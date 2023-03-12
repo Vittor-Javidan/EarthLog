@@ -1,11 +1,7 @@
-import { useState } from "react";
-import ProjectsScreen from "./Projects";
+import { Redirect } from "expo-router";
 
 export default function Home() {
-
-    const [language, setLanguage] = useState<"eng" | "pt-br">("eng")
-
     return (
-        <ProjectsScreen />
+        <Redirect href={"/Projects"} />
     );
 }

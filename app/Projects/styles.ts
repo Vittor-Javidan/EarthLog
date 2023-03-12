@@ -4,13 +4,11 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        padding: 24,
         backgroundColor: "#000"
     },
     main: {
         flex: 1,
         justifyContent: "center",
-        maxWidth: 960,
         marginHorizontal: "auto",
     },
     title: {
@@ -23,6 +21,7 @@ export const styles = StyleSheet.create({
         color: "#38434D",
     },
     link: {
-        color: "#38434D"
+        fontSize: 36,
+        color: "#FFFFFF",
     }
 });

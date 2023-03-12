@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Button, Text, View } from "react-native";
 import Config from "../../Classes/Config";
+import Background from "../../Components/Background";
 import { languages } from "./languages";
 import { styles } from "./styles";
 
@@ -16,7 +17,7 @@ export default function ProjectsScreen() {
     }
 
     return (
-        <View style={styles.container}>
+        <Background style={styles.container}>
             <View style={styles.main}>
                 <Text style={styles.title}>
                     {texts["Hello World"]}
@@ -24,14 +25,13 @@ export default function ProjectsScreen() {
                 <Text style={styles.subtitle}>
                     {texts["This is the first page of your app."]}
                 </Text>
-                
+                <Link
+                    style={styles.link}
+                    href={"/Page2"}
+                >
+                    {texts["Page 2"]}
+                </Link>
             </View>
-            <Link
-                style={styles.link}
-                href={"/Page2"}
-            >
-                {texts["Page 2"]}
-            </Link>
             <Button
                 onPress={() => handleLanguageChange("pt-br")}
                 title="Português"
@@ -40,6 +40,6 @@ export default function ProjectsScreen() {
                 onPress={() => handleLanguageChange("eng")}
                 title="English"
             />
-        </View>
+        </Background>
     );
 }
