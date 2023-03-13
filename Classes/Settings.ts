@@ -1,27 +1,13 @@
-import { getLocales } from "expo-localization"
-
-const languages = [
-    "pt-BR",
-    "en-US"
-] as const
+import { getDeviceLanguage } from "../Scripts/getDeviceLanguage"
+import { languageTags } from "../Types/languageTags"
 
 export default class Settings {
     
     static language: Languages =  getDeviceLanguage()
 
-    static setLanguage(language: Languages) {
+    static setLanguage(language: Languages): void {
         this.language = language
     }
 }
 
-function getDeviceLanguage() {
-
-    const languageTag = getLocales()[0].languageTag as Languages
-
-    if(languages.includes(languageTag)) {
-        return languageTag
-    }
-    return "en-US"
-}
-
-export type Languages = typeof languages[number]
+export type Languages = typeof languageTags[number]
