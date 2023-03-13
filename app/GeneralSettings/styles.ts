@@ -4,23 +4,21 @@ export const styles = StyleSheet.create({
     
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: "#000",
-        
+        alignItems: "center",
+        backgroundColor: "#000"
     },
 
-    settingsLink: {
+    closeLink: {
         position: 'absolute',
         right: 10,
         top: 25,
-        zIndex: 10
+        zIndex: 10,
     },
-
-    settingsSvg: {
+    
+    closeSvg: {
         opacity: 0.3,
     },
-
+    
     title: {
         paddingVertical: 60,
         paddingHorizontal: 20,
@@ -35,12 +33,8 @@ export const styles = StyleSheet.create({
         textShadowRadius: 10,
     },
     
-    link: {
-        paddingVertical: 35,
-        backgroundColor: "#208C1E",
-
-        textAlign: 'center',
-        fontSize: 32,
-        color: "#FFFFFF"
+    scrollView: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
 });

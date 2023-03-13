@@ -1,9 +1,9 @@
 export const languages = {
-    "eng": {
+    "en-US": {
         "Projects": "Projects",
         "New Project": "New Project"
     },
-    "pt-br": {
+    "pt-BR": {
         "Projects": "Projetos",
         "New Project": "Novo Projeto"
     }
