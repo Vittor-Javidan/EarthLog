@@ -6,6 +6,7 @@ export default function Background(props: {
     children: ReactNode 
     style: StyleProp<ViewStyle>
 }) {
+
     return(
         <View style={props.style}>
             <ImageBackground

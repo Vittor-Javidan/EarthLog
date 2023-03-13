@@ -1,8 +1,15 @@
 export default class Config {
     
-    static language: "eng" | "pt-br" =  "eng"
+    static language: Languages =  "eng"
 
-    static setLanguage(language: "eng" | "pt-br") {
+    static setLanguage(language: Languages) {
         this.language = language
     }
 }
+
+const languages = [
+    "eng", 
+    "pt-br"
+] as const
+
+export type Languages = typeof languages[number]
