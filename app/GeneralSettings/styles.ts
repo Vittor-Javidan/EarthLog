@@ -1,22 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const GeneralSettingScreenStyles = StyleSheet.create({
     
-    container: {
+    background: {
         flex: 1,
         alignItems: "center",
         backgroundColor: "#000"
-    },
-
-    closeLink: {
-        position: 'absolute',
-        right: 10,
-        top: 25,
-        zIndex: 10,
-    },
-    
-    closeSvg: {
-        opacity: 0.3,
     },
     
     title: {
@@ -38,3 +27,29 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
 });
+
+export const closeButtonStyles = StyleSheet.create({
+    
+    link: {
+        position: 'absolute',
+        right: 10,
+        top: 25,
+        zIndex: 10,
+    },
+    
+    svg: {
+        opacity: 0,
+        width: 50,
+        height: 50
+    },
+    
+    image: {
+        position: 'absolute',
+        right: 10,
+        top: 25,
+        zIndex: 9,
+        height: 50,
+        width: 50,
+        opacity: 0.3,
+    }
+})
