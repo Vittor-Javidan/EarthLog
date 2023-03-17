@@ -26,14 +26,17 @@ export const generalSettingScreenStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
     },
-
-    link: {
+    
+    touchableOpacity: {
         height: 60,
         backgroundColor: "#FFFFFF",
+        justifyContent: 'center'
+    },
+    
+    text: {
         fontSize: 32,
         textAlign: 'center',
-        textAlignVertical: 'center'
-    }
+    },
 });
 
 export const closeButtonStyles = StyleSheet.create({

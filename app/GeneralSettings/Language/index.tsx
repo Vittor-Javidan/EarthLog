@@ -1,30 +1,47 @@
 import { Link } from "expo-router";
 import { Href } from "expo-router/src/link/href";
-import { Image, ScrollView, Text } from "react-native";
+import { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity } from "react-native";
 import Svg, { Path } from 'react-native-svg';
-import Settings from "../../Classes/Settings";
-import Background from "../../Components/Background";
+import Settings from "../../../Classes/Settings";
+import Background from "../../../Components/Background";
 import { closeButtonStyles, generalSettingScreenStyles } from "./styles";
 import { languages } from "./translations";
 
 export default function GeneralSettingScreen() {
 
-    const text = languages[Settings.language]
+    const [language, setLanguage] = useState(Settings.language)
+    const text = languages[language]
 
     return (
         <Background style={generalSettingScreenStyles.background}>
             <CloseButton 
-                route={'/Projects'}
+                route={'/GeneralSettings'}
             />
             <Text style={generalSettingScreenStyles.title}>
-                {text["General Settings"]}
+                {text["Languages"]}
             </Text>
             <ScrollView contentContainerStyle={generalSettingScreenStyles.scrollView}>
-                <Link style={generalSettingScreenStyles.link}
-                    href={'/GeneralSettings/Language'}
+                <TouchableOpacity style={generalSettingScreenStyles.touchableOpacity}
+                    onPress={() => {
+                        Settings.setLanguage("en-US")
+                        setLanguage("en-US")
+                    }}
                 >
-                    {text["Languages"]}
-                </Link>
+                    <Text style={generalSettingScreenStyles.text}>
+                        {text["English"]}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={generalSettingScreenStyles.touchableOpacity}
+                    onPress={() => {
+                        Settings.setLanguage("pt-BR")
+                        setLanguage("pt-BR")
+                    }}
+                >
+                    <Text style={generalSettingScreenStyles.text}>
+                        {text["Português-Brasil"]}
+                    </Text>
+                </TouchableOpacity>
             </ScrollView>
         </Background>
     )
@@ -50,7 +67,7 @@ function CloseButton(props: {
         </Link>
         <Image
             style={closeButtonStyles.image}
-            source={require('../../assets/icons/closeIcon_WithShadow.png')}
+            source={require('../../../assets/icons/closeIcon_WithShadow.png')}
         />
     </>)
 }
