@@ -6,7 +6,7 @@ import ScreenChangeButton from "../../Components/ScreenChangeButton/ScreenChange
 import { styles } from "./styles";
 import { languages } from "./translations";
 
-export default function GeneralSettingScreen() {
+export default function LanguageSelectionScreen() {
 
     const [language, setLanguage] = useState(Settings.language)
     const text = languages[language]
@@ -14,7 +14,7 @@ export default function GeneralSettingScreen() {
     return (
         <Background style={styles.background}>
             <ScreenChangeButton 
-                route={'/GeneralSettings'}
+                route={'/GeneralSettingsScreen'}
                 imgRelativePath={require('../../assets/icons/closeIcon_WithShadow.png')}
                 containerStyle={styles.container_CLoseButton}
                 imageStyle={styles.image_CLoseButton}

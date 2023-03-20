@@ -13,7 +13,7 @@ export default function GeneralSettingScreen() {
     return (
         <Background style={styles.background}>
             <ScreenChangeButton 
-                route={'/Projects'}
+                route={'/ProjectsSelectionScreen'}
                 imgRelativePath={require('../../assets/icons/closeIcon_WithShadow.png')}
                 containerStyle={styles.container_CLoseButton}
                 imageStyle={styles.image_CLoseButton}
@@ -23,7 +23,7 @@ export default function GeneralSettingScreen() {
             </Text>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <Link style={styles.link}
-                    href={'/Language'}
+                    href={'/LanguageSelectionScreen'}
                 >
                     {text["Languages"]}
                 </Link>

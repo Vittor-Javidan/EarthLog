@@ -7,14 +7,14 @@ import ScreenChangeButton from "../../Components/ScreenChangeButton/ScreenChange
 import { styles } from "./styles";
 import { languages } from "./translations";
 
-export default function ProjectsScreen() {
+export default function ProjectsSelectionScreen() {
 
     const texts = languages[Settings.language]  
 
     return (
         <Background style={styles.background}>
             <ScreenChangeButton 
-                route={'/GeneralSettings'}
+                route={'/GeneralSettingsScreen'}
                 imgRelativePath={require('../../assets/icons/settingsGear_WithShadow.png')}
                 containerStyle={styles.container_SettingButton}
                 imageStyle={styles.image_SettingButton}
