@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const projectScreenStyles = StyleSheet.create({
+export const styles = StyleSheet.create({
     
     background: {
         flex: 1,
@@ -10,7 +10,21 @@ export const projectScreenStyles = StyleSheet.create({
         
     },
 
-    title: {
+    container_SettingButton: {
+        position: 'absolute',
+        right: 10,
+        top: 25,
+        zIndex: 10,
+    },
+    
+    image_SettingButton: {
+        opacity: 0.5,
+        width: 50,
+        height: 50,
+        zIndex: 9,
+    },
+
+    screenTitle: {
         paddingVertical: 60,
         paddingHorizontal: 20,
     
@@ -24,38 +38,14 @@ export const projectScreenStyles = StyleSheet.create({
         textShadowRadius: 10,
     },
 
-    link: {
+    view_NewProjectButton: {
         paddingVertical: 35,
         backgroundColor: "#208C1E",
+    },
 
+    text_NewProjectButton: {
         textAlign: 'center',
         fontSize: 32,
         color: "#FFFFFF"
-    },
-})
-
-export const generalSettingsButtonStyles = StyleSheet.create({
-    
-    link: {
-        position: 'absolute',
-        right: 10,
-        top: 25,
-        zIndex: 10,
-    },
-    
-    svg: {
-        opacity: 0,
-        width: 50,
-        height: 50
-    },
-    
-    image: {
-        position: 'absolute',
-        right: 10,
-        top: 25,
-        zIndex: 9,
-        height: 50,
-        width: 50,
-        opacity: 0.3,
     }
 })

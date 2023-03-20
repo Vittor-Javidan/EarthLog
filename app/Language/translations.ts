@@ -1,4 +1,4 @@
-import { Languages } from "../../../Classes/Settings"
+import { Languages } from "../../Classes/Settings"
 
 export const languages: Record<Languages, {
     "Languages": string,
