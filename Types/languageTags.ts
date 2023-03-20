@@ -1,4 +1,9 @@
 export const languageTags = [
-    "pt-BR",
-    "en-US"
+    "en-US",
+    "pt-BR"
 ] as const
+
+export const languageLabels = [
+    "English",
+    "Português-Brasil"
+]

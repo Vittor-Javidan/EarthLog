@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
         height: 50,
     },
     
-    
     title: {
         paddingVertical: 60,
         paddingHorizontal: 20,
@@ -46,9 +45,21 @@ export const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         justifyContent: 'center'
     },
-    
+
+    touchableOpacity_SelectedLanguage: {
+        height: 60,
+        backgroundColor: "#208C1E",
+        justifyContent: 'center'
+    },
+
     text: {
         fontSize: 32,
         textAlign: 'center',
     },
+
+    text_SelectedLanguage: {
+        fontSize: 32,
+        textAlign: 'center',
+        color: "#FFFFFF"
+    }
 });

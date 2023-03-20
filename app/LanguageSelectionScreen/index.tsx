@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import Settings from "../../Classes/Settings";
 import Background from "../../Components/Background";
 import ScreenChangeButton from "../../Components/ScreenChangeButton/ScreenChangeButton";
+import { languageLabels, languageTags } from "../../Types/languageTags";
 import { styles } from "./styles";
 import { languages } from "./translations";
 
@@ -13,37 +14,47 @@ export default function LanguageSelectionScreen() {
 
     return (
         <Background style={styles.background}>
+
             <ScreenChangeButton 
                 route={'/GeneralSettingsScreen'}
                 imgRelativePath={require('../../assets/icons/closeIcon_WithShadow.png')}
                 containerStyle={styles.container_CLoseButton}
                 imageStyle={styles.image_CLoseButton}
             />
-            <Text style={styles.title}>
+
+            <Text 
+                style={styles.title}
+            >
                 {text["Languages"]}
             </Text>
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <TouchableOpacity style={styles.touchableOpacity}
-                    onPress={() => {
-                        Settings.setLanguage("en-US")
-                        setLanguage("en-US")
-                    }}
-                >
-                    <Text style={styles.text}>
-                        {text["English"]}
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.touchableOpacity}
-                    onPress={() => {
-                        Settings.setLanguage("pt-BR")
-                        setLanguage("pt-BR")
-                    }}
-                >
-                    <Text style={styles.text}>
-                        {text["Português-Brasil"]}
-                    </Text>
-                </TouchableOpacity>
+            
+            <ScrollView 
+                contentContainerStyle={styles.scrollView}
+            >
+                {languageTags.map((tag, index) => (
+                    <Pressable 
+                        style={tag === Settings.language 
+                            ? styles.touchableOpacity_SelectedLanguage 
+                            : styles.touchableOpacity
+                        }
+                        key={tag}
+                        onPress={() => {
+                            Settings.setLanguage(tag)
+                            setLanguage(tag)
+                        }}
+                    >
+                        <Text 
+                            style={tag === Settings.language
+                                ? styles.text_SelectedLanguage
+                                : styles.text 
+                            }
+                        >
+                            {languageLabels[index]}
+                        </Text>
+                    </Pressable>
+                ))}
             </ScrollView>
+            
         </Background>
     )
 }
