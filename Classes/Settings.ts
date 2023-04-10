@@ -1,13 +1,12 @@
-import { getDeviceLanguage } from "../Scripts/getDeviceLanguage"
-import { languageTags } from "../Types/languageTags"
+import {getDeviceLanguage} from '../Scripts/getDeviceLanguage';
+import {languageTags} from '../Types/languageTags';
 
 export default class Settings {
-    
-    static language: Languages =  getDeviceLanguage()
+  static language: Languages = getDeviceLanguage();
 
-    static setLanguage(language: Languages): void {
-        this.language = language
-    }
+  static setLanguage(language: Languages): void {
+    this.language = language;
+  }
 }
 
-export type Languages = typeof languageTags[number]
+export type Languages = (typeof languageTags)[number];
