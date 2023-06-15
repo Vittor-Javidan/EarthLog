@@ -1,4 +1,4 @@
-import {Languages} from '../../Classes/Settings';
+import {Languages} from '../../Services/SettingsService';
 
 export const languages: Record<Languages, {}> = {
   'en-US': {},

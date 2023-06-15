@@ -8,7 +8,9 @@ export default function MainScreen(): JSX.Element {
       title="Earth Log"
       drawerChildren={<></>}
     >
-      <Text>Main screen content</Text>
+      <>
+        <Text>Content</Text>
+      </>
     </NewLayout>
   );
 }

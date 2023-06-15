@@ -21,7 +21,7 @@
 
 ## storage service
 
-- implement local storage service
++ implement local storage service
 
 ## config service
 
