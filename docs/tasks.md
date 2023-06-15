@@ -19,18 +19,25 @@
     + navbar title: Earth Log
     + footer: app version
 
-## storage service
+## Storage Service
 
 + implement local storage service
 
-## config service
+## Config Service
 
-- implement a config service
-    - must save on local storage a default config data when app first load
-    - user the local storage service to write and read
-        - local storage config data must be parsed into a DTO
++ implement a config service
+    + it return a default config when no config is saved on local storage
+    + uses the local storage service to write and read the current config
+        + local storage config data must be parsed into a DTO
 
-## internationalization service
+## Basic Config Screen
 
-- create a internationalization service
-    - must save on local storage when a new language is setted
+- Must implement a button on MainScreen Layout to navite to Config Screen
+
+- Must have a save button
+    - save button saves the current config into local storage
+
+- Must have a language select field
+    - screens must have a translation file dedicated to it.
+        - translations files must have only a constant with is an object with all laguages tags as main keys.
+        - each language tag is a pair-value with the key representing the text in english, and the value the respective translation.

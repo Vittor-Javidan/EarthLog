@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type LocalStorageData = Record<string, string | null>
-
+/**
+ * Should never be called directly on UI. It meant to be used by other services.
+ */
 export default class LocalStorageService {
 
   async saveData (key: string, value: string) {
@@ -13,18 +14,17 @@ export default class LocalStorageService {
     }
   }
 
-  async getData(key: string): Promise<string> {
+  async getData(key: string): Promise<string | null> {
     try {
       const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
-        // Data retrieved successfully
-        console.log('Retrieved data:', value);
-        return value;
+      console.log('Retrieved data:', value);
+      if (!value) {
+        return null;
       }
-      return '';
+      return value;
     } catch (error) {
       console.log('Error retrieving data:', error);
-      return '';
+      return null;
     }
   }
 
