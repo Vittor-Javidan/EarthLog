@@ -7,5 +7,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'off',
     'no-alert': 'off',
     'dot-notation': 'off',
+    'prettier/prettier': 'off',
+    'react-native/no-inline-styles': 'off',
   },
 };
