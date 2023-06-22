@@ -3,8 +3,10 @@ import {Text} from 'react-native';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
 import { useRouter } from 'expo-router';
+import LogService from '../../Services/LogService';
 
 export default function MainScreen(): JSX.Element {
+  LogService.useLog('MAIN SCREEN: renderizado');
 
   const navController = useRouter();
 
