@@ -1,6 +1,8 @@
 import {languageTags} from '../Types/languageTags';
 import {getLocales} from 'expo-localization';
 
+export type Languages = (typeof languageTags)[number];
+
 export default class LanguageService {
 
   getDeviceLanguage(): Languages {
@@ -11,5 +13,3 @@ export default class LanguageService {
     return 'en-US';
   }
 }
-
-export type Languages = (typeof languageTags)[number];
