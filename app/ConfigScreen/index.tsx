@@ -1,20 +1,21 @@
+
 import React from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
+import { useRouter } from 'expo-router';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
-import { useRouter } from 'expo-router';
 
-export default function MainScreen(): JSX.Element {
+export default function ConfigScreen(): JSX.Element {
 
   const navController = useRouter();
 
   return (
     <Layout
-      title="Earth Log"
+      title="Settings"
       drawerChildren={<>
         <DrawerButton
-          title="Config"
-          onPress={() => navController.push('/ConfigScreen')}
+          title="MainScreen"
+          onPress={() => navController.push('/MainScreen')}
         />
       </>}
     >

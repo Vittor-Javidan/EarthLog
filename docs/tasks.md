@@ -32,7 +32,7 @@
 
 ## Basic Config Screen
 
-- Must implement a button on MainScreen Layout to navite to Config Screen
+- Must implement a button on MainScreen Layout to navigate to Config Screen
 
 - Must have a save button
     - save button saves the current config into local storage
@@ -41,3 +41,12 @@
     - screens must have a translation file dedicated to it.
         - translations files must have only a constant with is an object with all laguages tags as main keys.
         - each language tag is a pair-value with the key representing the text in english, and the value the respective translation.
+
+## Project Creation Screen
+
+- Project screen must be the first screen
+
+- A button to create a project is needed
+
+- When create a new project, it must show the items as a list of projects
+    - No need to implement data base yet.
