@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
 import LogService from '../../Services/LogService';
+import APPColors from '../../Globals/Colors';
 
 export default function ConfigScreen(): JSX.Element {
   LogService.useLog('CONFIG SCREEN: renderizado');
@@ -21,9 +22,13 @@ export default function ConfigScreen(): JSX.Element {
         />
       </>}
     >
-      <>
-        <Text>Content</Text>
-      </>
+      <Text
+        style={{
+          color: APPColors.onBackground,
+        }}
+      >
+        Content
+      </Text>
     </Layout>
   );
 }

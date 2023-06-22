@@ -4,6 +4,7 @@ import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
 import { useRouter } from 'expo-router';
 import LogService from '../../Services/LogService';
+import APPColors from '../../Globals/Colors';
 
 export default function MainScreen(): JSX.Element {
   LogService.useLog('MAIN SCREEN: renderizado');
@@ -20,9 +21,13 @@ export default function MainScreen(): JSX.Element {
         />
       </>}
     >
-      <>
-        <Text>Content</Text>
-      </>
+      <Text
+        style={{
+          color: APPColors.onBackground,
+        }}
+      >
+        Content
+      </Text>
     </Layout>
   );
 }

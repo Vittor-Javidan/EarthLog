@@ -1,5 +1,6 @@
 export default class APPColors {
   static background = '#000';
+  static onBackground = '#DDD';
 
   static primary = '#DDD';
   static onPrimary = '#222';
