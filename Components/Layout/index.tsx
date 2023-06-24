@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { ReactNode, useState } from 'react';
 import {
   View,
   Text,
@@ -10,16 +10,17 @@ import {
   Pressable,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 import APPColors from '../../Globals/Colors';
 import { APP_VERSION } from '../../Globals/Version';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export default function Layout(props: {
-  title: string,
-  children: JSX.Element
-  drawerChildren: JSX.Element
+  title: string
+  children: ReactNode
+  drawerChildren: ReactNode
 }): JSX.Element {
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
@@ -34,11 +35,11 @@ export default function Layout(props: {
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
         style={{flex: 1}}
       />
-      <Layout_Content
+      <Layout_InnerContentContainer
         style={{flex: 9}}
       >
         {props.children}
-      </Layout_Content>
+      </Layout_InnerContentContainer>
     </View>
     {showDrawer && (
       <Layout_Drawer
@@ -121,8 +122,8 @@ function Layout_Navbar_MenuButton(props: {
       style={[props.style, {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? '#FFF' : APPColors.primary,
-        opacity: pressed ? 0.5 : 1,
+        backgroundColor: pressed ? APPColors.onPressColorPrimary : APPColors.primary,
+        opacity: pressed ? 0.9 : 1,
       }]}
     >
       <Ionicons
@@ -137,9 +138,9 @@ function Layout_Navbar_MenuButton(props: {
   );
 }
 
-function Layout_Content(props: {
+function Layout_InnerContentContainer(props: {
   style: StyleProp<ViewStyle>
-  children: JSX.Element
+  children: ReactNode
 }): JSX.Element {
   return (
     <View
@@ -154,12 +155,12 @@ function Layout_Content(props: {
 
 function Layout_Drawer(props: {
   style: StyleProp<ViewStyle>
-  children: JSX.Element
+  children: ReactNode
 }): JSX.Element {
   return (
     <ScrollView
       style={[props.style, {
-        backgroundColor: APPColors.primary,
+        backgroundColor: APPColors.secondary,
       }]}
     >
       {props.children}

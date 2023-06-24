@@ -1,5 +1,5 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import Layout from '../../Components/Layout';
@@ -9,16 +9,19 @@ import LogService from '../../Services/LogService';
 import { Languages } from '../../Services/LanguageService';
 import ConfigService from '../../Services/ConfigService';
 
-import APPColors from '../../Globals/Colors';
 import { ConfigScreenTranslations, languages } from './translations';
+import LayoutContent from '../../Components/LayoutContent';
+import LayoutButton from '../../Components/LayoutButton';
+import APPColors from '../../Globals/Colors';
 
 export default function ConfigScreen(): JSX.Element {
 
   LogService.useLog('CONFIG SCREEN: rendered');
   const navController = useRouter();
   const savedConfig = useMemo(() => ConfigService.config, [ConfigService.config]);
+  const [currentLanguage, _] = useState<Languages>(savedConfig.language);
   const stringResources = useMemo<ConfigScreenTranslations[Languages]>(
-    () => languages[savedConfig.language], []
+    () => languages[currentLanguage], [currentLanguage]
   );
 
   return (
@@ -31,13 +34,23 @@ export default function ConfigScreen(): JSX.Element {
         />
       </>}
     >
-      <Text
-        style={{
-          color: APPColors.onBackground,
-        }}
+      <LayoutContent
+        style={{ flex: 1 }}
       >
-        Content
-      </Text>
+        <Text
+          style={{color: APPColors.onBackground}}
+        >
+          Content
+        </Text>
+      </LayoutContent>
+      <LayoutContent>
+        <LayoutButton
+          title={stringResources['SAVE']}
+          overrideBackgroundColor={APPColors.confirm}
+          overrideTextColor={APPColors.onConfirm}
+          onPress={() => {}}
+        />
+      </LayoutContent>
     </Layout>
   );
 }

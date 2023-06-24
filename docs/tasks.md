@@ -32,7 +32,7 @@
 
 ## Screen Button
 
-- Create a button to be display on any screen. This button must be generic.
++ Create a button to be display on any screen. This button must be generic.
 
 ## Internationalization
 

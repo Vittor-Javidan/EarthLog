@@ -6,8 +6,16 @@ export default class APPColors {
   static onPrimary = '#222';
 
   static secondary = '#888';
-  static onSecondary = '#222';
+  static onSecondary = '#DDD';
 
   static terciary = '#444';
-  static onTerciary = '#222';
+  static onTerciary = '#DDD';
+
+  static onPressColorPrimary = '#FFF';
+
+  static confirm = '#5F5';
+  static onConfirm = '#222';
+
+  static modified = '#FF5';
+  static onModified = '#222';
 }
