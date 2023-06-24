@@ -1,10 +1,10 @@
 import { Languages } from '../Types/LanguageTypes';
 
-export type AppInitializationScreenTranslations = Record<Languages, {
+export type InitializationScreenTranslations = Record<Languages, {
 	'Loading...': string
 }>
 
-export const languages: AppInitializationScreenTranslations = {
+export const languages: InitializationScreenTranslations = {
 	'en-US': {
 		'Loading...': 'Loading...',
 	},
