@@ -30,9 +30,19 @@
     + uses the local storage service to write and read the current config
         + local storage config data must be parsed into a DTO
 
+## Screen Button
+
+- Create a button to be display on any screen. This button must be generic.
+
+## Internationalization
+
++ Add a translation file for each screen
+- Add a button to choose a language
+    - when a language is choosed, it must be saved on local storage using Config service.
+
 ## Basic Config Screen
 
-- Must implement a button on MainScreen Layout to navigate to Config Screen
++ Must implement a button on MainScreen Layout to navigate to Config Screen before
 
 - Must have a save button
     - save button saves the current config into local storage

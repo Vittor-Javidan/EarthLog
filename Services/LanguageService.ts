@@ -5,7 +5,7 @@ export type Languages = (typeof languageTags)[number];
 
 export default class LanguageService {
 
-  getDeviceLanguage(): Languages {
+  static getDeviceLanguage(): Languages {
     const languageTag = getLocales()[0].languageTag as Languages;
     if (languageTags.includes(languageTag)) {
       return languageTag;

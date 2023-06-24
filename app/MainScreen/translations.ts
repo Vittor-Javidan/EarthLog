@@ -1,6 +1,14 @@
-import {Languages} from '../../Services/SettingsService';
+import {Languages} from '../../Services/LanguageService';
 
-export const languages: Record<Languages, {}> = {
-  'en-US': {},
-  'pt-BR': {},
+export type MainScreenTranslations = Record<Languages, {
+  'Settings': string
+}>
+
+export const languages: MainScreenTranslations = {
+  'en-US': {
+    'Settings': 'Settings',
+  },
+  'pt-BR': {
+    'Settings': 'Configurações',
+  },
 };

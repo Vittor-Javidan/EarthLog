@@ -1,5 +1,5 @@
 import LocalStorageService from './LocalStorageService';
-import LanguageService, { Languages } from './SettingsService';
+import LanguageService, { Languages } from './LanguageService';
 
 export type ConfigDTO = {
   language: Languages
@@ -9,7 +9,7 @@ export default class ConfigService {
 
   private static LOCAL_STORAGE_KEY: string = 'config';
   private static DEFAULT_CONFIG: ConfigDTO = {
-    language: new LanguageService().getDeviceLanguage(),
+    language: LanguageService.getDeviceLanguage(),
   };
 
   async getConfig(): Promise<ConfigDTO> {
