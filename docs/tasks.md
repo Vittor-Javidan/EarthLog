@@ -44,7 +44,7 @@
 
 + Must implement a button on MainScreen Layout to navigate to Config Screen before
 
-- Must have a save button
++ Must have a save button
     - save button saves the current config into local storage
 
 - Must have a language select field
