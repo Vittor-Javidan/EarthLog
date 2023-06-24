@@ -4,11 +4,16 @@ import { Redirect } from 'expo-router';
 import LogService from '../Services/LogService';
 import ConfigService from '../Services/ConfigService';
 import APPColors from '../Globals/Colors';
+import { AppInitializationScreenTranslations, languages } from './translations';
+import LanguageService, { Languages } from '../Services/LanguageService';
 
 export default function Home() {
 
-  LogService.useLog('App Iniciado');
+  LogService.useLog('HOME SCREEN: App Started');
   const configService = useMemo<ConfigService>(() => new ConfigService(), []);
+  const stringResources = useMemo<AppInitializationScreenTranslations[Languages]>(
+    () => languages[LanguageService.getDeviceLanguage()], []
+  );
   const [isConfigLoaded, setConfigLoaded] = useState<boolean>(false);
 
   configService.useLoadConfig(() => {
@@ -34,7 +39,7 @@ export default function Home() {
             color: APPColors.onBackground,
           }}
         >
-          Carregando...
+          {stringResources['Loading...']}
         </Text>
       </View>
     )}

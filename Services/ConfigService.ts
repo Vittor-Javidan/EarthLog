@@ -39,10 +39,10 @@ export default class ConfigService {
 
   useLoadConfig(onFinish: () => void) {
     useEffect(() => {
-      LogService.useLog('Config Loading...');
+      LogService.useLog('CONFIG SERVICE: Config Loading...');
       ConfigService.loadConfig(() => {
         onFinish();
-        LogService.useLog('Config Loaded!');
+        LogService.useLog('CONFIG SERVICE: Config Loaded!');
       });
     }, []);
   }
