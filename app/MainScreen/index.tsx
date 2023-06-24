@@ -3,10 +3,13 @@ import {Text} from 'react-native';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
 import { useRouter } from 'expo-router';
+
 import LogService from '../../Services/LogService';
+import LanguageService from '../../Services/LanguageService';
+
 import APPColors from '../../Globals/Colors';
 import { MainScreenTranslations, languages } from './translations';
-import LanguageService, { Languages } from '../../Services/LanguageService';
+import { Languages } from '../../Types/LanguageTypes';
 
 export default function MainScreen(): JSX.Element {
 

@@ -1,4 +1,4 @@
-import {Languages} from '../../Services/LanguageService';
+import { Languages } from '../../Types/LanguageTypes';
 
 export type ConfigScreenTranslations = Record<Languages, {
   'Settings': string

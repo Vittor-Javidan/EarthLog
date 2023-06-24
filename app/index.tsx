@@ -1,11 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Redirect } from 'expo-router';
+
 import LogService from '../Services/LogService';
 import ConfigService from '../Services/ConfigService';
+import LanguageService from '../Services/LanguageService';
+
 import APPColors from '../Globals/Colors';
 import { AppInitializationScreenTranslations, languages } from './translations';
-import LanguageService, { Languages } from '../Services/LanguageService';
+import { Languages } from '../Types/LanguageTypes';
 
 export default function Home() {
 

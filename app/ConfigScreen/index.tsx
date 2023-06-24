@@ -4,15 +4,15 @@ import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
+import LayoutContent from '../../Components/LayoutContent';
+import LayoutButton from '../../Components/LayoutButton';
 
 import LogService from '../../Services/LogService';
-import { Languages } from '../../Services/LanguageService';
 import ConfigService from '../../Services/ConfigService';
 
 import { ConfigScreenTranslations, languages } from './translations';
-import LayoutContent from '../../Components/LayoutContent';
-import LayoutButton from '../../Components/LayoutButton';
 import APPColors from '../../Globals/Colors';
+import { Languages } from '../../Types/LanguageTypes';
 
 export default function ConfigScreen(): JSX.Element {
 
