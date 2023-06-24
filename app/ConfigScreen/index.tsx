@@ -4,17 +4,21 @@ import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import Layout from '../../Components/Layout';
 import DrawerButton from '../../Components/DrawerButton';
+
 import LogService from '../../Services/LogService';
+import { Languages } from '../../Services/LanguageService';
+import ConfigService from '../../Services/ConfigService';
+
 import APPColors from '../../Globals/Colors';
-import LanguageService, { Languages } from '../../Services/LanguageService';
 import { ConfigScreenTranslations, languages } from './translations';
 
 export default function ConfigScreen(): JSX.Element {
-  LogService.useLog('CONFIG SCREEN: renderizado');
 
+  LogService.useLog('CONFIG SCREEN: renderizado');
   const navController = useRouter();
+  const savedConfig = useMemo(() => ConfigService.config, [ConfigService.config]);
   const stringResources = useMemo<ConfigScreenTranslations[Languages]>(
-    () => languages[LanguageService.getDeviceLanguage()], []
+    () => languages[savedConfig.language], []
   );
 
   return (

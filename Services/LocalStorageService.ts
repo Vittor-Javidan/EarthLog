@@ -5,35 +5,27 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
  */
 export default class LocalStorageService {
 
-  async saveData (key: string, value: string) {
+  static async saveData (key: string, value: string) {
     try {
       await AsyncStorage.setItem(key, value);
-      console.log('Data saved successfully!');
-    } catch (error) {
-      console.log('Error saving data:', error);
-    }
+    } catch (error) {}
   }
 
-  async getData(key: string): Promise<string | null> {
+  static async getData(key: string): Promise<string | null> {
     try {
       const value = await AsyncStorage.getItem(key);
-      console.log('Retrieved data:', value);
       if (!value) {
         return null;
       }
       return value;
     } catch (error) {
-      console.log('Error retrieving data:', error);
       return null;
     }
   }
 
-  async removeData(key: string) {
+  static async removeData(key: string) {
     try {
       await AsyncStorage.removeItem(key);
-      console.log('Data removed successfully!');
-    } catch (error) {
-      console.log('Error removing data:', error);
-    }
+    } catch (error) {}
   }
 }

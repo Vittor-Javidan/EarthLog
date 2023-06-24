@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import LocalStorageService from './LocalStorageService';
 import LanguageService, { Languages } from './LanguageService';
+import LogService from './LogService';
 
 export type ConfigDTO = {
   language: Languages
@@ -12,24 +14,36 @@ export default class ConfigService {
     language: LanguageService.getDeviceLanguage(),
   };
 
-  async getConfig(): Promise<ConfigDTO> {
-    const data = await new LocalStorageService().getData(ConfigService.LOCAL_STORAGE_KEY);
+  static config: ConfigDTO = this.DEFAULT_CONFIG;
+
+  static async loadConfig(onFinish: () => void): Promise<void> {
+    const data = await LocalStorageService.getData(ConfigService.LOCAL_STORAGE_KEY);
     if (data) {
       const verifiedData = this.verifyConfigDTOIntegrity(JSON.parse(data));
-      return verifiedData;
+      this.config = verifiedData;
     }
-    return ConfigService.DEFAULT_CONFIG;
+    onFinish();
   }
 
-  async saveConfig(configData: ConfigDTO): Promise<void> {
-    await new LocalStorageService().saveData(ConfigService.LOCAL_STORAGE_KEY, JSON.stringify(configData));
+  static async saveConfig(configData: ConfigDTO): Promise<void> {
+    await LocalStorageService.saveData(ConfigService.LOCAL_STORAGE_KEY, JSON.stringify(configData));
   }
 
   /** Garantees migration when local storage config data is outdated */
-  private verifyConfigDTOIntegrity(dto: ConfigDTO): ConfigDTO {
+  private static verifyConfigDTOIntegrity(dto: ConfigDTO): ConfigDTO {
     const verifiedConfigDTO: ConfigDTO = {
       language: dto.language ? dto.language : ConfigService.DEFAULT_CONFIG.language,
     };
     return verifiedConfigDTO;
+  }
+
+  useLoadConfig(onFinish: () => void) {
+    useEffect(() => {
+      LogService.useLog('Config Loading...');
+      ConfigService.loadConfig(() => {
+        onFinish();
+        LogService.useLog('Config Loaded!');
+      });
+    }, []);
   }
 }

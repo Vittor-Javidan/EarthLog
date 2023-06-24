@@ -9,8 +9,8 @@ import { MainScreenTranslations, languages } from './translations';
 import LanguageService, { Languages } from '../../Services/LanguageService';
 
 export default function MainScreen(): JSX.Element {
-  LogService.useLog('MAIN SCREEN: renderizado');
 
+  LogService.useLog('MAIN SCREEN: renderizado');
   const navController = useRouter();
   const stringResources = useMemo<MainScreenTranslations[Languages]>(
     () => languages[LanguageService.getDeviceLanguage()], []

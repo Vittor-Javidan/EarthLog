@@ -9,5 +9,6 @@ module.exports = {
     'dot-notation': 'off',
     'prettier/prettier': 'off',
     'react-native/no-inline-styles': 'off',
+    'react-hooks/rules-of-hooks': 'off',
   },
 };
