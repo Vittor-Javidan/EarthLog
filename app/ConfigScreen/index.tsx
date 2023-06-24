@@ -2,16 +2,17 @@
 import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
+
 import Layout from '../../Components/Layout';
-import DrawerButton from '../../Components/DrawerButton';
+import LayoutDrawerButton from '../../Components/LayoutDrawerButton';
 import LayoutContent from '../../Components/LayoutContent';
 import LayoutButton from '../../Components/LayoutButton';
 
 import LogService from '../../Services/LogService';
 import ConfigService from '../../Services/ConfigService';
 
-import { ConfigScreenTranslations, languages } from './translations';
 import APPColors from '../../Globals/Colors';
+import { ConfigScreenTranslations, languages } from './translations';
 import { Languages } from '../../Types/LanguageTypes';
 
 export default function ConfigScreen(): JSX.Element {
@@ -28,7 +29,7 @@ export default function ConfigScreen(): JSX.Element {
     <Layout
       title={stringResources['Settings']}
       drawerChildren={<>
-        <DrawerButton
+        <LayoutDrawerButton
           title={stringResources['Main Screen']}
           onPress={() => navController.push('/MainScreen')}
         />
