@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 
-export default function LayoutContent(props: {
+export default function Layout_Content(props: {
 	children: ReactNode,
 	style?: StyleProp<ViewStyle>
 }): JSX.Element {

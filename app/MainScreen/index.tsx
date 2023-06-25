@@ -3,7 +3,7 @@ import {Text} from 'react-native';
 import { useRouter } from 'expo-router';
 
 import Layout from '../../Components/Layout';
-import LayoutDrawerButton from '../../Components/LayoutDrawerButton';
+import Layout_DrawerButton from '../../Components/Layout_DrawerButton';
 
 import LogService from '../../Services/LogService';
 
@@ -24,7 +24,7 @@ export default function MainScreen(): JSX.Element {
     <Layout
       title="Earth Log"
       drawerChildren={<>
-        <LayoutDrawerButton
+        <Layout_DrawerButton
           title={stringResources['Settings']}
           onPress={() => navController.push('/ConfigScreen')}
         />

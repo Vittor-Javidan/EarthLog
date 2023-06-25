@@ -2,15 +2,15 @@ import React, { useState, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
 import Layout from '../../Components/Layout';
-import LayoutDrawerButton from '../../Components/LayoutDrawerButton';
+import Layout_DrawerButton from '../../Components/Layout_DrawerButton';
 
 import LogService from '../../Services/LogService';
 import ConfigService from '../../Services/ConfigService';
 
 import { AvailableLanguagesScreen_Translations, languages } from './translations';
 import { LanguageTags, Languages, languageLabels, languageTags } from '../../Types/LanguageTypes';
-import LayoutButton from '../../Components/LayoutButton';
-import LayoutContent from '../../Components/LayoutContent';
+import Layout_Button from '../../Components/Layout_Button';
+import Layout_Content from '../../Components/Layout_Content';
 import APPColors from '../../Globals/Colors';
 
 export default function AvailableLanguagesScreen() {
@@ -23,7 +23,7 @@ export default function AvailableLanguagesScreen() {
     () => languages[currentLanguage], [currentLanguage]
   );
 
-  async function onButtonClick(languageTag: LanguageTags) {
+  async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
     await ConfigService.saveConfig();
     setCurrentLanguage(languageTag);
@@ -33,18 +33,18 @@ export default function AvailableLanguagesScreen() {
     <Layout
       title={stringResources['Languages']}
       drawerChildren={<>
-        <LayoutDrawerButton
+        <Layout_DrawerButton
           title={stringResources['Back']}
           onPress={() => navController.push('/ConfigScreen')}
         />
       </>}
     >
-      <LayoutContent>
+      <Layout_Content>
         <AllButtons
           selectedLanguage={currentLanguage}
-          onButtonClick={onButtonClick}
+          onButtonClick={saveSelectedLanguage}
         />
-      </LayoutContent>
+      </Layout_Content>
     </Layout>
   );
 }
@@ -59,7 +59,7 @@ function AllButtons(props: {
     const isSelected = props.selectedLanguage === languageTags[index];
 
     return (
-      <LayoutButton
+      <Layout_Button
         key={languageLabel}
         title={languageLabel}
         overrideBackgroundColor={isSelected ? APPColors.confirm : undefined}

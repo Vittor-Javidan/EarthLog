@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
 import Layout from '../../Components/Layout';
-import LayoutDrawerButton from '../../Components/LayoutDrawerButton';
-import LayoutContent from '../../Components/LayoutContent';
-import LayoutButton from '../../Components/LayoutButton';
+import Layout_DrawerButton from '../../Components/Layout_DrawerButton';
+import Layout_Content from '../../Components/Layout_Content';
+import Layout_Button from '../../Components/Layout_Button';
 
 import LogService from '../../Services/LogService';
 import ConfigService from '../../Services/ConfigService';
@@ -25,18 +25,18 @@ export default function ConfigScreen(): JSX.Element {
     <Layout
       title={stringResources['Settings']}
       drawerChildren={<>
-        <LayoutDrawerButton
+        <Layout_DrawerButton
           title={stringResources['Main Screen']}
           onPress={() => navController.push('/MainScreen')}
         />
       </>}
     >
-      <LayoutContent>
-        <LayoutButton
+      <Layout_Content>
+        <Layout_Button
           title={stringResources['Language']}
           onPress={() => navController.push('/AvailableLanguagesScreen')}
         />
-      </LayoutContent>
+      </Layout_Content>
     </Layout>
   );
 }

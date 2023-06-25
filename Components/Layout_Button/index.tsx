@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 import APPColors from '../../Globals/Colors';
 
-export default function LayoutButton(props: {
+export default function Layout_Button(props: {
 	title: string
 	overrideBackgroundColor?: string
 	overrideTextColor?: string

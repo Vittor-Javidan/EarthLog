@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 import APPColors from '../../Globals/Colors';
 
-export default function LayoutDrawerButton(props: {
+export default function Layout_DrawerButton(props: {
   title: string
   overrideBackgroundColor?: string
   overrideTextColor?: string
