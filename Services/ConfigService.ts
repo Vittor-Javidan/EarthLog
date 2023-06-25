@@ -26,8 +26,8 @@ export default class ConfigService {
     onFinish();
   }
 
-  static async saveConfig(configData: ConfigDTO): Promise<void> {
-    await LocalStorageService.saveData(ConfigService.LOCAL_STORAGE_KEY, JSON.stringify(configData));
+  static async saveConfig(): Promise<void> {
+    await LocalStorageService.saveData(ConfigService.LOCAL_STORAGE_KEY, JSON.stringify(this.config));
   }
 
   /** Garantees migration when local storage config data is outdated */

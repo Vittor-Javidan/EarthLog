@@ -37,20 +37,14 @@
 ## Internationalization
 
 + Add a translation file for each screen
-- Add a button to choose a language
-    - when a language is choosed, it must be saved on local storage using Config service.
++ Add a button to choose a language
+    + when a language is choosed, it must be saved on local storage using Config service.
 
 ## Basic Config Screen
 
 + Must implement a button on MainScreen Layout to navigate to Config Screen before
-
-+ Must have a save button
-    - save button saves the current config into local storage
-
-- Must have a language select field
-    - screens must have a translation file dedicated to it.
-        - translations files must have only a constant with is an object with all laguages tags as main keys.
-        - each language tag is a pair-value with the key representing the text in english, and the value the respective translation.
++ Must have a button to redirect to a language selection screen
+    + The language selected must be green
 
 ## Project Creation Screen
 

@@ -2,17 +2,17 @@ import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 
 import LogService from '../Services/LogService';
-import LanguageService from '../Services/LanguageService';
 
 import APPColors from '../Globals/Colors';
 import { InitializationScreenTranslations, languages } from './translations';
 import { Languages } from '../Types/LanguageTypes';
+import ConfigService from '../Services/ConfigService';
 
 export default function InitializationScreen(): JSX.Element {
 
   LogService.useLog('INITIALIZATION SCREEN: rendered');
   const stringResources = useMemo<InitializationScreenTranslations[Languages]>(
-    () => languages[LanguageService.getDeviceLanguage()], []
+    () => languages[ConfigService.config.language], []
   );
 
   return (

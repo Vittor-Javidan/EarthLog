@@ -6,18 +6,18 @@ import Layout from '../../Components/Layout';
 import LayoutDrawerButton from '../../Components/LayoutDrawerButton';
 
 import LogService from '../../Services/LogService';
-import LanguageService from '../../Services/LanguageService';
 
 import APPColors from '../../Globals/Colors';
 import { MainScreenTranslations, languages } from './translations';
 import { Languages } from '../../Types/LanguageTypes';
+import ConfigService from '../../Services/ConfigService';
 
 export default function MainScreen(): JSX.Element {
 
   LogService.useLog('MAIN SCREEN: rendered');
   const navController = useRouter();
   const stringResources = useMemo<MainScreenTranslations[Languages]>(
-    () => languages[LanguageService.getDeviceLanguage()], []
+    () => languages[ConfigService.config.language], []
   );
 
   return (
