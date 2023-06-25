@@ -1,5 +1,10 @@
 # 0.1.0.0
 
+# MVP Requirements
+
+- Must be able to use the app in field
+- Must be able to export saved data
+
 ## Layout
 
 + Build a basic layout
@@ -45,6 +50,10 @@
 + Must implement a button on MainScreen Layout to navigate to Config Screen before
 + Must have a button to redirect to a language selection screen
     + The language selected must be green
+
+## All Config Screens
+
+- Must have go back button 
 
 ## Project Creation Screen
 

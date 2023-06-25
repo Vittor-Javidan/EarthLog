@@ -2,16 +2,19 @@ import { Languages } from '../../Types/LanguageTypes';
 
 export type AvailableLanguagesScreen_Translations = Record<Languages, {
   'Languages': string
-  'Back': string
+  'Main Screen': string
+  'Settings Screen': string
 }>
 
 export const languages: AvailableLanguagesScreen_Translations = {
   'en-US': {
     'Languages': 'Languages',
-    'Back': 'Back',
+    'Main Screen': 'Main Screen',
+    'Settings Screen': 'Settings Screen',
   },
   'pt-BR': {
     'Languages': 'Idiomas',
-    'Back': 'Voltar',
+    'Main Screen': 'Tela Inicial',
+    'Settings Screen': 'Tela de Configurações',
   },
 };

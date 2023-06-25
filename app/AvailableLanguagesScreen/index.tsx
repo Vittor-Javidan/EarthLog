@@ -34,15 +34,23 @@ export default function AvailableLanguagesScreen() {
       title={stringResources['Languages']}
       drawerChildren={<>
         <Layout_DrawerButton
-          title={stringResources['Back']}
-          onPress={() => navController.push('/ConfigScreen')}
+          title={stringResources['Main Screen']}
+          onPress={() => navController.push('/MainScreen')}
         />
       </>}
     >
-      <Layout_Content>
+      <Layout_Content
+        style={{ flex: 1 }}
+      >
         <AllButtons
           selectedLanguage={currentLanguage}
           onButtonClick={saveSelectedLanguage}
+        />
+      </Layout_Content>
+      <Layout_Content>
+        <Layout_Button
+          title={stringResources['Settings Screen']}
+          onPress={() => navController.push('/ConfigScreen')}
         />
       </Layout_Content>
     </Layout>

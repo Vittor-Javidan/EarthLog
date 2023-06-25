@@ -31,10 +31,18 @@ export default function ConfigScreen(): JSX.Element {
         />
       </>}
     >
-      <Layout_Content>
+      <Layout_Content
+        style={{ flex: 1 }}
+      >
         <Layout_Button
           title={stringResources['Language']}
           onPress={() => navController.push('/AvailableLanguagesScreen')}
+        />
+      </Layout_Content>
+      <Layout_Content>
+        <Layout_Button
+          title={stringResources['Main Screen']}
+          onPress={() => navController.push('/MainScreen')}
         />
       </Layout_Content>
     </Layout>
