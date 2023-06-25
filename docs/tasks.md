@@ -1,9 +1,10 @@
 # 0.1.0.0
 
-# MVP Requirements
+# MVP Requirements (When Requirements is done, the app is read to be published on play store)
 
-- Must be able to use the app in field
-- Must be able to export saved data
+- Users must be able to:
+    - use the app in field
+    - export saved data to email and localy
 
 ## Layout
 
@@ -53,13 +54,96 @@
 
 ## All Config Screens
 
-- Must have go back button 
++ Must have go back button 
+
+## App Version
+
+- Must be inside the Drawer Menu
+
+## Icons
+
+- All buttons must have an icon to represent its function
+
+## Database
+
+- Implement a database conection
+- Create the following tables:
+    - Projects Info Template:
+        - cod_project_info_template: number
+        - template_name: string
+        - template: Object stringfied
+    - Projects Table:
+        - table name must be projects_table
+        - cod_project: number
+        - project_name: string
+        - project_info: Object stringfied
+    - Points Table:
+        - table name must be on format: <cod_project>
+        - cod_point: number
+        - point_name: string
+        - point_info: Object stringfied
+    - Widgets Table:
+        - table mame must be on format: <cod_project>_<cod_point>
+        - widget_cod: number
+        - widget_type: string
+        - widget_info: Object stringfied
+
+## Project Creation Logics
+
+- When user createst a new project, he must be redirect to a project screen creation
+- On this screen must have a single field: "project name"
+- Bellow the project name field, must have a button "Add a new field"
+    - this new field allow the user to add any relevant information about the project.
+    - user can add many info as he wants.
+    - 3 basics type fields must exist: boolean, number, string
+    - When user saves the project:
+        - all info, EXCEPT the project's name, must be saved on project_info database row field. 
+        - User must be asked if he wants to save a template for later usage.
 
 ## Project Creation Screen
 
-- Project screen must be the first screen
+- Before go to Creation Screen:
+    - Project screen creation must happen on the Main Screen
+    - A button to create a project inside Main Screen is needed
+        - when the button is clicked:
+            - user must be redirected to a Project Creation Screen
 
-- A button to create a project is needed
+- When inside Creation Screen:
+    - The Screen must ask if user wants to use an empty template, or a saved one.
+        - an empty template is the one with only project name field available, with the button to add a new field.
+        - 
 
-- When create a new project, it must show the items as a list of projects
-    - No need to implement data base yet.
+    - Add new field Button:
+        - when create a new field, the user must choose between 5 types:
+            - boolean
+            - string
+            - number
+            - coordinate
+            - date
+    - after the type is choosed, a new field will pop to user bellow the last field, so he can put any info he wants.
+    - When all fields is filled, the user is allow to click the button "Finish"
+
+    - Finsh Button:
+        - when clicked, user must choose if he wants to save the created fields as a template for future projects.
+        - If he chooses to, the object with a key-value pair of keys being the field label, and the value being the data type, must be saved inside the table of project info templates.
+        - The project must be saved inside projects table as well.
+
+## Project Edit Screen
+
+- Before go to Project Edit Screen:
+    - Inside Main Screen:
+        - A icon button representing an edit option must show on each project button loaded from projects table.
+        - When clicked, the user must be redirected to Project Edit Screen
+
+- When Inside Project Edit Screen:
+    - Must the same fields as choosed when the project was created, to allow the user modified, add or delete pre-existed fields.
+
+    - Finish Button:
+        - when clicked, user must choose if he wants to save the created fields as a template for future projects.
+        - If he chooses to, the object with a key-value pair of keys being the field label, and the value being the data type, must be saved inside the table of project info templates.
+        - The project must be saved inside projects table, by UPDATING using the cod_project of the projects.
+
+    - A Red Delete Button, representing a Danger Zone must exist on Bottom.
+        - When clicked, the user must type the same projects name as the current one being edit, regardless of upper or lower case.
+        - When type correcly, the project will be deleted from database and user will be redirected to Main Screen.
+        - When typed wrong, nothing will happen, and the user must click on the delete button again to try type again.
