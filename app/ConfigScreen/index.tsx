@@ -1,6 +1,5 @@
 
 import React, { useMemo, useState } from 'react';
-import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import Layout from '../../Components/Layout';
@@ -38,11 +37,10 @@ export default function ConfigScreen(): JSX.Element {
       <LayoutContent
         style={{ flex: 1 }}
       >
-        <Text
-          style={{color: APPColors.onBackground}}
-        >
-          Content
-        </Text>
+        <LayoutButton
+          title={stringResources['Language']}
+          onPress={() => {}}
+        />
       </LayoutContent>
       <LayoutContent>
         <LayoutButton

@@ -25,6 +25,7 @@ export default function LayoutDrawerButton(props: {
       }}
     >
       <Text
+        adjustsFontSizeToFit={true}
         style={{
           color: textColor,
           fontSize: 24,
