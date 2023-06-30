@@ -13,9 +13,10 @@ import Layout_Button from '../../Components/Layout_Button';
 import Layout_Content from '../../Components/Layout_Content';
 import APPColors from '../../Globals/Colors';
 
-export default function AvailableLanguagesScreen() {
+export default function AvailableLanguagesScreen(): JSX.Element {
 
   LogService.useLog('AVAILABLE LANGUAGES SCREEN: rendered');
+
   const navController = useRouter();
   const savedConfig = useMemo(() => ConfigService.config, [ConfigService.config]);
   const [currentLanguage, setCurrentLanguage] = useState<Languages>(savedConfig.language);
@@ -60,7 +61,7 @@ export default function AvailableLanguagesScreen() {
 function AllButtons(props: {
   selectedLanguage: LanguageTags
   onButtonClick: (languageTag: LanguageTags) => void
-}) {
+}): JSX.Element {
 
   const allButtons = languageLabels.map((languageLabel, index) => {
 

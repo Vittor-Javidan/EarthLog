@@ -16,6 +16,7 @@ import { Languages } from '../../Types/LanguageTypes';
 export default function ConfigScreen(): JSX.Element {
 
   LogService.useLog('CONFIG SCREEN: rendered');
+
   const navController = useRouter();
   const stringResources = useMemo<ConfigScreenTranslations[Languages]>(() => {
     return languages[ConfigService.config.language];

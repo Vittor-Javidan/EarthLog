@@ -15,6 +15,7 @@ import ConfigService from '../../Services/ConfigService';
 export default function MainScreen(): JSX.Element {
 
   LogService.useLog('MAIN SCREEN: rendered');
+
   const navController = useRouter();
   const stringResources = useMemo<MainScreenTranslations[Languages]>(
     () => languages[ConfigService.config.language], []

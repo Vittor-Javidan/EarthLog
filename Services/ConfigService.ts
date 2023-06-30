@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import LocalStorageService from './LocalStorageService';
 import LanguageService from './LanguageService';
-import LogService from './LogService';
 import { Languages } from '../Types/LanguageTypes';
 
 export type ConfigDTO = {
@@ -40,11 +39,7 @@ export default class ConfigService {
 
   useLoadConfig(onFinish: () => void) {
     useEffect(() => {
-      LogService.useLog('CONFIG SERVICE: Config Loading...');
-      ConfigService.loadConfig(() => {
-        onFinish();
-        LogService.useLog('CONFIG SERVICE: Config Loaded!');
-      });
+      ConfigService.loadConfig(() => { onFinish(); });
     }, []);
   }
 }
