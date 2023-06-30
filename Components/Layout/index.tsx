@@ -45,10 +45,10 @@ export default function Layout(props: {
       <Layout_Drawer
         style={{
           position: 'absolute',
-          top: 0,
+          bottom: 0,
           left: 0,
           width: WIDTH * 0.8,
-          height: HEIGHT,
+          height: HEIGHT * 0.9,
         }}
       >
         {props.drawerChildren}
