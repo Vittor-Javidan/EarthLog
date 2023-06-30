@@ -82,19 +82,11 @@ function Layout_Navbar(props: {
           adjustsFontSizeToFit={true}
           style={{
             color: APPColors.onPrimary,
-            fontSize: 24,
+            fontSize: 48,
+            paddingVertical: 16,
           }}
         >
           {props.title}
-        </Text>
-        <Text
-          adjustsFontSizeToFit={true}
-          style={{
-            color: APPColors.onPrimary,
-            fontSize: 8,
-          }}
-        >
-          {APP_VERSION}
         </Text>
       </View>
       <Layout_Navbar_MenuButton
@@ -164,6 +156,17 @@ function Layout_Drawer(props: {
       }]}
     >
       {props.children}
+      <Text
+        adjustsFontSizeToFit={true}
+        style={{
+          color: APPColors.onPrimary,
+          textAlign: 'right',
+          fontSize: 16,
+          padding: 8,
+        }}
+      >
+        v: {APP_VERSION}
+      </Text>
     </ScrollView>
   );
 }

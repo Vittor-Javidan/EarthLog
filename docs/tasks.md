@@ -58,7 +58,7 @@
 
 ## App Version
 
-- Must be inside the Drawer Menu
++ Must be inside the Drawer Menu
 
 ## Icons
 
