@@ -66,20 +66,31 @@
 
 ## Customization
 
-- User must be able to select the colors he wants for each situation:
-    - background
-    - onBackground
-    - primary
-    - onPrimary
-    - secondary
-    - onSecondary
-    - terciary
-    - onTerciary
-    - onPressColorPrimary
-    - confirm
-    - onConfirm
-    - modified
-    - onModified
++ User must be able to select the colors he wants for each situation:
+    + background
+    + onBackground
+    + primary
+    + onPrimary
+    + secondary
+    + onSecondary
+    + terciary
+    + onTerciary
+    + onPressColorPrimary
+    + confirm
+    + onConfirm
+    + modified
+    + onModified
+
++ A input component must be created.
+    + it must have a place to type a value.
+    + it must have a button to confirm
+    + it must have a widget to fast color pick
+
++ A button to restore to default values.
++ Reset does not exit the settings
++ Optmize performance
++ Lock preview option.
++ Clean the style.
 
 ## Database
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -12,7 +12,9 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import APPColors from '../../Globals/Colors';
+import { ThemeDTO } from '../../Services/ThemeService';
+import ConfigService from '../../Services/ConfigService';
+
 import { APP_VERSION } from '../../Globals/Version';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
@@ -62,12 +64,15 @@ function Layout_Navbar(props: {
   onMenuButtonPress: ((event: GestureResponderEvent) => void) | undefined
   style: StyleProp<ViewStyle>
 }): JSX.Element {
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
   return (
     <View
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: APPColors.primary,
+        backgroundColor: theme.primary,
       }]}
     >
       <View
@@ -81,7 +86,7 @@ function Layout_Navbar(props: {
         <Text
           adjustsFontSizeToFit={true}
           style={{
-            color: APPColors.onPrimary,
+            color: theme.onPrimary,
             fontSize: 48,
             paddingVertical: 16,
           }}
@@ -105,6 +110,7 @@ function Layout_Navbar_MenuButton(props: {
 }) {
 
   const [pressed, setPressed] = useState<boolean>(false);
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
   return (
     <Pressable
@@ -114,7 +120,7 @@ function Layout_Navbar_MenuButton(props: {
       style={[props.style, {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? APPColors.onPressColorPrimary : APPColors.primary,
+        backgroundColor: pressed ? theme.onPressColorPrimary : theme.primary,
         opacity: pressed ? 0.9 : 1,
       }]}
     >
@@ -122,7 +128,7 @@ function Layout_Navbar_MenuButton(props: {
         name="md-menu-sharp"
         adjustsFontSizeToFit={true}
         style={{
-          color: APPColors.onPrimary,
+          color: theme.onPrimary,
           fontSize: 48,
         }}
       />
@@ -134,10 +140,13 @@ function Layout_InnerContentContainer(props: {
   style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
   return (
     <View
       style={[props.style, {
-        backgroundColor: APPColors.background,
+        backgroundColor: theme.background,
       }]}
     >
       {props.children}
@@ -149,17 +158,20 @@ function Layout_Drawer(props: {
   style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
   return (
     <ScrollView
       style={[props.style, {
-        backgroundColor: APPColors.secondary,
+        backgroundColor: theme.secondary,
       }]}
     >
       {props.children}
       <Text
         adjustsFontSizeToFit={true}
         style={{
-          color: APPColors.onPrimary,
+          color: theme.onPrimary,
           textAlign: 'right',
           fontSize: 16,
           padding: 8,
