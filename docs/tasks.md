@@ -64,6 +64,23 @@
 
 - All buttons must have an icon to represent its function
 
+## Customization
+
+- User must be able to select the colors he wants for each situation:
+    - background
+    - onBackground
+    - primary
+    - onPrimary
+    - secondary
+    - onSecondary
+    - terciary
+    - onTerciary
+    - onPressColorPrimary
+    - confirm
+    - onConfirm
+    - modified
+    - onModified
+
 ## Database
 
 - Implement a database conection
