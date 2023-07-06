@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
-import { ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { ScrollView as ReactNative_ScrollView, StyleProp, ViewStyle } from 'react-native';
 
-export default function Layout_ScrollView(props: {
+export default function ScrollView(props: {
   children: ReactNode
   style?: StyleProp<ViewStyle>
 }) {
   return (
-    <ScrollView
+    <ReactNative_ScrollView
       style={props.style}
       contentContainerStyle={{
         gap: 10,
@@ -14,6 +14,6 @@ export default function Layout_ScrollView(props: {
       }}
     >
       {props.children}
-    </ScrollView>
+    </ReactNative_ScrollView>
   );
 }

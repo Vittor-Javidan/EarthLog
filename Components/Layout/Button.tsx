@@ -4,7 +4,7 @@ import { GestureResponderEvent, Pressable, Text } from 'react-native';
 import { ThemeDTO } from '../../Services/ThemeService';
 import ConfigService from '../../Services/ConfigService';
 
-export default function Layout_Button(props: {
+export default function Button(props: {
 	title: string
 	overrideBackgroundColor?: string
 	overrideTextColor?: string

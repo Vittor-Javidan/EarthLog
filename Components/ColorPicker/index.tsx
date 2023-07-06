@@ -17,7 +17,7 @@ import Animated, {
 
 } from 'react-native-reanimated';
 
-export default function ColorPicker(props: {
+export function ColorPicker(props: {
   pickerWidth: number
   pickerHeight: number
   pickerCircleSize: number

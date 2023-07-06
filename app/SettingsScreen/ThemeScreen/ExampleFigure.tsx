@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
-import { Languages } from '../../../Types/LanguageTypes';
+
 import ConfigService from '../../../Services/ConfigService';
 import API_ExampleFigure from './API_ExampleFigure';
 
-export default function ExampleFigure(props: {
+import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
+import { Languages } from '../../../Types/LanguageTypes';
+
+export function ExampleFigure(props: {
   locked: boolean
   onPressLock: () => void
 }): JSX.Element {

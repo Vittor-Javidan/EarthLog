@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import Layout from '../../Components/Layout';
-import Layout_DrawerButton from '../../Components/Layout_DrawerButton';
+import { Layout } from '../../Components/Layout';
+
 import LogService from '../../Services/LogService';
 import ConfigService from '../../Services/ConfigService';
 import { ThemeDTO } from '../../Services/ThemeService';
+
 import { MainScreenTranslations, languages } from './translations';
 import { Languages } from '../../Types/LanguageTypes';
 import AppRoutes from '../Routes';
@@ -21,10 +22,10 @@ export default function MainScreen(): JSX.Element {
   );
 
   return (
-    <Layout
+    <Layout.Root
       title="Earth Log"
       drawerChildren={<>
-        <Layout_DrawerButton
+        <Layout.DrawerButton
           title={stringResources['Settings']}
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
         />
@@ -37,6 +38,6 @@ export default function MainScreen(): JSX.Element {
       >
         Content
       </Text>
-    </Layout>
+    </Layout.Root>
   );
 }
