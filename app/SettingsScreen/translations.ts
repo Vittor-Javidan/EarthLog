@@ -5,6 +5,7 @@ export type ConfigScreenTranslations = Record<Languages, {
   'Main Screen': string
   'SAVE': string
   'Language': string
+  'Theme': string
 }>
 
 export const languages: ConfigScreenTranslations = {
@@ -13,11 +14,13 @@ export const languages: ConfigScreenTranslations = {
     'Main Screen': 'Main Screen',
     'SAVE': 'Save Settings',
     'Language': 'Language',
+    'Theme': 'Theme',
   },
   'pt-BR': {
     'Settings': 'Configurações',
     'Main Screen': 'Tela Inicial',
     'SAVE': 'SALVAR',
     'Language': 'Idioma',
+    'Theme': 'Tema',
   },
 };

@@ -1,5 +1,5 @@
-import {Languages, languageTags} from '../Types/LanguageTypes';
-import {getLocales} from 'expo-localization';
+import { Languages, languageTags } from '../Types/LanguageTypes';
+import { getLocales } from 'expo-localization';
 
 export default class LanguageService {
 

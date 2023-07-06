@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
-import APPColors from '../../Globals/Colors';
+
+import { ThemeDTO } from '../../Services/ThemeService';
+import ConfigService from '../../Services/ConfigService';
 
 export default function Layout_DrawerButton(props: {
   title: string
@@ -10,8 +12,10 @@ export default function Layout_DrawerButton(props: {
 }): JSX.Element {
 
   const [pressed, setPressed] = useState<boolean>(false);
-  const backgroundColor = props.overrideBackgroundColor ? props.overrideBackgroundColor : APPColors.terciary;
-  const textColor = props.overrideTextColor ? props.overrideTextColor : APPColors.onTerciary;
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
+  const backgroundColor = props.overrideBackgroundColor ? props.overrideBackgroundColor : theme.tertiary;
+  const textColor = props.overrideTextColor ? props.overrideTextColor : theme.onTertiary;
 
   return (
     <Pressable
@@ -19,7 +23,7 @@ export default function Layout_DrawerButton(props: {
       onPressOut={() => { setPressed(false); }}
       onPress={(event) => { props?.onPress(event); }}
       style={{
-        backgroundColor: pressed ? APPColors.onPressColorPrimary : backgroundColor,
+        backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
         padding: 10,
       }}

@@ -10,5 +10,6 @@ module.exports = {
     'prettier/prettier': 'off',
     'react-native/no-inline-styles': 'off',
     'react-hooks/rules-of-hooks': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };
