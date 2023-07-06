@@ -1,12 +1,14 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ColorPicker } from '../../../Components/ColorPicker';
+
 import { ThemeDTO } from '../../../Services/ThemeService';
 import ConfigService from '../../../Services/ConfigService';
-import ColorPicker from '../../../Components/ColorPicker';
+import API_ExampleFigure from './API_ExampleFigure';
+
 import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
 import { Languages } from '../../../Types/LanguageTypes';
-import API_ExampleFigure from './API_ExampleFigure';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   background: Background,

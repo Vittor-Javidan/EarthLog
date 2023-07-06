@@ -1,19 +1,17 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import { useRouter } from 'expo-router';
-import Layout from '../../../Components/Layout';
-import { ThemeScreenTranslations, languages } from './translations';
+import { Layout } from '../../../Components/Layout';
+import { ColorInput } from './ColorInput';
+import { ExampleFigure } from './ExampleFigure';
+
 import { Languages } from '../../../Types/LanguageTypes';
 import ConfigService from '../../../Services/ConfigService';
-import Layout_Button from '../../../Components/Layout_Button';
-import AppRoutes from '../../Routes';
-import Layout_DrawerButton from '../../../Components/Layout_DrawerButton';
-import { ColorInput } from './ColorInput';
 import LogService from '../../../Services/LogService';
-import Layout_ScrollView from '../../../Components/Layout_ScrollView';
-import Layout_Content from '../../../Components/Layout_Content';
-import ExampleFigure from './ExampleFigure';
 import API_ExampleFigure from './API_ExampleFigure';
+
+import AppRoutes from '../../Routes';
+import { ThemeScreenTranslations, languages } from './translations';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -42,10 +40,10 @@ export default function ThemeScreen(): JSX.Element {
   }, []);
 
   return (
-    <Layout
+    <Layout.Root
       title={stringResources['Theme']}
       drawerChildren={<>
-        <Layout_DrawerButton
+        <Layout.DrawerButton
           title={stringResources['Main Screen']}
           onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
         />
@@ -55,7 +53,7 @@ export default function ThemeScreen(): JSX.Element {
         locked={locked}
         onPressLock={() => setLocked(prev => !prev)}
       />}
-      <Layout_ScrollView
+      <Layout.ScrollView
         style={{ flex: 1 }}
       >
         {!locked && <ExampleFigure
@@ -63,30 +61,30 @@ export default function ThemeScreen(): JSX.Element {
           onPressLock={() => setLocked(prev => !prev)}
         />}
         <AllInputs />
-        <Layout_Content
+        <Layout.View
           style={{
             marginTop: 10,
           }}
         >
-          <Layout_Button
+          <Layout.Button
             title={stringResources['Reset Theme']}
             onPress={reset}
           />
-          <Layout_Button
+          <Layout.Button
             title={stringResources['Discart and Return']}
             onPress={discartAndExit}
             overrideBackgroundColor={savedTheme.wrong}
             overrideTextColor={savedTheme.onWrong}
           />
-          <Layout_Button
+          <Layout.Button
             title={stringResources['Save and Return']}
             onPress={saveAndExit}
             overrideBackgroundColor={savedTheme.confirm}
             overrideTextColor={savedTheme.onConfirm}
           />
-        </Layout_Content>
-      </Layout_ScrollView>
-    </Layout>
+        </Layout.View>
+      </Layout.ScrollView>
+    </Layout.Root>
   );
 }
 
