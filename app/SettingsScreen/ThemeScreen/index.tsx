@@ -42,12 +42,8 @@ export default function ThemeScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      drawerChildren={<>
-        <Layout.DrawerButton
-          title={stringResources['Main Screen']}
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
-        />
-      </>}
+      navbarButtonType="GoBack"
+      onGoBackPress={() => discartAndExit()}
     >
       {locked && <ExampleFigure
         locked={locked}
@@ -69,12 +65,6 @@ export default function ThemeScreen(): JSX.Element {
           <Layout.Button
             title={stringResources['Reset Theme']}
             onPress={reset}
-          />
-          <Layout.Button
-            title={stringResources['Discart and Return']}
-            onPress={discartAndExit}
-            overrideBackgroundColor={savedTheme.wrong}
-            overrideTextColor={savedTheme.onWrong}
           />
           <Layout.Button
             title={stringResources['Save and Return']}

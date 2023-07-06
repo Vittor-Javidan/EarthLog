@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useMemo } from 'react';
+import React, { ReactNode, useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -19,13 +19,31 @@ import { APP_VERSION } from '../../Globals/Version';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
+type navbarButtonType = 'Menu' | 'GoBack'
+
 export default function Root(props: {
   title: string
+  navbarButtonType: navbarButtonType
   children: ReactNode
-  drawerChildren: ReactNode
+  drawerChildren?: ReactNode
+  onGoBackPress?: () => void
 }): JSX.Element {
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
+
+  const onNavbarButtonPress = useCallback(() => {
+    switch (props.navbarButtonType) {
+      case 'Menu': {
+        setShowDrawer(prev => !prev);
+        break;
+      }
+      case 'GoBack': {
+        if (props.onGoBackPress !== undefined) {
+          props.onGoBackPress();
+        }
+      }
+    }
+  }, []);
 
   return (<>
     <StatusBar hidden={true}/>
@@ -34,7 +52,8 @@ export default function Root(props: {
     >
       <Navbar
         title={props.title}
-        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+        navbarButtonType={props.navbarButtonType}
+        onMenuButtonPress={onNavbarButtonPress}
         style={{flex: 1}}
       />
       <ContentArea
@@ -61,6 +80,7 @@ export default function Root(props: {
 
 function Navbar(props: {
   title: string
+  navbarButtonType: navbarButtonType
   onMenuButtonPress: ((event: GestureResponderEvent) => void) | undefined
   style: StyleProp<ViewStyle>
 }): JSX.Element {
@@ -95,6 +115,7 @@ function Navbar(props: {
         </Text>
       </View>
       <MenuButton
+        navbarButtonType={props.navbarButtonType}
         onPress={props.onMenuButtonPress}
         style={{
           flex: 2,
@@ -105,6 +126,7 @@ function Navbar(props: {
 }
 
 function MenuButton(props: {
+  navbarButtonType: navbarButtonType
   onPress: ((event: GestureResponderEvent) => void) | undefined
   style:  StyleProp<ViewStyle>,
 }) {
@@ -125,7 +147,7 @@ function MenuButton(props: {
       }]}
     >
       <Ionicons
-        name="md-menu-sharp"
+        name={props.navbarButtonType === 'Menu' ? 'md-menu-sharp' : 'chevron-back-circle-outline' }
         adjustsFontSizeToFit={true}
         style={{
           color: theme.onPrimary,

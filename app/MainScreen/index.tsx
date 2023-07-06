@@ -24,6 +24,7 @@ export default function MainScreen(): JSX.Element {
   return (
     <Layout.Root
       title="Earth Log"
+      navbarButtonType="Menu"
       drawerChildren={<>
         <Layout.DrawerButton
           title={stringResources['Settings']}

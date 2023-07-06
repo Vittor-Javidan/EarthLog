@@ -30,12 +30,8 @@ export default function AvailableLanguagesScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Languages']}
-      drawerChildren={<>
-        <Layout.DrawerButton
-          title={stringResources['Main Screen']}
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
-        />
-      </>}
+      navbarButtonType="GoBack"
+      onGoBackPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
     >
       <Layout.View
         style={{ flex: 1 }}
@@ -43,12 +39,6 @@ export default function AvailableLanguagesScreen(): JSX.Element {
         <AllButtons
           selectedLanguage={currentLanguage}
           onButtonClick={saveSelectedLanguage}
-        />
-      </Layout.View>
-      <Layout.View>
-        <Layout.Button
-          title={stringResources['Settings Screen']}
-          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
         />
       </Layout.View>
     </Layout.Root>
