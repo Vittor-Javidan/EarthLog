@@ -22,12 +22,8 @@ export default function ConfigScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Settings']}
-      drawerChildren={<>
-        <Layout.DrawerButton
-          title={stringResources['Main Screen']}
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
-        />
-      </>}
+      navbarButtonType="GoBack"
+      onGoBackPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
     >
       <Layout.View
         style={{ flex: 1 }}
@@ -39,12 +35,6 @@ export default function ConfigScreen(): JSX.Element {
         <Layout.Button
           title={stringResources['Theme']}
           onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
-        />
-      </Layout.View>
-      <Layout.View>
-        <Layout.Button
-          title={stringResources['Main Screen']}
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
         />
       </Layout.View>
     </Layout.Root>

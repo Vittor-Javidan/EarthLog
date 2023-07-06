@@ -90,9 +90,9 @@
 
 ## MenuIcon
 
-- It must open a drawer when on MainScreen
-- it must show a goBack button when inside other pages
-- All buttons dedicated just to go back must be deleted
++ It must open a drawer when on MainScreen
++ it must show a goBack button when inside other pages
++ All buttons dedicated just to go back must be deleted
 
 ## Icons
 
