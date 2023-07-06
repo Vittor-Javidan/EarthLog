@@ -94,9 +94,14 @@
 + it must show a goBack button when inside other pages
 + All buttons dedicated just to go back must be deleted
 
-## Icons
+## Navigation Tree
 
-- All buttons must have an icon to represent its function
+- A navigation tree must be implemented bellow the navbar
+- The tree must show:
+    - The current Route dept, for example: ProjectScreen > SettingsScreen > ThemeScreen
+    - Only project name and point name must be show as a string, all other must be icons
+    - when clicked, the user must be redirected to the route clicked
+- when ProjectScreen is being seeing, the navbar tree must be hidden.
 
 ## Project Creation Logics
 
