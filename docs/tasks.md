@@ -60,10 +60,6 @@
 
 + Must be inside the Drawer Menu
 
-## Icons
-
-- All buttons must have an icon to represent its function
-
 ## Customization
 
 + User must be able to select the colors he wants for each situation:
@@ -92,29 +88,15 @@
 + Lock preview option.
 + Clean the style.
 
-## Database
+## MenuIcon
 
-- Implement a database conection
-- Create the following tables:
-    - Projects Info Template:
-        - cod_project_info_template: number
-        - template_name: string
-        - template: Object stringfied
-    - Projects Table:
-        - table name must be projects_table
-        - cod_project: number
-        - project_name: string
-        - project_info: Object stringfied
-    - Points Table:
-        - table name must be on format: <cod_project>
-        - cod_point: number
-        - point_name: string
-        - point_info: Object stringfied
-    - Widgets Table:
-        - table mame must be on format: <cod_project>_<cod_point>
-        - widget_cod: number
-        - widget_type: string
-        - widget_info: Object stringfied
+- It must open a drawer when on MainScreen
+- it must show a goBack button when inside other pages
+- All buttons dedicated just to go back must be deleted
+
+## Icons
+
+- All buttons must have an icon to represent its function
 
 ## Project Creation Logics
 
@@ -175,3 +157,27 @@
         - When clicked, the user must type the same projects name as the current one being edit, regardless of upper or lower case.
         - When type correcly, the project will be deleted from database and user will be redirected to Main Screen.
         - When typed wrong, nothing will happen, and the user must click on the delete button again to try type again.
+
+## Database
+
+- Implement a database conection
+- Create the following tables:
+    - Projects Info Template:
+        - cod_project_info_template: number
+        - template_name: string
+        - template: Object stringfied
+    - Projects Table:
+        - table name must be projects_table
+        - cod_project: number
+        - project_name: string
+        - project_info: Object stringfied
+    - Points Table:
+        - table name must be on format: <cod_project>
+        - cod_point: number
+        - point_name: string
+        - point_info: Object stringfied
+    - Widgets Table:
+        - table mame must be on format: <cod_project>_<cod_point>
+        - widget_cod: number
+        - widget_type: string
+        - widget_info: Object stringfied
