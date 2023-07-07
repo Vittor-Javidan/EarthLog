@@ -4,6 +4,7 @@ import { Languages } from '../../../Types/LanguageTypes';
 export type ThemeScreenTranslations_InputLabels = Record<Languages, Record<keyof ThemeDTO, string>>
 export type ThemeScreenTranslations = Record<Languages, {
   'Theme': string
+  'Discart and Exit': string
   'Save and Return': string
   'Reset Theme': string
   'Invalid Color': string
@@ -14,6 +15,7 @@ export type ThemeScreenTranslations = Record<Languages, {
 export const languages: ThemeScreenTranslations = {
   'en-US': {
     'Theme': 'Theme',
+    'Discart and Exit': 'Discart and Exit',
     'Save and Return': 'Save and Return',
     'Reset Theme': 'Reset Theme',
     'Invalid Color': 'Invalid Color',
@@ -22,6 +24,7 @@ export const languages: ThemeScreenTranslations = {
   },
   'pt-BR': {
     'Theme': 'Tema',
+    'Discart and Exit': 'Descartar e Sair',
     'Save and Return': 'Salvar e Voltar',
     'Reset Theme': 'Resetar tema',
     'Invalid Color': 'Cor inválida',

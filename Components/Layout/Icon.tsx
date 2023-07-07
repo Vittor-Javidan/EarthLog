@@ -5,13 +5,26 @@ import ConfigService from '../../Services/ConfigService';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export const Icon = {
+  Menu: Menu,
   Home: Home,
   Settings: Settings,
   Language: Language,
   Theme: Theme,
+  Root: Root,
 };
 
-type IconName = 'home' | 'settings' | 'language' | 'color-palette'
+export type IconName = 'home' | 'settings' | 'language' | 'color-palette' | 'md-menu-sharp'
+
+function Menu(props: {
+  onPress: () => void
+}): JSX.Element {
+  return (
+    <Root
+      iconName="md-menu-sharp"
+      onPress={props.onPress}
+    />
+  );
+}
 
 function Home(props: {
   onPress: () => void
@@ -59,6 +72,8 @@ function Theme(props: {
 
 function Root(props: {
   iconName: IconName
+  paddingHorizontal?: number
+  paddingVertical?: number
   onPress: () => void
 }): JSX.Element {
 
@@ -72,8 +87,8 @@ function Root(props: {
       onPress={props.onPress}
       style={{
         backgroundColor: pressed ? theme.onPressColorPrimary : theme.primary,
-        paddingHorizontal: 20,
-        paddingVertical: 5,
+        paddingHorizontal: props.paddingHorizontal !== undefined ? props.paddingHorizontal : 20,
+        paddingVertical: props.paddingVertical !== undefined ? props.paddingVertical : 5,
         justifyContent: 'center',
         alignItems: 'center',
       }}

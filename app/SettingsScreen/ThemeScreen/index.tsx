@@ -42,17 +42,19 @@ export default function ThemeScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      navbarButtonType="GoBack"
+      iconName="color-palette"
       showNavigationTree={true}
+      drawerChildren={<Drawer />}
       navigationTreeIcons={[
         <Layout.Icon.Home
+          key="treeIcon_1"
           onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
         />,
         <Layout.Icon.Settings
+          key="treeIcon_2"
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
         />,
       ]}
-      onGoBackPress={() => discartAndExit()}
     >
       {locked && <ExampleFigure
         locked={locked}
@@ -76,6 +78,12 @@ export default function ThemeScreen(): JSX.Element {
             onPress={reset}
           />
           <Layout.Button
+            title={stringResources['Discart and Exit']}
+            onPress={discartAndExit}
+            overrideBackgroundColor={savedTheme.wrong}
+            overrideTextColor={savedTheme.onWrong}
+          />
+          <Layout.Button
             title={stringResources['Save and Return']}
             onPress={saveAndExit}
             overrideBackgroundColor={savedTheme.confirm}
@@ -89,4 +97,8 @@ export default function ThemeScreen(): JSX.Element {
 
 function AllInputs(): JSX.Element {
   return <>{Object.values(ColorInput).map((Component, index) => <Component key={index}/>)}</>;
+}
+
+function Drawer() {
+  return <></>;
 }
