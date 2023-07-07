@@ -53,7 +53,7 @@ export default function Root(props: {
           />
         )}
         <ContentArea
-          style={{ flex: 25 }}
+          style={{ flex: 20 }}
         >
           {props.children}
         </ContentArea>
