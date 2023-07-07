@@ -43,6 +43,15 @@ export default function ThemeScreen(): JSX.Element {
     <Layout.Root
       title={stringResources['Theme']}
       navbarButtonType="GoBack"
+      showNavigationTree={true}
+      navigationTreeIcons={[
+        <Layout.Icon.Home
+          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+        />,
+        <Layout.Icon.Settings
+          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+        />,
+      ]}
       onGoBackPress={() => discartAndExit()}
     >
       {locked && <ExampleFigure

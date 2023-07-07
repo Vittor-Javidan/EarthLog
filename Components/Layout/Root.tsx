@@ -24,8 +24,10 @@ type navbarButtonType = 'Menu' | 'GoBack'
 export default function Root(props: {
   title: string
   navbarButtonType: navbarButtonType
+  showNavigationTree: boolean
   children: ReactNode
   drawerChildren?: ReactNode
+  navigationTreeIcons?: JSX.Element[]
   onGoBackPress?: () => void
 }): JSX.Element {
 
@@ -56,11 +58,21 @@ export default function Root(props: {
         onMenuButtonPress={onNavbarButtonPress}
         style={{flex: 1}}
       />
-      <ContentArea
-        style={{flex: 9}}
+      <View
+        style={{ flex: 9 }}
       >
-        {props.children}
-      </ContentArea>
+        {props.showNavigationTree && (
+          <NavigationTree
+            style={{ flex: 1 }}
+            treeElements={props.navigationTreeIcons}
+          />
+        )}
+        <ContentArea
+          style={{ flex: 25 }}
+        >
+          {props.children}
+        </ContentArea>
+      </View>
     </View>
     {showDrawer && (
       <Drawer
@@ -155,6 +167,53 @@ function MenuButton(props: {
         }}
       />
     </Pressable>
+  );
+}
+
+function NavigationTree(props: {
+  treeElements?: JSX.Element[]
+  style: StyleProp<ViewStyle>
+}) {
+
+  if (props.treeElements === undefined) {
+    return <></>;
+  }
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
+  const tree: JSX.Element[] = [];
+  for (let i = 0; i < props.treeElements.length; i++) {
+    tree.push(props.treeElements[i]);
+    if ( i !== props.treeElements.length - 1) {
+      tree.push(
+        <Ionicons
+          name="chevron-forward"
+          adjustsFontSizeToFit={true}
+          maxFontSizeMultiplier={0}
+          style={{
+            color: theme.onPrimary,
+            fontSize: 200,
+          }}
+        />
+      );
+    }
+  }
+
+  return (
+    <View
+      style={[props.style, {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        backgroundColor: theme.primary,
+        borderColor: theme.secondary,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        gap: 5,
+      }]}
+    >
+      {tree}
+    </View>
   );
 }
 

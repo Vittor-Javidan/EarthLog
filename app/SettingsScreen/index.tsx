@@ -23,6 +23,12 @@ export default function ConfigScreen(): JSX.Element {
     <Layout.Root
       title={stringResources['Settings']}
       navbarButtonType="GoBack"
+      showNavigationTree={true}
+      navigationTreeIcons={[
+        <Layout.Icon.Home
+          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+        />,
+      ]}
       onGoBackPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
     >
       <Layout.View

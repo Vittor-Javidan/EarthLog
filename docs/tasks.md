@@ -102,6 +102,11 @@
     - Only project name and point name must be show as a string, all other must be icons
     - when clicked, the user must be redirected to the route clicked
 - when ProjectScreen is being seeing, the navbar tree must be hidden.
+- Remove Back Button, and replace it to a Icon that represents the current Screen
+
+## Bug Fix
+
+- Find a way to discart changes on theme screen when the native phone back button is clicked.
 
 ## Project Creation Logics
 
