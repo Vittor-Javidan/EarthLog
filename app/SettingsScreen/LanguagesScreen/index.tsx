@@ -30,19 +30,40 @@ export default function AvailableLanguagesScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Languages']}
-      navbarButtonType="GoBack"
-      onGoBackPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+      iconName="language"
+      showNavigationTree={true}
+      drawerChildren={<Drawer />}
+      navigationTreeIcons={[
+        <Layout.Icon.Home
+          key="treeIcon_1"
+          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+        />,
+        <Layout.Icon.Settings
+          key="treeIcon_2"
+          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+        />,
+      ]}
     >
-      <Layout.View
+      <Layout.ScrollView
         style={{ flex: 1 }}
       >
         <AllButtons
           selectedLanguage={currentLanguage}
           onButtonClick={saveSelectedLanguage}
         />
+      </Layout.ScrollView>
+      <Layout.View>
+        <Layout.Button
+          title={stringResources['Back']}
+          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+        />
       </Layout.View>
     </Layout.Root>
   );
+}
+
+function Drawer() {
+  return <></>;
 }
 
 function AllButtons(props: {

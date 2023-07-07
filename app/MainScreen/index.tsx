@@ -15,22 +15,14 @@ export default function MainScreen(): JSX.Element {
 
   LogService.useLog('MAIN SCREEN: rendered');
 
-  const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<MainScreenTranslations[Languages]>(
-    () => languages[ConfigService.config.language], []
-  );
 
   return (
     <Layout.Root
       title="Earth Log"
-      navbarButtonType="Menu"
-      drawerChildren={<>
-        <Layout.DrawerButton
-          title={stringResources['Settings']}
-          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
-        />
-      </>}
+      iconName="md-menu-sharp"
+      showNavigationTree={false}
+      drawerChildren={<Drawer />}
     >
       <Text
         style={{
@@ -40,5 +32,20 @@ export default function MainScreen(): JSX.Element {
         Content
       </Text>
     </Layout.Root>
+  );
+}
+
+function Drawer() {
+
+  const navController = useRouter();
+  const stringResources = useMemo<MainScreenTranslations[Languages]>(
+    () => languages[ConfigService.config.language], []
+  );
+
+  return (
+    <Layout.DrawerButton
+      title={stringResources['Settings']}
+      onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+    />
   );
 }

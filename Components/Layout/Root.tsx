@@ -1,13 +1,12 @@
-import React, { ReactNode, useState, useMemo, useCallback } from 'react';
+import React, { ReactNode, useState, useMemo } from 'react';
 import {
   View,
   Text,
   StyleProp,
   ViewStyle,
   Dimensions,
-  GestureResponderEvent,
   ScrollView,
-  Pressable,
+  // Pressable,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -16,51 +15,49 @@ import { ThemeDTO } from '../../Services/ThemeService';
 import ConfigService from '../../Services/ConfigService';
 
 import { APP_VERSION } from '../../Globals/Version';
+import { Icon, IconName } from './Icon';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
-type navbarButtonType = 'Menu' | 'GoBack'
+// type navbarButtonType = 'Menu' | 'GoBack'
 
 export default function Root(props: {
   title: string
-  navbarButtonType: navbarButtonType
+  iconName: IconName
+  showNavigationTree: boolean
   children: ReactNode
-  drawerChildren?: ReactNode
-  onGoBackPress?: () => void
+  drawerChildren: ReactNode
+  navigationTreeIcons?: JSX.Element[]
 }): JSX.Element {
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
-  const onNavbarButtonPress = useCallback(() => {
-    switch (props.navbarButtonType) {
-      case 'Menu': {
-        setShowDrawer(prev => !prev);
-        break;
-      }
-      case 'GoBack': {
-        if (props.onGoBackPress !== undefined) {
-          props.onGoBackPress();
-        }
-      }
-    }
-  }, []);
-
   return (<>
-    <StatusBar hidden={true}/>
     <View
       style={{ flex: 1}}
     >
+      <StatusBar animated={true} />
       <Navbar
         title={props.title}
-        navbarButtonType={props.navbarButtonType}
-        onMenuButtonPress={onNavbarButtonPress}
-        style={{flex: 1}}
+        iconName={props.iconName}
+        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+        style={{ flex: 1 }}
       />
-      <ContentArea
-        style={{flex: 9}}
+      <View
+        style={{ flex: 9 }}
       >
-        {props.children}
-      </ContentArea>
+        {props.showNavigationTree && (
+          <NavigationTree
+            style={{ flex: 1 }}
+            treeElements={props.navigationTreeIcons}
+          />
+        )}
+        <ContentArea
+          style={{ flex: 20 }}
+        >
+          {props.children}
+        </ContentArea>
+      </View>
     </View>
     {showDrawer && (
       <Drawer
@@ -68,8 +65,8 @@ export default function Root(props: {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          width: WIDTH * 0.8,
-          height: HEIGHT * 0.9,
+          width: WIDTH,
+          height: (HEIGHT * 0.9) - 18, // 18px from status bar
         }}
       >
         {props.drawerChildren}
@@ -80,9 +77,9 @@ export default function Root(props: {
 
 function Navbar(props: {
   title: string
-  navbarButtonType: navbarButtonType
-  onMenuButtonPress: ((event: GestureResponderEvent) => void) | undefined
+  iconName: IconName
   style: StyleProp<ViewStyle>
+  onMenuButtonPress: () => void | undefined
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -92,7 +89,9 @@ function Navbar(props: {
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         backgroundColor: theme.primary,
+        paddingTop: 20,
       }]}
     >
       <View
@@ -101,60 +100,75 @@ function Navbar(props: {
           justifyContent: 'center',
           alignItems: 'flex-start',
           paddingHorizontal: 10,
+          padding: 10,
         }}
       >
         <Text
           adjustsFontSizeToFit={true}
           style={{
             color: theme.onPrimary,
-            fontSize: 48,
-            paddingVertical: 16,
+            fontSize: 200,
           }}
         >
           {props.title}
         </Text>
       </View>
-      <MenuButton
-        navbarButtonType={props.navbarButtonType}
+      <Icon.Root
+        iconName={props.iconName}
         onPress={props.onMenuButtonPress}
-        style={{
-          flex: 2,
-        }}
+        paddingHorizontal={10}
+        paddingVertical={10}
       />
     </View>
   );
 }
 
-function MenuButton(props: {
-  navbarButtonType: navbarButtonType
-  onPress: ((event: GestureResponderEvent) => void) | undefined
-  style:  StyleProp<ViewStyle>,
+
+function NavigationTree(props: {
+  treeElements?: JSX.Element[]
+  style: StyleProp<ViewStyle>
 }) {
 
-  const [pressed, setPressed] = useState<boolean>(false);
+  if (props.treeElements === undefined) {
+    return <></>;
+  }
+
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
+  const tree: JSX.Element[] = [];
+  for (let i = 0; i < props.treeElements.length; i++) {
+    tree.push(props.treeElements[i]);
+    if ( i !== props.treeElements.length - 1) {
+      tree.push(
+        <Ionicons
+          key={`treeIcon_Chevrn_${i + 1}`}
+          name="chevron-forward"
+          adjustsFontSizeToFit={true}
+          maxFontSizeMultiplier={0}
+          style={{
+            color: theme.onPrimary,
+            fontSize: 200,
+          }}
+        />
+      );
+    }
+  }
+
   return (
-    <Pressable
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      onPress={props.onPress}
+    <View
       style={[props.style, {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: pressed ? theme.onPressColorPrimary : theme.primary,
-        opacity: pressed ? 0.9 : 1,
+        backgroundColor: theme.primary,
+        borderColor: theme.secondary,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        gap: 5,
       }]}
     >
-      <Ionicons
-        name={props.navbarButtonType === 'Menu' ? 'md-menu-sharp' : 'chevron-back-circle-outline' }
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onPrimary,
-          fontSize: 48,
-        }}
-      />
-    </Pressable>
+      {tree}
+    </View>
   );
 }
 

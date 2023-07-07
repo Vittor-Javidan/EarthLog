@@ -22,10 +22,17 @@ export default function ConfigScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Settings']}
-      navbarButtonType="GoBack"
-      onGoBackPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+      iconName="settings"
+      showNavigationTree={true}
+      drawerChildren={<Drawer />}
+      navigationTreeIcons={[
+        <Layout.Icon.Home
+          key="treeIcon_1"
+          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+        />,
+      ]}
     >
-      <Layout.View
+      <Layout.ScrollView
         style={{ flex: 1 }}
       >
         <Layout.Button
@@ -36,7 +43,17 @@ export default function ConfigScreen(): JSX.Element {
           title={stringResources['Theme']}
           onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
         />
+      </Layout.ScrollView>
+      <Layout.View>
+        <Layout.Button
+          title={stringResources['Back']}
+          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+        />
       </Layout.View>
     </Layout.Root>
   );
+}
+
+function Drawer() {
+  return <></>;
 }
