@@ -119,6 +119,10 @@
         - all info, EXCEPT the project's name, must be saved on project_info database row field. 
         - User must be asked if he wants to save a template for later usage.
 
+## Screens Helper
+
+- When outside the MainScreen, when all other screen has its Navbar Button Presses, an explanation about the screens must be shown inside the drower.
+
 ## Project Creation Screen
 
 - Before go to Creation Screen:
