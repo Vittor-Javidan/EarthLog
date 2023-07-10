@@ -13,7 +13,7 @@ import AppRoutes from '../Routes';
 
 export default function MainScreen(): JSX.Element {
 
-  LogService.useLog('MAIN SCREEN: rendered');
+  LogService.useLog('PROJECTS SCREEN: rendered');
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 

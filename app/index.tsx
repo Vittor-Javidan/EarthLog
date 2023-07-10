@@ -22,7 +22,7 @@ export default function Home() {
   if (!isConfigLoaded) {
     return <InitializationScreen />;
   }
-  return <Redirect href={AppRoutes.MAIN_SCREEN} />;
+  return <Redirect href={AppRoutes.PROJECTS_SCREEN} />;
 }
 
 function InitializationScreen(): JSX.Element {
