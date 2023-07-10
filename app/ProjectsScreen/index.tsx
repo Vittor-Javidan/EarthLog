@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Layout } from '../../Components/Layout';
 
@@ -11,11 +10,15 @@ import { MainScreenTranslations, languages } from './translations';
 import { Languages } from '../../Types/LanguageTypes';
 import AppRoutes from '../Routes';
 
-export default function MainScreen(): JSX.Element {
+export default function ProjectsScreen(): JSX.Element {
 
   LogService.useLog('PROJECTS SCREEN: rendered');
 
+  const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo<MainScreenTranslations[Languages]>(
+    () => languages[ConfigService.config.language], []
+  );
 
   return (
     <Layout.Root
@@ -24,13 +27,17 @@ export default function MainScreen(): JSX.Element {
       showNavigationTree={false}
       drawerChildren={<Drawer />}
     >
-      <Text
-        style={{
-          color: theme.onBackground,
-        }}
-      >
-        Content
-      </Text>
+      <Layout.ScrollView>
+        {/* TODO: Render buttons wich represents individual projects */}
+      </Layout.ScrollView>
+      <Layout.View>
+        <Layout.Button
+          title={stringResources['New Project']}
+          overrideBackgroundColor={theme.confirm}
+          overrideTextColor={theme.onConfirm}
+          onPress={() => navController.push(AppRoutes.PS_CREATION_SCREEN)}
+        />
+      </Layout.View>
     </Layout.Root>
   );
 }

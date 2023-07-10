@@ -10,10 +10,11 @@ export const Icon = {
   Settings: Settings,
   Language: Language,
   Theme: Theme,
+  Project: Project,
   Root: Root,
 };
 
-export type IconName = 'home' | 'settings' | 'language' | 'color-palette' | 'md-menu-sharp'
+export type IconName = 'home' | 'settings' | 'language' | 'color-palette' | 'md-menu-sharp' | 'map'
 
 function Menu(props: {
   onPress: () => void
@@ -65,6 +66,17 @@ function Theme(props: {
   return (
     <Root
       iconName="color-palette"
+      onPress={props.onPress}
+    />
+  );
+}
+
+function Project(props: {
+  onPress: () => void
+}): JSX.Element {
+  return (
+    <Root
+      iconName="map"
       onPress={props.onPress}
     />
   );
