@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../Components/Layout';
 
-import LogService from '../../Services/LogService';
-import ConfigService from '../../Services/ConfigService';
-import { ThemeDTO } from '../../Services/ThemeService';
+import AppRoutes from '@AppRoutes/Routes';
+import LogService from '@Services/LogService';
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
+import { Languages } from '@Services/LanguageService';
 
+import { Layout } from '@Components/Layout';
 import { MainScreenTranslations, languages } from './translations';
-import { Languages } from '../../Types/LanguageTypes';
-import AppRoutes from '../Routes';
 
 export default function ProjectsScreen(): JSX.Element {
 

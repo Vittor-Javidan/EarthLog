@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import LocalStorageService from './LocalStorageService';
-import LanguageService from './LanguageService';
-import { Languages } from '../Types/LanguageTypes';
+import LanguageService, { Languages } from './LanguageService';
 import ThemeService, { ThemeDTO } from './ThemeService';
 
 export type ConfigDTO = {

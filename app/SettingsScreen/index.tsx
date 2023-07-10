@@ -1,14 +1,14 @@
 
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../Components/Layout';
+import { Layout } from '@Components/Layout';
 
-import LogService from '../../Services/LogService';
-import ConfigService from '../../Services/ConfigService';
+import AppRoutes from '@AppRoutes/Routes';
+import LogService from '@Services/LogService';
+import ConfigService from '@Services/ConfigService';
+import { Languages } from '@Services/LanguageService';
 
-import AppRoutes from '../Routes';
 import { ConfigScreenTranslations, languages } from './translations';
-import { Languages } from '../../Types/LanguageTypes';
 
 export default function ConfigScreen(): JSX.Element {
 

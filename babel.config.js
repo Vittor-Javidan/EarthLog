@@ -11,6 +11,15 @@ module.exports = function (api) {
       require.resolve('expo-router/babel'),
       'react-native-reanimated/plugin',
       '@babel/plugin-proposal-export-namespace-from',
+      ['module-resolver', {
+        root: '.',
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        alias: {
+          '@Components': './Components',
+          '@Services': './Services',
+          '@AppRoutes': './AppRoutes',
+        },
+      }],
     ],
   };
 };

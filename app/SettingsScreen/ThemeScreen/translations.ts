@@ -1,5 +1,5 @@
-import { ThemeDTO } from '../../../Services/ThemeService';
-import { Languages } from '../../../Types/LanguageTypes';
+import { Languages } from '@Services/LanguageService';
+import { ThemeDTO } from '@Services/ThemeService';
 
 export type ThemeScreenTranslations_InputLabels = Record<Languages, Record<keyof ThemeDTO, string>>
 export type ThemeScreenTranslations = Record<Languages, {

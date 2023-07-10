@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
-import ConfigService from '../../../Services/ConfigService';
-import API_ExampleFigure from './API_ExampleFigure';
+import ConfigService from '@Services/ConfigService';
+import { Languages } from '@Services/LanguageService';
 
+import API_ExampleFigure from './API_ExampleFigure';
 import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
-import { Languages } from '../../../Types/LanguageTypes';
 
 export function ExampleFigure(props: {
   locked: boolean

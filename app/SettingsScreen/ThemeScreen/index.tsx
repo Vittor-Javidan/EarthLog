@@ -1,16 +1,16 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, useNavigation } from 'expo-router';
-import { Layout } from '../../../Components/Layout';
+
+import AppRoutes from '@AppRoutes/Routes';
+import ConfigService from '@Services/ConfigService';
+import LogService from '@Services/LogService';
+import { Languages } from '@Services/LanguageService';
+
+import { Layout } from '@Components/Layout';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
-
-import { Languages } from '../../../Types/LanguageTypes';
-import ConfigService from '../../../Services/ConfigService';
-import LogService from '../../../Services/LogService';
 import API_ExampleFigure from './API_ExampleFigure';
-
-import AppRoutes from '../../Routes';
 import { ThemeScreenTranslations, languages } from './translations';
 
 export default function ThemeScreen(): JSX.Element {

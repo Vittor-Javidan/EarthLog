@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../../Components/Layout';
 
-import LogService from '../../../Services/LogService';
-import ConfigService from '../../../Services/ConfigService';
-import { ThemeDTO } from '../../../Services/ThemeService';
+import AppRoutes from '@AppRoutes/Routes';
+import LogService from '@Services/LogService';
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
+import { LanguageTags, Languages, languageLabels, languageTags } from '@Services/LanguageService';
 
-import AppRoutes from '../../Routes';
+import { Layout } from '@Components/Layout';
 import { AvailableLanguagesScreen_Translations, languages } from './translations';
-import { LanguageTags, Languages, languageLabels, languageTags } from '../../../Types/LanguageTypes';
 
 export default function AvailableLanguagesScreen(): JSX.Element {
 

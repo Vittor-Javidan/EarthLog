@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
-import { Layout } from '../../../Components/Layout';
-
-import { Languages } from '../../../Types/LanguageTypes';
-import ConfigService from '../../../Services/ConfigService';
-
-import { ProjectCreationScreenTranslations, languages } from './translations';
 import { useRouter } from 'expo-router';
-import AppRoutes from '../../Routes';
-import { ThemeDTO } from '../../../Services/ThemeService';
+
+import AppRoutes from '@AppRoutes/Routes';
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
+import { Languages } from '@Services/LanguageService';
+
+import { Layout } from '@Components/Layout';
+import { ProjectCreationScreenTranslations, languages } from './translations';
 
 export default function ProjectCreationScreen() {
 
