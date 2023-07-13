@@ -4,8 +4,8 @@ import { ThemeDTO } from '@Services/ThemeService';
 export type ThemeScreenTranslations_InputLabels = Record<Languages, Record<keyof ThemeDTO, string>>
 export type ThemeScreenTranslations = Record<Languages, {
   'Theme': string
-  'Discart and Exit': string
-  'Save and Return': string
+  'Discart': string
+  'Save': string
   'Reset Theme': string
   'Invalid Color': string
   'unlock': string
@@ -15,8 +15,8 @@ export type ThemeScreenTranslations = Record<Languages, {
 export const languages: ThemeScreenTranslations = {
   'en-US': {
     'Theme': 'Theme',
-    'Discart and Exit': 'Discart and Exit',
-    'Save and Return': 'Save and Return',
+    'Discart': 'Exit',
+    'Save': 'Save',
     'Reset Theme': 'Reset Theme',
     'Invalid Color': 'Invalid Color',
     'unlock': 'unlock',
@@ -24,8 +24,8 @@ export const languages: ThemeScreenTranslations = {
   },
   'pt-BR': {
     'Theme': 'Tema',
-    'Discart and Exit': 'Descartar e Sair',
-    'Save and Return': 'Salvar e Voltar',
+    'Discart': 'Descartar',
+    'Save': 'Salvar',
     'Reset Theme': 'Resetar tema',
     'Invalid Color': 'Cor inválida',
     'unlock': 'destravar',

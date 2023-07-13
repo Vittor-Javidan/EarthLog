@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 
-import { ThemeDTO } from '../../Services/ThemeService';
+import ThemeService, { ThemeDTO } from '../../Services/ThemeService';
 import ConfigService from '../../Services/ConfigService';
 
 export default function DrawerButton(props: {
@@ -30,9 +30,10 @@ export default function DrawerButton(props: {
     >
       <Text
         adjustsFontSizeToFit={true}
+        maxFontSizeMultiplier={0}
         style={{
           color: textColor,
-          fontSize: 24,
+          fontSize: ThemeService.FONTS.h2,
         }}
       >
         {props.title}

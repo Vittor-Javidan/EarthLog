@@ -44,7 +44,12 @@ export default function ConfigScreen(): JSX.Element {
           onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
         />
       </Layout.ScrollView>
-      <Layout.View>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
         <Layout.Button
           title={stringResources['Back']}
           onPress={() => navController.push(AppRoutes.PROJECTS_SCREEN)}

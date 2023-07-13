@@ -109,15 +109,19 @@
 
 ## Project Creation Logics
 
-- When user createst a new project, he must be redirect to a project screen creation
-- On this screen must have a single field: "project name"
++ When user create a new project, he must be redirect to a project screen creation
++ On this screen must have all required fields: "Immutable: boolean, ID: string, Name: string"
 - Bellow the project name field, must have a button "Add a new field"
+    - 3 basics type fields must exist: boolean, number, string
+        + string
+        - number
+        - boolean
     - this new field allow the user to add any relevant information about the project.
     - user can add many info as he wants.
-    - 3 basics type fields must exist: boolean, number, string
     - When user saves the project:
         - all info, EXCEPT the project's name, must be saved on project_info database row field. 
         - User must be asked if he wants to save a template for later usage.
+- Normalize all fonts sizes.
 
 ## Screens Helper
 

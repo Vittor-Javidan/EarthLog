@@ -50,4 +50,11 @@ export default class ThemeService {
 
     onPressColorPrimary: '#FFF',
   };
+
+  static FONTS = {
+    h1: 36,
+    h2: 24,
+    h3: 14,
+    auto: 200,
+  };
 }

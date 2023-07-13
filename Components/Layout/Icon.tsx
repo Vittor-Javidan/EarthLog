@@ -14,8 +14,6 @@ export const Icon = {
   Root: Root,
 };
 
-export type IconName = 'home' | 'settings' | 'language' | 'color-palette' | 'md-menu-sharp' | 'map'
-
 function Menu(props: {
   onPress: () => void
 }): JSX.Element {
@@ -84,6 +82,7 @@ function Project(props: {
 
 function Root(props: {
   iconName: IconName
+  color?: string
   paddingHorizontal?: number
   paddingVertical?: number
   onPress: () => void
@@ -98,11 +97,12 @@ function Root(props: {
       onPressOut={() => setPressed(false)}
       onPress={props.onPress}
       style={{
-        backgroundColor: pressed ? theme.onPressColorPrimary : theme.primary,
+        backgroundColor: pressed ? theme.onPressColorPrimary : undefined,
         paddingHorizontal: props.paddingHorizontal !== undefined ? props.paddingHorizontal : 20,
         paddingVertical: props.paddingVertical !== undefined ? props.paddingVertical : 5,
         justifyContent: 'center',
         alignItems: 'center',
+        height: '100%',
       }}
     >
       <Ionicons
@@ -110,10 +110,23 @@ function Root(props: {
         adjustsFontSizeToFit={true}
         maxFontSizeMultiplier={0}
         style={{
-          color: theme.onPrimary,
+          color: props.color,
           fontSize: 200,
         }}
       />
     </Pressable>
   );
 }
+
+export type IconName = (
+  'home'                |
+  'settings'            |
+  'language'            |
+  'color-palette'       |
+  'md-menu-sharp'       |
+  'map'                 |
+  'pencil-sharp'        |
+  'checkmark-done-sharp'|
+  'close'               |
+  'refresh-sharp'
+)

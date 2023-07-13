@@ -69,37 +69,38 @@ export default function ThemeScreen(): JSX.Element {
           onPressLock={() => setLocked(prev => !prev)}
         />}
         <AllInputs />
-        <Layout.View
-          style={{
-            marginTop: 10,
+        <Layout.Button
+          title={stringResources['Reset Theme']}
+          onPress={() => {
+            API_ExampleFigure.reset();
           }}
-        >
-          <Layout.Button
-            title={stringResources['Reset Theme']}
-            onPress={() => {
-              API_ExampleFigure.reset();
-            }}
-          />
-          <Layout.Button
-            title={stringResources['Discart and Exit']}
-            overrideBackgroundColor={savedTheme.wrong}
-            overrideTextColor={savedTheme.onWrong}
-            onPress={() => {
-              API_ExampleFigure.discart();
-              navController.push(AppRoutes.SETTINGS_SCREEN);
-            }}
-          />
-          <Layout.Button
-            title={stringResources['Save and Return']}
-            overrideBackgroundColor={savedTheme.confirm}
-            overrideTextColor={savedTheme.onConfirm}
-            onPress={() => async () => {
-              API_ExampleFigure.save();
-              navController.push(AppRoutes.SETTINGS_SCREEN);
-            }}
-          />
-        </Layout.View>
+        />
       </Layout.ScrollView>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
+        <Layout.Button
+          title={stringResources['Discart']}
+          overrideBackgroundColor={savedTheme.wrong}
+          overrideTextColor={savedTheme.onWrong}
+          onPress={() => {
+            API_ExampleFigure.discart();
+            navController.push(AppRoutes.SETTINGS_SCREEN);
+          }}
+        />
+        <Layout.Button
+          title={stringResources['Save']}
+          overrideBackgroundColor={savedTheme.confirm}
+          overrideTextColor={savedTheme.onConfirm}
+          onPress={() => async () => {
+            API_ExampleFigure.save();
+            navController.push(AppRoutes.SETTINGS_SCREEN);
+          }}
+        />
+      </Layout.View>
     </Layout.Root>
   );
 }

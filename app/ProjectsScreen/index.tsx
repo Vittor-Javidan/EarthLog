@@ -30,7 +30,12 @@ export default function ProjectsScreen(): JSX.Element {
       <Layout.ScrollView>
         {/* TODO: Render buttons wich represents individual projects */}
       </Layout.ScrollView>
-      <Layout.View>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
         <Layout.Button
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}

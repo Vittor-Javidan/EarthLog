@@ -52,7 +52,12 @@ export default function AvailableLanguagesScreen(): JSX.Element {
           onButtonClick={saveSelectedLanguage}
         />
       </Layout.ScrollView>
-      <Layout.View>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
         <Layout.Button
           title={stringResources['Back']}
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}

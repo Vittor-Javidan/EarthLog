@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 
-import { ThemeDTO } from '../../Services/ThemeService';
+import ThemeService, { ThemeDTO } from '../../Services/ThemeService';
 import ConfigService from '../../Services/ConfigService';
 
 export default function Button(props: {
@@ -23,7 +23,7 @@ export default function Button(props: {
 			onPressOut={() => { setPressed(false); }}
 			onPress={props.onPress}
 			style={{
-				width: '100%',
+				flex: 1,
 				alignItems: 'center',
 				backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
@@ -34,8 +34,9 @@ export default function Button(props: {
 		>
 			<Text
 				adjustsFontSizeToFit={true}
+				maxFontSizeMultiplier={0}
 				style={{
-					fontSize: 24,
+					fontSize: ThemeService.FONTS.h2,
           color: textColor,
 				}}
 			>
