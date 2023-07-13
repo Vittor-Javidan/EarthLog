@@ -28,7 +28,7 @@ export default function ConfigScreen(): JSX.Element {
       navigationTreeIcons={[
         <Layout.Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.PROJECTS_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />,
       ]}
     >
@@ -52,7 +52,7 @@ export default function ConfigScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Back']}
-          onPress={() => navController.push(AppRoutes.PROJECTS_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />
       </Layout.View>
     </Layout.Root>

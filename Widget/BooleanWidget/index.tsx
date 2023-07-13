@@ -4,7 +4,7 @@ import { View, Text, Switch } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 
-export default function BooleanInput(props: {
+export default function BooleanWidget(props: {
   label: string
   onBooleanChange: (boolean: boolean) => void
 }) {

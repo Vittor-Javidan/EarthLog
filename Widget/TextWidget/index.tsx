@@ -7,7 +7,7 @@ import {
 
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import ProjectService, { StringType } from '@Services/ProjectService';
+import ProjectService, { TextWidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import View from '@Components/Layout/View';
 import ScrollView from '@Components/Layout/ScrollView';
@@ -15,25 +15,24 @@ import Modal from '@Components/Layout/Modal';
 import Button from '@Components/Layout/Button';
 import { Icon } from '@Components/Layout/Icon';
 
-export default function StringInput(props: {
-  label: string
-  projectInfo: StringType
-  enableLabelEdit: boolean
-  onConfirm: (label: string, value: StringType) => void
+export default function TextWidget(props: {
+  label: WidgetLabel
+  widgetData: TextWidgetData
+  onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
 }) {
 
   const [showdEditModal, setShowEditModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function isLabelInvalid(label: string) {
+  function isLabelInvalid(label: WidgetLabel) {
     return (
-      props.enableLabelEdit &&
+      props.widgetData.canEdit.label &&
       showdEditModal &&
       ProjectService.KEY_LABELS.includes(label)
     );
   }
 
-  function onConfirm(label: string, value: StringType) {
+  function onConfirm(label: WidgetLabel, value: TextWidgetData) {
 
     setShowEditModal(false);
 
@@ -57,14 +56,13 @@ export default function StringInput(props: {
         onIconPress={() => setShowEditModal(true)}
       />
       <ValueDisplay
-        value={props.projectInfo.value}
+        widgetData={props.widgetData}
       />
     </ReactNative_View>
     {showdEditModal && (
       <EditModal
         label={props.label}
-        projectInfo={props.projectInfo}
-        enableLabelEdit={props.enableLabelEdit}
+        widgetData={props.widgetData}
         onRequestClose={() => setShowEditModal(false)}
         onConfirm={onConfirm}
       />
@@ -73,7 +71,7 @@ export default function StringInput(props: {
 }
 
 function Label(props: {
-  label: string
+  label: WidgetLabel
   wrongData: boolean
   onIconPress: () => void
 }) {
@@ -117,7 +115,7 @@ function Label(props: {
 }
 
 function ValueDisplay(props: {
-  value: string
+  widgetData: TextWidgetData
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -138,24 +136,23 @@ function ValueDisplay(props: {
           color: theme.onTertiary,
         }}
       >
-        {props.value}
+        {props.widgetData.value}
       </Text>
     </ReactNative_View>
   );
 }
 
 function EditModal(props: {
-  label: string
-  projectInfo: StringType
-  enableLabelEdit: boolean
-  onConfirm: (label: string, value: StringType) => void
+  label: WidgetLabel
+  widgetData: TextWidgetData
+  onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
   onRequestClose: () => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
   const [label, setLabel] = useState<string>(props.label);
-  const [value, setValue] = useState<string>(props.projectInfo.value);
+  const [value, setValue] = useState<string>(props.widgetData.value);
 
   function onRequestClose() {
     props.onRequestClose();
@@ -165,6 +162,7 @@ function EditModal(props: {
     props.onConfirm(label, {
       type: 'string',
       value: value,
+      canEdit: { ...props.widgetData.canEdit },
     });
   }
 
@@ -174,7 +172,7 @@ function EditModal(props: {
       onRequestClose={onRequestClose}
     >
       <ScrollView>
-        {props.enableLabelEdit && (
+        {props.widgetData.canEdit.label && (
           <Input
             label="Label:"
             value={label}

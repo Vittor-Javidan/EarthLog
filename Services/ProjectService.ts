@@ -9,25 +9,34 @@ export default class ProjectService {
 }
 
 export type ProjectDTO = {
-  pointTemplate: PointTemplate | null
-  projectInfo: Record<string , ProjectInfoTypes>
+  Immutable: BooleanWidgetData
+  ID: TextWidgetData
+  Name: TextWidgetData
+  projectWidgets: Record<WidgetLabel, WidgetData>
   points: PointDTO[]
+  pointTemplate: PointDTO | null
 }
 
-export type PointDTO = Record<string, Widget>
-export type PointTemplate = Record<string, WidgetType>
+export type PointDTO = {
+  Immutable: BooleanWidgetData
+  ID: TextWidgetData
+  Name: TextWidgetData
+  pointWidgets: Record<WidgetLabel, WidgetData>
+}
 
-export type ProjectInfoTypes = StringType | BooleanType
+export type WidgetLabel = string
+export type WidgetData = TextWidgetData | BooleanWidgetData
 
-export type Widget = any
-export type WidgetType = any
-
-export type StringType = {
+export type TextWidgetData = {
   type: 'string'
   value: string
+  canEdit: {
+    label: boolean,
+    value: boolean,
+  }
 }
 
-export type BooleanType = {
+export type BooleanWidgetData = {
   type: 'boolean'
   value: boolean
 }

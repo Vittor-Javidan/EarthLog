@@ -45,7 +45,7 @@ export default function ThemeScreen(): JSX.Element {
           key="treeIcon_1"
           onPress={() => {
             API_ExampleFigure.discart();
-            navController.push(AppRoutes.PROJECTS_SCREEN);
+            navController.push(AppRoutes.HOME);
           }}
         />,
         <Layout.Icon.Settings

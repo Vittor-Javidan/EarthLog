@@ -5,11 +5,12 @@ import AppRoutes from '@AppRoutes/Routes';
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
-import ProjectService, { ProjectInfoTypes } from '@Services/ProjectService';
+import { WidgetData } from '@Services/ProjectService';
 
 import { Layout } from '@Components/Layout';
 import { ProjectCreationScreenTranslations, languages } from './translations';
 import API_ProjectCreation from './API_ProjectCreation';
+import { Widget } from '@Widget/index';
 
 export default function ProjectCreationScreen() {
 
@@ -37,7 +38,7 @@ export default function ProjectCreationScreen() {
       navigationTreeIcons={[
         <Layout.Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.PROJECTS_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />,
       ]}
     >
@@ -56,7 +57,7 @@ export default function ProjectCreationScreen() {
           overrideTextColor={theme.onWrong}
           onPress={() => {
             API_ProjectCreation.reset();
-            navController.push(AppRoutes.PROJECTS_SCREEN);
+            navController.push(AppRoutes.HOME);
           }}
         />
         <Layout.Button
@@ -75,6 +76,10 @@ function Drawer() {
 }
 
 function ProjectInfoInputs() {
+
+  const [_, refresh] = useState<boolean>(false);
+  API_ProjectCreation.refreshSetters['ProjectInfoInputs'] = refresh;
+
   return (
     <Layout.View>
       <Layout.Text
@@ -83,22 +88,50 @@ function ProjectInfoInputs() {
       >
         Project Info
       </Layout.Text>
-      <AllProjectInputs />
-      <AddInputButton />
+      <Widget.Boolean
+        label={'Immutable'}
+        onBooleanChange={(boolean) => {
+          API_ProjectCreation.setImmutable({ type: 'boolean', value: boolean });
+          refresh(prev => !prev);
+        }}
+      />
+      <Widget.Text
+        label="ID"
+        widgetData={API_ProjectCreation.temporaryProject.ID}
+        onConfirm={(_, value) => {
+          API_ProjectCreation.setID(value);
+          refresh(prev => !prev);
+        }}
+      />
+      <Widget.Text
+        label="Name"
+        widgetData={API_ProjectCreation.temporaryProject.Name}
+        onConfirm={(_, value) => {
+          API_ProjectCreation.setName(value);
+          refresh(prev => !prev);
+        }}
+      />
+      <AllWidgets />
+      <AddWidgetButton />
     </Layout.View>
   );
 }
 
-function AllProjectInputs() {
+function AddWidgetButton() {
+  return (
+    <Layout.Button
+      title="Add"
+      onPress={() => {}}
+    />
+  );
+}
 
-  const [_, refresh] = useState<boolean>(false);
-  API_ProjectCreation.refreshSetters['AllProjectInputs'] = refresh;
-
+function AllWidgets() {
   const allInputs: JSX.Element[] = [];
-  for (const key in API_ProjectCreation.temporaryProject.projectInfo) {
-    const projectInfo = API_ProjectCreation.temporaryProject.projectInfo[key];
+  for (const key in API_ProjectCreation.temporaryProject.projectWidgets) {
+    const projectInfo = API_ProjectCreation.temporaryProject.projectWidgets[key];
     allInputs.push(
-      <ProjectInput
+      <WidgetSelector
         key={key}
         label={key}
         projectInfo={projectInfo}
@@ -108,45 +141,30 @@ function AllProjectInputs() {
   return <>{allInputs}</>;
 }
 
-function AddInputButton() {
-
-  return (
-    <Layout.Button
-      title="Add"
-      onPress={() => {}}
-    />
-  );
-}
-
-function ProjectInput(props: {
+function WidgetSelector(props: {
   label: string
-  projectInfo: ProjectInfoTypes
+  projectInfo: WidgetData
 }) {
 
-  function onConfirm(newLabel: string, value: ProjectInfoTypes) {
+  function onConfirm(newLabel: string, value: WidgetData) {
     if ( props.label !== newLabel) {
       API_ProjectCreation.deleteProjectInfo(props.label);
     }
     API_ProjectCreation.modifyProjectInfo(newLabel, value);
-    API_ProjectCreation.refreshSetters['AllProjectInputs'](prev => !prev);
-  }
-
-  function enableLabelEdit() {
-    return !ProjectService.KEY_LABELS.includes(props.label);
+    API_ProjectCreation.refreshSetters['ProjectInfoInputs'](prev => !prev);
   }
 
   switch (props.projectInfo.type) {
     case 'string': return (
-      <Layout.Input.String
+      <Widget.Text
         label={props.label}
-        enableLabelEdit={enableLabelEdit()}
-        projectInfo={props.projectInfo}
+        widgetData={props.projectInfo}
         onConfirm={onConfirm}
       />
     );
     case 'boolean': return (<>
       {/* TODO: Add edit options, and change the event to onConfirm*/}
-      <Layout.Input.Boolean
+      <Widget.Boolean
         label={props.label}
         onBooleanChange={(boolean) => API_ProjectCreation.modifyProjectInfo(props.label, { type: 'boolean', value: boolean })}
       />

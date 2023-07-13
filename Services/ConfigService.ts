@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import LocalStorageService from './LocalStorageService';
 import LanguageService, { Languages } from './LanguageService';
 import ThemeService, { ThemeDTO } from './ThemeService';
@@ -67,11 +66,5 @@ export default class ConfigService {
     };
 
     return verifiedConfigDTO;
-  }
-
-  useLoadConfig(onFinish: () => void) {
-    useEffect(() => {
-      ConfigService.loadConfig(() => { onFinish(); });
-    }, []);
   }
 }

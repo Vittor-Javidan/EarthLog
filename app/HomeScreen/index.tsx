@@ -1,22 +1,22 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
-import AppRoutes from '@AppRoutes/Routes';
 import LogService from '@Services/LogService';
-import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 
 import { Layout } from '@Components/Layout';
-import { MainScreenTranslations, languages } from './translations';
+import { HomeScreenTranslations, languages } from './translations';
+import AppRoutes from '@AppRoutes/Routes';
 
-export default function ProjectsScreen(): JSX.Element {
+export default function HomeScreen() {
 
   LogService.useLog('PROJECTS SCREEN: rendered');
 
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<MainScreenTranslations[Languages]>(
+  const stringResources = useMemo<HomeScreenTranslations[Languages]>(
     () => languages[ConfigService.config.language], []
   );
 
@@ -40,7 +40,7 @@ export default function ProjectsScreen(): JSX.Element {
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => navController.push(AppRoutes.PS_CREATION_SCREEN)}
+          onPress={() => navController.push(AppRoutes.PROJECT_CREATION_SCREEN)}
         />
       </Layout.View>
     </Layout.Root>
@@ -50,7 +50,7 @@ export default function ProjectsScreen(): JSX.Element {
 function Drawer() {
 
   const navController = useRouter();
-  const stringResources = useMemo<MainScreenTranslations[Languages]>(
+  const stringResources = useMemo<HomeScreenTranslations[Languages]>(
     () => languages[ConfigService.config.language], []
   );
 

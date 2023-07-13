@@ -36,7 +36,7 @@ export default function AvailableLanguagesScreen(): JSX.Element {
       navigationTreeIcons={[
         <Layout.Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.PROJECTS_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />,
         <Layout.Icon.Settings
           key="treeIcon_2"
