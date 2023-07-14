@@ -1,83 +1,43 @@
-import { BooleanWidgetData, ProjectDTO, WidgetData, TextWidgetData, PointDTO } from '@Services/ProjectService';
-
+import ProjectService, { BooleanWidgetData, ProjectDTO, TextWidgetData, WidgetData } from '@Services/ProjectService';
 export default class API_ProjectCreation {
 
   static unsavedChanges: boolean = false;
-  static temporaryProject: ProjectDTO = {
-    Immutable: { type: 'boolean', value: false },
-    ID: {
-      type: 'string',
-      value: '',
-      canEdit: {
-        label: false,
-        value: true,
-      },
-    },
-    Name: {
-      type: 'string',
-      value: '',
-      canEdit: {
-        label: false,
-        value: true,
-      },
-    },
-    projectWidgets: {},
-    points: [],
-    pointTemplate: null,
-  };
-
-  static refreshSetters: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};
+  static temporaryProject: ProjectDTO = ProjectService.getDefaultProjectTemplate();
 
   static reset() {
     this.unsavedChanges = false;
-    this.temporaryProject = {
-      Immutable: { type: 'boolean', value: false },
-      ID: {
-        type: 'string',
-        value: '',
-        canEdit: {
-          label: false,
-          value: true,
-        },
-      },
-      Name: {
-        type: 'string',
-        value: '',
-        canEdit: {
-          label: false,
-          value: true,
-        },
-      },
-      projectWidgets: {},
-      points: [],
-      pointTemplate: null,
-    };
+    this.temporaryProject = ProjectService.getDefaultProjectTemplate();
   }
 
-  static setImmutable(value: BooleanWidgetData) {
-    this.temporaryProject.Immutable = value;
+  static setProjectImmutable(value: BooleanWidgetData) {
+    this.temporaryProject.projectSettings.Immutable = value;
   }
 
-  static setID(value: TextWidgetData) {
-    this.temporaryProject.ID = value;
+  static setProjectID(value: TextWidgetData) {
+    this.temporaryProject.projectSettings.ID = value;
   }
 
-  static setName(value: TextWidgetData) {
-    this.temporaryProject.Name = value;
+  static setProjectName(value: TextWidgetData) {
+    this.temporaryProject.projectSettings.Name = value;
   }
 
-  static modifyProjectInfo(key: string, value: WidgetData) {
+  static modifyProjectWidget(key: string, value: WidgetData) {
     this.unsavedChanges = true;
     this.temporaryProject.projectWidgets[key] = value;
   }
 
-  static deleteProjectInfo(key: string) {
+  static modifyPointTemplateWidget(key: string, value: WidgetData) {
+    this.unsavedChanges = true;
+    this.temporaryProject.pointTemplate[key] = value;
+  }
+
+  static deleteProjectWidget(key: string) {
     this.unsavedChanges = true;
     delete this.temporaryProject.projectWidgets[key];
   }
 
-  static setPointTemplate(template: PointDTO | null) {
+  static deletePointTemplateWidget(key: string) {
     this.unsavedChanges = true;
-    this.temporaryProject.pointTemplate = template;
+    delete this.temporaryProject.pointTemplate[key];
   }
 }

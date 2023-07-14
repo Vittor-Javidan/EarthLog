@@ -1,24 +1,11 @@
-export default class ProjectService {
-
-  static KEY_LABELS = ['Immutable', 'ID', 'Name'];
-  static currentProject: ProjectDTO | null = null;
-
-  static createProject(project: ProjectDTO) {
-    console.log(project);
-  }
-}
-
 export type ProjectDTO = {
-  Immutable: BooleanWidgetData
-  ID: TextWidgetData
-  Name: TextWidgetData
+  projectSettings: ProjectSettingWidgets
   projectWidgets: Record<WidgetLabel, WidgetData>
+  pointTemplate: Record<WidgetLabel, WidgetData>
   points: PointDTO[]
-  pointTemplate: PointDTO | null
 }
 
 export type PointDTO = {
-  Immutable: BooleanWidgetData
   ID: TextWidgetData
   Name: TextWidgetData
   pointWidgets: Record<WidgetLabel, WidgetData>
@@ -26,17 +13,65 @@ export type PointDTO = {
 
 export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
+export type ProjectSettingWidgets = {
+  Immutable: BooleanWidgetData,
+  ID: TextWidgetData,
+  Name: TextWidgetData,
+}
 
 export type TextWidgetData = {
   type: 'string'
   value: string
-  canEdit: {
-    label: boolean,
-    value: boolean,
+  rules: {
+    allowLabelChange?: boolean,
+    allowValueChange?: boolean,
+    noSpaces?: boolean,
+    noSpecialLetters?: boolean,
   }
 }
 
 export type BooleanWidgetData = {
   type: 'boolean'
   value: boolean
+  rules: {
+    allowLabelChange?: boolean,
+    allowValueChange?: boolean,
+  }
+}
+
+export default class ProjectService {
+
+  static currentProject: ProjectDTO | null = null;
+  static getDefaultProjectTemplate(): ProjectDTO {
+    return {
+      projectSettings:{
+        Immutable: {
+          type: 'boolean',
+          value: false,
+          rules: {
+            allowValueChange: true,
+          },
+        },
+        ID: {
+          type: 'string',
+          value: '',
+          rules: {
+            allowValueChange: true,
+            noSpaces: true,
+            noSpecialLetters: true,
+          },
+        },
+        Name: {
+          type: 'string',
+          value: '',
+          rules: {
+            allowValueChange: true,
+          },
+        },
+      },
+      projectWidgets: {},
+      pointTemplate: {},
+      points: [],
+    };
+  }
 }

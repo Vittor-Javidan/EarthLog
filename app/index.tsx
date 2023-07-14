@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 
-import HomeScreen from './HomeScreen';
 import LoadingScreen from './LoadingScreen';
+import { Redirect } from 'expo-router';
+import AppRoutes from '@AppRoutes/Routes';
 
 export default function Home() {
 
@@ -18,5 +19,5 @@ export default function Home() {
   if (!isConfigLoaded) {
     return <LoadingScreen />;
   }
-  return <HomeScreen />;
+  return <Redirect href={AppRoutes.HOME} />;
 }

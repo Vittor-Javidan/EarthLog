@@ -9,8 +9,8 @@ export default function ScrollView(props: {
     <ReactNative_ScrollView
       style={props.style}
       contentContainerStyle={{
-        gap: 10,
-        padding: 10,
+        gap: 5,
+        padding: 5,
       }}
     >
       {props.children}

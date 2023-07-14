@@ -19,6 +19,7 @@ module.exports = function (api) {
           '@Services': './Services',
           '@AppRoutes': './AppRoutes',
           '@Widget': './Widget',
+          '@WidgetComponents': './WidgetComponents',
         },
       }],
     ],

@@ -1,9 +1,9 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useNavigation, useRouter } from 'expo-router';
 
 import AppRoutes from '@AppRoutes/Routes';
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
 import { WidgetData } from '@Services/ProjectService';
 
@@ -31,7 +31,7 @@ export default function ProjectCreationScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Project Creation']}
+      title={stringResources['Project creation']}
       iconName="map"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
@@ -43,7 +43,9 @@ export default function ProjectCreationScreen() {
       ]}
     >
       <Layout.ScrollView>
-        <ProjectInfoInputs />
+        <ProjectSettingsWidgets />
+        <ProjectWidgets />
+        <PointWidgetTemplate />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -75,45 +77,124 @@ function Drawer() {
   return <></>;
 }
 
-function ProjectInfoInputs() {
+function ProjectSettingsWidgets() {
 
-  const [_, refresh] = useState<boolean>(false);
-  API_ProjectCreation.refreshSetters['ProjectInfoInputs'] = refresh;
+  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
 
   return (
     <Layout.View>
       <Layout.Text
-        fontSize={24}
+        fontSize={ThemeService.FONTS.h2}
         color="onBackground"
       >
-        Project Info
+        {stringResources['Project settings']}
       </Layout.Text>
       <Widget.Boolean
-        label={'Immutable'}
-        onBooleanChange={(boolean) => {
-          API_ProjectCreation.setImmutable({ type: 'boolean', value: boolean });
-          refresh(prev => !prev);
-        }}
+        label={stringResources['Immutable']}
+        widgetData={API_ProjectCreation.temporaryProject.projectSettings.Immutable}
+        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectImmutable(widgetData)}
       />
       <Widget.Text
-        label="ID"
-        widgetData={API_ProjectCreation.temporaryProject.ID}
-        onConfirm={(_, value) => {
-          API_ProjectCreation.setID(value);
-          refresh(prev => !prev);
-        }}
+        label={stringResources['ID']}
+        widgetData={API_ProjectCreation.temporaryProject.projectSettings.ID}
+        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectID(widgetData)}
       />
       <Widget.Text
-        label="Name"
-        widgetData={API_ProjectCreation.temporaryProject.Name}
-        onConfirm={(_, value) => {
-          API_ProjectCreation.setName(value);
-          refresh(prev => !prev);
-        }}
+        label={stringResources['Name']}
+        widgetData={API_ProjectCreation.temporaryProject.projectSettings.Name}
+        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectName(widgetData)}
       />
-      <AllWidgets />
-      <AddWidgetButton />
     </Layout.View>
+  );
+}
+
+function ProjectWidgets() {
+
+  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
+
+  function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
+    if ( oldlabel !== newLabel) {
+      API_ProjectCreation.deleteProjectWidget(oldlabel);
+    }
+    API_ProjectCreation.modifyProjectWidget(newLabel, value);
+  }
+
+  return (
+    <Layout.View>
+      <Layout.Text
+        fontSize={ThemeService.FONTS.h2}
+        color="onBackground"
+      >
+        {stringResources['Project widgets']}
+      </Layout.Text>
+      <AllWidgets
+        widgets={API_ProjectCreation.temporaryProject.projectWidgets}
+        showAddButton={true}
+        onConfirm={onConfirm}
+      />
+    </Layout.View>
+  );
+}
+
+function PointWidgetTemplate() {
+
+  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
+
+  function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
+    if ( oldlabel !== newLabel) {
+      API_ProjectCreation.deletePointTemplateWidget(oldlabel);
+    }
+    API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
+  }
+
+  return (
+    <Layout.View>
+      <Layout.Text
+        fontSize={ThemeService.FONTS.h2}
+        color="onBackground"
+      >
+        {stringResources['Point template']}
+      </Layout.Text>
+      <AllWidgets
+        widgets={API_ProjectCreation.temporaryProject.pointTemplate}
+        showAddButton={true}
+        onConfirm={onConfirm}
+      />
+    </Layout.View>
+  );
+}
+
+
+function AllWidgets(props: {
+  widgets: Record<string, WidgetData>
+  showAddButton: boolean
+  onConfirm: (oldlabel: string, newLabel: string, value: WidgetData) => void
+}) {
+
+  const allWidgetsComponents: JSX.Element[] = [];
+  for (const key in props.widgets) {
+    const widgetData = props.widgets[key];
+    allWidgetsComponents.push(
+      <Widget.Selector
+        key={key}
+        label={key}
+        widgetData={widgetData}
+        onConfirm={(newLabel, value) => props.onConfirm(key, newLabel, value)}
+      />
+    );
+  }
+
+  return (
+    <>
+      {allWidgetsComponents}
+      {props.showAddButton && <AddWidgetButton />}
+    </>
   );
 }
 
@@ -124,50 +205,4 @@ function AddWidgetButton() {
       onPress={() => {}}
     />
   );
-}
-
-function AllWidgets() {
-  const allInputs: JSX.Element[] = [];
-  for (const key in API_ProjectCreation.temporaryProject.projectWidgets) {
-    const projectInfo = API_ProjectCreation.temporaryProject.projectWidgets[key];
-    allInputs.push(
-      <WidgetSelector
-        key={key}
-        label={key}
-        projectInfo={projectInfo}
-      />
-    );
-  }
-  return <>{allInputs}</>;
-}
-
-function WidgetSelector(props: {
-  label: string
-  projectInfo: WidgetData
-}) {
-
-  function onConfirm(newLabel: string, value: WidgetData) {
-    if ( props.label !== newLabel) {
-      API_ProjectCreation.deleteProjectInfo(props.label);
-    }
-    API_ProjectCreation.modifyProjectInfo(newLabel, value);
-    API_ProjectCreation.refreshSetters['ProjectInfoInputs'](prev => !prev);
-  }
-
-  switch (props.projectInfo.type) {
-    case 'string': return (
-      <Widget.Text
-        label={props.label}
-        widgetData={props.projectInfo}
-        onConfirm={onConfirm}
-      />
-    );
-    case 'boolean': return (<>
-      {/* TODO: Add edit options, and change the event to onConfirm*/}
-      <Widget.Boolean
-        label={props.label}
-        onBooleanChange={(boolean) => API_ProjectCreation.modifyProjectInfo(props.label, { type: 'boolean', value: boolean })}
-      />
-    </>);
-  }
 }
