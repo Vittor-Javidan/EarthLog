@@ -1,6 +1,19 @@
-import { TextWidgetData } from '@Services/ProjectService';
+import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 export class WidgetRules {
+
+  static noDuplicatedLabel(label: WidgetLabel, widgets: Record<WidgetLabel, WidgetData>) {
+    alert(`The label ${label} already axists`);
+    return Object.keys(widgets).includes(label);
+  }
+
+  static noEmptyLabel(label: WidgetLabel): boolean {
+    return label === '';
+  }
+
+  // ===============================================================================================
+  // FLEXIBLE RULES
+  // ===============================================================================================
 
   static noSpaces(widgetData: TextWidgetData): boolean {
     if (widgetData.rules.noSpaces && widgetData.value !== '') {

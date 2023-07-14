@@ -20,6 +20,7 @@ module.exports = function (api) {
           '@AppRoutes': './AppRoutes',
           '@Widget': './Widget',
           '@WidgetComponents': './WidgetComponents',
+          '@Inputs': './Inputs',
         },
       }],
     ],

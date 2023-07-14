@@ -1,11 +1,12 @@
 import React from 'react';
-import { WidgetData } from '@Services/ProjectService';
+import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 import TextWidget from './TextWidget';
 import BooleanWidget from './BooleanWidget';
 
 export default function WidgetSelector(props: {
   label: string
   widgetData: WidgetData
+  widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (newLabel: string, value: WidgetData) => void
 }) {
 
@@ -14,6 +15,7 @@ export default function WidgetSelector(props: {
       <TextWidget
         label={props.label}
         widgetData={props.widgetData}
+        widgets={props.widgets}
         onConfirm={props.onConfirm}
       />
     );

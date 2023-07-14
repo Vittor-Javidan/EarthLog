@@ -3,15 +3,18 @@ import { Text } from 'react-native';
 
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { TextWidgetData, WidgetLabel } from '@Services/ProjectService';
+import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
-import { WidgetComponent } from '@WidgetComponents/index';
 import { Layout } from '@Components/Layout';
+import { Input } from '@Inputs/Inputs';
+import { WidgetComponent } from '@WidgetComponents/index';
+
 import { WidgetRules } from '../Rules';
 
 export default function TextWidget(props: {
   label: WidgetLabel
   widgetData: TextWidgetData
+  widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
 }) {
 
@@ -23,6 +26,17 @@ export default function TextWidget(props: {
   function onConfirm(label: WidgetLabel, value: TextWidgetData) {
 
     setShowEditModal(false);
+
+    if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
+      setIsDataWrong(true);
+      return;
+    }
+
+    if (WidgetRules.noEmptyLabel(label)) {
+      alert('Labels cannot be empty');
+      setIsDataWrong(true);
+      return;
+    }
 
     if (WidgetRules.noSpaces(value)) {
       alert(`${label} cannot have empty spaces`);
@@ -84,7 +98,7 @@ function Icons(props: {
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
   return (<>
-    {props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange && (
+    {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
       <Layout.Icon.Root
         iconName="pencil-sharp"
         paddingHorizontal={10}
@@ -139,14 +153,14 @@ function Modal(props: {
       }}
     >
       {props.widgetData.rules.allowLabelChange && (
-        <WidgetComponent.Input.String
+        <Input.String
           label="Label:"
           value={label}
           onChangeText={setLabel}
         />
       )}
       {props.widgetData.rules.allowValueChange && (
-        <WidgetComponent.Input.String
+        <Input.String
           label="Value:"
           value={value}
           onChangeText={setValue}
