@@ -3,7 +3,6 @@ import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectServic
 export class WidgetRules {
 
   static noDuplicatedLabel(label: WidgetLabel, widgets: Record<WidgetLabel, WidgetData>) {
-    alert(`The label ${label} already axists`);
     return Object.keys(widgets).includes(label);
   }
 

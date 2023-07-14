@@ -28,6 +28,7 @@ export default function TextWidget(props: {
     setShowEditModal(false);
 
     if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
+      alert(`The label ${label} already axists`);
       setIsDataWrong(true);
       return;
     }
