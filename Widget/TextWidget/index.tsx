@@ -6,7 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import { Layout } from '@Components/Layout';
-import { Input } from '@Inputs/Inputs';
+import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
 import { WidgetRules } from '../Rules';

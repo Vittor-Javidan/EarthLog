@@ -9,7 +9,7 @@ import { Languages } from '@Services/LanguageService';
 import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import { Layout } from '@Components/Layout';
-import { Input } from '@Inputs/Inputs';
+import { Input } from '@Inputs/index';
 import { Widget } from '@Widget/index';
 
 import { ProjectCreationScreenTranslations, languages } from './translations';
