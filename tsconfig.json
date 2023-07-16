@@ -7,9 +7,11 @@
       "@Components/*": ["Components/*"],
       "@Services/*": ["Services/*"],
       "@AppRoutes/*": ["AppRoutes/*"],
-      "@Widget/*": ["Widget/*"],
-      "@WidgetComponents/*": ["WidgetComponents/*"],
-      "@Inputs/*": ["Inputs/*"],
+      "@Icon/*": ["Components/Icon/*"],
+      "@Layout/*": ["Components/Layout/*"],
+      "@Inputs/*": ["Components/Inputs/*"],
+      "@Widget/*": ["Components/Widget/*"],
+      "@WidgetComponents/*": ["Components/Widget/Components/*"],
     },
   }
 }

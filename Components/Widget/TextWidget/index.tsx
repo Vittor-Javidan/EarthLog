@@ -5,7 +5,7 @@ import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
-import { Layout } from '@Components/Layout';
+import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
@@ -100,7 +100,7 @@ function Icons(props: {
 
   return (<>
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
-      <Layout.Icon.Root
+      <Icon.Root
         iconName="pencil-sharp"
         paddingHorizontal={10}
         paddingVertical={5}

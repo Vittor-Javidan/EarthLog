@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
+import AppRoutes from '@AppRoutes/Routes';
 import LogService from '@Services/LogService';
 import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
 import { HomeScreenTranslations, languages } from './translations';
-import AppRoutes from '@AppRoutes/Routes';
 
 export default function HomeScreen() {
 

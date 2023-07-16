@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 
-import ThemeService, { ThemeDTO } from '../../Services/ThemeService';
-import ConfigService from '../../Services/ConfigService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
 
 export default function Button(props: {
 	title: string

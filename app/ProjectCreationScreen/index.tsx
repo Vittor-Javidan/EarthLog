@@ -8,7 +8,8 @@ import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
 import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { Widget } from '@Widget/index';
 
@@ -39,7 +40,7 @@ export default function ProjectCreationScreen() {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
           onPress={() => navController.push(AppRoutes.HOME)}
         />,

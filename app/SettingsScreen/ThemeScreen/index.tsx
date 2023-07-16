@@ -7,7 +7,9 @@ import ConfigService from '@Services/ConfigService';
 import LogService from '@Services/LogService';
 import { Languages } from '@Services/LanguageService';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
+
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
 import API_ExampleFigure from './API_ExampleFigure';
@@ -41,14 +43,14 @@ export default function ThemeScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
           onPress={() => {
             API_ExampleFigure.discart();
             navController.push(AppRoutes.HOME);
           }}
         />,
-        <Layout.Icon.Settings
+        <Icon.Settings
           key="treeIcon_2"
           onPress={() => {
             API_ExampleFigure.discart();

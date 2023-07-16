@@ -4,11 +4,9 @@ import { View as ReactNative_View, Text, Switch } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import { BooleanWidgetData, WidgetLabel } from '@Services/ProjectService';
-import Modal from '@Components/Layout/Modal';
-import ScrollView from '@Components/Layout/ScrollView';
-import View from '@Components/Layout/View';
-import Button from '@Components/Layout/Button';
-import { Icon } from '@Components/Layout/Icon';
+
+import { Icon } from '@Icon/index';
+import { Layout } from '@Components/Layout';
 
 export default function BooleanWidget(props: {
   label: string
@@ -168,11 +166,11 @@ function EditModal(props: {
   }, []);
 
   return (
-    <Modal
+    <Layout.Modal
       title={props.label}
       onRequestClose={onRequestClose}
     >
-      <ScrollView>
+      <Layout.ScrollView>
         {/* {props.widgetData.rules.allowLabelChange && (
           <Input
             label="Label:"
@@ -185,20 +183,20 @@ function EditModal(props: {
           value={value}
           onChangeText={setValue}
         /> */}
-      </ScrollView>
-      <View
+      </Layout.ScrollView>
+      <Layout.View
         style={{
           flexDirection: 'row',
           gap: 10,
         }}
       >
-        <Button
+        <Layout.Button
           title="Save"
           onPress={() => onConfirm(label, value)}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
         />
-      </View>
-    </Modal>
+      </Layout.View>
+    </Layout.Modal>
   );
 }

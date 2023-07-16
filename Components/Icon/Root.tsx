@@ -1,86 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Pressable } from 'react-native';
-import { ThemeDTO } from '../../Services/ThemeService';
-import ConfigService from '../../Services/ConfigService';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export const Icon = {
-  Menu: Menu,
-  Home: Home,
-  Settings: Settings,
-  Language: Language,
-  Theme: Theme,
-  Project: Project,
-  Root: Root,
-};
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
 
-function Menu(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="md-menu-sharp"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Home(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="home"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Settings(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="settings"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Language(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="language"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Theme(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="color-palette"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Project(props: {
-  onPress: () => void
-}): JSX.Element {
-  return (
-    <Root
-      iconName="map"
-      onPress={props.onPress}
-    />
-  );
-}
-
-function Root(props: {
+export default function Root(props: {
   iconName: IconName
   color?: string
   paddingHorizontal?: number

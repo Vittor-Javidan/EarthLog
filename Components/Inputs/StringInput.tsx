@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 import { View, Text, TextInput } from 'react-native';
 
-import { Layout } from '@Components/Layout';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { Icon } from '@Components/Layout/Icon';
+
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
 export default function StringInput(props: {
   label: string

@@ -1,20 +1,13 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  StyleProp,
-  ViewStyle,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import ThemeService, { ThemeDTO } from '../../Services/ThemeService';
-import ConfigService from '../../Services/ConfigService';
-
 import { APP_VERSION } from '../../Globals/Version';
-import { Icon, IconName } from './Icon';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
+
+import { Icon, IconName } from '@Icon/index';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 

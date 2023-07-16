@@ -7,7 +7,9 @@ import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { LanguageTags, Languages, languageLabels, languageTags } from '@Services/LanguageService';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
+
 import { AvailableLanguagesScreen_Translations, languages } from './translations';
 
 export default function AvailableLanguagesScreen(): JSX.Element {
@@ -34,11 +36,11 @@ export default function AvailableLanguagesScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
           onPress={() => navController.push(AppRoutes.HOME)}
         />,
-        <Layout.Icon.Settings
+        <Icon.Settings
           key="treeIcon_2"
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
         />,

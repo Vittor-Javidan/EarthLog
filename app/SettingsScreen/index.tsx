@@ -1,12 +1,14 @@
 
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '@Components/Layout';
 
 import AppRoutes from '@AppRoutes/Routes';
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
+
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
 import { ConfigScreenTranslations, languages } from './translations';
 
@@ -26,7 +28,7 @@ export default function ConfigScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
           onPress={() => navController.push(AppRoutes.HOME)}
         />,

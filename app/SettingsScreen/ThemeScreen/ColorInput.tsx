@@ -6,7 +6,8 @@ import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 
-import { ColorPicker } from '@Components/ColorPicker';
+import { Input } from '@Inputs/index';
+
 import API_ExampleFigure from './API_ExampleFigure';
 import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
 
@@ -28,23 +29,23 @@ export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   onPressColorPrimary: OnPressColorPrimary,
 };
 
-function Background(): JSX.Element          { return <Input themeKey="background"          savedValue={ConfigService.config.theme.background} />; }
-function OnBackground(): JSX.Element        { return <Input themeKey="onBackground"        savedValue={ConfigService.config.theme.onBackground} />; }
-function Primary(): JSX.Element             { return <Input themeKey="primary"             savedValue={ConfigService.config.theme.primary} />; }
-function OnPrimary(): JSX.Element           { return <Input themeKey="onPrimary"           savedValue={ConfigService.config.theme.onPrimary} />; }
-function Secondary(): JSX.Element           { return <Input themeKey="secondary"           savedValue={ConfigService.config.theme.secondary} />; }
-function OnSecondary(): JSX.Element         { return <Input themeKey="onSecondary"         savedValue={ConfigService.config.theme.onSecondary} />; }
-function Tertiary(): JSX.Element            { return <Input themeKey="tertiary"            savedValue={ConfigService.config.theme.tertiary} />; }
-function OnTertiary(): JSX.Element          { return <Input themeKey="onTertiary"          savedValue={ConfigService.config.theme.onTertiary} />; }
-function Confirm(): JSX.Element             { return <Input themeKey="confirm"             savedValue={ConfigService.config.theme.confirm} />; }
-function OnConfirm(): JSX.Element           { return <Input themeKey="onConfirm"           savedValue={ConfigService.config.theme.onConfirm} />; }
-function Modified(): JSX.Element            { return <Input themeKey="modified"            savedValue={ConfigService.config.theme.modified} />; }
-function OnModified(): JSX.Element          { return <Input themeKey="onModified"          savedValue={ConfigService.config.theme.onModified} />; }
-function Wrong(): JSX.Element               { return <Input themeKey="wrong"               savedValue={ConfigService.config.theme.wrong} />; }
-function OnWrong(): JSX.Element             { return <Input themeKey="onWrong"             savedValue={ConfigService.config.theme.onWrong} />; }
-function OnPressColorPrimary(): JSX.Element { return <Input themeKey="onPressColorPrimary" savedValue={ConfigService.config.theme.onPressColorPrimary} />; }
+function Background(): JSX.Element          { return <CustomInput themeKey="background"          savedValue={ConfigService.config.theme.background} />; }
+function OnBackground(): JSX.Element        { return <CustomInput themeKey="onBackground"        savedValue={ConfigService.config.theme.onBackground} />; }
+function Primary(): JSX.Element             { return <CustomInput themeKey="primary"             savedValue={ConfigService.config.theme.primary} />; }
+function OnPrimary(): JSX.Element           { return <CustomInput themeKey="onPrimary"           savedValue={ConfigService.config.theme.onPrimary} />; }
+function Secondary(): JSX.Element           { return <CustomInput themeKey="secondary"           savedValue={ConfigService.config.theme.secondary} />; }
+function OnSecondary(): JSX.Element         { return <CustomInput themeKey="onSecondary"         savedValue={ConfigService.config.theme.onSecondary} />; }
+function Tertiary(): JSX.Element            { return <CustomInput themeKey="tertiary"            savedValue={ConfigService.config.theme.tertiary} />; }
+function OnTertiary(): JSX.Element          { return <CustomInput themeKey="onTertiary"          savedValue={ConfigService.config.theme.onTertiary} />; }
+function Confirm(): JSX.Element             { return <CustomInput themeKey="confirm"             savedValue={ConfigService.config.theme.confirm} />; }
+function OnConfirm(): JSX.Element           { return <CustomInput themeKey="onConfirm"           savedValue={ConfigService.config.theme.onConfirm} />; }
+function Modified(): JSX.Element            { return <CustomInput themeKey="modified"            savedValue={ConfigService.config.theme.modified} />; }
+function OnModified(): JSX.Element          { return <CustomInput themeKey="onModified"          savedValue={ConfigService.config.theme.onModified} />; }
+function Wrong(): JSX.Element               { return <CustomInput themeKey="wrong"               savedValue={ConfigService.config.theme.wrong} />; }
+function OnWrong(): JSX.Element             { return <CustomInput themeKey="onWrong"             savedValue={ConfigService.config.theme.onWrong} />; }
+function OnPressColorPrimary(): JSX.Element { return <CustomInput themeKey="onPressColorPrimary" savedValue={ConfigService.config.theme.onPressColorPrimary} />; }
 
-function Input(props: {
+function CustomInput(props: {
   themeKey: keyof ThemeDTO
   savedValue: string
 }) {
@@ -189,7 +190,7 @@ function Input(props: {
           backgroundColor: theme.secondary,
         }}
       >
-        <ColorPicker
+        <Input.Color
           pickerWidth={WIDTH - 50}
           pickerCircleSize={20}
           pickerHeight={10}

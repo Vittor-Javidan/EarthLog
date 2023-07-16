@@ -1,6 +1,4 @@
 import React, { useMemo } from 'react';
-import ConfigService from '../../Services/ConfigService';
-import { ThemeDTO } from '../../Services/ThemeService';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, {
@@ -16,6 +14,9 @@ import Animated, {
   useSharedValue,
 
 } from 'react-native-reanimated';
+
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
 
 export function ColorPicker(props: {
   pickerWidth: number
