@@ -8,7 +8,7 @@ import ConfigService from '@Services/ConfigService';
 export default function Label(props: {
   label: WidgetLabel
   wrongData: boolean
-  icons: JSX.Element
+  shortcutIconButtons: JSX.Element
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -45,7 +45,7 @@ export default function Label(props: {
           justifyContent: 'center',
         }}
       >
-        {props.icons}
+        {props.shortcutIconButtons}
       </View>
     </View>
   );

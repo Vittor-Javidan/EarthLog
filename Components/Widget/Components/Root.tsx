@@ -10,7 +10,7 @@ export default function Root(props: {
   label: WidgetLabel
   isDataWrong: boolean
   showModal: boolean
-  icons: JSX.Element
+  shortcutIconButtons: JSX.Element
   dataDisplay: JSX.Element
   modal: JSX.Element
 }) {
@@ -19,7 +19,7 @@ export default function Root(props: {
       <Label
         label={props.label}
         wrongData={props.isDataWrong}
-        icons={props.icons}
+        shortcutIconButtons={props.shortcutIconButtons}
       />
       <DataDisplay>
         {props.dataDisplay}

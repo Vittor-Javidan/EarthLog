@@ -66,8 +66,8 @@ export default function TextWidget(props: {
       isDataWrong={isDataWrong}
       showModal={showModal}
 
-      icons={<>
-        <Icons
+      shortcutIconButtons={<>
+        <ShortcutIconButtons
           widgetData={widgetData}
           onPencilPress={() => setShowEditModal(true)}
         />
@@ -91,7 +91,7 @@ export default function TextWidget(props: {
   );
 }
 
-function Icons(props: {
+function ShortcutIconButtons(props: {
   widgetData: TextWidgetData
   onPencilPress: () => void
 }) {
