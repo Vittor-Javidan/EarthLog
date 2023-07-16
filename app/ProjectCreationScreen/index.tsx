@@ -123,11 +123,18 @@ function ProjectWidgets() {
     return languages[ConfigService.config.language];
   }, []);
 
+  const [_, refresh] = useState<boolean>(false);
+
   function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
     if ( oldlabel !== newLabel) {
       API_ProjectCreation.deleteProjectWidget(oldlabel);
     }
     API_ProjectCreation.modifyProjectWidget(newLabel, value);
+  }
+
+  function onCreateWidget(label: string, widgetData: WidgetData) {
+    API_ProjectCreation.modifyProjectWidget(label, widgetData);
+    refresh(prev => !prev);
   }
 
   return (
@@ -142,7 +149,7 @@ function ProjectWidgets() {
         refreshSetterKey="ProjectWidgets"
         widgets={API_ProjectCreation.temporaryProject.projectWidgets}
         onConfirm={onConfirm}
-        onCreateWidget={(label, widgetData) => API_ProjectCreation.modifyProjectWidget(label, widgetData)}
+        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />
     </Layout.View>
   );
@@ -154,11 +161,18 @@ function PointWidgetTemplate() {
     return languages[ConfigService.config.language];
   }, []);
 
+  const [_, refresh] = useState<boolean>(false);
+
   function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
     if ( oldlabel !== newLabel) {
       API_ProjectCreation.deletePointTemplateWidget(oldlabel);
     }
     API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
+  }
+
+  function onCreateWidget(label: string, widgetData: WidgetData) {
+    API_ProjectCreation.modifyPointTemplateWidget(label, widgetData);
+    refresh(prev => !prev);
   }
 
   return (
@@ -173,7 +187,7 @@ function PointWidgetTemplate() {
         refreshSetterKey="PointWidgetTemplate"
         widgets={API_ProjectCreation.temporaryProject.pointTemplate}
         onConfirm={onConfirm}
-        onCreateWidget={(label, widgetData) => API_ProjectCreation.modifyPointTemplateWidget(label, widgetData)}
+        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />
     </Layout.View>
   );
@@ -187,7 +201,6 @@ function AllWidgets(props: {
   onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
 }) {
 
-  const [_, refresh] = useState<boolean>(false);
   const allWidgetsComponents: JSX.Element[] = [];
   for (const key in props.widgets) {
     const widgetData = props.widgets[key];
@@ -204,17 +217,12 @@ function AllWidgets(props: {
     );
   }
 
-  function onCreateWidget(label: WidgetLabel, widgetData: WidgetData) {
-    props.onCreateWidget(label, widgetData);
-    refresh(prev => !prev);
-  }
-
   return (
     <>
       {allWidgetsComponents}
       <AddWidgetButton
         widgets={props.widgets}
-        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
+        onCreateWidget={(label, widgetData) => props.onCreateWidget(label, widgetData)}
       />
     </>
   );
