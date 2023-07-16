@@ -20,12 +20,12 @@ export default function TextWidget(props: {
 
   const [label, setLabel] = useState<string>(props.label);
   const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
-  const [showModal, setShowEditModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function onConfirm(label: WidgetLabel, value: TextWidgetData) {
+  function onConfirm(label: WidgetLabel, widgetData: TextWidgetData) {
 
-    setShowEditModal(false);
+    setShowModal(false);
 
     if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
       alert(`The label ${label} already axists`);
@@ -39,13 +39,13 @@ export default function TextWidget(props: {
       return;
     }
 
-    if (WidgetRules.noSpaces(value)) {
+    if (WidgetRules.noSpaces(widgetData)) {
       alert(`${label} cannot have empty spaces`);
       setIsDataWrong(true);
       return;
     }
 
-    if (WidgetRules.noSpecialLetters(value)) {
+    if (WidgetRules.noSpecialLetters(widgetData)) {
       alert(`${label} can have only numbers, and letter from "a to z" or "A to Z".`);
       setIsDataWrong(true);
       return;
@@ -54,8 +54,8 @@ export default function TextWidget(props: {
     if (showModal) {
       setIsDataWrong(false);
       setLabel(label);
-      setWidgetData(value);
-      props.onConfirm(label, value);
+      setWidgetData(widgetData);
+      props.onConfirm(label, widgetData);
     }
   }
 
@@ -69,7 +69,7 @@ export default function TextWidget(props: {
       shortcutIconButtons={<>
         <ShortcutIconButtons
           widgetData={widgetData}
-          onPencilPress={() => setShowEditModal(true)}
+          onPencilPress={() => setShowModal(true)}
         />
       </>}
 
@@ -83,8 +83,8 @@ export default function TextWidget(props: {
         <Modal
           label={label}
           widgetData={widgetData}
-          onRequestClose={() => setShowEditModal(false)}
-          onConfirm={onConfirm}
+          onRequestClose={() => setShowModal(false)}
+          onConfirm={(label, widgetData) => onConfirm(label, widgetData)}
         />
       </>}
     />
