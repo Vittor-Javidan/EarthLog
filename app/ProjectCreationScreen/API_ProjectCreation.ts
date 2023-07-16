@@ -4,8 +4,6 @@ export default class API_ProjectCreation {
   static unsavedChanges: boolean = false;
   static temporaryProject: ProjectDTO = ProjectService.getDefaultProjectTemplate();
 
-  static refreshSetter: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};
-
   static reset() {
     this.unsavedChanges = false;
     this.temporaryProject = ProjectService.getDefaultProjectTemplate();

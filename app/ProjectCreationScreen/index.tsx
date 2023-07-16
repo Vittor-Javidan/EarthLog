@@ -97,6 +97,7 @@ function ProjectSettingsWidgets() {
       </Layout.Text>
       <Widget.Boolean
         label={stringResources['Immutable']}
+        widgets={API_ProjectCreation.temporaryProject.projectSettings}
         widgetData={API_ProjectCreation.temporaryProject.projectSettings.Immutable}
         onConfirm={(_, widgetData) => API_ProjectCreation.setProjectImmutable(widgetData)}
       />
@@ -141,6 +142,7 @@ function ProjectWidgets() {
         refreshSetterKey="ProjectWidgets"
         widgets={API_ProjectCreation.temporaryProject.projectWidgets}
         onConfirm={onConfirm}
+        onCreateWidget={(label, widgetData) => API_ProjectCreation.modifyProjectWidget(label, widgetData)}
       />
     </Layout.View>
   );
@@ -171,6 +173,7 @@ function PointWidgetTemplate() {
         refreshSetterKey="PointWidgetTemplate"
         widgets={API_ProjectCreation.temporaryProject.pointTemplate}
         onConfirm={onConfirm}
+        onCreateWidget={(label, widgetData) => API_ProjectCreation.modifyPointTemplateWidget(label, widgetData)}
       />
     </Layout.View>
   );
@@ -181,12 +184,10 @@ function AllWidgets(props: {
   refreshSetterKey: string
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (oldlabel: string, newLabel: string, value: WidgetData) => void
+  onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
 }) {
 
-  const [_, refreshComponent] = useState<boolean>(false);
-
-  API_ProjectCreation.refreshSetter[props.refreshSetterKey] = refreshComponent;
-
+  const [_, refresh] = useState<boolean>(false);
   const allWidgetsComponents: JSX.Element[] = [];
   for (const key in props.widgets) {
     const widgetData = props.widgets[key];
@@ -198,26 +199,30 @@ function AllWidgets(props: {
         widgets={props.widgets}
         onConfirm={(newLabel, value) => {
           props.onConfirm(key, newLabel, value);
-          refreshComponent(prev => !prev);
         }}
       />
     );
+  }
+
+  function onCreateWidget(label: WidgetLabel, widgetData: WidgetData) {
+    props.onCreateWidget(label, widgetData);
+    refresh(prev => !prev);
   }
 
   return (
     <>
       {allWidgetsComponents}
       <AddWidgetButton
-        refreshSetterKey={props.refreshSetterKey}
         widgets={props.widgets}
+        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />
     </>
   );
 }
 
 function AddWidgetButton(props: {
-  refreshSetterKey: string
   widgets: Record<WidgetLabel, WidgetData>
+  onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -236,17 +241,29 @@ function AddWidgetButton(props: {
     callback();
   }
 
+  function addBooleandWidget() {
+    whenLabelValid(() => {
+      props.onCreateWidget(label, {
+        type: 'boolean',
+        value: false,
+        rules: {
+          allowLabelChange: true,
+          allowValueChange: true,
+        },
+      });
+    });
+  }
+
   function addTextWidget() {
     whenLabelValid(() => {
-      props.widgets[label] = {
+      props.onCreateWidget(label, {
         type: 'string',
         value: '',
         rules: {
           allowLabelChange: true,
           allowValueChange: true,
         },
-      };
-      API_ProjectCreation.refreshSetter[props.refreshSetterKey](prev => !prev);
+      });
     });
   }
 
@@ -273,6 +290,18 @@ function AddWidgetButton(props: {
           />
         </Layout.View>
         <Layout.ScrollView>
+          <ButtonContainer>
+            <Layout.Button
+              title="Boolean Widget"
+              overrideBackgroundColor={theme.tertiary}
+              overrideTextColor={theme.onTertiary}
+              onPress={() => {
+                addBooleandWidget();
+                setLabel('');
+                setShowlModal(false);
+              }}
+            />
+          </ButtonContainer>
           <ButtonContainer>
             <Layout.Button
               title="Text Widget"

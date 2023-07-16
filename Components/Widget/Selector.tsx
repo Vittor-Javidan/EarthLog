@@ -23,6 +23,7 @@ export default function WidgetSelector(props: {
       <BooleanWidget
         label={props.label}
         widgetData={props.widgetData}
+        widgets={props.widgets}
         onConfirm={props.onConfirm}
       />
     );
