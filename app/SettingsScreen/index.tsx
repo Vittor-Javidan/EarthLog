@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
-import AppRoutes from '@AppRoutes/Routes';
+import AppRoutes from '@Globals/AppRoutes';
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';

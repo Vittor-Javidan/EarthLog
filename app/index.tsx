@@ -5,7 +5,7 @@ import ConfigService from '@Services/ConfigService';
 
 import LoadingScreen from './LoadingScreen';
 import { Redirect } from 'expo-router';
-import AppRoutes from '@AppRoutes/Routes';
+import AppRoutes from '@Globals/AppRoutes';
 
 export default function Home() {
 

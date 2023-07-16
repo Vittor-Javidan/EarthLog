@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, ReactNode } from 'react';
 import { View } from 'react-native';
 import { useNavigation, useRouter } from 'expo-router';
 
-import AppRoutes from '@AppRoutes/Routes';
+import AppRoutes from '@Globals/AppRoutes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';

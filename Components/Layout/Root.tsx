@@ -3,7 +3,7 @@ import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { APP_VERSION } from '../../Globals/Version';
+import { APP_VERSION } from '@Globals/Version';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 

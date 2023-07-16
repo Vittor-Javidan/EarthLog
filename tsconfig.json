@@ -6,7 +6,7 @@
     "paths": {
       "@Components/*": ["Components/*"],
       "@Services/*": ["Services/*"],
-      "@AppRoutes/*": ["AppRoutes/*"],
+      "@Globals/*": ["Globals/*"],
       "@Icon/*": ["Components/Icon/*"],
       "@Layout/*": ["Components/Layout/*"],
       "@Inputs/*": ["Components/Inputs/*"],

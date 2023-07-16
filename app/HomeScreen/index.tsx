@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 
-import AppRoutes from '@AppRoutes/Routes';
+import AppRoutes from '@Globals/AppRoutes';
 import LogService from '@Services/LogService';
 import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
