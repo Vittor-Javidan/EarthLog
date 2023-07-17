@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TextInput } from 'react-native';
 
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
@@ -10,15 +9,18 @@ import { Icon } from '@Icon/index';
 export default function StringInput(props: {
   label: string
   value: string
+  placeholder: string
+  backgroundColor_Label: string
+  backgroundColor_Value: string
+  color_Label: string
+  color_Value: string
+  color_Placeholder: string
   onChangeText: (text: string) => void
 }) {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
   return (
     <View
       style={{
-        backgroundColor: theme.tertiary,
+        backgroundColor: props.backgroundColor_Label,
       }}
     >
       <Layout.View
@@ -33,7 +35,7 @@ export default function StringInput(props: {
       >
         <Text
           style={{
-            color: theme.onTertiary,
+            color: props.color_Label,
             fontSize: ThemeService.FONTS.h3,
             paddingHorizontal: 10,
           }}
@@ -42,7 +44,7 @@ export default function StringInput(props: {
         </Text>
         <Icon.Root
           iconName="refresh-sharp"
-          color={theme.onTertiary}
+          color={props.color_Label}
           paddingHorizontal={10}
           paddingVertical={5}
           onPress={() => props.onChangeText('')}
@@ -53,13 +55,13 @@ export default function StringInput(props: {
           width: '100%',
           paddingHorizontal: 10,
           paddingVertical: 10,
-          backgroundColor: theme.background,
-          color: theme.onBackground,
+          backgroundColor: props.backgroundColor_Value,
+          color: props.color_Value,
         }}
         value={props.value}
         onChangeText={props.onChangeText}
-        placeholder="string"
-        placeholderTextColor={theme.onBackground}
+        placeholder={props.placeholder}
+        placeholderTextColor={props.color_Placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline

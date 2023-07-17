@@ -1,4 +1,4 @@
-import ProjectService, { BooleanWidgetData, ProjectDTO, TextWidgetData, WidgetData } from '@Services/ProjectService';
+import ProjectService, { ProjectDTO, WidgetData } from '@Services/ProjectService';
 export default class API_ProjectCreation {
 
   static unsavedChanges: boolean = false;
@@ -9,15 +9,15 @@ export default class API_ProjectCreation {
     this.temporaryProject = ProjectService.getDefaultProjectTemplate();
   }
 
-  static setProjectImmutable(value: BooleanWidgetData) {
+  static setProjectImmutable(value: boolean) {
     this.temporaryProject.projectSettings.Immutable = value;
   }
 
-  static setProjectID(value: TextWidgetData) {
+  static setProjectID(value: string) {
     this.temporaryProject.projectSettings.ID = value;
   }
 
-  static setProjectName(value: TextWidgetData) {
+  static setProjectName(value: string) {
     this.temporaryProject.projectSettings.Name = value;
   }
 

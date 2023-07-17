@@ -9,6 +9,10 @@ import { Layout } from '@Layout/index';
 export default function BooleanInput(props: {
   label: string
   value: boolean
+  backgroundColor_Label: string
+  backgroundColor_Value: string
+  color_Label: string
+  color_Value: string
   onSwitchChange: (value: boolean) => void
 }) {
 
@@ -17,7 +21,7 @@ export default function BooleanInput(props: {
   return (
     <View
       style={{
-        backgroundColor: theme.tertiary,
+        backgroundColor: props.backgroundColor_Label,
       }}
     >
       <Layout.View
@@ -50,7 +54,7 @@ export default function BooleanInput(props: {
       </Layout.View>
       <View
         style={{
-          backgroundColor: theme.background,
+          backgroundColor: props.backgroundColor_Value,
           paddingHorizontal: 10,
           paddingVertical: 10,
         }}
@@ -58,7 +62,6 @@ export default function BooleanInput(props: {
         <Text
           style={{
             color: theme.onBackground,
-            paddingBottom: 10,
           }}
         >
           {String(props.value)}

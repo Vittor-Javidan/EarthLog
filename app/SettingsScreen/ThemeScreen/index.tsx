@@ -97,8 +97,9 @@ export default function ThemeScreen(): JSX.Element {
           title={stringResources['Save']}
           overrideBackgroundColor={savedTheme.confirm}
           overrideTextColor={savedTheme.onConfirm}
-          onPress={() => async () => {
-            API_ExampleFigure.save();
+          onPress={async () => {
+            console.log('click');
+            await API_ExampleFigure.save();
             navController.push(AppRoutes.SETTINGS_SCREEN);
           }}
         />

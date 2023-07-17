@@ -83,9 +83,15 @@ function Drawer() {
 
 function ProjectSettingsWidgets() {
 
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
     return languages[ConfigService.config.language];
   }, []);
+  const idRegex = useMemo<RegExp>(() => /[^a-zA-Z0-9-]/g, []);
+
+  const [immutable, setImmutable] = useState<boolean>(API_ProjectCreation.temporaryProject.projectSettings.Immutable);
+  const [id, setId] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.ID);
+  const [name, setName] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.Name);
 
   return (
     <Layout.View>
@@ -95,23 +101,46 @@ function ProjectSettingsWidgets() {
       >
         {stringResources['Project settings']}
       </Layout.Text>
-      <Widget.Boolean
+      <Input.Boolean
         label={stringResources['Immutable']}
-        widgets={API_ProjectCreation.temporaryProject.projectSettings}
-        widgetData={API_ProjectCreation.temporaryProject.projectSettings.Immutable}
-        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectImmutable(widgetData)}
+        backgroundColor_Label={theme.secondary}
+        backgroundColor_Value={theme.tertiary}
+        color_Label={theme.onSecondary}
+        color_Value={theme.onTertiary}
+        value={immutable}
+        onSwitchChange={(boolean) => {
+          API_ProjectCreation.setProjectImmutable(boolean);
+          setImmutable(boolean);
+        }}
       />
-      <Widget.Text
+      <Input.String
         label={stringResources['ID']}
-        widgets={API_ProjectCreation.temporaryProject.projectSettings}
-        widgetData={API_ProjectCreation.temporaryProject.projectSettings.ID}
-        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectID(widgetData)}
+        backgroundColor_Label={theme.secondary}
+        backgroundColor_Value={theme.tertiary}
+        color_Label={theme.onSecondary}
+        color_Value={theme.onTertiary}
+        color_Placeholder="#666"
+        placeholder='Write an ID here... only numbers, letters and "-"'
+        value={id}
+        onChangeText={(text) => {
+          const normalizedText = text.replace(idRegex, '');
+          API_ProjectCreation.setProjectID(normalizedText);
+          setId(normalizedText);
+        }}
       />
-      <Widget.Text
+      <Input.String
         label={stringResources['Name']}
-        widgets={API_ProjectCreation.temporaryProject.projectSettings}
-        widgetData={API_ProjectCreation.temporaryProject.projectSettings.Name}
-        onConfirm={(_, widgetData) => API_ProjectCreation.setProjectName(widgetData)}
+        backgroundColor_Label={theme.secondary}
+        backgroundColor_Value={theme.tertiary}
+        color_Label={theme.onSecondary}
+        color_Value={theme.onTertiary}
+        color_Placeholder="#666"
+        placeholder="Write the project name here..."
+        value={name}
+        onChangeText={(text) => {
+          API_ProjectCreation.temporaryProject.projectSettings.Name = text;
+          setName(text);
+        }}
       />
     </Layout.View>
   );
@@ -293,6 +322,12 @@ function AddWidgetButton(props: {
         <Layout.View>
           <Input.String
             label="Label name"
+            backgroundColor_Label={theme.tertiary}
+            backgroundColor_Value={theme.background}
+            color_Label={theme.onTertiary}
+            color_Value={theme.onBackground}
+            color_Placeholder={'#444'}
+            placeholder={'give a name to the widget here...'}
             value={label}
             onChangeText={setLabel}
           />

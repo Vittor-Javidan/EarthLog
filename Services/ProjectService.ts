@@ -14,9 +14,13 @@ export type PointDTO = {
 export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
 export type ProjectSettingWidgets = {
-  Immutable: BooleanWidgetData,
-  ID: TextWidgetData,
-  Name: TextWidgetData,
+  Immutable: boolean,
+  ID: string,
+  Name: string,
+  rules: {
+    allowImmutableChange?: boolean,
+    allowNameChange?: boolean
+  }
 }
 
 export type TextWidgetData = {
@@ -44,29 +48,13 @@ export default class ProjectService {
   static currentProject: ProjectDTO | null = null;
   static getDefaultProjectTemplate(): ProjectDTO {
     return {
-      projectSettings:{
-        Immutable: {
-          type: 'boolean',
-          value: false,
-          rules: {
-            allowValueChange: true,
-          },
-        },
-        ID: {
-          type: 'string',
-          value: '',
-          rules: {
-            allowValueChange: true,
-            noSpaces: true,
-            noSpecialLetters: true,
-          },
-        },
-        Name: {
-          type: 'string',
-          value: '',
-          rules: {
-            allowValueChange: true,
-          },
+      projectSettings: {
+        Immutable: false,
+        ID: '',
+        Name: '',
+        rules: {
+          allowImmutableChange: true,
+          allowNameChange: true,
         },
       },
       projectWidgets: {},

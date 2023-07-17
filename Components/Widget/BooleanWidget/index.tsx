@@ -148,6 +148,8 @@ function Modal(props: {
   onRequestClose: () => void
 }) {
 
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
   const [label, setLabel] = useState<string>(props.label);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
 
@@ -166,6 +168,12 @@ function Modal(props: {
       {props.widgetData.rules.allowLabelChange && (
         <Input.String
           label="Label:"
+          backgroundColor_Label={theme.tertiary}
+          backgroundColor_Value={theme.background}
+          color_Label={theme.onTertiary}
+          color_Value={theme.onBackground}
+          color_Placeholder="#666"
+          placeholder="Write widget name here..."
           value={label}
           onChangeText={setLabel}
         />
@@ -173,6 +181,10 @@ function Modal(props: {
       {props.widgetData.rules.allowValueChange && (
         <Input.Boolean
           label="Value:"
+          backgroundColor_Label={theme.tertiary}
+          backgroundColor_Value={theme.background}
+          color_Label={theme.onTertiary}
+          color_Value={theme.onBackground}
           value={value}
           onSwitchChange={setValue}
         />
