@@ -33,6 +33,15 @@ export default function ProjectCreationScreen() {
     });
   }, []);
 
+  function onConfirm() {
+    if (API_ProjectCreation.temporaryProject.projectSettings.ID === '') {
+      alert('ID cannot be empty. This is your local database file name.');
+      return;
+    }
+    API_ProjectCreation.reset();
+    navController.push(AppRoutes.HOME);
+  }
+
   return (
     <Layout.Root
       title={stringResources['Project creation']}
@@ -70,7 +79,7 @@ export default function ProjectCreationScreen() {
           title={stringResources['Confirm']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => {}}
+          onPress={() => onConfirm()}
         />
       </Layout.View>
     </Layout.Root>
