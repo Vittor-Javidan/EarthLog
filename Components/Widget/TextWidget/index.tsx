@@ -116,6 +116,7 @@ function DataDisplay(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const isDataEmpty = props.widgetData.value === '';
 
   return (
     <Text
@@ -123,10 +124,10 @@ function DataDisplay(props: {
       adjustsFontSizeToFit={true}
       style={{
         fontSize: ThemeService.FONTS.h3,
-        color: theme.onTertiary,
+        color: isDataEmpty ? theme.modified : theme.onTertiary,
       }}
     >
-      {props.widgetData.value}
+      {isDataEmpty ? 'Empty text' : props.widgetData.value}
     </Text>
   );
 }
