@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+import ProjectService, { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
@@ -150,6 +150,7 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
       onConfirm={() => {
         props.onConfirm(label, {
+          ID: ProjectService.generateUuidV4(),
           type: 'string',
           value: value,
           rules: { ...props.widgetData.rules },
@@ -167,6 +168,7 @@ function Modal(props: {
           placeholder="Write widget name here..."
           value={label}
           onChangeText={setLabel}
+          onResetPress={() => setLabel('')}
         />
       )}
       {props.widgetData.rules.allowValueChange && (
@@ -180,6 +182,7 @@ function Modal(props: {
           placeholder="Write anything you want here..."
           value={value}
           onChangeText={setValue}
+          onResetPress={() => setValue('')}
         />
       )}
     </WidgetComponent.Modal>

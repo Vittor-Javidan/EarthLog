@@ -16,6 +16,7 @@ export default function StringInput(props: {
   color_Value: string
   color_Placeholder: string
   onChangeText: (text: string) => void
+  onResetPress: () => void
 }) {
   return (
     <View
@@ -47,7 +48,7 @@ export default function StringInput(props: {
           color={props.color_Label}
           paddingHorizontal={10}
           paddingVertical={5}
-          onPress={() => props.onChangeText('')}
+          onPress={props.onResetPress}
         />
       </Layout.View>
       <TextInput

@@ -56,6 +56,7 @@ export default function AddWidgetButton(props: {
             placeholder={'give a name to the widget here...'}
             value={label}
             onChangeText={setLabel}
+            onResetPress={() => setLabel('')}
           />
         </Layout.View>
         <Layout.ScrollView>

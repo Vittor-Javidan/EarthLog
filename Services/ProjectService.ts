@@ -1,5 +1,4 @@
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 export type ProjectDTO = {
   projectSettings: ProjectSettingWidgets
@@ -63,8 +62,8 @@ export default class ProjectService {
 
   static currentProject: ProjectDTO | null = null;
 
-  private static generateUuidV4(): string {
-    return uuidv4();
+  static generateUuidV4(): string {
+    return uuid.v4() as string;
   }
 
   static getDefaultProjectTemplate(): ProjectDTO {

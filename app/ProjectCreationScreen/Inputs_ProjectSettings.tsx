@@ -6,6 +6,7 @@ import { Languages } from '@Services/LanguageService';
 import API_ProjectCreation from './API_ProjectCreation';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
+import ProjectService from '@Services/ProjectService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -68,6 +69,7 @@ export default function Inputs_ProjectSettings() {
         placeholder='Write an ID here... only numbers, letters and "-"'
         value={id}
         onChangeText={(text) => onIDChange(text)}
+        onResetPress={() => setId(ProjectService.generateUuidV4())}
       />
       <Input.String
         label={stringResources['Name']}
@@ -79,6 +81,7 @@ export default function Inputs_ProjectSettings() {
         placeholder="Write the project name here..."
         value={name}
         onChangeText={(text) => onNameChange(text)}
+        onResetPress={() => setName('')}
       />
     </Layout.View>
   );

@@ -3,7 +3,7 @@ import { Text, Switch } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import { BooleanWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+import ProjectService, { BooleanWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import { Icon } from '@Icon/index';
 import { Input } from '@Components/Inputs';
@@ -159,6 +159,7 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
       onConfirm={() => {
         props.onConfirm(label, {
+          ID: ProjectService.generateUuidV4(),
           type: 'boolean',
           value: value,
           rules: { ...props.widgetData.rules },
@@ -176,6 +177,7 @@ function Modal(props: {
           placeholder="Write widget name here..."
           value={label}
           onChangeText={setLabel}
+          onResetPress={() => setLabel('')}
         />
       )}
       {props.widgetData.rules.allowValueChange && (
