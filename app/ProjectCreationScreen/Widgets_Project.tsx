@@ -11,7 +11,7 @@ import WidgetsGroup from './WidgetsGroup';
 import API_ProjectCreation from './API_ProjectCreation';
 import { ProjectCreationScreenTranslations, languages } from './translations';
 
-export default function PointWidgetTemplate() {
+export default function Widgets_Project() {
 
   const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
     return languages[ConfigService.config.language];
@@ -21,13 +21,13 @@ export default function PointWidgetTemplate() {
 
   function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
     if ( oldlabel !== newLabel) {
-      API_ProjectCreation.deletePointTemplateWidget(oldlabel);
+      API_ProjectCreation.deleteProjectWidget(oldlabel);
     }
-    API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
+    API_ProjectCreation.modifyProjectWidget(newLabel, value);
   }
 
   function onCreateWidget(label: string, widgetData: WidgetData) {
-    API_ProjectCreation.modifyPointTemplateWidget(label, widgetData);
+    API_ProjectCreation.modifyProjectWidget(label, widgetData);
     refresh(prev => !prev);
   }
 
@@ -37,11 +37,11 @@ export default function PointWidgetTemplate() {
         fontSize={ThemeService.FONTS.h2}
         color="onBackground"
       >
-        {stringResources['Point template']}
+        {stringResources['Project widgets']}
       </Layout.Text>
       <WidgetsGroup
-        refreshSetterKey="PointWidgetTemplate"
-        widgets={API_ProjectCreation.temporaryProject.pointTemplate}
+        refreshSetterKey="ProjectWidgets"
+        widgets={API_ProjectCreation.temporaryProject.projectWidgets}
         onConfirm={onConfirm}
         onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />

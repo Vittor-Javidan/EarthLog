@@ -7,7 +7,7 @@ import API_ProjectCreation from './API_ProjectCreation';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
-export default function ProjectSettingsInputs() {
+export default function Inputs_ProjectSettings() {
 
   const idRegex = useMemo<RegExp>(() => /[^a-zA-Z0-9-]/g, []);
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);

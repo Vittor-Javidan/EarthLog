@@ -8,12 +8,12 @@ import { Languages } from '@Services/LanguageService';
 
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import Inputs_ProjectSettings from './Inputs_ProjectSettings';
+import Widgets_PointTemplate from './Widgets_PointTemplate';
+import Widgets_Project from './Widgets_Project';
 
-import { ProjectCreationScreenTranslations, languages } from './translations';
 import API_ProjectCreation from './API_ProjectCreation';
-import PointWidgetTemplate from './PointWidgetTemplate';
-import ProjectWidgets from './ProjectWidgets';
-import ProjectSettingsInputs from './ProjectSettingsInputs';
+import { ProjectCreationScreenTranslations, languages } from './translations';
 
 export default function ProjectCreationScreen() {
 
@@ -55,9 +55,9 @@ export default function ProjectCreationScreen() {
       ]}
     >
       <Layout.ScrollView>
-        <ProjectSettingsInputs />
-        <ProjectWidgets />
-        <PointWidgetTemplate />
+        <Inputs_ProjectSettings />
+        <Widgets_Project />
+        <Widgets_PointTemplate />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -88,4 +88,3 @@ export default function ProjectCreationScreen() {
 function Drawer() {
   return <></>;
 }
-
