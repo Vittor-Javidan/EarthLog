@@ -6,7 +6,7 @@ import AppRoutes from '@Globals/AppRoutes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import ProjectService, { WidgetData, WidgetLabel } from '@Services/ProjectService';
 
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
@@ -56,7 +56,7 @@ export default function ProjectCreationScreen() {
       ]}
     >
       <Layout.ScrollView>
-        <ProjectSettingsWidgets />
+        <ProjectSettingsInputs />
         <ProjectWidgets />
         <PointWidgetTemplate />
       </Layout.ScrollView>
@@ -90,7 +90,7 @@ function Drawer() {
   return <></>;
 }
 
-function ProjectSettingsWidgets() {
+function ProjectSettingsInputs() {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
@@ -288,29 +288,11 @@ function AddWidgetButton(props: {
   }
 
   function addBooleandWidget() {
-    whenLabelValid(() => {
-      props.onCreateWidget(label, {
-        type: 'boolean',
-        value: false,
-        rules: {
-          allowLabelChange: true,
-          allowValueChange: true,
-        },
-      });
-    });
+    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData('BooleanWidget')));
   }
 
   function addTextWidget() {
-    whenLabelValid(() => {
-      props.onCreateWidget(label, {
-        type: 'string',
-        value: '',
-        rules: {
-          allowLabelChange: true,
-          allowValueChange: true,
-        },
-      });
-    });
+    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData('TextWidget')));
   }
 
   // eslint-disable-next-line react/no-unstable-nested-components

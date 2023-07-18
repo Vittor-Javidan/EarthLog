@@ -6,20 +6,27 @@ export type ProjectDTO = {
 }
 
 export type PointDTO = {
-  ID: TextWidgetData
-  Name: TextWidgetData
+  pointSettings: pointSettings
   pointWidgets: Record<WidgetLabel, WidgetData>
 }
 
 export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
 export type ProjectSettingWidgets = {
-  Immutable: boolean,
-  ID: string,
-  Name: string,
+  Immutable: boolean
+  ID: string
+  Name: string
   rules: {
-    allowImmutableChange?: boolean,
+    allowImmutableChange?: boolean
     allowNameChange?: boolean
+    allowPointCreation?: boolean
+  }
+}
+export type pointSettings = {
+  ID: TextWidgetData
+  Name: TextWidgetData
+  rules: {
+    allowNameChange: boolean,
   }
 }
 
@@ -27,10 +34,11 @@ export type TextWidgetData = {
   type: 'string'
   value: string
   rules: {
-    allowLabelChange?: boolean,
-    allowValueChange?: boolean,
-    noSpaces?: boolean,
-    noSpecialLetters?: boolean,
+    allowLabelChange?: boolean
+    allowValueChange?: boolean
+    allowWidgetErase?: boolean
+    noSpaces?: boolean
+    noSpecialLetters?: boolean
   }
 }
 
@@ -38,8 +46,9 @@ export type BooleanWidgetData = {
   type: 'boolean'
   value: boolean
   rules: {
-    allowLabelChange?: boolean,
-    allowValueChange?: boolean,
+    allowLabelChange?: boolean
+    allowValueChange?: boolean
+    allowWidgetErase?: boolean
   }
 }
 
@@ -61,5 +70,28 @@ export default class ProjectService {
       pointTemplate: {},
       points: [],
     };
+  }
+
+  static getWidgetData(type: 'TextWidget' | 'BooleanWidget'): WidgetData {
+    switch (type) {
+      case 'BooleanWidget': return {
+        type: 'boolean',
+        value: false,
+        rules: {
+          allowLabelChange: true,
+          allowValueChange: true,
+          allowWidgetErase: true,
+        },
+      };
+      case 'TextWidget': return {
+        type: 'string',
+        value: '',
+        rules: {
+          allowLabelChange: true,
+          allowValueChange: true,
+          allowWidgetErase: true,
+        },
+      };
+    }
   }
 }
