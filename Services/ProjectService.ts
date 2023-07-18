@@ -4,14 +4,14 @@ export type ProjectDTO = {
   pointTemplate: Record<WidgetLabel, WidgetData>
   points: PointDTO[]
 }
-
 export type PointDTO = {
-  pointSettings: pointSettings
+  pointSettings: PointSettings
   pointWidgets: Record<WidgetLabel, WidgetData>
 }
 
 export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
+
 export type ProjectSettingWidgets = {
   Immutable: boolean
   ID: string
@@ -22,7 +22,7 @@ export type ProjectSettingWidgets = {
     allowPointCreation?: boolean
   }
 }
-export type pointSettings = {
+export type PointSettings = {
   ID: TextWidgetData
   Name: TextWidgetData
   rules: {
@@ -31,6 +31,7 @@ export type pointSettings = {
 }
 
 export type TextWidgetData = {
+  ID: string
   type: 'string'
   value: string
   rules: {
@@ -41,8 +42,8 @@ export type TextWidgetData = {
     noSpecialLetters?: boolean
   }
 }
-
 export type BooleanWidgetData = {
+  ID: string
   type: 'boolean'
   value: boolean
   rules: {
@@ -74,9 +75,10 @@ export default class ProjectService {
     };
   }
 
-  static getWidgetData(type: WidgetName): WidgetData {
-    switch (type) {
+  static getWidgetData(widgetName: WidgetName): WidgetData {
+    switch (widgetName) {
       case 'BooleanWidget': return {
+        ID: '',
         type: 'boolean',
         value: false,
         rules: {
@@ -86,6 +88,7 @@ export default class ProjectService {
         },
       };
       case 'TextWidget': return {
+        ID: '',
         type: 'string',
         value: '',
         rules: {
