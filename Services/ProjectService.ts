@@ -52,6 +52,8 @@ export type BooleanWidgetData = {
   }
 }
 
+export type WidgetName = 'BooleanWidget' | 'TextWidget'
+
 export default class ProjectService {
 
   static currentProject: ProjectDTO | null = null;
@@ -72,7 +74,7 @@ export default class ProjectService {
     };
   }
 
-  static getWidgetData(type: 'TextWidget' | 'BooleanWidget'): WidgetData {
+  static getWidgetData(type: WidgetName): WidgetData {
     switch (type) {
       case 'BooleanWidget': return {
         type: 'boolean',

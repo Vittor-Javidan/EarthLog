@@ -2,7 +2,7 @@ import React, { useState, useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-import ProjectService, { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import ProjectService, { WidgetData, WidgetLabel, WidgetName } from '@Services/ProjectService';
 import { ThemeDTO } from '@Services/ThemeService';
 
 import { Layout } from '@Components/Layout';
@@ -29,17 +29,10 @@ export default function AddWidgetButton(props: {
     callback();
   }
 
-  function addBooleandWidget() {
-    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData('BooleanWidget')));
-  }
-
-  function addTextWidget() {
-    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData('TextWidget')));
-  }
-
-  // eslint-disable-next-line react/no-unstable-nested-components
-  function ButtonContainer(props: { children: ReactNode }) {
-    return <View style={{ height: 60 }}>{props.children}</View>;
+  function onPress(widgetName: WidgetName) {
+    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData(widgetName)));
+    setLabel('');
+    setShowlModal(false);
   }
 
   return (<>
@@ -71,11 +64,7 @@ export default function AddWidgetButton(props: {
               title="Boolean Widget"
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
-              onPress={() => {
-                addBooleandWidget();
-                setLabel('');
-                setShowlModal(false);
-              }}
+              onPress={() => onPress('BooleanWidget')}
             />
           </ButtonContainer>
           <ButtonContainer>
@@ -83,15 +72,15 @@ export default function AddWidgetButton(props: {
               title="Text Widget"
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
-              onPress={() => {
-                addTextWidget();
-                setLabel('');
-                setShowlModal(false);
-              }}
+              onPress={() => onPress('TextWidget')}
             />
           </ButtonContainer>
         </Layout.ScrollView>
       </Layout.Modal>
     )}
   </>);
+}
+
+function ButtonContainer(props: { children: ReactNode }) {
+  return <View style={{ height: 60 }}>{props.children}</View>;
 }
