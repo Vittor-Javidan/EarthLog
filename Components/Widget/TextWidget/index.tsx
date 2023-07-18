@@ -10,6 +10,8 @@ import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
 import { WidgetRules } from '../Rules';
+import { TextWidgetTranslations, languages } from './translations';
+import { Languages } from '@Services/LanguageService';
 
 export default function TextWidget(props: {
   label: WidgetLabel
@@ -17,6 +19,10 @@ export default function TextWidget(props: {
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
 }) {
+
+  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
 
   const [label, setLabel] = useState<string>(props.label);
   const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
@@ -28,25 +34,25 @@ export default function TextWidget(props: {
     setShowModal(false);
 
     if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
-      alert(`The label ${label} already axists`);
+      alert(stringResources['Not possible to have 2 Widgets with the same name.']);
       setIsDataWrong(true);
       return;
     }
 
     if (WidgetRules.noEmptyLabel(label)) {
-      alert('Labels cannot be empty');
+      alert(stringResources['Widget name cannot be empty.']);
       setIsDataWrong(true);
       return;
     }
 
     if (WidgetRules.noSpaces(widgetData)) {
-      alert(`${label} cannot have empty spaces`);
+      alert(stringResources['Value cannot have empty spaces.']);
       setIsDataWrong(true);
       return;
     }
 
     if (WidgetRules.noSpecialLetters(widgetData)) {
-      alert(`${label} can have only numbers, and letter from "a to z" or "A to Z".`);
+      alert(stringResources['only numbers, and letter from "a" to "z" or "A" to "Z" is allow.']);
       setIsDataWrong(true);
       return;
     }
@@ -116,6 +122,10 @@ function DataDisplay(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
+
   const isDataEmpty = props.widgetData.value === '';
 
   return (
@@ -127,7 +137,7 @@ function DataDisplay(props: {
         color: isDataEmpty ? theme.modified : theme.onTertiary,
       }}
     >
-      {isDataEmpty ? 'Empty text' : props.widgetData.value}
+      {isDataEmpty ? stringResources['Empty text'] : props.widgetData.value}
     </Text>
   );
 }
@@ -140,6 +150,9 @@ function Modal(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
 
   const [label, setLabel] = useState<string>(props.label);
   const [value, setValue] = useState<string>(props.widgetData.value);
@@ -159,13 +172,13 @@ function Modal(props: {
     >
       {props.widgetData.rules.allowLabelChange && (
         <Input.String
-          label="Label:"
+          label={stringResources['Widget Name']}
           backgroundColor_Label={theme.tertiary}
           backgroundColor_Value={theme.background}
           color_Label={theme.onTertiary}
           color_Value={theme.onBackground}
           color_Placeholder={theme.onBackground_Placeholder}
-          placeholder="Write widget name here..."
+          placeholder={stringResources['Write widget name here...']}
           value={label}
           onChangeText={setLabel}
           onResetPress={() => setLabel('')}
@@ -173,13 +186,13 @@ function Modal(props: {
       )}
       {props.widgetData.rules.allowValueChange && (
         <Input.String
-          label="Value:"
+          label={stringResources['Text']}
           backgroundColor_Label={theme.tertiary}
           backgroundColor_Value={theme.background}
           color_Label={theme.onTertiary}
           color_Value={theme.onBackground}
           color_Placeholder={theme.onBackground_Placeholder}
-          placeholder="Write anything you want here..."
+          placeholder={stringResources['Write anything here...']}
           value={value}
           onChangeText={setValue}
           onResetPress={() => setValue('')}

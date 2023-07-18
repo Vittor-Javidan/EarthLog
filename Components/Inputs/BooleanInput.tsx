@@ -5,6 +5,8 @@ import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
+import { DataTypeTranslations, languages } from './translations';
+import { Languages } from '@Services/LanguageService';
 
 export default function BooleanInput(props: {
   label: string
@@ -17,6 +19,9 @@ export default function BooleanInput(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo<DataTypeTranslations[Languages]>(() => {
+    return languages[ConfigService.config.language];
+  }, []);
 
   return (
     <View
@@ -64,7 +69,7 @@ export default function BooleanInput(props: {
             color: theme.onBackground,
           }}
         >
-          {String(props.value)}
+          {props.value ? stringResources['True'] : stringResources['False']}
         </Text>
       </View>
     </View>

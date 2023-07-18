@@ -66,7 +66,7 @@ export default function Inputs_ProjectSettings() {
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
         color_Placeholder={theme.onTertiary_Placeholder}
-        placeholder='Write an ID here... only numbers, letters and "-"'
+        placeholder=""
         value={id}
         onChangeText={(text) => onIDChange(text)}
         onResetPress={() => setId(ProjectService.generateUuidV4())}
@@ -78,7 +78,7 @@ export default function Inputs_ProjectSettings() {
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
         color_Placeholder={theme.onTertiary_Placeholder}
-        placeholder="Write the project name here..."
+        placeholder={stringResources['Write the project name here...']}
         value={name}
         onChangeText={(text) => onNameChange(text)}
         onResetPress={() => setName('')}
