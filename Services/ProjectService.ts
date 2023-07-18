@@ -1,3 +1,6 @@
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+
 export type ProjectDTO = {
   projectSettings: ProjectSettingWidgets
   projectWidgets: Record<WidgetLabel, WidgetData>
@@ -18,6 +21,7 @@ export type ProjectSettingWidgets = {
   Name: string
   rules: {
     allowImmutableChange?: boolean
+    allowIDChange?: boolean
     allowNameChange?: boolean
     allowPointCreation?: boolean
   }
@@ -58,11 +62,16 @@ export type WidgetName = 'BooleanWidget' | 'TextWidget'
 export default class ProjectService {
 
   static currentProject: ProjectDTO | null = null;
+
+  private static generateUuidV4(): string {
+    return uuidv4();
+  }
+
   static getDefaultProjectTemplate(): ProjectDTO {
     return {
       projectSettings: {
         Immutable: false,
-        ID: '',
+        ID: this.generateUuidV4(),
         Name: '',
         rules: {
           allowImmutableChange: true,
@@ -78,7 +87,7 @@ export default class ProjectService {
   static getWidgetData(widgetName: WidgetName): WidgetData {
     switch (widgetName) {
       case 'BooleanWidget': return {
-        ID: '',
+        ID: this.generateUuidV4(),
         type: 'boolean',
         value: false,
         rules: {
@@ -88,7 +97,7 @@ export default class ProjectService {
         },
       };
       case 'TextWidget': return {
-        ID: '',
+        ID: this.generateUuidV4(),
         type: 'string',
         value: '',
         rules: {
