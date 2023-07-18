@@ -210,7 +210,7 @@ function Drawer(props: {
       <Text
         adjustsFontSizeToFit={true}
         style={{
-          color: theme.onPrimary,
+          color: theme.onSecondary_PlaceHolder,
           textAlign: 'right',
           fontSize: 16,
           padding: 8,

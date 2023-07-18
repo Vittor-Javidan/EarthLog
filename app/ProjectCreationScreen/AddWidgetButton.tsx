@@ -52,7 +52,7 @@ export default function AddWidgetButton(props: {
             backgroundColor_Value={theme.background}
             color_Label={theme.onTertiary}
             color_Value={theme.onBackground}
-            color_Placeholder={'#444'}
+            color_Placeholder={theme.onBackground_Placeholder}
             placeholder={'give a name to the widget here...'}
             value={label}
             onChangeText={setLabel}

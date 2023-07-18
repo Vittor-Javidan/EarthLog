@@ -173,7 +173,7 @@ function Modal(props: {
           backgroundColor_Value={theme.background}
           color_Label={theme.onTertiary}
           color_Value={theme.onBackground}
-          color_Placeholder="#666"
+          color_Placeholder={theme.onBackground_Placeholder}
           placeholder="Write widget name here..."
           value={label}
           onChangeText={setLabel}

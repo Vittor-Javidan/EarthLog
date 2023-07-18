@@ -48,15 +48,17 @@ export function ExampleFigure(props: {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Text
-            style={{
-              color: temporaryTheme.onBackground,
-            }}
-          >
-            {stringResources_InputLabels['onBackground']}
-          </Text>
+          <View style={{ paddingBottom: 5 }}>
+            <Text style={{ color: temporaryTheme.onBackground }}>
+              {stringResources_InputLabels['onBackground']}
+            </Text>
+            <Text style={{ color: temporaryTheme.onBackground_Placeholder }}>
+              {stringResources_InputLabels['onBackground_Placeholder']}
+            </Text>
+          </View>
           <Pressable
             onPressIn={() => setLockedPressed(true) }
             onPressOut={() => setLockedPressed(false)}
@@ -81,42 +83,42 @@ export function ExampleFigure(props: {
             backgroundColor: temporaryTheme.primary,
           }}
         >
-          <Text
-            style={{
-              paddingBottom: 10,
-              color: temporaryTheme.onPrimary,
-            }}
-          >
-            {stringResources_InputLabels['onPrimary']}
-          </Text>
+          <View style={{ paddingBottom: 5 }}>
+            <Text style={{ color: temporaryTheme.onPrimary }}>
+              {stringResources_InputLabels['onPrimary']}
+            </Text>
+            <Text style={{ color: temporaryTheme.onPrimary_Placeholder }}>
+              {stringResources_InputLabels['onPrimary_Placeholder']}
+            </Text>
+          </View>
           <View
             style={{
               padding: 10,
               backgroundColor: temporaryTheme.secondary,
             }}
           >
-            <Text
-              style={{
-                paddingBottom: 10,
-                color: temporaryTheme.onSecondary,
-              }}
-            >
-              {stringResources_InputLabels['onSecondary']}
-            </Text>
+            <View style={{ paddingBottom: 5 }}>
+              <Text style={{ color: temporaryTheme.onSecondary }}>
+                {stringResources_InputLabels['onSecondary']}
+              </Text>
+              <Text style={{ color: temporaryTheme.onSecondary_PlaceHolder }}>
+                {stringResources_InputLabels['onSecondary_PlaceHolder']}
+              </Text>
+            </View>
             <View
               style={{
                 padding: 10,
                 backgroundColor: temporaryTheme.tertiary,
               }}
             >
-              <Text
-                style={{
-                  paddingBottom: 10,
-                  color: temporaryTheme.onTertiary,
-                }}
-              >
-                {stringResources_InputLabels['onTertiary']}
-              </Text>
+              <View>
+                <Text style={{ color: temporaryTheme.onTertiary }}>
+                  {stringResources_InputLabels['onTertiary']}
+                </Text>
+                <Text style={{ color: temporaryTheme.onTertiary_Placeholder }}>
+                  {stringResources_InputLabels['onTertiary_Placeholder']}
+                </Text>
+              </View>
             </View>
           </View>
         </View>

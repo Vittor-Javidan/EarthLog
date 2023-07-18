@@ -65,7 +65,7 @@ export default function Inputs_ProjectSettings() {
         backgroundColor_Value={theme.tertiary}
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
-        color_Placeholder="#666"
+        color_Placeholder={theme.onTertiary_Placeholder}
         placeholder='Write an ID here... only numbers, letters and "-"'
         value={id}
         onChangeText={(text) => onIDChange(text)}
@@ -77,7 +77,7 @@ export default function Inputs_ProjectSettings() {
         backgroundColor_Value={theme.tertiary}
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
-        color_Placeholder="#666"
+        color_Placeholder={theme.onTertiary_Placeholder}
         placeholder="Write the project name here..."
         value={name}
         onChangeText={(text) => onNameChange(text)}
