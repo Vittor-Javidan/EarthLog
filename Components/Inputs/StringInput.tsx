@@ -43,12 +43,13 @@ export default function StringInput(props: {
         >
           {props.label}
         </Text>
-        <Icon.Root
-          iconName="refresh-sharp"
+        <Icon.Reset
           color={props.color_Label}
-          paddingHorizontal={10}
-          paddingVertical={5}
           onPress={props.onResetPress}
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+          }}
         />
       </Layout.View>
       <TextInput

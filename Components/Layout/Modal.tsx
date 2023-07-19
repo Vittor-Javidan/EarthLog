@@ -1,10 +1,9 @@
 import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions, StyleProp, ViewStyle } from 'react-native';
+import { Icon } from '@Icon/index';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-
-import { Icon, IconName } from '@Icon/index';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -31,7 +30,6 @@ export default function Modal(props: {
         style={{
           height: HEIGHT * 0.08,
         }}
-        iconName="close"
         onIconPress={props.onRequestClose}
       />
       <View
@@ -48,7 +46,6 @@ export default function Modal(props: {
 
 function Navbar(props: {
   title: string
-  iconName: IconName
   style: StyleProp<ViewStyle>
   onIconPress: () => void | undefined
 }): JSX.Element {
@@ -85,11 +82,12 @@ function Navbar(props: {
           {props.title}
         </Text>
       </View>
-      <Icon.Root
-        iconName={props.iconName}
+      <Icon.Close
         onPress={props.onIconPress}
-        paddingHorizontal={10}
-        paddingVertical={10}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+        }}
       />
     </View>
   );

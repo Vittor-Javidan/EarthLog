@@ -14,7 +14,7 @@ export default function DataDisplay(props: {
     <View
       style={{
         backgroundColor: theme.secondary,
-        paddingVertical: 5,
+        paddingVertical: 10,
         paddingHorizontal: 10,
       }}
     >

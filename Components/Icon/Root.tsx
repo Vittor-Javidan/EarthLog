@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ConfigService from '@Services/ConfigService';
@@ -8,8 +8,7 @@ import { ThemeDTO } from '@Services/ThemeService';
 export default function Root(props: {
   iconName: IconName
   color?: string
-  paddingHorizontal?: number
-  paddingVertical?: number
+  style?: StyleProp<ViewStyle>
   onPress: () => void
 }): JSX.Element {
 
@@ -21,14 +20,14 @@ export default function Root(props: {
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
       onPress={props.onPress}
-      style={{
+      style={[{
         backgroundColor: pressed ? theme.onPressColorPrimary : undefined,
-        paddingHorizontal: props.paddingHorizontal !== undefined ? props.paddingHorizontal : 20,
-        paddingVertical: props.paddingVertical !== undefined ? props.paddingVertical : 5,
+        paddingHorizontal: 20,
+        paddingVertical: 5,
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-      }}
+      }, props.style]}
     >
       <Ionicons
         name={props.iconName}

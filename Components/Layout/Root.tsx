@@ -6,8 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { APP_VERSION } from '@Globals/Version';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-
-import { Icon, IconName } from '@Icon/index';
+import { Icon, IconName } from '@Components/Icon';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -119,8 +118,10 @@ function Navbar(props: {
       <Icon.Root
         iconName={props.iconName}
         onPress={props.onMenuButtonPress}
-        paddingHorizontal={10}
-        paddingVertical={10}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+        }}
       />
     </View>
   );

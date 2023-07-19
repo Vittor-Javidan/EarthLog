@@ -107,12 +107,13 @@ function ShortcutIconButtons(props: {
 
   return (<>
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
-      <Icon.Root
-        iconName="pencil-sharp"
-        paddingHorizontal={10}
-        paddingVertical={5}
+      <Icon.Edit
         color={theme.onPrimary}
         onPress={props.onPencilPress}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+        }}
       />
     )}
   </>);
