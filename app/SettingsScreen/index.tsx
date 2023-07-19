@@ -1,24 +1,24 @@
 
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
+
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 
-import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
-
-import { ConfigScreenTranslations, languages } from './translations';
-
-export default function ConfigScreen(): JSX.Element {
+export default function SettingsScreen(): JSX.Element {
 
   LogService.useLog('CONFIG SCREEN: rendered');
 
   const navController = useRouter();
-  const stringResources = useMemo<ConfigScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_SettingsScreen[Languages]>(() => {
+    return translations.Screens.SettingsScreen[ConfigService.config.language];
   }, []);
 
   return (

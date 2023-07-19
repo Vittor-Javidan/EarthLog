@@ -1,11 +1,11 @@
 import { Languages } from '@Services/LanguageService';
 
-export type HomeScreenTranslations = Record<Languages, {
+export type Translations_HomeScreen = Record<Languages, {
 	'Settings': string
   'New Project': string
 }>
 
-export const languages: HomeScreenTranslations = {
+export const translations_HomeScreen: Translations_HomeScreen = {
 	'en-US': {
 		'Settings': 'Settings',
     'New Project': 'New Project',

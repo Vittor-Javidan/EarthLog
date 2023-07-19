@@ -1,14 +1,15 @@
 import React, { useState, useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
-
-import ConfigService from '@Services/ConfigService';
-import ProjectService, { WidgetData, WidgetLabel, WidgetName } from '@Services/ProjectService';
-import { ThemeDTO } from '@Services/ThemeService';
-
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
-import { ProjectCreationScreenTranslations, languages } from './translations';
+
+import { translations } from '@Translations/index';
+import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
+
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
+import ProjectService, { WidgetData, WidgetLabel, WidgetName } from '@Services/ProjectService';
 
 export default function AddWidgetButton(props: {
   widgets: Record<WidgetLabel, WidgetData>
@@ -16,8 +17,8 @@ export default function AddWidgetButton(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
+    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);

@@ -1,17 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
-
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ConfigService from '@Services/ConfigService';
-import ProjectService, { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
-
 import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
-import { WidgetRules } from '../Rules';
-import { TextWidgetTranslations, languages } from './translations';
+import { translations } from '@Translations/index';
+import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
+
+import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ProjectService, { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+
+import { WidgetRules } from '../Rules';
 
 export default function TextWidget(props: {
   label: WidgetLabel
@@ -20,8 +21,8 @@ export default function TextWidget(props: {
   onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
 }) {
 
-  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
+    return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
   const [label, setLabel] = useState<string>(props.label);
@@ -122,8 +123,8 @@ function DataDisplay(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
+    return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
   const isDataEmpty = props.widgetData.value === '';
@@ -150,8 +151,8 @@ function Modal(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<TextWidgetTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
+    return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
   const [label, setLabel] = useState<string>(props.label);

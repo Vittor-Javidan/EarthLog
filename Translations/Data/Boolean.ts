@@ -1,11 +1,11 @@
 import { Languages } from '@Services/LanguageService';
 
-export type DataTypeTranslations = Record<Languages, {
+export type Translations_BooleanData = Record<Languages, {
   'True': string
   'False': string
 }>
 
-export const languages: DataTypeTranslations = {
+export const translations_BooleanData: Translations_BooleanData = {
   'en-US': {
     'True': 'True',
     'False': 'False',

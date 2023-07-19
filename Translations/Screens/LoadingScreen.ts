@@ -1,10 +1,10 @@
 import { Languages } from '@Services/LanguageService';
 
-export type LoadingScreenTranslations = Record<Languages, {
+export type Translations_LoadingScreen = Record<Languages, {
 	'Loading...': string
 }>
 
-export const languages: LoadingScreenTranslations = {
+export const translations_LoadingScreen: Translations_LoadingScreen = {
 	'en-US': {
 		'Loading...': 'Loading...',
 	},

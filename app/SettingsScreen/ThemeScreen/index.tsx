@@ -1,19 +1,20 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, useNavigation } from 'expo-router';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
+import { ColorInput } from './ColorInput';
+import { ExampleFigure } from './ExampleFigure';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
+
 import ConfigService from '@Services/ConfigService';
 import LogService from '@Services/LogService';
 import { Languages } from '@Services/LanguageService';
 
-import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
-
-import { ColorInput } from './ColorInput';
-import { ExampleFigure } from './ExampleFigure';
 import API_ExampleFigure from './API_ExampleFigure';
-import { ThemeScreenTranslations, languages } from './translations';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -22,8 +23,8 @@ export default function ThemeScreen(): JSX.Element {
   const navController = useRouter();
   const navigation = useNavigation();
   const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<ThemeScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
+    return translations.Screens.ThemeScreen[ConfigService.config.language];
   }, []);
 
   const [locked, setLocked] = useState<boolean>(false);

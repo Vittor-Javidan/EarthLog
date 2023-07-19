@@ -1,27 +1,28 @@
 import React, { useMemo, useEffect } from 'react';
 import { useNavigation, useRouter } from 'expo-router';
-
-import AppRoutes from '@Globals/AppRoutes';
-import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { Languages } from '@Services/LanguageService';
-
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import Widgets_PointTemplate from './Widgets_PointTemplate';
 import Widgets_Project from './Widgets_Project';
 
+import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
+
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
+import { Languages } from '@Services/LanguageService';
+
 import API_ProjectCreation from './API_ProjectCreation';
-import { ProjectCreationScreenTranslations, languages } from './translations';
 
 export default function ProjectCreationScreen() {
 
   const navigation = useNavigation();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
+    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
   useEffect(() => {

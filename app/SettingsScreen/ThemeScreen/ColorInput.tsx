@@ -1,15 +1,16 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Input } from '@Inputs/index';
+
+import { translations } from '@Translations/index';
+import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 
-import { Input } from '@Inputs/index';
-
 import API_ExampleFigure from './API_ExampleFigure';
-import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
 
 export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   background: Background,
@@ -60,11 +61,8 @@ function CustomInput(props: {
 
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<ThemeScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
-  }, []);
-  const stringResources_InputLabels = useMemo<ThemeScreenTranslations_InputLabels[Languages]>(() => {
-    return inputLabels[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
+    return translations.Screens.ThemeScreen[ConfigService.config.language];
   }, []);
 
   const [color, setColor] = useState<string>(props.savedValue);
@@ -122,7 +120,7 @@ function CustomInput(props: {
             verticalAlign: 'middle',
           }}
         >
-          {stringResources_InputLabels[props.themeKey]}
+          {stringResources[props.themeKey]}
         </Text>
         <View
           style={{

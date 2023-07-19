@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
+import { Layout } from '@Layout/index';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
+
 import LogService from '@Services/LogService';
 import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
-
-import { Layout } from '@Layout/index';
-import { HomeScreenTranslations, languages } from './translations';
 
 export default function HomeScreen() {
 
@@ -16,8 +17,8 @@ export default function HomeScreen() {
 
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<HomeScreenTranslations[Languages]>(
-    () => languages[ConfigService.config.language], []
+  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
+    () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
 
   return (
@@ -50,8 +51,8 @@ export default function HomeScreen() {
 function Drawer() {
 
   const navController = useRouter();
-  const stringResources = useMemo<HomeScreenTranslations[Languages]>(
-    () => languages[ConfigService.config.language], []
+  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
+    () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
 
   return (

@@ -1,27 +1,26 @@
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'expo-router';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_LanguagesScreen } from '@Translations/Screens/SettingsScreen/LanguagesScreen';
+
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { LanguageTags, Languages, languageLabels, languageTags } from '@Services/LanguageService';
 
-import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
-
-import { AvailableLanguagesScreen_Translations, languages } from './translations';
-
-export default function AvailableLanguagesScreen(): JSX.Element {
+export default function LanguagesScreen(): JSX.Element {
 
   LogService.useLog('LANGUAGES SCREEN: rendered');
 
   const [currentLanguage, setCurrentLanguage] = useState<Languages>(ConfigService.config.language);
   const navController = useRouter();
-  const stringResources = useMemo<AvailableLanguagesScreen_Translations[Languages]>(
-    () => languages[currentLanguage], [currentLanguage]
+  const stringResources = useMemo<Translations_LanguagesScreen[Languages]>(
+    () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
   );
-
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;

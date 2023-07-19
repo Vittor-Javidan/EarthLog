@@ -1,8 +1,7 @@
 import { Languages } from '@Services/LanguageService';
 import { ThemeDTO } from '@Services/ThemeService';
 
-export type ThemeScreenTranslations_InputLabels = Record<Languages, Record<keyof ThemeDTO, string>>
-export type ThemeScreenTranslations = Record<Languages, {
+export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, string> & {
   'Theme': string
   'Discart': string
   'Save': string
@@ -12,7 +11,7 @@ export type ThemeScreenTranslations = Record<Languages, {
   'lock': string
 }>
 
-export const languages: ThemeScreenTranslations = {
+export const translations_ThemeScreen: Translations_ThemeScreen = {
   'en-US': {
     'Theme': 'Theme',
     'Discart': 'Exit',
@@ -21,20 +20,6 @@ export const languages: ThemeScreenTranslations = {
     'Invalid Color': 'Invalid Color',
     'unlock': 'unlock',
     'lock': 'lock',
-  },
-  'pt-BR': {
-    'Theme': 'Tema',
-    'Discart': 'Descartar',
-    'Save': 'Salvar',
-    'Reset Theme': 'Resetar tema',
-    'Invalid Color': 'Cor inválida',
-    'unlock': 'destravar',
-    'lock': 'travar',
-  },
-};
-
-export const inputLabels: ThemeScreenTranslations_InputLabels = {
-  'en-US': {
     background: 'Background',
     onBackground: 'Background font',
     onBackground_Placeholder: 'Background font (hint)',
@@ -56,6 +41,13 @@ export const inputLabels: ThemeScreenTranslations_InputLabels = {
     onWrong: 'Button: warning font',
   },
   'pt-BR': {
+    'Theme': 'Tema',
+    'Discart': 'Descartar',
+    'Save': 'Salvar',
+    'Reset Theme': 'Resetar tema',
+    'Invalid Color': 'Cor inválida',
+    'unlock': 'destravar',
+    'lock': 'travar',
     background: 'Tela de fundo',
     onBackground: 'Fonte tela de fundo',
     onBackground_Placeholder: 'Fonte tela de fundo (dica)',

@@ -18,6 +18,7 @@ module.exports = function (api) {
           '@Components': './Components',
           '@Services': './Services',
           '@Globals': './Globals',
+          '@Translations': './Translations',
           '@Layout': './Components/Layout',
           '@Icon': './Components/Icon',
           '@Inputs': './Components/Inputs',

@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import { View, Text, Switch } from 'react-native';
-
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ConfigService from '@Services/ConfigService';
-
 import { Layout } from '@Layout/index';
-import { DataTypeTranslations, languages } from './translations';
+
+import { translations } from '@Translations/index';
+import { Translations_BooleanData } from '@Translations/Data/Boolean';
+
+import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+
 
 export default function BooleanInput(props: {
   label: string
@@ -19,8 +21,8 @@ export default function BooleanInput(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<DataTypeTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_BooleanData[Languages]>(() => {
+    return translations.Data.Boolean[ConfigService.config.language];
   }, []);
 
   return (

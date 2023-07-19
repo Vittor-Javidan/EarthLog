@@ -7,6 +7,7 @@
       "@Components/*": ["Components/*"],
       "@Services/*": ["Services/*"],
       "@Globals/*": ["Globals/*"],
+      "@Translations/*": ["Translations/*"],
       "@Icon/*": ["Components/Icon/*"],
       "@Layout/*": ["Components/Layout/*"],
       "@Inputs/*": ["Components/Inputs/*"],

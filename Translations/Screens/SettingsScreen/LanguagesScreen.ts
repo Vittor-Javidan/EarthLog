@@ -1,11 +1,11 @@
 import { Languages } from '@Services/LanguageService';
 
-export type AvailableLanguagesScreen_Translations = Record<Languages, {
+export type Translations_LanguagesScreen = Record<Languages, {
   'Languages': string
   'Back': string
 }>
 
-export const languages: AvailableLanguagesScreen_Translations = {
+export const translations_LanguagesScreen: Translations_LanguagesScreen = {
   'en-US': {
     'Languages': 'Languages',
     'Back': 'Back',

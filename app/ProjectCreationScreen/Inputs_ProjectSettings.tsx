@@ -1,19 +1,23 @@
-import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import React, { useState, useMemo } from 'react';
-import { ProjectCreationScreenTranslations, languages } from './translations';
-import { Languages } from '@Services/LanguageService';
-import API_ProjectCreation from './API_ProjectCreation';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
+
+import { translations } from '@Translations/index';
+import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
+
+import ConfigService from '@Services/ConfigService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import { Languages } from '@Services/LanguageService';
 import ProjectService from '@Services/ProjectService';
+
+import API_ProjectCreation from './API_ProjectCreation';
 
 export default function Inputs_ProjectSettings() {
 
   const idRegex = useMemo<RegExp>(() => /[^a-zA-Z0-9-]/g, []);
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<ProjectCreationScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
+    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
   const [immutable, setImmutable] = useState<boolean>(API_ProjectCreation.temporaryProject.projectSettings.Immutable);

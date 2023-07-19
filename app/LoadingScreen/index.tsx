@@ -1,17 +1,18 @@
 import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 
+import { translations } from '@Translations/index';
+import { Translations_LoadingScreen } from '@Translations/Screens/LoadingScreen';
+
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 import { ThemeDTO } from '@Services/ThemeService';
 
-import { LoadingScreenTranslations, languages } from './translations';
-
 export default function LoadingScreen(): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<LoadingScreenTranslations[Languages]>(
-    () => languages[ConfigService.config.language], []
+  const stringResources = useMemo<Translations_LoadingScreen[Languages]>(
+    () => translations.Screens.LoadingScreen[ConfigService.config.language], []
   );
 
   return (
