@@ -8,6 +8,7 @@ export default function WidgetSelector(props: {
   widgetData: WidgetData
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (newLabel: string, value: WidgetData) => void
+  onDelete: () => void
 }) {
 
   switch (props.widgetData.type) {
@@ -17,6 +18,7 @@ export default function WidgetSelector(props: {
         widgetData={props.widgetData}
         widgets={props.widgets}
         onConfirm={props.onConfirm}
+        onDelete={props.onDelete}
       />
     );
     case 'boolean': return (

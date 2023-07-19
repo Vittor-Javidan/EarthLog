@@ -5,9 +5,9 @@ import { Widget } from '@Components/Widget';
 import AddWidgetButton from './AddWidgetButton';
 
 export default function WidgetsGroup(props: {
-  refreshSetterKey: string
   widgets: Record<WidgetLabel, WidgetData>
-  onConfirm: (oldlabel: string, newLabel: string, value: WidgetData) => void
+  onConfirm: (oldlabel: WidgetLabel, newLabel: WidgetLabel, value: WidgetData) => void
+  onDelete: (label: WidgetLabel) => void
   onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
 }) {
 
@@ -20,9 +20,8 @@ export default function WidgetsGroup(props: {
         label={key}
         widgetData={widgetData}
         widgets={props.widgets}
-        onConfirm={(newLabel, value) => {
-          props.onConfirm(key, newLabel, value);
-        }}
+        onConfirm={(newLabel, value) => { props.onConfirm(key, newLabel, value);}}
+        onDelete={() => props.onDelete(key)}
       />
     );
   }

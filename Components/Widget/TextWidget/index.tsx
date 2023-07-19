@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
+import { Layout } from '@Components/Layout';
 import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
@@ -19,6 +20,7 @@ export default function TextWidget(props: {
   widgetData: TextWidgetData
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
+  onDelete: () => void
 }) {
 
   const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
@@ -92,6 +94,7 @@ export default function TextWidget(props: {
           widgetData={widgetData}
           onRequestClose={() => setShowModal(false)}
           onConfirm={(label, widgetData) => onConfirm(label, widgetData)}
+          onDelete={props.onDelete}
         />
       </>}
     />
@@ -148,6 +151,7 @@ function Modal(props: {
   label: WidgetLabel
   widgetData: TextWidgetData
   onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
+  onDelete: () => void
   onRequestClose: () => void
 }) {
 
@@ -200,6 +204,44 @@ function Modal(props: {
           onResetPress={() => setValue('')}
         />
       )}
+      {props.widgetData.rules.allowWidgetErase && (
+        <DeleteButton
+          widgetLabel={props.label}
+          onDeleteButtonPress={props.onDelete}
+        />
+      )}
     </WidgetComponent.Modal>
   );
+}
+
+function DeleteButton(props: {
+  widgetLabel: WidgetLabel
+  onDeleteButtonPress: () => void
+}) {
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
+  const [widgetName, setWidgetName] = useState<string>('');
+  const isNameCorrect = widgetName === props.widgetLabel;
+
+  return (<>
+    <Input.String
+      label="Delete"
+      placeholder="Type widget name perfectly to delete."
+      backgroundColor_Label={theme.wrong}
+      backgroundColor_Value={theme.background}
+      color_Label={theme.onWrong}
+      color_Value={theme.onBackground}
+      color_Placeholder={theme.onBackground_Placeholder}
+      value={widgetName}
+      onChangeText={setWidgetName}
+      onResetPress={() => setWidgetName('')}
+    />
+    {isNameCorrect && <Layout.Button
+      title="confirm to delete"
+      overrideBackgroundColor={theme.wrong}
+      overrideTextColor={theme.onWrong}
+      onPress={props.onDeleteButtonPress}
+    />}
+  </>);
 }

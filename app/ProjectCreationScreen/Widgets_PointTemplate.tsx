@@ -7,7 +7,7 @@ import { Translations_ProjectCreationScreen } from '@Translations/Screens/Projec
 
 import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData } from '@Services/ProjectService';
+import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -27,6 +27,11 @@ export default function Widgets_PointTemplate() {
     API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
   }
 
+  function onDelete(label: WidgetLabel) {
+    API_ProjectCreation.deletePointTemplateWidget(label);
+    refresh(prev => !prev);
+  }
+
   function onCreateWidget(label: string, widgetData: WidgetData) {
     API_ProjectCreation.modifyPointTemplateWidget(label, widgetData);
     refresh(prev => !prev);
@@ -41,9 +46,9 @@ export default function Widgets_PointTemplate() {
         {stringResources['Point template']}
       </Layout.Text>
       <WidgetsGroup
-        refreshSetterKey="PointWidgetTemplate"
         widgets={API_ProjectCreation.temporaryProject.pointTemplate}
         onConfirm={onConfirm}
+        onDelete={onDelete}
         onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />
     </Layout.View>

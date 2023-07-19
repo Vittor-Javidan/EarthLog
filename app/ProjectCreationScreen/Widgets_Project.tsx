@@ -4,7 +4,7 @@ import WidgetsGroup from './WidgetsGroup';
 
 import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData } from '@Services/ProjectService';
+import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -26,6 +26,11 @@ export default function Widgets_Project() {
     API_ProjectCreation.modifyProjectWidget(newLabel, value);
   }
 
+  function onDelete(label: WidgetLabel) {
+    API_ProjectCreation.deleteProjectWidget(label);
+    refresh(prev => !prev);
+  }
+
   function onCreateWidget(label: string, widgetData: WidgetData) {
     API_ProjectCreation.modifyProjectWidget(label, widgetData);
     refresh(prev => !prev);
@@ -40,9 +45,9 @@ export default function Widgets_Project() {
         {stringResources['Project widgets']}
       </Layout.Text>
       <WidgetsGroup
-        refreshSetterKey="ProjectWidgets"
         widgets={API_ProjectCreation.temporaryProject.projectWidgets}
         onConfirm={onConfirm}
+        onDelete={onDelete}
         onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
       />
     </Layout.View>
