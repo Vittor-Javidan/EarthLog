@@ -9,8 +9,8 @@ export default function View(props: {
 	return (
 		<ReactNative_View
 			style={[props.style, {
-				gap: 10,
-				padding: 10,
+				gap: 5,
+				padding: 5,
 			}]}
 		>
 			{props.children}

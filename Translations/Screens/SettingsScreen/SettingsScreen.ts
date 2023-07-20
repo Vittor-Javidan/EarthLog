@@ -1,13 +1,13 @@
-import { Languages } from '../../Types/LanguageTypes';
+import { Languages } from '@Services/LanguageService';
 
-export type ConfigScreenTranslations = Record<Languages, {
+export type Translations_SettingsScreen = Record<Languages, {
   'Settings': string
   'Language': string
   'Theme': string
   'Back': string
 }>
 
-export const languages: ConfigScreenTranslations = {
+export const translations_SettingsScreen: Translations_SettingsScreen = {
   'en-US': {
     'Settings': 'Settings',
     'Language': 'Language',

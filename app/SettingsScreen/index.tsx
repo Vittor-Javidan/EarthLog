@@ -1,22 +1,24 @@
 
 import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
-import LogService from '../../Services/LogService';
-import ConfigService from '../../Services/ConfigService';
+import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
 
-import AppRoutes from '../Routes';
-import { ConfigScreenTranslations, languages } from './translations';
-import { Languages } from '../../Types/LanguageTypes';
+import LogService from '@Services/LogService';
+import ConfigService from '@Services/ConfigService';
+import { Languages } from '@Services/LanguageService';
 
-export default function ConfigScreen(): JSX.Element {
+export default function SettingsScreen(): JSX.Element {
 
   LogService.useLog('CONFIG SCREEN: rendered');
 
   const navController = useRouter();
-  const stringResources = useMemo<ConfigScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_SettingsScreen[Languages]>(() => {
+    return translations.Screens.SettingsScreen[ConfigService.config.language];
   }, []);
 
   return (
@@ -26,9 +28,9 @@ export default function ConfigScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />,
       ]}
     >
@@ -44,10 +46,15 @@ export default function ConfigScreen(): JSX.Element {
           onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
         />
       </Layout.ScrollView>
-      <Layout.View>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
         <Layout.Button
           title={stringResources['Back']}
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />
       </Layout.View>
     </Layout.Root>

@@ -1,17 +1,20 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter, useNavigation } from 'expo-router';
-import { Layout } from '../../../Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
 
-import { Languages } from '../../../Types/LanguageTypes';
-import ConfigService from '../../../Services/ConfigService';
-import LogService from '../../../Services/LogService';
-import API_ExampleFigure from './API_ExampleFigure';
+import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
-import AppRoutes from '../../Routes';
-import { ThemeScreenTranslations, languages } from './translations';
+import ConfigService from '@Services/ConfigService';
+import LogService from '@Services/LogService';
+import { Languages } from '@Services/LanguageService';
+
+import API_ExampleFigure from './API_ExampleFigure';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -20,8 +23,8 @@ export default function ThemeScreen(): JSX.Element {
   const navController = useRouter();
   const navigation = useNavigation();
   const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<ThemeScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
+    return translations.Screens.ThemeScreen[ConfigService.config.language];
   }, []);
 
   const [locked, setLocked] = useState<boolean>(false);
@@ -41,14 +44,14 @@ export default function ThemeScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
           onPress={() => {
             API_ExampleFigure.discart();
-            navController.push(AppRoutes.MAIN_SCREEN);
+            navController.push(AppRoutes.HOME);
           }}
         />,
-        <Layout.Icon.Settings
+        <Icon.Settings
           key="treeIcon_2"
           onPress={() => {
             API_ExampleFigure.discart();
@@ -69,37 +72,39 @@ export default function ThemeScreen(): JSX.Element {
           onPressLock={() => setLocked(prev => !prev)}
         />}
         <AllInputs />
-        <Layout.View
-          style={{
-            marginTop: 10,
+        <Layout.Button
+          title={stringResources['Reset Theme']}
+          onPress={() => {
+            API_ExampleFigure.reset();
           }}
-        >
-          <Layout.Button
-            title={stringResources['Reset Theme']}
-            onPress={() => {
-              API_ExampleFigure.reset();
-            }}
-          />
-          <Layout.Button
-            title={stringResources['Discart and Exit']}
-            overrideBackgroundColor={savedTheme.wrong}
-            overrideTextColor={savedTheme.onWrong}
-            onPress={() => {
-              API_ExampleFigure.discart();
-              navController.push(AppRoutes.SETTINGS_SCREEN);
-            }}
-          />
-          <Layout.Button
-            title={stringResources['Save and Return']}
-            overrideBackgroundColor={savedTheme.confirm}
-            overrideTextColor={savedTheme.onConfirm}
-            onPress={() => async () => {
-              API_ExampleFigure.save();
-              navController.push(AppRoutes.SETTINGS_SCREEN);
-            }}
-          />
-        </Layout.View>
+        />
       </Layout.ScrollView>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
+        <Layout.Button
+          title={stringResources['Discart']}
+          overrideBackgroundColor={savedTheme.wrong}
+          overrideTextColor={savedTheme.onWrong}
+          onPress={() => {
+            API_ExampleFigure.discart();
+            navController.push(AppRoutes.SETTINGS_SCREEN);
+          }}
+        />
+        <Layout.Button
+          title={stringResources['Save']}
+          overrideBackgroundColor={savedTheme.confirm}
+          overrideTextColor={savedTheme.onConfirm}
+          onPress={async () => {
+            console.log('click');
+            await API_ExampleFigure.save();
+            navController.push(AppRoutes.SETTINGS_SCREEN);
+          }}
+        />
+      </Layout.View>
     </Layout.Root>
   );
 }

@@ -1,21 +1,12 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import {
-  View,
-  Text,
-  StyleProp,
-  ViewStyle,
-  Dimensions,
-  ScrollView,
-  // Pressable,
-} from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { ThemeDTO } from '../../Services/ThemeService';
-import ConfigService from '../../Services/ConfigService';
-
-import { APP_VERSION } from '../../Globals/Version';
-import { Icon, IconName } from './Icon';
+import { APP_VERSION } from '@Globals/Version';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
+import { Icon, IconName } from '@Components/Icon';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -34,17 +25,26 @@ export default function Root(props: {
 
   return (<>
     <View
-      style={{ flex: 1}}
+      style={{
+        width: WIDTH,
+        height: HEIGHT,
+      }}
     >
       <StatusBar animated={true} />
       <Navbar
         title={props.title}
         iconName={props.iconName}
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-        style={{ flex: 1 }}
+        style={{
+          width: WIDTH,
+          height: HEIGHT * 0.12,
+        }}
       />
       <View
-        style={{ flex: 9 }}
+        style={{
+          width: WIDTH,
+          height: HEIGHT * 0.88,
+        }}
       >
         {props.showNavigationTree && (
           <NavigationTree
@@ -53,7 +53,7 @@ export default function Root(props: {
           />
         )}
         <ContentArea
-          style={{ flex: 20 }}
+          style={{ flex: 19 }}
         >
           {props.children}
         </ContentArea>
@@ -66,7 +66,7 @@ export default function Root(props: {
           bottom: 0,
           left: 0,
           width: WIDTH,
-          height: (HEIGHT * 0.9) - 18, // 18px from status bar
+          height: (HEIGHT * 0.88),
         }}
       >
         {props.drawerChildren}
@@ -105,9 +105,11 @@ function Navbar(props: {
       >
         <Text
           adjustsFontSizeToFit={true}
+          maxFontSizeMultiplier={0}
           style={{
             color: theme.onPrimary,
-            fontSize: 200,
+            fontSize: ThemeService.FONTS.h1,
+            fontWeight: '600',
           }}
         >
           {props.title}
@@ -116,8 +118,10 @@ function Navbar(props: {
       <Icon.Root
         iconName={props.iconName}
         onPress={props.onMenuButtonPress}
-        paddingHorizontal={10}
-        paddingVertical={10}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 10,
+        }}
       />
     </View>
   );
@@ -147,7 +151,7 @@ function NavigationTree(props: {
           maxFontSizeMultiplier={0}
           style={{
             color: theme.onPrimary,
-            fontSize: 200,
+            fontSize: ThemeService.FONTS.auto,
           }}
         />
       );
@@ -207,7 +211,7 @@ function Drawer(props: {
       <Text
         adjustsFontSizeToFit={true}
         style={{
-          color: theme.onPrimary,
+          color: theme.onSecondary_PlaceHolder,
           textAlign: 'right',
           fontSize: 16,
           padding: 8,

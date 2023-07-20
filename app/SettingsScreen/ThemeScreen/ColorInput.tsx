@@ -1,24 +1,30 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { ColorPicker } from '../../../Components/ColorPicker';
+import { Input } from '@Inputs/index';
 
-import { ThemeDTO } from '../../../Services/ThemeService';
-import ConfigService from '../../../Services/ConfigService';
+import { translations } from '@Translations/index';
+import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
+
+import { ThemeDTO } from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
+import { Languages } from '@Services/LanguageService';
+
 import API_ExampleFigure from './API_ExampleFigure';
-
-import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
-import { Languages } from '../../../Types/LanguageTypes';
 
 export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   background: Background,
   onBackground: OnBackground,
+  onBackground_Placeholder: OnBackground_Placeholder,
   primary: Primary,
   onPrimary: OnPrimary,
+  onPrimary_Placeholder: OnPrimary_Placeholder,
   secondary: Secondary,
   onSecondary: OnSecondary,
+  onSecondary_PlaceHolder: OnSecondary_Placeholder,
   tertiary: Tertiary,
   onTertiary: OnTertiary,
+  onTertiary_Placeholder: OnTertiary_Placeholder,
   confirm: Confirm,
   onConfirm: OnConfirm,
   modified: Modified,
@@ -28,34 +34,35 @@ export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   onPressColorPrimary: OnPressColorPrimary,
 };
 
-function Background(): JSX.Element          { return <Input themeKey="background"          savedValue={ConfigService.config.theme.background} />; }
-function OnBackground(): JSX.Element        { return <Input themeKey="onBackground"        savedValue={ConfigService.config.theme.onBackground} />; }
-function Primary(): JSX.Element             { return <Input themeKey="primary"             savedValue={ConfigService.config.theme.primary} />; }
-function OnPrimary(): JSX.Element           { return <Input themeKey="onPrimary"           savedValue={ConfigService.config.theme.onPrimary} />; }
-function Secondary(): JSX.Element           { return <Input themeKey="secondary"           savedValue={ConfigService.config.theme.secondary} />; }
-function OnSecondary(): JSX.Element         { return <Input themeKey="onSecondary"         savedValue={ConfigService.config.theme.onSecondary} />; }
-function Tertiary(): JSX.Element            { return <Input themeKey="tertiary"            savedValue={ConfigService.config.theme.tertiary} />; }
-function OnTertiary(): JSX.Element          { return <Input themeKey="onTertiary"          savedValue={ConfigService.config.theme.onTertiary} />; }
-function Confirm(): JSX.Element             { return <Input themeKey="confirm"             savedValue={ConfigService.config.theme.confirm} />; }
-function OnConfirm(): JSX.Element           { return <Input themeKey="onConfirm"           savedValue={ConfigService.config.theme.onConfirm} />; }
-function Modified(): JSX.Element            { return <Input themeKey="modified"            savedValue={ConfigService.config.theme.modified} />; }
-function OnModified(): JSX.Element          { return <Input themeKey="onModified"          savedValue={ConfigService.config.theme.onModified} />; }
-function Wrong(): JSX.Element               { return <Input themeKey="wrong"               savedValue={ConfigService.config.theme.wrong} />; }
-function OnWrong(): JSX.Element             { return <Input themeKey="onWrong"             savedValue={ConfigService.config.theme.onWrong} />; }
-function OnPressColorPrimary(): JSX.Element { return <Input themeKey="onPressColorPrimary" savedValue={ConfigService.config.theme.onPressColorPrimary} />; }
+function Background(): JSX.Element                { return <CustomInput themeKey="background"               savedValue={ConfigService.config.theme.background} />; }
+function OnBackground(): JSX.Element              { return <CustomInput themeKey="onBackground"             savedValue={ConfigService.config.theme.onBackground} />; }
+function OnBackground_Placeholder(): JSX.Element  { return <CustomInput themeKey="onBackground_Placeholder" savedValue={ConfigService.config.theme.onBackground_Placeholder} />; }
+function Primary(): JSX.Element                   { return <CustomInput themeKey="primary"                  savedValue={ConfigService.config.theme.primary} />; }
+function OnPrimary(): JSX.Element                 { return <CustomInput themeKey="onPrimary"                savedValue={ConfigService.config.theme.onPrimary} />; }
+function OnPrimary_Placeholder(): JSX.Element     { return <CustomInput themeKey="onPrimary_Placeholder"    savedValue={ConfigService.config.theme.onPrimary_Placeholder} />; }
+function Secondary(): JSX.Element                 { return <CustomInput themeKey="secondary"                savedValue={ConfigService.config.theme.secondary} />; }
+function OnSecondary(): JSX.Element               { return <CustomInput themeKey="onSecondary"              savedValue={ConfigService.config.theme.onSecondary} />; }
+function OnSecondary_Placeholder(): JSX.Element   { return <CustomInput themeKey="onSecondary_PlaceHolder"  savedValue={ConfigService.config.theme.onSecondary_PlaceHolder} />; }
+function Tertiary(): JSX.Element                  { return <CustomInput themeKey="tertiary"                 savedValue={ConfigService.config.theme.tertiary} />; }
+function OnTertiary(): JSX.Element                { return <CustomInput themeKey="onTertiary"               savedValue={ConfigService.config.theme.onTertiary} />; }
+function OnTertiary_Placeholder(): JSX.Element    { return <CustomInput themeKey="onTertiary_Placeholder"   savedValue={ConfigService.config.theme.onTertiary_Placeholder} />; }
+function Confirm(): JSX.Element                   { return <CustomInput themeKey="confirm"                  savedValue={ConfigService.config.theme.confirm} />; }
+function OnConfirm(): JSX.Element                 { return <CustomInput themeKey="onConfirm"                savedValue={ConfigService.config.theme.onConfirm} />; }
+function Modified(): JSX.Element                  { return <CustomInput themeKey="modified"                 savedValue={ConfigService.config.theme.modified} />; }
+function OnModified(): JSX.Element                { return <CustomInput themeKey="onModified"               savedValue={ConfigService.config.theme.onModified} />; }
+function Wrong(): JSX.Element                     { return <CustomInput themeKey="wrong"                    savedValue={ConfigService.config.theme.wrong} />; }
+function OnWrong(): JSX.Element                   { return <CustomInput themeKey="onWrong"                  savedValue={ConfigService.config.theme.onWrong} />; }
+function OnPressColorPrimary(): JSX.Element       { return <CustomInput themeKey="onPressColorPrimary"      savedValue={ConfigService.config.theme.onPressColorPrimary} />; }
 
-function Input(props: {
+function CustomInput(props: {
   themeKey: keyof ThemeDTO
   savedValue: string
 }) {
 
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<ThemeScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
-  }, []);
-  const stringResources_InputLabels = useMemo<ThemeScreenTranslations_InputLabels[Languages]>(() => {
-    return inputLabels[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
+    return translations.Screens.ThemeScreen[ConfigService.config.language];
   }, []);
 
   const [color, setColor] = useState<string>(props.savedValue);
@@ -113,7 +120,7 @@ function Input(props: {
             verticalAlign: 'middle',
           }}
         >
-          {stringResources_InputLabels[props.themeKey]}
+          {stringResources[props.themeKey]}
         </Text>
         <View
           style={{
@@ -189,7 +196,7 @@ function Input(props: {
           backgroundColor: theme.secondary,
         }}
       >
-        <ColorPicker
+        <Input.Color
           pickerWidth={WIDTH - 50}
           pickerCircleSize={20}
           pickerHeight={10}

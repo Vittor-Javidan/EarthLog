@@ -1,25 +1,26 @@
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'expo-router';
-import { Layout } from '../../../Components/Layout';
+import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
-import LogService from '../../../Services/LogService';
-import ConfigService from '../../../Services/ConfigService';
-import { ThemeDTO } from '../../../Services/ThemeService';
+import AppRoutes from '@Globals/AppRoutes';
+import { translations } from '@Translations/index';
+import { Translations_LanguagesScreen } from '@Translations/Screens/SettingsScreen/LanguagesScreen';
 
-import AppRoutes from '../../Routes';
-import { AvailableLanguagesScreen_Translations, languages } from './translations';
-import { LanguageTags, Languages, languageLabels, languageTags } from '../../../Types/LanguageTypes';
+import LogService from '@Services/LogService';
+import ConfigService from '@Services/ConfigService';
+import { ThemeDTO } from '@Services/ThemeService';
+import { LanguageTags, Languages, languageLabels, languageTags } from '@Services/LanguageService';
 
-export default function AvailableLanguagesScreen(): JSX.Element {
+export default function LanguagesScreen(): JSX.Element {
 
   LogService.useLog('LANGUAGES SCREEN: rendered');
 
   const [currentLanguage, setCurrentLanguage] = useState<Languages>(ConfigService.config.language);
   const navController = useRouter();
-  const stringResources = useMemo<AvailableLanguagesScreen_Translations[Languages]>(
-    () => languages[currentLanguage], [currentLanguage]
+  const stringResources = useMemo<Translations_LanguagesScreen[Languages]>(
+    () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
   );
-
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -34,11 +35,11 @@ export default function AvailableLanguagesScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Layout.Icon.Home
+        <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.MAIN_SCREEN)}
+          onPress={() => navController.push(AppRoutes.HOME)}
         />,
-        <Layout.Icon.Settings
+        <Icon.Settings
           key="treeIcon_2"
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
         />,
@@ -52,7 +53,12 @@ export default function AvailableLanguagesScreen(): JSX.Element {
           onButtonClick={saveSelectedLanguage}
         />
       </Layout.ScrollView>
-      <Layout.View>
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          gap: 10,
+        }}
+      >
         <Layout.Button
           title={stringResources['Back']}
           onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}

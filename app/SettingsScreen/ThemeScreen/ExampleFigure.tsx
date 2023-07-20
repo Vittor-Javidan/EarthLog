@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
-import ConfigService from '../../../Services/ConfigService';
-import API_ExampleFigure from './API_ExampleFigure';
+import { translations } from '@Translations/index';
+import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
-import { ThemeScreenTranslations, ThemeScreenTranslations_InputLabels, inputLabels, languages } from './translations';
-import { Languages } from '../../../Types/LanguageTypes';
+import ConfigService from '@Services/ConfigService';
+import { Languages } from '@Services/LanguageService';
+
+import API_ExampleFigure from './API_ExampleFigure';
 
 export function ExampleFigure(props: {
   locked: boolean
@@ -13,11 +15,8 @@ export function ExampleFigure(props: {
 }): JSX.Element {
 
   const temporaryTheme = useMemo(() => API_ExampleFigure.temporaryConfig ?? { ...ConfigService.config.theme }, [API_ExampleFigure.temporaryConfig]);
-  const stringResources = useMemo<ThemeScreenTranslations[Languages]>(() => {
-    return languages[ConfigService.config.language];
-  }, []);
-  const stringResources_InputLabels = useMemo<ThemeScreenTranslations_InputLabels[Languages]>(() => {
-    return inputLabels[ConfigService.config.language];
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
+    return translations.Screens.ThemeScreen[ConfigService.config.language];
   }, []);
 
   const [lockedPressed, setLockedPressed] = useState<boolean>(false);
@@ -48,15 +47,17 @@ export function ExampleFigure(props: {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Text
-            style={{
-              color: temporaryTheme.onBackground,
-            }}
-          >
-            {stringResources_InputLabels['onBackground']}
-          </Text>
+          <View style={{ paddingBottom: 5 }}>
+            <Text style={{ color: temporaryTheme.onBackground }}>
+              {stringResources['onBackground']}
+            </Text>
+            <Text style={{ color: temporaryTheme.onBackground_Placeholder }}>
+              {stringResources['onBackground_Placeholder']}
+            </Text>
+          </View>
           <Pressable
             onPressIn={() => setLockedPressed(true) }
             onPressOut={() => setLockedPressed(false)}
@@ -81,42 +82,42 @@ export function ExampleFigure(props: {
             backgroundColor: temporaryTheme.primary,
           }}
         >
-          <Text
-            style={{
-              paddingBottom: 10,
-              color: temporaryTheme.onPrimary,
-            }}
-          >
-            {stringResources_InputLabels['onPrimary']}
-          </Text>
+          <View style={{ paddingBottom: 5 }}>
+            <Text style={{ color: temporaryTheme.onPrimary }}>
+              {stringResources['onPrimary']}
+            </Text>
+            <Text style={{ color: temporaryTheme.onPrimary_Placeholder }}>
+              {stringResources['onPrimary_Placeholder']}
+            </Text>
+          </View>
           <View
             style={{
               padding: 10,
               backgroundColor: temporaryTheme.secondary,
             }}
           >
-            <Text
-              style={{
-                paddingBottom: 10,
-                color: temporaryTheme.onSecondary,
-              }}
-            >
-              {stringResources_InputLabels['onSecondary']}
-            </Text>
+            <View style={{ paddingBottom: 5 }}>
+              <Text style={{ color: temporaryTheme.onSecondary }}>
+                {stringResources['onSecondary']}
+              </Text>
+              <Text style={{ color: temporaryTheme.onSecondary_PlaceHolder }}>
+                {stringResources['onSecondary_PlaceHolder']}
+              </Text>
+            </View>
             <View
               style={{
                 padding: 10,
                 backgroundColor: temporaryTheme.tertiary,
               }}
             >
-              <Text
-                style={{
-                  paddingBottom: 10,
-                  color: temporaryTheme.onTertiary,
-                }}
-              >
-                {stringResources_InputLabels['onTertiary']}
-              </Text>
+              <View>
+                <Text style={{ color: temporaryTheme.onTertiary }}>
+                  {stringResources['onTertiary']}
+                </Text>
+                <Text style={{ color: temporaryTheme.onTertiary_Placeholder }}>
+                  {stringResources['onTertiary_Placeholder']}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -149,7 +150,7 @@ export function ExampleFigure(props: {
                 color: temporaryTheme.onConfirm,
               }}
             >
-              {stringResources_InputLabels['confirm']}
+              {stringResources['confirm']}
             </Text>
           </Pressable>
           <Pressable
@@ -173,7 +174,7 @@ export function ExampleFigure(props: {
                 color: temporaryTheme.onModified,
               }}
             >
-              {stringResources_InputLabels['modified']}
+              {stringResources['modified']}
             </Text>
           </Pressable>
           <Pressable
@@ -197,7 +198,7 @@ export function ExampleFigure(props: {
                 color: temporaryTheme.onWrong,
               }}
             >
-              {stringResources_InputLabels['wrong']}
+              {stringResources['wrong']}
             </Text>
           </Pressable>
         </View>

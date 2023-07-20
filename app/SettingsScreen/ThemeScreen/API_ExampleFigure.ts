@@ -1,5 +1,5 @@
-import ConfigService from '../../../Services/ConfigService';
-import ThemeService, { ThemeDTO } from '../../../Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 
 export default class API_ExampleFigure {
 
