@@ -34,10 +34,19 @@ export default function ProjectCreationScreen() {
   }, []);
 
   function onConfirm() {
-    if (API_ProjectCreation.temporaryProject.projectSettings.ID === '') {
+
+    if (API_ProjectCreation.temporaryProject.projectSettings.id_project === '') {
       alert('ID cannot be empty. This is your local database file name.');
       return;
     }
+
+    if (false) {
+      /* TODO:
+        - Check if project ID already exists.
+        - Database must be implemented already.
+      */
+    }
+
     API_ProjectCreation.reset();
     navController.push(AppRoutes.HOME);
   }

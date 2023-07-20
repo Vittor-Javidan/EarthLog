@@ -12,7 +12,7 @@ export default function WidgetSelector(props: {
 }) {
 
   switch (props.widgetData.type) {
-    case 'string': return (
+    case 'text': return (
       <TextWidget
         label={props.label}
         widgetData={props.widgetData}

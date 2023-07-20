@@ -9,7 +9,7 @@ import { Translations_ProjectCreationScreen } from '@Translations/Screens/Projec
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
-import ProjectService, { WidgetData, WidgetLabel, WidgetName } from '@Services/ProjectService';
+import ProjectService, { WidgetData, WidgetLabel, WidgetTypes } from '@Services/ProjectService';
 
 export default function AddWidgetButton(props: {
   widgets: Record<WidgetLabel, WidgetData>
@@ -36,7 +36,7 @@ export default function AddWidgetButton(props: {
     callback();
   }
 
-  function onPress(widgetName: WidgetName) {
+  function onPress(widgetName: WidgetTypes) {
     whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData(widgetName)));
     setLabel('');
     setShowlModal(false);
@@ -72,7 +72,7 @@ export default function AddWidgetButton(props: {
               title={stringResources['Boolean']}
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
-              onPress={() => onPress('BooleanWidget')}
+              onPress={() => onPress('boolean')}
             />
           </ButtonContainer>
           <ButtonContainer>
@@ -80,7 +80,7 @@ export default function AddWidgetButton(props: {
               title={stringResources['Text']}
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
-              onPress={() => onPress('TextWidget')}
+              onPress={() => onPress('text')}
             />
           </ButtonContainer>
         </Layout.ScrollView>

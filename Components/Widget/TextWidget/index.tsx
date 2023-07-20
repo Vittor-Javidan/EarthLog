@@ -169,8 +169,8 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
       onConfirm={() => {
         props.onConfirm(label, {
-          ID: ProjectService.generateUuidV4(),
-          type: 'string',
+          id_widget: ProjectService.generateUuidV4(),
+          type: 'text',
           value: value,
           rules: { ...props.widgetData.rules },
         });

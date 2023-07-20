@@ -10,15 +10,15 @@ export default class API_ProjectCreation {
   }
 
   static setProjectImmutable(value: boolean) {
-    this.temporaryProject.projectSettings.Immutable = value;
+    this.temporaryProject.projectSettings.immutable = value;
   }
 
   static setProjectID(value: string) {
-    this.temporaryProject.projectSettings.ID = value;
+    this.temporaryProject.projectSettings.id_project = value;
   }
 
   static setProjectName(value: string) {
-    this.temporaryProject.projectSettings.Name = value;
+    this.temporaryProject.projectSettings.name = value;
   }
 
   static modifyProjectWidget(key: string, value: WidgetData) {
@@ -28,7 +28,7 @@ export default class API_ProjectCreation {
 
   static modifyPointTemplateWidget(key: string, value: WidgetData) {
     this.unsavedChanges = true;
-    this.temporaryProject.pointTemplate[key] = value;
+    this.temporaryProject.sampleTemplate[key] = value;
   }
 
   static deleteProjectWidget(key: string) {
@@ -38,6 +38,6 @@ export default class API_ProjectCreation {
 
   static deletePointTemplateWidget(key: string) {
     this.unsavedChanges = true;
-    delete this.temporaryProject.pointTemplate[key];
+    delete this.temporaryProject.sampleTemplate[key];
   }
 }

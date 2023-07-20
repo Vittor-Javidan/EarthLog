@@ -1,41 +1,53 @@
 import uuid from 'react-native-uuid';
 
 export type ProjectDTO = {
-  projectSettings: ProjectSettingWidgets
+  projectSettings: ProjectSetting
   projectWidgets: Record<WidgetLabel, WidgetData>
-  pointTemplate: Record<WidgetLabel, WidgetData>
-  points: PointDTO[]
+  sampleTemplate: Record<WidgetLabel, WidgetData>
+  samples: SampleDTO[]
 }
-export type PointDTO = {
-  pointSettings: PointSettings
-  pointWidgets: Record<WidgetLabel, WidgetData>
+export type SampleDTO = {
+  sampleSettings: SampleSettings
+  sampleWidgets: Record<WidgetLabel, WidgetData>
 }
 
 export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
 
-export type ProjectSettingWidgets = {
-  Immutable: boolean
-  ID: string
-  Name: string
+export type ProjectSetting = {
+  id_project: string
+  name: string
+  immutable: boolean
   rules: {
     allowImmutableChange?: boolean
     allowIDChange?: boolean
     allowNameChange?: boolean
-    allowPointCreation?: boolean
+    allowSampleCreation?: boolean
   }
 }
-export type PointSettings = {
-  ID: TextWidgetData
-  Name: TextWidgetData
+export type SampleSettings = {
+  id_sample: string
+  name: string
   rules: {
-    allowNameChange: boolean,
+    allowIDChange?: boolean,
+    allowNameChange?: boolean,
+    allowSampleErase?: boolean,
   }
 }
 
+export type BooleanWidgetData = {
+  id_widget: string
+  type: 'boolean'
+  value: boolean
+  rules: {
+    allowLabelChange?: boolean
+    allowValueChange?: boolean
+    allowWidgetErase?: boolean
+  }
+}
 export type TextWidgetData = {
-  ID: string
-  type: 'string'
+  id_widget: string
+  type: 'text'
   value: string
   rules: {
     allowLabelChange?: boolean
@@ -45,18 +57,8 @@ export type TextWidgetData = {
     noSpecialLetters?: boolean
   }
 }
-export type BooleanWidgetData = {
-  ID: string
-  type: 'boolean'
-  value: boolean
-  rules: {
-    allowLabelChange?: boolean
-    allowValueChange?: boolean
-    allowWidgetErase?: boolean
-  }
-}
 
-export type WidgetName = 'BooleanWidget' | 'TextWidget'
+export type WidgetTypes = 'boolean' | 'text'
 
 export default class ProjectService {
 
@@ -69,24 +71,26 @@ export default class ProjectService {
   static getDefaultProjectTemplate(): ProjectDTO {
     return {
       projectSettings: {
-        Immutable: false,
-        ID: this.generateUuidV4(),
-        Name: '',
+        id_project: this.generateUuidV4(),
+        name: '',
+        immutable: false,
         rules: {
           allowImmutableChange: true,
+          allowIDChange: true,
           allowNameChange: true,
+          allowSampleCreation: true,
         },
       },
       projectWidgets: {},
-      pointTemplate: {},
-      points: [],
+      sampleTemplate: {},
+      samples: [],
     };
   }
 
-  static getWidgetData(widgetName: WidgetName): WidgetData {
+  static getWidgetData(widgetName: WidgetTypes): WidgetData {
     switch (widgetName) {
-      case 'BooleanWidget': return {
-        ID: this.generateUuidV4(),
+      case 'boolean': return {
+        id_widget: this.generateUuidV4(),
         type: 'boolean',
         value: false,
         rules: {
@@ -95,9 +99,9 @@ export default class ProjectService {
           allowWidgetErase: true,
         },
       };
-      case 'TextWidget': return {
-        ID: this.generateUuidV4(),
-        type: 'string',
+      case 'text': return {
+        id_widget: this.generateUuidV4(),
+        type: 'text',
         value: '',
         rules: {
           allowLabelChange: true,

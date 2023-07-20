@@ -46,7 +46,7 @@ export default function Widgets_PointTemplate() {
         {stringResources['Point template']}
       </Layout.Text>
       <WidgetsGroup
-        widgets={API_ProjectCreation.temporaryProject.pointTemplate}
+        widgets={API_ProjectCreation.temporaryProject.sampleTemplate}
         onConfirm={onConfirm}
         onDelete={onDelete}
         onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}

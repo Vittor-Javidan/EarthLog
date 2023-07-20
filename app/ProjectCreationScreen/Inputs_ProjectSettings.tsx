@@ -20,9 +20,9 @@ export default function Inputs_ProjectSettings() {
     return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
-  const [immutable, setImmutable] = useState<boolean>(API_ProjectCreation.temporaryProject.projectSettings.Immutable);
-  const [id, setId] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.ID);
-  const [name, setName] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.Name);
+  const [immutable, setImmutable] = useState<boolean>(API_ProjectCreation.temporaryProject.projectSettings.immutable);
+  const [id, setId] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.id_project);
+  const [name, setName] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.name);
 
   function onIDChange(newID: string) {
     if (API_ProjectCreation.temporaryProject.projectSettings.rules.allowIDChange) {
@@ -41,7 +41,7 @@ export default function Inputs_ProjectSettings() {
 
   function onNameChange(newName: string) {
     if (API_ProjectCreation.temporaryProject.projectSettings.rules.allowNameChange) {
-      API_ProjectCreation.temporaryProject.projectSettings.Name = newName;
+      API_ProjectCreation.temporaryProject.projectSettings.name = newName;
       setName(newName);
     }
   }
