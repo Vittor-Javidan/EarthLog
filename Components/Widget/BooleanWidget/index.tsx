@@ -16,6 +16,7 @@ export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (label: string, widgetData: BooleanWidgetData) => void
+  onDelete: () => void
 }) {
 
   const [label, setLabel] = useState<string>(props.label);
@@ -84,8 +85,9 @@ export default function BooleanWidget(props: {
         <Modal
           label={label}
           widgetData={widgetData}
-          onRequestClose={() => setShowModal(false)}
           onConfirm={(label, widgetData) => onConfirm(label, widgetData)}
+          onDelete={props.onDelete}
+          onRequestClose={() => setShowModal(false)}
         />
       </>}
     />
@@ -146,6 +148,7 @@ function Modal(props: {
   label: WidgetLabel
   widgetData: BooleanWidgetData
   onConfirm: (label: WidgetLabel, value: BooleanWidgetData) => void
+  onDelete: () => void
   onRequestClose: () => void
 }) {
 
@@ -157,7 +160,7 @@ function Modal(props: {
   return (
     <WidgetComponent.Modal
       title={props.label}
-      onRequestClose={props.onRequestClose}
+      widgetData={props.widgetData}
       onConfirm={() => {
         props.onConfirm(label, {
           id_widget: ProjectService.generateUuidV4(),
@@ -166,6 +169,8 @@ function Modal(props: {
           rules: { ...props.widgetData.rules },
         });
       }}
+      onDelete={props.onDelete}
+      onRequestClose={props.onRequestClose}
     >
       {props.widgetData.rules.allowLabelChange && (
         <Input.String

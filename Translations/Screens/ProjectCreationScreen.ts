@@ -16,6 +16,7 @@ export type Translations_ProjectCreationScreen = Record<Languages, {
   'Boolean': string
   'Text': string
   'Widget name': string
+  'Only numbers, letters and "-".': string
   'Write a name to the widget here...': string
 }>
 
@@ -36,6 +37,7 @@ export const translations_ProjectCreationScreen: Translations_ProjectCreationScr
     'Boolean': 'Boolean Widget',
     'Text': 'Text',
     'Widget name': 'Widget name',
+    'Only numbers, letters and "-".': 'Only numbers, letters and "-".',
     'Write a name to the widget here...': 'write a name to the widget here...',
   },
   'pt-BR': {
@@ -54,6 +56,7 @@ export const translations_ProjectCreationScreen: Translations_ProjectCreationScr
     'Boolean': 'Booleano',
     'Text': 'Texto',
     'Widget name': 'Nome do Widget',
+    'Only numbers, letters and "-".': 'Apenas números, letras e o símbolo "-".',
     'Write a name to the widget here...': 'Escreva um nome para o Widget aqui...',
   },
 };

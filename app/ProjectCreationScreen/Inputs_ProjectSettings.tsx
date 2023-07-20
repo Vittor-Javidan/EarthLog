@@ -70,7 +70,7 @@ export default function Inputs_ProjectSettings() {
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
         color_Placeholder={theme.onTertiary_Placeholder}
-        placeholder=""
+        placeholder={stringResources['Only numbers, letters and "-".']}
         value={id}
         onChangeText={(text) => onIDChange(text)}
         onResetPress={() => setId(ProjectService.generateUuidV4())}

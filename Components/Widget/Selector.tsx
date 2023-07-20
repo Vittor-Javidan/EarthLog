@@ -27,6 +27,7 @@ export default function WidgetSelector(props: {
         widgetData={props.widgetData}
         widgets={props.widgets}
         onConfirm={props.onConfirm}
+        onDelete={props.onDelete}
       />
     );
   }
