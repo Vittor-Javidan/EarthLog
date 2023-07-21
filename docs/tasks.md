@@ -114,87 +114,77 @@
 - Bellow the project name field, must have a button "Add a new field"
     - 3 basics type fields must exist: boolean, number, string
         + string
-        - number
-        - boolean
-    - this new field allow the user to add any relevant information about the project.
-    - user can add many info as he wants.
-    - When user saves the project:
-        - all info, EXCEPT the project's name, must be saved on project_info database row field. 
-        - User must be asked if he wants to save a template for later usage.
-- Normalize all fonts sizes.
+        + number
+        + boolean
+    + this new field allow the user to add any relevant information about the project.
+    + user can add many info as he wants.
++ Normalize all fonts sizes.
 
-## Screens Helper
+## 1 - Database
 
-- When outside the MainScreen, when all other screen has its Navbar Button Presses, an explanation about the screens must be shown inside the drower.
+- Create a Database with the following tables:
+    - projects
+        - id_project: string
+        - name: string
+        - immutable: boolean
+        - rules: stringfied javascript object
+    - samples
+        - id_project: string
+        - id_sample: string
+        - name: string
+        - rules: stringfied javascript object
+    - project_widgets
+        - id_project: string
+        - id_widget: string
+        - type: string
+        - name: string
+        - value: any
+        - rules: stringfied javascript object
+    - samples_template
+        - id_project: string
+        - id_widget: string
+        - type: string
+        - name: string
+        - value: any
+        - rules: stringfied javascript object
+    - samples_widgets
+        - id_project: string
+        - id_sample: string
+        - id_widget: string
+        - type: string
+        - name: string
+        - value: any
+        - rules: stringfied javascript object
 
-## Project Creation Screen
+- Create a Database service.
+- Implement methods on Project Service to interact with Database Service.
+    - Create Project
+    - Update Project
+    - Delete Project
+    - Create Sample
+    - Update Sample
+    - Delete Sample
+    - Create widget (for project, template and sample)
+    - Update widget (for project, template and sample)
+    - Delete widget (for project, template and sample)
 
-- Before go to Creation Screen:
-    - Project screen creation must happen on the Main Screen
-    - A button to create a project inside Main Screen is needed
-        - when the button is clicked:
-            - user must be redirected to a Project Creation Screen
+## 2 - Basic Screens
 
-- When inside Creation Screen:
-    - The Screen must ask if user wants to use an empty template, or a saved one.
-        - an empty template is the one with only project name field available, with the button to add a new field.
-        - 
-
-    - Add new field Button:
-        - when create a new field, the user must choose between 5 types:
-            - boolean
-            - string
-            - number
-            - coordinate
-            - date
-    - after the type is choosed, a new field will pop to user bellow the last field, so he can put any info he wants.
-    - When all fields is filled, the user is allow to click the button "Finish"
-
-    - Finsh Button:
-        - when clicked, user must choose if he wants to save the created fields as a template for future projects.
-        - If he chooses to, the object with a key-value pair of keys being the field label, and the value being the data type, must be saved inside the table of project info templates.
-        - The project must be saved inside projects table as well.
-
-## Project Edit Screen
-
-- Before go to Project Edit Screen:
-    - Inside Main Screen:
-        - A icon button representing an edit option must show on each project button loaded from projects table.
-        - When clicked, the user must be redirected to Project Edit Screen
-
-- When Inside Project Edit Screen:
-    - Must the same fields as choosed when the project was created, to allow the user modified, add or delete pre-existed fields.
-
-    - Finish Button:
-        - when clicked, user must choose if he wants to save the created fields as a template for future projects.
-        - If he chooses to, the object with a key-value pair of keys being the field label, and the value being the data type, must be saved inside the table of project info templates.
-        - The project must be saved inside projects table, by UPDATING using the cod_project of the projects.
-
-    - A Red Delete Button, representing a Danger Zone must exist on Bottom.
-        - When clicked, the user must type the same projects name as the current one being edit, regardless of upper or lower case.
-        - When type correcly, the project will be deleted from database and user will be redirected to Main Screen.
-        - When typed wrong, nothing will happen, and the user must click on the delete button again to try type again.
-
-## Database
-
-- Implement a database conection
-- Create the following tables:
-    - Projects Info Template:
-        - cod_project_info_template: number
-        - template_name: string
-        - template: Object stringfied
-    - Projects Table:
-        - table name must be projects_table
-        - cod_project: number
-        - project_name: string
-        - project_info: Object stringfied
-    - Points Table:
-        - table name must be on format: <cod_project>
-        - cod_point: number
-        - point_name: string
-        - point_info: Object stringfied
-    - Widgets Table:
-        - table mame must be on format: <cod_project>_<cod_point>
-        - widget_cod: number
-        - widget_type: string
-        - widget_info: Object stringfied
+- Implement project creation to Project Creation Screen confirm button.
+- Show all available projects on HomeScreen
+    - Show last openned project.
+    - All projects must have an edit button.
+- New Screens needed:
+    - Project Edit Screen
+        - Show the project settings that are allow to be edited.
+        - Show delete input option, no rules are required here.
+    - Project Screen
+        - Show all samples available
+        - All samples must have an edit button
+        - Must show a button to create a new sample, if rules allow.
+    - Sample Edit Screen
+        - Show the sample settings that are allow to be edited.
+        - Show delete input option, if the rules allow.
+    - Sample Screen
+        - Show all widgets inside the sample.
+        - Must show a button to create a new widget, if rules allow.
