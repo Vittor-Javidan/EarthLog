@@ -15,6 +15,7 @@ import { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
 
 import API_ProjectCreation from './API_ProjectCreation';
+import ProjectService from '@Services/ProjectService';
 
 export default function ProjectCreationScreen() {
 
@@ -33,22 +34,28 @@ export default function ProjectCreationScreen() {
     });
   }, []);
 
-  function onConfirm() {
+  async function onConfirm() {
 
     if (API_ProjectCreation.temporaryProject.projectSettings.id_project === '') {
-      alert('ID cannot be empty. This is your local database file name.');
+      alert('ID cannot be empty. This is your project folder name.');
       return;
     }
 
-    if (false) {
-      /* TODO:
-        - Check if project ID already exists.
-        - Database must be implemented already.
-      */
+    if (API_ProjectCreation.temporaryProject.projectSettings.name === '') {
+      alert('Project Name Empty.');
+      return;
     }
 
-    API_ProjectCreation.reset();
-    navController.push(AppRoutes.HOME);
+    await ProjectService.createProject(
+      API_ProjectCreation.temporaryProject,
+      () => {
+        API_ProjectCreation.reset();
+        navController.push(AppRoutes.HOME);
+      },
+      (errorMessage) => {
+        alert(errorMessage);
+      },
+    );
   }
 
   return (
@@ -88,7 +95,9 @@ export default function ProjectCreationScreen() {
           title={stringResources['Confirm']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => onConfirm()}
+          onPress={async () => {
+            await onConfirm();
+          }}
         />
       </Layout.View>
     </Layout.Root>
