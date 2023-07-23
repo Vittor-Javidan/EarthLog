@@ -31,8 +31,8 @@ export default function Widgets_Project() {
     refresh(prev => !prev);
   }
 
-  function onCreateWidget(label: string, widgetData: WidgetData) {
-    API_ProjectCreation.modifyProjectWidget(label, widgetData);
+  function onCreateWidget(widgetData: WidgetData) {
+    API_ProjectCreation.modifyProjectWidget(widgetData.name, widgetData);
     refresh(prev => !prev);
   }
 
@@ -48,7 +48,7 @@ export default function Widgets_Project() {
         widgets={API_ProjectCreation.temporaryProject.projectWidgets}
         onConfirm={onConfirm}
         onDelete={onDelete}
-        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
+        onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
       />
     </Layout.View>
   );

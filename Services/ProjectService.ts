@@ -38,6 +38,7 @@ export type SampleSettings = {
 
 export type BooleanWidgetData = {
   id_widget: string
+  name: string
   type: 'boolean'
   value: boolean
   rules: {
@@ -48,6 +49,7 @@ export type BooleanWidgetData = {
 }
 export type TextWidgetData = {
   id_widget: string
+  name: string
   type: 'text'
   value: string
   rules: {
@@ -93,6 +95,7 @@ export default class ProjectService {
     switch (widgetName) {
       case 'boolean': return {
         id_widget: this.generateUuidV4(),
+        name: '',
         type: 'boolean',
         value: false,
         rules: {
@@ -103,6 +106,7 @@ export default class ProjectService {
       };
       case 'text': return {
         id_widget: this.generateUuidV4(),
+        name: '',
         type: 'text',
         value: '',
         rules: {
@@ -136,7 +140,6 @@ export default class ProjectService {
       for (const projectWidgetLabel in projectDTO.projectWidgets) {
         const projectWidgetData = projectDTO.projectWidgets[projectWidgetLabel];
         await this.createWidgetFolderStructure(
-          projectWidgetLabel,
           projectWidgetData,
           `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`,
         );
@@ -145,7 +148,6 @@ export default class ProjectService {
       for (const sampleTemplatetWidgetLabel in projectDTO.sampleTemplate) {
         const sampleTemplateWidgetData = projectDTO.sampleTemplate[sampleTemplatetWidgetLabel];
         await this.createWidgetFolderStructure(
-          sampleTemplatetWidgetLabel,
           sampleTemplateWidgetData,
           `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`,
         );
@@ -163,7 +165,6 @@ export default class ProjectService {
         for (const sampleWidgetLabel in projectDTO.samples[i].sampleWidgets) {
           const sampleWidgetData = projectDTO.samples[i].sampleWidgets[sampleWidgetLabel];
           await this.createWidgetFolderStructure(
-            sampleWidgetLabel,
             sampleWidgetData,
             `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`,
           );
@@ -196,124 +197,84 @@ export default class ProjectService {
 
       // MAIN FOLDER
       await FileSystemService.createDirectory(this.DATA_BASE_DIRECTORY);
-
-      // INDEX FILE
-      await FileSystemService.writeFile(
-        `${this.DATA_BASE_DIRECTORY}/index.json`,
-        JSON.stringify([], null, 4),
-      );
     }
   }
 
   static async createProjectFolderStructure(
     projectSettings: ProjectSetting,
   ): Promise<void> {
-    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
-    const indexFileContent = await FileSystemService.readFile(indexFilePath);
-    if (indexFileContent !== null) {
+    const projectsIDs = await FileSystemService.readDirectory(this.DATA_BASE_DIRECTORY);
 
-      // INDEXING
-      const indexData = JSON.parse(indexFileContent) as IndexData;
-      if (indexData.map(value => value.ID).includes(projectSettings.id_project)) {
-        throw Error('You cannot create 2 projects with same ID.');
-      }
-
-      indexData.push({
-        ID: projectSettings.id_project,
-        name: projectSettings.name,
-      });
-      await FileSystemService.writeFile(indexFilePath, JSON.stringify(indexData, null, 4));
-
-      // MAIN FOLDER
-      const projectFolderPath = `${this.DATA_BASE_DIRECTORY}/${projectSettings.id_project}`;
-      await FileSystemService.createDirectory(projectFolderPath);
-
-      // MAIN FOLDER CONTENTS
-      await FileSystemService.createDirectory(`${projectFolderPath}/projectWidgets`);
-      await FileSystemService.createDirectory(`${projectFolderPath}/samples`);
-      await FileSystemService.createDirectory(`${projectFolderPath}/sampleTemplate`);
-      await FileSystemService.writeFile(
-        `${projectFolderPath}/projectSettings.json`,
-        JSON.stringify(projectSettings, null, 4),
-      );
-      await FileSystemService.writeFile(
-        `${projectFolderPath}/projectWidgets/index.json`,
-        JSON.stringify([], null, 4),
-      );
-      await FileSystemService.writeFile(
-        `${projectFolderPath}/samples/index.json`,
-        JSON.stringify([], null, 4),
-      );
-      await FileSystemService.writeFile(
-        `${projectFolderPath}/sampleTemplate/index.json`,
-        JSON.stringify([], null, 4),
-      );
+    if (!projectsIDs) {
+      throw Error('Database folder do not exist');
     }
+
+    if (projectsIDs.includes(projectSettings.id_project)) {
+      throw Error('You cannot create 2 projects with same ID.');
+    }
+
+    // MAIN FOLDER
+    const projectFolderPath = `${this.DATA_BASE_DIRECTORY}/${projectSettings.id_project}`;
+    await FileSystemService.createDirectory(projectFolderPath);
+
+    // MAIN FOLDER CONTENTS
+    await FileSystemService.createDirectory(`${projectFolderPath}/projectWidgets`);
+    await FileSystemService.createDirectory(`${projectFolderPath}/samples`);
+    await FileSystemService.createDirectory(`${projectFolderPath}/sampleTemplate`);
+    await FileSystemService.writeFile(
+      `${projectFolderPath}/projectSettings.json`,
+      JSON.stringify(projectSettings, null, 4),
+    );
   }
 
   static async createSampleFolderStructure(
     id_project: string,
     sampleSettings: SampleSettings,
   ): Promise<void> {
-    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`;
-    const indexFileContent = await FileSystemService.readFile(indexFilePath);
-    if (indexFileContent !== null) {
+    const samplesIDs = await FileSystemService.readDirectory(`${this.DATA_BASE_DIRECTORY}/${id_project}/samples`);
 
-      // INDEXING
-      const indexData = JSON.parse(indexFileContent) as IndexData;
-      if (indexData.map(value => value.ID).includes(sampleSettings.id_sample)) {
-        throw Error('You cannot create 2 samples with same ID.');
-      }
-
-      indexData.push({
-        ID: sampleSettings.id_sample,
-        name: sampleSettings.name,
-      });
-      await FileSystemService.writeFile(indexFilePath, JSON.stringify(indexData, null, 4));
-
-      // MAIN FOLDER
-      const sampleFolderPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${sampleSettings.id_sample}`;
-      await FileSystemService.createDirectory(sampleFolderPath);
-
-      // MAIN FOLDER CONTENTS
-      await FileSystemService.createDirectory(`${sampleFolderPath}/sampleWidgets`);
-      await FileSystemService.writeFile(
-        `${sampleFolderPath}/sampleSettings.json`,
-        JSON.stringify(sampleSettings, null, 4),
-      );
+    if (!samplesIDs) {
+      throw Error('Samples folder do not exist');
     }
+
+    if (samplesIDs.includes(sampleSettings.id_sample)) {
+      throw Error('You cannot create 2 samples with same ID.');
+    }
+
+    // MAIN FOLDER
+    const sampleFolderPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${sampleSettings.id_sample}`;
+    await FileSystemService.createDirectory(sampleFolderPath);
+
+    // MAIN FOLDER CONTENTS
+    await FileSystemService.createDirectory(`${sampleFolderPath}/sampleWidgets`);
+    await FileSystemService.writeFile(
+      `${sampleFolderPath}/sampleSettings.json`,
+      JSON.stringify(sampleSettings, null, 4),
+    );
   }
 
   static async createWidgetFolderStructure(
-    widgetLabel: WidgetLabel,
     widgetData: WidgetData,
     folderPath: string,
   ): Promise<void> {
-    const indexFilePath = `${folderPath}/index.json`;
-    const indexFileContent = await FileSystemService.readFile(indexFilePath);
-    if (indexFileContent !== null) {
+    const widgetsIDs = await FileSystemService.readDirectory(folderPath);
 
-      // INDEXING
-      const indexData = JSON.parse(indexFileContent) as IndexData;
-      if (indexData.map(value => value.ID).includes(widgetData.id_widget)) {
-        throw Error('You cannot create 2 widgets with same ID.');
-      }
-
-      indexData.push({
-        ID: widgetData.id_widget,
-        name: widgetLabel,
-      });
-      await FileSystemService.writeFile(indexFilePath, JSON.stringify(indexData, null, 4));
-
-      // MAIN FOLDER
-      const widgetFolderPath = `${folderPath}/${widgetData.id_widget}`;
-      await FileSystemService.createDirectory(widgetFolderPath);
-
-      // MAIN FOLDER CONTENTS
-      await FileSystemService.writeFile(
-        `${widgetFolderPath}/data.json`,
-        JSON.stringify(widgetData, null, 4),
-      );
+    if (!widgetsIDs) {
+      throw Error(`Widgets folder do not exist. Path: ${folderPath}`);
     }
+
+    if (widgetsIDs.includes(widgetData.id_widget)) {
+      throw Error('You cannot create 2 widgets with same ID.');
+    }
+
+    // MAIN FOLDER
+    const widgetFolderPath = `${folderPath}/${widgetData.id_widget}`;
+    await FileSystemService.createDirectory(widgetFolderPath);
+
+    // MAIN FOLDER CONTENTS
+    await FileSystemService.writeFile(
+      `${widgetFolderPath}/data.json`,
+      JSON.stringify(widgetData, null, 4),
+    );
   }
 }

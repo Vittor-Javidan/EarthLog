@@ -13,7 +13,7 @@ import ProjectService, { WidgetData, WidgetLabel, WidgetTypes } from '@Services/
 
 export default function AddWidgetButton(props: {
   widgets: Record<WidgetLabel, WidgetData>
-  onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
+  onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -37,7 +37,11 @@ export default function AddWidgetButton(props: {
   }
 
   function onPress(widgetName: WidgetTypes) {
-    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData(widgetName)));
+    whenLabelValid(() => {
+      const widgetData = ProjectService.getWidgetData(widgetName);
+      widgetData.name = label;
+      props.onCreateWidget(widgetData);
+    });
     setLabel('');
     setShowlModal(false);
   }

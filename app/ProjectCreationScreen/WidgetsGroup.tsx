@@ -8,7 +8,7 @@ export default function WidgetsGroup(props: {
   widgets: Record<WidgetLabel, WidgetData>
   onConfirm: (oldlabel: WidgetLabel, newLabel: WidgetLabel, value: WidgetData) => void
   onDelete: (label: WidgetLabel) => void
-  onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
+  onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
   const allWidgetsComponents: JSX.Element[] = [];
@@ -31,7 +31,7 @@ export default function WidgetsGroup(props: {
       {allWidgetsComponents}
       <AddWidgetButton
         widgets={props.widgets}
-        onCreateWidget={(label, widgetData) => props.onCreateWidget(label, widgetData)}
+        onCreateWidget={(widgetData) => props.onCreateWidget(widgetData)}
       />
     </>
   );

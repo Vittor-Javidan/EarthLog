@@ -169,6 +169,7 @@ function Modal(props: {
       onConfirm={() => {
         props.onConfirm(label, {
           id_widget: ProjectService.generateUuidV4(),
+          name: label,
           type: 'text',
           value: value,
           rules: { ...props.widgetData.rules },

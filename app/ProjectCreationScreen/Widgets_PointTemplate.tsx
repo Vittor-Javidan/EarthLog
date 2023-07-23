@@ -32,8 +32,8 @@ export default function Widgets_PointTemplate() {
     refresh(prev => !prev);
   }
 
-  function onCreateWidget(label: string, widgetData: WidgetData) {
-    API_ProjectCreation.modifyPointTemplateWidget(label, widgetData);
+  function onCreateWidget(widgetData: WidgetData) {
+    API_ProjectCreation.modifyPointTemplateWidget(widgetData.name, widgetData);
     refresh(prev => !prev);
   }
 
@@ -49,7 +49,7 @@ export default function Widgets_PointTemplate() {
         widgets={API_ProjectCreation.temporaryProject.sampleTemplate}
         onConfirm={onConfirm}
         onDelete={onDelete}
-        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
+        onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
       />
     </Layout.View>
   );
