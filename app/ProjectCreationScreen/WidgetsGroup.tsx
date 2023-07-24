@@ -1,30 +1,26 @@
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { WidgetData } from '@Services/ProjectService';
 import React from 'react';
 
 import { Widget } from '@Components/Widget';
 import AddWidgetButton from './AddWidgetButton';
 
 export default function WidgetsGroup(props: {
-  widgets: Record<WidgetLabel, WidgetData>
-  onConfirm: (oldlabel: WidgetLabel, newLabel: WidgetLabel, value: WidgetData) => void
-  onDelete: (label: WidgetLabel) => void
+  widgets: WidgetData[]
+  onConfirm: (widgetData: WidgetData) => void
+  onDelete: (widgetData: WidgetData) => void
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
-  const allWidgetsComponents: JSX.Element[] = [];
-  for (const key in props.widgets) {
-    const widgetData = props.widgets[key];
-    allWidgetsComponents.push(
+  const allWidgetsComponents: JSX.Element[] = props.widgets.map(widgetData => {
+    return (
       <Widget.Selector
-        key={key}
-        label={key}
+        key={widgetData.id_widget}
         widgetData={widgetData}
-        widgets={props.widgets}
-        onConfirm={(newLabel, value) => { props.onConfirm(key, newLabel, value);}}
-        onDelete={() => props.onDelete(key)}
+        onConfirm={(widgetData) => { props.onConfirm(widgetData);}}
+        onDelete={() => props.onDelete(widgetData)}
       />
     );
-  }
+  });
 
   return (
     <>

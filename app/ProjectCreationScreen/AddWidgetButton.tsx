@@ -9,10 +9,10 @@ import { Translations_ProjectCreationScreen } from '@Translations/Screens/Projec
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { Languages } from '@Services/LanguageService';
-import ProjectService, { WidgetData, WidgetLabel, WidgetTypes } from '@Services/ProjectService';
+import ProjectService, { WidgetData, WidgetTypes } from '@Services/ProjectService';
 
 export default function AddWidgetButton(props: {
-  widgets: Record<WidgetLabel, WidgetData>
+  widgets: WidgetData[]
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
@@ -27,10 +27,6 @@ export default function AddWidgetButton(props: {
   function whenLabelValid(callback: () => void) {
     if (label === '') {
       alert('Label cannot be empty');
-      return;
-    }
-    if (Object.keys(props.widgets).includes(label)) {
-      alert('Label cannot be duplicated');
       return;
     }
     callback();

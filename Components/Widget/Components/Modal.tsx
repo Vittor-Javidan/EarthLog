@@ -4,10 +4,10 @@ import { Layout } from '@Components/Layout';
 
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { WidgetData } from '@Services/ProjectService';
 
 export default function Modal(props: {
-  title: WidgetLabel
+  title: string
   widgetData: WidgetData
   children: ReactNode
   onConfirm: () => void
@@ -42,7 +42,7 @@ export default function Modal(props: {
 }
 
 function DeleteButton(props: {
-  widgetLabel: WidgetLabel
+  widgetLabel: string
   onDelete: () => void
 }) {
 

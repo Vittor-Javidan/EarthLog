@@ -4,7 +4,7 @@ import WidgetsGroup from './WidgetsGroup';
 
 import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { WidgetData } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -19,20 +19,17 @@ export default function Widgets_Project() {
 
   const [_, refresh] = useState<boolean>(false);
 
-  function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
-    if ( oldlabel !== newLabel) {
-      API_ProjectCreation.deleteProjectWidget(oldlabel);
-    }
-    API_ProjectCreation.modifyProjectWidget(newLabel, value);
+  function onConfirm(widgetData: WidgetData) {
+    API_ProjectCreation.updateProjectWidget(widgetData);
   }
 
-  function onDelete(label: WidgetLabel) {
-    API_ProjectCreation.deleteProjectWidget(label);
+  function onDelete(widgetData: WidgetData) {
+    API_ProjectCreation.deleteProjectWidget(widgetData);
     refresh(prev => !prev);
   }
 
   function onCreateWidget(widgetData: WidgetData) {
-    API_ProjectCreation.modifyProjectWidget(widgetData.name, widgetData);
+    API_ProjectCreation.addProjectWidget(widgetData);
     refresh(prev => !prev);
   }
 

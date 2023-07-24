@@ -3,16 +3,15 @@ import FileSystemService from './FileSystemService';
 
 export type ProjectDTO = {
   projectSettings: ProjectSetting
-  projectWidgets: Record<WidgetLabel, WidgetData>
-  sampleTemplate: Record<WidgetLabel, WidgetData>
+  projectWidgets: WidgetData[]
+  sampleTemplate: WidgetData[]
   samples: SampleDTO[]
 }
 export type SampleDTO = {
   sampleSettings: SampleSettings
-  sampleWidgets: Record<WidgetLabel, WidgetData>
+  sampleWidgets: WidgetData[]
 }
 
-export type WidgetLabel = string
 export type WidgetData = TextWidgetData | BooleanWidgetData
 
 export type ProjectSetting = {
@@ -62,7 +61,12 @@ export type TextWidgetData = {
 }
 
 export type WidgetTypes = 'boolean' | 'text'
-export type IndexData = { name: string, ID: string }[]
+
+/*
+  The index.json file has the purpose to allow the app to know how organized is the elements, since
+  just small blocks of project data is loaded on each screen.
+*/
+export type IndexData = string[]
 
 export default class ProjectService {
 
@@ -85,8 +89,8 @@ export default class ProjectService {
           allowSampleCreation: true,
         },
       },
-      projectWidgets: {},
-      sampleTemplate: {},
+      projectWidgets: [],
+      sampleTemplate: [],
       samples: [],
     };
   }
@@ -116,10 +120,6 @@ export default class ProjectService {
         },
       };
     }
-  }
-
-  static async deleteProject(id_project: string): Promise<void> {
-    await FileSystemService.delete(`${this.DATA_BASE_DIRECTORY}/${id_project}`);
   }
 
   static async createProject(
@@ -174,20 +174,42 @@ export default class ProjectService {
       onSuccess();
 
     } catch (error) {
-
       this.deleteProject(projectDTO.projectSettings.id_project);
-
-      // PROJECT INDEX REMOVE
-      const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
-      const indexFileContent = await FileSystemService.readFile(indexFilePath);
-      if (indexFileContent !== null) {
-        const indexData = JSON.parse(indexFileContent) as IndexData;
-        const { id_project } = projectDTO.projectSettings;
-        const indexFilteredData = indexData.filter(data => data.ID !== id_project);
-        await FileSystemService.writeFile(indexFilePath, JSON.stringify(indexFilteredData, null, 4));
-      }
-
       onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateProject(
+    projectSettings: ProjectSetting,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+    try {
+      await FileSystemService.writeFile(
+        `${this.DATA_BASE_DIRECTORY}/${projectSettings.id_project}/projectSettings.json`,
+        JSON.stringify(projectSettings, null, 4)
+      );
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteProject(id_project: string): Promise<void> {
+
+    const indexDataString = await FileSystemService.readFile(`${this.DATA_BASE_DIRECTORY}/index.json`);
+    if (indexDataString) {
+
+      // REMOVE PROJECT INDEX
+      let indexData = JSON.parse(indexDataString) as IndexData;
+      indexData = indexData.filter(ID => ID !== id_project);
+      await FileSystemService.writeFile(
+        `${this.DATA_BASE_DIRECTORY}/index.json`,
+        JSON.stringify(indexData, null, 4)
+      );
+
+      // DELETE PROJECT FOLDER
+      await FileSystemService.delete(`${this.DATA_BASE_DIRECTORY}/${id_project}`);
     }
   }
 
@@ -197,21 +219,37 @@ export default class ProjectService {
 
       // MAIN FOLDER
       await FileSystemService.createDirectory(this.DATA_BASE_DIRECTORY);
+
+      // INDEX FILE
+      await FileSystemService.writeFile(
+        `${this.DATA_BASE_DIRECTORY}/index.json`,
+        JSON.stringify([], null, 4)
+      );
     }
   }
 
   static async createProjectFolderStructure(
     projectSettings: ProjectSetting,
   ): Promise<void> {
-    const projectsIDs = await FileSystemService.readDirectory(this.DATA_BASE_DIRECTORY);
 
-    if (!projectsIDs) {
-      throw Error('Database folder do not exist');
+    // INDEXING
+    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+    if (indexDataString === null) {
+      throw Error('index.json file do not exist');
     }
 
-    if (projectsIDs.includes(projectSettings.id_project)) {
-      throw Error('You cannot create 2 projects with same ID.');
+    const indexData = JSON.parse(indexDataString) as IndexData;
+    if (indexData.includes(projectSettings.id_project)) {
+      throw Error('You cannot create 2 projects with same ID');
     }
+
+    indexData.push(projectSettings.id_project);
+    await FileSystemService.writeFile(
+      indexFilePath,
+      JSON.stringify(indexData, null, 4)
+    );
+
 
     // MAIN FOLDER
     const projectFolderPath = `${this.DATA_BASE_DIRECTORY}/${projectSettings.id_project}`;
@@ -225,21 +263,42 @@ export default class ProjectService {
       `${projectFolderPath}/projectSettings.json`,
       JSON.stringify(projectSettings, null, 4),
     );
+    await FileSystemService.writeFile(
+      `${projectFolderPath}/projectWidgets/index.json`,
+      JSON.stringify([], null, 4)
+    );
+    await FileSystemService.writeFile(
+      `${projectFolderPath}/samples/index.json`,
+      JSON.stringify([], null, 4)
+    );
+    await FileSystemService.writeFile(
+      `${projectFolderPath}/sampleTemplate/index.json`,
+      JSON.stringify([], null, 4)
+    );
   }
 
   static async createSampleFolderStructure(
     id_project: string,
     sampleSettings: SampleSettings,
   ): Promise<void> {
-    const samplesIDs = await FileSystemService.readDirectory(`${this.DATA_BASE_DIRECTORY}/${id_project}/samples`);
 
-    if (!samplesIDs) {
-      throw Error('Samples folder do not exist');
+    // INDEXING
+    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+    if (indexDataString === null) {
+      throw Error('index.json file do not exist');
     }
 
-    if (samplesIDs.includes(sampleSettings.id_sample)) {
-      throw Error('You cannot create 2 samples with same ID.');
+    const indexData = JSON.parse(indexDataString) as IndexData;
+    if (indexData.includes(sampleSettings.id_sample)) {
+      throw Error('You cannot create 2 Samples with same ID');
     }
+
+    indexData.push(sampleSettings.id_sample);
+    await FileSystemService.writeFile(
+      indexFilePath,
+      JSON.stringify(indexData, null, 4)
+    );
 
     // MAIN FOLDER
     const sampleFolderPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${sampleSettings.id_sample}`;
@@ -251,21 +310,37 @@ export default class ProjectService {
       `${sampleFolderPath}/sampleSettings.json`,
       JSON.stringify(sampleSettings, null, 4),
     );
+
+    // INDEX FILES
+    await FileSystemService.writeFile(
+      `${sampleFolderPath}/sampleWidgets/index.json`,
+      JSON.stringify([], null, 4)
+    );
   }
 
   static async createWidgetFolderStructure(
     widgetData: WidgetData,
     folderPath: string,
   ): Promise<void> {
-    const widgetsIDs = await FileSystemService.readDirectory(folderPath);
 
-    if (!widgetsIDs) {
-      throw Error(`Widgets folder do not exist. Path: ${folderPath}`);
+    // INDEXING
+    const indexFilePath = `${folderPath}/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+    if (indexDataString === null) {
+      throw Error('index.json file do not exist');
     }
 
-    if (widgetsIDs.includes(widgetData.id_widget)) {
-      throw Error('You cannot create 2 widgets with same ID.');
+    const indexData = JSON.parse(indexDataString) as IndexData;
+    if (indexData.includes(widgetData.id_widget)) {
+      throw Error('You cannot create 2 widget with same ID');
     }
+
+    indexData.push(widgetData.id_widget);
+    await FileSystemService.writeFile(
+      indexFilePath,
+      JSON.stringify(indexData, null, 4)
+    );
+
 
     // MAIN FOLDER
     const widgetFolderPath = `${folderPath}/${widgetData.id_widget}`;

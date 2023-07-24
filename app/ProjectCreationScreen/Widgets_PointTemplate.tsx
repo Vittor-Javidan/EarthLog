@@ -7,7 +7,7 @@ import { Translations_ProjectCreationScreen } from '@Translations/Screens/Projec
 
 import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { WidgetData } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -20,20 +20,17 @@ export default function Widgets_PointTemplate() {
 
   const [_, refresh] = useState<boolean>(false);
 
-  function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
-    if ( oldlabel !== newLabel) {
-      API_ProjectCreation.deletePointTemplateWidget(oldlabel);
-    }
-    API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
+  function onConfirm(widgetData: WidgetData) {
+    API_ProjectCreation.updatePointTemplateWidget(widgetData);
   }
 
-  function onDelete(label: WidgetLabel) {
-    API_ProjectCreation.deletePointTemplateWidget(label);
+  function onDelete(widgetData: WidgetData) {
+    API_ProjectCreation.deletePointTemplateWidget(widgetData);
     refresh(prev => !prev);
   }
 
   function onCreateWidget(widgetData: WidgetData) {
-    API_ProjectCreation.modifyPointTemplateWidget(widgetData.name, widgetData);
+    API_ProjectCreation.addPointTemplateWidget(widgetData);
     refresh(prev => !prev);
   }
 

@@ -147,7 +147,7 @@
 - Implement methods on Project Service to interact with Database Service.
     + Create Project
     + Delete Project
-    - Update Project
+    + Update Project
     - Create Sample
     - Update Sample
     - Delete Sample

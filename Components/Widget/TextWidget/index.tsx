@@ -10,15 +10,13 @@ import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { TextWidgetData } from '@Services/ProjectService';
 
 import { WidgetRules } from '../Rules';
 
 export default function TextWidget(props: {
-  label: WidgetLabel
   widgetData: TextWidgetData
-  widgets: Record<WidgetLabel, WidgetData>
-  onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
+  onConfirm: (value: TextWidgetData) => void
   onDelete: () => void
 }) {
 
@@ -26,22 +24,15 @@ export default function TextWidget(props: {
     return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
-  const [label, setLabel] = useState<string>(props.label);
   const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function onConfirm(label: WidgetLabel, widgetData: TextWidgetData) {
+  function onConfirm(widgetData: TextWidgetData) {
 
     setShowModal(false);
 
-    if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
-      alert(stringResources['Not possible to have 2 Widgets with the same name.']);
-      setIsDataWrong(true);
-      return;
-    }
-
-    if (WidgetRules.noEmptyLabel(label)) {
+    if (WidgetRules.noEmptyLabel(widgetData)) {
       alert(stringResources['Widget name cannot be empty.']);
       setIsDataWrong(true);
       return;
@@ -61,16 +52,15 @@ export default function TextWidget(props: {
 
     if (showModal) {
       setIsDataWrong(false);
-      setLabel(label);
       setWidgetData(widgetData);
-      props.onConfirm(label, widgetData);
+      props.onConfirm(widgetData);
     }
   }
 
   return (
     <WidgetComponent.Root
 
-      label={label}
+      label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
 
@@ -89,9 +79,8 @@ export default function TextWidget(props: {
 
       modal={<>
         <Modal
-          label={label}
           widgetData={widgetData}
-          onConfirm={(label, widgetData) => onConfirm(label, widgetData)}
+          onConfirm={(widgetData) => onConfirm(widgetData)}
           onDelete={props.onDelete}
           onRequestClose={() => setShowModal(false)}
         />
@@ -147,9 +136,8 @@ function DataDisplay(props: {
 }
 
 function Modal(props: {
-  label: WidgetLabel
   widgetData: TextWidgetData
-  onConfirm: (label: WidgetLabel, value: TextWidgetData) => void
+  onConfirm: (value: TextWidgetData) => void
   onDelete: () => void
   onRequestClose: () => void
 }) {
@@ -159,16 +147,16 @@ function Modal(props: {
     return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
-  const [label, setLabel] = useState<string>(props.label);
+  const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
 
   return (
     <WidgetComponent.Modal
-      title={props.label}
+      title={label}
       widgetData={props.widgetData}
       onConfirm={() => {
-        props.onConfirm(label, {
-          id_widget: ProjectService.generateUuidV4(),
+        props.onConfirm({
+          id_widget: props.widgetData.id_widget,
           name: label,
           type: 'text',
           value: value,
