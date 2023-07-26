@@ -152,20 +152,26 @@ export default class ProjectService {
     for (let i = 0; i < indexData.length; i++) {
 
       const id_project = indexData[i];
-      const projectSettingsString = await FileSystemService.readFile(
-        `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
-      );
-
-      if (projectSettingsString !== null) {
-        const projectSettings = JSON.parse(projectSettingsString) as ProjectSetting;
-        projectCredentials.push({
-          ID: projectSettings.id_project,
-          name: projectSettings.name,
-        });
-      }
+      const projectSettings = await this.getProjectSettings(id_project);
+      projectCredentials.push({
+        ID: projectSettings.id_project,
+        name: projectSettings.name,
+      });
     }
 
     return projectCredentials;
+  }
+
+  static async getProjectSettings(id_project: string): Promise<ProjectSetting> {
+    const settingsFile = await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
+    );
+
+    if (settingsFile === null) {
+      throw Error('projectSettings.json file do not exist');
+    }
+
+    return await JSON.parse(settingsFile) as ProjectSetting;
   }
 
   static async createProject(

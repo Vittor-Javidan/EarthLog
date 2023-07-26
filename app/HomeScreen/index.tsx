@@ -96,10 +96,7 @@ function ProjectButtons() {
       title={dataCredential.name}
       onPress={async () => {
         await ProjectService.saveLastOpenProject(dataCredential);
-        navController.push(AppRoutes.PROJECT_SCREEN(
-          dataCredential.ID,
-          dataCredential.name
-        ));
+        navController.push(AppRoutes.PROJECT_SCREEN(dataCredential.ID));
       }}
     />
   ));
@@ -121,10 +118,7 @@ function ProjectButtons() {
           title={projectCredentials.lastProject.name}
           onPress={() => {
             if (projectCredentials.lastProject !== null) {
-              navController.push(AppRoutes.PROJECT_SCREEN(
-                projectCredentials.lastProject.ID,
-                projectCredentials.lastProject.name,
-              ));
+              navController.push(AppRoutes.PROJECT_SCREEN(projectCredentials.lastProject.ID));
             }
           }}
         />

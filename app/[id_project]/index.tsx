@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Text} from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Text } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import AppRoutes from '@Globals/AppRoutes';
@@ -9,6 +9,8 @@ import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Layout } from '@Components/Layout';
 import { Icon } from '@Components/Icon';
+import ProjectService, { ProjectSetting } from '@Services/ProjectService';
+import LoadingScreen from 'app/LoadingScreen';
 
 
 export default function ProjectScreen() {
@@ -16,12 +18,25 @@ export default function ProjectScreen() {
   LogService.useLog('PROJECT SCREEN: rendered');
 
   const navController = useRouter();
-  const { id_project, name } = useLocalSearchParams();
+  const { id_project } = useLocalSearchParams();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
+  const [settings, setSettings] = useState<ProjectSetting | null>(null);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      setSettings(await ProjectService.getProjectSettings(id_project as string));
+    }
+    fetchSettings();
+  }, []);
+
+  if (settings === null) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Layout.Root
-      title={name as string}
+      title={settings.name}
       iconName="map"
       showNavigationTree={true}
       drawerChildren={<></>}
@@ -49,7 +64,9 @@ export default function ProjectScreen() {
           title="New Sample"
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => alert('ainda não implementado')}
+          onPress={() => {
+            navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(settings.id_project));
+          }}
         />
       </Layout.View>
     </Layout.Root>
