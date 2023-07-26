@@ -3,7 +3,7 @@ import { Languages } from '@Services/LanguageService';
 export type Translations_ProjectCreationScreen = Record<Languages, {
   'Project creation': string
   'Cancel': string
-  'Confirm': string
+  'Create': string
   'Project settings': string
   'Immutable': string
   'ID': string
@@ -24,7 +24,7 @@ export const translations_ProjectCreationScreen: Translations_ProjectCreationScr
   'en-US': {
     'Project creation': 'Project creation',
     'Cancel': 'Cancel',
-    'Confirm': 'Confirm',
+    'Create': 'Create',
     'Project settings': 'Project settings',
     'Immutable': 'Immutable',
     'ID': 'ID',
@@ -43,7 +43,7 @@ export const translations_ProjectCreationScreen: Translations_ProjectCreationScr
   'pt-BR': {
     'Project creation': 'Criação de projeto',
     'Cancel': 'Cancelar',
-    'Confirm': 'Confirmar',
+    'Create': 'Criar',
     'Project settings': 'Configurações do projeto',
     'Immutable': 'Imutável',
     'ID': 'ID',

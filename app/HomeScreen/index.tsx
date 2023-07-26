@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 
@@ -7,9 +7,10 @@ import { translations } from '@Translations/index';
 import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
 import LogService from '@Services/LogService';
-import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ProjectService, { DataCredential } from '@Services/ProjectService';
 
 export default function HomeScreen() {
 
@@ -29,7 +30,7 @@ export default function HomeScreen() {
       drawerChildren={<Drawer />}
     >
       <Layout.ScrollView>
-        {/* TODO: Render buttons wich represents individual projects */}
+        <ProjectButtons />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -61,4 +62,51 @@ function Drawer() {
       onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
     />
   );
+}
+
+function ProjectButtons() {
+
+  const [projectCredentials, setProjectCredential] = useState<DataCredential[] | null>(null);
+  const [lastOpenProjectCredential, setLastOpenProjectCredential] = useState<DataCredential | null>(null);
+  const lastOpenExist = lastOpenProjectCredential !== null;
+
+  useEffect(() => {
+    async function scanProjectCredentials() {
+      setProjectCredential(await ProjectService.getProjectsCredentials());
+      setLastOpenProjectCredential(await ProjectService.getLastOpenProject());
+    }
+    scanProjectCredentials();
+  }, []);
+
+  const allProjectButtons = projectCredentials?.map(dataCredential => (
+    <Layout.Button
+      key={dataCredential.ID}
+      title={dataCredential.name}
+      onPress={async () => {
+        await ProjectService.saveLastOpenProject(dataCredential);
+      }}
+    />
+  ));
+
+  return (<Layout.View>
+    {lastOpenExist && (<>
+      <Layout.Text
+        fontSize={ThemeService.FONTS.h2}
+        color={'onBackground'}
+      >
+        Last Open
+      </Layout.Text>
+      <Layout.Button
+        title={lastOpenProjectCredential.name}
+        onPress={async () => {}}
+      />
+    </>)}
+    <Layout.Text
+      fontSize={ThemeService.FONTS.h2}
+      color={'onBackground'}
+    >
+      Projects
+    </Layout.Text>
+    {allProjectButtons}
+  </Layout.View>);
 }

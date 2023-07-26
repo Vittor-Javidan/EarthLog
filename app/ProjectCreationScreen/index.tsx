@@ -92,7 +92,7 @@ export default function ProjectCreationScreen() {
           }}
         />
         <Layout.Button
-          title={stringResources['Confirm']}
+          title={stringResources['Create']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
           onPress={async () => {

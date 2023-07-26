@@ -26,10 +26,11 @@ export default function Button(props: {
 			onPress={props.onPress}
 			style={[{
 				flex: 1,
+				justifyContent: 'center',
 				alignItems: 'center',
 				backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
-				padding: 10,
+				height: 55,
 			}, props.style]}
 		>
 			<Text

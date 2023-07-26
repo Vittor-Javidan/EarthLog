@@ -1,5 +1,6 @@
 import uuid from 'react-native-uuid';
 import FileSystemService from './FileSystemService';
+import LocalStorageService from './LocalStorageService';
 
 export type ProjectDTO = {
   projectSettings: ProjectSetting
@@ -66,7 +67,11 @@ export type WidgetTypes = 'boolean' | 'text'
   The index.json file has the purpose to allow the app to know how organized is the elements, since
   just small blocks of project data is loaded on each screen.
 */
-export type IndexData = string[]
+export type IDsArray = string[]
+export type DataCredential = {
+  name: string,
+  ID: string,
+}
 
 export default class ProjectService {
 
@@ -120,6 +125,47 @@ export default class ProjectService {
         },
       };
     }
+  }
+
+  static async getLastOpenProject(): Promise<DataCredential | null> {
+    const lastProject = await LocalStorageService.getData('LastProject');
+    if (lastProject === null) {
+      return null;
+    }
+    return JSON.parse(lastProject) as DataCredential;
+  }
+
+  static async saveLastOpenProject(projectDataCredential: DataCredential): Promise<void> {
+    await LocalStorageService.saveData('LastProject', JSON.stringify(projectDataCredential));
+  }
+
+  static async getProjectsCredentials(): Promise<DataCredential[] | null> {
+    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+
+    if (indexDataString === null) {
+      return null;
+    }
+
+    const projectCredentials: DataCredential[] = [];
+    const indexData = JSON.parse(indexDataString) as IDsArray;
+    for (let i = 0; i < indexData.length; i++) {
+
+      const id_project = indexData[i];
+      const projectSettingsString = await FileSystemService.readFile(
+        `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
+      );
+
+      if (projectSettingsString !== null) {
+        const projectSettings = JSON.parse(projectSettingsString) as ProjectSetting;
+        projectCredentials.push({
+          ID: projectSettings.id_project,
+          name: projectSettings.name,
+        });
+      }
+    }
+
+    return projectCredentials;
   }
 
   static async createProject(
@@ -201,7 +247,7 @@ export default class ProjectService {
     if (indexDataString) {
 
       // REMOVE PROJECT INDEX
-      let indexData = JSON.parse(indexDataString) as IndexData;
+      let indexData = JSON.parse(indexDataString) as IDsArray;
       indexData = indexData.filter(ID => ID !== id_project);
       await FileSystemService.writeFile(
         `${this.DATA_BASE_DIRECTORY}/index.json`,
@@ -210,6 +256,60 @@ export default class ProjectService {
 
       // DELETE PROJECT FOLDER
       await FileSystemService.delete(`${this.DATA_BASE_DIRECTORY}/${id_project}`);
+    }
+  }
+
+  static async createSample(
+    id_project: string,
+    sampleSettings: SampleSettings,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+
+      const { id_sample } = sampleSettings;
+      await this.createSampleFolderStructure(id_project, sampleSettings);
+
+      // READ SAMPLE TEMPLATE INDEX
+      const sampleTemplateIndex = await FileSystemService.readFile(
+        `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate/index.json`,
+      );
+
+      if (sampleTemplateIndex === null) {
+        throw Error('index.json file do not exist');
+      }
+
+      // SAMPLE TEMPLATE WIDGET DATA READING
+      const sampleTemplateIDs = JSON.parse(sampleTemplateIndex) as IDsArray;
+      for (let i = 0; i < sampleTemplateIDs.length; i++) {
+
+        // READ WIDGET DATA
+        const templateWidgetDataString = await FileSystemService.readFile(
+          `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate/${sampleTemplateIDs[i]}/data.json`
+        );
+
+        if (templateWidgetDataString === null) {
+          throw Error('data.json file do not exist');
+        }
+
+        const widgetData = JSON.parse(templateWidgetDataString) as WidgetData;
+
+        // GENERATE NEW ID INTO WIDGET DATA
+        widgetData.id_widget = this.generateUuidV4();
+
+        // CREATE WIDGET FROM TEMPLATE
+        await this.createWidgetFolderStructure(
+          widgetData,
+          `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`
+        );
+
+      }
+
+      onSuccess();
+
+    } catch (error) {
+      onError(JSON.stringify(error));
     }
   }
 
@@ -239,7 +339,7 @@ export default class ProjectService {
       throw Error('index.json file do not exist');
     }
 
-    const indexData = JSON.parse(indexDataString) as IndexData;
+    const indexData = JSON.parse(indexDataString) as IDsArray;
     if (indexData.includes(projectSettings.id_project)) {
       throw Error('You cannot create 2 projects with same ID');
     }
@@ -289,7 +389,7 @@ export default class ProjectService {
       throw Error('index.json file do not exist');
     }
 
-    const indexData = JSON.parse(indexDataString) as IndexData;
+    const indexData = JSON.parse(indexDataString) as IDsArray;
     if (indexData.includes(sampleSettings.id_sample)) {
       throw Error('You cannot create 2 Samples with same ID');
     }
@@ -330,7 +430,7 @@ export default class ProjectService {
       throw Error('index.json file do not exist');
     }
 
-    const indexData = JSON.parse(indexDataString) as IndexData;
+    const indexData = JSON.parse(indexDataString) as IDsArray;
     if (indexData.includes(widgetData.id_widget)) {
       throw Error('You cannot create 2 widget with same ID');
     }

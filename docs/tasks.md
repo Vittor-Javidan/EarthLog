@@ -157,10 +157,9 @@
 
 ## 2 - Basic Screens
 
-- Implement project creation to Project Creation Screen confirm button.
-- Show all available projects on HomeScreen
-    - Show last openned project.
-    - All projects must have an edit button.
++ Implement project creation to Project Creation Screen confirm button.
++ Show all available projects on HomeScreen
+    + Show last openned project.
 - New Screens needed:
     - Project Edit Screen
         - Show the project settings that are allow to be edited.
