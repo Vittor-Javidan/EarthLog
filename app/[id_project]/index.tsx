@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Text } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 import AppRoutes from '@Globals/AppRoutes';
 
@@ -10,7 +10,6 @@ import ConfigService from '@Services/ConfigService';
 import { Layout } from '@Components/Layout';
 import { Icon } from '@Components/Icon';
 import ProjectService, { ProjectSetting } from '@Services/ProjectService';
-import LoadingScreen from 'app/LoadingScreen';
 
 
 export default function ProjectScreen() {
@@ -18,21 +17,8 @@ export default function ProjectScreen() {
   LogService.useLog('PROJECT SCREEN: rendered');
 
   const navController = useRouter();
-  const { id_project } = useLocalSearchParams();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
-  const [settings, setSettings] = useState<ProjectSetting | null>(null);
-
-  useEffect(() => {
-    async function fetchSettings() {
-      setSettings(await ProjectService.getProjectSettings(id_project as string));
-    }
-    fetchSettings();
-  }, []);
-
-  if (settings === null) {
-    return <LoadingScreen />;
-  }
+  const settings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
 
   return (
     <Layout.Root
@@ -51,7 +37,7 @@ export default function ProjectScreen() {
         <Text
           style={{ color: theme.onBackground }}
         >
-          {id_project}
+          {settings.id_project}
         </Text>
       </Layout.ScrollView>
       <Layout.View

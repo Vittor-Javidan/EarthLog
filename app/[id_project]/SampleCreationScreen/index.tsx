@@ -2,20 +2,18 @@ import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 
 import LogService from '@Services/LogService';
-import { useLocalSearchParams } from 'expo-router';
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
 import { Layout } from '@Components/Layout';
+import ProjectService, { ProjectSetting } from '@Services/ProjectService';
 
 export default function SampleCreationScreen() {
 
   LogService.useLog('SAMPLE CREATION SCREEN: rendered');
 
   // const navController = useRouter();
-  const { id_project: PROJECT_ID } = useLocalSearchParams();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
-  console.log(PROJECT_ID);
+  const settings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
 
   return (
     <Layout.Root
@@ -29,7 +27,7 @@ export default function SampleCreationScreen() {
         <Text
           style={{ color: theme.onBackground }}
         >
-          {PROJECT_ID}
+          {settings.id_project}
         </Text>
       </Layout.ScrollView>
       <Layout.View

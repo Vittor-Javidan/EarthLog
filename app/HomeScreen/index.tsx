@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 
@@ -10,8 +10,7 @@ import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { DataCredential } from '@Services/ProjectService';
-import LoadingScreen from 'app/LoadingScreen';
+import ProjectService from '@Services/ProjectService';
 
 export default function HomeScreen() {
 
@@ -69,45 +68,26 @@ function Drawer() {
 
 function ProjectButtons() {
 
-  type ProjectCredentials = {
-    lastProject: DataCredential | null,
-    projects: DataCredential[] | null
-  }
-
   const navController = useRouter();
-  const [projectCredentials, setProjectCredentials] = useState<ProjectCredentials>({
-    lastProject: null,
-    projects: null,
-  });
+  const showLastProjectButton = ProjectService.lastLoadedProject.id_project !== '';
 
-  useEffect(() => {
-    async function scanProjectCredentials() {
-      setProjectCredentials({
-        lastProject: await ProjectService.getLastOpenProject(),
-        projects: await ProjectService.getProjectsCredentials(),
-      });
-    }
-    scanProjectCredentials();
-  }, []);
-
-  const allProjectButtons = projectCredentials.projects?.map(dataCredential => (
+  const allProjectButtons = ProjectService.allProjectSettings.map(settings => (
     <Layout.Button
-      key={dataCredential.ID}
-      title={dataCredential.name}
+      key={settings.id_project}
+      title={settings.name}
       onPress={async () => {
-        await ProjectService.saveLastOpenProject(dataCredential);
-        navController.push(AppRoutes.PROJECT_SCREEN(dataCredential.ID));
+        await ProjectService.saveLastOpenProject({
+          ID: settings.id_project,
+          name: settings.name,
+        });
+        navController.push(AppRoutes.PROJECT_SCREEN(settings.id_project));
       }}
     />
   ));
 
-  if (projectCredentials.projects === null) {
-    return <LoadingScreen />;
-  }
-
   return (
     <Layout.View>
-      {projectCredentials.lastProject !== null && (<>
+      {showLastProjectButton && (<>
         <Layout.Text
           fontSize={ThemeService.FONTS.h2}
           color={'onBackground'}
@@ -115,11 +95,9 @@ function ProjectButtons() {
           Last Open
         </Layout.Text>
         <Layout.Button
-          title={projectCredentials.lastProject.name}
+          title={ProjectService.lastLoadedProject.name}
           onPress={() => {
-            if (projectCredentials.lastProject !== null) {
-              navController.push(AppRoutes.PROJECT_SCREEN(projectCredentials.lastProject.ID));
-            }
+            navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastLoadedProject.id_project));
           }}
         />
       </>)}

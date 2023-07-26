@@ -75,6 +75,13 @@ export type DataCredential = {
 
 export default class ProjectService {
 
+  static lastLoadedProject: ProjectSetting = {
+    id_project: '',
+    immutable: true,
+    name: 'ERROR: No project available',
+    rules: {},
+  };
+  static allProjectSettings: ProjectSetting[] = [];
   static DATA_BASE_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/database`;
 
   static generateUuidV4(): string {
@@ -137,6 +144,43 @@ export default class ProjectService {
 
   static async saveLastOpenProject(projectDataCredential: DataCredential): Promise<void> {
     await LocalStorageService.saveData('LastProject', JSON.stringify(projectDataCredential));
+    this.allProjectSettings.forEach(settings => {
+      if (settings.id_project === projectDataCredential.ID) {
+        this.lastLoadedProject = settings;
+      }
+    });
+  }
+
+  static async loadAllProjectSettings(onFinish: () => void): Promise<void> {
+
+    // ALL PROJECT SETTINGS
+    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+
+    if (indexDataString === null) {
+      onFinish();
+      return;
+    }
+
+    this.allProjectSettings = [];
+    const indexData = JSON.parse(indexDataString) as IDsArray;
+    for (let i = 0; i < indexData.length; i++) {
+      this.allProjectSettings.push(await this.getProjectSettings(indexData[i]));
+    }
+
+    // LAST LOADED PROJECT
+    const lastProject = await this.getLastOpenProject();
+    if (lastProject === null) {
+      onFinish();
+      return;
+    }
+
+    for (let i = 0; i < this.allProjectSettings.length; i++) {
+      if (this.allProjectSettings[i].id_project === lastProject.ID) {
+        this.lastLoadedProject = this.allProjectSettings[i];
+      }
+    }
+    onFinish();
   }
 
   static async getProjectsCredentials(): Promise<DataCredential[] | null> {
@@ -222,6 +266,9 @@ export default class ProjectService {
           );
         }
       }
+
+      // SAVE SETTINGS ON CACHE
+      this.allProjectSettings.push(JSON.parse(JSON.stringify(projectDTO.projectSettings)));
 
       onSuccess();
 
