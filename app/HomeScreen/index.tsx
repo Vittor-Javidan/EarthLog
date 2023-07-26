@@ -11,10 +11,11 @@ import ConfigService from '@Services/ConfigService';
 import { Languages } from '@Services/LanguageService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ProjectService, { DataCredential } from '@Services/ProjectService';
+import LoadingScreen from 'app/LoadingScreen';
 
 export default function HomeScreen() {
 
-  LogService.useLog('PROJECTS SCREEN: rendered');
+  LogService.useLog('HOME SCREEN: rendered');
 
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -42,7 +43,9 @@ export default function HomeScreen() {
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => navController.push(AppRoutes.PROJECT_CREATION_SCREEN)}
+          onPress={() => {
+            navController.push(AppRoutes.PROJECT_CREATION_SCREEN);
+          }}
         />
       </Layout.View>
     </Layout.Root>
@@ -66,47 +69,73 @@ function Drawer() {
 
 function ProjectButtons() {
 
-  const [projectCredentials, setProjectCredential] = useState<DataCredential[] | null>(null);
-  const [lastOpenProjectCredential, setLastOpenProjectCredential] = useState<DataCredential | null>(null);
-  const lastOpenExist = lastOpenProjectCredential !== null;
+  type ProjectCredentials = {
+    lastProject: DataCredential | null,
+    projects: DataCredential[] | null
+  }
+
+  const navController = useRouter();
+  const [projectCredentials, setProjectCredentials] = useState<ProjectCredentials>({
+    lastProject: null,
+    projects: null,
+  });
 
   useEffect(() => {
     async function scanProjectCredentials() {
-      setProjectCredential(await ProjectService.getProjectsCredentials());
-      setLastOpenProjectCredential(await ProjectService.getLastOpenProject());
+      setProjectCredentials({
+        lastProject: await ProjectService.getLastOpenProject(),
+        projects: await ProjectService.getProjectsCredentials(),
+      });
     }
     scanProjectCredentials();
   }, []);
 
-  const allProjectButtons = projectCredentials?.map(dataCredential => (
+  const allProjectButtons = projectCredentials.projects?.map(dataCredential => (
     <Layout.Button
       key={dataCredential.ID}
       title={dataCredential.name}
       onPress={async () => {
         await ProjectService.saveLastOpenProject(dataCredential);
+        navController.push(AppRoutes.PROJECT_SCREEN(
+          dataCredential.ID,
+          dataCredential.name
+        ));
       }}
     />
   ));
 
-  return (<Layout.View>
-    {lastOpenExist && (<>
+  if (projectCredentials.projects === null) {
+    return <LoadingScreen />;
+  }
+
+  return (
+    <Layout.View>
+      {projectCredentials.lastProject !== null && (<>
+        <Layout.Text
+          fontSize={ThemeService.FONTS.h2}
+          color={'onBackground'}
+        >
+          Last Open
+        </Layout.Text>
+        <Layout.Button
+          title={projectCredentials.lastProject.name}
+          onPress={() => {
+            if (projectCredentials.lastProject !== null) {
+              navController.push(AppRoutes.PROJECT_SCREEN(
+                projectCredentials.lastProject.ID,
+                projectCredentials.lastProject.name,
+              ));
+            }
+          }}
+        />
+      </>)}
       <Layout.Text
         fontSize={ThemeService.FONTS.h2}
         color={'onBackground'}
       >
-        Last Open
+        Projects
       </Layout.Text>
-      <Layout.Button
-        title={lastOpenProjectCredential.name}
-        onPress={async () => {}}
-      />
-    </>)}
-    <Layout.Text
-      fontSize={ThemeService.FONTS.h2}
-      color={'onBackground'}
-    >
-      Projects
-    </Layout.Text>
-    {allProjectButtons}
-  </Layout.View>);
+      {allProjectButtons}
+    </Layout.View>
+  );
 }
