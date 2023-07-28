@@ -8,7 +8,7 @@ import AppRoutes from '@Globals/AppRoutes';
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { ProjectSetting } from '@Services/ProjectService';
+import ProjectService, { ProjectSettings } from '@Services/ProjectService';
 
 
 export default function ProjectScreen() {
@@ -16,10 +16,10 @@ export default function ProjectScreen() {
   const { id_project } = useLocalSearchParams();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
+  const settings = useMemo<ProjectSettings>(() => ProjectService.getCachedProjectSettings(id_project as string), []);
 
-  LogService.useLog(`RENDERED:
-    project screen ${id_project}
+  LogService.useLog(`RENDERED: Project Screen
+    id: ${id_project}
   `);
 
   return (
@@ -65,7 +65,7 @@ export default function ProjectScreen() {
 
 function SampleButtons() {
 
-  const projectSettings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
+  const projectSettings = useMemo<ProjectSettings>(() => ProjectService.lastLoadedProject, []);
   const navController = useRouter();
 
   const showLastProjectButton = ProjectService.allSamplesSettings.length > 0;

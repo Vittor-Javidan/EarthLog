@@ -18,9 +18,9 @@ export default function SampleScreens() {
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const settings = useMemo<SampleSettings>(() => ProjectService.getCachedSampleSettings(id_sample as string), []);
 
-  LogService.useLog(`RENDERED:
-    sample ${id_sample}
-    of Project ${id_project}:
+  LogService.useLog(`RENDERED: Sample Screen
+    id project: ${id_project}:
+    id sample: ${id_sample}
   `);
 
   return (

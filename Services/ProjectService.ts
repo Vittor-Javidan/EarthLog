@@ -4,7 +4,7 @@ import LocalStorageService from './LocalStorageService';
 import UtilService from './UtilService';
 
 export type ProjectDTO = {
-  projectSettings: ProjectSetting
+  projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
   sampleTemplate: WidgetData[]
   samples: SampleDTO[]
@@ -16,7 +16,7 @@ export type SampleDTO = {
 
 export type WidgetData = TextWidgetData | BooleanWidgetData
 
-export type ProjectSetting = {
+export type ProjectSettings = {
   id_project: string
   name: string
   immutable: boolean
@@ -72,13 +72,13 @@ export type IDsArray = string[]
 
 export default class ProjectService {
 
-  static lastLoadedProject: ProjectSetting = {
+  static lastLoadedProject: ProjectSettings = {
     id_project: '',
     immutable: true,
     name: 'ERROR: No project available',
     rules: {},
   };
-  static allProjectSettings: ProjectSetting[] = [];
+  static allProjectSettings: ProjectSettings[] = [];
   static allSamplesSettings: SampleSettings[] = [];
   static allWidgetsData: WidgetData[] = [];
 
@@ -152,7 +152,16 @@ export default class ProjectService {
         return this.allSamplesSettings[i];
       }
     }
-    throw Error('Sample does not exist');
+    throw Error('Sample does not exist on cache');
+  }
+
+  static getCachedProjectSettings(id_project: string): ProjectSettings {
+    for (let i = 0; i < this.allProjectSettings.length; i++) {
+      if (this.allProjectSettings[i].id_project === id_project) {
+        return this.allProjectSettings[i];
+      }
+    }
+    throw Error('Project does not exist on cache');
   }
 
   static async getLastOpenProject(): Promise<string | null> {
@@ -262,7 +271,7 @@ export default class ProjectService {
     }
   }
 
-  static async readProjectSettings(id_project: string): Promise<ProjectSetting> {
+  static async readProjectSettings(id_project: string): Promise<ProjectSettings> {
     const settingsFile = await FileSystemService.readFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
     );
@@ -271,7 +280,7 @@ export default class ProjectService {
       throw Error('projectSettings.json file do not exist');
     }
 
-    return await JSON.parse(settingsFile) as ProjectSetting;
+    return await JSON.parse(settingsFile) as ProjectSettings;
   }
 
   static async readSampleSettings(id_project: string, id_sample: string): Promise<SampleSettings> {
@@ -346,7 +355,7 @@ export default class ProjectService {
   }
 
   static async updateProject(
-    projectSettings: ProjectSetting,
+    projectSettings: ProjectSettings,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -454,7 +463,7 @@ export default class ProjectService {
   }
 
   static async createProjectFolderStructure(
-    projectSettings: ProjectSetting,
+    projectSettings: ProjectSettings,
   ): Promise<void> {
 
     // INDEXING

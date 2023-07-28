@@ -7,7 +7,7 @@ import AppRoutes from '@Globals/AppRoutes';
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { ProjectSetting } from '@Services/ProjectService';
+import ProjectService, { ProjectSettings } from '@Services/ProjectService';
 
 import API_SampleCreation from './API_SampleCreation';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
@@ -19,7 +19,7 @@ export default function SampleCreationScreen() {
   const navigation = useNavigation();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
+  const settings = useMemo<ProjectSettings>(() => ProjectService.lastLoadedProject, []);
 
   const [succed, setSucced] = useState<boolean>(false);
 
