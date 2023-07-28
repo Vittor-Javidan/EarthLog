@@ -1,5 +1,5 @@
-import React, { useMemo, useEffect } from 'react';
-import { useNavigation, useRouter } from 'expo-router';
+import React, { useState, useMemo, useEffect } from 'react';
+import { Redirect, useNavigation, useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
@@ -26,7 +26,10 @@ export default function ProjectCreationScreen() {
     return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
+  const [succed, setSucced] = useState<boolean>(false);
+
   useEffect(() => {
+    // Resets API when component unmounts
     navigation.addListener('beforeRemove', () => {
       if (API_ProjectCreation.unsavedChanges) {
         API_ProjectCreation.reset();
@@ -50,12 +53,16 @@ export default function ProjectCreationScreen() {
       API_ProjectCreation.temporaryProject,
       () => {
         API_ProjectCreation.reset();
-        navController.push(AppRoutes.HOME);
+        setSucced(true);
       },
       (errorMessage) => {
         alert(errorMessage);
       },
     );
+  }
+
+  if (succed) {
+    return <Redirect href={AppRoutes.HOME} />;
   }
 
   return (

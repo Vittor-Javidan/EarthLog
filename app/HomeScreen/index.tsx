@@ -70,16 +70,18 @@ function ProjectButtons() {
 
   const navController = useRouter();
   const showLastProjectButton = ProjectService.lastLoadedProject.id_project !== '';
+  const showProjects = (
+    (ProjectService.allProjectSettings.length > 0 && !showLastProjectButton) ||
+    (ProjectService.allProjectSettings.length > 1)
+  );
 
   const allProjectButtons = ProjectService.allProjectSettings.map(settings => (
     <Layout.Button
       key={settings.id_project}
       title={settings.name}
       onPress={async () => {
-        await ProjectService.saveLastOpenProject({
-          ID: settings.id_project,
-          name: settings.name,
-        });
+        await ProjectService.saveLastOpenProject(settings.id_project);
+        await ProjectService.loadAllSampleSettings(settings.id_project);
         navController.push(AppRoutes.PROJECT_SCREEN(settings.id_project));
       }}
     />
@@ -101,13 +103,15 @@ function ProjectButtons() {
           }}
         />
       </>)}
-      <Layout.Text
-        fontSize={ThemeService.FONTS.h2}
-        color={'onBackground'}
-      >
-        Projects
-      </Layout.Text>
-      {allProjectButtons}
+      {showProjects && (<>
+        <Layout.Text
+          fontSize={ThemeService.FONTS.h2}
+          color={'onBackground'}
+        >
+          Projects
+        </Layout.Text>
+        {allProjectButtons}
+      </>)}
     </Layout.View>
   );
 }

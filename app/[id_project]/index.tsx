@@ -1,24 +1,26 @@
 import React, { useMemo } from 'react';
-import { Text } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Icon } from '@Components/Icon';
+import { Layout } from '@Components/Layout';
 
 import AppRoutes from '@Globals/AppRoutes';
 
 import LogService from '@Services/LogService';
-import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { Layout } from '@Components/Layout';
-import { Icon } from '@Components/Icon';
+import ThemeService, { ThemeDTO } from '@Services/ThemeService';
 import ProjectService, { ProjectSetting } from '@Services/ProjectService';
 
 
 export default function ProjectScreen() {
 
-  LogService.useLog('PROJECT SCREEN: rendered');
-
+  const { id_project } = useLocalSearchParams();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const settings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
+
+  LogService.useLog(`RENDERED:
+    project screen ${id_project}
+  `);
 
   return (
     <Layout.Root
@@ -34,11 +36,7 @@ export default function ProjectScreen() {
       ]}
     >
       <Layout.ScrollView>
-        <Text
-          style={{ color: theme.onBackground }}
-        >
-          {settings.id_project}
-        </Text>
+        <SampleButtons />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -46,6 +44,12 @@ export default function ProjectScreen() {
           gap: 10,
         }}
       >
+        <Layout.Button
+          title="Back"
+          onPress={() => {
+            navController.push(AppRoutes.HOME);
+          }}
+        />
         <Layout.Button
           title="New Sample"
           overrideBackgroundColor={theme.confirm}
@@ -56,5 +60,37 @@ export default function ProjectScreen() {
         />
       </Layout.View>
     </Layout.Root>
+  );
+}
+
+function SampleButtons() {
+
+  const projectSettings = useMemo<ProjectSetting>(() => ProjectService.lastLoadedProject, []);
+  const navController = useRouter();
+
+  const showLastProjectButton = ProjectService.allSamplesSettings.length > 0;
+  const allSampleButtons = ProjectService.allSamplesSettings.map(sampleSettings => (
+    <Layout.Button
+      key={sampleSettings.id_sample}
+      title={sampleSettings.name}
+      onPress={async () => {
+        await ProjectService.loadAllWidgetsData(projectSettings.id_project, sampleSettings.id_sample);
+        navController.push(AppRoutes.PS_SAMPLE_SCREEN(projectSettings.id_project, sampleSettings.id_sample));
+      }}
+    />
+  ));
+
+  return (
+    <Layout.View>
+      {showLastProjectButton && (<>
+          <Layout.Text
+            fontSize={ThemeService.FONTS.h2}
+            color={'onBackground'}
+          >
+            Samples
+          </Layout.Text>
+          {allSampleButtons}
+        </>)}
+    </Layout.View>
   );
 }

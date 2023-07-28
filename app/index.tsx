@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Redirect } from 'expo-router';
+import LoadingScreen from './LoadingScreen';
+
+import AppRoutes from '@Globals/AppRoutes';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-
-import LoadingScreen from './LoadingScreen';
-import { Redirect } from 'expo-router';
-import AppRoutes from '@Globals/AppRoutes';
 import ProjectService from '@Services/ProjectService';
 
 export default function Home() {
@@ -18,7 +18,12 @@ export default function Home() {
 
   useEffect(() => {
     ConfigService.loadConfig(() => setConfigLoaded(true));
-    ProjectService.loadAllProjectSettings(() => setIsAllProjectSettingsLoaded(true));
+    ProjectService.loadAllProjectSettings(async () => {
+      if (ProjectService.lastLoadedProject.id_project !== '') {
+        await ProjectService.loadAllSampleSettings(ProjectService.lastLoadedProject.id_project);
+      }
+      setIsAllProjectSettingsLoaded(true);
+    });
   }, []);
 
   console.log(ProjectService.allProjectSettings);

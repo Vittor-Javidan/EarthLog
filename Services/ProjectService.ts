@@ -1,6 +1,7 @@
 import uuid from 'react-native-uuid';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
+import UtilService from './UtilService';
 
 export type ProjectDTO = {
   projectSettings: ProjectSetting
@@ -68,10 +69,6 @@ export type WidgetTypes = 'boolean' | 'text'
   just small blocks of project data is loaded on each screen.
 */
 export type IDsArray = string[]
-export type DataCredential = {
-  name: string,
-  ID: string,
-}
 
 export default class ProjectService {
 
@@ -82,6 +79,9 @@ export default class ProjectService {
     rules: {},
   };
   static allProjectSettings: ProjectSetting[] = [];
+  static allSamplesSettings: SampleSettings[] = [];
+  static allWidgetsData: WidgetData[] = [];
+
   static DATA_BASE_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/database`;
 
   static generateUuidV4(): string {
@@ -104,6 +104,18 @@ export default class ProjectService {
       projectWidgets: [],
       sampleTemplate: [],
       samples: [],
+    };
+  }
+
+  static getDefaultSampleSettings(): SampleSettings {
+    return {
+      id_sample: this.generateUuidV4(),
+      name: '',
+      rules: {
+        allowIDChange: true,
+        allowNameChange: true,
+        allowSampleErase: true,
+      },
     };
   }
 
@@ -134,18 +146,31 @@ export default class ProjectService {
     }
   }
 
-  static async getLastOpenProject(): Promise<DataCredential | null> {
+  static getCachedSampleSettings(id_sample: string): SampleSettings {
+    for (let i = 0; i < this.allSamplesSettings.length; i++) {
+      if (this.allSamplesSettings[i].id_sample === id_sample) {
+        return this.allSamplesSettings[i];
+      }
+    }
+    throw Error('Sample does not exist');
+  }
+
+  static async getLastOpenProject(): Promise<string | null> {
     const lastProject = await LocalStorageService.getData('LastProject');
     if (lastProject === null) {
       return null;
     }
-    return JSON.parse(lastProject) as DataCredential;
+    return JSON.parse(lastProject) as string;
   }
 
-  static async saveLastOpenProject(projectDataCredential: DataCredential): Promise<void> {
-    await LocalStorageService.saveData('LastProject', JSON.stringify(projectDataCredential));
+  static async saveLastOpenProject(id_project: string): Promise<void> {
+
+    // LOCAL STORAGE
+    await LocalStorageService.saveData('LastProject', JSON.stringify(id_project));
+
+    // MEMORY CACHE
     this.allProjectSettings.forEach(settings => {
-      if (settings.id_project === projectDataCredential.ID) {
+      if (settings.id_project === id_project) {
         this.lastLoadedProject = settings;
       }
     });
@@ -169,41 +194,53 @@ export default class ProjectService {
     }
 
     // LAST LOADED PROJECT
-    const lastProject = await this.getLastOpenProject();
-    if (lastProject === null) {
+    const lastProjectID = await this.getLastOpenProject();
+    if (lastProjectID === null) {
       onFinish();
       return;
     }
 
     for (let i = 0; i < this.allProjectSettings.length; i++) {
-      if (this.allProjectSettings[i].id_project === lastProject.ID) {
+      if (this.allProjectSettings[i].id_project === lastProjectID) {
         this.lastLoadedProject = this.allProjectSettings[i];
       }
     }
     onFinish();
   }
 
-  static async getProjectsCredentials(): Promise<DataCredential[] | null> {
-    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
+  static async loadAllSampleSettings(id_project: string): Promise<void> {
+
+    // ALL SAMPLE SETTINGS
+    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
 
     if (indexDataString === null) {
-      return null;
+      return;
     }
 
-    const projectCredentials: DataCredential[] = [];
+    this.allSamplesSettings = [];
     const indexData = JSON.parse(indexDataString) as IDsArray;
     for (let i = 0; i < indexData.length; i++) {
+      this.allSamplesSettings.push(await this.getSampleSettings(id_project, indexData[i]));
+    }
+  }
 
-      const id_project = indexData[i];
-      const projectSettings = await this.getProjectSettings(id_project);
-      projectCredentials.push({
-        ID: projectSettings.id_project,
-        name: projectSettings.name,
-      });
+  static async loadAllWidgetsData(id_project: string, id_sample: string): Promise<void> {
+
+    // ALL WIDGET DATA
+    const directoryPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`;
+    const indexFilePath = `${directoryPath}/index.json`;
+    const indexDataString = await FileSystemService.readFile(indexFilePath);
+
+    if (indexDataString === null) {
+      return;
     }
 
-    return projectCredentials;
+    this.allWidgetsData = [];
+    const indexData = JSON.parse(indexDataString) as IDsArray;
+    for (let i = 0; i < indexData.length; i++) {
+      this.allWidgetsData.push(await this.readWidgetData(`${directoryPath}/${indexData[i]}`));
+    }
   }
 
   static async getProjectSettings(id_project: string): Promise<ProjectSetting> {
@@ -216,6 +253,30 @@ export default class ProjectService {
     }
 
     return await JSON.parse(settingsFile) as ProjectSetting;
+  }
+
+  static async getSampleSettings(id_project: string, id_sample: string): Promise<SampleSettings> {
+    const settingsFile = await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleSettings.json`
+    );
+
+    if (settingsFile === null) {
+      throw Error('sampleSettings.json file do not exist');
+    }
+
+    return await JSON.parse(settingsFile) as SampleSettings;
+  }
+
+  static async readWidgetData(directoryPath: string): Promise<WidgetData> {
+    const dataFile = await FileSystemService.readFile(
+      `${directoryPath}/data.json`
+    );
+
+    if (dataFile === null) {
+      throw Error('data.json file do not exist');
+    }
+
+    return await JSON.parse(dataFile) as WidgetData;
   }
 
   static async createProject(
@@ -267,8 +328,10 @@ export default class ProjectService {
         }
       }
 
-      // SAVE SETTINGS ON CACHE
-      this.allProjectSettings.push(JSON.parse(JSON.stringify(projectDTO.projectSettings)));
+      // MEMORY CACHE
+      this.allProjectSettings.push(
+        UtilService.deepCloning(projectDTO.projectSettings)
+      );
 
       onSuccess();
 
@@ -358,6 +421,11 @@ export default class ProjectService {
         );
 
       }
+
+      // MEMORY CACHE
+      this.allSamplesSettings.push(
+        UtilService.deepCloning(sampleSettings)
+      );
 
       onSuccess();
 
