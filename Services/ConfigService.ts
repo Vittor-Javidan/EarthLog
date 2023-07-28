@@ -21,13 +21,12 @@ export default class ConfigService {
     theme: { ...this.DEFAULT_CONFIG.theme },
   };
 
-  static async loadConfig(onFinish: () => void): Promise<void> {
+  static async loadConfig(): Promise<void> {
     const data = await LocalStorageService.getData(ConfigService.LOCAL_STORAGE_KEY);
     if (data) {
       const verifiedData = this.verifyConfigDTOIntegrity(JSON.parse(data));
       this.config = verifiedData;
     }
-    onFinish();
   }
 
   static async saveConfig(): Promise<void> {

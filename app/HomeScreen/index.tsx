@@ -69,9 +69,11 @@ function Drawer() {
 function ProjectButtons() {
 
   const navController = useRouter();
-  const showLastProjectButton = ProjectService.lastLoadedProject.id_project !== '';
   const showProjects = (
-    (ProjectService.allProjectSettings.length > 0 && !showLastProjectButton) ||
+    (
+      ProjectService.allProjectSettings.length > 0 &&
+      ProjectService.lastLoadedProject.id_project === ''
+    ) ||
     (ProjectService.allProjectSettings.length > 1)
   );
 
@@ -89,20 +91,7 @@ function ProjectButtons() {
 
   return (
     <Layout.View>
-      {showLastProjectButton && (<>
-        <Layout.Text
-          fontSize={ThemeService.FONTS.h2}
-          color={'onBackground'}
-        >
-          Last Open
-        </Layout.Text>
-        <Layout.Button
-          title={ProjectService.lastLoadedProject.name}
-          onPress={() => {
-            navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastLoadedProject.id_project));
-          }}
-        />
-      </>)}
+      <LastProjectButton />
       {showProjects && (<>
         <Layout.Text
           fontSize={ThemeService.FONTS.h2}
@@ -114,4 +103,26 @@ function ProjectButtons() {
       </>)}
     </Layout.View>
   );
+}
+
+function LastProjectButton() {
+
+  const navController = useRouter();
+  const showLastProjectButton = ProjectService.lastLoadedProject.id_project !== '';
+
+  return (showLastProjectButton ? (<>
+    <Layout.Text
+      fontSize={ThemeService.FONTS.h2}
+      color={'onBackground'}
+    >
+      Last Open
+    </Layout.Text>
+    <Layout.Button
+      title={ProjectService.lastLoadedProject.name}
+      onPress={async () => {
+        await ProjectService.loadAllSampleSettings(ProjectService.lastLoadedProject.id_project);
+        navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastLoadedProject.id_project));
+      }}
+    />
+  </>) : <></>);
 }

@@ -176,98 +176,19 @@ export default class ProjectService {
     });
   }
 
-  static async loadAllProjectSettings(onFinish: () => void): Promise<void> {
-
-    // ALL PROJECT SETTINGS
-    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/index.json`;
+  static async readIndexFile(folderPath: string): Promise<IDsArray> {
+    const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
-
     if (indexDataString === null) {
-      onFinish();
-      return;
+      throw Error(`ERROR:
+        index.json file do not exist
+        path: ${folderPath}
+      `);
     }
-
-    this.allProjectSettings = [];
-    const indexData = JSON.parse(indexDataString) as IDsArray;
-    for (let i = 0; i < indexData.length; i++) {
-      this.allProjectSettings.push(await this.getProjectSettings(indexData[i]));
-    }
-
-    // LAST LOADED PROJECT
-    const lastProjectID = await this.getLastOpenProject();
-    if (lastProjectID === null) {
-      onFinish();
-      return;
-    }
-
-    for (let i = 0; i < this.allProjectSettings.length; i++) {
-      if (this.allProjectSettings[i].id_project === lastProjectID) {
-        this.lastLoadedProject = this.allProjectSettings[i];
-      }
-    }
-    onFinish();
+    return JSON.parse(indexDataString) as IDsArray;
   }
 
-  static async loadAllSampleSettings(id_project: string): Promise<void> {
-
-    // ALL SAMPLE SETTINGS
-    const indexFilePath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`;
-    const indexDataString = await FileSystemService.readFile(indexFilePath);
-
-    if (indexDataString === null) {
-      return;
-    }
-
-    this.allSamplesSettings = [];
-    const indexData = JSON.parse(indexDataString) as IDsArray;
-    for (let i = 0; i < indexData.length; i++) {
-      this.allSamplesSettings.push(await this.getSampleSettings(id_project, indexData[i]));
-    }
-  }
-
-  static async loadAllWidgetsData(id_project: string, id_sample: string): Promise<void> {
-
-    // ALL WIDGET DATA
-    const directoryPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`;
-    const indexFilePath = `${directoryPath}/index.json`;
-    const indexDataString = await FileSystemService.readFile(indexFilePath);
-
-    if (indexDataString === null) {
-      return;
-    }
-
-    this.allWidgetsData = [];
-    const indexData = JSON.parse(indexDataString) as IDsArray;
-    for (let i = 0; i < indexData.length; i++) {
-      this.allWidgetsData.push(await this.readWidgetData(`${directoryPath}/${indexData[i]}`));
-    }
-  }
-
-  static async getProjectSettings(id_project: string): Promise<ProjectSetting> {
-    const settingsFile = await FileSystemService.readFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
-    );
-
-    if (settingsFile === null) {
-      throw Error('projectSettings.json file do not exist');
-    }
-
-    return await JSON.parse(settingsFile) as ProjectSetting;
-  }
-
-  static async getSampleSettings(id_project: string, id_sample: string): Promise<SampleSettings> {
-    const settingsFile = await FileSystemService.readFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleSettings.json`
-    );
-
-    if (settingsFile === null) {
-      throw Error('sampleSettings.json file do not exist');
-    }
-
-    return await JSON.parse(settingsFile) as SampleSettings;
-  }
-
-  static async readWidgetData(directoryPath: string): Promise<WidgetData> {
+  static async readWidgetDataFile(directoryPath: string): Promise<WidgetData> {
     const dataFile = await FileSystemService.readFile(
       `${directoryPath}/data.json`
     );
@@ -279,6 +200,92 @@ export default class ProjectService {
     return await JSON.parse(dataFile) as WidgetData;
   }
 
+  static async loadAllProjectSettings(): Promise<void> {
+
+    const indexData = await this.readIndexFile(this.DATA_BASE_DIRECTORY);
+
+    this.allProjectSettings = [];
+    for (let i = 0; i < indexData.length; i++) {
+      this.allProjectSettings.push(await this.readProjectSettings(indexData[i]));
+    }
+
+    // LAST LOADED PROJECT
+    const lastProjectID = await this.getLastOpenProject();
+    if (lastProjectID === null) {
+      return;
+    }
+
+    for (let i = 0; i < this.allProjectSettings.length; i++) {
+      if (this.allProjectSettings[i].id_project === lastProjectID) {
+        this.lastLoadedProject = this.allProjectSettings[i];
+      }
+    }
+  }
+
+  static async loadLastOpenProject(): Promise<void> {
+
+    const lastProjectID = await this.getLastOpenProject();
+    if (lastProjectID === null) {
+      return;
+    }
+
+    for (let i = 0; i < this.allProjectSettings.length; i++) {
+      if (this.allProjectSettings[i].id_project === lastProjectID) {
+        this.lastLoadedProject = this.allProjectSettings[i];
+      }
+    }
+  }
+
+  static async loadAllSampleSettings(id_project: string): Promise<void> {
+
+    const indexData = await this.readIndexFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`,
+    );
+
+    this.allSamplesSettings = [];
+    for (let i = 0; i < indexData.length; i++) {
+      this.allSamplesSettings.push(await this.readSampleSettings(id_project, indexData[i]));
+    }
+  }
+
+  static async loadAllWidgetsData(id_project: string, id_sample: string): Promise<void> {
+
+    // ALL WIDGET DATA
+    const directoryPath = `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`;
+    const indexData = await this.readIndexFile(
+      directoryPath
+    );
+
+    this.allWidgetsData = [];
+    for (let i = 0; i < indexData.length; i++) {
+      this.allWidgetsData.push(await this.readWidgetDataFile(`${directoryPath}/${indexData[i]}`));
+    }
+  }
+
+  static async readProjectSettings(id_project: string): Promise<ProjectSetting> {
+    const settingsFile = await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
+    );
+
+    if (settingsFile === null) {
+      throw Error('projectSettings.json file do not exist');
+    }
+
+    return await JSON.parse(settingsFile) as ProjectSetting;
+  }
+
+  static async readSampleSettings(id_project: string, id_sample: string): Promise<SampleSettings> {
+    const settingsFile = await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleSettings.json`
+    );
+
+    if (settingsFile === null) {
+      throw Error('sampleSettings.json file do not exist');
+    }
+
+    return await JSON.parse(settingsFile) as SampleSettings;
+  }
+
   static async createProject(
     projectDTO: ProjectDTO,
     onSuccess: () => void,
@@ -286,9 +293,6 @@ export default class ProjectService {
   ): Promise<void> {
 
     try {
-
-      // CREATE DATABASE FOLDER IF DON'T EXIST
-      await this.createDataBaseFolderStructure();
 
       // PROJECT
       const { id_project } = projectDTO.projectSettings;

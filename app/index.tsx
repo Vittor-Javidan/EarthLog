@@ -11,25 +11,22 @@ import ProjectService from '@Services/ProjectService';
 export default function Home() {
 
   LogService.useLog('HOME SCREEN: App Started');
-  const [isConfigLoaded, setConfigLoaded] = useState<boolean>(false);
-  const [isAllProjectSettingsLoaded, setIsAllProjectSettingsLoaded] = useState<boolean>(false);
-
-  const loadComplete = isConfigLoaded && isAllProjectSettingsLoaded;
+  const [loadFinish, setLoadFinish] = useState<boolean>(false);
 
   useEffect(() => {
-    ConfigService.loadConfig(() => setConfigLoaded(true));
-    ProjectService.loadAllProjectSettings(async () => {
-      if (ProjectService.lastLoadedProject.id_project !== '') {
-        await ProjectService.loadAllSampleSettings(ProjectService.lastLoadedProject.id_project);
-      }
-      setIsAllProjectSettingsLoaded(true);
-    });
+    initApp(() => setLoadFinish(true));
   }, []);
 
-  console.log(ProjectService.allProjectSettings);
-
-  if (!loadComplete) {
+  if (!loadFinish) {
     return <LoadingScreen />;
   }
   return <Redirect href={AppRoutes.HOME} />;
+}
+
+async function initApp(onFinish: () => void) {
+  await ConfigService.loadConfig();
+  await ProjectService.createDataBaseFolderStructure();
+  await ProjectService.loadAllProjectSettings();
+  await ProjectService.loadLastOpenProject();
+  onFinish();
 }
