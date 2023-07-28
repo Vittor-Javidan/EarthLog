@@ -148,14 +148,12 @@
     + Create Project
     + Delete Project
     + Update Project
-    - Create Sample
-    - Update Sample
-    - Delete Sample
+    + Create Sample
+    + Update Sample
+    + Delete Sample
     - Create widget (for project, template and sample)
     - Update widget (for project, template and sample)
     - Delete widget (for project, template and sample)
-
-## 2 - Basic Screens
 
 + Implement project creation to Project Creation Screen confirm button.
 + Show all available projects on HomeScreen
@@ -164,13 +162,12 @@
     - Project Edit Screen
         - Show the project settings that are allow to be edited.
         - Show delete input option, no rules are required here.
-    - Project Screen
-        - Show all samples available
-        - All samples must have an edit button
-        - Must show a button to create a new sample, if rules allow.
+    + Project Screen
+        + Show all samples available
+        + Must show a button to create a new sample, if rules allow.
     - Sample Edit Screen
         - Show the sample settings that are allow to be edited.
         - Show delete input option, if the rules allow.
-    - Sample Screen
-        - Show all widgets inside the sample.
-        - Must show a button to create a new widget, if rules allow.
+    + Sample Screen
+        + Show all widgets inside the sample.
+        + Must show a button to create a new widget, if rules allow.

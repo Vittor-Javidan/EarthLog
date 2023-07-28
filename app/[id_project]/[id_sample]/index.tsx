@@ -19,7 +19,7 @@ export default function SampleScreens() {
   const settings = useMemo<SampleSettings>(() => ProjectService.getCachedSampleSettings(id_sample as string), []);
 
   LogService.useLog(`RENDERED: Sample Screen
-    id project: ${id_project}:
+    id project: ${id_project}
     id sample: ${id_sample}
   `);
 

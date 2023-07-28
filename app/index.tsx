@@ -25,8 +25,6 @@ export default function Home() {
 
 async function initApp(onFinish: () => void) {
   await ConfigService.loadConfig();
-  await ProjectService.createDataBaseFolderStructure();
-  await ProjectService.loadAllProjectSettings();
-  await ProjectService.loadLastOpenProject();
+  await ProjectService.loadDatabase();
   onFinish();
 }
