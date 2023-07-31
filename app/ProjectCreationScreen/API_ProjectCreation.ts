@@ -61,7 +61,7 @@ export default class API_ProjectCreation {
 
   static deletePointTemplateWidget(widgetData: WidgetData) {
     this.unsavedChanges = true;
-    this.temporaryProject.projectWidgets = this.temporaryProject.sampleTemplate.filter(
+    this.temporaryProject.sampleTemplate = this.temporaryProject.sampleTemplate.filter(
       widget => widget.id_widget !== widgetData.id_widget
     );
   }
