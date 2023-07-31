@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
-import WidgetsGroup from './WidgetsGroup';
+import { Widget } from '@Components/Widget';
 
 import { Languages, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
@@ -33,6 +33,17 @@ export default function Widgets_PointTemplate() {
     refresh(prev => !prev);
   }
 
+  const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.sampleTemplate.map(widgetData => {
+    return (
+      <Widget.Selector
+        key={widgetData.id_widget}
+        widgetData={widgetData}
+        onConfirm={(widgetData) => { onConfirm(widgetData);}}
+        onDelete={() => onDelete(widgetData)}
+      />
+    );
+  });
+
   return (
     <Layout.View>
       <Layout.Text
@@ -41,10 +52,8 @@ export default function Widgets_PointTemplate() {
       >
         {stringResources['Point template']}
       </Layout.Text>
-      <WidgetsGroup
-        widgets={API_ProjectCreation.temporaryProject.sampleTemplate}
-        onConfirm={onConfirm}
-        onDelete={onDelete}
+      {allWidgetsComponents}
+      <Widget.AddWidgetButton
         onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
       />
     </Layout.View>

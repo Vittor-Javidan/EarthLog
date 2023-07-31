@@ -3,7 +3,9 @@ import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
-import { ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
+import { Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
+import { translations } from '@Translations/index';
+import { Translations_AddWidgetButton } from '@Translations/Widgets/AddWidgetButton';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
@@ -13,6 +15,9 @@ export default function AddWidgetButton(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo<Translations_AddWidgetButton[Languages]>(() => {
+    return translations.Widgets.AddWidgetButton[ConfigService.config.language];
+  }, []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);
   const [label, setLabel] = useState<string>('');
@@ -37,23 +42,23 @@ export default function AddWidgetButton(props: {
 
   return (<>
     <Layout.Button
-      title="Add"
+      title={stringResources['Add']}
       onPress={() => setShowlModal(true)}
     />
     {showModal && (
       <Layout.Modal
-        title="Add Widget"
+        title={stringResources['Add Widget']}
         onRequestClose={() => setShowlModal(false)}
       >
         <Layout.View>
           <Input.String
-            label="Widget name"
+            label={stringResources['Widget name']}
             backgroundColor_Label={theme.tertiary}
             backgroundColor_Value={theme.background}
             color_Label={theme.onTertiary}
             color_Value={theme.onBackground}
             color_Placeholder={theme.onBackground_Placeholder}
-            placeholder="Write a name to the widget here..."
+            placeholder={stringResources['Write a name to the widget here...']}
             value={label}
             onChangeText={setLabel}
             onResetPress={() => setLabel('')}
@@ -62,7 +67,7 @@ export default function AddWidgetButton(props: {
         <Layout.ScrollView>
           <ButtonContainer>
             <Layout.Button
-              title="Boolean"
+              title={stringResources['Boolean']}
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
               onPress={() => onPress('boolean')}
@@ -70,7 +75,7 @@ export default function AddWidgetButton(props: {
           </ButtonContainer>
           <ButtonContainer>
             <Layout.Button
-              title="Text"
+              title={stringResources['Text']}
               overrideBackgroundColor={theme.tertiary}
               overrideTextColor={theme.onTertiary}
               onPress={() => onPress('text')}

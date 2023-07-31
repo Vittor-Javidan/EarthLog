@@ -1,15 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
-import { Widget } from '@Components/Widget';
+import Widgets_Sample from './Widgets_Sample';
 
 import AppRoutes from '@Globals/AppRoutes';
-import { SampleSettings, WidgetData } from '@Types/index';
+import { SampleSettings } from '@Types/index';
 
 import LogService from '@Services/LogService';
 import ProjectService from '@Services/ProjectService';
-import AddWidgetButton from './AddWidgetButton';
 
 export default function SampleScreens() {
 
@@ -36,7 +35,7 @@ export default function SampleScreens() {
       ]}
     >
       <Layout.ScrollView>
-        <SampleWidgets />
+        <Widgets_Sample />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -52,72 +51,5 @@ export default function SampleScreens() {
         />
       </Layout.View>
     </Layout.Root>
-  );
-}
-
-function SampleWidgets() {
-
-  const { id_project, id_sample } = useLocalSearchParams();
-  const [_, refresh] = useState<boolean>(false);
-
-  async function onConfirm(widgetData: WidgetData) {
-    await ProjectService.updateWidget_Sample(
-      id_project as string,
-      id_sample as string,
-      widgetData,
-      () => {},
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
-  }
-
-  async function onDelete(widgetData: WidgetData) {
-    const { id_widget } = widgetData;
-    await ProjectService.deleteWidget_Sample(
-      id_project as string,
-      id_sample as string,
-      id_widget,
-      () => {
-        refresh(prev => !prev);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
-  }
-
-  async function onCreateWidget(widgetData: WidgetData) {
-    await ProjectService.createWidget_Sample(
-      id_project as string,
-      id_sample as string,
-      widgetData,
-      () => {
-        refresh(prev => !prev);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
-  }
-
-  const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Sample.map(widgetData => {
-    return (
-      <Widget.Selector
-        key={widgetData.id_widget}
-        widgetData={widgetData}
-        onConfirm={async (widgetData) => await onConfirm(widgetData)}
-        onDelete={async () => await onDelete(widgetData)}
-      />
-    );
-  });
-
-  return (
-    <>
-      {allWidgetsComponents}
-      <AddWidgetButton
-        onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
-      />
-    </>
   );
 }

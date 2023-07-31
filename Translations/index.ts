@@ -6,6 +6,7 @@ import { Translations_LanguagesScreen, translations_LanguagesScreen } from './Sc
 import { Translations_ThemeScreen, translations_ThemeScreen } from './Screens/SettingsScreen/ThemeScreen';
 import { Translations_TextWidget, translations_TextWidget } from './Widgets/TextWidget';
 import { Translations_BooleanData, translations_BooleanData } from './Data/Boolean';
+import { Translations_AddWidgetButton, translations_AddWidgetButton } from './Widgets/AddWidgetButton';
 
 export const translations: {
   Screens: {
@@ -18,6 +19,7 @@ export const translations: {
   }
   Widgets: {
     TextWidget:             Translations_TextWidget
+    AddWidgetButton:        Translations_AddWidgetButton
   }
   Data: {
     Boolean:                Translations_BooleanData
@@ -33,6 +35,7 @@ export const translations: {
   },
   Widgets: {
     TextWidget:             translations_TextWidget,
+    AddWidgetButton:        translations_AddWidgetButton,
   },
   Data: {
     Boolean:                translations_BooleanData,
