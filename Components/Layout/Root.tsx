@@ -12,6 +12,8 @@ import ConfigService from '@Services/ConfigService';
 import { Icon, IconName } from '@Components/Icon';
 
 const { height: HEIGHT } = Dimensions.get('window');
+const NAVBAR_HEIGH = 60;
+const NAVGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
@@ -41,19 +43,19 @@ export default function Root(props: {
         title={props.title}
         iconName={props.iconName}
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-        style={{ flex: 1 }}
+        style={{ height: NAVBAR_HEIGH }}
       />
       <View
-        style={{ flex: 9 }}
+        style={{ flex: 1 }}
       >
         {props.showNavigationTree && (
           <NavigationTree
-            style={{ flex: 1 }}
+            style={{ height: NAVGATION_TREE_HEIGHT }}
             treeElements={props.navigationTreeIcons}
           />
         )}
         <ContentArea
-          style={{ flex: 19 }}
+          style={{ flex: 1 }}
         >
           {props.children}
         </ContentArea>
@@ -185,7 +187,7 @@ function Drawer(props: {
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const STATUS_BAR_HEIGHT = useSafeAreaInsets().top - 1;
+  const STATUS_BAR_HEIGHT = useSafeAreaInsets().top;
 
   return (
     <ScrollView
@@ -194,7 +196,7 @@ function Drawer(props: {
         position: 'absolute',
         bottom: 0,
         left: 0,
-        height: (HEIGHT - STATUS_BAR_HEIGHT) * 0.9,
+        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH),
         width: '100%',
       }}
     >
