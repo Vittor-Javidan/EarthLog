@@ -75,7 +75,7 @@ function SampleButtons() {
       key={sampleSettings.id_sample}
       title={sampleSettings.name}
       onPress={async () => {
-        await ProjectService.loadAllSampleWidgetData(projectSettings.id_project, sampleSettings.id_sample);
+        await ProjectService.loadAllWidgets_Sample(projectSettings.id_project, sampleSettings.id_sample);
         navController.push(AppRoutes.PS_SAMPLE_SCREEN(projectSettings.id_project, sampleSettings.id_sample));
       }}
     />

@@ -1,21 +1,20 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 
 import AppRoutes from '@Globals/AppRoutes';
-import { SampleSettings, ThemeDTO, WidgetData } from '@Types/index';
+import { SampleSettings, WidgetData } from '@Types/index';
 
 import LogService from '@Services/LogService';
-import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import AddWidgetButton from './AddWidgetButton';
 
 export default function SampleScreens() {
 
   const { id_project, id_sample } = useLocalSearchParams();
   const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const settings = useMemo<SampleSettings>(() => ProjectService.getSample(id_sample as string), []);
 
   LogService.useLog(`RENDERED: Sample Screen
@@ -51,12 +50,6 @@ export default function SampleScreens() {
             navController.push(AppRoutes.PROJECT_SCREEN( id_project as string ));
           }}
         />
-        <Layout.Button
-          title="New Widget"
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
-          onPress={() => {}}
-        />
       </Layout.View>
     </Layout.Root>
   );
@@ -64,14 +57,57 @@ export default function SampleScreens() {
 
 function SampleWidgets() {
 
-  const widgetData = useMemo<WidgetData[]>(() => ProjectService.allSampleWidgets, []);
-  const allWidgetsComponents: JSX.Element[] = widgetData.map(widgetData => {
+  const { id_project, id_sample } = useLocalSearchParams();
+  const [_, refresh] = useState<boolean>(false);
+
+  async function onConfirm(widgetData: WidgetData) {
+    await ProjectService.updateWidget_Sample(
+      id_project as string,
+      id_sample as string,
+      widgetData,
+      () => {},
+      (errorMessage) => {
+        alert(errorMessage);
+      }
+    );
+  }
+
+  async function onDelete(widgetData: WidgetData) {
+    const { id_widget } = widgetData;
+    await ProjectService.deleteWidget_Sample(
+      id_project as string,
+      id_sample as string,
+      id_widget,
+      () => {
+        refresh(prev => !prev);
+      },
+      (errorMessage) => {
+        alert(errorMessage);
+      }
+    );
+  }
+
+  async function onCreateWidget(widgetData: WidgetData) {
+    await ProjectService.createWidget_Sample(
+      id_project as string,
+      id_sample as string,
+      widgetData,
+      () => {
+        refresh(prev => !prev);
+      },
+      (errorMessage) => {
+        alert(errorMessage);
+      }
+    );
+  }
+
+  const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Sample.map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onConfirm={(_) => {}}
-        onDelete={() => {}}
+        onConfirm={async (widgetData) => await onConfirm(widgetData)}
+        onDelete={async () => await onDelete(widgetData)}
       />
     );
   });
@@ -79,6 +115,9 @@ function SampleWidgets() {
   return (
     <>
       {allWidgetsComponents}
+      <AddWidgetButton
+        onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
+      />
     </>
   );
 }
