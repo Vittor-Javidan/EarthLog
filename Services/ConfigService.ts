@@ -1,11 +1,8 @@
-import LocalStorageService from './LocalStorageService';
-import LanguageService, { Languages } from './LanguageService';
-import ThemeService, { ThemeDTO } from './ThemeService';
+import { ConfigDTO, ThemeDTO } from '@Types/index';
 
-export type ConfigDTO = {
-  language: Languages
-  theme: ThemeDTO
-}
+import LocalStorageService from './LocalStorageService';
+import LanguageService from './LanguageService';
+import ThemeService from './ThemeService';
 
 export default class ConfigService {
 

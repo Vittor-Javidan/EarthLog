@@ -8,9 +8,9 @@ import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import { Languages, ThemeDTO } from '@Types/index';
 
 export default function HomeScreen() {
 
@@ -71,19 +71,19 @@ function ProjectButtons() {
   const navController = useRouter();
   const showProjects = (
     (
-      ProjectService.allProjectSettings.length > 0 &&
-      ProjectService.lastLoadedProject.id_project === ''
+      ProjectService.allProjects.length > 0 &&
+      ProjectService.lastProject.id_project === ''
     ) ||
-    (ProjectService.allProjectSettings.length > 1)
+    (ProjectService.allProjects.length > 1)
   );
 
-  const allProjectButtons = ProjectService.allProjectSettings.map(settings => (
+  const allProjectButtons = ProjectService.allProjects.map(settings => (
     <Layout.Button
       key={settings.id_project}
       title={settings.name}
       onPress={async () => {
         await ProjectService.saveLastOpenProject(settings.id_project);
-        await ProjectService.loadAllSampleSettings(settings.id_project);
+        await ProjectService.loadAllSamplesSettings(settings.id_project);
         navController.push(AppRoutes.PROJECT_SCREEN(settings.id_project));
       }}
     />
@@ -108,7 +108,7 @@ function ProjectButtons() {
 function LastProjectButton() {
 
   const navController = useRouter();
-  const showLastProjectButton = ProjectService.lastLoadedProject.id_project !== '';
+  const showLastProjectButton = ProjectService.lastProject.id_project !== '';
 
   return (showLastProjectButton ? (<>
     <Layout.Text
@@ -118,10 +118,10 @@ function LastProjectButton() {
       Last Open
     </Layout.Text>
     <Layout.Button
-      title={ProjectService.lastLoadedProject.name}
+      title={ProjectService.lastProject.name}
       onPress={async () => {
-        await ProjectService.loadAllSampleSettings(ProjectService.lastLoadedProject.id_project);
-        navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastLoadedProject.id_project));
+        await ProjectService.loadAllSamplesSettings(ProjectService.lastProject.id_project);
+        navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastProject.id_project));
       }}
     />
   </>) : <></>);

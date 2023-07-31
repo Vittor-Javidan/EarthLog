@@ -1,8 +1,8 @@
-import { WidgetData } from '@Services/ProjectService';
 import React from 'react';
-
 import { Widget } from '@Components/Widget';
 import AddWidgetButton from './AddWidgetButton';
+
+import { WidgetData } from '@Types/index';
 
 export default function WidgetsGroup(props: {
   widgets: WidgetData[]

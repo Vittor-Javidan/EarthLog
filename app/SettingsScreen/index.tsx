@@ -4,13 +4,13 @@ import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 
+import { Languages } from '@Types/index';
 import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
 import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
 
 export default function SettingsScreen(): JSX.Element {
 

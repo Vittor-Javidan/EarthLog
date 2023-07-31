@@ -2,9 +2,9 @@ import React, { useState, useMemo, ReactNode } from 'react';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 
+import { ThemeDTO, WidgetData } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { WidgetData } from '@Services/ProjectService';
 
 export default function Modal(props: {
   title: string

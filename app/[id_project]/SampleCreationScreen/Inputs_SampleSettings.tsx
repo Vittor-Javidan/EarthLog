@@ -2,10 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
+import { ThemeDTO } from '@Types/index';
+
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 
 import API_SampleCreation from './API_SampleCreation';
 

@@ -4,13 +4,12 @@ import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
+import { Languages, TextWidgetData, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import { TextWidgetData } from '@Services/ProjectService';
+import ThemeService from '@Services/ThemeService';
 
 import { WidgetRules } from '../Rules';
 

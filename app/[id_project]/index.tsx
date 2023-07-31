@@ -4,11 +4,12 @@ import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { ProjectSettings, ThemeDTO } from '@Types/index';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { ProjectSettings } from '@Services/ProjectService';
+import ThemeService from '@Services/ThemeService';
+import ProjectService from '@Services/ProjectService';
 
 
 export default function ProjectScreen() {
@@ -16,7 +17,7 @@ export default function ProjectScreen() {
   const { id_project } = useLocalSearchParams();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<ProjectSettings>(() => ProjectService.getCachedProjectSettings(id_project as string), []);
+  const settings = useMemo<ProjectSettings>(() => ProjectService.getProject(id_project as string), []);
 
   LogService.useLog(`RENDERED: Project Screen
     id: ${id_project}
@@ -65,16 +66,16 @@ export default function ProjectScreen() {
 
 function SampleButtons() {
 
-  const projectSettings = useMemo<ProjectSettings>(() => ProjectService.lastLoadedProject, []);
+  const projectSettings = useMemo<ProjectSettings>(() => ProjectService.lastProject, []);
   const navController = useRouter();
 
-  const showLastProjectButton = ProjectService.allSamplesSettings.length > 0;
-  const allSampleButtons = ProjectService.allSamplesSettings.map(sampleSettings => (
+  const showLastProjectButton = ProjectService.allSamples.length > 0;
+  const allSampleButtons = ProjectService.allSamples.map(sampleSettings => (
     <Layout.Button
       key={sampleSettings.id_sample}
       title={sampleSettings.name}
       onPress={async () => {
-        await ProjectService.loadAllWidgetsData(projectSettings.id_project, sampleSettings.id_sample);
+        await ProjectService.loadAllSampleWidgetData(projectSettings.id_project, sampleSettings.id_sample);
         navController.push(AppRoutes.PS_SAMPLE_SCREEN(projectSettings.id_project, sampleSettings.id_sample));
       }}
     />

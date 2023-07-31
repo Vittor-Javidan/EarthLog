@@ -1,7 +1,8 @@
 import React from 'react';
-import { WidgetData } from '@Services/ProjectService';
 import TextWidget from './TextWidget';
 import BooleanWidget from './BooleanWidget';
+
+import { WidgetData } from '@Types/index';
 
 export default function WidgetSelector(props: {
   widgetData: WidgetData

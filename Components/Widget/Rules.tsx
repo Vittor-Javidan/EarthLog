@@ -1,4 +1,4 @@
-import { TextWidgetData, WidgetData } from '@Services/ProjectService';
+import { TextWidgetData, WidgetData } from '@Types/index';
 
 export class WidgetRules {
 

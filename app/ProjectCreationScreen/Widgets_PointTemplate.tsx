@@ -2,12 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 import WidgetsGroup from './WidgetsGroup';
 
+import { Languages, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
-import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';

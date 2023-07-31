@@ -2,8 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { ThemeDTO } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
 
 export default function Root(props: {
   iconName: IconName

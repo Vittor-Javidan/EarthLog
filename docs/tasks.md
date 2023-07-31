@@ -151,9 +151,9 @@
     + Create Sample
     + Update Sample
     + Delete Sample
-    - Create widget (for project, template and sample)
-    - Update widget (for project, template and sample)
-    - Delete widget (for project, template and sample)
+    + Create widget (for project, template and sample)
+    + Update widget (for project, template and sample)
+    + Delete widget (for project, template and sample)
 
 + Implement project creation to Project Creation Screen confirm button.
 + Show all available projects on HomeScreen

@@ -5,18 +5,18 @@ import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { SampleSettings, ThemeDTO, WidgetData } from '@Types/index';
 
 import LogService from '@Services/LogService';
-import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import ProjectService, { SampleSettings, WidgetData } from '@Services/ProjectService';
+import ProjectService from '@Services/ProjectService';
 
 export default function SampleScreens() {
 
   const { id_project, id_sample } = useLocalSearchParams();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<SampleSettings>(() => ProjectService.getCachedSampleSettings(id_sample as string), []);
+  const settings = useMemo<SampleSettings>(() => ProjectService.getSample(id_sample as string), []);
 
   LogService.useLog(`RENDERED: Sample Screen
     id project: ${id_project}
@@ -64,7 +64,7 @@ export default function SampleScreens() {
 
 function SampleWidgets() {
 
-  const widgetData = useMemo<WidgetData[]>(() => ProjectService.allWidgetsData, []);
+  const widgetData = useMemo<WidgetData[]>(() => ProjectService.allSampleWidgets, []);
   const allWidgetsComponents: JSX.Element[] = widgetData.map(widgetData => {
     return (
       <Widget.Selector

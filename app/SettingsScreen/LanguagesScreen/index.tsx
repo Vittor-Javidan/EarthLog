@@ -4,13 +4,12 @@ import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { languageLabels, Languages, languageTags, LanguageTags, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_LanguagesScreen } from '@Translations/Screens/SettingsScreen/LanguagesScreen';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { LanguageTags, Languages, languageLabels, languageTags } from '@Services/LanguageService';
 
 export default function LanguagesScreen(): JSX.Element {
 

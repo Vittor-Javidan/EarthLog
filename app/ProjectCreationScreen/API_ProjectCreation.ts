@@ -1,4 +1,5 @@
-import ProjectService, { ProjectDTO, WidgetData } from '@Services/ProjectService';
+import ProjectService from '@Services/ProjectService';
+import { ProjectDTO, WidgetData } from '@Types/index';
 export default class API_ProjectCreation {
 
   static unsavedChanges: boolean = false;

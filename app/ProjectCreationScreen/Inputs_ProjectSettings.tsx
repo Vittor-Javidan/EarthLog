@@ -2,12 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
+import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import { Languages } from '@Services/LanguageService';
+import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';

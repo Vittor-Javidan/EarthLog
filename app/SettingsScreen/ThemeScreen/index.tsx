@@ -6,13 +6,13 @@ import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
 
+import { Languages } from '@Types/index';
 import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
 import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
 import LogService from '@Services/LogService';
-import { Languages } from '@Services/LanguageService';
 
 import API_ExampleFigure from './API_ExampleFigure';
 

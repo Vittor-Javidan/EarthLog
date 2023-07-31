@@ -1,4 +1,4 @@
-import { Languages } from '@Services/LanguageService';
+import { Languages } from '@Types/index';
 
 export type Translations_BooleanData = Record<Languages, {
   'True': string

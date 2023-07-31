@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
+import { Languages } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
 
 import API_ExampleFigure from './API_ExampleFigure';
 

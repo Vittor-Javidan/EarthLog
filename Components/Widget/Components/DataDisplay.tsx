@@ -2,7 +2,7 @@ import React, { useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
+import { ThemeDTO } from '@Types/index';
 
 export default function DataDisplay(props: {
   children: ReactNode

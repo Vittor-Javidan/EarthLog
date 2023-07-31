@@ -1,4 +1,6 @@
-import ProjectService, { SampleSettings } from '@Services/ProjectService';
+import { SampleSettings } from '@Types/index';
+
+import ProjectService from '@Services/ProjectService';
 
 export default class API_SampleCreation {
 

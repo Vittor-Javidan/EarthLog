@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { Layout } from '@Layout/index';
 
+import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_BooleanData } from '@Translations/Data/Boolean';
 
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 
 
 export default function BooleanInput(props: {

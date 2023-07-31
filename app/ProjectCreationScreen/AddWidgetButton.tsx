@@ -3,13 +3,12 @@ import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
+import { Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { Languages } from '@Services/LanguageService';
-import ProjectService, { WidgetData, WidgetTypes } from '@Services/ProjectService';
+import ProjectService from '@Services/ProjectService';
 
 export default function AddWidgetButton(props: {
   widgets: WidgetData[]

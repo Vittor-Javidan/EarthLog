@@ -1,31 +1,4 @@
-export type ThemeDTO = {
-  background: string
-  onBackground: string
-  onBackground_Placeholder: string
-
-  primary: string
-  onPrimary: string
-  onPrimary_Placeholder: string
-
-  secondary: string
-  onSecondary: string
-  onSecondary_PlaceHolder: string
-
-  tertiary: string
-  onTertiary: string
-  onTertiary_Placeholder: string
-
-  confirm: string
-  onConfirm: string
-
-  modified: string
-  onModified: string
-
-  wrong: string
-  onWrong: string
-
-  onPressColorPrimary: string
-}
+import { ThemeDTO } from '@Types/index';
 
 export default class ThemeService {
 

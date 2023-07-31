@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import { ThemeDTO } from '@Types/index';
+
+import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
 export default function Label(props: {

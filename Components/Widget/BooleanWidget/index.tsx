@@ -2,14 +2,14 @@ import React, { useMemo, useState } from 'react';
 import { Text, Switch } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import { BooleanWidgetData } from '@Services/ProjectService';
+import ThemeService from '@Services/ThemeService';
 
 import { Icon } from '@Icon/index';
 import { Input } from '@Components/Inputs';
 
 import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
+import { BooleanWidgetData, ThemeDTO } from '@Types/index';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData

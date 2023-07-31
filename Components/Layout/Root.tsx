@@ -4,8 +4,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { ThemeDTO } from '@Types/index';
+
 import { APP_VERSION } from '@Globals/Version';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Icon, IconName } from '@Components/Icon';
 
