@@ -37,19 +37,6 @@ export default function SampleScreens() {
       <Layout.ScrollView>
         <Widgets_Sample />
       </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title="Back"
-          onPress={() => {
-            navController.push(AppRoutes.PROJECT_SCREEN( id_project as string ));
-          }}
-        />
-      </Layout.View>
     </Layout.Root>
   );
 }

@@ -46,12 +46,6 @@ export default function ProjectScreen() {
         }}
       >
         <Layout.Button
-          title="Back"
-          onPress={() => {
-            navController.push(AppRoutes.HOME);
-          }}
-        />
-        <Layout.Button
           title="New Sample"
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
@@ -69,7 +63,7 @@ function SampleButtons() {
   const projectSettings = useMemo<ProjectSettings>(() => ProjectService.lastProject, []);
   const navController = useRouter();
 
-  const showLastProjectButton = ProjectService.allSamples.length > 0;
+  const showSamples = ProjectService.allSamples.length > 0;
   const allSampleButtons = ProjectService.allSamples.map(sampleSettings => (
     <Layout.Button
       key={sampleSettings.id_sample}
@@ -83,7 +77,7 @@ function SampleButtons() {
 
   return (
     <Layout.View>
-      {showLastProjectButton && (<>
+      {showSamples && (<>
           <Layout.Text
             fontSize={ThemeService.FONTS.h2}
             color={'onBackground'}

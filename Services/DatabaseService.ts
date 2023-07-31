@@ -38,6 +38,11 @@ export default class DatabaseService {
     }
   }
 
+  static async deleteDatabase(): Promise<void> {
+    await FileSystemService.delete(this.DATA_BASE_DIRECTORY);
+    await LocalStorageService.removeData('LastProject');
+  }
+
 
 
 
