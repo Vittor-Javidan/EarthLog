@@ -142,7 +142,7 @@ export default class ProjectService {
   // CACHE METHODS
   // ===============================================================================================
 
-  static getProject(id_project: string): ProjectSettings {
+  static getProjectFromCache(id_project: string): ProjectSettings {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         return this.allProjects[i];
@@ -151,7 +151,7 @@ export default class ProjectService {
     throw Error('Project does not exist on cache');
   }
 
-  static getSample(id_sample: string): SampleSettings {
+  static getSampleFromCache(id_sample: string): SampleSettings {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         return this.allSamples[i];

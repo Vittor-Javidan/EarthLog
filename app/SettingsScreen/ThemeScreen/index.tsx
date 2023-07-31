@@ -1,6 +1,6 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { useRouter, useNavigation } from 'expo-router';
+import React, { useState, useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
@@ -15,13 +15,13 @@ import ConfigService from '@Services/ConfigService';
 import LogService from '@Services/LogService';
 
 import API_ExampleFigure from './API_ExampleFigure';
+import useBackPress from 'app/GlobalHooks';
 
 export default function ThemeScreen(): JSX.Element {
 
   LogService.useLog('THEME SCREEN: rendered');
 
   const navController = useRouter();
-  const navigation = useNavigation();
   const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
   const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
     return translations.Screens.ThemeScreen[ConfigService.config.language];
@@ -29,13 +29,26 @@ export default function ThemeScreen(): JSX.Element {
 
   const [locked, setLocked] = useState<boolean>(false);
 
-  useEffect(() => {
-    navigation.addListener('beforeRemove', () => {
-      if (API_ExampleFigure.unsavedChanges) {
-        API_ExampleFigure.discart();
-      }
-    });
-  }, []);
+  useBackPress(() => exitScreen());
+
+  function exitScreen() {
+    API_ExampleFigure.discart();
+    navController.push(AppRoutes.SETTINGS_SCREEN);
+  }
+
+  async function confirmTheme() {
+    await API_ExampleFigure.save();
+    navController.push(AppRoutes.SETTINGS_SCREEN);
+  }
+
+  function goToHomeScreen() {
+    API_ExampleFigure.discart();
+    navController.push(AppRoutes.HOME);
+  }
+
+  function resetTheme() {
+    API_ExampleFigure.reset();
+  }
 
   return (
     <Layout.Root
@@ -46,17 +59,11 @@ export default function ThemeScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.HOME);
-          }}
+          onPress={() => goToHomeScreen()}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={() => exitScreen()}
         />,
       ]}
     >
@@ -74,9 +81,7 @@ export default function ThemeScreen(): JSX.Element {
         <AllInputs />
         <Layout.Button
           title={stringResources['Reset Theme']}
-          onPress={() => {
-            API_ExampleFigure.reset();
-          }}
+          onPress={() => resetTheme()}
         />
       </Layout.ScrollView>
       <Layout.View
@@ -89,19 +94,13 @@ export default function ThemeScreen(): JSX.Element {
           title={stringResources['Discart']}
           overrideBackgroundColor={savedTheme.wrong}
           overrideTextColor={savedTheme.onWrong}
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={() => exitScreen()}
         />
         <Layout.Button
           title={stringResources['Save']}
           overrideBackgroundColor={savedTheme.confirm}
           overrideTextColor={savedTheme.onConfirm}
-          onPress={async () => {
-            await API_ExampleFigure.save();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={async () => await confirmTheme()}
         />
       </Layout.View>
     </Layout.Root>

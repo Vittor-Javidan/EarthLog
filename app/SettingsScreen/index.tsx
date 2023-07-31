@@ -9,17 +9,29 @@ import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
 import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
+import useBackPress from 'app/GlobalHooks';
 
 export default function SettingsScreen(): JSX.Element {
-
-  LogService.useLog('CONFIG SCREEN: rendered');
 
   const navController = useRouter();
   const stringResources = useMemo<Translations_SettingsScreen[Languages]>(() => {
     return translations.Screens.SettingsScreen[ConfigService.config.language];
   }, []);
+
+  useBackPress(() => exitScreen());
+
+  function exitScreen() {
+    navController.push(AppRoutes.HOME);
+  }
+
+  function goToLanguagesScreen() {
+    navController.push(AppRoutes.SS_LANGUAGES_SCREEN);
+  }
+
+  function goToThemeScreen() {
+    navController.push(AppRoutes.SS_THEME_SCREEN);
+  }
 
   return (
     <Layout.Root
@@ -30,7 +42,7 @@ export default function SettingsScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={() => exitScreen()}
         />,
       ]}
     >
@@ -39,24 +51,13 @@ export default function SettingsScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Language']}
-          onPress={() => navController.push(AppRoutes.SS_LANGUAGES_SCREEN)}
+          onPress={() => goToLanguagesScreen()}
         />
         <Layout.Button
           title={stringResources['Theme']}
-          onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
+          onPress={() => goToThemeScreen()}
         />
       </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Back']}
-          onPress={() => navController.push(AppRoutes.HOME)}
-        />
-      </Layout.View>
     </Layout.Root>
   );
 }

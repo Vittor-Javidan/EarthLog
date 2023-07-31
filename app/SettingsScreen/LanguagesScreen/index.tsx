@@ -8,18 +8,26 @@ import { languageLabels, Languages, languageTags, LanguageTags, ThemeDTO } from 
 import { translations } from '@Translations/index';
 import { Translations_LanguagesScreen } from '@Translations/Screens/SettingsScreen/LanguagesScreen';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
+import useBackPress from 'app/GlobalHooks';
 
 export default function LanguagesScreen(): JSX.Element {
-
-  LogService.useLog('LANGUAGES SCREEN: rendered');
 
   const [currentLanguage, setCurrentLanguage] = useState<Languages>(ConfigService.config.language);
   const navController = useRouter();
   const stringResources = useMemo<Translations_LanguagesScreen[Languages]>(
     () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
   );
+
+  useBackPress(() => exitScreen());
+
+  function exitScreen() {
+    navController.push(AppRoutes.SETTINGS_SCREEN);
+  }
+
+  function goToHomeScreen() {
+    navController.push(AppRoutes.HOME);
+  }
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -36,11 +44,11 @@ export default function LanguagesScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={() => goToHomeScreen()}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+          onPress={() => exitScreen()}
         />,
       ]}
     >
@@ -52,17 +60,6 @@ export default function LanguagesScreen(): JSX.Element {
           onButtonClick={saveSelectedLanguage}
         />
       </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Back']}
-          onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
-        />
-      </Layout.View>
     </Layout.Root>
   );
 }

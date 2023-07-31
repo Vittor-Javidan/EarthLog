@@ -6,6 +6,7 @@ import Menu from './Menu';
 import Project from './Project';
 import Reset from './Reset';
 import Root, { IconName as IconNameType } from './Root';
+import Sample from './Sample';
 import Settings from './Settings';
 import Theme from './Theme';
 
@@ -21,4 +22,5 @@ export const Icon = {
   Reset: Reset,
   Close: Close,
   Root: Root,
+  Sample: Sample,
 };

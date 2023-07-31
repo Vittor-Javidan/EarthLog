@@ -53,5 +53,6 @@ export type IconName = (
   'pencil-sharp'        |
   'checkmark-done-sharp'|
   'close'               |
-  'refresh-sharp'
+  'refresh-sharp'       |
+  'clipboard'
 )

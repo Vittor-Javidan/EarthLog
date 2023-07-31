@@ -8,20 +8,32 @@ import { ProjectSettings, ThemeDTO } from '@Types/index';
 
 import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import useBackPress from 'app/GlobalHooks';
+import SampleButtons from './SampleButtons';
 
 
 export default function ProjectScreen() {
 
-  const { id_project } = useLocalSearchParams();
+  const id_project = useLocalSearchParams().id_project as string;
+
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<ProjectSettings>(() => ProjectService.getProject(id_project as string), []);
+  const settings = useMemo<ProjectSettings>(() => ProjectService.getProjectFromCache(id_project), []);
 
   LogService.useLog(`RENDERED: Project Screen
     id: ${id_project}
   `);
+
+  useBackPress(() => exitScreen());
+
+  function exitScreen() {
+    navController.push(AppRoutes.HOME);
+  }
+
+  function goToSampleCreationScreenCreation() {
+    navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(settings.id_project));
+  }
 
   return (
     <Layout.Root
@@ -32,7 +44,7 @@ export default function ProjectScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={() => exitScreen()}
         />,
       ]}
     >
@@ -49,43 +61,9 @@ export default function ProjectScreen() {
           title="New Sample"
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => {
-            navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(settings.id_project));
-          }}
+          onPress={() => goToSampleCreationScreenCreation()}
         />
       </Layout.View>
     </Layout.Root>
-  );
-}
-
-function SampleButtons() {
-
-  const projectSettings = useMemo<ProjectSettings>(() => ProjectService.lastProject, []);
-  const navController = useRouter();
-
-  const showSamples = ProjectService.allSamples.length > 0;
-  const allSampleButtons = ProjectService.allSamples.map(sampleSettings => (
-    <Layout.Button
-      key={sampleSettings.id_sample}
-      title={sampleSettings.name}
-      onPress={async () => {
-        await ProjectService.loadAllWidgets_Sample(projectSettings.id_project, sampleSettings.id_sample);
-        navController.push(AppRoutes.PS_SAMPLE_SCREEN(projectSettings.id_project, sampleSettings.id_sample));
-      }}
-    />
-  ));
-
-  return (
-    <Layout.View>
-      {showSamples && (<>
-          <Layout.Text
-            fontSize={ThemeService.FONTS.h2}
-            color={'onBackground'}
-          >
-            Samples
-          </Layout.Text>
-          {allSampleButtons}
-        </>)}
-    </Layout.View>
   );
 }

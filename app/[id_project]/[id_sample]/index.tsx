@@ -7,30 +7,41 @@ import Widgets_Sample from './Widgets_Sample';
 import AppRoutes from '@Globals/AppRoutes';
 import { SampleSettings } from '@Types/index';
 
-import LogService from '@Services/LogService';
 import ProjectService from '@Services/ProjectService';
+import useBackPress from 'app/GlobalHooks';
 
 export default function SampleScreens() {
 
-  const { id_project, id_sample } = useLocalSearchParams();
-  const navController = useRouter();
-  const settings = useMemo<SampleSettings>(() => ProjectService.getSample(id_sample as string), []);
+  const id_project = useLocalSearchParams().id_project as string;
+  const id_sample = useLocalSearchParams().id_sample as string;
 
-  LogService.useLog(`RENDERED: Sample Screen
-    id project: ${id_project}
-    id sample: ${id_sample}
-  `);
+  const navController = useRouter();
+  const settings = useMemo<SampleSettings>(() => ProjectService.getSampleFromCache(id_sample), []);
+
+  useBackPress(() => exitScreen());
+
+  function exitScreen() {
+    navController.push(AppRoutes.PROJECT_SCREEN(id_project));
+  }
+
+  function goToHomeScreen() {
+    navController.push(AppRoutes.HOME);
+  }
 
   return (
     <Layout.Root
       title={settings.name}
-      iconName="map"
+      iconName="clipboard"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={() => goToHomeScreen()}
+        />,
+        <Icon.Project
+          key="treeIcon_2"
+          onPress={() => exitScreen()}
         />,
       ]}
     >

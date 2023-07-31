@@ -8,7 +8,6 @@ export default class API_ExampleFigure {
   private static registeredSetters: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};
 
   static temporaryConfig: ThemeDTO | null = null;
-  static unsavedChanges: boolean = false;
 
   static setterRegister(setter: React.Dispatch<React.SetStateAction<boolean>>, theme: ThemeDTO) {
     if (this.temporaryConfig === null) {
@@ -21,7 +20,6 @@ export default class API_ExampleFigure {
     if (this.temporaryConfig !== null) {
       this.temporaryConfig[key] = value;
       this.registeredSetters[this.SETTER_KEY](prev => !prev);
-      this.unsavedChanges = true;
     }
   }
 
@@ -29,14 +27,13 @@ export default class API_ExampleFigure {
     if (this.temporaryConfig !== null) {
       this.temporaryConfig = { ...ThemeService.default };
       this.registeredSetters[this.SETTER_KEY](prev => !prev);
-      this.unsavedChanges = true;
     }
   }
 
   static discart() {
     if (this.temporaryConfig !== null) {
       this.temporaryConfig = { ...ConfigService.config.theme };
-      this.unsavedChanges = false;
+      this.registeredSetters[this.SETTER_KEY](prev => !prev);
     }
   }
 
@@ -44,7 +41,6 @@ export default class API_ExampleFigure {
     if (this.temporaryConfig !== null) {
       ConfigService.config.theme = { ...this.temporaryConfig };
       await ConfigService.saveConfig();
-      this.unsavedChanges = false;
     }
   }
 }

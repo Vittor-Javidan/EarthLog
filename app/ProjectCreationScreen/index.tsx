@@ -1,5 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Redirect, useNavigation, useRouter } from 'expo-router';
+import React, { useMemo } from 'react';
+import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
@@ -15,26 +15,23 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
+import Drawer from './Drawer';
+import useBackPress from 'app/GlobalHooks';
 
 export default function ProjectCreationScreen() {
 
-  const navigation = useNavigation();
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
     return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
   }, []);
 
-  const [succed, setSucced] = useState<boolean>(false);
+  useBackPress(() => exitScreen());
 
-  useEffect(() => {
-    // Resets API when component unmounts
-    navigation.addListener('beforeRemove', () => {
-      if (API_ProjectCreation.unsavedChanges) {
-        API_ProjectCreation.reset();
-      }
-    });
-  }, []);
+  function exitScreen() {
+    API_ProjectCreation.reset();
+    navController.push(AppRoutes.HOME);
+  }
 
   async function onConfirm() {
 
@@ -50,18 +47,9 @@ export default function ProjectCreationScreen() {
 
     await ProjectService.createProject(
       API_ProjectCreation.temporaryProject,
-      () => {
-        API_ProjectCreation.reset();
-        setSucced(true);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      },
+      () => exitScreen(),
+      (errorMessage) => alert(errorMessage),
     );
-  }
-
-  if (succed) {
-    return <Redirect href={AppRoutes.HOME} />;
   }
 
   return (
@@ -92,24 +80,16 @@ export default function ProjectCreationScreen() {
           title={stringResources['Cancel']}
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
-          onPress={() => {
-            API_ProjectCreation.reset();
-            navController.push(AppRoutes.HOME);
-          }}
+          onPress={() => exitScreen() }
         />
         <Layout.Button
           title={stringResources['Create']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={async () => {
-            await onConfirm();
-          }}
+          onPress={async () => await onConfirm()}
         />
       </Layout.View>
     </Layout.Root>
   );
 }
 
-function Drawer() {
-  return <></>;
-}

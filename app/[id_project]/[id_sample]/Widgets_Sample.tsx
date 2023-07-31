@@ -8,13 +8,15 @@ import ProjectService from '@Services/ProjectService';
 
 export default function Widgets_Sample() {
 
-  const { id_project, id_sample } = useLocalSearchParams();
+  const id_project = useLocalSearchParams().id_project as string;
+  const id_sample = useLocalSearchParams().id_sample as string;
+
   const [_, refresh] = useState<boolean>(false);
 
   async function onConfirm(widgetData: WidgetData) {
     await ProjectService.updateWidget_Sample(
-      id_project as string,
-      id_sample as string,
+      id_project,
+      id_sample,
       widgetData,
       () => {},
       (errorMessage) => {
@@ -26,8 +28,8 @@ export default function Widgets_Sample() {
   async function onDelete(widgetData: WidgetData) {
     const { id_widget } = widgetData;
     await ProjectService.deleteWidget_Sample(
-      id_project as string,
-      id_sample as string,
+      id_project,
+      id_sample,
       id_widget,
       () => {
         refresh(prev => !prev);
@@ -40,8 +42,8 @@ export default function Widgets_Sample() {
 
   async function onCreateWidget(widgetData: WidgetData) {
     await ProjectService.createWidget_Sample(
-      id_project as string,
-      id_sample as string,
+      id_project,
+      id_sample,
       widgetData,
       () => {
         refresh(prev => !prev);

@@ -1,26 +1,43 @@
 import React, { useMemo } from 'react';
+import { BackHandler, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
+import ProjectButtons from './ProjectButtons';
 
 import AppRoutes from '@Globals/AppRoutes';
+import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
-import ProjectService from '@Services/ProjectService';
-import { Languages, ThemeDTO } from '@Types/index';
+import Drawer from './Drawer';
+import useBackPress from 'app/GlobalHooks';
 
 export default function HomeScreen() {
-
-  LogService.useLog('HOME SCREEN: rendered');
 
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const stringResources = useMemo<Translations_HomeScreen[Languages]>(
     () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
+
+  useBackPress(() => {
+    Alert.alert(
+      stringResources['Hold on!'],
+      stringResources['Want to exit?'],
+      [
+        {
+          text: stringResources['NO'],
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: stringResources['YES'],
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]
+    );
+  });
 
   return (
     <Layout.Root
@@ -49,80 +66,4 @@ export default function HomeScreen() {
       </Layout.View>
     </Layout.Root>
   );
-}
-
-function Drawer() {
-
-  const navController = useRouter();
-  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
-    () => translations.Screens.HomeScreen[ConfigService.config.language], []
-  );
-
-  return (
-    <Layout.DrawerButton
-      title={stringResources['Settings']}
-      onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
-    />
-  );
-}
-
-function ProjectButtons() {
-
-  const navController = useRouter();
-  const showProjects = (
-    (
-      ProjectService.allProjects.length > 0 &&
-      ProjectService.lastProject.id_project === ''
-    ) ||
-    (ProjectService.allProjects.length > 1)
-  );
-
-  const allProjectButtons = ProjectService.allProjects.map(settings => (
-    <Layout.Button
-      key={settings.id_project}
-      title={settings.name}
-      onPress={async () => {
-        await ProjectService.saveLastOpenProject(settings.id_project);
-        await ProjectService.loadAllSamplesSettings(settings.id_project);
-        navController.push(AppRoutes.PROJECT_SCREEN(settings.id_project));
-      }}
-    />
-  ));
-
-  return (
-    <Layout.View>
-      <LastProjectButton />
-      {showProjects && (<>
-        <Layout.Text
-          fontSize={ThemeService.FONTS.h2}
-          color={'onBackground'}
-        >
-          Projects
-        </Layout.Text>
-        {allProjectButtons}
-      </>)}
-    </Layout.View>
-  );
-}
-
-function LastProjectButton() {
-
-  const navController = useRouter();
-  const showLastProjectButton = ProjectService.lastProject.id_project !== '';
-
-  return (showLastProjectButton ? (<>
-    <Layout.Text
-      fontSize={ThemeService.FONTS.h2}
-      color={'onBackground'}
-    >
-      Last Open
-    </Layout.Text>
-    <Layout.Button
-      title={ProjectService.lastProject.name}
-      onPress={async () => {
-        await ProjectService.loadAllSamplesSettings(ProjectService.lastProject.id_project);
-        navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastProject.id_project));
-      }}
-    />
-  </>) : <></>);
 }
