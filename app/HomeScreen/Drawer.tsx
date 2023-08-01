@@ -3,16 +3,14 @@ import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 
 import AppRoutes from '@Globals/AppRoutes';
-import { Languages } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
 import ConfigService from '@Services/ConfigService';
 
 export default function Drawer() {
 
   const navController = useRouter();
-  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
+  const stringResources = useMemo(
     () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
 

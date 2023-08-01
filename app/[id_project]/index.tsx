@@ -1,38 +1,33 @@
 import React, { useMemo } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
-
-import AppRoutes from '@Globals/AppRoutes';
-import { ProjectSettings, ThemeDTO } from '@Types/index';
+import SampleButtons from './SampleButtons';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import useBackPress from 'app/GlobalHooks';
-import SampleButtons from './SampleButtons';
-
 
 export default function ProjectScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const settings = useMemo<ProjectSettings>(() => ProjectService.getProjectFromCache(id_project), []);
+  const theme = useMemo(() => ConfigService.config.theme, []);
+  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
 
   useBackPress(() => exitScreen());
 
   function exitScreen() {
-    navController.push(AppRoutes.HOME);
+    useNavigate('HOME SCREEN');
   }
 
   function goToSampleCreationScreenCreation() {
-    navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(settings.id_project));
+    useNavigate('SAMPLE CREATION SCREEN', id_project);
   }
 
   return (
     <Layout.Root
-      title={settings.name}
+      title={projectSettings.name}
       iconName="map"
       showNavigationTree={true}
       drawerChildren={<></>}

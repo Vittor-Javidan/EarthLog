@@ -1,46 +1,42 @@
 
 import React, { useState, useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
 import { Languages } from '@Types/index';
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
 import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
 
 import API_ExampleFigure from './API_ExampleFigure';
-import useBackPress from 'app/GlobalHooks';
 
 export default function ThemeScreen(): JSX.Element {
 
-  const navController = useRouter();
-  const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
-    return translations.Screens.ThemeScreen[ConfigService.config.language];
-  }, []);
+  const savedTheme = useMemo(
+    () => ConfigService.config.theme, [ConfigService.config.theme]
+  );
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
+    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
+  );
 
   const [locked, setLocked] = useState<boolean>(false);
 
-  useBackPress(() => exitScreen());
+  useBackPress(() => cancelAndExit('SETTINGS SCREEN'));
 
-  function exitScreen() {
+  function cancelAndExit(
+    screen: 'HOME SCREEN' | 'SETTINGS SCREEN'
+  ) {
     API_ExampleFigure.discart();
-    navController.push(AppRoutes.SETTINGS_SCREEN);
+    useNavigate(screen);
   }
 
-  async function confirmTheme() {
+  async function confirmAndSave() {
     await API_ExampleFigure.save();
-    navController.push(AppRoutes.SETTINGS_SCREEN);
-  }
-
-  function goToHomeScreen() {
-    API_ExampleFigure.discart();
-    navController.push(AppRoutes.HOME);
+    useNavigate('SETTINGS SCREEN');
   }
 
   function resetTheme() {
@@ -56,11 +52,11 @@ export default function ThemeScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => goToHomeScreen()}
+          onPress={() => cancelAndExit('HOME SCREEN')}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => exitScreen()}
+          onPress={() => cancelAndExit('SETTINGS SCREEN')}
         />,
       ]}
     >
@@ -91,13 +87,13 @@ export default function ThemeScreen(): JSX.Element {
           title={stringResources['Discart']}
           overrideBackgroundColor={savedTheme.wrong}
           overrideTextColor={savedTheme.onWrong}
-          onPress={() => exitScreen()}
+          onPress={() => cancelAndExit('SETTINGS SCREEN')}
         />
         <Layout.Button
           title={stringResources['Save']}
           overrideBackgroundColor={savedTheme.confirm}
           overrideTextColor={savedTheme.onConfirm}
-          onPress={async () => await confirmTheme()}
+          onPress={async () => await confirmAndSave()}
         />
       </Layout.View>
     </Layout.Root>

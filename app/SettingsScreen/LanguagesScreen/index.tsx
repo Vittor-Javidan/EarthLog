@@ -1,33 +1,23 @@
 import React, { useState, useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import AllButtons from './LanguageButtons';
 
-import AppRoutes from '@Globals/AppRoutes';
-import { languageLabels, Languages, languageTags, LanguageTags, ThemeDTO } from '@Types/index';
+import { LanguageTags } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_LanguagesScreen } from '@Translations/Screens/SettingsScreen/LanguagesScreen';
 
 import ConfigService from '@Services/ConfigService';
-import useBackPress from 'app/GlobalHooks';
 
 export default function LanguagesScreen(): JSX.Element {
 
-  const [currentLanguage, setCurrentLanguage] = useState<Languages>(ConfigService.config.language);
-  const navController = useRouter();
-  const stringResources = useMemo<Translations_LanguagesScreen[Languages]>(
+  const [currentLanguage, setCurrentLanguage] = useState(ConfigService.config.language);
+
+  const stringResources = useMemo(
     () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
   );
 
-  useBackPress(() => exitScreen());
-
-  function exitScreen() {
-    navController.push(AppRoutes.SETTINGS_SCREEN);
-  }
-
-  function goToHomeScreen() {
-    navController.push(AppRoutes.HOME);
-  }
+  useBackPress(() => useNavigate('SETTINGS SCREEN'));
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -40,21 +30,19 @@ export default function LanguagesScreen(): JSX.Element {
       title={stringResources['Languages']}
       iconName="language"
       showNavigationTree={true}
-      drawerChildren={<Drawer />}
+      drawerChildren={<></>}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => goToHomeScreen()}
+          onPress={() => useNavigate('HOME SCREEN')}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => exitScreen()}
+          onPress={() => useNavigate('SETTINGS SCREEN')}
         />,
       ]}
     >
-      <Layout.ScrollView
-        style={{ flex: 1 }}
-      >
+      <Layout.ScrollView>
         <AllButtons
           selectedLanguage={currentLanguage}
           onButtonClick={saveSelectedLanguage}
@@ -62,33 +50,4 @@ export default function LanguagesScreen(): JSX.Element {
       </Layout.ScrollView>
     </Layout.Root>
   );
-}
-
-function Drawer() {
-  return <></>;
-}
-
-function AllButtons(props: {
-  selectedLanguage: LanguageTags
-  onButtonClick: (languageTag: LanguageTags) => void
-}): JSX.Element {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
-  return <>
-    {
-      languageLabels.map((languageLabel, index) => {
-        const isSelected = props.selectedLanguage === languageTags[index];
-        return (
-          <Layout.Button
-            key={languageLabel}
-            title={languageLabel}
-            overrideBackgroundColor={isSelected ? theme.confirm : undefined}
-            overrideTextColor={isSelected ? theme.onConfirm : undefined}
-            onPress={() => props.onButtonClick(languageTags[index])}
-          />
-        );
-      })
-    }
-  </>;
 }

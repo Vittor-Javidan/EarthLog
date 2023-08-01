@@ -1,15 +1,11 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
-
-import AppRoutes from '@Globals/AppRoutes';
 
 import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import { useNavigate } from 'app/GlobalHooks';
 
 export default function ProjectButtons() {
-
-  const navController = useRouter();
 
   const allProjectButtons = ProjectService.allProjects.map(settings => (
     <Layout.Button
@@ -18,7 +14,7 @@ export default function ProjectButtons() {
       onPress={async () => {
         await ProjectService.saveLastOpenProject(settings.id_project);
         await ProjectService.loadAllSamplesSettings(settings.id_project);
-        navController.push(AppRoutes.PROJECT_SCREEN(settings.id_project));
+        useNavigate('PROJECT SCREEN', settings.id_project);
       }}
     />
   ));
@@ -49,7 +45,7 @@ export default function ProjectButtons() {
 
 function LastProjectButton() {
 
-  const navController = useRouter();
+  const { id_project } = ProjectService.lastProject;
   const showLastProjectButton = ProjectService.lastProject.id_project !== '';
 
   return (showLastProjectButton ? (<>
@@ -62,8 +58,8 @@ function LastProjectButton() {
     <Layout.Button
       title={ProjectService.lastProject.name}
       onPress={async () => {
-        await ProjectService.loadAllSamplesSettings(ProjectService.lastProject.id_project);
-        navController.push(AppRoutes.PROJECT_SCREEN(ProjectService.lastProject.id_project));
+        await ProjectService.loadAllSamplesSettings(id_project);
+        useNavigate('PROJECT SCREEN', id_project);
       }}
     />
   </>) : <></>);

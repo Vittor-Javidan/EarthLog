@@ -1,11 +1,10 @@
 import React from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
-
-import AppRoutes from '@Globals/AppRoutes';
 
 import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import { useNavigate } from 'app/GlobalHooks';
 
 export default function SampleButtons() {
 
@@ -28,15 +27,7 @@ export default function SampleButtons() {
 
 function AllButtons() {
 
-  const navController = useRouter();
   const id_project = useLocalSearchParams().id_project as string;
-
-  function goToSampleCreationScreen(
-    id_project: string,
-    id_sample: string
-  ) {
-    navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
-  }
 
   return <>
     {ProjectService.allSamples.map(sampleSettings => (
@@ -45,7 +36,7 @@ function AllButtons() {
         title={sampleSettings.name}
         onPress={async () => {
           await ProjectService.loadAllWidgets_Sample(id_project, sampleSettings.id_sample);
-          goToSampleCreationScreen(id_project, sampleSettings.id_sample);
+          useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample);
         }}
       />
     ))}

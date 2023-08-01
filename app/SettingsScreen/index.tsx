@@ -1,37 +1,20 @@
 
 import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import { Languages } from '@Types/index';
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
-import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
 
 import ConfigService from '@Services/ConfigService';
-import useBackPress from 'app/GlobalHooks';
 
 export default function SettingsScreen(): JSX.Element {
 
-  const navController = useRouter();
-  const stringResources = useMemo<Translations_SettingsScreen[Languages]>(() => {
-    return translations.Screens.SettingsScreen[ConfigService.config.language];
-  }, []);
+  const stringResources = useMemo(
+    () => translations.Screens.SettingsScreen[ConfigService.config.language], []
+  );
 
-  useBackPress(() => exitScreen());
-
-  function exitScreen() {
-    navController.push(AppRoutes.HOME);
-  }
-
-  function goToLanguagesScreen() {
-    navController.push(AppRoutes.SS_LANGUAGES_SCREEN);
-  }
-
-  function goToThemeScreen() {
-    navController.push(AppRoutes.SS_THEME_SCREEN);
-  }
+  useBackPress(() => useNavigate('HOME SCREEN'));
 
   return (
     <Layout.Root
@@ -42,7 +25,7 @@ export default function SettingsScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => exitScreen()}
+          onPress={() => useNavigate('HOME SCREEN')}
         />,
       ]}
     >
@@ -51,11 +34,11 @@ export default function SettingsScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Language']}
-          onPress={() => goToLanguagesScreen()}
+          onPress={() => useNavigate('LANGUAGES SCREEN')}
         />
         <Layout.Button
           title={stringResources['Theme']}
-          onPress={() => goToThemeScreen()}
+          onPress={() => useNavigate('THEME SCREEN')}
         />
       </Layout.ScrollView>
     </Layout.Root>

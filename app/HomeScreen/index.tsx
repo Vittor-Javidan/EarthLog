@@ -1,23 +1,18 @@
 import React, { useMemo } from 'react';
 import { BackHandler, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import ProjectButtons from './ProjectButtons';
+import Drawer from './Drawer';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import AppRoutes from '@Globals/AppRoutes';
-import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
 import ConfigService from '@Services/ConfigService';
-import Drawer from './Drawer';
-import useBackPress from 'app/GlobalHooks';
 
 export default function HomeScreen() {
 
-  const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
+  const theme = useMemo(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(
     () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
 
@@ -59,9 +54,7 @@ export default function HomeScreen() {
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => {
-            navController.push(AppRoutes.PROJECT_CREATION_SCREEN);
-          }}
+          onPress={() => useNavigate('PROJECT CREATION SCREEN')}
         />
       </Layout.View>
     </Layout.Root>

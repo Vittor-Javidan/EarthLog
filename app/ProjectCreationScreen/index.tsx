@@ -1,36 +1,31 @@
 import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import Widgets_PointTemplate from './Widgets_PointTemplate';
 import Widgets_Project from './Widgets_Project';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import Drawer from './Drawer';
 
-import AppRoutes from '@Globals/AppRoutes';
-import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
-import Drawer from './Drawer';
-import useBackPress from 'app/GlobalHooks';
 
 export default function ProjectCreationScreen() {
 
-  const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
-    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
-  }, []);
+  const theme = useMemo(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(
+    () => translations.Screens.ProjectCreationScreen[ConfigService.config.language], []
+  );
 
   useBackPress(() => exitScreen());
 
   function exitScreen() {
     API_ProjectCreation.reset();
-    navController.push(AppRoutes.HOME);
+    useNavigate('HOME SCREEN');
   }
 
   async function onConfirm() {
@@ -61,7 +56,7 @@ export default function ProjectCreationScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={() => useNavigate('HOME SCREEN')}
         />,
       ]}
     >

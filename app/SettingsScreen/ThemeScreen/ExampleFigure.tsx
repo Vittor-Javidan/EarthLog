@@ -14,10 +14,13 @@ export function ExampleFigure(props: {
   onPressLock: () => void
 }): JSX.Element {
 
-  const temporaryTheme = useMemo(() => API_ExampleFigure.temporaryConfig ?? { ...ConfigService.config.theme }, [API_ExampleFigure.temporaryConfig]);
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
-    return translations.Screens.ThemeScreen[ConfigService.config.language];
-  }, []);
+  const temporaryTheme = useMemo(
+    () => API_ExampleFigure.temporaryConfig ?? { ...ConfigService.config.theme },
+    [API_ExampleFigure.temporaryConfig]
+  );
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
+    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
+  );
 
   const [lockedPressed, setLockedPressed] = useState<boolean>(false);
   const [confirmPressed, setConfirmPressed] = useState<boolean>(false);

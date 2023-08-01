@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Input } from '@Inputs/index';
@@ -10,6 +10,9 @@ import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/T
 import ConfigService from '@Services/ConfigService';
 
 import API_ExampleFigure from './API_ExampleFigure';
+import UtilService from '@Services/UtilService';
+
+const { width: WIDTH } = Dimensions.get('window');
 
 export const ColorInput: Record<keyof ThemeDTO, React.FC> = {
   background: Background,
@@ -58,29 +61,29 @@ function CustomInput(props: {
   savedValue: string
 }) {
 
-  const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
-    return translations.Screens.ThemeScreen[ConfigService.config.language];
-  }, []);
+  const theme = useMemo<ThemeDTO>(
+    () => ConfigService.config.theme, [ConfigService.config.theme]
+  );
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
+    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
+  );
 
   const [color, setColor] = useState<string>(props.savedValue);
   const [valid, setValid] = useState<boolean>(true);
   const [showPicker, setShowPicker] = useState<boolean>(false);
   const [chevronPressed, setChevronPressed] = useState<boolean>(false);
 
-  const isValid = useCallback((value: string) => {
-    const colorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    return colorRegex.test(value);
-  }, []);
+  function isValidColor(value: string) {
+    return UtilService.hexColorRegex.test(value);
+  }
 
-  const onUpdate = useCallback((value: string) => {
+  function onUpdate(value: string) {
     setColor(value);
-    setValid(isValid(value));
-    if (isValid(value)) {
+    setValid(isValidColor(value));
+    if (isValidColor(value)) {
       API_ExampleFigure.update(props.themeKey, value);
     }
-  }, []);
+  }
 
   return (
     <View

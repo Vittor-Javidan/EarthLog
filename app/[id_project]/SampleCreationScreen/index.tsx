@@ -1,35 +1,33 @@
 import React, { useMemo } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
+import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
+import Inputs_SampleSettings from './Inputs_SampleSettings';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import AppRoutes from '@Globals/AppRoutes';
 import { ThemeDTO } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_SampleCreation from './API_SampleCreation';
-import Inputs_SampleSettings from './Inputs_SampleSettings';
-import useBackPress from 'app/GlobalHooks';
-import { Icon } from '@Components/Icon';
 
 export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
   useBackPress(() => exitScreen());
 
   function exitScreen() {
     API_SampleCreation.reset();
-    navController.push(AppRoutes.PROJECT_SCREEN(id_project));
+    useNavigate('PROJECT SCREEN', id_project);
   }
 
   function goToHomeScreen() {
     API_SampleCreation.reset();
-    navController.push(AppRoutes.HOME);
+    useNavigate('HOME SCREEN');
   }
 
   async function onConfirm() {
