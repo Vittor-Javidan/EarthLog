@@ -18,34 +18,39 @@ export default function SampleCreationScreen() {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
-  useBackPress(() => exitScreen());
+  useBackPress(() => exitScreen('HOME SCREEN'));
 
-  function exitScreen() {
+  function exitScreen(
+    screen: 'PROJECT SCREEN' | 'HOME SCREEN'
+  ) {
     API_SampleCreation.reset();
-    useNavigate('PROJECT SCREEN', id_project);
+    useNavigate(screen, id_project);
   }
 
-  function goToHomeScreen() {
+  async function exitAndOpenSample(id_sample: string) {
     API_SampleCreation.reset();
-    useNavigate('HOME SCREEN');
+    await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
+    useNavigate('SAMPLE SCREEN', id_project, id_sample);
   }
 
   async function onConfirm() {
 
-    if (API_SampleCreation.temporarySettings.id_sample === '') {
+    const { temporarySettings } = API_SampleCreation;
+
+    if (temporarySettings.id_sample === '') {
       alert('ID cannot be empty. This is your sample folder name.');
       return;
     }
 
-    if (API_SampleCreation.temporarySettings.name === '') {
+    if (temporarySettings.name === '') {
       alert('Sample Name Empty.');
       return;
     }
 
     await ProjectService.createSample(
       id_project,
-      API_SampleCreation.temporarySettings,
-      () => exitScreen(),
+      temporarySettings,
+      async () => await exitAndOpenSample(temporarySettings.id_sample),
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -59,11 +64,11 @@ export default function SampleCreationScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => goToHomeScreen()}
+          onPress={() => exitScreen('HOME SCREEN')}
         />,
         <Icon.Project
           key="treeIcon_2"
-          onPress={() => exitScreen()}
+          onPress={() => exitScreen('PROJECT SCREEN')}
         />,
       ]}
     >
@@ -80,7 +85,7 @@ export default function SampleCreationScreen() {
           title="Cancel"
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
-          onPress={() => exitScreen()}
+          onPress={() => exitScreen('PROJECT SCREEN')}
         />
         <Layout.Button
           title="Create"

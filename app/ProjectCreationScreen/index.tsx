@@ -28,21 +28,30 @@ export default function ProjectCreationScreen() {
     useNavigate('HOME SCREEN');
   }
 
+  async function exitAndOpenProject(id_project: string) {
+    await ProjectService.saveLastOpenProject(id_project);
+    await ProjectService.loadAllSamplesSettings(id_project);
+    useNavigate('PROJECT SCREEN', id_project);
+  }
+
   async function onConfirm() {
 
-    if (API_ProjectCreation.temporaryProject.projectSettings.id_project === '') {
+    const { temporaryProject: newProject } = API_ProjectCreation;
+    const { projectSettings: newProjectSettings } = newProject;
+
+    if (newProjectSettings.id_project === '') {
       alert('ID cannot be empty. This is your project folder name.');
       return;
     }
 
-    if (API_ProjectCreation.temporaryProject.projectSettings.name === '') {
+    if (newProjectSettings.name === '') {
       alert('Project Name Empty.');
       return;
     }
 
     await ProjectService.createProject(
-      API_ProjectCreation.temporaryProject,
-      () => exitScreen(),
+      newProject,
+      async () => await exitAndOpenProject(newProjectSettings.id_project),
       (errorMessage) => alert(errorMessage),
     );
   }
