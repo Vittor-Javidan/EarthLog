@@ -8,6 +8,7 @@ import { useBackPress, useNavigate } from 'app/GlobalHooks';
 import { SampleSettings } from '@Types/index';
 
 import ProjectService from '@Services/ProjectService';
+import { Drawer } from './Drawer';
 
 export default function SampleScreens() {
 
@@ -23,7 +24,7 @@ export default function SampleScreens() {
       title={settings.name}
       iconName="clipboard"
       showNavigationTree={true}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer />}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"

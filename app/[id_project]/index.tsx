@@ -7,6 +7,7 @@ import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import { Drawer } from './Drawer';
 
 export default function ProjectScreen() {
 
@@ -30,7 +31,7 @@ export default function ProjectScreen() {
       title={projectSettings.name}
       iconName="map"
       showNavigationTree={true}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer />}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
