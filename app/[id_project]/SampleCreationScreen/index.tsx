@@ -5,7 +5,6 @@ import { Layout } from '@Components/Layout';
 import AppRoutes from '@Globals/AppRoutes';
 import { ThemeDTO } from '@Types/index';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
@@ -16,9 +15,10 @@ import { Icon } from '@Components/Icon';
 
 export default function SampleCreationScreen() {
 
+  const id_project = useLocalSearchParams().id_project as string;
+
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const id_project = useLocalSearchParams().id_project as string;
 
   useBackPress(() => exitScreen());
 
@@ -51,8 +51,6 @@ export default function SampleCreationScreen() {
       (errorMessage) => alert(errorMessage)
     );
   }
-
-  LogService.useLog('SAMPLE CREATION SCREEN: rendered');
 
   return (
     <Layout.Root

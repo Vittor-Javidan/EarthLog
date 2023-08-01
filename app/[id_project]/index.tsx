@@ -6,7 +6,6 @@ import { Layout } from '@Components/Layout';
 import AppRoutes from '@Globals/AppRoutes';
 import { ProjectSettings, ThemeDTO } from '@Types/index';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import useBackPress from 'app/GlobalHooks';
@@ -20,10 +19,6 @@ export default function ProjectScreen() {
   const navController = useRouter();
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const settings = useMemo<ProjectSettings>(() => ProjectService.getProjectFromCache(id_project), []);
-
-  LogService.useLog(`RENDERED: Project Screen
-    id: ${id_project}
-  `);
 
   useBackPress(() => exitScreen());
 

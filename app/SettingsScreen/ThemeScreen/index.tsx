@@ -12,14 +12,11 @@ import { translations } from '@Translations/index';
 import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
-import LogService from '@Services/LogService';
 
 import API_ExampleFigure from './API_ExampleFigure';
 import useBackPress from 'app/GlobalHooks';
 
 export default function ThemeScreen(): JSX.Element {
-
-  LogService.useLog('THEME SCREEN: rendered');
 
   const navController = useRouter();
   const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);

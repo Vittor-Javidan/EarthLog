@@ -4,13 +4,11 @@ import LoadingScreen from './LoadingScreen';
 
 import AppRoutes from '@Globals/AppRoutes';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 export default function Home() {
 
-  LogService.useLog('HOME SCREEN: App Started');
   const [loadFinish, setLoadFinish] = useState<boolean>(false);
 
   useEffect(() => {
