@@ -5,20 +5,22 @@ import { Layout } from '@Components/Layout';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
 import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_SampleCreation from './API_SampleCreation';
+import { translations } from '@Translations/index';
 
 export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
-  useBackPress(() => exitScreen('HOME SCREEN'));
+  useBackPress(() => exitScreen('PROJECT SCREEN'));
 
   function exitScreen(
     screen: 'PROJECT SCREEN' | 'HOME SCREEN'
@@ -38,12 +40,12 @@ export default function SampleCreationScreen() {
     const { temporarySettings } = API_SampleCreation;
 
     if (temporarySettings.id_sample === '') {
-      alert('ID cannot be empty. This is your sample folder name.');
+      alert(stringResources['ID cannot be empty']);
       return;
     }
 
     if (temporarySettings.name === '') {
-      alert('Sample Name Empty.');
+      alert(stringResources['Name cannot be empty']);
       return;
     }
 
@@ -57,8 +59,8 @@ export default function SampleCreationScreen() {
 
   return (
     <Layout.Root
-      title="Sample Creation"
-      iconName="pencil-sharp"
+      title={stringResources['New sample']}
+      iconName="clipboard"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
@@ -82,13 +84,13 @@ export default function SampleCreationScreen() {
         }}
       >
         <Layout.Button
-          title="Cancel"
+          title={stringResources['Cancel']}
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
           onPress={() => exitScreen('PROJECT SCREEN')}
         />
         <Layout.Button
-          title="Create"
+          title={stringResources['Create']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
           onPress={async () => await onConfirm()}

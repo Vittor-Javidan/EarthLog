@@ -8,6 +8,7 @@ import { useBackPress, useNavigate } from 'app/GlobalHooks';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import { Drawer } from './Drawer';
+import { translations } from '@Translations/index';
 
 export default function ProjectScreen() {
 
@@ -15,6 +16,9 @@ export default function ProjectScreen() {
 
   const theme = useMemo(() => ConfigService.config.theme, []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const stringResources = useMemo(
+    () => translations.Screens.ProjectScreen[ConfigService.config.language], []
+  );
 
   useBackPress(() => exitScreen());
 
@@ -49,7 +53,7 @@ export default function ProjectScreen() {
         }}
       >
         <Layout.Button
-          title="New Sample"
+          title={stringResources['New sample']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
           onPress={() => goToSampleCreationScreenCreation()}

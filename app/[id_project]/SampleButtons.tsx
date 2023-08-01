@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
 
 import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
 import { useNavigate } from 'app/GlobalHooks';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export default function SampleButtons() {
+
+  const stringResources = useMemo(
+    () => translations.Screens.ProjectScreen[ConfigService.config.language], []
+  );
 
   const showSamples = ProjectService.allSamples.length > 0;
 
@@ -17,7 +23,7 @@ export default function SampleButtons() {
             fontSize={ThemeService.FONTS.h2}
             color={'onBackground'}
           >
-            Samples
+            {stringResources['Samples']}
           </Layout.Text>
           <AllButtons />
         </>)}

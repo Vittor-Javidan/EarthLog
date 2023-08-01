@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
-import { ThemeDTO } from '@Types/index';
+import { translations } from '@Translations/index';
 
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
@@ -13,7 +13,10 @@ import API_SampleCreation from './API_SampleCreation';
 
 export default function Inputs_SampleSettings() {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   const [id, setId] = useState<string>(API_SampleCreation.temporarySettings.id_sample);
   const [name, setName] = useState<string>(API_SampleCreation.temporarySettings.name);
@@ -39,28 +42,28 @@ export default function Inputs_SampleSettings() {
         fontSize={ThemeService.FONTS.h2}
         color="onBackground"
       >
-        Sample Settings
+        {stringResources['Sample settings']}
       </Layout.Text>
       <Input.String
-        label="ID"
+        label={stringResources['ID']}
         backgroundColor_Label={theme.secondary}
         backgroundColor_Value={theme.tertiary}
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
         color_Placeholder={theme.onTertiary_Placeholder}
-        placeholder='Only numbers, letters and "-".'
+        placeholder={stringResources['Only numbers, letters and "-"']}
         value={id}
         onChangeText={(text) => onIDChange(text)}
         onResetPress={() => setId(ProjectService.generateUuidV4())}
       />
       <Input.String
-        label="Name"
+        label={stringResources['Name']}
         backgroundColor_Label={theme.secondary}
         backgroundColor_Value={theme.tertiary}
         color_Label={theme.onSecondary}
         color_Value={theme.onTertiary}
         color_Placeholder={theme.onTertiary_Placeholder}
-        placeholder="Write the project name here..."
+        placeholder={stringResources['Write the sample name here...']}
         value={name}
         onChangeText={(text) => onNameChange(text)}
         onResetPress={() => setName('')}

@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Layout } from '@Layout/index';
-
-import ThemeService from '@Services/ThemeService';
-import ProjectService from '@Services/ProjectService';
 import { useNavigate } from 'app/GlobalHooks';
 
+import { translations } from '@Translations/index';
+
+import ThemeService from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
+
+
 export default function ProjectButtons() {
+
+  const stringResources = useMemo(
+    () => translations.Screens.HomeScreen[ConfigService.config.language], []
+  );
 
   const allProjectButtons = ProjectService.allProjects.map(settings => (
     <Layout.Button
@@ -35,7 +43,7 @@ export default function ProjectButtons() {
           fontSize={ThemeService.FONTS.h2}
           color={'onBackground'}
         >
-          Projects
+          {stringResources['Projects']}
         </Layout.Text>
         {allProjectButtons}
       </>)}
@@ -45,6 +53,10 @@ export default function ProjectButtons() {
 
 function LastProjectButton() {
 
+  const stringResources = useMemo(
+    () => translations.Screens.HomeScreen[ConfigService.config.language], []
+  );
+
   const { id_project } = ProjectService.lastProject;
   const showLastProjectButton = ProjectService.lastProject.id_project !== '';
 
@@ -53,7 +65,7 @@ function LastProjectButton() {
       fontSize={ThemeService.FONTS.h2}
       color={'onBackground'}
     >
-      Last Open
+      {stringResources['Last Open']}
     </Layout.Text>
     <Layout.Button
       title={ProjectService.lastProject.name}

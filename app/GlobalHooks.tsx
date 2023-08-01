@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useRouter } from 'expo-router';
 import AppRoutes from '@Globals/AppRoutes';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 type ScreenName = (
   'HOME SCREEN' | 'LANGUAGES SCREEN' | 'THEME SCREEN' | 'SETTINGS SCREEN' |
@@ -26,7 +28,12 @@ export function useNavigate(
   id_project?: string,
   id_sample?: string,
 ) {
+
   const navController = useRouter();
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.ErrorMessages[language], []);
+
   switch (screen) {
     case 'HOME SCREEN':       navController.push(AppRoutes.HOME);                             break;
     case 'LANGUAGES SCREEN':  navController.push(AppRoutes.SS_LANGUAGES_SCREEN);              break;
@@ -36,7 +43,7 @@ export function useNavigate(
     case 'PROJECT SCREEN': {
 
       if (id_project === undefined) {
-        alert('Project ID undefined');
+        alert(stringResources['Project ID undefined']);
         break;
       }
 
@@ -46,7 +53,7 @@ export function useNavigate(
     case 'SAMPLE CREATION SCREEN': {
 
       if (id_project === undefined) {
-        alert('project id undefined');
+        alert(stringResources['Project ID undefined']);
         break;
       }
 
@@ -56,12 +63,12 @@ export function useNavigate(
     case 'SAMPLE SCREEN': {
 
       if (id_project === undefined) {
-        alert('project id undefined');
+        alert(stringResources['Project ID undefined']);
         break;
       }
 
       if (id_sample === undefined) {
-        alert('sample id undefined');
+        alert(stringResources['Sample ID undefined']);
         break;
       }
 
