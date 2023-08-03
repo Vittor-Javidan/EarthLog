@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
-import Widgets_PointTemplate from './Widgets_PointTemplate';
 import Widgets_Project from './Widgets_Project';
 import { useBackPress, useNavigate } from 'app/GlobalHooks';
 import Drawer from './Drawer';
@@ -71,7 +70,6 @@ export default function ProjectCreationScreen() {
       <Layout.ScrollView>
         <Inputs_ProjectSettings />
         <Widgets_Project />
-        <Widgets_PointTemplate />
       </Layout.ScrollView>
       <Layout.View
         style={{

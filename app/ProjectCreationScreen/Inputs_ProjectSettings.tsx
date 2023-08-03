@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -44,21 +42,6 @@ export default function Inputs_ProjectSettings() {
   }
 
   return (<>
-    <Layout.Text
-      fontSize={ThemeService.FONTS.h2}
-      color="onBackground"
-    >
-      {stringResources['Project settings']}
-    </Layout.Text>
-    <Input.Boolean
-      label={stringResources['Immutable']}
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
-      value={immutable}
-      onSwitchChange={(boolean) => onImmutableChange(boolean)}
-    />
     <Input.String
       label={stringResources['ID']}
       backgroundColor_Label={theme.secondary}
@@ -82,6 +65,15 @@ export default function Inputs_ProjectSettings() {
       value={name}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => setName('')}
+    />
+    <Input.Boolean
+      label={stringResources['Immutable']}
+      backgroundColor_Label={theme.secondary}
+      backgroundColor_Value={theme.tertiary}
+      color_Label={theme.onSecondary}
+      color_Value={theme.onTertiary}
+      value={immutable}
+      onSwitchChange={(boolean) => onImmutableChange(boolean)}
     />
   </>);
 }

@@ -1,21 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import { Layout } from '@Components/Layout';
+import React, { useState } from 'react';
 import { Widget } from '@Components/Widget';
 
-import { Languages, WidgetData } from '@Types/index';
-import { translations } from '@Translations/index';
-import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
-
-import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
+import { WidgetData } from '@Types/index';
 
 import API_ProjectCreation from './API_ProjectCreation';
 
 export default function Widgets_Project() {
-
-  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
-    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
-  }, []);
 
   const [_, refresh] = useState<boolean>(false);
 
@@ -45,12 +35,6 @@ export default function Widgets_Project() {
   });
 
   return (<>
-    <Layout.Text
-      fontSize={ThemeService.FONTS.h2}
-      color="onBackground"
-    >
-      {stringResources['Project widgets']}
-    </Layout.Text>
     {allWidgetsComponents}
     <Widget.AddWidgetButton
       onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
