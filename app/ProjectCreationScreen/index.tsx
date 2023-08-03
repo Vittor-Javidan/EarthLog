@@ -21,17 +21,16 @@ export default function ProjectCreationScreen() {
     () => translations.Screens.ProjectCreationScreen[ConfigService.config.language], []
   );
 
-  useBackPress(() => exitScreen());
+  useBackPress(async () => await exitScreen());
 
-  function exitScreen() {
+  async function exitScreen() {
     API_ProjectCreation.reset();
-    useNavigate('HOME SCREEN');
+    await useNavigate('HOME SCREEN');
   }
 
   async function exitAndOpenProject(id_project: string) {
-    await ProjectService.saveLastOpenProject(id_project);
-    await ProjectService.loadAllSamplesSettings(id_project);
-    useNavigate('PROJECT SCREEN', id_project);
+    API_ProjectCreation.reset();
+    await useNavigate('PROJECT SCREEN (FROM PROJECT CREATION SCREEN)', id_project);
   }
 
   async function onConfirm() {
@@ -65,7 +64,7 @@ export default function ProjectCreationScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => useNavigate('HOME SCREEN')}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
       ]}
     >
@@ -84,7 +83,7 @@ export default function ProjectCreationScreen() {
           title={stringResources['Cancel']}
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
-          onPress={() => exitScreen() }
+          onPress={async () => await exitScreen() }
         />
         <Layout.Button
           title={stringResources['Create']}
@@ -96,4 +95,3 @@ export default function ProjectCreationScreen() {
     </Layout.Root>
   );
 }
-

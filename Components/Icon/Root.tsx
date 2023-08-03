@@ -54,5 +54,7 @@ export type IconName = (
   'checkmark-done-sharp'|
   'close'               |
   'refresh-sharp'       |
-  'clipboard'
+  'clipboard'           |
+  'save'                |
+  'chevron-back-sharp'
 )

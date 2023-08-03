@@ -1,13 +1,23 @@
-import { useMemo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useRouter } from 'expo-router';
 import AppRoutes from '@Globals/AppRoutes';
 import ConfigService from '@Services/ConfigService';
 import { translations } from '@Translations/index';
+import ProjectService from '@Services/ProjectService';
 
 type ScreenName = (
-  'HOME SCREEN' | 'LANGUAGES SCREEN' | 'THEME SCREEN' | 'SETTINGS SCREEN' |
-  'PROJECT CREATION SCREEN' | 'PROJECT SCREEN' | 'SAMPLE CREATION SCREEN' | 'SAMPLE SCREEN'
+  'SETTINGS SCREEN'                                   |
+    'LANGUAGES SCREEN'                                |
+    'THEME SCREEN'                                    |
+  'HOME SCREEN'                                       |
+    'PROJECT CREATION SCREEN'                         |
+    'PROJECT SCREEN'                                  |
+    'PROJECT SCREEN (FROM PROJECT CREATION SCREEN)'   |
+      'PROJECT SETTINGS SCREEN'                       |
+      'SAMPLE SCREEN'                                 |
+      'SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)'   |
+      'SAMPLE CREATION SCREEN'
 )
 
 export function useBackPress(onPress: () => void) {
@@ -23,23 +33,50 @@ export function useBackPress(onPress: () => void) {
   }, []);
 }
 
-export function useNavigate(
+export async function useNavigate(
   screen: ScreenName,
   id_project?: string,
   id_sample?: string,
 ) {
 
+  /* Warn:
+    Some hooks will not work on this scope (ex: useState, useMemo), since this function is
+    called inside callbacks, and not directly inside a Component scope.
+  */
+
   const navController = useRouter();
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
-  const stringResources = useMemo(() => translations.ErrorMessages[language], []);
+  const stringResources = translations.ErrorMessages[ConfigService.config.language];
 
   switch (screen) {
-    case 'HOME SCREEN':       navController.push(AppRoutes.HOME);                             break;
-    case 'LANGUAGES SCREEN':  navController.push(AppRoutes.SS_LANGUAGES_SCREEN);              break;
-    case 'THEME SCREEN':      navController.push(AppRoutes.SS_THEME_SCREEN);                  break;
-    case 'SETTINGS SCREEN':   navController.push(AppRoutes.SETTINGS_SCREEN);                  break;
-    case 'PROJECT CREATION SCREEN': navController.push(AppRoutes.PROJECT_CREATION_SCREEN);    break;
+
+    case 'SETTINGS SCREEN': {
+      navController.push(AppRoutes.SETTINGS_SCREEN);
+      break;
+    }
+
+    case 'LANGUAGES SCREEN': {
+      navController.push(AppRoutes.SS_LANGUAGES_SCREEN);
+      break;
+    }
+
+    case 'THEME SCREEN': {
+      navController.push(AppRoutes.SS_THEME_SCREEN);
+      break;
+    }
+
+    case 'HOME SCREEN': {
+
+      await ProjectService.loadLastOpenProject();
+      await ProjectService.loadAllProjectsSettings();
+      navController.push(AppRoutes.HOME);
+      break;
+    }
+
+    case 'PROJECT CREATION SCREEN': {
+      navController.push(AppRoutes.PROJECT_CREATION_SCREEN);
+      break;
+    }
+
     case 'PROJECT SCREEN': {
 
       if (id_project === undefined) {
@@ -47,9 +84,40 @@ export function useNavigate(
         break;
       }
 
+      await ProjectService.saveLastOpenProject(id_project);
+      await ProjectService.loadAllSamplesSettings(id_project);
       navController.push(AppRoutes.PROJECT_SCREEN(id_project));
       break;
     }
+
+    case 'PROJECT SCREEN (FROM PROJECT CREATION SCREEN)': {
+
+      if (id_project === undefined) {
+        alert(stringResources['Project ID undefined']);
+        break;
+      }
+
+      // cache
+      await ProjectService.saveLastOpenProject(id_project);
+      await ProjectService.loadLastOpenProject();
+      await ProjectService.loadAllProjectsSettings();
+      await ProjectService.loadAllSamplesSettings(id_project);
+      navController.push(AppRoutes.PROJECT_SCREEN(id_project));
+      break;
+    }
+
+    case 'PROJECT SETTINGS SCREEN': {
+
+      if (id_project === undefined) {
+        alert(stringResources['Project ID undefined']);
+        break;
+      }
+
+      await ProjectService.loadAllWidgets_Project(id_project);
+      navController.push(AppRoutes.PS_PROJECT_SETTINGS_SCREEN(id_project));
+      break;
+    }
+
     case 'SAMPLE CREATION SCREEN': {
 
       if (id_project === undefined) {
@@ -57,9 +125,11 @@ export function useNavigate(
         break;
       }
 
+      await ProjectService.loadAllWidgets_SampleTemplate(id_project);
       navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(id_project));
       break;
     }
+
     case 'SAMPLE SCREEN': {
 
       if (id_project === undefined) {
@@ -72,7 +142,27 @@ export function useNavigate(
         break;
       }
 
+      await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
       navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
+      break;
+    }
+
+    case 'SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)': {
+
+      if (id_project === undefined) {
+        alert(stringResources['Project ID undefined']);
+        break;
+      }
+
+      if (id_sample === undefined) {
+        alert(stringResources['Sample ID undefined']);
+        break;
+      }
+
+      await ProjectService.loadAllSamplesSettings(id_project);
+      await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
+      navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
+      break;
     }
   }
 }

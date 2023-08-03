@@ -40,7 +40,7 @@ export default class DatabaseService {
 
   static async deleteDatabase(): Promise<void> {
     await FileSystemService.delete(this.DATA_BASE_DIRECTORY);
-    await LocalStorageService.removeData('LastProject');
+    await this.deleteLastOpenProject();
   }
 
 
@@ -70,6 +70,12 @@ export default class DatabaseService {
 
     // SAVE ID ON LOCAL STORAGE
     await LocalStorageService.saveData('LastProject', JSON.stringify(id_project));
+  }
+
+  static async deleteLastOpenProject(): Promise<void> {
+
+    // REMOVE ID FROM LOCAL STORAGE
+    await LocalStorageService.removeData('LastProject');
   }
 
   static async getAllProjects(): Promise<ProjectSettings[]> {

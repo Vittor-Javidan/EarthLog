@@ -20,19 +20,18 @@ export default function SampleCreationScreen() {
   const { language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
-  useBackPress(() => exitScreen('PROJECT SCREEN'));
+  useBackPress(async () => await exitScreen('PROJECT SCREEN'));
 
-  function exitScreen(
+  async function exitScreen(
     screen: 'PROJECT SCREEN' | 'HOME SCREEN'
   ) {
     API_SampleCreation.reset();
-    useNavigate(screen, id_project);
+    await useNavigate(screen, id_project);
   }
 
   async function exitAndOpenSample(id_sample: string) {
     API_SampleCreation.reset();
-    await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
-    useNavigate('SAMPLE SCREEN', id_project, id_sample);
+    await useNavigate('SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)', id_project, id_sample);
   }
 
   async function onConfirm() {
@@ -66,11 +65,11 @@ export default function SampleCreationScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => exitScreen('HOME SCREEN')}
+          onPress={async () => await exitScreen('HOME SCREEN')}
         />,
         <Icon.Project
           key="treeIcon_2"
-          onPress={() => exitScreen('PROJECT SCREEN')}
+          onPress={async () => await exitScreen('PROJECT SCREEN')}
         />,
       ]}
     >
@@ -87,7 +86,7 @@ export default function SampleCreationScreen() {
           title={stringResources['Cancel']}
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
-          onPress={() => exitScreen('PROJECT SCREEN')}
+          onPress={async () => await exitScreen('PROJECT SCREEN')}
         />
         <Layout.Button
           title={stringResources['Create']}

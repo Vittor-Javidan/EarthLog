@@ -44,18 +44,16 @@ export default function Widgets_PointTemplate() {
     );
   });
 
-  return (
-    <Layout.View>
-      <Layout.Text
-        fontSize={ThemeService.FONTS.h2}
-        color="onBackground"
-      >
-        {stringResources['Point template']}
-      </Layout.Text>
-      {allWidgetsComponents}
-      <Widget.AddWidgetButton
-        onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
-      />
-    </Layout.View>
-  );
+  return (<>
+    <Layout.Text
+      fontSize={ThemeService.FONTS.h2}
+      color="onBackground"
+    >
+      {stringResources['Point template']}
+    </Layout.Text>
+    {allWidgetsComponents}
+    <Widget.AddWidgetButton
+      onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
+    />
+  </>);
 }

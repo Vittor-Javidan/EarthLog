@@ -40,10 +40,7 @@ function AllButtons() {
       <Layout.Button
         key={sampleSettings.id_sample}
         title={sampleSettings.name}
-        onPress={async () => {
-          await ProjectService.loadAllWidgets_Sample(id_project, sampleSettings.id_sample);
-          useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample);
-        }}
+        onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
       />
     ))}
   </>;

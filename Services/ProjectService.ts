@@ -20,7 +20,7 @@ export default class ProjectService {
   // CACHED DATA
   // ===============================================================================================
 
-  static lastProject: ProjectSettings = {
+  static lastOpenProject: ProjectSettings = {
     id_project: '',
     immutable: true,
     name: '',
@@ -31,26 +31,6 @@ export default class ProjectService {
   static allWidgets_Project: WidgetData[] = [];
   static allWidgets_SampleTemplate: WidgetData[] = [];
   static allWidgets_Sample: WidgetData[] = [];
-
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
-  // APP INITIALIZATION METHODS
-  // ===============================================================================================
-
-  static async loadDatabase(): Promise<void> {
-    await DatabaseService.createDatabase();
-    await this.loadAllProjectsSettings();
-    await this.loadLastOpenProject();
-  }
 
 
 
@@ -160,6 +140,14 @@ export default class ProjectService {
     throw Error('Sample does not exist on cache');
   }
 
+  static getLastProjectFromCache(): ProjectSettings {
+    return this.lastOpenProject;
+  }
+
+  static getAllProjectWidgetsFromCache(): WidgetData[] {
+    return this.allWidgets_Project;
+  }
+
 
 
 
@@ -175,15 +163,33 @@ export default class ProjectService {
 
   static async saveLastOpenProject(id_project: string): Promise<void> {
     await DatabaseService.saveLastOpenProject(id_project);
-    this.lastProject = await DatabaseService.readProject(id_project);
+    this.lastOpenProject = await DatabaseService.readProject(id_project);
   }
 
   static async loadLastOpenProject(): Promise<void> {
+
     const lastProjectID = await DatabaseService.getLastOpenProject();
+    const allProjectSettings = this.allProjects.map(settings => settings.id_project);
+
     if (lastProjectID === null) {
       return;
     }
-    this.lastProject = await DatabaseService.readProject(lastProjectID);
+
+    if (!allProjectSettings.includes(lastProjectID)) {
+      return;
+    }
+
+    this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
+  }
+
+  static async deleteLastOpenProject(): Promise<void> {
+    await DatabaseService.deleteLastOpenProject();
+    this.lastOpenProject = {
+      id_project: '',
+      immutable: true,
+      name: '',
+      rules: {},
+    };
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
@@ -269,8 +275,6 @@ export default class ProjectService {
         }
       }
 
-      // REFRESH CACHE
-      await this.loadAllProjectsSettings();
       onSuccess();
 
     } catch (error) {
@@ -286,7 +290,6 @@ export default class ProjectService {
   ): Promise<void> {
     try {
       await DatabaseService.updateProject(projectSettings);
-      await this.loadAllProjectsSettings();
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -300,7 +303,9 @@ export default class ProjectService {
   ): Promise<void> {
     try {
       await DatabaseService.deleteProject(id_project);
-      await this.loadAllProjectsSettings();
+      if (this.lastOpenProject.id_project === id_project) {
+        await this.deleteLastOpenProject();
+      }
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));

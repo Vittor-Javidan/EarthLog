@@ -14,7 +14,7 @@ export default function SettingsScreen(): JSX.Element {
     () => translations.Screens.SettingsScreen[ConfigService.config.language], []
   );
 
-  useBackPress(() => useNavigate('HOME SCREEN'));
+  useBackPress(async () => await useNavigate('HOME SCREEN'));
 
   return (
     <Layout.Root
@@ -25,7 +25,7 @@ export default function SettingsScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => useNavigate('HOME SCREEN')}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
       ]}
     >
@@ -34,11 +34,11 @@ export default function SettingsScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Language']}
-          onPress={() => useNavigate('LANGUAGES SCREEN')}
+          onPress={async () => await useNavigate('LANGUAGES SCREEN')}
         />
         <Layout.Button
           title={stringResources['Theme']}
-          onPress={() => useNavigate('THEME SCREEN')}
+          onPress={async () => await useNavigate('THEME SCREEN')}
         />
       </Layout.ScrollView>
     </Layout.Root>

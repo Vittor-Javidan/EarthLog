@@ -12,8 +12,8 @@ import ConfigService from '@Services/ConfigService';
 import { Icon, IconName } from '@Components/Icon';
 
 const { height: HEIGHT } = Dimensions.get('window');
-const NAVBAR_HEIGH = 60;
-const NAVGATION_TREE_HEIGHT = 30;
+const NAVBAR_HEIGH = 70;
+const NAVIGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
@@ -50,7 +50,7 @@ export default function Root(props: {
       >
         {props.showNavigationTree && (
           <NavigationTree
-            style={{ height: NAVGATION_TREE_HEIGHT }}
+            style={{ height: NAVIGATION_TREE_HEIGHT }}
             treeElements={props.navigationTreeIcons}
           />
         )}

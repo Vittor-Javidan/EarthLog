@@ -17,7 +17,7 @@ export default function LanguagesScreen(): JSX.Element {
     () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
   );
 
-  useBackPress(() => useNavigate('SETTINGS SCREEN'));
+  useBackPress(async () => await useNavigate('SETTINGS SCREEN'));
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -34,11 +34,11 @@ export default function LanguagesScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => useNavigate('HOME SCREEN')}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => useNavigate('SETTINGS SCREEN')}
+          onPress={async () => await useNavigate('SETTINGS SCREEN')}
         />,
       ]}
     >

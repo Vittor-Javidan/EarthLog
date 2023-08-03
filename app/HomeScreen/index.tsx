@@ -54,7 +54,7 @@ export default function HomeScreen() {
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => useNavigate('PROJECT CREATION SCREEN')}
+          onPress={async () => await useNavigate('PROJECT CREATION SCREEN')}
         />
       </Layout.View>
     </Layout.Root>

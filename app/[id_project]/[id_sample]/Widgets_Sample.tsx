@@ -45,12 +45,8 @@ export default function Widgets_Sample() {
       id_project,
       id_sample,
       widgetData,
-      () => {
-        refresh(prev => !prev);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
+      () => refresh(prev => !prev),
+      (errorMessage) => alert(errorMessage)
     );
   }
 

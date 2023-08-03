@@ -17,7 +17,7 @@ export default function SampleScreens() {
 
   const settings = useMemo<SampleSettings>(() => ProjectService.getSampleFromCache(id_sample), []);
 
-  useBackPress(() => useNavigate('PROJECT SCREEN', id_project));
+  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
@@ -28,11 +28,11 @@ export default function SampleScreens() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => useNavigate('HOME SCREEN')}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
         <Icon.Project
           key="treeIcon_2"
-          onPress={() => useNavigate('PROJECT SCREEN', id_project)}
+          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
       ]}
     >

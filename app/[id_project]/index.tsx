@@ -20,14 +20,14 @@ export default function ProjectScreen() {
     () => translations.Screens.ProjectScreen[ConfigService.config.language], []
   );
 
-  useBackPress(() => exitScreen());
+  useBackPress(async () => await exitScreen());
 
-  function exitScreen() {
-    useNavigate('HOME SCREEN');
+  async function exitScreen() {
+    await useNavigate('HOME SCREEN');
   }
 
-  function goToSampleCreationScreenCreation() {
-    useNavigate('SAMPLE CREATION SCREEN', id_project);
+  async function goToSampleCreationScreenCreation() {
+    await useNavigate('SAMPLE CREATION SCREEN', id_project);
   }
 
   return (
@@ -39,7 +39,7 @@ export default function ProjectScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => exitScreen()}
+          onPress={async () => await exitScreen()}
         />,
       ]}
     >
@@ -56,7 +56,7 @@ export default function ProjectScreen() {
           title={stringResources['New sample']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => goToSampleCreationScreenCreation()}
+          onPress={async () => await goToSampleCreationScreenCreation()}
         />
       </Layout.View>
     </Layout.Root>

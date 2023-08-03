@@ -25,18 +25,18 @@ export default function ThemeScreen(): JSX.Element {
 
   const [locked, setLocked] = useState<boolean>(false);
 
-  useBackPress(() => cancelAndExit('SETTINGS SCREEN'));
+  useBackPress(async () => await cancelAndExit('SETTINGS SCREEN'));
 
-  function cancelAndExit(
+  async function cancelAndExit(
     screen: 'HOME SCREEN' | 'SETTINGS SCREEN'
   ) {
     API_ExampleFigure.discart();
-    useNavigate(screen);
+    await useNavigate(screen);
   }
 
   async function confirmAndSave() {
     await API_ExampleFigure.save();
-    useNavigate('SETTINGS SCREEN');
+    await useNavigate('SETTINGS SCREEN');
   }
 
   function resetTheme() {
@@ -52,11 +52,11 @@ export default function ThemeScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => cancelAndExit('HOME SCREEN')}
+          onPress={async () => await cancelAndExit('HOME SCREEN')}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => cancelAndExit('SETTINGS SCREEN')}
+          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />,
       ]}
     >
@@ -87,7 +87,7 @@ export default function ThemeScreen(): JSX.Element {
           title={stringResources['Discart']}
           overrideBackgroundColor={savedTheme.wrong}
           overrideTextColor={savedTheme.onWrong}
-          onPress={() => cancelAndExit('SETTINGS SCREEN')}
+          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />
         <Layout.Button
           title={stringResources['Save']}
