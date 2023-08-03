@@ -15,9 +15,10 @@ type ScreenName = (
     'PROJECT SCREEN'                                  |
     'PROJECT SCREEN (FROM PROJECT CREATION SCREEN)'   |
       'PROJECT SETTINGS SCREEN'                       |
+      'SAMPLE CREATION SCREEN'                        |
       'SAMPLE SCREEN'                                 |
       'SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)'   |
-      'SAMPLE CREATION SCREEN'
+        'SAMPLE SETTINGS SCREEN'
 )
 
 export function useBackPress(onPress: () => void) {
@@ -31,6 +32,20 @@ export function useBackPress(onPress: () => void) {
     );
     return () => backHandler.remove();
   }, []);
+}
+
+export function useTiming(
+  execute: () => void,
+  deps: React.DependencyList | undefined,
+  ms: number,
+) {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      execute();
+    }, ms);
+
+    return () => clearInterval(timer);
+  }, deps);
 }
 
 export async function useNavigate(
@@ -162,6 +177,22 @@ export async function useNavigate(
       await ProjectService.loadAllSamplesSettings(id_project);
       await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
       navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
+      break;
+    }
+
+    case 'SAMPLE SETTINGS SCREEN': {
+
+      if (id_project === undefined) {
+        alert(stringResources['Project ID undefined']);
+        break;
+      }
+
+      if (id_sample === undefined) {
+        alert(stringResources['Sample ID undefined']);
+        break;
+      }
+
+      navController.push(AppRoutes.PS_SAMPLE_SETTINGS_SCREEN(id_project, id_sample));
       break;
     }
   }

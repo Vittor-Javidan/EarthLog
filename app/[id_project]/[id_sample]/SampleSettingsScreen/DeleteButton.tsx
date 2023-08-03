@@ -1,30 +1,33 @@
 import React, { useState, useMemo } from 'react';
-import ConfigService from '@Services/ConfigService';
+import { useLocalSearchParams } from 'expo-router';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
-import ProjectService from '@Services/ProjectService';
 import { useNavigate } from 'app/GlobalHooks';
-import { useLocalSearchParams } from 'expo-router';
+
+import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
 
 export default function DeleteButton() {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const id_sample = useLocalSearchParams().id_sample as string;
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
 
   const [widgetName, setWidgetName] = useState<string>('');
 
   async function deleteProject() {
-    await ProjectService.deleteProject(
+    await ProjectService.deleteSample(
       id_project,
-      async () => await useNavigate('HOME SCREEN'),
+      id_sample,
+      async () => await useNavigate('PROJECT SCREEN', id_project),
       (errorMessage) => alert(errorMessage)
     );
   }
 
-  const isNameCorrect = widgetName === projectSettings.name;
+  const isNameCorrect = widgetName === sampleSettings.name;
 
   return (<>
     <Input.String

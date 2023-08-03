@@ -1,21 +1,19 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
 import { Layout } from '@Components/Layout';
 import { Icon } from '@Components/Icon';
-import Inputs_ProjectSettings from './Inputs_ProjectSettings';
+import { useNavigate } from 'app/GlobalHooks';
+import Inputs_SampleSettings from './Inputs_SampleSettings';
 import DeleteButton from './DeleteButton';
-import Widgets_Project from './Widgets_Project';
 
-export default function ProjectSettingsScreen() {
+export default function SampleSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
-  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+  const id_sample = useLocalSearchParams().id_sample as string;
 
   return (
     <Layout.Root
-      title="Project Settings"
+      title="Sample Settings"
       iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}
@@ -28,11 +26,14 @@ export default function ProjectSettingsScreen() {
           key="treeIcon_2"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
+        <Icon.Sample
+          key="treeIcon_3"
+          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
+        />,
       ]}
     >
       <Layout.ScrollView>
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
+        <Inputs_SampleSettings />
         <DeleteButton />
       </Layout.ScrollView>
     </Layout.Root>
