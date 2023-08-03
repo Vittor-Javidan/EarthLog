@@ -11,6 +11,7 @@ export default function Inputs_ProjectSettings() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const { rules } = useMemo(() => API_ProjectEdit.projectSettings, []);
 
   const [immutable, setImmutable] = useState<boolean>(API_ProjectEdit.projectSettings.immutable);
   const [name, setName] = useState<string>(API_ProjectEdit.projectSettings.name);
@@ -38,16 +39,7 @@ export default function Inputs_ProjectSettings() {
 
   return (<>
     <Display_ID />
-    <Input.Boolean
-      label="Immutable"
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
-      value={immutable}
-      onSwitchChange={(boolean) => onImmutableChange(boolean)}
-    />
-    <Input.String
+    {rules.allowNameChange ? <Input.String
       label="Name"
       backgroundColor_Label={theme.secondary}
       backgroundColor_Value={theme.tertiary}
@@ -58,7 +50,16 @@ export default function Inputs_ProjectSettings() {
       value={name}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
-    />
+    /> : <Display_Name />}
+    {rules.allowImmutableChange ? <Input.Boolean
+      label="Immutable"
+      backgroundColor_Label={theme.secondary}
+      backgroundColor_Value={theme.tertiary}
+      color_Label={theme.onSecondary}
+      color_Value={theme.onTertiary}
+      value={immutable}
+      onSwitchChange={(boolean) => onImmutableChange(boolean)}
+    /> : <Display_Immutable />}
   </>);
 }
 
@@ -98,6 +99,88 @@ function Display_ID() {
         }}
       >
         {API_ProjectEdit.projectSettings.id_project}
+      </Text>
+    </Layout.View>
+  );
+}
+
+function Display_Name() {
+
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+
+  return (
+    <Layout.View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 40,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        backgroundColor: theme.secondary,
+      }}
+    >
+      <Text
+        adjustsFontSizeToFit={true}
+        style={{
+          color: theme.onSecondary,
+          fontSize: ThemeService.FONTS.h3,
+          paddingHorizontal: 10,
+        }}
+      >
+        Name
+      </Text>
+      <Text
+        adjustsFontSizeToFit={true}
+        style={{
+          color: theme.onSecondary,
+          fontSize: ThemeService.FONTS.h3,
+          paddingHorizontal: 10,
+        }}
+      >
+        {API_ProjectEdit.projectSettings.name}
+      </Text>
+    </Layout.View>
+  );
+}
+
+function Display_Immutable() {
+
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+
+  return (
+    <Layout.View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 40,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        backgroundColor: theme.secondary,
+      }}
+    >
+      <Text
+        adjustsFontSizeToFit={true}
+        style={{
+          color: theme.onSecondary,
+          fontSize: ThemeService.FONTS.h3,
+          paddingHorizontal: 10,
+        }}
+      >
+        Immutable
+      </Text>
+      <Text
+        adjustsFontSizeToFit={true}
+        style={{
+          color: theme.onSecondary,
+          fontSize: ThemeService.FONTS.h3,
+          paddingHorizontal: 10,
+        }}
+      >
+        {JSON.stringify(API_ProjectEdit.projectSettings.immutable)}
       </Text>
     </Layout.View>
   );
