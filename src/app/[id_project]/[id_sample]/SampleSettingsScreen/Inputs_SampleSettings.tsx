@@ -16,8 +16,8 @@ export default function Inputs_SampleSettings() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
+  const { theme, language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
   const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
   const { rules } = useMemo(() => sampleSettings, []);
 

@@ -15,10 +15,9 @@ import API_ProjectCreation from './API_ProjectCreation';
 
 export default function ProjectCreationScreen() {
 
-  const theme = useMemo(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(
-    () => translations.Screens.ProjectCreationScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   useBackPress(async () => await exitScreen());
 

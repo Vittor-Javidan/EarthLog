@@ -14,8 +14,9 @@ import API_ExampleFigure from './API_ExampleFigure';
 
 export default function ThemeScreen(): JSX.Element {
 
-  const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo(() => translations.Screens.ThemeScreen[ConfigService.config.language], []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, [config.theme]);
+  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const [locked, setLocked] = useState<boolean>(false);
 
@@ -79,14 +80,14 @@ export default function ThemeScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Discart']}
-          overrideBackgroundColor={savedTheme.wrong}
-          overrideTextColor={savedTheme.onWrong}
+          overrideBackgroundColor={theme.wrong}
+          overrideTextColor={theme.onWrong}
           onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />
         <Layout.Button
           title={stringResources['Save']}
-          overrideBackgroundColor={savedTheme.confirm}
-          overrideTextColor={savedTheme.onConfirm}
+          overrideBackgroundColor={theme.confirm}
+          overrideTextColor={theme.onConfirm}
           onPress={async () => await confirmAndSave()}
         />
       </Layout.View>

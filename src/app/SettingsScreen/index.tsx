@@ -10,9 +10,9 @@ import ConfigService from '@Services/ConfigService';
 
 export default function SettingsScreen(): JSX.Element {
 
-  const stringResources = useMemo(
-    () => translations.Screens.SettingsScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('HOME SCREEN'));
 

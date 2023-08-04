@@ -3,7 +3,7 @@ import LoadingScreen from './LoadingScreen';
 
 import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
-import { useNavigate } from './GlobalHooks';
+import { useNavigate } from '@Hooks/index';
 
 export default function Home() {
 

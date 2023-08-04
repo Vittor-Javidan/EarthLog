@@ -11,10 +11,9 @@ import ConfigService from '@Services/ConfigService';
 
 export default function HomeScreen() {
 
-  const theme = useMemo(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(
-    () => translations.Screens.HomeScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   useBackPress(() => {
     Alert.alert(

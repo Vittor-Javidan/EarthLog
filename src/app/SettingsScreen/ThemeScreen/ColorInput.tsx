@@ -3,9 +3,8 @@ import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Input } from '@Inputs/index';
 
-import { Languages, ThemeDTO } from '@Types/index';
+import { ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -61,12 +60,9 @@ function CustomInput(props: {
   savedValue: string
 }) {
 
-  const theme = useMemo<ThemeDTO>(
-    () => ConfigService.config.theme, [ConfigService.config.theme]
-  );
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
-    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, [config.theme]);
+  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const [color, setColor] = useState<string>(props.savedValue);
   const [valid, setValid] = useState<boolean>(true);

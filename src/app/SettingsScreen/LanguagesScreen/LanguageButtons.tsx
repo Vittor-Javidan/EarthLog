@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Layout } from '@Layout/index';
 
-import { languageLabels, languageTags, LanguageTags, ThemeDTO } from '@Types/index';
+import { languageLabels, languageTags, LanguageTags } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -10,7 +10,8 @@ export default function AllButtons(props: {
   onButtonClick: (languageTag: LanguageTags) => void
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
 
   return <>
     {

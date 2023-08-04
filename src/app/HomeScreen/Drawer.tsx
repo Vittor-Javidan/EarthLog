@@ -1,23 +1,21 @@
 import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
+import { useNavigate } from '@Hooks/index';
 
 export default function Drawer() {
 
-  const navController = useRouter();
-  const stringResources = useMemo(
-    () => translations.Screens.HomeScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   return (
     <Layout.DrawerButton
       title={stringResources['Settings']}
-      onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
+      onPress={() => useNavigate('SETTINGS SCREEN')}
     />
   );
 }

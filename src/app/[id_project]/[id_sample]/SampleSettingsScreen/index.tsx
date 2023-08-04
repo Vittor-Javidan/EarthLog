@@ -15,7 +15,9 @@ export default function SampleSettingsScreen() {
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (
     <Layout.Root

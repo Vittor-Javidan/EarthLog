@@ -2,9 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 
-import { Languages, WidgetData } from '@Types/index';
+import { WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
@@ -13,9 +12,9 @@ import API_ProjectCreation from './API_ProjectCreation';
 
 export default function Widgets_PointTemplate() {
 
-  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
-    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
-  }, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   const [_, refresh] = useState<boolean>(false);
 

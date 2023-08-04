@@ -15,11 +15,10 @@ export default function ProjectScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const theme = useMemo(() => ConfigService.config.theme, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-  const stringResources = useMemo(
-    () => translations.Screens.ProjectScreen[ConfigService.config.language], []
-  );
+  const stringResources = useMemo(() => translations.Screens.ProjectScreen[language], []);
 
   useBackPress(async () => await exitScreen());
 

@@ -1,9 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
-import { Languages } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -14,12 +12,13 @@ export function ExampleFigure(props: {
   onPressLock: () => void
 }): JSX.Element {
 
+  const { config } = useMemo(() => ConfigService, []);
+  const { language, theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
+
   const temporaryTheme = useMemo(
-    () => API_ExampleFigure.temporaryConfig ?? { ...ConfigService.config.theme },
+    () => API_ExampleFigure.temporaryConfig ?? { ...theme },
     [API_ExampleFigure.temporaryConfig]
-  );
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
-    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
   );
 
   const [lockedPressed, setLockedPressed] = useState<boolean>(false);
@@ -28,7 +27,7 @@ export function ExampleFigure(props: {
   const [wrongPressed, setWrongPressed] = useState<boolean>(false);
   const [_, refresh] = useState<boolean>(true);
 
-  API_ExampleFigure.setterRegister(refresh, ConfigService.config.theme);
+  API_ExampleFigure.setterRegister(refresh, theme);
 
   return (
     <View

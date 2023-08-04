@@ -11,9 +11,9 @@ import ProjectService from '@Services/ProjectService';
 
 export default function ProjectButtons() {
 
-  const stringResources = useMemo(
-    () => translations.Screens.HomeScreen[ConfigService.config.language], []
-  );
+  const { config } = useMemo(() => ConfigService, []);
+  const { language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const allProjectButtons = ProjectService.allProjects.map(settings => (
     <Layout.Button
