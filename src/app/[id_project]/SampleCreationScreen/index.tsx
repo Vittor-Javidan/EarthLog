@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
+
+import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_SampleCreation from './API_SampleCreation';
-import { translations } from '@Translations/index';
 
 export default function SampleCreationScreen() {
 

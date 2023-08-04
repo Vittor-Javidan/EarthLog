@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { BackHandler, Alert } from 'react-native';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import ProjectButtons from './ProjectButtons';
 import Drawer from './Drawer';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import ProjectButtons from './ProjectButtons';
 
 import { translations } from '@Translations/index';
 

@@ -1,29 +1,30 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
-import Inputs_ProjectSettings from './Inputs_ProjectSettings';
-import DeleteButton from './DeleteButton';
-import Widgets_Project from './Widgets_Project';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import { Drawer } from './Drawer';
+import Widgets_Sample from './Widgets_Sample';
 
-import { translations } from '@Translations/index';
+import { SampleSettings } from '@Types/index';
 
-import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
 
-export default function ProjectSettingsScreen() {
+export default function SampleScreens() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
+  const id_sample = useLocalSearchParams().id_sample as string;
+
+  const settings = useMemo<SampleSettings>(() => ProjectService.getSampleFromCache(id_sample), []);
 
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
-      title={stringResources['Project Settings']}
-      iconName="settings"
+      title={settings.name}
+      iconName="clipboard"
       showNavigationTree={true}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer />}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
@@ -36,9 +37,7 @@ export default function ProjectSettingsScreen() {
       ]}
     >
       <Layout.ScrollView>
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
-        <DeleteButton />
+        <Widgets_Sample />
       </Layout.ScrollView>
     </Layout.Root>
   );

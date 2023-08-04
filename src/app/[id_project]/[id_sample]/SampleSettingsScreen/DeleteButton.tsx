@@ -1,35 +1,37 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useNavigate } from '@Hooks/index';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
-import { useNavigate } from 'app/GlobalHooks';
 
 import { InputColors } from '@Types/index';
+import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import { translations } from '@Translations/index';
 
 export default function DeleteButton() {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const id_sample = useLocalSearchParams().id_sample as string;
 
   const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const { theme, language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
+  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
 
   const [widgetName, setWidgetName] = useState<string>('');
 
   async function deleteProject() {
-    await ProjectService.deleteProject(
+    await ProjectService.deleteSample(
       id_project,
-      async () => await useNavigate('HOME SCREEN'),
+      id_sample,
+      async () => await useNavigate('PROJECT SCREEN', id_project),
       (errorMessage) => alert(errorMessage)
     );
   }
 
-  const isNameCorrect = widgetName === projectSettings.name;
+  const isNameCorrect = widgetName === sampleSettings.name;
   const inputColors: InputColors = {
     label: {
       background: theme.wrong,
@@ -46,7 +48,7 @@ export default function DeleteButton() {
     <Input.String
       colors={inputColors}
       label={stringResources['Delete']}
-      placeholder={stringResources['Type project name perfectly to delete.']}
+      placeholder={stringResources['Type sample name perfectly to delete.']}
       value={widgetName}
       onChangeText={setWidgetName}
       locked={false}

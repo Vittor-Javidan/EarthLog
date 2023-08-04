@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
-import { useTiming } from 'app/GlobalHooks';
+import { useTiming } from '@Hooks/index';
 
 import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';

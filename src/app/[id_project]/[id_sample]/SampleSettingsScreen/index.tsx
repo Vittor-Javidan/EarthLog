@@ -1,30 +1,28 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useNavigate } from '@Hooks/index';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
-import Widgets_Sample from './Widgets_Sample';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import Inputs_SampleSettings from './Inputs_SampleSettings';
+import DeleteButton from './DeleteButton';
 
-import { SampleSettings } from '@Types/index';
+import { translations } from '@Translations/index';
 
-import ProjectService from '@Services/ProjectService';
-import { Drawer } from './Drawer';
+import ConfigService from '@Services/ConfigService';
 
-export default function SampleScreens() {
+export default function SampleSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
-  const settings = useMemo<SampleSettings>(() => ProjectService.getSampleFromCache(id_sample), []);
-
-  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
 
   return (
     <Layout.Root
-      title={settings.name}
-      iconName="clipboard"
+      title={stringResources['Sample Settings']}
+      iconName="settings"
       showNavigationTree={true}
-      drawerChildren={<Drawer />}
+      drawerChildren={<></>}
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
@@ -34,10 +32,15 @@ export default function SampleScreens() {
           key="treeIcon_2"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
+        <Icon.Sample
+          key="treeIcon_3"
+          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
+        />,
       ]}
     >
       <Layout.ScrollView>
-        <Widgets_Sample />
+        <Inputs_SampleSettings />
+        <DeleteButton />
       </Layout.ScrollView>
     </Layout.Root>
   );
