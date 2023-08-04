@@ -9,8 +9,11 @@ import { Translations_BooleanData, translations_BooleanData } from './Data/Boole
 import { Translations_AddWidgetButton, translations_AddWidgetButton } from './Widgets/AddWidgetButton';
 import { Translations_ProjectScreen, translations_ProjectScreen } from './Screens/ProjectScreen/ProjectScreen';
 import { Translations_SampleCreationScreen, translations_SampleCreationScreen } from './Screens/ProjectScreen/SampleCreationScreen';
-import { Translations_SampleScreen, translations_SampleScreen } from './Screens/ProjectScreen/SampleScreen';
+import { Translations_SampleScreen, translations_SampleScreen } from './Screens/ProjectScreen/SampleScreen/SampleScreen';
 import { Translations_ErrorMessages, translations_ErrorMessages } from './ErrorMessages';
+import { Translations_ProjectSettingsScreen, translations_ProjectSettingsScreen } from './Screens/ProjectScreen/ProjectSettingsScreen';
+import { Translations_WidgetsComponents_Modal, translations_WidgetsComponents_Modal } from './Widgets/Components_Modal';
+import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } from './Screens/ProjectScreen/SampleScreen/SampleSettingsScreen';
 
 export const translations: {
   Screens: {
@@ -21,10 +24,15 @@ export const translations: {
       LanguagesScreen:          Translations_LanguagesScreen
       ThemeScreen:              Translations_ThemeScreen
     ProjectScreen:              Translations_ProjectScreen
+      ProjectSettingsScreen:    Translations_ProjectSettingsScreen
       SampleCreationScreen:     Translations_SampleCreationScreen
       SampleScreen:             Translations_SampleScreen
+        SampleSettingsScreen:   Translations_SampleSettingsScreen
   }
   Widgets: {
+    Components: {
+      Modal:                    Translations_WidgetsComponents_Modal
+    }
     TextWidget:                 Translations_TextWidget
     AddWidgetButton:            Translations_AddWidgetButton
   }
@@ -41,10 +49,15 @@ export const translations: {
       LanguagesScreen:          translations_LanguagesScreen,
       ThemeScreen:              translations_ThemeScreen,
     ProjectScreen:              translations_ProjectScreen,
+      ProjectSettingsScreen:    translations_ProjectSettingsScreen,
       SampleCreationScreen:     translations_SampleCreationScreen,
       SampleScreen:             translations_SampleScreen,
+        SampleSettingsScreen:   translations_SampleSettingsScreen,
   },
   Widgets: {
+    Components: {
+      Modal:                    translations_WidgetsComponents_Modal,
+    },
     TextWidget:                 translations_TextWidget,
     AddWidgetButton:            translations_AddWidgetButton,
   },

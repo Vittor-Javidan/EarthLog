@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
-import { Layout } from '@Components/Layout';
 import { Icon } from '@Components/Icon';
+import { Layout } from '@Components/Layout';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import DeleteButton from './DeleteButton';
 import Widgets_Project from './Widgets_Project';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
+
+import { translations } from '@Translations/index';
+
+import ConfigService from '@Services/ConfigService';
 
 export default function ProjectSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
 
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
-      title="Project Settings"
+      title={stringResources['Project Settings']}
       iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}

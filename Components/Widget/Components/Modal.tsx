@@ -3,6 +3,7 @@ import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 
 import { InputColors, ThemeDTO, WidgetData } from '@Types/index';
+import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -16,6 +17,7 @@ export default function Modal(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
 
   return (
     <Layout.Modal
@@ -31,7 +33,7 @@ export default function Modal(props: {
           />
         )}
         <Layout.Button
-          title="Save"
+          title={stringResources['Save']}
           onPress={props.onConfirm}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
@@ -47,6 +49,7 @@ function DeleteButton(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
 
   const [widgetName, setWidgetName] = useState<string>('');
   const isNameCorrect = widgetName === props.widgetLabel;
@@ -66,15 +69,15 @@ function DeleteButton(props: {
   return (<>
     <Input.String
       colors={inputColors}
-      label="Delete"
-      placeholder="Type widget name perfectly to delete."
+      label={stringResources['Delete']}
+      placeholder={stringResources['Type widget name perfectly to delete.']}
       value={widgetName}
       onChangeText={setWidgetName}
       locked={false}
       onResetPress={() => setWidgetName('')}
     />
     {isNameCorrect && <Layout.Button
-      title="confirm to delete"
+      title={stringResources['Delete']}
       overrideBackgroundColor={theme.wrong}
       overrideTextColor={theme.onWrong}
       onPress={props.onDelete}

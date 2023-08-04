@@ -5,6 +5,7 @@ import { Layout } from '@Components/Layout';
 import { useTiming } from 'app/GlobalHooks';
 
 import { InputColors } from '@Types/index';
+import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
@@ -16,6 +17,7 @@ export default function Inputs_SampleSettings() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
   const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
   const { rules } = useMemo(() => sampleSettings, []);
 
@@ -61,18 +63,22 @@ export default function Inputs_SampleSettings() {
   };
 
   return (<>
-    <Layout.StatusFeedback saved={saved} />
+    <Layout.Feedback
+      title={stringResources['Status:']}
+      assert={saved}
+      values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
+    />
     <Input.String
       colors={inputColors}
-      label="ID"
+      label={stringResources['ID']}
       placeholder=""
       locked={true}
       value={sampleSettings.id_sample}
     />
     <Input.String
       colors={inputColors}
-      label="Name"
-      placeholder=""
+      label={stringResources['Name']}
+      placeholder={stringResources['Write the sample name here...']}
       locked={!rules.allowNameChange}
       value={name}
       onChangeText={(text) => onNameChange(text)}

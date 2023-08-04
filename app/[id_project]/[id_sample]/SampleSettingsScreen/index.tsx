@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { Layout } from '@Components/Layout';
 import { Icon } from '@Components/Icon';
-import { useNavigate } from 'app/GlobalHooks';
+import { Layout } from '@Components/Layout';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
 import DeleteButton from './DeleteButton';
+import { useNavigate } from 'app/GlobalHooks';
+
+import { translations } from '@Translations/index';
+
+import ConfigService from '@Services/ConfigService';
 
 export default function SampleSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
+  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
+
   return (
     <Layout.Root
-      title="Sample Settings"
+      title={stringResources['Sample Settings']}
       iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}

@@ -4,8 +4,12 @@ import { View, Text, StyleProp, TextStyle } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-export default function StatusFeedback(props: {
-  saved: boolean
+type Values = { whenTrue: string, whenFalse: string }
+
+export default function Feedback(props: {
+  title: string
+  assert: boolean
+  values: Values
   textStyle_Label?: StyleProp<TextStyle>
   textStyle_Status?: StyleProp<TextStyle>
 }) {
@@ -32,17 +36,17 @@ export default function StatusFeedback(props: {
           paddingHorizontal: 10,
         }, props.textStyle_Label]}
       >
-        Status
+        {props.title}
       </Text>
       <Text
         adjustsFontSizeToFit={true}
         style={[{
-          color: props.saved ? theme.confirm : theme.modified,
+          color: props.assert ? theme.confirm : theme.modified,
           fontSize: ThemeService.FONTS.h3,
           paddingHorizontal: 10,
         }, props.textStyle_Status]}
       >
-        {props.saved ? 'Saved' : 'Saving'}
+        {props.assert ? props.values.whenTrue : props.values.whenFalse}
       </Text>
     </View>
   );

@@ -7,6 +7,7 @@ import { useTiming } from 'app/GlobalHooks';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import { InputColors } from '@Types/index';
+import { translations } from '@Translations/index';
 
 export default function Inputs_ProjectSettings() {
 
@@ -14,6 +15,7 @@ export default function Inputs_ProjectSettings() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
   const { rules } = useMemo(() => projectSettings, []);
 
@@ -67,25 +69,29 @@ export default function Inputs_ProjectSettings() {
   };
 
   return (<>
-    <Layout.StatusFeedback saved={saved} />
+    <Layout.Feedback
+      title={stringResources['Status:']}
+      assert={saved}
+      values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
+    />
     <Input.String
-      label="ID"
+      label={stringResources['ID']}
       colors={inputColors}
       placeholder=""
       value={projectSettings.id_project}
       locked={true}
     />
     <Input.String
-      label="Name"
+      label={stringResources['Name']}
       colors={inputColors}
-      placeholder=""
+      placeholder={stringResources['Write the project name here...']}
       value={name}
       locked={!rules.allowNameChange}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
     />
     <Input.Boolean
-      label="Immutable"
+      label={stringResources['Immutable']}
       colors={inputColors}
       value={immutable}
       locked={!rules.allowImmutableChange}

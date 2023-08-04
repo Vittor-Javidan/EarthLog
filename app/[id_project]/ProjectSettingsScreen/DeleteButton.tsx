@@ -8,6 +8,7 @@ import { InputColors } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import { translations } from '@Translations/index';
 
 export default function DeleteButton() {
 
@@ -15,6 +16,7 @@ export default function DeleteButton() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
 
   const [widgetName, setWidgetName] = useState<string>('');
@@ -43,8 +45,8 @@ export default function DeleteButton() {
   return (<>
     <Input.String
       colors={inputColors}
-      label="Delete"
-      placeholder="Type project name perfectly to delete."
+      label={stringResources['Delete']}
+      placeholder={stringResources['Type project name perfectly to delete.']}
       value={widgetName}
       onChangeText={setWidgetName}
       locked={false}
@@ -52,7 +54,7 @@ export default function DeleteButton() {
     />
     {isNameCorrect && (
       <Layout.Button
-        title="confirm to delete"
+        title={stringResources['Delete']}
         overrideBackgroundColor={theme.wrong}
         overrideTextColor={theme.onWrong}
         onPress={async () => await deleteProject()}
