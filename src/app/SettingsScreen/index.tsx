@@ -1,8 +1,8 @@
 
 import React, { useMemo } from 'react';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
 import { translations } from '@Translations/index';
 

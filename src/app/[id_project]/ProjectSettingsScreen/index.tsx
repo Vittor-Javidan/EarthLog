@@ -1,25 +1,26 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
-import Inputs_SampleSettings from './Inputs_SampleSettings';
+import Inputs_ProjectSettings from './Inputs_ProjectSettings';
+import Widgets_Project from './Widgets_Project';
 import DeleteButton from './DeleteButton';
-import { useNavigate } from 'app/GlobalHooks';
 
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 
-export default function SampleSettingsScreen() {
+export default function ProjectSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
+  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[ConfigService.config.language], []);
 
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[ConfigService.config.language], []);
+  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
-      title={stringResources['Sample Settings']}
+      title={stringResources['Project Settings']}
       iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}
@@ -32,14 +33,11 @@ export default function SampleSettingsScreen() {
           key="treeIcon_2"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
-        <Icon.Sample
-          key="treeIcon_3"
-          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
-        />,
       ]}
     >
       <Layout.ScrollView>
-        <Inputs_SampleSettings />
+        <Inputs_ProjectSettings />
+        <Widgets_Project />
         <DeleteButton />
       </Layout.ScrollView>
     </Layout.Root>

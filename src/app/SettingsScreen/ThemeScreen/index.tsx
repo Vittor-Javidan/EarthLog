@@ -1,14 +1,12 @@
 
 import React, { useState, useMemo } from 'react';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import { Languages } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -16,12 +14,8 @@ import API_ExampleFigure from './API_ExampleFigure';
 
 export default function ThemeScreen(): JSX.Element {
 
-  const savedTheme = useMemo(
-    () => ConfigService.config.theme, [ConfigService.config.theme]
-  );
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
-    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
-  );
+  const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
+  const stringResources = useMemo(() => translations.Screens.ThemeScreen[ConfigService.config.language], []);
 
   const [locked, setLocked] = useState<boolean>(false);
 

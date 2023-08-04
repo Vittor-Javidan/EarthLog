@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import Drawer from './Drawer';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import Widgets_Project from './Widgets_Project';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
-import Drawer from './Drawer';
 
 import { translations } from '@Translations/index';
 

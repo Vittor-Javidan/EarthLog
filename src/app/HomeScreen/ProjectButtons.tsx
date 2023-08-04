@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { useNavigate } from 'app/GlobalHooks';
 
 import { translations } from '@Translations/index';
 

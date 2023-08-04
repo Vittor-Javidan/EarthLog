@@ -1,14 +1,15 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useBackPress, useNavigate } from '@Hooks/index';
 import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
+import { Drawer } from './Drawer';
 import SampleButtons from './SampleButtons';
-import { useBackPress, useNavigate } from 'app/GlobalHooks';
+
+import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import { Drawer } from './Drawer';
-import { translations } from '@Translations/index';
 
 export default function ProjectScreen() {
 

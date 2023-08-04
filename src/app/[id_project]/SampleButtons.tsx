@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
 
 import ProjectService from '@Services/ProjectService';
-import { useNavigate } from 'app/GlobalHooks';
 
 export default function SampleButtons() {
 
