@@ -4,6 +4,8 @@ import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 import { useNavigate } from 'app/GlobalHooks';
 
+import { InputColors } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
@@ -28,18 +30,26 @@ export default function DeleteButton() {
   }
 
   const isNameCorrect = widgetName === sampleSettings.name;
+  const inputColors: InputColors = {
+    label: {
+      background: theme.wrong,
+      font: theme.onWrong,
+    },
+    dataDisplay: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+      font_placeholder: theme.onTertiary_Placeholder,
+    },
+  };
 
   return (<>
     <Input.String
+      colors={inputColors}
       label="Delete"
       placeholder="Type project name perfectly to delete."
-      backgroundColor_Label={theme.wrong}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onWrong}
-      color_Value={theme.onTertiary}
-      color_Placeholder={theme.onTertiary_Placeholder}
       value={widgetName}
       onChangeText={setWidgetName}
+      locked={false}
       onResetPress={() => setWidgetName('')}
     />
     {isNameCorrect && (

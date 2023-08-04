@@ -5,11 +5,11 @@ import Root from './Root';
 export default function Back(props: {
   color?: string
   style?: StyleProp<ViewStyle>
-  onPress: () => void
+  onPress?: () => void
 }): JSX.Element {
   return (
     <Root
-      iconName="chevron-back"
+      iconName="chevron-back-sharp"
       color={props.color}
       onPress={props.onPress}
       style={props.style}

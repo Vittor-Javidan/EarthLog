@@ -3,6 +3,7 @@ import Close from './Close';
 import Edit from './Edit';
 import Home from './Home';
 import Language from './Language';
+import Locked from './Locked';
 import Menu from './Menu';
 import Project from './Project';
 import Reset from './Reset';
@@ -27,4 +28,5 @@ export const Icon = {
   Sample: Sample,
   Save: Save,
   Back: Back,
+  Locked: Locked,
 };

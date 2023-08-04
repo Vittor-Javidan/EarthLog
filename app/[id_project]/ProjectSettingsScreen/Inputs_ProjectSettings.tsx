@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { Text } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 import { useTiming } from 'app/GlobalHooks';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import { InputColors } from '@Types/index';
 
 export default function Inputs_ProjectSettings() {
 
@@ -55,202 +54,42 @@ export default function Inputs_ProjectSettings() {
     }
   }
 
+  const inputColors: InputColors = {
+    label: {
+      background: theme.secondary,
+      font: theme.onSecondary,
+    },
+    dataDisplay: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+      font_placeholder: theme.onTertiary_Placeholder,
+    },
+  };
+
   return (<>
-    <StatusFeedback saved={saved} />
-    <Display_ID />
-    {rules.allowNameChange ? <Input.String
+    <Layout.StatusFeedback saved={saved} />
+    <Input.String
+      label="ID"
+      colors={inputColors}
+      placeholder=""
+      value={projectSettings.id_project}
+      locked={true}
+    />
+    <Input.String
       label="Name"
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
-      color_Placeholder={theme.onTertiary_Placeholder}
+      colors={inputColors}
       placeholder=""
       value={name}
+      locked={!rules.allowNameChange}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
-    /> : <Display_Name />}
-    {rules.allowImmutableChange ? <Input.Boolean
+    />
+    <Input.Boolean
       label="Immutable"
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
+      colors={inputColors}
       value={immutable}
+      locked={!rules.allowImmutableChange}
       onSwitchChange={(boolean) => onImmutableChange(boolean)}
-    /> : <Display_Immutable />}
+    />
   </>);
-}
-
-function StatusFeedback(props: { saved: boolean }) {
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-
-  return (
-    <Layout.View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 40,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        backgroundColor: theme.background,
-      }}
-    >
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onBackground,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        Status
-      </Text>
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: props.saved ? theme.confirm : theme.modified,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        {props.saved ? 'Saved' : 'Saving'}
-      </Text>
-    </Layout.View>
-  );
-}
-
-function Display_ID() {
-
-  const id_project = useLocalSearchParams().id_project as string;
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-
-  return (
-    <Layout.View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 40,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        backgroundColor: theme.secondary,
-      }}
-    >
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        ID
-      </Text>
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        {projectSettings.id_project}
-      </Text>
-    </Layout.View>
-  );
-}
-
-function Display_Name() {
-
-  const id_project = useLocalSearchParams().id_project as string;
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-
-  return (
-    <Layout.View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 40,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        backgroundColor: theme.secondary,
-      }}
-    >
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        Name
-      </Text>
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        {projectSettings.name}
-      </Text>
-    </Layout.View>
-  );
-}
-
-function Display_Immutable() {
-
-  const id_project = useLocalSearchParams().id_project as string;
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-
-  return (
-    <Layout.View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 40,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
-        backgroundColor: theme.secondary,
-      }}
-    >
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        Immutable
-      </Text>
-      <Text
-        adjustsFontSizeToFit={true}
-        style={{
-          color: theme.onSecondary,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }}
-      >
-        {JSON.stringify(projectSettings.immutable)}
-      </Text>
-    </Layout.View>
-  );
 }

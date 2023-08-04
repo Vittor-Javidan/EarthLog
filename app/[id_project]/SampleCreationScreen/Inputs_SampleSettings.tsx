@@ -10,6 +10,7 @@ import ProjectService from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_SampleCreation from './API_SampleCreation';
+import { InputColors } from '@Types/index';
 
 export default function Inputs_SampleSettings() {
 
@@ -36,6 +37,18 @@ export default function Inputs_SampleSettings() {
     }
   }
 
+  const inputColors: InputColors = {
+    label: {
+      background: theme.secondary,
+      font: theme.onSecondary,
+    },
+    dataDisplay: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+      font_placeholder: theme.onTertiary_Placeholder,
+    },
+  };
+
   return (
     <Layout.View>
       <Layout.Text
@@ -45,26 +58,20 @@ export default function Inputs_SampleSettings() {
         {stringResources['Sample settings']}
       </Layout.Text>
       <Input.String
+        colors={inputColors}
         label={stringResources['ID']}
-        backgroundColor_Label={theme.secondary}
-        backgroundColor_Value={theme.tertiary}
-        color_Label={theme.onSecondary}
-        color_Value={theme.onTertiary}
-        color_Placeholder={theme.onTertiary_Placeholder}
         placeholder={stringResources['Only numbers, letters and "-"']}
         value={id}
+        locked={false}
         onChangeText={(text) => onIDChange(text)}
         onResetPress={() => setId(ProjectService.generateUuidV4())}
       />
       <Input.String
+        colors={inputColors}
         label={stringResources['Name']}
-        backgroundColor_Label={theme.secondary}
-        backgroundColor_Value={theme.tertiary}
-        color_Label={theme.onSecondary}
-        color_Value={theme.onTertiary}
-        color_Placeholder={theme.onTertiary_Placeholder}
         placeholder={stringResources['Write the sample name here...']}
         value={name}
+        locked={false}
         onChangeText={(text) => onNameChange(text)}
         onResetPress={() => setName('')}
       />

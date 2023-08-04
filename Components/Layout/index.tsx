@@ -5,6 +5,7 @@ import Text from './Text';
 import Button from './Button';
 import DrawerButton from './DrawerButton';
 import Modal from './Modal';
+import StatusFeedback from './StatusFeedback';
 
 export const Layout = {
   Root: Root,
@@ -14,4 +15,5 @@ export const Layout = {
   Button: Button,
   DrawerButton: DrawerButton,
   Modal: Modal,
+  StatusFeedback: StatusFeedback,
 };

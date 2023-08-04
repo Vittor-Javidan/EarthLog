@@ -9,7 +9,7 @@ import { Input } from '@Components/Inputs';
 
 import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
-import { BooleanWidgetData, ThemeDTO } from '@Types/index';
+import { BooleanWidgetData, InputColors, ThemeDTO } from '@Types/index';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
@@ -145,6 +145,20 @@ function Modal(props: {
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
 
+  const { rules } = props.widgetData;
+
+  const inputColors: InputColors = {
+    label: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
+
   return (
     <WidgetComponent.Modal
       title={label}
@@ -161,31 +175,22 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      {props.widgetData.rules.allowLabelChange && (
-        <Input.String
-          label="Label:"
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          color_Placeholder={theme.onBackground_Placeholder}
-          placeholder="Write widget name here..."
-          value={label}
-          onChangeText={setLabel}
-          onResetPress={() => setLabel('')}
-        />
-      )}
-      {props.widgetData.rules.allowValueChange && (
-        <Input.Boolean
-          label="Value:"
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          value={value}
-          onSwitchChange={setValue}
-        />
-      )}
+      <Input.String
+        colors={inputColors}
+        label="Label:"
+        placeholder="Write widget name here..."
+        value={label}
+        onChangeText={setLabel}
+        locked={!rules.allowLabelChange}
+        onResetPress={() => setLabel('')}
+      />
+      <Input.Boolean
+        label="Value:"
+        colors={inputColors}
+        value={value}
+        locked={!rules.allowValueChange}
+        onSwitchChange={setValue}
+      />
     </WidgetComponent.Modal>
   );
 }

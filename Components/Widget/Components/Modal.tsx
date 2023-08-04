@@ -2,7 +2,7 @@ import React, { useState, useMemo, ReactNode } from 'react';
 import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 
-import { ThemeDTO, WidgetData } from '@Types/index';
+import { InputColors, ThemeDTO, WidgetData } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -51,17 +51,26 @@ function DeleteButton(props: {
   const [widgetName, setWidgetName] = useState<string>('');
   const isNameCorrect = widgetName === props.widgetLabel;
 
+  const inputColors: InputColors = {
+    label: {
+      background: theme.wrong,
+      font: theme.onWrong,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
+
   return (<>
     <Input.String
+      colors={inputColors}
       label="Delete"
       placeholder="Type widget name perfectly to delete."
-      backgroundColor_Label={theme.wrong}
-      backgroundColor_Value={theme.background}
-      color_Label={theme.onWrong}
-      color_Value={theme.onBackground}
-      color_Placeholder={theme.onBackground_Placeholder}
       value={widgetName}
       onChangeText={setWidgetName}
+      locked={false}
       onResetPress={() => setWidgetName('')}
     />
     {isNameCorrect && <Layout.Button

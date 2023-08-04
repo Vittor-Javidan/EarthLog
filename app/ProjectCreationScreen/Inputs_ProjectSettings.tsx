@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Input } from '@Components/Inputs';
 
+import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
@@ -41,38 +42,42 @@ export default function Inputs_ProjectSettings() {
     }
   }
 
+  const inputColors: InputColors = {
+    label: {
+      background: theme.secondary,
+      font: theme.onSecondary,
+    },
+    dataDisplay: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+      font_placeholder: theme.onTertiary_Placeholder,
+    },
+  };
+
   return (<>
     <Input.String
+      colors={inputColors}
       label={stringResources['ID']}
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
-      color_Placeholder={theme.onTertiary_Placeholder}
       placeholder={stringResources['Only numbers, letters and "-".']}
       value={id}
+      locked={false}
       onChangeText={(text) => onIDChange(text)}
       onResetPress={() => setId(ProjectService.generateUuidV4())}
     />
     <Input.String
+      colors={inputColors}
       label={stringResources['Name']}
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
-      color_Placeholder={theme.onTertiary_Placeholder}
       placeholder={stringResources['Write the project name here...']}
       value={name}
+      locked={false}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => setName('')}
     />
     <Input.Boolean
+      colors={inputColors}
       label={stringResources['Immutable']}
-      backgroundColor_Label={theme.secondary}
-      backgroundColor_Value={theme.tertiary}
-      color_Label={theme.onSecondary}
-      color_Value={theme.onTertiary}
       value={immutable}
+      locked={false}
       onSwitchChange={(boolean) => onImmutableChange(boolean)}
     />
   </>);

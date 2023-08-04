@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
-import { Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
+import { InputColors, Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_AddWidgetButton } from '@Translations/Widgets/AddWidgetButton';
 
@@ -40,6 +40,18 @@ export default function AddWidgetButton(props: {
     setShowlModal(false);
   }
 
+  const inputColors: InputColors = {
+    label: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
+
   return (<>
     <Layout.Button
       title={stringResources['Add']}
@@ -52,15 +64,12 @@ export default function AddWidgetButton(props: {
       >
         <Layout.View>
           <Input.String
+            colors={inputColors}
             label={stringResources['Widget name']}
-            backgroundColor_Label={theme.tertiary}
-            backgroundColor_Value={theme.background}
-            color_Label={theme.onTertiary}
-            color_Value={theme.onBackground}
-            color_Placeholder={theme.onBackground_Placeholder}
             placeholder={stringResources['Write a name to the widget here...']}
             value={label}
             onChangeText={setLabel}
+            locked={false}
             onResetPress={() => setLabel('')}
           />
         </Layout.View>

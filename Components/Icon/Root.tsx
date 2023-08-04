@@ -10,7 +10,7 @@ export default function Root(props: {
   iconName: IconName
   color?: string
   style?: StyleProp<ViewStyle>
-  onPress: () => void
+  onPress?: () => void
 }): JSX.Element {
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -56,5 +56,6 @@ export type IconName = (
   'refresh-sharp'       |
   'clipboard'           |
   'save'                |
-  'chevron-back-sharp'
+  'chevron-back-sharp'  |
+  'lock-closed-sharp'
 )

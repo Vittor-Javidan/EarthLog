@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TextInput } from 'react-native';
 
 import ThemeService from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import { InputColors } from '@Types/index';
 
 export default function StringInput(props: {
+  colors : InputColors
   label: string
   value: string
   placeholder: string
-  backgroundColor_Label: string
-  backgroundColor_Value: string
-  color_Label: string
-  color_Value: string
-  color_Placeholder: string
-  onChangeText: (text: string) => void
-  onResetPress: () => void
+  locked: boolean
+  onChangeText?: (text: string) => void
+  onResetPress?: () => void
 }) {
+
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+
+  const { label: LABEL_COLORS, dataDisplay: DATA_DISPLAY_COLORS } = props.colors;
+
   return (
     <View
       style={{
-        backgroundColor: props.backgroundColor_Label,
+        backgroundColor: LABEL_COLORS.background,
       }}
     >
       <Layout.View
@@ -36,34 +41,61 @@ export default function StringInput(props: {
       >
         <Text
           style={{
-            color: props.color_Label,
+            color: LABEL_COLORS.font,
             fontSize: ThemeService.FONTS.h3,
             paddingHorizontal: 10,
           }}
         >
           {props.label}
         </Text>
-        <Icon.Reset
-          color={props.color_Label}
-          onPress={props.onResetPress}
-          style={{
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-          }}
-        />
+        {props.locked ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: theme.wrong,
+                fontSize: ThemeService.FONTS.h3,
+              }}
+            >
+              Locked
+            </Text>
+            <Icon.Locked
+              color={theme.wrong}
+              onPress={() => {}}
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+            />
+          </View>
+        ) : (
+          <Icon.Reset
+            color={LABEL_COLORS.font}
+            onPress={props.onResetPress}
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+          />
+        )}
       </Layout.View>
       <TextInput
         style={{
           width: '100%',
           paddingHorizontal: 10,
           paddingVertical: 10,
-          backgroundColor: props.backgroundColor_Value,
-          color: props.color_Value,
+          backgroundColor: DATA_DISPLAY_COLORS.background,
+          color: DATA_DISPLAY_COLORS.font,
         }}
         value={props.value}
         onChangeText={props.onChangeText}
         placeholder={props.placeholder}
-        placeholderTextColor={props.color_Placeholder}
+        placeholderTextColor={DATA_DISPLAY_COLORS.font_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline

@@ -4,7 +4,7 @@ import { Icon } from '@Icon/index';
 import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
-import { Languages, TextWidgetData, ThemeDTO } from '@Types/index';
+import { InputColors, Languages, TextWidgetData, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 
@@ -149,6 +149,20 @@ function Modal(props: {
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
 
+  const { rules } = props.widgetData;
+
+  const inputColors: InputColors = {
+    label: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
+
   return (
     <WidgetComponent.Modal
       title={label}
@@ -159,40 +173,30 @@ function Modal(props: {
           name: label,
           type: 'text',
           value: value,
-          rules: { ...props.widgetData.rules },
+          rules: { ...rules },
         });
       }}
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      {props.widgetData.rules.allowLabelChange && (
-        <Input.String
-          label={stringResources['Widget Name']}
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          color_Placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write widget name here...']}
-          value={label}
-          onChangeText={setLabel}
-          onResetPress={() => setLabel('')}
-        />
-      )}
-      {props.widgetData.rules.allowValueChange && (
-        <Input.String
-          label={stringResources['Text']}
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          color_Placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write anything here...']}
-          value={value}
-          onChangeText={setValue}
-          onResetPress={() => setValue('')}
-        />
-      )}
+      <Input.String
+        colors={inputColors}
+        label={stringResources['Widget Name']}
+        placeholder={stringResources['Write widget name here...']}
+        value={label}
+        onChangeText={setLabel}
+        locked={!rules.allowLabelChange}
+        onResetPress={() => setLabel('')}
+      />
+      <Input.String
+        colors={inputColors}
+        label={stringResources['Text']}
+        placeholder={stringResources['Write anything here...']}
+        value={value}
+        onChangeText={setValue}
+        locked={!rules.allowValueChange}
+        onResetPress={() => setValue('')}
+      />
     </WidgetComponent.Modal>
   );
 }
