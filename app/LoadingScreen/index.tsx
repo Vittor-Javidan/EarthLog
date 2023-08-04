@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 
+import { Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_LoadingScreen } from '@Translations/Screens/LoadingScreen';
 
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
-import { ThemeDTO } from '@Services/ThemeService';
 
 export default function LoadingScreen(): JSX.Element {
 

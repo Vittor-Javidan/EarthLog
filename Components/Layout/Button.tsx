@@ -2,7 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
 
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import { ThemeDTO } from '@Types/index';
+
+import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
 export default function Button(props: {
@@ -26,10 +28,11 @@ export default function Button(props: {
 			onPress={props.onPress}
 			style={[{
 				flex: 1,
+				justifyContent: 'center',
 				alignItems: 'center',
 				backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
-				padding: 10,
+				height: 55,
 			}, props.style]}
 		>
 			<Text

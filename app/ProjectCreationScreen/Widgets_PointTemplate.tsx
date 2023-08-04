@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
-import WidgetsGroup from './WidgetsGroup';
+import { Widget } from '@Components/Widget';
 
+import { Languages, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
-import { Languages } from '@Services/LanguageService';
 import ConfigService from '@Services/ConfigService';
-import { WidgetData, WidgetLabel } from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
 import API_ProjectCreation from './API_ProjectCreation';
@@ -20,37 +19,41 @@ export default function Widgets_PointTemplate() {
 
   const [_, refresh] = useState<boolean>(false);
 
-  function onConfirm(oldlabel: string, newLabel: string, value: WidgetData) {
-    if ( oldlabel !== newLabel) {
-      API_ProjectCreation.deletePointTemplateWidget(oldlabel);
-    }
-    API_ProjectCreation.modifyPointTemplateWidget(newLabel, value);
+  function onConfirm(widgetData: WidgetData) {
+    API_ProjectCreation.updatePointTemplateWidget(widgetData);
   }
 
-  function onDelete(label: WidgetLabel) {
-    API_ProjectCreation.deletePointTemplateWidget(label);
+  function onDelete(widgetData: WidgetData) {
+    API_ProjectCreation.deletePointTemplateWidget(widgetData);
     refresh(prev => !prev);
   }
 
-  function onCreateWidget(label: string, widgetData: WidgetData) {
-    API_ProjectCreation.modifyPointTemplateWidget(label, widgetData);
+  function onCreateWidget(widgetData: WidgetData) {
+    API_ProjectCreation.addPointTemplateWidget(widgetData);
     refresh(prev => !prev);
   }
 
-  return (
-    <Layout.View>
-      <Layout.Text
-        fontSize={ThemeService.FONTS.h2}
-        color="onBackground"
-      >
-        {stringResources['Point template']}
-      </Layout.Text>
-      <WidgetsGroup
-        widgets={API_ProjectCreation.temporaryProject.sampleTemplate}
-        onConfirm={onConfirm}
-        onDelete={onDelete}
-        onCreateWidget={(label, widgetData) => onCreateWidget(label, widgetData)}
+  const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.sampleTemplate.map(widgetData => {
+    return (
+      <Widget.Selector
+        key={widgetData.id_widget}
+        widgetData={widgetData}
+        onConfirm={(widgetData) => { onConfirm(widgetData);}}
+        onDelete={() => onDelete(widgetData)}
       />
-    </Layout.View>
-  );
+    );
+  });
+
+  return (<>
+    <Layout.Text
+      fontSize={ThemeService.FONTS.h2}
+      color="onBackground"
+    >
+      {stringResources['Point template']}
+    </Layout.Text>
+    {allWidgetsComponents}
+    <Widget.AddWidgetButton
+      onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
+    />
+  </>);
 }

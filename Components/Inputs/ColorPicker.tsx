@@ -15,8 +15,9 @@ import Animated, {
 
 } from 'react-native-reanimated';
 
+import { ThemeDTO } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
 
 export function ColorPicker(props: {
   pickerWidth: number

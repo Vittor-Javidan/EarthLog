@@ -4,15 +4,40 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "@Components/*": ["Components/*"],
-      "@Services/*": ["Services/*"],
-      "@Globals/*": ["Globals/*"],
-      "@Translations/*": ["Translations/*"],
-      "@Icon/*": ["Components/Icon/*"],
-      "@Layout/*": ["Components/Layout/*"],
-      "@Inputs/*": ["Components/Inputs/*"],
-      "@Widget/*": ["Components/Widget/*"],
-      "@WidgetComponents/*": ["Components/Widget/Components/*"],
-    },
-  }
+      "@Types/*": [
+        "Types/*"
+      ],
+      "@Components/*": [
+        "Components/*"
+      ],
+      "@Services/*": [
+        "Services/*"
+      ],
+      "@Globals/*": [
+        "Globals/*"
+      ],
+      "@Translations/*": [
+        "Translations/*"
+      ],
+      "@Icon/*": [
+        "Components/Icon/*"
+      ],
+      "@Layout/*": [
+        "Components/Layout/*"
+      ],
+      "@Inputs/*": [
+        "Components/Inputs/*"
+      ],
+      "@Widget/*": [
+        "Components/Widget/*"
+      ],
+      "@WidgetComponents/*": [
+        "Components/Widget/Components/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

@@ -2,14 +2,15 @@ import React, { useState, useMemo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { ThemeDTO } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
 
 export default function Root(props: {
   iconName: IconName
   color?: string
   style?: StyleProp<ViewStyle>
-  onPress: () => void
+  onPress?: () => void
 }): JSX.Element {
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -52,5 +53,9 @@ export type IconName = (
   'pencil-sharp'        |
   'checkmark-done-sharp'|
   'close'               |
-  'refresh-sharp'
+  'refresh-sharp'       |
+  'clipboard'           |
+  'save'                |
+  'chevron-back-sharp'  |
+  'lock-closed-sharp'
 )

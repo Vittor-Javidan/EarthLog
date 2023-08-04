@@ -3,22 +3,20 @@ import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
 import { Input } from '@Components/Inputs';
 
+import { InputColors, Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
+import { Translations_AddWidgetButton } from '@Translations/Widgets/AddWidgetButton';
 
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { Languages } from '@Services/LanguageService';
-import ProjectService, { WidgetData, WidgetLabel, WidgetTypes } from '@Services/ProjectService';
+import ProjectService from '@Services/ProjectService';
 
 export default function AddWidgetButton(props: {
-  widgets: Record<WidgetLabel, WidgetData>
-  onCreateWidget: (label: WidgetLabel, widgetData: WidgetData) => void
+  onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
-    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
+  const stringResources = useMemo<Translations_AddWidgetButton[Languages]>(() => {
+    return translations.Widgets.AddWidgetButton[ConfigService.config.language];
   }, []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);
@@ -29,18 +27,30 @@ export default function AddWidgetButton(props: {
       alert('Label cannot be empty');
       return;
     }
-    if (Object.keys(props.widgets).includes(label)) {
-      alert('Label cannot be duplicated');
-      return;
-    }
     callback();
   }
 
   function onPress(widgetName: WidgetTypes) {
-    whenLabelValid(() => props.onCreateWidget(label, ProjectService.getWidgetData(widgetName)));
+    whenLabelValid(() => {
+      const widgetData = ProjectService.getWidgetData(widgetName);
+      widgetData.name = label;
+      props.onCreateWidget(widgetData);
+    });
     setLabel('');
     setShowlModal(false);
   }
+
+  const inputColors: InputColors = {
+    label: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
 
   return (<>
     <Layout.Button
@@ -54,15 +64,12 @@ export default function AddWidgetButton(props: {
       >
         <Layout.View>
           <Input.String
+            colors={inputColors}
             label={stringResources['Widget name']}
-            backgroundColor_Label={theme.tertiary}
-            backgroundColor_Value={theme.background}
-            color_Label={theme.onTertiary}
-            color_Value={theme.onBackground}
-            color_Placeholder={theme.onBackground_Placeholder}
             placeholder={stringResources['Write a name to the widget here...']}
             value={label}
             onChangeText={setLabel}
+            locked={false}
             onResetPress={() => setLabel('')}
           />
         </Layout.View>

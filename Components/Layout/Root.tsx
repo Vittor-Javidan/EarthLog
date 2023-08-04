@@ -1,16 +1,19 @@
 import React, { ReactNode, useState, useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { ThemeDTO } from '@Types/index';
+
 import { APP_VERSION } from '@Globals/Version';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import { Icon, IconName } from '@Components/Icon';
 
-const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
-
-// type navbarButtonType = 'Menu' | 'GoBack'
+const { height: HEIGHT } = Dimensions.get('window');
+const NAVBAR_HEIGH = 70;
+const NAVIGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
@@ -21,54 +24,45 @@ export default function Root(props: {
   navigationTreeIcons?: JSX.Element[]
 }): JSX.Element {
 
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
+    <StatusBar
+      animated={true}
+      networkActivityIndicatorVisible={true}
+      backgroundColor={theme.primary}
+    />
     <View
       style={{
-        width: WIDTH,
-        height: HEIGHT,
+        flex: 1,
+        backgroundColor: theme.background,
       }}
     >
-      <StatusBar animated={true} />
       <Navbar
         title={props.title}
         iconName={props.iconName}
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-        style={{
-          width: WIDTH,
-          height: HEIGHT * 0.12,
-        }}
+        style={{ height: NAVBAR_HEIGH }}
       />
       <View
-        style={{
-          width: WIDTH,
-          height: HEIGHT * 0.88,
-        }}
+        style={{ flex: 1 }}
       >
         {props.showNavigationTree && (
           <NavigationTree
-            style={{ flex: 1 }}
+            style={{ height: NAVIGATION_TREE_HEIGHT }}
             treeElements={props.navigationTreeIcons}
           />
         )}
         <ContentArea
-          style={{ flex: 19 }}
+          style={{ flex: 1 }}
         >
           {props.children}
         </ContentArea>
       </View>
     </View>
     {showDrawer && (
-      <Drawer
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: WIDTH,
-          height: (HEIGHT * 0.88),
-        }}
-      >
+      <Drawer>
         {props.drawerChildren}
       </Drawer>
     )}
@@ -84,14 +78,13 @@ function Navbar(props: {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
-  return (
+  return (<>
     <View
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: theme.primary,
-        paddingTop: 20,
       }]}
     >
       <View
@@ -124,7 +117,7 @@ function Navbar(props: {
         }}
       />
     </View>
-  );
+  </>);
 }
 
 
@@ -180,14 +173,9 @@ function ContentArea(props: {
   style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
   return (
     <View
-      style={[props.style, {
-        backgroundColor: theme.background,
-      }]}
+      style={props.style}
     >
       {props.children}
     </View>
@@ -195,30 +183,42 @@ function ContentArea(props: {
 }
 
 function Drawer(props: {
-  style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const STATUS_BAR_HEIGHT = useSafeAreaInsets().top;
 
   return (
     <ScrollView
-      style={[props.style, {
-        backgroundColor: theme.secondary,
-      }]}
+      contentContainerStyle={{ flex: 1 }}
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH),
+        width: '100%',
+      }}
     >
-      {props.children}
-      <Text
-        adjustsFontSizeToFit={true}
+      <View
         style={{
-          color: theme.onSecondary_PlaceHolder,
-          textAlign: 'right',
-          fontSize: 16,
-          padding: 8,
+          flex: 9,
+          backgroundColor: theme.secondary,
         }}
       >
-        v: {APP_VERSION}
-      </Text>
+        {props.children}
+        <Text
+          adjustsFontSizeToFit={true}
+          style={{
+            color: theme.onSecondary_PlaceHolder,
+            textAlign: 'right',
+            fontSize: 16,
+            padding: 8,
+          }}
+        >
+          v: {APP_VERSION}
+        </Text>
+      </View>
     </ScrollView>
   );
 }

@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { Text as ReactNativeView } from 'react-native';
 
-import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
+import { ThemeDTO } from '@Types/index';
 
+import ConfigService from '@Services/ConfigService';
 
 export default function Text(props: {
   children: string

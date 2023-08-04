@@ -2,8 +2,10 @@ import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { Icon } from '@Icon/index';
 
+import { ThemeDTO } from '@Types/index';
+
 import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 

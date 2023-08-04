@@ -1,41 +1,47 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { useRouter, useNavigation } from 'expo-router';
+import React, { useState, useMemo } from 'react';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import AppRoutes from '@Globals/AppRoutes';
+import { Languages } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_ThemeScreen } from '@Translations/Screens/SettingsScreen/ThemeScreen';
 
 import ConfigService from '@Services/ConfigService';
-import LogService from '@Services/LogService';
-import { Languages } from '@Services/LanguageService';
 
 import API_ExampleFigure from './API_ExampleFigure';
 
 export default function ThemeScreen(): JSX.Element {
 
-  LogService.useLog('THEME SCREEN: rendered');
-
-  const navController = useRouter();
-  const navigation = useNavigation();
-  const savedTheme = useMemo(() => ConfigService.config.theme, [ConfigService.config.theme]);
-  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(() => {
-    return translations.Screens.ThemeScreen[ConfigService.config.language];
-  }, []);
+  const savedTheme = useMemo(
+    () => ConfigService.config.theme, [ConfigService.config.theme]
+  );
+  const stringResources = useMemo<Translations_ThemeScreen[Languages]>(
+    () => translations.Screens.ThemeScreen[ConfigService.config.language], []
+  );
 
   const [locked, setLocked] = useState<boolean>(false);
 
-  useEffect(() => {
-    navigation.addListener('beforeRemove', () => {
-      if (API_ExampleFigure.unsavedChanges) {
-        API_ExampleFigure.discart();
-      }
-    });
-  }, []);
+  useBackPress(async () => await cancelAndExit('SETTINGS SCREEN'));
+
+  async function cancelAndExit(
+    screen: 'HOME SCREEN' | 'SETTINGS SCREEN'
+  ) {
+    API_ExampleFigure.discart();
+    await useNavigate(screen);
+  }
+
+  async function confirmAndSave() {
+    await API_ExampleFigure.save();
+    await useNavigate('SETTINGS SCREEN');
+  }
+
+  function resetTheme() {
+    API_ExampleFigure.reset();
+  }
 
   return (
     <Layout.Root
@@ -46,17 +52,11 @@ export default function ThemeScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.HOME);
-          }}
+          onPress={async () => await cancelAndExit('HOME SCREEN')}
         />,
         <Icon.Settings
           key="treeIcon_2"
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />,
       ]}
     >
@@ -74,9 +74,7 @@ export default function ThemeScreen(): JSX.Element {
         <AllInputs />
         <Layout.Button
           title={stringResources['Reset Theme']}
-          onPress={() => {
-            API_ExampleFigure.reset();
-          }}
+          onPress={() => resetTheme()}
         />
       </Layout.ScrollView>
       <Layout.View
@@ -89,20 +87,13 @@ export default function ThemeScreen(): JSX.Element {
           title={stringResources['Discart']}
           overrideBackgroundColor={savedTheme.wrong}
           overrideTextColor={savedTheme.onWrong}
-          onPress={() => {
-            API_ExampleFigure.discart();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />
         <Layout.Button
           title={stringResources['Save']}
           overrideBackgroundColor={savedTheme.confirm}
           overrideTextColor={savedTheme.onConfirm}
-          onPress={async () => {
-            console.log('click');
-            await API_ExampleFigure.save();
-            navController.push(AppRoutes.SETTINGS_SCREEN);
-          }}
+          onPress={async () => await confirmAndSave()}
         />
       </Layout.View>
     </Layout.Root>

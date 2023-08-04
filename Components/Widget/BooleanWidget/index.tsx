@@ -2,24 +2,21 @@ import React, { useMemo, useState } from 'react';
 import { Text, Switch } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
-import ProjectService, { BooleanWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+import ThemeService from '@Services/ThemeService';
 
 import { Icon } from '@Icon/index';
 import { Input } from '@Components/Inputs';
 
 import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
+import { BooleanWidgetData, InputColors, ThemeDTO } from '@Types/index';
 
 export default function BooleanWidget(props: {
-  label: string
   widgetData: BooleanWidgetData
-  widgets: Record<WidgetLabel, WidgetData>
-  onConfirm: (label: string, widgetData: BooleanWidgetData) => void
+  onConfirm: (widgetData: BooleanWidgetData) => void
   onDelete: () => void
 }) {
 
-  const [label, setLabel] = useState<string>(props.label);
   const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
@@ -31,22 +28,16 @@ export default function BooleanWidget(props: {
         value: !prev.value,
         rules: {...prev.rules},
       };
-      props.onConfirm(label, newWidgetData);
+      props.onConfirm(newWidgetData);
       return newWidgetData;
     });
   }
 
-  function onConfirm(label: WidgetLabel, value: BooleanWidgetData) {
+  function onConfirm(widgetData: BooleanWidgetData) {
 
     setShowModal(false);
 
-    if (props.label !== label && WidgetRules.noDuplicatedLabel(label, props.widgets)) {
-      alert(`The label ${label} already axists`);
-      setIsDataWrong(true);
-      return;
-    }
-
-    if (WidgetRules.noEmptyLabel(label)) {
+    if (WidgetRules.noEmptyLabel(widgetData)) {
       alert('Labels cannot be empty');
       setIsDataWrong(true);
       return;
@@ -54,16 +45,15 @@ export default function BooleanWidget(props: {
 
     if (showModal) {
       setIsDataWrong(false);
-      setLabel(label);
-      setWidgetData(value);
-      props.onConfirm(label, value);
+      setWidgetData(widgetData);
+      props.onConfirm(widgetData);
     }
   }
 
   return (<>
     <WidgetComponent.Root
 
-      label={label}
+      label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
 
@@ -83,9 +73,8 @@ export default function BooleanWidget(props: {
 
       modal={<>
         <Modal
-          label={label}
           widgetData={widgetData}
-          onConfirm={(label, widgetData) => onConfirm(label, widgetData)}
+          onConfirm={(widgetData) => onConfirm(widgetData)}
           onDelete={props.onDelete}
           onRequestClose={() => setShowModal(false)}
         />
@@ -145,25 +134,39 @@ function DataDisplay(props : {
 }
 
 function Modal(props: {
-  label: WidgetLabel
   widgetData: BooleanWidgetData
-  onConfirm: (label: WidgetLabel, value: BooleanWidgetData) => void
+  onConfirm: (value: BooleanWidgetData) => void
   onDelete: () => void
   onRequestClose: () => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
-  const [label, setLabel] = useState<string>(props.label);
+  const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
+
+  const { rules } = props.widgetData;
+
+  const inputColors: InputColors = {
+    label: {
+      background: theme.tertiary,
+      font: theme.onTertiary,
+    },
+    dataDisplay: {
+      background: theme.background,
+      font: theme.onBackground,
+      font_placeholder: theme.onBackground_Placeholder,
+    },
+  };
 
   return (
     <WidgetComponent.Modal
-      title={props.label}
+      title={label}
       widgetData={props.widgetData}
       onConfirm={() => {
-        props.onConfirm(label, {
-          id_widget: ProjectService.generateUuidV4(),
+        props.onConfirm({
+          id_widget: props.widgetData.id_widget,
+          name: label,
           type: 'boolean',
           value: value,
           rules: { ...props.widgetData.rules },
@@ -172,31 +175,22 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      {props.widgetData.rules.allowLabelChange && (
-        <Input.String
-          label="Label:"
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          color_Placeholder={theme.onBackground_Placeholder}
-          placeholder="Write widget name here..."
-          value={label}
-          onChangeText={setLabel}
-          onResetPress={() => setLabel('')}
-        />
-      )}
-      {props.widgetData.rules.allowValueChange && (
-        <Input.Boolean
-          label="Value:"
-          backgroundColor_Label={theme.tertiary}
-          backgroundColor_Value={theme.background}
-          color_Label={theme.onTertiary}
-          color_Value={theme.onBackground}
-          value={value}
-          onSwitchChange={setValue}
-        />
-      )}
+      <Input.String
+        colors={inputColors}
+        label="Label:"
+        placeholder="Write widget name here..."
+        value={label}
+        onChangeText={setLabel}
+        locked={!rules.allowLabelChange}
+        onResetPress={() => setLabel('')}
+      />
+      <Input.Boolean
+        label="Value:"
+        colors={inputColors}
+        value={value}
+        locked={!rules.allowValueChange}
+        onSwitchChange={setValue}
+      />
     </WidgetComponent.Modal>
   );
 }

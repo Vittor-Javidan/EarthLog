@@ -2,22 +2,21 @@ import React, { useMemo } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { Layout } from '@Layout/index';
 
+import { InputColors, Languages, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_BooleanData } from '@Translations/Data/Boolean';
 
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
-import ThemeService, { ThemeDTO } from '@Services/ThemeService';
+import ThemeService from '@Services/ThemeService';
+import { Icon } from '@Components/Icon';
 
 
 export default function BooleanInput(props: {
+  colors : InputColors
   label: string
   value: boolean
-  backgroundColor_Label: string
-  backgroundColor_Value: string
-  color_Label: string
-  color_Value: string
-  onSwitchChange: (value: boolean) => void
+  locked: boolean
+  onSwitchChange?: (value: boolean) => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -25,10 +24,12 @@ export default function BooleanInput(props: {
     return translations.Data.Boolean[ConfigService.config.language];
   }, []);
 
+  const { label: LABEL_COLORS, dataDisplay: DATA_DISPLAY_COLORS } = props.colors;
+
   return (
     <View
       style={{
-        backgroundColor: props.backgroundColor_Label,
+        backgroundColor: LABEL_COLORS.background,
       }}
     >
       <Layout.View
@@ -43,32 +44,59 @@ export default function BooleanInput(props: {
       >
         <Text
           style={{
-            color: theme.onTertiary,
+            color: LABEL_COLORS.font,
             fontSize: ThemeService.FONTS.h3,
             paddingHorizontal: 10,
           }}
         >
           {props.label}
         </Text>
-        <Switch
-          style={{
-            paddingHorizontal: 0,
-          }}
-          trackColor={{ false: theme.wrong, true: theme.confirm }}
-          value={props.value}
-          onValueChange={props.onSwitchChange}
-        />
+        {props.locked ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                color: theme.wrong,
+                fontSize: ThemeService.FONTS.h3,
+              }}
+            >
+              Locked
+            </Text>
+            <Icon.Locked
+              color={theme.wrong}
+              onPress={() => {}}
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+              }}
+            />
+          </View>
+        ) : (
+          <Switch
+            style={{
+              paddingHorizontal: 0,
+            }}
+            trackColor={{ false: theme.wrong, true: theme.confirm }}
+            value={props.value}
+            onValueChange={props.onSwitchChange}
+          />
+        )}
       </Layout.View>
       <View
         style={{
-          backgroundColor: props.backgroundColor_Value,
+          backgroundColor: DATA_DISPLAY_COLORS.background,
           paddingHorizontal: 10,
           paddingVertical: 10,
         }}
       >
         <Text
           style={{
-            color: theme.onBackground,
+            color: DATA_DISPLAY_COLORS.font,
           }}
         >
           {props.value ? stringResources['True'] : stringResources['False']}

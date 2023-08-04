@@ -122,69 +122,52 @@
 
 ## 1 - Database
 
-- Create a Database with the following tables:
-    - projects
-        - id_project: string
-        - name: string
-        - immutable: boolean
-        - rules: stringfied javascript object
-    - samples
-        - id_project: string
-        - id_sample: string
-        - name: string
-        - rules: stringfied javascript object
-    - project_widgets
-        - id_project: string
-        - id_widget: string
-        - type: string
-        - name: string
-        - value: any
-        - rules: stringfied javascript object
-    - samples_template
-        - id_project: string
-        - id_widget: string
-        - type: string
-        - name: string
-        - value: any
-        - rules: stringfied javascript object
-    - samples_widgets
-        - id_project: string
-        - id_sample: string
-        - id_widget: string
-        - type: string
-        - name: string
-        - value: any
-        - rules: stringfied javascript object
++ Create a FileSystem Service.
++ Database will be structure in folder and files, to allow more flexibility in terms of data export and access.
+    + database folder structure:
+        + project folders
+        + index.json file
+    + project folder structure:
+        + projectWidgets folder (widgets folder)
+            + index.json file
+        + samples folder
+            + index.json file
+        + sampleTemplate folder (widgets folder)
+            + index.json file
+        + projectSettings.json file
+    + sample folder struture
+        + sampleWidgets folder (widgets folder)
+            + index.json file
+        + sampleSettings.json file
+    + widgets folder
+        + widget folders
+            + data.json file
+        + index.json
 
-- Create a Database service.
 - Implement methods on Project Service to interact with Database Service.
-    - Create Project
-    - Update Project
-    - Delete Project
-    - Create Sample
-    - Update Sample
-    - Delete Sample
-    - Create widget (for project, template and sample)
-    - Update widget (for project, template and sample)
-    - Delete widget (for project, template and sample)
+    + Create Project
+    + Delete Project
+    + Update Project
+    + Create Sample
+    + Update Sample
+    + Delete Sample
+    + Create widget (for project, template and sample)
+    + Update widget (for project, template and sample)
+    + Delete widget (for project, template and sample)
 
-## 2 - Basic Screens
-
-- Implement project creation to Project Creation Screen confirm button.
-- Show all available projects on HomeScreen
-    - Show last openned project.
-    - All projects must have an edit button.
++ Implement project creation to Project Creation Screen confirm button.
++ Show all available projects on HomeScreen
+    + Show last openned project.
 - New Screens needed:
     - Project Edit Screen
         - Show the project settings that are allow to be edited.
         - Show delete input option, no rules are required here.
-    - Project Screen
-        - Show all samples available
-        - All samples must have an edit button
-        - Must show a button to create a new sample, if rules allow.
+    + Project Screen
+        + Show all samples available
+        + Must show a button to create a new sample, if rules allow.
     - Sample Edit Screen
         - Show the sample settings that are allow to be edited.
         - Show delete input option, if the rules allow.
-    - Sample Screen
-        - Show all widgets inside the sample.
-        - Must show a button to create a new widget, if rules allow.
+    + Sample Screen
+        + Show all widgets inside the sample.
+        + Must show a button to create a new widget, if rules allow.

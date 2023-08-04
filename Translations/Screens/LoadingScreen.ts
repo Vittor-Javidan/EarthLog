@@ -1,4 +1,4 @@
-import { Languages } from '@Services/LanguageService';
+import { Languages } from '@Types/index';
 
 export type Translations_LoadingScreen = Record<Languages, {
 	'Loading...': string

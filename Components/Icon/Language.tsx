@@ -5,7 +5,7 @@ import Root from './Root';
 export default function Language(props: {
   color?: string
   style?: StyleProp<ViewStyle>
-  onPress: () => void
+  onPress?: () => void
 }): JSX.Element {
   return (
     <Root

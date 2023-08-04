@@ -1,13 +1,9 @@
-import { TextWidgetData, WidgetData, WidgetLabel } from '@Services/ProjectService';
+import { TextWidgetData, WidgetData } from '@Types/index';
 
 export class WidgetRules {
 
-  static noDuplicatedLabel(label: WidgetLabel, widgets: Record<WidgetLabel, WidgetData>) {
-    return Object.keys(widgets).includes(label);
-  }
-
-  static noEmptyLabel(label: WidgetLabel): boolean {
-    return label === '';
+  static noEmptyLabel(widgetData: WidgetData): boolean {
+    return widgetData.name === '';
   }
 
   // ===============================================================================================

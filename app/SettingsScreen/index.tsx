@@ -1,25 +1,20 @@
 
 import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
-import { Translations_SettingsScreen } from '@Translations/Screens/SettingsScreen/SettingsScreen';
 
-import LogService from '@Services/LogService';
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
 
 export default function SettingsScreen(): JSX.Element {
 
-  LogService.useLog('CONFIG SCREEN: rendered');
+  const stringResources = useMemo(
+    () => translations.Screens.SettingsScreen[ConfigService.config.language], []
+  );
 
-  const navController = useRouter();
-  const stringResources = useMemo<Translations_SettingsScreen[Languages]>(() => {
-    return translations.Screens.SettingsScreen[ConfigService.config.language];
-  }, []);
+  useBackPress(async () => await useNavigate('HOME SCREEN'));
 
   return (
     <Layout.Root
@@ -30,7 +25,7 @@ export default function SettingsScreen(): JSX.Element {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
       ]}
     >
@@ -39,24 +34,13 @@ export default function SettingsScreen(): JSX.Element {
       >
         <Layout.Button
           title={stringResources['Language']}
-          onPress={() => navController.push(AppRoutes.SS_LANGUAGES_SCREEN)}
+          onPress={async () => await useNavigate('LANGUAGES SCREEN')}
         />
         <Layout.Button
           title={stringResources['Theme']}
-          onPress={() => navController.push(AppRoutes.SS_THEME_SCREEN)}
+          onPress={async () => await useNavigate('THEME SCREEN')}
         />
       </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Back']}
-          onPress={() => navController.push(AppRoutes.HOME)}
-        />
-      </Layout.View>
     </Layout.Root>
   );
 }

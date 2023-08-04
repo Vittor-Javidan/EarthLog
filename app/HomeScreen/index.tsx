@@ -1,25 +1,38 @@
 import React, { useMemo } from 'react';
-import { useRouter } from 'expo-router';
+import { BackHandler, Alert } from 'react-native';
 import { Layout } from '@Layout/index';
+import ProjectButtons from './ProjectButtons';
+import Drawer from './Drawer';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
 
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
-import { Translations_HomeScreen } from '@Translations/Screens/HomeScreen';
 
-import LogService from '@Services/LogService';
-import { ThemeDTO } from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { Languages } from '@Services/LanguageService';
 
 export default function HomeScreen() {
 
-  LogService.useLog('PROJECTS SCREEN: rendered');
-
-  const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
+  const theme = useMemo(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(
     () => translations.Screens.HomeScreen[ConfigService.config.language], []
   );
+
+  useBackPress(() => {
+    Alert.alert(
+      stringResources['Hold on!'],
+      stringResources['Want to exit?'],
+      [
+        {
+          text: stringResources['NO'],
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: stringResources['YES'],
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]
+    );
+  });
 
   return (
     <Layout.Root
@@ -29,7 +42,7 @@ export default function HomeScreen() {
       drawerChildren={<Drawer />}
     >
       <Layout.ScrollView>
-        {/* TODO: Render buttons wich represents individual projects */}
+        <ProjectButtons />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -41,24 +54,9 @@ export default function HomeScreen() {
           title={stringResources['New Project']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => navController.push(AppRoutes.PROJECT_CREATION_SCREEN)}
+          onPress={async () => await useNavigate('PROJECT CREATION SCREEN')}
         />
       </Layout.View>
     </Layout.Root>
-  );
-}
-
-function Drawer() {
-
-  const navController = useRouter();
-  const stringResources = useMemo<Translations_HomeScreen[Languages]>(
-    () => translations.Screens.HomeScreen[ConfigService.config.language], []
-  );
-
-  return (
-    <Layout.DrawerButton
-      title={stringResources['Settings']}
-      onPress={() => navController.push(AppRoutes.SETTINGS_SCREEN)}
-    />
   );
 }

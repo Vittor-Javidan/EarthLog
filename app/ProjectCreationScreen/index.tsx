@@ -1,54 +1,57 @@
-import React, { useMemo, useEffect } from 'react';
-import { useNavigation, useRouter } from 'expo-router';
+import React, { useMemo } from 'react';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
-import Widgets_PointTemplate from './Widgets_PointTemplate';
 import Widgets_Project from './Widgets_Project';
+import { useBackPress, useNavigate } from 'app/GlobalHooks';
+import Drawer from './Drawer';
 
-import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
-import { Translations_ProjectCreationScreen } from '@Translations/Screens/ProjectCreationScreen';
 
 import ConfigService from '@Services/ConfigService';
-import { ThemeDTO } from '@Services/ThemeService';
-import { Languages } from '@Services/LanguageService';
+import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
 
 export default function ProjectCreationScreen() {
 
-  const navigation = useNavigation();
-  const navController = useRouter();
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_ProjectCreationScreen[Languages]>(() => {
-    return translations.Screens.ProjectCreationScreen[ConfigService.config.language];
-  }, []);
+  const theme = useMemo(() => ConfigService.config.theme, []);
+  const stringResources = useMemo(
+    () => translations.Screens.ProjectCreationScreen[ConfigService.config.language], []
+  );
 
-  useEffect(() => {
-    navigation.addListener('beforeRemove', () => {
-      if (API_ProjectCreation.unsavedChanges) {
-        API_ProjectCreation.reset();
-      }
-    });
-  }, []);
+  useBackPress(async () => await exitScreen());
 
-  function onConfirm() {
+  async function exitScreen() {
+    API_ProjectCreation.reset();
+    await useNavigate('HOME SCREEN');
+  }
 
-    if (API_ProjectCreation.temporaryProject.projectSettings.id_project === '') {
-      alert('ID cannot be empty. This is your local database file name.');
+  async function exitAndOpenProject(id_project: string) {
+    API_ProjectCreation.reset();
+    await useNavigate('PROJECT SCREEN (FROM PROJECT CREATION SCREEN)', id_project);
+  }
+
+  async function onConfirm() {
+
+    const { temporaryProject: newProject } = API_ProjectCreation;
+    const { projectSettings: newProjectSettings } = newProject;
+
+    if (newProjectSettings.id_project === '') {
+      alert('ID cannot be empty. This is your project folder name.');
       return;
     }
 
-    if (false) {
-      /* TODO:
-        - Check if project ID already exists.
-        - Database must be implemented already.
-      */
+    if (newProjectSettings.name === '') {
+      alert('Project Name Empty.');
+      return;
     }
 
-    API_ProjectCreation.reset();
-    navController.push(AppRoutes.HOME);
+    await ProjectService.createProject(
+      newProject,
+      async () => await exitAndOpenProject(newProjectSettings.id_project),
+      (errorMessage) => alert(errorMessage),
+    );
   }
 
   return (
@@ -60,14 +63,13 @@ export default function ProjectCreationScreen() {
       navigationTreeIcons={[
         <Icon.Home
           key="treeIcon_1"
-          onPress={() => navController.push(AppRoutes.HOME)}
+          onPress={async () => await useNavigate('HOME SCREEN')}
         />,
       ]}
     >
       <Layout.ScrollView>
         <Inputs_ProjectSettings />
         <Widgets_Project />
-        <Widgets_PointTemplate />
       </Layout.ScrollView>
       <Layout.View
         style={{
@@ -79,22 +81,15 @@ export default function ProjectCreationScreen() {
           title={stringResources['Cancel']}
           overrideBackgroundColor={theme.wrong}
           overrideTextColor={theme.onWrong}
-          onPress={() => {
-            API_ProjectCreation.reset();
-            navController.push(AppRoutes.HOME);
-          }}
+          onPress={async () => await exitScreen() }
         />
         <Layout.Button
-          title={stringResources['Confirm']}
+          title={stringResources['Create']}
           overrideBackgroundColor={theme.confirm}
           overrideTextColor={theme.onConfirm}
-          onPress={() => onConfirm()}
+          onPress={async () => await onConfirm()}
         />
       </Layout.View>
     </Layout.Root>
   );
-}
-
-function Drawer() {
-  return <></>;
 }
