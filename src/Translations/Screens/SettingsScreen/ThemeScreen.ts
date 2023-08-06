@@ -2,9 +2,6 @@ import { Languages, ThemeDTO } from '@Types/index';
 
 export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, string> & {
   'Theme': string
-  'Discart': string
-  'Save': string
-  'Reset Theme': string
   'Invalid Color': string
   'unlock': string
   'lock': string
@@ -13,9 +10,6 @@ export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, 
 export const translations_ThemeScreen: Translations_ThemeScreen = {
   'en-US': {
     'Theme': 'Theme',
-    'Discart': 'Exit',
-    'Save': 'Save',
-    'Reset Theme': 'Reset Theme',
     'Invalid Color': 'Invalid Color',
     'unlock': 'unlock',
     'lock': 'lock',
@@ -41,9 +35,6 @@ export const translations_ThemeScreen: Translations_ThemeScreen = {
   },
   'pt-BR': {
     'Theme': 'Tema',
-    'Discart': 'Descartar',
-    'Save': 'Salvar',
-    'Reset Theme': 'Resetar tema',
     'Invalid Color': 'Cor inválida',
     'unlock': 'destravar',
     'lock': 'travar',

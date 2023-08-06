@@ -9,8 +9,6 @@ export type Translations_SampleCreationScreen = Record<Languages, {
   'Only numbers, letters and "-"': string
   'Name': string
   'Write the sample name here...': string
-  'Cancel': string
-  'Create': string
 }>
 
 export const translations_SampleCreationScreen: Translations_SampleCreationScreen = {
@@ -23,8 +21,6 @@ export const translations_SampleCreationScreen: Translations_SampleCreationScree
     'Only numbers, letters and "-"': 'Only numbers, letters and "-"',
     'Name': 'Name',
     'Write the sample name here...': 'Write the sample name here...',
-    'Cancel': 'Cancel',
-    'Create': 'Create',
 	},
 	'pt-BR': {
     'New sample': 'Nova amostra',
@@ -35,7 +31,5 @@ export const translations_SampleCreationScreen: Translations_SampleCreationScree
     'Only numbers, letters and "-"': 'Apenas numeros, letras e "-"',
     'Name': 'Nome',
     'Write the sample name here...': 'Escreva o nome da amostra aqui',
-    'Cancel': 'Cancelar',
-    'Create': 'Criar',
 	},
 };
