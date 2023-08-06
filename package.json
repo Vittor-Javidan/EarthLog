@@ -33,7 +33,8 @@
     "react-native-svg": "13.9.0",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.19.6",
-    "expo-file-system": "~15.4.2"
+    "expo-file-system": "~15.4.2",
+    "expo-haptics": "~12.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

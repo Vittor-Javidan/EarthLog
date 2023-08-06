@@ -1,6 +1,7 @@
 import React, { useState, useMemo, ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { Pressable } from 'react-native';
+import * as Vibration from 'expo-haptics';
 
 import { ThemeDTO } from '@Types/index';
 
@@ -20,7 +21,10 @@ export default function Root(props: {
 
 	return (
 		<Pressable
-			onPressIn={() => { setPressed(true); }}
+			onPressIn={async () => {
+				setPressed(true);
+				await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+			}}
 			onPressOut={() => { setPressed(false); }}
 			onPress={props.onPress}
 			style={[{

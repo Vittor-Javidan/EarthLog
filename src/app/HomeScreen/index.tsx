@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { BackHandler, Alert } from 'react-native';
+import * as Vibration from 'expo-haptics';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import Drawer from './Drawer';
@@ -15,19 +16,26 @@ export default function HomeScreen() {
   const { language, theme } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
-  useBackPress(() => {
+  useBackPress(async () => {
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
     Alert.alert(
       stringResources['Hold on!'],
       stringResources['Want to exit?'],
       [
         {
           text: stringResources['NO'],
-          onPress: () => null,
+          onPress: async () => {
+            await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+            return null;
+          },
           style: 'cancel',
         },
         {
           text: stringResources['YES'],
-          onPress: () => BackHandler.exitApp(),
+          onPress: async () => {
+            await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+            BackHandler.exitApp();
+          },
         },
       ]
     );

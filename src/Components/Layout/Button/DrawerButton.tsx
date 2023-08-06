@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable, Text } from 'react-native';
+import * as Vibration from 'expo-haptics';
 
 import { ThemeDTO } from '@Types/index';
 
@@ -21,8 +22,13 @@ export default function DrawerButton(props: {
 
   return (
     <Pressable
-      onPressIn={() => { setPressed(true); }}
-      onPressOut={() => { setPressed(false); }}
+      onPressIn={async () => {
+        setPressed(true);
+        await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      }}
+      onPressOut={() => {
+        setPressed(false);
+      }}
       onPress={(event) => { props?.onPress(event); }}
       style={{
         backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,

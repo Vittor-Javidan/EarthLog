@@ -208,13 +208,14 @@ function ButtonsArea(props: {
   return (
     <View
       style={{
-        flexDirection: 'row',
         position: 'absolute',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
         bottom: 0,
-        paddingBottom: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
       }}
     >
       <View

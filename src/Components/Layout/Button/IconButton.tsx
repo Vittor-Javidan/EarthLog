@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
+import * as Vibration from 'expo-haptics';
 
 import { ThemeDTO } from '@Types/index';
 import Icon, { IconName } from '../Icon';
@@ -19,8 +20,13 @@ export default function IconButton(props: {
 
   return (
     <Pressable
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
+      onPressIn={async () => {
+        setPressed(true);
+        await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      }}
+      onPressOut={() => {
+        setPressed(false);
+      }}
       onPress={props.onPress}
       style={[{
         flexDirection: 'row',
