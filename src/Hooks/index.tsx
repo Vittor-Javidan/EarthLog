@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useRouter } from 'expo-router';
+import * as Vibration from 'expo-haptics';
 
 import AppRoutes from '@Globals/AppRoutes';
 import { translations } from '@Translations/index';
@@ -29,6 +30,7 @@ export function useBackPress(onPress: () => void) {
       'hardwareBackPress',
       () => {
         onPress();
+        Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
         return true;
       },
     );
