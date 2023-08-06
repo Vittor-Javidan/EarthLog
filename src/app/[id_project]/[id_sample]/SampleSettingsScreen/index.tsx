@@ -21,7 +21,6 @@ export default function SampleSettingsScreen() {
   return (
     <Layout.Root
       title={stringResources['Sample Settings']}
-      iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
@@ -39,6 +38,10 @@ export default function SampleSettingsScreen() {
           key="treeIcon_3"
           iconName="clipboard"
           onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_4"
+          iconName="settings"
         />,
       ]}
       button_left={

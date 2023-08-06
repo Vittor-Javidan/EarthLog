@@ -40,7 +40,6 @@ export default function ThemeScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      iconName="color-palette"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
@@ -51,8 +50,12 @@ export default function ThemeScreen(): JSX.Element {
         />,
         <Layout.Button.Icon
           key="treeIcon_2"
-          iconName="language"
+          iconName="settings"
           onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_3"
+          iconName="color-palette"
         />,
       ]}
       button_left={

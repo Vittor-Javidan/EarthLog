@@ -25,7 +25,6 @@ export default function ProjectScreen() {
   return (
     <Layout.Root
       title={projectSettings.name}
-      iconName="map"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
@@ -33,6 +32,10 @@ export default function ProjectScreen() {
           key="treeIcon_1"
           iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_2"
+          iconName="map"
         />,
       ]}
       button_left={

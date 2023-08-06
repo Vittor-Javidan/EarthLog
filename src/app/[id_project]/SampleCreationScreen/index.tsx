@@ -59,7 +59,6 @@ export default function SampleCreationScreen() {
   return (
     <Layout.Root
       title={stringResources['New sample']}
-      iconName="clipboard"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
@@ -72,6 +71,10 @@ export default function SampleCreationScreen() {
           key="treeIcon_2"
           iconName="map"
           onPress={async () => await exitScreen('PROJECT SCREEN')}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_3"
+          iconName="clipboard"
         />,
       ]}
       button_left={

@@ -36,7 +36,6 @@ export default function SampleScreens() {
   return (
     <Layout.Root
       title={sampleSettings.name}
-      iconName="clipboard"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
@@ -49,6 +48,10 @@ export default function SampleScreens() {
           key="treeIcon_2"
           iconName="map"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_3"
+          iconName="clipboard"
         />,
       ]}
       button_left={

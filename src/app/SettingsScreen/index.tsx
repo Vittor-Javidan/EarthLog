@@ -18,7 +18,6 @@ export default function SettingsScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Settings']}
-      iconName="settings"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
@@ -26,6 +25,10 @@ export default function SettingsScreen(): JSX.Element {
           key="treeIcon_1"
           iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_2"
+          iconName="settings"
         />,
       ]}
       button_left={

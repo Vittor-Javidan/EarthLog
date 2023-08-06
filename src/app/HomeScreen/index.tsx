@@ -44,9 +44,14 @@ export default function HomeScreen() {
   return (
     <Layout.Root
       title="Earth Log"
-      iconName="md-menu-sharp"
-      showNavigationTree={false}
+      showNavigationTree={true}
       drawerChildren={<Drawer />}
+      navigationTreeIcons={[
+        <Layout.Button.Icon
+          key="treeIcon_1"
+          iconName="home"
+        />,
+      ]}
       button_right={
         <Layout.Button.IconRounded
           iconName="map"

@@ -30,7 +30,6 @@ export default function LanguagesScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Languages']}
-      iconName="language"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
@@ -43,6 +42,10 @@ export default function LanguagesScreen(): JSX.Element {
           key="treeIcon_2"
           iconName="settings"
           onPress={async () => await useNavigate('SETTINGS SCREEN')}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_3"
+          iconName="language"
         />,
       ]}
       button_left={

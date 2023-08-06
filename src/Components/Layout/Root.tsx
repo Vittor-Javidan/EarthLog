@@ -3,7 +3,6 @@ import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-n
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { IconName } from './Icon';
 import IconButton from './Button/IconButton';
 
 import { ThemeDTO } from '@Types/index';
@@ -18,7 +17,6 @@ const NAVIGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
-  iconName: IconName
   showNavigationTree: boolean
   children: ReactNode
   drawerChildren: ReactNode
@@ -45,7 +43,6 @@ export default function Root(props: {
     >
       <Navbar
         title={props.title}
-        iconName={props.iconName}
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
         style={{ height: NAVBAR_HEIGH }}
       />
@@ -80,7 +77,6 @@ export default function Root(props: {
 
 function Navbar(props: {
   title: string
-  iconName: IconName
   style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
 }): JSX.Element {
@@ -118,7 +114,7 @@ function Navbar(props: {
         </Text>
       </View>
       <IconButton
-        iconName={props.iconName}
+        iconName="md-menu-sharp"
         onPress={props.onMenuButtonPress}
         style={{
           paddingHorizontal: 10,

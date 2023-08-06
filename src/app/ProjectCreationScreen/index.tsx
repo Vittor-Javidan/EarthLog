@@ -64,14 +64,17 @@ export default function ProjectCreationScreen() {
   return (
     <Layout.Root
       title={stringResources['Project creation']}
-      iconName="map"
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
         <Layout.Button.Icon
           key="treeIcon_1"
-          iconName="map"
+          iconName="home"
           onPress={async () => await exitScreen()}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_2"
+          iconName="map"
         />,
       ]}
       button_left={

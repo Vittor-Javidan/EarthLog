@@ -37,7 +37,6 @@ export default function ProjectSettingsScreen() {
   return (
     <Layout.Root
       title={stringResources['Project Settings']}
-      iconName="settings"
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
@@ -50,6 +49,10 @@ export default function ProjectSettingsScreen() {
           key="treeIcon_2"
           iconName="map"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+        />,
+        <Layout.Button.Icon
+          key="treeIcon_3"
+          iconName="settings"
         />,
       ]}
       button_left={
