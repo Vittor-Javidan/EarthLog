@@ -29,15 +29,6 @@ export default function Widgets_Project() {
     );
   }
 
-  async function onCreate(widgetData: WidgetData) {
-    await ProjectService.createWidget_Project(
-      id_project,
-      widgetData,
-      () => refresh(prev => !prev),
-      (errorMessage) => alert(errorMessage)
-    );
-  }
-
   const allWidgetsComponents: JSX.Element[] = ProjectService.getAllProjectWidgetsFromCache().map(widgetData => {
     return (
       <Widget.Selector
@@ -51,8 +42,5 @@ export default function Widgets_Project() {
 
   return (<>
     {allWidgetsComponents}
-    <Widget.AddWidgetButton
-      onCreateWidget={async (widgetData) => await onCreate(widgetData)}
-    />
   </>);
 }

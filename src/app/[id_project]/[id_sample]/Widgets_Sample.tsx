@@ -40,16 +40,6 @@ export default function Widgets_Sample() {
     );
   }
 
-  async function onCreateWidget(widgetData: WidgetData) {
-    await ProjectService.createWidget_Sample(
-      id_project,
-      id_sample,
-      widgetData,
-      () => refresh(prev => !prev),
-      (errorMessage) => alert(errorMessage)
-    );
-  }
-
   const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Sample.map(widgetData => {
     return (
       <Widget.Selector
@@ -64,9 +54,6 @@ export default function Widgets_Sample() {
   return (
     <>
       {allWidgetsComponents}
-      <Widget.AddWidgetButton
-        onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
-      />
     </>
   );
 }

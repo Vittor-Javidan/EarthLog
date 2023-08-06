@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import Drawer from './Drawer';
@@ -11,12 +11,16 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
+import { Widget } from '@Components/Widget';
+import { WidgetData } from '@Types/index';
 
 export default function ProjectCreationScreen() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { language, theme } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
+
+  const [_, refresh] = useState<boolean>(false);
 
   useBackPress(async () => await exitScreen());
 
@@ -52,6 +56,11 @@ export default function ProjectCreationScreen() {
     );
   }
 
+  function onCreateWidget(widgetData: WidgetData) {
+    API_ProjectCreation.addProjectWidget(widgetData);
+    refresh(prev => !prev);
+  }
+
   return (
     <Layout.Root
       title={stringResources['Project creation']}
@@ -74,14 +83,19 @@ export default function ProjectCreationScreen() {
           onPress={async () => await exitScreen()}
         />
       }
+      button_middle={
+        <Widget.AddWidgetButton
+          onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
+        />
+      }
       button_right={
         <Layout.Button.IconRounded
-        iconName="save"
-        showPlusSign={false}
-        color_background={theme.confirm}
-        color={theme.onConfirm}
-        onPress={async () => await onConfirm()}
-      />
+          iconName="save"
+          showPlusSign={false}
+          color_background={theme.confirm}
+          color={theme.onConfirm}
+          onPress={async () => await onConfirm()}
+        />
       }
     >
       <Inputs_ProjectSettings />

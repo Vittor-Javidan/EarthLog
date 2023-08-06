@@ -34,5 +34,6 @@ export type IconName = (
   'save'                |
   'chevron-back-sharp'  |
   'lock-closed-sharp'   |
-  'arrow-back'
+  'arrow-back'          |
+  'add-sharp'
 )

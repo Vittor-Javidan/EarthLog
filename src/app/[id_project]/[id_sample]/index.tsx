@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
@@ -7,6 +7,8 @@ import Widgets_Sample from './Widgets_Sample';
 
 import ProjectService from '@Services/ProjectService';
 import ConfigService from '@Services/ConfigService';
+import { WidgetData } from '@Types/index';
+import { Widget } from '@Components/Widget';
 
 export default function SampleScreens() {
 
@@ -17,7 +19,19 @@ export default function SampleScreens() {
   const { theme } = useMemo(() => config, []);
   const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
 
+  const [_, refresh] = useState<boolean>(false);
+
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+
+  async function onCreateWidget(widgetData: WidgetData) {
+    await ProjectService.createWidget_Sample(
+      id_project,
+      id_sample,
+      widgetData,
+      () => refresh(prev => !prev),
+      (errorMessage) => alert(errorMessage)
+    );
+  }
 
   return (
     <Layout.Root
@@ -44,6 +58,11 @@ export default function SampleScreens() {
           color_background={theme.primary}
           color={theme.onPrimary}
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+        />
+      }
+      button_right={
+        <Widget.AddWidgetButton
+          onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
         />
       }
     >

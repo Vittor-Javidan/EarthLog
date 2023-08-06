@@ -1,7 +1,7 @@
 import Root from './Root';
 import Text from './Text';
 import IconButton from './IconButton';
-import IconButtonRounded from './RoundedRoot';
+import IconButtonRounded from './IconButtonRounded';
 import DrawerButton from './DrawerButton';
 
 export const Button = {

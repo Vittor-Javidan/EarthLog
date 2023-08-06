@@ -2,9 +2,8 @@ import React, { useState, useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
 
-import { InputColors, Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
+import { InputColors, WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_AddWidgetButton } from '@Translations/Widgets/AddWidgetButton';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
@@ -13,10 +12,9 @@ export default function AddWidgetButton(props: {
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_AddWidgetButton[Languages]>(() => {
-    return translations.Widgets.AddWidgetButton[ConfigService.config.language];
-  }, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme, language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Widgets.AddWidgetButton[language], []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);
   const [label, setLabel] = useState<string>('');
@@ -52,8 +50,11 @@ export default function AddWidgetButton(props: {
   };
 
   return (<>
-    <Layout.Button.Text
-      title={stringResources['Add']}
+    <Layout.Button.IconRounded
+      iconName="add-sharp"
+      showPlusSign={false}
+      color_background={theme.secondary}
+      color={theme.onSecondary}
       onPress={() => setShowlModal(true)}
     />
     {showModal && (

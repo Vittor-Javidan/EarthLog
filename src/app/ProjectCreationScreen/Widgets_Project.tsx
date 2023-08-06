@@ -18,11 +18,6 @@ export default function Widgets_Project() {
     refresh(prev => !prev);
   }
 
-  function onCreateWidget(widgetData: WidgetData) {
-    API_ProjectCreation.addProjectWidget(widgetData);
-    refresh(prev => !prev);
-  }
-
   const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.projectWidgets.map(widgetData => {
     return (
       <Widget.Selector
@@ -36,8 +31,5 @@ export default function Widgets_Project() {
 
   return (<>
     {allWidgetsComponents}
-    <Widget.AddWidgetButton
-      onCreateWidget={(widgetData) => onCreateWidget(widgetData)}
-    />
   </>);
 }

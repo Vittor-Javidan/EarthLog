@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
@@ -9,6 +9,9 @@ import DeleteButton from './DeleteButton';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
+import { WidgetData } from '@Types/index';
+import ProjectService from '@Services/ProjectService';
+import { Widget } from '@Components/Widget';
 
 export default function ProjectSettingsScreen() {
 
@@ -18,7 +21,18 @@ export default function ProjectSettingsScreen() {
   const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
+  const [_, refresh] = useState<boolean>(false);
+
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+
+  async function onCreate(widgetData: WidgetData) {
+    await ProjectService.createWidget_Project(
+      id_project,
+      widgetData,
+      () => refresh(prev => !prev),
+      (errorMessage) => alert(errorMessage)
+    );
+  }
 
   return (
     <Layout.Root
@@ -45,6 +59,11 @@ export default function ProjectSettingsScreen() {
           color_background={theme.primary}
           color={theme.onPrimary}
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+        />
+      }
+      button_right={
+        <Widget.AddWidgetButton
+          onCreateWidget={async (widgetData) => await onCreate(widgetData)}
         />
       }
     >
