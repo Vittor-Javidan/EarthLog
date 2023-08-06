@@ -39,13 +39,13 @@ export default function AddWidgetButton(props: {
 
   const inputColors: InputColors = {
     label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
+      background: theme.secondary,
+      font: theme.onSecondary,
     },
     dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
+      background: theme.tertiary,
+      font: theme.onTertiary,
+      font_placeholder: theme.onTertiary_Placeholder,
     },
   };
 
@@ -77,16 +77,16 @@ export default function AddWidgetButton(props: {
           <ButtonContainer>
             <Layout.Button.Text
               title={stringResources['Boolean']}
-              color_background={theme.tertiary}
-              color_font={theme.onTertiary}
+              color_background={theme.secondary}
+              color_font={theme.onSecondary}
               onPress={() => onPress('boolean')}
             />
           </ButtonContainer>
           <ButtonContainer>
             <Layout.Button.Text
               title={stringResources['Text']}
-              color_background={theme.tertiary}
-              color_font={theme.onTertiary}
+              color_background={theme.secondary}
+              color_font={theme.onSecondary}
               onPress={() => onPress('text')}
             />
           </ButtonContainer>

@@ -1,5 +1,5 @@
 import React, { useMemo, ReactNode } from 'react';
-import { View, Text, Modal as ReactNative_Modal, Dimensions, StyleProp, ViewStyle } from 'react-native';
+import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 
 import { ThemeDTO } from '@Types/index';
 
@@ -33,15 +33,12 @@ export default function Modal(props: {
       />
       <Navbar
         title={props.title}
-        style={{
-          height: 70,
-        }}
         onIconPress={props.onRequestClose}
       />
       <View
         style={{
           flex: 1,
-          backgroundColor: theme.secondary,
+          backgroundColor: theme.background,
         }}
       >
         {props.children}
@@ -52,7 +49,6 @@ export default function Modal(props: {
 
 function Navbar(props: {
   title: string
-  style: StyleProp<ViewStyle>
   onIconPress: () => void | undefined
 }): JSX.Element {
 
@@ -60,12 +56,13 @@ function Navbar(props: {
 
   return (
     <View
-      style={[props.style, {
+      style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: theme.primary,
-      }]}
+        height: 70,
+      }}
     >
       <View
         style={{
