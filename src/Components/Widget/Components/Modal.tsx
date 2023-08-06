@@ -16,14 +16,15 @@ export default function Modal(props: {
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
 
   return (
     <Layout.Modal
       title={props.title}
       onRequestClose={props.onRequestClose}
     >
-      <Layout.ScrollView>
+      <Layout.ScrollView
+        style={{ flex: 1 }}
+      >
         {props.children}
         {props.widgetData.rules.allowValueChange && (
           <DeleteButton
@@ -31,13 +32,18 @@ export default function Modal(props: {
             onDelete={props.onDelete}
           />
         )}
-        <Layout.Button.Text
-          title={stringResources['Save']}
-          onPress={props.onConfirm}
-          color_background={theme.confirm}
-          color_font={theme.onConfirm}
-        />
       </Layout.ScrollView>
+      <Layout.ScreenButtons
+        button_right={
+          <Layout.Button.IconRounded
+            iconName="save"
+            showPlusSign={false}
+            color_background={theme.confirm}
+            color={theme.onConfirm}
+            onPress={props.onConfirm}
+          />
+        }
+      />
     </Layout.Modal>
   );
 }
