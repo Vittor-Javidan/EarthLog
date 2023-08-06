@@ -14,6 +14,7 @@ import { Translations_ErrorMessages, translations_ErrorMessages } from './ErrorM
 import { Translations_ProjectSettingsScreen, translations_ProjectSettingsScreen } from './Screens/ProjectScreen/ProjectSettingsScreen';
 import { Translations_WidgetsComponents_Modal, translations_WidgetsComponents_Modal } from './Widgets/Components_Modal';
 import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } from './Screens/ProjectScreen/SampleScreen/SampleSettingsScreen';
+import { Translations_TemplateScreen, translations_TemplateScreen } from './Screens/ProjectScreen/TemplateScreen';
 
 export const translations: {
   Screens: {
@@ -25,6 +26,7 @@ export const translations: {
       ThemeScreen:              Translations_ThemeScreen
     ProjectScreen:              Translations_ProjectScreen
       ProjectSettingsScreen:    Translations_ProjectSettingsScreen
+      TemplateScreen:     Translations_TemplateScreen
       SampleCreationScreen:     Translations_SampleCreationScreen
       SampleScreen:             Translations_SampleScreen
         SampleSettingsScreen:   Translations_SampleSettingsScreen
@@ -50,6 +52,7 @@ export const translations: {
       ThemeScreen:              translations_ThemeScreen,
     ProjectScreen:              translations_ProjectScreen,
       ProjectSettingsScreen:    translations_ProjectSettingsScreen,
+      TemplateScreen:     translations_TemplateScreen,
       SampleCreationScreen:     translations_SampleCreationScreen,
       SampleScreen:             translations_SampleScreen,
         SampleSettingsScreen:   translations_SampleSettingsScreen,

@@ -56,7 +56,7 @@ export type ConfigDTO = {
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
-  sampleTemplate: WidgetData[]
+  template: WidgetData[]
   samples: SampleDTO[]
 }
 export type SampleDTO = {

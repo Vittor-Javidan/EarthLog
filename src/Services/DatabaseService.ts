@@ -129,10 +129,10 @@ export default class DatabaseService {
       JSON.stringify([], null, 4)
     );
     await FileSystemService.createDirectory(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`
     );
     await FileSystemService.writeFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate/index.json`,
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template/index.json`,
       JSON.stringify([], null, 4)
     );
     await FileSystemService.createDirectory(
@@ -327,11 +327,11 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`
     );
   }
-  static async getAllWidgets_SampleTemplate(
+  static async getAllWidgets_Template(
     id_project: string
   ): Promise<WidgetData[]> {
     return await this.getAllWidgets(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`
     );
   }
   static async getAllWidgets_Sample(
@@ -371,12 +371,12 @@ export default class DatabaseService {
       widgetData,
     );
   }
-  static async createWidget_SampleTemplate(
+  static async createWidget_Template(
     id_project: string,
     widgetData: WidgetData,
   ): Promise<void> {
     await this.createWidget(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`,
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       widgetData,
     );
   }
@@ -435,12 +435,12 @@ export default class DatabaseService {
       id_widget
     );
   }
-  static async readWidget_SampleTemplate(
+  static async readWidget_Template(
     id_project: string,
     id_widget: string,
   ): Promise<WidgetData> {
     return await this.readWidget(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`,
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       id_widget
     );
   }
@@ -477,12 +477,12 @@ export default class DatabaseService {
       widgetData
     );
   }
-  static async updateWidget_SampleTemplate(
+  static async updateWidget_Template(
     id_project: string,
     widgetData: WidgetData,
   ): Promise<void> {
     await this.updateWidget(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`,
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       widgetData
     );
   }
@@ -521,12 +521,12 @@ export default class DatabaseService {
       id_widget
     );
   }
-  static async deleteWidget_SampleTemplate(
+  static async deleteWidget_Template(
     id_project: string,
     id_widget: string,
   ): Promise<void> {
     await this.deleteWidget(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/sampleTemplate`,
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       id_widget
     );
   }

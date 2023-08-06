@@ -20,5 +20,9 @@ export function Drawer() {
       title={stringResources['Project settings']}
       onPress={async () => await useNavigate('PROJECT SETTINGS SCREEN', id_project)}
     />
+    <Layout.Button.Drawer
+      title={stringResources['Template']}
+      onPress={async () => await useNavigate('TEMPLATE SCREEN', id_project)}
+    />
   </>);
 }

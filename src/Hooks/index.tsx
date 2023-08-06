@@ -10,6 +10,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 type ScreenName = (
+  'RESTART APP'                                       |
   'SETTINGS SCREEN'                                   |
     'LANGUAGES SCREEN'                                |
     'THEME SCREEN'                                    |
@@ -18,6 +19,7 @@ type ScreenName = (
     'PROJECT SCREEN'                                  |
     'PROJECT SCREEN (FROM PROJECT CREATION SCREEN)'   |
       'PROJECT SETTINGS SCREEN'                       |
+      'TEMPLATE SCREEN'                               |
       'SAMPLE CREATION SCREEN'                        |
       'SAMPLE SCREEN'                                 |
       'SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)'   |
@@ -67,6 +69,11 @@ export async function useNavigate(
   const stringResources = translations.ErrorMessages[ConfigService.config.language];
 
   switch (screen) {
+
+    case 'RESTART APP': {
+      navController.push(AppRoutes.RESTART_APP);
+      break;
+    }
 
     case 'SETTINGS SCREEN': {
       navController.push(AppRoutes.SETTINGS_SCREEN);
@@ -137,6 +144,18 @@ export async function useNavigate(
       break;
     }
 
+    case 'TEMPLATE SCREEN': {
+
+      if (id_project === undefined) {
+        alert(stringResources['Project ID undefined']);
+        break;
+      }
+
+      await ProjectService.loadAllWidgets_Template(id_project);
+      navController.push(AppRoutes.PS_TEMPLATE_SCREEN(id_project));
+      break;
+    }
+
     case 'SAMPLE CREATION SCREEN': {
 
       if (id_project === undefined) {
@@ -144,7 +163,7 @@ export async function useNavigate(
         break;
       }
 
-      await ProjectService.loadAllWidgets_SampleTemplate(id_project);
+      await ProjectService.loadAllWidgets_Template(id_project);
       navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(id_project));
       break;
     }

@@ -53,15 +53,15 @@ export default class API_ProjectCreation {
 
   static addPointTemplateWidget(widgetData: WidgetData) {
     this.unsavedChanges = true;
-    const IDs = this.temporaryProject.sampleTemplate.map(widget => widget.id_widget);
+    const IDs = this.temporaryProject.template.map(widget => widget.id_widget);
     if (!IDs.includes(widgetData.id_widget)) {
-      this.temporaryProject.sampleTemplate.push(widgetData);
+      this.temporaryProject.template.push(widgetData);
     }
   }
 
   static updatePointTemplateWidget(widgetData: WidgetData) {
     this.unsavedChanges = true;
-    this.temporaryProject.sampleTemplate.forEach(widget => {
+    this.temporaryProject.template.forEach(widget => {
       if (widget.id_widget === widgetData.id_widget) {
         widget = widgetData;
       }
@@ -70,7 +70,7 @@ export default class API_ProjectCreation {
 
   static deletePointTemplateWidget(widgetData: WidgetData) {
     this.unsavedChanges = true;
-    this.temporaryProject.sampleTemplate = this.temporaryProject.sampleTemplate.filter(
+    this.temporaryProject.template = this.temporaryProject.template.filter(
       widget => widget.id_widget !== widgetData.id_widget
     );
   }

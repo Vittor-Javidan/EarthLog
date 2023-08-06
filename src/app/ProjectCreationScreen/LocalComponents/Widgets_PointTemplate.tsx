@@ -32,7 +32,7 @@ export default function Widgets_PointTemplate() {
     refresh(prev => !prev);
   }
 
-  const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.sampleTemplate.map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.template.map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}

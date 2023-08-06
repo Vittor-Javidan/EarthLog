@@ -1,21 +1,48 @@
 
 import React, { useMemo } from 'react';
+import { Alert } from 'react-native';
+import * as Vibration from 'expo-haptics';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import NavigationTree from './NavigationTree';
-
-import { translations } from '@Translations/index';
-
-import ConfigService from '@Services/ConfigService';
 import ScreenButtons from './ScreenButtons';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
 
 export default function SettingsScreen(): JSX.Element {
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('HOME SCREEN'));
+
+  async function whipeDataBase() {
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+    Alert.alert(
+      stringResources['Hold on!'],
+      stringResources['Want to whipe database?'],
+      [
+        {
+          text: stringResources['NO'],
+          onPress: async () => {
+            await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+            return null;
+          },
+          style: 'cancel',
+        },
+        {
+          text: stringResources['YES'],
+          onPress: async () => {
+            await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+            await ProjectService.deleteDatabase();
+            await useNavigate('RESTART APP');
+          },
+        },
+      ]
+    );
+  }
 
   return (
     <Layout.Root
@@ -31,6 +58,12 @@ export default function SettingsScreen(): JSX.Element {
       <Layout.Button.Text
         title={stringResources['Theme']}
         onPress={async () => await useNavigate('THEME SCREEN')}
+      />
+      <Layout.Button.Text
+        title={stringResources['Whipe Database']}
+        color_background={theme.wrong}
+        color_font={theme.onWrong}
+        onPress={async () => await whipeDataBase()}
       />
     </Layout.Root>
   );

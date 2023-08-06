@@ -27,9 +27,9 @@ export default class ProjectService {
     rules: {},
   };
   static allProjects: ProjectSettings[] = [];
-  static allSamples: SampleSettings[] = [];
   static allWidgets_Project: WidgetData[] = [];
-  static allWidgets_SampleTemplate: WidgetData[] = [];
+  static allWidgets_Template: WidgetData[] = [];
+  static allSamples: SampleSettings[] = [];
   static allWidgets_Sample: WidgetData[] = [];
 
 
@@ -64,7 +64,7 @@ export default class ProjectService {
         },
       },
       projectWidgets: [],
-      sampleTemplate: [],
+      template: [],
       samples: [],
     };
   }
@@ -117,6 +117,26 @@ export default class ProjectService {
 
 
 
+
+  // ===============================================================================================
+  // DATA CREATION METHODS
+  // ===============================================================================================
+
+  static async deleteDatabase() {
+    await DatabaseService.deleteDatabase();
+    await this.deleteLastOpenProject();
+    this.lastOpenProject = {
+      id_project: '',
+      immutable: true,
+      name: '',
+      rules: {},
+    };
+    this.allProjects = [];
+    this.allWidgets_Project = [];
+    this.allWidgets_Template = [];
+    this.allSamples = [];
+    this.allWidgets_Sample = [];
+  }
 
   // ===============================================================================================
   // CACHE METHODS
@@ -204,8 +224,8 @@ export default class ProjectService {
     this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(id_project);
   }
 
-  static async loadAllWidgets_SampleTemplate(id_project: string): Promise<void> {
-    this.allWidgets_SampleTemplate = await DatabaseService.getAllWidgets_SampleTemplate(id_project);
+  static async loadAllWidgets_Template(id_project: string): Promise<void> {
+    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(id_project);
   }
 
   static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
@@ -234,7 +254,7 @@ export default class ProjectService {
     const {
       projectSettings,
       projectWidgets,
-      sampleTemplate,
+      template,
       samples,
     } = projectDTO;
 
@@ -253,8 +273,8 @@ export default class ProjectService {
       }
 
       // SAMPLE TEMPLATE WIDGETS
-      for (let i = 0; i < sampleTemplate.length; i++) {
-        await DatabaseService.createWidget_SampleTemplate(id_project, sampleTemplate[i]);
+      for (let i = 0; i < template.length; i++) {
+        await DatabaseService.createWidget_Template(id_project, template[i]);
       }
 
       // SAMPLES
@@ -326,7 +346,7 @@ export default class ProjectService {
       await DatabaseService.createSample(id_project, sampleSettings);
 
       // COPY WIDGETS FROM TEMPLATE
-      const templateWidgets = await DatabaseService.getAllWidgets_SampleTemplate(id_project);
+      const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
       for (let i = 0; i < templateWidgets.length; i++) {
         templateWidgets[i].id_widget = this.generateUuidV4();
         DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
@@ -422,7 +442,7 @@ export default class ProjectService {
     }
   }
 
-  static async createWidget_SampleTemplate(
+  static async createWidget_Template(
     id_project: string,
     widgetData: WidgetData,
     onSuccess: () => void,
@@ -432,16 +452,16 @@ export default class ProjectService {
     const { id_widget } = widgetData;
 
     try {
-      await DatabaseService.createWidget_SampleTemplate(id_project, widgetData);
-      await this.loadAllWidgets_SampleTemplate(id_project);
+      await DatabaseService.createWidget_Template(id_project, widgetData);
+      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
-      await DatabaseService.deleteWidget_SampleTemplate(id_project, id_widget);
+      await DatabaseService.deleteWidget_Template(id_project, id_widget);
       onError(JSON.stringify(error));
     }
   }
 
-  static async updateWidget_SampleTemplate(
+  static async updateWidget_Template(
     id_project: string,
     widgetData: WidgetData,
     onSuccess: () => void,
@@ -449,15 +469,15 @@ export default class ProjectService {
   ): Promise<void> {
 
     try {
-      await DatabaseService.updateWidget_SampleTemplate(id_project, widgetData);
-      await this.loadAllWidgets_SampleTemplate(id_project);
+      await DatabaseService.updateWidget_Template(id_project, widgetData);
+      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
     }
   }
 
-  static async deleteWidget_SampleTemplate(
+  static async deleteWidget_Template(
     id_project: string,
     id_widget: string,
     onSuccess: () => void,
@@ -465,8 +485,8 @@ export default class ProjectService {
   ): Promise<void> {
 
     try {
-      await DatabaseService.deleteWidget_SampleTemplate(id_project, id_widget);
-      await this.loadAllWidgets_SampleTemplate(id_project);
+      await DatabaseService.deleteWidget_Template(id_project, id_widget);
+      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
