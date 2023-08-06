@@ -72,20 +72,23 @@ function DeleteButton(props: {
   };
 
   return (<>
-    <Layout.Input.String
-      colors={inputColors}
-      label={stringResources['Delete']}
-      placeholder={stringResources['Type widget name perfectly to delete.']}
-      value={widgetName}
-      onChangeText={setWidgetName}
-      locked={false}
-      onResetPress={() => setWidgetName('')}
-    />
-    {isNameCorrect && <Layout.Button.Text
-      title={stringResources['Delete']}
-      color_background={theme.wrong}
-      color_font={theme.onWrong}
-      onPress={props.onDelete}
-    />}
+    {isNameCorrect ? (
+      <Layout.Button.Text
+        title={stringResources['Delete']}
+        color_background={theme.wrong}
+        color_font={theme.onWrong}
+        onPress={props.onDelete}
+      />
+    ) : (
+      <Layout.Input.String
+        colors={inputColors}
+        label={stringResources['Delete']}
+        placeholder={stringResources['Type widget name perfectly to delete.']}
+        value={widgetName}
+        onChangeText={setWidgetName}
+        locked={false}
+        onResetPress={() => setWidgetName('')}
+      />
+    )}
   </>);
 }
