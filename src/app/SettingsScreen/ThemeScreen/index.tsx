@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import { ColorInput } from './LocalComponents/ColorInput';
@@ -19,8 +19,6 @@ export default function ThemeScreen(): JSX.Element {
   const { language } = useMemo(() => config, [config.theme]);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
-  const [locked, setLocked] = useState<boolean>(false);
-
   useBackPress(async () => await cancelAndExit());
 
   async function cancelAndExit() {
@@ -35,12 +33,7 @@ export default function ThemeScreen(): JSX.Element {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      {!locked && (
-        <ExampleFigure
-          locked={locked}
-          onPressLock={() => setLocked(prev => !prev)}
-        />
-      )}
+      <ExampleFigure/>
       <AllInputs />
     </Layout.Root>
   );

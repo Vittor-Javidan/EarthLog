@@ -7,10 +7,7 @@ import ConfigService from '@Services/ConfigService';
 
 import API_ExampleFigure from './API_ExampleFigure';
 
-export function ExampleFigure(props: {
-  locked: boolean
-  onPressLock: () => void
-}): JSX.Element {
+export function ExampleFigure(): JSX.Element {
 
   const { config } = useMemo(() => ConfigService, []);
   const { language, theme } = useMemo(() => config, []);
@@ -21,7 +18,6 @@ export function ExampleFigure(props: {
     [API_ExampleFigure.temporaryConfig]
   );
 
-  const [lockedPressed, setLockedPressed] = useState<boolean>(false);
   const [confirmPressed, setConfirmPressed] = useState<boolean>(false);
   const [modifiedPressed, setModifiedPressed] = useState<boolean>(false);
   const [wrongPressed, setWrongPressed] = useState<boolean>(false);
@@ -60,23 +56,6 @@ export function ExampleFigure(props: {
               {stringResources['onBackground_Placeholder']}
             </Text>
           </View>
-          <Pressable
-            onPressIn={() => setLockedPressed(true) }
-            onPressOut={() => setLockedPressed(false)}
-            onPress={() => {
-              props.onPressLock();
-            }}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 10,
-              backgroundColor: lockedPressed ? temporaryTheme.onPressColorPrimary : temporaryTheme.secondary,
-            }}
-          >
-            <Text>
-              {props.locked ?  stringResources['unlock'] : stringResources['lock']}
-            </Text>
-          </Pressable>
         </View>
         <View
           style={{
