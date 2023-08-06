@@ -6,6 +6,7 @@ import { ThemeDTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import IconButton from './Button/IconButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -25,12 +26,15 @@ export default function Modal(props: {
         width: WIDTH,
         height: HEIGHT,
       }}
-      transparent
+      statusBarTranslucent={true}
     >
+      <View
+        style={{ height: useSafeAreaInsets().top }}
+      />
       <Navbar
         title={props.title}
         style={{
-          height: HEIGHT * 0.08,
+          height: 70,
         }}
         onIconPress={props.onRequestClose}
       />
@@ -85,7 +89,7 @@ function Navbar(props: {
         </Text>
       </View>
       <IconButton
-        iconName="lock-closed-sharp"
+        iconName="close"
         onPress={props.onIconPress}
         style={{
           paddingHorizontal: 10,

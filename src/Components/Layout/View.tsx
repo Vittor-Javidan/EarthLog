@@ -7,10 +7,7 @@ export default function View(props: {
 }): JSX.Element {
 	return (
 		<ReactNative_View
-			style={[props.style, {
-				gap: 5,
-				padding: 5,
-			}]}
+			style={props.style}
 		>
 			{props.children}
 		</ReactNative_View>

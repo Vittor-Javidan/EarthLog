@@ -24,7 +24,10 @@ export default function Text(props: {
 		<Root
       color_background={backgroundColor}
       onPress={props.onPress}
-      style={props.style}
+      style={[{
+				borderColor: theme.tertiary,
+        borderWidth: 1,
+			}, props.style]}
     >
       <ReactNative_Text
 				adjustsFontSizeToFit={true}

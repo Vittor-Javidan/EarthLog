@@ -151,6 +151,8 @@ export function ExampleFigure(props: {
                 fontSize: 12,
                 color: temporaryTheme.onConfirm,
               }}
+              lineBreakStrategyIOS="push-out"
+              numberOfLines={2}
             >
               {stringResources['confirm']}
             </Text>

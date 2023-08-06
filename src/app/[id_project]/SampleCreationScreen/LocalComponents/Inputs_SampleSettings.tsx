@@ -6,7 +6,6 @@ import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import ThemeService from '@Services/ThemeService';
 
 import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
 import { InputColors } from '@Types/index';
@@ -50,12 +49,6 @@ export default function Inputs_SampleSettings() {
 
   return (
     <Layout.View>
-      <Layout.Text
-        fontSize={ThemeService.FONTS.h2}
-        color="onBackground"
-      >
-        {stringResources['Sample settings']}
-      </Layout.Text>
       <Layout.Input.String
         colors={inputColors}
         label={stringResources['ID']}

@@ -81,6 +81,7 @@ export default function BooleanInput(props: {
               paddingHorizontal: 0,
             }}
             trackColor={{ false: theme.wrong, true: theme.confirm }}
+            ios_backgroundColor={theme.wrong}
             value={props.value}
             onValueChange={props.onSwitchChange}
           />

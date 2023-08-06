@@ -95,13 +95,14 @@ function ShortcutIconButtons(props: {
         paddingHorizontal: 0,
       }}
       trackColor={{ false: theme.wrong, true: theme.confirm }}
+      ios_backgroundColor={theme.wrong}
       value={props.widgetData.value}
       onValueChange={props.onSwitchChange}
     />
     {(props.widgetData.rules.allowLabelChange) && (
       <Layout.Button.Icon
         iconName="pencil-sharp"
-        color={theme.onPrimary}
+        color={theme.onSecondary}
         onPress={props.onPencilPress}
         style={{
           paddingHorizontal: 10,

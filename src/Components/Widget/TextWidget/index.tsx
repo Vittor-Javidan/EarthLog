@@ -98,7 +98,7 @@ function ShortcutIconButtons(props: {
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
       <Layout.Button.Icon
         iconName="pencil-sharp"
-        color={theme.onPrimary}
+        color={theme.onSecondary}
         onPress={props.onPencilPress}
         style={{
           paddingHorizontal: 10,

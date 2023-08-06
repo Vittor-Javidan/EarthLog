@@ -13,7 +13,7 @@ export default function DataDisplay(props: {
   return (
     <View
       style={{
-        backgroundColor: theme.secondary,
+        backgroundColor: theme.tertiary,
         paddingVertical: 10,
         paddingHorizontal: 10,
       }}

@@ -120,8 +120,6 @@ function ContentArea(props: {
       style={props.style}
       automaticallyAdjustKeyboardInsets={true}
       contentContainerStyle={{
-        gap: 5,
-        paddingTop: 30,
         paddingBottom: 150,
       }}
     >

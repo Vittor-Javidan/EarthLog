@@ -21,8 +21,8 @@ export default function Label(props: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: props.wrongData ? theme.wrong : theme.primary,
-        borderColor: theme.secondary,
+        backgroundColor: props.wrongData ? theme.wrong : theme.secondary,
+        borderColor: theme.tertiary,
         borderWidth: 1,
         height: 40,
       }}
@@ -34,7 +34,7 @@ export default function Label(props: {
           width: '50%',
           paddingHorizontal: 10,
           fontSize: ThemeService.FONTS.h3,
-          color: props.wrongData ? theme.onWrong : theme.onPrimary,
+          color: props.wrongData ? theme.onWrong : theme.onSecondary,
         }}
       >
         {props.label}

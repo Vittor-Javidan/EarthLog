@@ -4,7 +4,6 @@ export type Translations_SampleCreationScreen = Record<Languages, {
   'New sample': string
   'ID cannot be empty': string
   'Name cannot be empty': string
-  'Sample settings': string
   'ID': string
   'Only numbers, letters and "-"': string
   'Name': string
@@ -16,7 +15,6 @@ export const translations_SampleCreationScreen: Translations_SampleCreationScree
     'New sample': 'New sample',
     'ID cannot be empty': 'ID cannot be empty',
     'Name cannot be empty': 'Name cannot be empty',
-    'Sample settings': 'Sample settings',
     'ID': 'ID',
     'Only numbers, letters and "-"': 'Only numbers, letters and "-"',
     'Name': 'Name',
@@ -26,7 +24,6 @@ export const translations_SampleCreationScreen: Translations_SampleCreationScree
     'New sample': 'Nova amostra',
     'ID cannot be empty': 'ID não pode estar vazio',
     'Name cannot be empty': 'Nome não pode estar vazio',
-    'Sample settings': 'Configurações da amostra',
     'ID': 'ID',
     'Only numbers, letters and "-"': 'Apenas numeros, letras e "-"',
     'Name': 'Nome',
