@@ -18,11 +18,11 @@ export default function AllButtons(props: {
       languageLabels.map((languageLabel, index) => {
         const isSelected = props.selectedLanguage === languageTags[index];
         return (
-          <Layout.Button
+          <Layout.Button.Text
             key={languageLabel}
             title={languageLabel}
-            overrideBackgroundColor={isSelected ? theme.confirm : undefined}
-            overrideTextColor={isSelected ? theme.onConfirm : undefined}
+            color_background={isSelected ? theme.confirm : undefined}
+            color_font={isSelected ? theme.onConfirm : undefined}
             onPress={() => props.onButtonClick(languageTags[index])}
           />
         );

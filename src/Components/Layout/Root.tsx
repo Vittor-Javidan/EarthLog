@@ -1,15 +1,16 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { IconName } from './Icon';
+import IconButton from './Button/IconButton';
 
 import { ThemeDTO } from '@Types/index';
 
 import { APP_VERSION } from '@Globals/Version';
 import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { Icon, IconName } from '@Components/Icon';
 
 const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
@@ -22,6 +23,9 @@ export default function Root(props: {
   children: ReactNode
   drawerChildren: ReactNode
   navigationTreeIcons?: JSX.Element[]
+  button_left?: JSX.Element
+  button_middle?: JSX.Element
+  button_right?: JSX.Element
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
@@ -59,6 +63,11 @@ export default function Root(props: {
         >
           {props.children}
         </ContentArea>
+        <ButtonsArea
+          button_left={props.button_left}
+          button_middle={props.button_middle}
+          button_right={props.button_right}
+        />
       </View>
     </View>
     {showDrawer && (
@@ -108,7 +117,7 @@ function Navbar(props: {
           {props.title}
         </Text>
       </View>
-      <Icon.Root
+      <IconButton
         iconName={props.iconName}
         onPress={props.onMenuButtonPress}
         style={{
@@ -174,10 +183,69 @@ function ContentArea(props: {
   children: ReactNode
 }): JSX.Element {
   return (
-    <View
+    <ScrollView
       style={props.style}
+      automaticallyAdjustKeyboardInsets={true}
+      contentContainerStyle={{
+        gap: 5,
+        paddingTop: 30,
+        paddingBottom: 150,
+      }}
     >
       {props.children}
+    </ScrollView>
+  );
+}
+
+function ButtonsArea(props: {
+  button_left?: JSX.Element
+  button_middle?: JSX.Element
+  button_right?: JSX.Element
+}) {
+
+  const HORIZONTAL_PADDING = 10;
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        bottom: 0,
+        paddingBottom: 20,
+      }}
+    >
+      <View
+        style={{
+          width: '33%',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          paddingLeft: HORIZONTAL_PADDING,
+        }}
+      >
+        {props.button_left}
+      </View>
+      <View
+        style={{
+          width: '33%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        {props.button_middle}
+      </View>
+      <View
+        style={{
+          width: '33%',
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+          paddingRight: HORIZONTAL_PADDING,
+        }}
+      >
+        {props.button_right}
+      </View>
     </View>
   );
 }

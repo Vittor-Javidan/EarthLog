@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useBackPress, useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
 
@@ -64,38 +63,37 @@ export default function SampleCreationScreen() {
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await exitScreen('HOME SCREEN')}
         />,
-        <Icon.Project
+        <Layout.Button.Icon
           key="treeIcon_2"
+          iconName="map"
           onPress={async () => await exitScreen('PROJECT SCREEN')}
         />,
       ]}
-    >
-      <Layout.ScrollView>
-        <Inputs_SampleSettings />
-      </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Cancel']}
-          overrideBackgroundColor={theme.wrong}
-          overrideTextColor={theme.onWrong}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="close"
+          showPlusSign={false}
+          color_background={theme.wrong}
+          color={theme.onWrong}
           onPress={async () => await exitScreen('PROJECT SCREEN')}
         />
-        <Layout.Button
-          title={stringResources['Create']}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
+      }
+      button_right={
+        <Layout.Button.IconRounded
+          iconName="save"
+          showPlusSign={false}
+          color_background={theme.confirm}
+          color={theme.onConfirm}
           onPress={async () => await onConfirm()}
         />
-      </Layout.View>
+      }
+    >
+      <Inputs_SampleSettings />
     </Layout.Root>
   );
 }

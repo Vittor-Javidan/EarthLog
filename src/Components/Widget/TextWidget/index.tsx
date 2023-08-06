@@ -1,7 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
-import { Icon } from '@Icon/index';
-import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
 import { InputColors, Languages, TextWidgetData, ThemeDTO } from '@Types/index';
@@ -12,6 +10,7 @@ import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
 import { WidgetRules } from '../Rules';
+import { Layout } from '@Components/Layout';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
@@ -97,7 +96,8 @@ function ShortcutIconButtons(props: {
 
   return (<>
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
-      <Icon.Edit
+      <Layout.Button.Icon
+        iconName="pencil-sharp"
         color={theme.onPrimary}
         onPress={props.onPencilPress}
         style={{
@@ -179,7 +179,7 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      <Input.String
+      <Layout.Input.String
         colors={inputColors}
         label={stringResources['Widget Name']}
         placeholder={stringResources['Write widget name here...']}
@@ -188,7 +188,7 @@ function Modal(props: {
         locked={!rules.allowLabelChange}
         onResetPress={() => setLabel('')}
       />
-      <Input.String
+      <Layout.Input.String
         colors={inputColors}
         label={stringResources['Text']}
         placeholder={stringResources['Write anything here...']}

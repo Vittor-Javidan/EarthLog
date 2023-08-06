@@ -22,8 +22,6 @@ module.exports = function (api) {
           '@Globals': './src/Globals',
           '@Translations': './src/Translations',
           '@Layout': './src/Components/Layout',
-          '@Icon': './src/Components/Icon',
-          '@Inputs': './src/Components/Inputs',
           '@Widget': './src/Components/Widget',
           '@WidgetComponents': './src/Components/Widget/Components',
         },

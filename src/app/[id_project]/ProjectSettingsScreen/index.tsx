@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useBackPress, useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import Widgets_Project from './Widgets_Project';
@@ -16,7 +15,7 @@ export default function ProjectSettingsScreen() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
@@ -28,21 +27,30 @@ export default function ProjectSettingsScreen() {
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
         />,
-        <Icon.Project
+        <Layout.Button.Icon
           key="treeIcon_2"
+          iconName="map"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
       ]}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.primary}
+          color={theme.onPrimary}
+          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+        />
+      }
     >
-      <Layout.ScrollView>
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
-        <DeleteButton />
-      </Layout.ScrollView>
+      <Inputs_ProjectSettings />
+      <Widgets_Project />
+      <DeleteButton />
     </Layout.Root>
   );
 }

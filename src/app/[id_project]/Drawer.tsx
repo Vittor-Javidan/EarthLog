@@ -16,7 +16,7 @@ export function Drawer() {
   const stringResources = useMemo(() => translations.Screens.ProjectScreen[language], []);
 
   return (<>
-    <Layout.DrawerButton
+    <Layout.Button.Drawer
       title={stringResources['Project settings']}
       onPress={async () => await useNavigate('PROJECT SETTINGS SCREEN', id_project)}
     />

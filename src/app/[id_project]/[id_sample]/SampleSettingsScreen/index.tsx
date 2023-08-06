@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
 import { Layout } from '@Components/Layout';
 import Inputs_SampleSettings from './Inputs_SampleSettings';
 import DeleteButton from './DeleteButton';
@@ -16,7 +15,7 @@ export default function SampleSettingsScreen() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (
@@ -26,24 +25,34 @@ export default function SampleSettingsScreen() {
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
         />,
-        <Icon.Project
+        <Layout.Button.Icon
           key="treeIcon_2"
+          iconName="map"
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />,
-        <Icon.Sample
+        <Layout.Button.Icon
           key="treeIcon_3"
+          iconName="clipboard"
           onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
         />,
       ]}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.primary}
+          color={theme.onPrimary}
+          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
+        />
+      }
     >
-      <Layout.ScrollView>
-        <Inputs_SampleSettings />
-        <DeleteButton />
-      </Layout.ScrollView>
+      <Inputs_SampleSettings />
+      <DeleteButton />
     </Layout.Root>
   );
 }

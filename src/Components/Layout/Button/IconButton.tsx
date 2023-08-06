@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { ThemeDTO } from '@Types/index';
+import Icon, { IconName } from '../Icon';
 
 import ConfigService from '@Services/ConfigService';
 
-export default function Root(props: {
+export default function IconButton(props: {
   iconName: IconName
+  color_background?: string
   color?: string
   style?: StyleProp<ViewStyle>
   onPress?: () => void
@@ -22,7 +23,8 @@ export default function Root(props: {
       onPressOut={() => setPressed(false)}
       onPress={props.onPress}
       style={[{
-        backgroundColor: pressed ? theme.onPressColorPrimary : undefined,
+        flexDirection: 'row',
+        backgroundColor: pressed ? theme.onPressColorPrimary : props.color_background,
         paddingHorizontal: 20,
         paddingVertical: 5,
         justifyContent: 'center',
@@ -30,32 +32,10 @@ export default function Root(props: {
         height: '100%',
       }, props.style]}
     >
-      <Ionicons
-        name={props.iconName}
-        adjustsFontSizeToFit={true}
-        maxFontSizeMultiplier={0}
-        style={{
-          color: props.color,
-          fontSize: 200,
-        }}
+      <Icon
+        iconName={props.iconName}
+        color={props.color}
       />
     </Pressable>
   );
 }
-
-export type IconName = (
-  'home'                |
-  'settings'            |
-  'language'            |
-  'color-palette'       |
-  'md-menu-sharp'       |
-  'map'                 |
-  'pencil-sharp'        |
-  'checkmark-done-sharp'|
-  'close'               |
-  'refresh-sharp'       |
-  'clipboard'           |
-  'save'                |
-  'chevron-back-sharp'  |
-  'lock-closed-sharp'
-)

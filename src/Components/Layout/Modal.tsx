@@ -1,11 +1,11 @@
 import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions, StyleProp, ViewStyle } from 'react-native';
-import { Icon } from '@Icon/index';
 
 import { ThemeDTO } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
+import IconButton from './Button/IconButton';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -84,7 +84,8 @@ function Navbar(props: {
           {props.title}
         </Text>
       </View>
-      <Icon.Close
+      <IconButton
+        iconName="lock-closed-sharp"
         onPress={props.onIconPress}
         style={{
           paddingHorizontal: 10,

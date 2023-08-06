@@ -1,14 +1,14 @@
 import React, { useState, useMemo } from 'react';
-import { Input } from '@Components/Inputs';
+import { Layout } from '@Components/Layout';
 
 import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
+import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_ProjectCreation from './API_ProjectCreation';
-import UtilService from '@Services/UtilService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -55,7 +55,7 @@ export default function Inputs_ProjectSettings() {
   };
 
   return (<>
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['ID']}
       placeholder={stringResources['Only numbers, letters and "-".']}
@@ -64,7 +64,7 @@ export default function Inputs_ProjectSettings() {
       onChangeText={(text) => onIDChange(text)}
       onResetPress={() => setId(ProjectService.generateUuidV4())}
     />
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['Name']}
       placeholder={stringResources['Write the project name here...']}
@@ -73,7 +73,7 @@ export default function Inputs_ProjectSettings() {
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => setName('')}
     />
-    <Input.Boolean
+    <Layout.Input.Boolean
       colors={inputColors}
       label={stringResources['Immutable']}
       value={immutable}

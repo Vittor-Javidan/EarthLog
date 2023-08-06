@@ -11,7 +11,7 @@ export default function SampleButtons() {
 
   return <>
     {ProjectService.allSamples.map(sampleSettings => (
-      <Layout.Button
+      <Layout.Button.Text
         key={sampleSettings.id_sample}
         title={sampleSettings.name}
         onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}

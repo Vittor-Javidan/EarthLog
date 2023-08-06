@@ -13,7 +13,7 @@ export default function Drawer() {
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   return (
-    <Layout.DrawerButton
+    <Layout.Button.Drawer
       title={stringResources['Settings']}
       onPress={() => useNavigate('SETTINGS SCREEN')}
     />

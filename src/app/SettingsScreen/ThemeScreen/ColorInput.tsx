@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Input } from '@Inputs/index';
+import { Layout } from '@Components/Layout';
 
 import { ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
@@ -194,7 +194,7 @@ function CustomInput(props: {
           backgroundColor: theme.secondary,
         }}
       >
-        <Input.Color
+        <Layout.Input.Color
           pickerWidth={WIDTH - 50}
           pickerCircleSize={20}
           pickerHeight={10}

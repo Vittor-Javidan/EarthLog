@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 import AllButtons from './LanguageButtons';
 
 import { LanguageTags } from '@Types/index';
@@ -11,7 +10,10 @@ import ConfigService from '@Services/ConfigService';
 
 export default function LanguagesScreen(): JSX.Element {
 
-  const [currentLanguage, setCurrentLanguage] = useState(ConfigService.config.language);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme, language } = useMemo(() => config, []);
+
+  const [currentLanguage, setCurrentLanguage] = useState(language);
 
   const stringResources = useMemo(
     () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
@@ -32,22 +34,31 @@ export default function LanguagesScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<></>}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
         />,
-        <Icon.Settings
+        <Layout.Button.Icon
           key="treeIcon_2"
+          iconName="settings"
           onPress={async () => await useNavigate('SETTINGS SCREEN')}
         />,
       ]}
-    >
-      <Layout.ScrollView>
-        <AllButtons
-          selectedLanguage={currentLanguage}
-          onButtonClick={saveSelectedLanguage}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.primary}
+          color={theme.onPrimary}
+          onPress={async () =>   await useNavigate('SETTINGS SCREEN')}
         />
-      </Layout.ScrollView>
+      }
+    >
+      <AllButtons
+        selectedLanguage={currentLanguage}
+        onButtonClick={saveSelectedLanguage}
+      />
     </Layout.Root>
   );
 }

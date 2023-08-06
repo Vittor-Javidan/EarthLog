@@ -16,7 +16,7 @@ export default function ProjectButtons() {
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const allProjectButtons = ProjectService.allProjects.map(settings => (
-    <Layout.Button
+    <Layout.Button.Text
       key={settings.id_project}
       title={settings.name}
       onPress={async () => await useNavigate('PROJECT SCREEN', settings.id_project)}
@@ -63,7 +63,7 @@ function LastProjectButton() {
     >
       {stringResources['Last Open']}
     </Layout.Text>
-    <Layout.Button
+    <Layout.Button.Text
       title={ProjectService.lastOpenProject.name}
       onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
     />

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { useNavigate } from '@Hooks/index';
-import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 
 import { InputColors } from '@Types/index';
@@ -45,7 +44,7 @@ export default function DeleteButton() {
   };
 
   return (<>
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['Delete']}
       placeholder={stringResources['Type sample name perfectly to delete.']}
@@ -55,10 +54,10 @@ export default function DeleteButton() {
       onResetPress={() => setWidgetName('')}
     />
     {isNameCorrect && (
-      <Layout.Button
+      <Layout.Button.Text
         title={stringResources['Delete']}
-        overrideBackgroundColor={theme.wrong}
-        overrideTextColor={theme.onWrong}
+        color_background={theme.wrong}
+        color_font={theme.onWrong}
         onPress={async () => await deleteProject()}
       />
     )}

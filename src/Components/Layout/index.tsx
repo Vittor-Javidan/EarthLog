@@ -1,19 +1,21 @@
 import Root from './Root';
+import Icon from './Icon';
+import Text from './Text';
 import View from './View';
 import ScrollView from './ScrollView';
-import Text from './Text';
-import Button from './Button';
-import DrawerButton from './DrawerButton';
+import Feedback from './Feedback';
 import Modal from './Modal';
-import Feedback from './StatusFeedback';
+import { Button } from './Button';
+import { Input } from './Input';
 
 export const Layout = {
   Root: Root,
+  Icon: Icon,
+  Text: Text,
   View: View,
   ScrollView: ScrollView,
-  Text: Text,
-  Button: Button,
-  DrawerButton: DrawerButton,
-  Modal: Modal,
   Feedback: Feedback,
+  Modal: Modal,
+  Button: Button,
+  Input: Input,
 };

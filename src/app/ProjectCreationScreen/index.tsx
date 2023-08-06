@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 import Drawer from './Drawer';
 import Inputs_ProjectSettings from './Inputs_ProjectSettings';
 import Widgets_Project from './Widgets_Project';
@@ -60,35 +59,33 @@ export default function ProjectCreationScreen() {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
-          onPress={async () => await useNavigate('HOME SCREEN')}
+          iconName="map"
+          onPress={async () => await exitScreen()}
         />,
       ]}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="close"
+          showPlusSign={false}
+          color_background={theme.wrong}
+          color={theme.onWrong}
+          onPress={async () => await exitScreen()}
+        />
+      }
+      button_right={
+        <Layout.Button.IconRounded
+        iconName="save"
+        showPlusSign={false}
+        color_background={theme.confirm}
+        color={theme.onConfirm}
+        onPress={async () => await onConfirm()}
+      />
+      }
     >
-      <Layout.ScrollView>
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
-      </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Cancel']}
-          overrideBackgroundColor={theme.wrong}
-          overrideTextColor={theme.onWrong}
-          onPress={async () => await exitScreen() }
-        />
-        <Layout.Button
-          title={stringResources['Create']}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
-          onPress={async () => await onConfirm()}
-        />
-      </Layout.View>
+      <Inputs_ProjectSettings />
+      <Widgets_Project />
     </Layout.Root>
   );
 }

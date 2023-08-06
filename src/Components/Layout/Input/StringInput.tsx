@@ -4,9 +4,8 @@ import { View, Text, TextInput } from 'react-native';
 import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
-import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 import { InputColors } from '@Types/index';
+import IconButton from '../Button/IconButton';
 
 export default function StringInput(props: {
   colors : InputColors
@@ -29,7 +28,7 @@ export default function StringInput(props: {
         backgroundColor: LABEL_COLORS.background,
       }}
     >
-      <Layout.View
+      <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -37,6 +36,8 @@ export default function StringInput(props: {
           height: 40,
           paddingHorizontal: 0,
           paddingVertical: 0,
+          gap: 5,
+          padding: 5,
         }}
       >
         <Text
@@ -64,7 +65,8 @@ export default function StringInput(props: {
             >
               Locked
             </Text>
-            <Icon.Locked
+            <IconButton
+              iconName="lock-closed-sharp"
               color={theme.wrong}
               onPress={() => {}}
               style={{
@@ -74,7 +76,8 @@ export default function StringInput(props: {
             />
           </View>
         ) : (
-          <Icon.Reset
+          <IconButton
+            iconName="refresh-sharp"
             color={LABEL_COLORS.font}
             onPress={props.onResetPress}
             style={{
@@ -83,7 +86,7 @@ export default function StringInput(props: {
             }}
           />
         )}
-      </Layout.View>
+      </View>
       <TextInput
         style={{
           width: '100%',

@@ -2,7 +2,6 @@
 import React, { useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 
 import { translations } from '@Translations/index';
 
@@ -11,7 +10,7 @@ import ConfigService from '@Services/ConfigService';
 export default function SettingsScreen(): JSX.Element {
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('HOME SCREEN'));
@@ -23,24 +22,30 @@ export default function SettingsScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await useNavigate('HOME SCREEN')}
         />,
       ]}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.primary}
+          color={theme.onPrimary}
+          onPress={async () =>  await useNavigate('HOME SCREEN')}
+        />
+      }
     >
-      <Layout.ScrollView
-        style={{ flex: 1 }}
-      >
-        <Layout.Button
-          title={stringResources['Language']}
-          onPress={async () => await useNavigate('LANGUAGES SCREEN')}
-        />
-        <Layout.Button
-          title={stringResources['Theme']}
-          onPress={async () => await useNavigate('THEME SCREEN')}
-        />
-      </Layout.ScrollView>
+      <Layout.Button.Text
+        title={stringResources['Language']}
+        onPress={async () => await useNavigate('LANGUAGES SCREEN')}
+      />
+      <Layout.Button.Text
+        title={stringResources['Theme']}
+        onPress={async () => await useNavigate('THEME SCREEN')}
+      />
     </Layout.Root>
   );
 }

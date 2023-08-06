@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
-import { Input } from '@Components/Inputs';
 
 import { translations } from '@Translations/index';
 
@@ -57,7 +56,7 @@ export default function Inputs_SampleSettings() {
       >
         {stringResources['Sample settings']}
       </Layout.Text>
-      <Input.String
+      <Layout.Input.String
         colors={inputColors}
         label={stringResources['ID']}
         placeholder={stringResources['Only numbers, letters and "-"']}
@@ -66,7 +65,7 @@ export default function Inputs_SampleSettings() {
         onChangeText={(text) => onIDChange(text)}
         onResetPress={() => setId(ProjectService.generateUuidV4())}
       />
-      <Input.String
+      <Layout.Input.String
         colors={inputColors}
         label={stringResources['Name']}
         placeholder={stringResources['Write the sample name here...']}

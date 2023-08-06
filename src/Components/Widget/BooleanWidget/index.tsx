@@ -4,12 +4,10 @@ import { Text, Switch } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-import { Icon } from '@Icon/index';
-import { Input } from '@Components/Inputs';
-
 import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
 import { BooleanWidgetData, InputColors, ThemeDTO } from '@Types/index';
+import { Layout } from '@Components/Layout';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
@@ -101,7 +99,8 @@ function ShortcutIconButtons(props: {
       onValueChange={props.onSwitchChange}
     />
     {(props.widgetData.rules.allowLabelChange) && (
-      <Icon.Edit
+      <Layout.Button.Icon
+        iconName="pencil-sharp"
         color={theme.onPrimary}
         onPress={props.onPencilPress}
         style={{
@@ -175,7 +174,7 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      <Input.String
+      <Layout.Input.String
         colors={inputColors}
         label="Label:"
         placeholder="Write widget name here..."
@@ -184,7 +183,7 @@ function Modal(props: {
         locked={!rules.allowLabelChange}
         onResetPress={() => setLabel('')}
       />
-      <Input.Boolean
+      <Layout.Input.Boolean
         label="Value:"
         colors={inputColors}
         value={value}

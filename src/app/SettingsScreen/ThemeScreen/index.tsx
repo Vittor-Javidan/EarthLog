@@ -2,7 +2,6 @@
 import React, { useState, useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 import { ColorInput } from './ColorInput';
 import { ExampleFigure } from './ExampleFigure';
 
@@ -45,52 +44,52 @@ export default function ThemeScreen(): JSX.Element {
       showNavigationTree={true}
       drawerChildren={<Drawer />}
       navigationTreeIcons={[
-        <Icon.Home
+        <Layout.Button.Icon
           key="treeIcon_1"
+          iconName="home"
           onPress={async () => await cancelAndExit('HOME SCREEN')}
         />,
-        <Icon.Settings
+        <Layout.Button.Icon
           key="treeIcon_2"
+          iconName="language"
           onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />,
       ]}
-    >
-      {locked && <ExampleFigure
-        locked={locked}
-        onPressLock={() => setLocked(prev => !prev)}
-      />}
-      <Layout.ScrollView
-        style={{ flex: 1 }}
-      >
-        {!locked && <ExampleFigure
-          locked={locked}
-          onPressLock={() => setLocked(prev => !prev)}
-        />}
-        <AllInputs />
-        <Layout.Button
-          title={stringResources['Reset Theme']}
-          onPress={() => resetTheme()}
-        />
-      </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Discart']}
-          overrideBackgroundColor={theme.wrong}
-          overrideTextColor={theme.onWrong}
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="close"
+          showPlusSign={false}
+          color_background={theme.wrong}
+          color={theme.onWrong}
           onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
         />
-        <Layout.Button
-          title={stringResources['Save']}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
+      }
+      button_middle={
+        <Layout.Button.IconRounded
+          iconName="refresh-sharp"
+          showPlusSign={false}
+          color_background={theme.primary}
+          color={theme.onPrimary}
+          onPress={async () => resetTheme()}
+        />
+      }
+      button_right={
+        <Layout.Button.IconRounded
+          iconName="save"
+          showPlusSign={false}
+          color_background={theme.confirm}
+          color={theme.onConfirm}
           onPress={async () => await confirmAndSave()}
         />
-      </Layout.View>
+      }
+    >
+      {!locked && (
+        <ExampleFigure
+          locked={locked}
+          onPressLock={() => setLocked(prev => !prev)}
+        />
+      )}
+      <AllInputs />
     </Layout.Root>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
 import { Layout } from '@Components/Layout';
-import { Input } from '@Components/Inputs';
 
 import { InputColors, Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
@@ -53,7 +52,7 @@ export default function AddWidgetButton(props: {
   };
 
   return (<>
-    <Layout.Button
+    <Layout.Button.Text
       title={stringResources['Add']}
       onPress={() => setShowlModal(true)}
     />
@@ -63,7 +62,7 @@ export default function AddWidgetButton(props: {
         onRequestClose={() => setShowlModal(false)}
       >
         <Layout.View>
-          <Input.String
+          <Layout.Input.String
             colors={inputColors}
             label={stringResources['Widget name']}
             placeholder={stringResources['Write a name to the widget here...']}
@@ -75,18 +74,18 @@ export default function AddWidgetButton(props: {
         </Layout.View>
         <Layout.ScrollView>
           <ButtonContainer>
-            <Layout.Button
+            <Layout.Button.Text
               title={stringResources['Boolean']}
-              overrideBackgroundColor={theme.tertiary}
-              overrideTextColor={theme.onTertiary}
+              color_background={theme.tertiary}
+              color_font={theme.onTertiary}
               onPress={() => onPress('boolean')}
             />
           </ButtonContainer>
           <ButtonContainer>
-            <Layout.Button
+            <Layout.Button.Text
               title={stringResources['Text']}
-              overrideBackgroundColor={theme.tertiary}
-              overrideTextColor={theme.onTertiary}
+              color_background={theme.tertiary}
+              color_font={theme.onTertiary}
               onPress={() => onPress('text')}
             />
           </ButtonContainer>

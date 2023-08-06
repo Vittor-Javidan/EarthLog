@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 import { useTiming } from '@Hooks/index';
 
@@ -75,14 +74,14 @@ export default function Inputs_ProjectSettings() {
       assert={saved}
       values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
     />
-    <Input.String
+    <Layout.Input.String
       label={stringResources['ID']}
       colors={inputColors}
       placeholder=""
       value={projectSettings.id_project}
       locked={true}
     />
-    <Input.String
+    <Layout.Input.String
       label={stringResources['Name']}
       colors={inputColors}
       placeholder={stringResources['Write the project name here...']}
@@ -91,7 +90,7 @@ export default function Inputs_ProjectSettings() {
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
     />
-    <Input.Boolean
+    <Layout.Input.Boolean
       label={stringResources['Immutable']}
       colors={inputColors}
       value={immutable}

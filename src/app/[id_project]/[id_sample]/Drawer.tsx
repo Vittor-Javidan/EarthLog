@@ -17,7 +17,7 @@ export function Drawer() {
   const stringResources = useMemo(() => translations.Screens.SampleScreen[language], []);
 
   return (<>
-    <Layout.DrawerButton
+    <Layout.Button.Drawer
       title={stringResources['Sample settings']}
       onPress={async () => await useNavigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
     />

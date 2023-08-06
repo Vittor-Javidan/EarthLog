@@ -39,23 +39,17 @@ export default function HomeScreen() {
       iconName="md-menu-sharp"
       showNavigationTree={false}
       drawerChildren={<Drawer />}
-    >
-      <Layout.ScrollView>
-        <ProjectButtons />
-      </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['New Project']}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
+      button_right={
+        <Layout.Button.IconRounded
+          iconName="map"
+          showPlusSign={true}
+          color={theme.onConfirm}
+          color_background={theme.confirm}
           onPress={async () => await useNavigate('PROJECT CREATION SCREEN')}
         />
-      </Layout.View>
+      }
+    >
+      <ProjectButtons />
     </Layout.Root>
   );
 }

@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
 import { View, Text, Switch } from 'react-native';
-import { Layout } from '@Layout/index';
 
-import { InputColors, Languages, ThemeDTO } from '@Types/index';
+import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_BooleanData } from '@Translations/Data/Boolean';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import { Icon } from '@Components/Icon';
-
+import IconButton from '../Button/IconButton';
 
 export default function BooleanInput(props: {
   colors : InputColors
@@ -19,10 +16,9 @@ export default function BooleanInput(props: {
   onSwitchChange?: (value: boolean) => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_BooleanData[Languages]>(() => {
-    return translations.Data.Boolean[ConfigService.config.language];
-  }, []);
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme, language } = useMemo(() => config, []);
+  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
 
   const { label: LABEL_COLORS, dataDisplay: DATA_DISPLAY_COLORS } = props.colors;
 
@@ -32,7 +28,7 @@ export default function BooleanInput(props: {
         backgroundColor: LABEL_COLORS.background,
       }}
     >
-      <Layout.View
+      <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -40,6 +36,8 @@ export default function BooleanInput(props: {
           height: 40,
           paddingHorizontal: 0,
           paddingVertical: 0,
+          gap: 5,
+          padding: 5,
         }}
       >
         <Text
@@ -67,7 +65,8 @@ export default function BooleanInput(props: {
             >
               Locked
             </Text>
-            <Icon.Locked
+            <IconButton
+              iconName="lock-closed-sharp"
               color={theme.wrong}
               onPress={() => {}}
               style={{
@@ -86,7 +85,7 @@ export default function BooleanInput(props: {
             onValueChange={props.onSwitchChange}
           />
         )}
-      </Layout.View>
+      </View>
       <View
         style={{
           backgroundColor: DATA_DISPLAY_COLORS.background,

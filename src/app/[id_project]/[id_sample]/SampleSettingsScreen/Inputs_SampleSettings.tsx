@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 import { useTiming } from '@Hooks/index';
 
@@ -68,14 +67,14 @@ export default function Inputs_SampleSettings() {
       assert={saved}
       values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
     />
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['ID']}
       placeholder=""
       locked={true}
       value={sampleSettings.id_sample}
     />
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['Name']}
       placeholder={stringResources['Write the sample name here...']}

@@ -1,5 +1,4 @@
 import React, { useState, useMemo, ReactNode } from 'react';
-import { Input } from '@Components/Inputs';
 import { Layout } from '@Components/Layout';
 
 import { InputColors, ThemeDTO, WidgetData } from '@Types/index';
@@ -32,11 +31,11 @@ export default function Modal(props: {
             onDelete={props.onDelete}
           />
         )}
-        <Layout.Button
+        <Layout.Button.Text
           title={stringResources['Save']}
           onPress={props.onConfirm}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
+          color_background={theme.confirm}
+          color_font={theme.onConfirm}
         />
       </Layout.ScrollView>
     </Layout.Modal>
@@ -67,7 +66,7 @@ function DeleteButton(props: {
   };
 
   return (<>
-    <Input.String
+    <Layout.Input.String
       colors={inputColors}
       label={stringResources['Delete']}
       placeholder={stringResources['Type widget name perfectly to delete.']}
@@ -76,10 +75,10 @@ function DeleteButton(props: {
       locked={false}
       onResetPress={() => setWidgetName('')}
     />
-    {isNameCorrect && <Layout.Button
+    {isNameCorrect && <Layout.Button.Text
       title={stringResources['Delete']}
-      overrideBackgroundColor={theme.wrong}
-      overrideTextColor={theme.onWrong}
+      color_background={theme.wrong}
+      color_font={theme.onWrong}
       onPress={props.onDelete}
     />}
   </>);
