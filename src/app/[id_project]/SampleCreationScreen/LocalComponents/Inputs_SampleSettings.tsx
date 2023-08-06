@@ -8,7 +8,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import ThemeService from '@Services/ThemeService';
 
-import API_SampleCreation from './API_SampleCreation';
+import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
 import { InputColors } from '@Types/index';
 
 export default function Inputs_SampleSettings() {
@@ -18,20 +18,20 @@ export default function Inputs_SampleSettings() {
   const { language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
-  const [id, setId] = useState<string>(API_SampleCreation.temporarySettings.id_sample);
-  const [name, setName] = useState<string>(API_SampleCreation.temporarySettings.name);
+  const [id, setId] = useState<string>(API_Inputs_SampleSettings.temporarySettings.id_sample);
+  const [name, setName] = useState<string>(API_Inputs_SampleSettings.temporarySettings.name);
 
   function onIDChange(newID: string) {
-    if (API_SampleCreation.temporarySettings.rules.allowIDChange) {
+    if (API_Inputs_SampleSettings.temporarySettings.rules.allowIDChange) {
       const normalizedText = newID.replace(UtilService.idRegex, '');
-      API_SampleCreation.setSampleID(normalizedText);
+      API_Inputs_SampleSettings.setSampleID(normalizedText);
       setId(normalizedText);
     }
   }
 
   function onNameChange(newName: string) {
-    if (API_SampleCreation.temporarySettings.rules.allowNameChange) {
-      API_SampleCreation.setSampleName(newName);
+    if (API_Inputs_SampleSettings.temporarySettings.rules.allowNameChange) {
+      API_Inputs_SampleSettings.setSampleName(newName);
       setName(newName);
     }
   }

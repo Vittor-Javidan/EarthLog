@@ -8,6 +8,7 @@ import API_ProjectCreation from './API_ProjectCreation';
 export default function Widgets_Project() {
 
   const [_, refresh] = useState<boolean>(false);
+  API_ProjectCreation.setterRegister_ProjectWidgets(refresh);
 
   function onConfirm(widgetData: WidgetData) {
     API_ProjectCreation.updateProjectWidget(widgetData);

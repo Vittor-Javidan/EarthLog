@@ -5,25 +5,32 @@ import { languageLabels, languageTags, LanguageTags } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 
-export default function AllButtons(props: {
-  selectedLanguage: LanguageTags
-  onButtonClick: (languageTag: LanguageTags) => void
+export default function LanguageButtons(props: {
+  onButtonClick: () => void
 }): JSX.Element {
 
   const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => config, []);
+
+  async function saveSelectedLanguage(languageTag: LanguageTags) {
+    ConfigService.config.language = languageTag;
+    await ConfigService.saveConfig();
+  }
 
   return <>
     {
       languageLabels.map((languageLabel, index) => {
-        const isSelected = props.selectedLanguage === languageTags[index];
+        const isSelected = language === languageTags[index];
         return (
           <Layout.Button.Text
             key={languageLabel}
             title={languageLabel}
             color_background={isSelected ? theme.confirm : undefined}
             color_font={isSelected ? theme.onConfirm : undefined}
-            onPress={() => props.onButtonClick(languageTags[index])}
+            onPress={async () => {
+              props.onButtonClick();
+              await saveSelectedLanguage(languageTags[index]);
+            }}
           />
         );
       })

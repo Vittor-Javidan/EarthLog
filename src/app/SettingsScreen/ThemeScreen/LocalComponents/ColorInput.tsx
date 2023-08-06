@@ -1,13 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
+import * as Vibration from 'expo-haptics';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Layout } from '@Components/Layout';
-
 import { ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
-
 import API_ExampleFigure from './API_ExampleFigure';
 import UtilService from '@Services/UtilService';
 
@@ -67,7 +65,7 @@ function CustomInput(props: {
   const [color, setColor] = useState<string>(props.savedValue);
   const [valid, setValid] = useState<boolean>(true);
   const [showPicker, setShowPicker] = useState<boolean>(false);
-  const [chevronPressed, setChevronPressed] = useState<boolean>(false);
+  const [iconPressed, setIconPressed] = useState<boolean>(false);
 
   function isValidColor(value: string) {
     return UtilService.hexColorRegex.test(value);
@@ -154,16 +152,19 @@ function CustomInput(props: {
             height: '100%',
             borderLeftWidth: 1,
             borderColor:theme.secondary,
-            backgroundColor: chevronPressed ? theme.onPressColorPrimary : theme.secondary,
-            opacity: chevronPressed ? 0.9 : 1,
+            backgroundColor: iconPressed ? theme.onPressColorPrimary : theme.secondary,
+            opacity: iconPressed ? 0.9 : 1,
             justifyContent: 'center',
             alignItems: 'center',
             padding: 5,
           }}
         >
           <Pressable
-            onPressIn={() => setChevronPressed(true)}
-            onPressOut={() => setChevronPressed(false)}
+            onPressIn={async () => {
+              setIconPressed(true);
+              await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+            }}
+            onPressOut={() => setIconPressed(false)}
             onPress={() => setShowPicker(prev => !prev)}
             style={{
               justifyContent: 'center',

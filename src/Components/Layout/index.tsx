@@ -3,6 +3,8 @@ import Icon from './Icon';
 import Text from './Text';
 import View from './View';
 import ScrollView from './ScrollView';
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
 import Feedback from './Feedback';
 import Modal from './Modal';
 import { Button } from './Button';
@@ -14,6 +16,8 @@ export const Layout = {
   Text: Text,
   View: View,
   ScrollView: ScrollView,
+  NavigationTree: NavigationTree,
+  ScreenButtons: ScreenButtons,
   Feedback: Feedback,
   Modal: Modal,
   Button: Button,

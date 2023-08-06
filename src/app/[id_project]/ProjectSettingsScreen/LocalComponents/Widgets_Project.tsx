@@ -4,12 +4,14 @@ import { Widget } from '@Components/Widget';
 
 import ProjectService from '@Services/ProjectService';
 import { WidgetData } from '@Types/index';
+import API_Widgets_Project from './API_Widgets_Project';
 
 export default function Widgets_Project() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
   const [_, refresh] = useState<boolean>(false);
+  API_Widgets_Project.setterRegister(refresh);
 
   async function onConfirm(widgetData: WidgetData) {
     await ProjectService.updateWidget_Project(

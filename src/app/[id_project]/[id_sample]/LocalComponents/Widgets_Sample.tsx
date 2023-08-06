@@ -5,6 +5,7 @@ import { Widget } from '@Components/Widget';
 import { WidgetData } from '@Types/index';
 
 import ProjectService from '@Services/ProjectService';
+import API_Widgets_Sample from './API_Widgets_Sample';
 
 export default function Widgets_Sample() {
 
@@ -12,6 +13,7 @@ export default function Widgets_Sample() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const [_, refresh] = useState<boolean>(false);
+  API_Widgets_Sample.setterRegister(refresh);
 
   async function onConfirm(widgetData: WidgetData) {
     await ProjectService.updateWidget_Sample(

@@ -2,89 +2,38 @@
 import React, { useState, useMemo } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { ColorInput } from './ColorInput';
-import { ExampleFigure } from './ExampleFigure';
+import { ColorInput } from './LocalComponents/ColorInput';
+import { ExampleFigure } from './LocalComponents/ExampleFigure';
 
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 
-import API_ExampleFigure from './API_ExampleFigure';
+import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
 
 export default function ThemeScreen(): JSX.Element {
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language, theme } = useMemo(() => config, [config.theme]);
+  const { language } = useMemo(() => config, [config.theme]);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const [locked, setLocked] = useState<boolean>(false);
 
-  useBackPress(async () => await cancelAndExit('SETTINGS SCREEN'));
+  useBackPress(async () => await cancelAndExit());
 
-  async function cancelAndExit(
-    screen: 'HOME SCREEN' | 'SETTINGS SCREEN'
-  ) {
+  async function cancelAndExit() {
     API_ExampleFigure.discart();
-    await useNavigate(screen);
-  }
-
-  async function confirmAndSave() {
-    await API_ExampleFigure.save();
     await useNavigate('SETTINGS SCREEN');
-  }
-
-  function resetTheme() {
-    API_ExampleFigure.reset();
   }
 
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      showNavigationTree={true}
       drawerChildren={<Drawer />}
-      navigationTreeIcons={[
-        <Layout.Button.Icon
-          key="treeIcon_1"
-          iconName="home"
-          onPress={async () => await cancelAndExit('HOME SCREEN')}
-        />,
-        <Layout.Button.Icon
-          key="treeIcon_2"
-          iconName="settings"
-          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
-        />,
-        <Layout.Button.Icon
-          key="treeIcon_3"
-          iconName="color-palette"
-        />,
-      ]}
-      button_left={
-        <Layout.Button.IconRounded
-          iconName="close"
-          showPlusSign={false}
-          color_background={theme.wrong}
-          color={theme.onWrong}
-          onPress={async () => await cancelAndExit('SETTINGS SCREEN')}
-        />
-      }
-      button_middle={
-        <Layout.Button.IconRounded
-          iconName="refresh-sharp"
-          showPlusSign={false}
-          color_background={theme.primary}
-          color={theme.onPrimary}
-          onPress={async () => resetTheme()}
-        />
-      }
-      button_right={
-        <Layout.Button.IconRounded
-          iconName="save"
-          showPlusSign={false}
-          color_background={theme.confirm}
-          color={theme.onConfirm}
-          onPress={async () => await confirmAndSave()}
-        />
-      }
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
       {!locked && (
         <ExampleFigure

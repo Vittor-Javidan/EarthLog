@@ -16,6 +16,15 @@ export default class API_ProjectCreation {
 
   // PROJECT WIDGETS
 
+  private static SETTER_KEY_PROJECT_WIDGET = 'ProjectSettingsScreen_Widgets';
+  private static registeredSetters: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};
+  static setterRegister_ProjectWidgets(setter: React.Dispatch<React.SetStateAction<boolean>>) {
+    this.registeredSetters[this.SETTER_KEY_PROJECT_WIDGET] = setter;
+  }
+  static refresh_ProjectWidgets() {
+    this.registeredSetters[this.SETTER_KEY_PROJECT_WIDGET](prev => !prev);
+  }
+
   static addProjectWidget(widgetData: WidgetData) {
     this.unsavedChanges = true;
     const IDs = this.temporaryProject.projectWidgets.map(widget => widget.id_widget);

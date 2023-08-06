@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { BackHandler, Alert } from 'react-native';
 import * as Vibration from 'expo-haptics';
-import { useBackPress, useNavigate } from '@Hooks/index';
+import { useBackPress } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import Drawer from './Drawer';
 import ProjectButtons from './ProjectButtons';
@@ -9,14 +9,18 @@ import ProjectButtons from './ProjectButtons';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
 
 export default function HomeScreen() {
 
   const { config } = useMemo(() => ConfigService, []);
-  const { language, theme } = useMemo(() => config, []);
+  const { language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
-  useBackPress(async () => {
+  useBackPress(async () => await exitMessage());
+
+  async function exitMessage() {
     await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
     Alert.alert(
       stringResources['Hold on!'],
@@ -39,28 +43,14 @@ export default function HomeScreen() {
         },
       ]
     );
-  });
+  }
 
   return (
     <Layout.Root
       title="Earth Log"
-      showNavigationTree={true}
       drawerChildren={<Drawer />}
-      navigationTreeIcons={[
-        <Layout.Button.Icon
-          key="treeIcon_1"
-          iconName="home"
-        />,
-      ]}
-      button_right={
-        <Layout.Button.IconRounded
-          iconName="map"
-          showPlusSign={true}
-          color={theme.onConfirm}
-          color_background={theme.confirm}
-          onPress={async () => await useNavigate('PROJECT CREATION SCREEN')}
-        />
-      }
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
       <ProjectButtons />
     </Layout.Root>
