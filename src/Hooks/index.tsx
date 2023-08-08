@@ -92,8 +92,8 @@ export async function useNavigate(
 
     case 'HOME SCREEN': {
 
-      await ProjectService.loadLastOpenProject();
       await ProjectService.loadAllProjectsSettings();
+      await ProjectService.loadLastOpenProject();
       navController.push(AppRoutes.HOME);
       break;
     }
@@ -125,8 +125,8 @@ export async function useNavigate(
 
       // cache
       await ProjectService.saveLastOpenProject(id_project);
-      await ProjectService.loadLastOpenProject();
       await ProjectService.loadAllProjectsSettings();
+      await ProjectService.loadLastOpenProject();
       await ProjectService.loadAllSamplesSettings(id_project);
       navController.push(AppRoutes.PROJECT_SCREEN(id_project));
       break;

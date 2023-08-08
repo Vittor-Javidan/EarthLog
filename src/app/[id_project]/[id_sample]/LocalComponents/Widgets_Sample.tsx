@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 
 import { WidgetData } from '@Types/index';
@@ -54,8 +55,10 @@ export default function Widgets_Sample() {
   });
 
   return (
-    <>
+    <Layout.View
+      style={{ gap: 5 }}
+    >
       {allWidgetsComponents}
-    </>
+    </Layout.View>
   );
 }

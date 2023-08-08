@@ -1,5 +1,4 @@
-import React, { useState, useMemo, ReactNode } from 'react';
-import { View } from 'react-native';
+import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 
 import { InputColors, WidgetData, WidgetTypes } from '@Types/index';
@@ -72,30 +71,22 @@ export default function AddWidgetButton(props: {
             locked={false}
             onResetPress={() => setLabel('')}
           />
-        </Layout.View>
-        <Layout.ScrollView>
-          <ButtonContainer>
+          <Layout.ScrollView>
             <Layout.Button.Text
               title={stringResources['Boolean']}
               color_background={theme.secondary}
               color_font={theme.onSecondary}
               onPress={() => onPress('boolean')}
             />
-          </ButtonContainer>
-          <ButtonContainer>
             <Layout.Button.Text
               title={stringResources['Text']}
               color_background={theme.secondary}
               color_font={theme.onSecondary}
               onPress={() => onPress('text')}
             />
-          </ButtonContainer>
-        </Layout.ScrollView>
+          </Layout.ScrollView>
+        </Layout.View>
       </Layout.Modal>
     )}
   </>);
-}
-
-function ButtonContainer(props: { children: ReactNode }) {
-  return <View style={{ height: 60 }}>{props.children}</View>;
 }

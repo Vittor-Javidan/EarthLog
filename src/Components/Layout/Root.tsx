@@ -7,7 +7,6 @@ import IconButton from './Button/IconButton';
 import { ThemeDTO } from '@Types/index';
 
 import { APP_VERSION } from '@Globals/Version';
-import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
 const { height: HEIGHT } = Dimensions.get('window');
@@ -92,8 +91,8 @@ function Navbar(props: {
           maxFontSizeMultiplier={0}
           style={{
             color: theme.onPrimary,
-            fontSize: ThemeService.FONTS.h1,
-            fontWeight: '600',
+            fontSize: 200,
+            fontWeight: '700',
           }}
         >
           {props.title}

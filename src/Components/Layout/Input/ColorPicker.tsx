@@ -106,7 +106,7 @@ export function ColorPicker(props: {
             width: props.pickerWidth,
             borderRadius: props.pickerHeight / 2,
           }}
-          />
+        />
 
         {/*PICKER CIRCLE*/}
         <Animated.View

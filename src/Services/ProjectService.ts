@@ -189,13 +189,13 @@ export default class ProjectService {
   static async loadLastOpenProject(): Promise<void> {
 
     const lastProjectID = await DatabaseService.getLastOpenProject();
-    const allProjectSettings = this.allProjects.map(settings => settings.id_project);
+    const allProjectSettingsIDs = this.allProjects.map(settings => settings.id_project);
 
     if (lastProjectID === null) {
       return;
     }
 
-    if (!allProjectSettings.includes(lastProjectID)) {
+    if (!allProjectSettingsIDs.includes(lastProjectID)) {
       return;
     }
 

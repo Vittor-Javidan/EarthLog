@@ -25,7 +25,7 @@ export default function NavigationTree() {
         />,
         <Layout.Button.Icon
           key="treeIcon_2"
-          iconName="map"
+          iconName="file-tray"
           onPress={async () => await exitScreen('PROJECT SCREEN')}
         />,
         <Layout.Button.Icon

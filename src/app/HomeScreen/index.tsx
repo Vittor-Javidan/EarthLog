@@ -4,13 +4,14 @@ import * as Vibration from 'expo-haptics';
 import { useBackPress } from '@Hooks/index';
 import { Layout } from '@Layout/index';
 import Drawer from './Drawer';
-import ProjectButtons from './ProjectButtons';
+import ProjectButtons from './LocalComponents/ProjectButtons';
 
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
+import LastProjectButton from './LocalComponents/LastProjectButton';
 
 export default function HomeScreen() {
 
@@ -18,10 +19,12 @@ export default function HomeScreen() {
   const { language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
-  useBackPress(async () => await exitMessage());
+  useBackPress(async () => {
+    await exitMessage();
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+  });
 
   async function exitMessage() {
-    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
     Alert.alert(
       stringResources['Hold on!'],
       stringResources['Want to exit?'],
@@ -52,6 +55,7 @@ export default function HomeScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
+      <LastProjectButton />
       <ProjectButtons />
     </Layout.Root>
   );

@@ -5,7 +5,7 @@ import { Layout } from '@Components/Layout';
 import { Drawer } from './Drawer';
 import NavigationTree from './NavigationTree';
 
-import SampleButtons from './SampleButtons';
+import SampleButtons from './LocalComponents/SampleButtons';
 
 import ProjectService from '@Services/ProjectService';
 import ScreenButtons from './ScreenButtons';

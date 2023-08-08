@@ -7,7 +7,7 @@ import { ThemeDTO } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
 
-export default function Root(props: {
+export default function RootButton(props: {
   color_background?: string
 	style?: StyleProp<ViewStyle>
   children: ReactNode
@@ -28,12 +28,14 @@ export default function Root(props: {
 			onPressOut={() => { setPressed(false); }}
 			onPress={props.onPress}
 			style={[{
-				flex: 1,
 				justifyContent: 'center',
-				alignItems: 'center',
+				alignItems: 'flex-start',
 				backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
 				height: 55,
+				width: '100%',
+				paddingHorizontal: 10,
+				paddingVertical: 10,
 			}, props.style]}
 		>
       {props.children}

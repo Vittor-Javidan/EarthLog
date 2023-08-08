@@ -12,7 +12,7 @@ export default function ScreenButtons() {
     <Layout.ScreenButtons
       button_right={
         <Layout.Button.IconRounded
-          iconName="map"
+          iconName="file-tray"
           showPlusSign={true}
           color={theme.onConfirm}
           color_background={theme.confirm}

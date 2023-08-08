@@ -20,8 +20,14 @@ export default function SampleSettingsScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Inputs_SampleSettings />
-      <DeleteButton />
+      <Layout.View
+        style={{
+          paddingHorizontal: 5,
+        }}
+      >
+        <Inputs_SampleSettings />
+        <DeleteButton />
+      </Layout.View>
     </Layout.Root>
   );
 }

@@ -6,9 +6,12 @@ import { ThemeDTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import RootButton from './Root';
 import RootText from '../Text/Root';
+import Icon, { IconName } from '../Icon';
 
-export default function Text(props: {
+export default function TextWithIcon(props: {
 	title: string
+  iconSide: 'Left' | 'Right'
+  iconName: IconName
 	color_background?: string
 	color_font?: string
 	style?: StyleProp<ViewStyle>
@@ -25,10 +28,18 @@ export default function Text(props: {
       color_background={backgroundColor}
       onPress={props.onPress}
       style={[{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
 				borderColor: theme.tertiary,
         borderWidth: 1,
 			}, props.style]}
     >
+      {props.iconSide === 'Left' && (
+        <Icon
+          iconName={props.iconName}
+          color={textColor}
+        />
+      )}
       <RootText
 				style={{
 					fontSize: 200,
@@ -37,6 +48,12 @@ export default function Text(props: {
 			>
 				{props.title}
 			</RootText>
+      {props.iconSide === 'Right' && (
+        <Icon
+          iconName={props.iconName}
+          color={textColor}
+        />
+      )}
 		</RootButton>
 	);
 }

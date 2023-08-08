@@ -35,5 +35,8 @@ export type IconName = (
   'chevron-back-sharp'  |
   'lock-closed-sharp'   |
   'arrow-back'          |
-  'add-sharp'
+  'add-sharp'           |
+  'apps'                |
+  'file-tray'           |
+  'arrow-forward-sharp'
 )
