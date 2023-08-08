@@ -38,12 +38,12 @@ function NoSampleMessage() {
       color_background={theme.primary}
       color_border={theme.secondary}
     >
+      <Layout.Text.BR />
       <Layout.Text.H1
         style={{ color: theme.onPrimary }}
       >
         Nothing here!
       </Layout.Text.H1>
-      <Layout.Text.BR />
       <Layout.Text.BR />
       <Layout.Text.H2
         style={{ color: theme.onPrimary }}
@@ -55,7 +55,6 @@ function NoSampleMessage() {
       >
         To start to create subgroups and collect data, click on the right side button on the bottom of your screen.
       </Layout.Text.P>
-      <Layout.Text.BR />
       <Layout.Text.H2
         style={{ color: theme.onPrimary }}
       >

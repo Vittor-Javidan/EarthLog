@@ -9,21 +9,15 @@ export default function MessageArea(props: {
   return (
     <View
       style={{
-        paddingHorizontal: 5,
+        backgroundColor: props.color_background,
+        padding: 10,
+        width: '100%',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: props.color_border,
       }}
     >
-      <View
-        style={{
-          backgroundColor: props.color_background,
-          padding: 10,
-          width: '100%',
-          borderRadius: 10,
-          borderWidth: 1,
-          borderColor: props.color_border,
-        }}
-      >
-        {props.children}
-      </View>
+      {props.children}
     </View>
   );
 }
