@@ -55,9 +55,11 @@ export default class ProjectService {
         id_project: this.generateUuidV4(),
         name: '',
         rules: {
-          unlockTemplate: true,
           allowNameChange: true,
           allowSampleCreation: true,
+          allowWidgetCreation_Project: true,
+          allowWidgetCreation_Template: true,
+          allowWidgetCreation_Sample: true,
         },
       },
       projectWidgets: [],
@@ -73,6 +75,7 @@ export default class ProjectService {
       rules: {
         allowNameChange: true,
         allowSampleErase: true,
+        allowWidgetCreation: true,
       },
     };
   }

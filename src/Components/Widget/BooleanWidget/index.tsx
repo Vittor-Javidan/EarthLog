@@ -73,7 +73,7 @@ export default function BooleanWidget(props: {
         <Modal
           widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm(widgetData)}
-          onDelete={props.onDelete}
+          onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />
       </>}

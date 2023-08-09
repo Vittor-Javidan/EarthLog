@@ -70,9 +70,11 @@ export type ProjectSettings = {
   id_project: string
   name: string
   rules: {
-    unlockTemplate?: boolean
     allowNameChange?: boolean
     allowSampleCreation?: boolean
+    allowWidgetCreation_Project?: boolean
+    allowWidgetCreation_Template?: boolean
+    allowWidgetCreation_Sample?: boolean
   }
 }
 export type SampleSettings = {
@@ -81,6 +83,7 @@ export type SampleSettings = {
   rules: {
     allowNameChange?: boolean,
     allowSampleErase?: boolean,
+    allowWidgetCreation?: boolean,
   }
 }
 

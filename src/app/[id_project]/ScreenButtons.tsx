@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
 
 export default function ScreenButtons() {
 
@@ -10,6 +11,7 @@ export default function ScreenButtons() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
 
   return (
     <Layout.ScreenButtons
@@ -22,7 +24,7 @@ export default function ScreenButtons() {
           onPress={async () => await useNavigate('HOME SCREEN')}
         />
       }
-      button_right={
+      button_right={rules.allowSampleCreation ? (
         <Layout.Button.IconRounded
           iconName="clipboard"
           showPlusSign={true}
@@ -30,7 +32,7 @@ export default function ScreenButtons() {
           color={theme.onConfirm}
           onPress={async () => await useNavigate('SAMPLE CREATION SCREEN', id_project)}
         />
-      }
+      ) : undefined}
     />
   );
 }

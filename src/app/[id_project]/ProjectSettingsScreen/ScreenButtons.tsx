@@ -14,6 +14,7 @@ export default function ScreenButtons() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
 
   async function onCreate(widgetData: WidgetData) {
     await ProjectService.createWidget_Project(
@@ -35,11 +36,11 @@ export default function ScreenButtons() {
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />
       }
-      button_right={
+      button_right={rules.allowWidgetCreation_Project ? (
         <Widget.AddWidgetButton
           onCreateWidget={async (widgetData) => await onCreate(widgetData)}
         />
-      }
+      ) : undefined}
     />
   );
 }
