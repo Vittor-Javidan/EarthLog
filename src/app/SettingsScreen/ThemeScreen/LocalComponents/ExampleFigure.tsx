@@ -29,14 +29,14 @@ export function ExampleFigure(): JSX.Element {
     <View
       style={{
         borderColor: '#FFF',
-        borderWidth: 2,
+        borderWidth: 1,
       }}
     >
       <View
         style={{
           padding: 10,
           borderColor: '#000',
-          borderWidth: 2,
+          borderWidth: 1,
           gap: 10,
           backgroundColor: temporaryTheme.background,
         }}
