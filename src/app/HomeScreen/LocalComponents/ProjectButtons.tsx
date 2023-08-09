@@ -41,10 +41,7 @@ function NoProjectMessage() {
   const { theme } = useMemo(() => config, []);
 
   return (
-    <Layout.Text.MessageArea
-      color_background={theme.primary}
-      color_border={theme.secondary}
-    >
+    <Layout.Text.MessageArea>
         <Layout.Text.BR />
         <Layout.Text.H1
           style={{ color: theme.onPrimary }}
@@ -53,9 +50,7 @@ function NoProjectMessage() {
         </Layout.Text.H1>
         <Layout.Text.BR />
         <Layout.Text.H2
-          style={{
-            color: theme.onPrimary,
-          }}
+          style={{ color: theme.onPrimary }}
         >
           Creating a new project:
         </Layout.Text.H2>

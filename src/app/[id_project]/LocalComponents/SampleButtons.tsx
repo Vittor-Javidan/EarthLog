@@ -34,10 +34,7 @@ function NoSampleMessage() {
   const { theme } = useMemo(() => config, []);
 
   return (
-    <Layout.Text.MessageArea
-      color_background={theme.primary}
-      color_border={theme.secondary}
-    >
+    <Layout.Text.MessageArea>
       <Layout.Text.BR />
       <Layout.Text.H1
         style={{ color: theme.onPrimary }}

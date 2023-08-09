@@ -1,21 +1,26 @@
-import React, { ReactNode } from 'react';
+import React, { useMemo, ReactNode } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import View from '../View';
+import ConfigService from '@Services/ConfigService';
 
 export default function MessageArea(props: {
-  color_background: string
-  color_border: string
   children: ReactNode
+  style?: StyleProp<ViewStyle>
 }) {
+
+  const { config } = useMemo(() => ConfigService, []);
+  const { theme } = useMemo(() => config, []);
+
   return (
     <View
-      style={{
-        backgroundColor: props.color_background,
+      style={[{
+        backgroundColor: theme.primary,
         padding: 10,
         width: '100%',
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderColor: props.color_border,
-      }}
+        borderColor: theme.secondary,
+      }]}
     >
       {props.children}
     </View>
