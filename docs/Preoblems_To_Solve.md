@@ -1,8 +1,8 @@
 ## Current
 
+- Simplify API from project creation, making an API for input, and another for widgets.
 - "app" icon for widgets.
 - "locate" icon for coordinate
-- "file-tray" for projects
 
 # 1 - GPS coordenate for each widget
 

@@ -10,7 +10,7 @@ export default function ProjectButtons() {
   const { id_project: lastOpen_id_project } = ProjectService?.lastOpenProject;
   const allProjectButtons = ProjectService.allProjects.map(settings => {
     if (settings.id_project !== lastOpen_id_project) {
-      return <Layout.ProjectDisplay
+      return <Layout.UI.Project
         key={settings.id_project}
         title_label=""
         title_button={settings.name}

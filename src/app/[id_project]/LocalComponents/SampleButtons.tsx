@@ -17,7 +17,7 @@ export default function SampleButtons() {
       <NoSampleMessage />
     ) : (
       ProjectService.allSamples.map(sampleSettings => (
-        <Layout.SampleDisplay
+        <Layout.UI.Sample
           key={sampleSettings.id_sample}
           title_label=""
           title_button={sampleSettings.name}

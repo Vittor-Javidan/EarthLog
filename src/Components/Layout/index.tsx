@@ -10,8 +10,7 @@ import Modal from './Modal';
 import { Button } from './Button';
 import { Input } from './Input';
 import { Text } from './Text';
-import ProjectDisplay from './ProjectDisplay';
-import SampleDisplay from './SampleDisplay';
+import { UI } from './UI';
 
 export const Layout = {
   Root: Root,
@@ -21,11 +20,10 @@ export const Layout = {
   ScrollView: ScrollView,
   NavigationTree: NavigationTree,
   ScreenButtons: ScreenButtons,
-  ProjectDisplay: ProjectDisplay,
-  SampleDisplay: SampleDisplay,
   Group: Group,
   Feedback: Feedback,
   Modal: Modal,
   Button: Button,
   Input: Input,
+  UI: UI,
 };

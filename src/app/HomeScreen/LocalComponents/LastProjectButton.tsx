@@ -17,7 +17,7 @@ export default function LastProjectButton() {
   const showLastProjectButton = id_project !== '';
 
   return showLastProjectButton ? (
-    <Layout.ProjectDisplay
+    <Layout.UI.Project
       title_label={stringResources['Recently']}
       title_button={ProjectService.lastOpenProject.name}
       onPress_Open={async () => await useNavigate('PROJECT SCREEN', id_project)}

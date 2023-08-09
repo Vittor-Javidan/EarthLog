@@ -42,8 +42,6 @@ export default function Widgets_Sample() {
     );
   }
 
-  console.log(ProjectService.allWidgets_Sample);
-
   const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Sample.map(widgetData => {
     return (
       <Widget.Selector

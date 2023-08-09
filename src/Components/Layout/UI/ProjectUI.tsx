@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import View from './View';
-import Icon from './Icon';
+import View from '../View';
+import Icon from '../Icon';
 
 import ConfigService from '@Services/ConfigService';
-import TextWithIcon from './Button/TextWithIcon';
-import RootText from './Text/Root';
+import TextWithIcon from '../Button/TextWithIcon';
+import RootText from '../Text/Root';
 
-export default function ProjectDisplay(props: {
+export default function ProjectUI(props: {
   title_label: string
   title_button: string
   onPress_Open: () => void

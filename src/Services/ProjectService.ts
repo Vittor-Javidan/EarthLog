@@ -347,11 +347,9 @@ export default class ProjectService {
 
       // COPY WIDGETS FROM TEMPLATE
       const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
-      console.log(templateWidgets);
       for (let i = 0; i < templateWidgets.length; i++) {
         templateWidgets[i].id_widget = this.generateUuidV4();
         await DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
-        console.log(templateWidgets[i]);
       }
 
       await this.loadAllSamplesSettings(id_project);
