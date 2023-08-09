@@ -22,40 +22,30 @@ export default function Inputs_ProjectSettings() {
   const [name, setName] = useState<string>(API_TemporaryProject.project.projectSettings.name);
 
   function onIDChange(newID: string) {
-    if (API_TemporaryProject.project.projectSettings.rules.allowIDChange) {
-      const normalizedText = newID.replace(UtilService.idRegex, '');
-      API_Inputs_ProjectSettings.setProjectID(normalizedText);
-      setId(normalizedText);
-    }
+    const normalizedText = newID.replace(UtilService.idRegex, '');
+    API_Inputs_ProjectSettings.setProjectID(normalizedText);
+    setId(normalizedText);
   }
 
   function onRefreshID() {
-    if (API_TemporaryProject.project.projectSettings.rules.allowIDChange) {
-      const newID = ProjectService.generateUuidV4();
-      API_Inputs_ProjectSettings.setProjectID(newID);
-      setId(newID);
-    }
+    const newID = ProjectService.generateUuidV4();
+    API_Inputs_ProjectSettings.setProjectID(newID);
+    setId(newID);
   }
 
   function onImmutableChange(boolean: boolean) {
-    if (API_TemporaryProject.project.projectSettings.rules.allowImmutableChange) {
-      API_Inputs_ProjectSettings.setProjectImmutable(boolean);
-      setImmutable(boolean);
-    }
+    API_Inputs_ProjectSettings.setProjectImmutable(boolean);
+    setImmutable(boolean);
   }
 
   function onNameChange(newName: string) {
-    if (API_TemporaryProject.project.projectSettings.rules.allowNameChange) {
-      API_Inputs_ProjectSettings.setProjectName(newName);
-      setName(newName);
-    }
+    API_Inputs_ProjectSettings.setProjectName(newName);
+    setName(newName);
   }
 
   function onNameReset() {
-    if (API_TemporaryProject.project.projectSettings.rules.allowNameChange) {
-      API_Inputs_ProjectSettings.setProjectName('');
-      setName('');
-    }
+    API_Inputs_ProjectSettings.setProjectName('');
+    setName('');
   }
 
   const inputColors: InputColors = {

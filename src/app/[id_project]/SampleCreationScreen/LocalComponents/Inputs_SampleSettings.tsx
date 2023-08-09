@@ -21,18 +21,14 @@ export default function Inputs_SampleSettings() {
   const [name, setName] = useState<string>(API_Inputs_SampleSettings.temporarySettings.name);
 
   function onIDChange(newID: string) {
-    if (API_Inputs_SampleSettings.temporarySettings.rules.allowIDChange) {
-      const normalizedText = newID.replace(UtilService.idRegex, '');
-      API_Inputs_SampleSettings.setSampleID(normalizedText);
-      setId(normalizedText);
-    }
+    const normalizedText = newID.replace(UtilService.idRegex, '');
+    API_Inputs_SampleSettings.setSampleID(normalizedText);
+    setId(normalizedText);
   }
 
   function onNameChange(newName: string) {
-    if (API_Inputs_SampleSettings.temporarySettings.rules.allowNameChange) {
-      API_Inputs_SampleSettings.setSampleName(newName);
-      setName(newName);
-    }
+    API_Inputs_SampleSettings.setSampleName(newName);
+    setName(newName);
   }
 
   const inputColors: InputColors = {
