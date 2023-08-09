@@ -69,10 +69,8 @@ export type WidgetData = TextWidgetData | BooleanWidgetData
 export type ProjectSettings = {
   id_project: string
   name: string
-  immutable: boolean
   rules: {
-    allowImmutableChange?: boolean
-    allowIDChange?: boolean
+    unlockTemplate?: boolean
     allowNameChange?: boolean
     allowSampleCreation?: boolean
   }
@@ -81,7 +79,6 @@ export type SampleSettings = {
   id_sample: string
   name: string
   rules: {
-    allowIDChange?: boolean,
     allowNameChange?: boolean,
     allowSampleErase?: boolean,
   }

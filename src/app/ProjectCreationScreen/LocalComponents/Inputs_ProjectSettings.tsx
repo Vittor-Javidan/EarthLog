@@ -17,7 +17,6 @@ export default function Inputs_ProjectSettings() {
   const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
-  const [immutable, setImmutable] = useState<boolean>(API_TemporaryProject.project.projectSettings.immutable);
   const [id, setId] = useState<string>(API_TemporaryProject.project.projectSettings.id_project);
   const [name, setName] = useState<string>(API_TemporaryProject.project.projectSettings.name);
 
@@ -31,11 +30,6 @@ export default function Inputs_ProjectSettings() {
     const newID = ProjectService.generateUuidV4();
     API_Inputs_ProjectSettings.setProjectID(newID);
     setId(newID);
-  }
-
-  function onImmutableChange(boolean: boolean) {
-    API_Inputs_ProjectSettings.setProjectImmutable(boolean);
-    setImmutable(boolean);
   }
 
   function onNameChange(newName: string) {
@@ -78,13 +72,6 @@ export default function Inputs_ProjectSettings() {
       locked={false}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
-    />
-    <Layout.Input.Boolean
-      colors={inputColors}
-      label={stringResources['Immutable']}
-      value={immutable}
-      locked={false}
-      onSwitchChange={(boolean) => onImmutableChange(boolean)}
     />
   </>);
 }

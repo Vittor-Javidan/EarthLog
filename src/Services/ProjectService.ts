@@ -22,7 +22,6 @@ export default class ProjectService {
 
   static lastOpenProject: ProjectSettings = {
     id_project: '',
-    immutable: true,
     name: '',
     rules: {},
   };
@@ -55,10 +54,8 @@ export default class ProjectService {
       projectSettings: {
         id_project: this.generateUuidV4(),
         name: '',
-        immutable: false,
         rules: {
-          allowImmutableChange: true,
-          allowIDChange: true,
+          unlockTemplate: true,
           allowNameChange: true,
           allowSampleCreation: true,
         },
@@ -74,7 +71,6 @@ export default class ProjectService {
       id_sample: this.generateUuidV4(),
       name: '',
       rules: {
-        allowIDChange: true,
         allowNameChange: true,
         allowSampleErase: true,
       },
@@ -127,7 +123,6 @@ export default class ProjectService {
     await this.deleteLastOpenProject();
     this.lastOpenProject = {
       id_project: '',
-      immutable: true,
       name: '',
       rules: {},
     };
@@ -206,7 +201,6 @@ export default class ProjectService {
     await DatabaseService.deleteLastOpenProject();
     this.lastOpenProject = {
       id_project: '',
-      immutable: true,
       name: '',
       rules: {},
     };

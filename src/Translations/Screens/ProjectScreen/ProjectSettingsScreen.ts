@@ -8,7 +8,6 @@ export type Translations_ProjectSettingsScreen = Record<Languages, {
   'ID': string
   'Name': string
   'Write the project name here...': string
-  'Immutable': string
   'Delete': string
   'Type project name perfectly to delete.': string
 }>
@@ -22,7 +21,6 @@ export const translations_ProjectSettingsScreen: Translations_ProjectSettingsScr
     'ID': 'ID',
     'Name': 'Name',
     'Write the project name here...': 'Write the project name here...',
-    'Immutable': 'Immutable',
     'Delete': 'Delete',
     'Type project name perfectly to delete.': 'Type project name perfectly to delete.',
   },
@@ -34,7 +32,6 @@ export const translations_ProjectSettingsScreen: Translations_ProjectSettingsScr
     'ID': 'ID',
     'Name': 'Nome',
     'Write the project name here...': 'Escreva o nome do projeto aqui...',
-    'Immutable': 'Imutável',
     'Delete': 'Deletar',
     'Type project name perfectly to delete.': 'Escreva o nome do projeto perfeitamente para deletar.',
   },

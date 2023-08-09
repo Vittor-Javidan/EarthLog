@@ -20,13 +20,11 @@ export default function Inputs_ProjectSettings() {
   const { rules } = useMemo(() => projectSettings, []);
 
   const [name, setName] = useState<string>(projectSettings.name);
-  const [immutable, setImmutable] = useState<boolean>(projectSettings.immutable);
   const [saved, setSaved] = useState<boolean>(true);
 
   useTiming(async () => {
     if (!saved) {
       projectSettings.name = name;
-      projectSettings.immutable = immutable;
       await ProjectService.updateProject(
         projectSettings,
         () => setSaved(true),
@@ -34,13 +32,6 @@ export default function Inputs_ProjectSettings() {
       );
     }
   }, [saved], 100);
-
-  function onImmutableChange(boolean: boolean) {
-    if (rules.allowImmutableChange) {
-      setImmutable(boolean);
-      setSaved(false);
-    }
-  }
 
   function onNameChange(newName: string) {
     if (rules.allowNameChange) {
@@ -89,13 +80,6 @@ export default function Inputs_ProjectSettings() {
       locked={!rules.allowNameChange}
       onChangeText={(text) => onNameChange(text)}
       onResetPress={() => onNameReset()}
-    />
-    <Layout.Input.Boolean
-      label={stringResources['Immutable']}
-      colors={inputColors}
-      value={immutable}
-      locked={!rules.allowImmutableChange}
-      onSwitchChange={(boolean) => onImmutableChange(boolean)}
     />
   </>);
 }

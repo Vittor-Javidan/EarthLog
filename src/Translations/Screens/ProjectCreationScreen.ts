@@ -2,7 +2,6 @@ import { Languages } from '@Types/index';
 
 export type Translations_ProjectCreationScreen = Record<Languages, {
   'Project creation': string
-  'Immutable': string
   'ID': string
   'Name': string
   'Write the project name here...': string
@@ -13,7 +12,6 @@ export type Translations_ProjectCreationScreen = Record<Languages, {
 export const translations_ProjectCreationScreen: Translations_ProjectCreationScreen = {
   'en-US': {
     'Project creation': 'Project creation',
-    'Immutable': 'Immutable',
     'ID': 'ID',
     'Name': 'Name',
     'Write the project name here...': 'Write the project name here...',
@@ -22,7 +20,6 @@ export const translations_ProjectCreationScreen: Translations_ProjectCreationScr
   },
   'pt-BR': {
     'Project creation': 'Criação de projeto',
-    'Immutable': 'Imutável',
     'ID': 'ID',
     'Name': 'Nome',
     'Write the project name here...': 'Escreva o nome do projeto aqui...',
