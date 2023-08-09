@@ -9,9 +9,9 @@ import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 
-import API_ProjectCreation from './LocalComponents/API_ProjectCreation';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
+import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
 
 export default function ProjectCreationScreen() {
 
@@ -22,7 +22,7 @@ export default function ProjectCreationScreen() {
   useBackPress(async () => await exitScreen());
 
   async function exitScreen() {
-    API_ProjectCreation.reset();
+    API_TemporaryProject.reset();
     await useNavigate('HOME SCREEN');
   }
 

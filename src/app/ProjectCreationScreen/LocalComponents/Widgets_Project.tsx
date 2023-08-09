@@ -3,23 +3,24 @@ import { Widget } from '@Components/Widget';
 
 import { WidgetData } from '@Types/index';
 
-import API_ProjectCreation from './API_ProjectCreation';
+import API_TemporaryProject from './API_TemporaryProject';
+import API_Widgets_Project from './API_Widgets_Project';
 
 export default function Widgets_Project() {
 
   const [_, refresh] = useState<boolean>(false);
-  API_ProjectCreation.setterRegister_ProjectWidgets(refresh);
+  API_Widgets_Project.setterRegister_ProjectWidgets(refresh);
 
   function onConfirm(widgetData: WidgetData) {
-    API_ProjectCreation.updateProjectWidget(widgetData);
+    API_Widgets_Project.updateProjectWidget(widgetData);
   }
 
   function onDelete(widgetData: WidgetData) {
-    API_ProjectCreation.deleteProjectWidget(widgetData);
+    API_Widgets_Project.deleteProjectWidget(widgetData);
     refresh(prev => !prev);
   }
 
-  const allWidgetsComponents: JSX.Element[] = API_ProjectCreation.temporaryProject.projectWidgets.map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = API_TemporaryProject.project.projectWidgets.map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}

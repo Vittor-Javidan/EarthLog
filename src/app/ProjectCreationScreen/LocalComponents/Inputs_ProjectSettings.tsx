@@ -8,7 +8,8 @@ import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
-import API_ProjectCreation from './API_ProjectCreation';
+import API_TemporaryProject from './API_TemporaryProject';
+import API_Inputs_ProjectSettings from './API_Inputs_ProjectSettings';
 
 export default function Inputs_ProjectSettings() {
 
@@ -16,29 +17,44 @@ export default function Inputs_ProjectSettings() {
   const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
-  const [immutable, setImmutable] = useState<boolean>(API_ProjectCreation.temporaryProject.projectSettings.immutable);
-  const [id, setId] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.id_project);
-  const [name, setName] = useState<string>(API_ProjectCreation.temporaryProject.projectSettings.name);
+  const [immutable, setImmutable] = useState<boolean>(API_TemporaryProject.project.projectSettings.immutable);
+  const [id, setId] = useState<string>(API_TemporaryProject.project.projectSettings.id_project);
+  const [name, setName] = useState<string>(API_TemporaryProject.project.projectSettings.name);
 
   function onIDChange(newID: string) {
-    if (API_ProjectCreation.temporaryProject.projectSettings.rules.allowIDChange) {
+    if (API_TemporaryProject.project.projectSettings.rules.allowIDChange) {
       const normalizedText = newID.replace(UtilService.idRegex, '');
-      API_ProjectCreation.setProjectID(normalizedText);
+      API_Inputs_ProjectSettings.setProjectID(normalizedText);
       setId(normalizedText);
     }
   }
 
+  function onRefreshID() {
+    if (API_TemporaryProject.project.projectSettings.rules.allowIDChange) {
+      const newID = ProjectService.generateUuidV4();
+      API_Inputs_ProjectSettings.setProjectID(newID);
+      setId(newID);
+    }
+  }
+
   function onImmutableChange(boolean: boolean) {
-    if (API_ProjectCreation.temporaryProject.projectSettings.rules.allowImmutableChange) {
-      API_ProjectCreation.setProjectImmutable(boolean);
+    if (API_TemporaryProject.project.projectSettings.rules.allowImmutableChange) {
+      API_Inputs_ProjectSettings.setProjectImmutable(boolean);
       setImmutable(boolean);
     }
   }
 
   function onNameChange(newName: string) {
-    if (API_ProjectCreation.temporaryProject.projectSettings.rules.allowNameChange) {
-      API_ProjectCreation.temporaryProject.projectSettings.name = newName;
+    if (API_TemporaryProject.project.projectSettings.rules.allowNameChange) {
+      API_Inputs_ProjectSettings.setProjectName(newName);
       setName(newName);
+    }
+  }
+
+  function onNameReset() {
+    if (API_TemporaryProject.project.projectSettings.rules.allowNameChange) {
+      API_Inputs_ProjectSettings.setProjectName('');
+      setName('');
     }
   }
 
@@ -62,7 +78,7 @@ export default function Inputs_ProjectSettings() {
       value={id}
       locked={false}
       onChangeText={(text) => onIDChange(text)}
-      onResetPress={() => setId(ProjectService.generateUuidV4())}
+      onResetPress={() => onRefreshID()}
     />
     <Layout.Input.String
       colors={inputColors}
@@ -71,7 +87,7 @@ export default function Inputs_ProjectSettings() {
       value={name}
       locked={false}
       onChangeText={(text) => onNameChange(text)}
-      onResetPress={() => setName('')}
+      onResetPress={() => onNameReset()}
     />
     <Layout.Input.Boolean
       colors={inputColors}

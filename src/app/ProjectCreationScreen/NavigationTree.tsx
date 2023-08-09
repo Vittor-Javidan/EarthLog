@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
-import API_ProjectCreation from './LocalComponents/API_ProjectCreation';
+import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
 
 export default function NavigationTree() {
 
   async function exitScreen() {
-    API_ProjectCreation.reset();
+    API_TemporaryProject.reset();
     await useNavigate('HOME SCREEN');
   }
 
