@@ -20,9 +20,12 @@ import { ThemeDTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 
 export function ColorPicker(props: {
-  pickerWidth: number
+  colorInputPadding: number
+  colorInputWidth: number
+  colorInputHeight: number
   pickerHeight: number
-  pickerCircleSize: number
+  pickerWidth: number
+  borderRadius: number
   onColorSelected: (hexColor: string) => void
 }) {
 
@@ -47,7 +50,7 @@ export function ColorPicker(props: {
   const adjustedTranslateX = useDerivedValue(() => {
     return Math.min(
       Math.max(translateX.value, 0),
-      props.pickerWidth - props.pickerCircleSize,
+      props.colorInputWidth - props.pickerWidth - (props.colorInputPadding * 2),
     );
   });
 
@@ -59,7 +62,7 @@ export function ColorPicker(props: {
       return hex.length === 1 ? '0' + hex : hex;
     }
 
-    const inputRange = GRADIENT_COLORS.map((_, index) => (index / GRADIENT_COLORS.length) * (props.pickerWidth + props.pickerCircleSize + props.pickerCircleSize / 2));
+    const inputRange = GRADIENT_COLORS.map((_, index) => (index / (GRADIENT_COLORS.length - 0.5)) * (props.colorInputWidth + (props.colorInputPadding * 2)));
     const pickerColor = interpolateColor(translateX.value, inputRange, GRADIENT_COLORS,'RGB');
     const pickerRGBAColorArray = convertToRGBA(pickerColor) as number[];
     const r = Math.round(pickerRGBAColorArray[0] * 255);
@@ -102,9 +105,9 @@ export function ColorPicker(props: {
           start={{ x: 0, y: 0}}
           end={{ x: 1, y: 0}}
           style={{
-            height: props.pickerHeight,
-            width: props.pickerWidth,
-            borderRadius: props.pickerHeight / 2,
+            height: props.colorInputHeight,
+            width: props.colorInputWidth - (props.colorInputPadding * 2),
+            borderRadius: props.borderRadius,
           }}
         />
 
@@ -114,9 +117,11 @@ export function ColorPicker(props: {
             {
               position: 'absolute',
               backgroundColor: theme.primary,
-              width: props.pickerCircleSize,
-              height: props.pickerCircleSize,
-              borderRadius: props.pickerCircleSize / 2,
+              width: props.pickerWidth,
+              height: props.pickerHeight,
+              borderRadius: props.borderRadius,
+              borderWidth: 1,
+              borderColor: 'black',
             },
             animatedStyle,
           ]}

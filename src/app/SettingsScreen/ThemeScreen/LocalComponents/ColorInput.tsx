@@ -191,14 +191,17 @@ function CustomInput(props: {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 20,
+          paddingVertical: 5,
           backgroundColor: theme.secondary,
         }}
       >
         <Layout.Input.Color
-          pickerWidth={WIDTH - 50}
-          pickerCircleSize={20}
-          pickerHeight={10}
+          colorInputPadding={5}
+          colorInputWidth={WIDTH}
+          colorInputHeight={45}
+          pickerWidth={2}
+          pickerHeight={50}
+          borderRadius={5}
           onColorSelected={onUpdate}
         />
       </View>}
