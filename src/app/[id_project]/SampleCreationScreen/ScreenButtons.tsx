@@ -36,11 +36,6 @@ export default function ScreenButtons() {
       return;
     }
 
-    if (temporarySettings.name === '') {
-      alert(stringResources['Name cannot be empty']);
-      return;
-    }
-
     await ProjectService.createSample(
       id_project,
       temporarySettings,
