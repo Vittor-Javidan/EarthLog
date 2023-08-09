@@ -38,5 +38,6 @@ export type IconName = (
   'add-sharp'           |
   'apps'                |
   'file-tray'           |
-  'arrow-forward-sharp'
+  'arrow-forward-sharp' |
+  'copy'
 )
