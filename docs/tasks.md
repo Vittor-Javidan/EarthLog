@@ -144,7 +144,7 @@
             + data.json file
         + index.json
 
-- Implement methods on Project Service to interact with Database Service.
++ Implement methods on Project Service to interact with Database Service.
     + Create Project
     + Delete Project
     + Update Project
@@ -171,3 +171,62 @@
     + Sample Screen
         + Show all widgets inside the sample.
         + Must show a button to create a new widget, if rules allow.
+
+## APIs
+
++ Simplify API from project creation, making an API for input, and another for widgets.
+
+## Project and Sample
+
++ fix the rules.
+
+## Layout Project and Samples
+
++ Implemente a new UI for Project and Samples
+
+## Save system
+
+- Change the current autosaving system, to be a more consistent model.
+
+## Widgets
+
+- Implement a new Widget UI.
+- Implement the widgets rules.
+- "app" icon for widgets.
+
+## Date System
+
+- Implement a TimeService.
+- A last saved date and Hour info must be stored on ProjectSettings, SampleSettings and WidgetData.
+- A new time info must be saved every time something changes.
+
+## GPS system
+
+- GPS is not a widget, but a propertie that can be used on everything.
+- GPS required must be a rule for projectSettings, sampleSettings, widgetsData.
+- implement GPS service
+- implement "locate" icon for coordinate
+- the coordinate aquisition must be on project settings, sample settings, and widget modal.
+- a gps quick action icon must be present on the bottom of every widget UI.
+- Minimum precision is defined by the user.
+
+## GPS widget
+
+- a dedicated GPS widget. If the user wants to save just coordinates with a label alone.
+
+# Auto audition
+
+- Shold trigger an alert when the current GPS aquisition deviates too much from current sample gps coordinates.
+- Distance trigger should be optional.
+
+# Data Export:
+
+- Estudy ways to export data:
+  - Some of interest are CSV, word, PFF and Email
+
+# Server communication:
+
+- App must be able to receive a ProjectDTO from external servers, and parse this data.
+- App must be able to post a ProjectDTO to a external server, so the server can filter the data whatever he wants.
+- A screen to define the JSON body of both GET and POST request must be created.
+  - This screen is dedicated for people who know a programming.
