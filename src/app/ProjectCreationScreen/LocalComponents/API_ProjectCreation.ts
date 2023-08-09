@@ -2,11 +2,9 @@ import ProjectService from '@Services/ProjectService';
 import { ProjectDTO, WidgetData } from '@Types/index';
 export default class API_ProjectCreation {
 
-  static unsavedChanges: boolean = false;
   static temporaryProject: ProjectDTO = ProjectService.getDefaultProjectTemplate();
 
   static reset() {
-    this.unsavedChanges = false;
     this.temporaryProject = ProjectService.getDefaultProjectTemplate();
   }
 
@@ -26,7 +24,6 @@ export default class API_ProjectCreation {
   }
 
   static addProjectWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     const IDs = this.temporaryProject.projectWidgets.map(widget => widget.id_widget);
     if (!IDs.includes(widgetData.id_widget)) {
       this.temporaryProject.projectWidgets.push(widgetData);
@@ -34,7 +31,6 @@ export default class API_ProjectCreation {
   }
 
   static updateProjectWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     this.temporaryProject.projectWidgets.forEach(widget => {
       if (widget.id_widget === widgetData.id_widget) {
         widget = widgetData;
@@ -43,7 +39,6 @@ export default class API_ProjectCreation {
   }
 
   static deleteProjectWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     this.temporaryProject.projectWidgets = this.temporaryProject.projectWidgets.filter(
       widget => widget.id_widget !== widgetData.id_widget
     );
@@ -52,7 +47,6 @@ export default class API_ProjectCreation {
   // SAMPLE TEMPLATE WIDGETS
 
   static addPointTemplateWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     const IDs = this.temporaryProject.template.map(widget => widget.id_widget);
     if (!IDs.includes(widgetData.id_widget)) {
       this.temporaryProject.template.push(widgetData);
@@ -60,7 +54,6 @@ export default class API_ProjectCreation {
   }
 
   static updatePointTemplateWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     this.temporaryProject.template.forEach(widget => {
       if (widget.id_widget === widgetData.id_widget) {
         widget = widgetData;
@@ -69,7 +62,6 @@ export default class API_ProjectCreation {
   }
 
   static deletePointTemplateWidget(widgetData: WidgetData) {
-    this.unsavedChanges = true;
     this.temporaryProject.template = this.temporaryProject.template.filter(
       widget => widget.id_widget !== widgetData.id_widget
     );
