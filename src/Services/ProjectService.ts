@@ -1,20 +1,8 @@
 import uuid from 'react-native-uuid';
-import FileSystemService from './FileSystemService';
 import DatabaseService from './DatabaseService';
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, WidgetTypes } from '@Types/index';
 
 export default class ProjectService {
-
-  static DATA_BASE_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/database`;
-
-
-
-
-
-
-
-
-
 
   // ===============================================================================================
   // CACHED DATA
