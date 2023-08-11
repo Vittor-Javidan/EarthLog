@@ -25,7 +25,11 @@ export default function TemplateScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Widgets_Template />
+      <Layout.View
+        style={{ paddingTop: 20 }}
+      >
+        <Widgets_Template />
+      </Layout.View>
     </Layout.Root>
   );
 }

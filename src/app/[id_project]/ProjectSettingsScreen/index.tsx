@@ -6,7 +6,6 @@ import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
 import Inputs_ProjectSettings from './LocalComponents/Inputs_ProjectSettings';
 import Widgets_Project from './LocalComponents/Widgets_Project';
-import DeleteButton from './LocalComponents/DeleteButton';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
@@ -29,13 +28,13 @@ export default function ProjectSettingsScreen() {
     >
       <Layout.View
         style={{
+          paddingTop: 20,
           padding: 5,
           gap: 5,
         }}
       >
         <Inputs_ProjectSettings />
         <Widgets_Project />
-        <DeleteButton />
       </Layout.View>
     </Layout.Root>
   );

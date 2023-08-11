@@ -25,7 +25,11 @@ export default function SampleScreens() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Widgets_Sample />
+      <Layout.View
+        style={{ paddingTop: 20 }}
+      >
+        <Widgets_Sample />
+      </Layout.View>
     </Layout.Root>
   );
 }

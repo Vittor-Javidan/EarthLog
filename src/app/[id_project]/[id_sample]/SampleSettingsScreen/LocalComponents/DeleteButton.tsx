@@ -3,7 +3,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
 
-import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
@@ -19,6 +18,7 @@ export default function DeleteButton() {
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
   const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
 
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [widgetName, setWidgetName] = useState<string>('');
 
   async function deleteProject() {
@@ -30,37 +30,77 @@ export default function DeleteButton() {
     );
   }
 
+  function dismissModal() {
+    setShowModal(false);
+    setWidgetName('');
+  }
+
   const isNameCorrect = widgetName === sampleSettings.name;
-  const inputColors: InputColors = {
-    label: {
-      background: theme.wrong,
-      font: theme.onWrong,
-    },
-    dataDisplay: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-      font_placeholder: theme.onTertiary_Placeholder,
-    },
-  };
 
   return (<>
-    {isNameCorrect ? (
-      <Layout.Button.Text
+    <Layout.Button.IconRounded
+      iconName="trash-outline"
+      showPlusSign={false}
+      color_background={theme.wrong}
+      color={theme.onWrong}
+      onPress={() => setShowModal(true)}
+    />
+    {showModal && (
+      <Layout.Modal
         title={stringResources['Delete']}
-        color_background={theme.wrong}
-        color_font={theme.onWrong}
-        onPress={async () => await deleteProject()}
-      />
-    ) : (
-      <Layout.Input.String
-        colors={inputColors}
-        label={stringResources['Delete']}
-        placeholder={stringResources['Type sample name perfectly to delete.']}
-        value={widgetName}
-        onChangeText={setWidgetName}
-        locked={false}
-        onResetPress={() => setWidgetName('')}
-      />
+        onRequestClose={() => dismissModal()}
+      >
+        <Layout.View
+          style={{
+            padding: 5,
+            gap: 10,
+          }}
+        >
+          {!isNameCorrect ? (<>
+            <Layout.Input.String
+              label={stringResources['Name']}
+              backgroundColor={theme.background}
+              color={theme.wrong}
+              color_placeholder={theme.wrong}
+              placeholder={`${stringResources['Type sample name perfectly to delete.']}`}
+              value={widgetName}
+              onChangeText={setWidgetName}
+              locked={false}
+              onResetPress={() => setWidgetName('')}
+            />
+            <Layout.Text.P
+              style={{
+                color: theme.onBackground,
+                marginLeft: 10,
+                textAlignVertical: 'center',
+              }}
+            >
+              {`${stringResources['Name']}: ${sampleSettings.name}`}
+            </Layout.Text.P>
+          </>) : (
+            <Layout.Text.P
+              style={{
+                color: theme.wrong,
+                margin: 10,
+                textAlignVertical: 'center',
+              }}
+            >
+              Click on the bottom right button to confirm
+            </Layout.Text.P>
+          )}
+        </Layout.View>
+        <Layout.ScreenButtons
+          button_right={isNameCorrect ? (
+            <Layout.Button.IconRounded
+              color_background={theme.wrong}
+              color={theme.onWrong}
+              iconName="checkmark-done-sharp"
+              showPlusSign={false}
+              onPress={async () => await deleteProject()}
+            />
+          ) : undefined}
+        />
+      </Layout.Modal>
     )}
   </>);
 }

@@ -7,6 +7,7 @@ import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
 import { WidgetData } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import DeleteButton from './LocalComponents/DeleteButton';
 
 export default function ScreenButtons() {
 
@@ -31,10 +32,13 @@ export default function ScreenButtons() {
         <Layout.Button.IconRounded
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.primary}
-          color={theme.onPrimary}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />
+      }
+      button_middle={
+        <DeleteButton />
       }
       button_right={rules.allowWidgetCreation_Project ? (
         <Widget.AddWidgetButton

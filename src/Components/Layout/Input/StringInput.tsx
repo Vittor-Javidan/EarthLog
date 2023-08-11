@@ -94,7 +94,7 @@ export default function StringInput(props: {
           paddingBottom: 10,
           backgroundColor: backgroundColor,
           color: color,
-          borderColor: theme.primary,
+          borderColor: color,
           borderWidth: 2,
           borderRadius: 10,
         }}

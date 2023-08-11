@@ -38,10 +38,14 @@ export default function ThemeScreen(): JSX.Element {
     >
       {state === 'Loading' ? (
         <Layout.Loading />
-      ) : (<>
-        <ExampleFigure/>
-        <AllInputs />
-      </>)}
+      ) : (
+        <Layout.View
+          style={{ paddingTop: 20 }}
+        >
+          <ExampleFigure/>
+          <AllInputs />
+        </Layout.View>
+      )}
     </Layout.Root>
   );
 }

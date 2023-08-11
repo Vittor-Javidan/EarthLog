@@ -55,8 +55,12 @@ export default function HomeScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <LastProjectButton />
-      <ProjectButtons />
+      <Layout.View
+        style={{ paddingTop: 20 }}
+      >
+        <LastProjectButton />
+        <ProjectButtons />
+      </Layout.View>
     </Layout.Root>
   );
 }

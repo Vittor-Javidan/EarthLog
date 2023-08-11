@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 
-import { InputColors, WidgetData, WidgetTypes } from '@Types/index';
+import { WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
@@ -36,18 +36,6 @@ export default function AddWidgetButton(props: {
     setShowlModal(false);
   }
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.secondary,
-      font: theme.onSecondary,
-    },
-    dataDisplay: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-      font_placeholder: theme.onTertiary_Placeholder,
-    },
-  };
-
   return (<>
     <Layout.Button.IconRounded
       iconName="add-sharp"
@@ -61,9 +49,13 @@ export default function AddWidgetButton(props: {
         title={stringResources['Add Widget']}
         onRequestClose={() => setShowlModal(false)}
       >
-        <Layout.View>
+        <Layout.View
+          style={{
+            padding: 5,
+            gap: 5,
+          }}
+        >
           <Layout.Input.String
-            colors={inputColors}
             label={stringResources['Widget name']}
             placeholder={stringResources['Write a name to the widget here...']}
             value={label}

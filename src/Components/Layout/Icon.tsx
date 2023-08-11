@@ -39,5 +39,6 @@ export type IconName = (
   'apps'                |
   'file-tray'           |
   'arrow-forward-sharp' |
-  'copy'
+  'copy'                |
+  'trash-outline'
 )

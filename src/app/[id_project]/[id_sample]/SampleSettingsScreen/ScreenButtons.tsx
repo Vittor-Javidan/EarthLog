@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
+import DeleteButton from './LocalComponents/DeleteButton';
 
 export default function ScreenButtons() {
 
@@ -18,10 +19,13 @@ export default function ScreenButtons() {
         <Layout.Button.IconRounded
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.primary}
-          color={theme.onPrimary}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
           onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
         />
+      }
+      button_right={
+        <DeleteButton />
       }
     />
   );

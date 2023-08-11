@@ -3,7 +3,6 @@ import { Layout } from '@Components/Layout';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
 import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
-import DeleteButton from './LocalComponents/DeleteButton';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
@@ -22,12 +21,12 @@ export default function SampleSettingsScreen() {
     >
       <Layout.View
         style={{
+          paddingTop: 20,
           padding: 5,
           gap: 5,
         }}
       >
         <Inputs_SampleSettings />
-        <DeleteButton />
       </Layout.View>
     </Layout.Root>
   );

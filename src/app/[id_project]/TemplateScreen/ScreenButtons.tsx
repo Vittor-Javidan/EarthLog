@@ -31,8 +31,8 @@ export default function ScreenButtons() {
         <Layout.Button.IconRounded
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.primary}
-          color={theme.onPrimary}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
           onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
         />
       }

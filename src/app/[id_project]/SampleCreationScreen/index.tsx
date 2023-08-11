@@ -38,6 +38,7 @@ export default function SampleCreationScreen() {
     >
       <Layout.View
         style={{
+          paddingTop: 20,
           padding: 5,
           gap: 5,
         }}

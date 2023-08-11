@@ -25,9 +25,13 @@ export default function LanguagesScreen(): JSX.Element {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <LanguageButtons
-        onButtonClick={() => refresh(prev => !prev)}
-      />
+      <Layout.View
+        style={{ paddingTop: 20 }}
+      >
+        <LanguageButtons
+          onButtonClick={() => refresh(prev => !prev)}
+        />
+      </Layout.View>
     </Layout.Root>
   );
 }

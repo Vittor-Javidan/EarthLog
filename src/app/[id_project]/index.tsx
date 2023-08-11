@@ -24,7 +24,11 @@ export default function ProjectScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <SampleButtons />
+      <Layout.View
+        style={{ paddingTop: 20 }}
+      >
+        <SampleButtons />
+      </Layout.View>
     </Layout.Root>
   );
 }
