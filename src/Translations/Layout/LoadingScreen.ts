@@ -1,10 +1,10 @@
 import { Languages } from '@Types/index';
 
-export type Translations_LoadingScreen = Record<Languages, {
+export type Translations_Layout_Loading = Record<Languages, {
 	'Loading...': string
 }>
 
-export const translations_LoadingScreen: Translations_LoadingScreen = {
+export const translations_Layout_Loading: Translations_Layout_Loading = {
 	'en-US': {
 		'Loading...': 'Loading...',
 	},

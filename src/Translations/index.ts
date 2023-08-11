@@ -1,4 +1,4 @@
-import { Translations_LoadingScreen, translations_LoadingScreen } from './Screens/LoadingScreen';
+import { Translations_Layout_Loading, translations_Layout_Loading } from './Layout/LoadingScreen';
 import { Translations_HomeScreen, translations_HomeScreen } from './Screens/HomeScreen';
 import { Translations_ProjectCreationScreen, translations_ProjectCreationScreen } from './Screens/ProjectCreationScreen';
 import { Translations_SettingsScreen, translations_SettingsScreen } from './Screens/SettingsScreen/SettingsScreen';
@@ -18,7 +18,6 @@ import { Translations_TemplateScreen, translations_TemplateScreen } from './Scre
 
 export const translations: {
   Screens: {
-    LoadingScreen:              Translations_LoadingScreen
     HomeScreen:                 Translations_HomeScreen
     ProjectCreationScreen:      Translations_ProjectCreationScreen
     SettingsScreen:             Translations_SettingsScreen
@@ -26,11 +25,14 @@ export const translations: {
       ThemeScreen:              Translations_ThemeScreen
     ProjectScreen:              Translations_ProjectScreen
       ProjectSettingsScreen:    Translations_ProjectSettingsScreen
-      TemplateScreen:     Translations_TemplateScreen
+      TemplateScreen:           Translations_TemplateScreen
       SampleCreationScreen:     Translations_SampleCreationScreen
       SampleScreen:             Translations_SampleScreen
         SampleSettingsScreen:   Translations_SampleSettingsScreen
   }
+  Layout: {
+    Loading:                    Translations_Layout_Loading,
+  },
   Widgets: {
     Components: {
       Modal:                    Translations_WidgetsComponents_Modal
@@ -44,7 +46,6 @@ export const translations: {
   ErrorMessages:                Translations_ErrorMessages
 } = {
   Screens: {
-    LoadingScreen:              translations_LoadingScreen,
     HomeScreen:                 translations_HomeScreen,
     ProjectCreationScreen:      translations_ProjectCreationScreen,
     SettingsScreen:             translations_SettingsScreen,
@@ -52,10 +53,13 @@ export const translations: {
       ThemeScreen:              translations_ThemeScreen,
     ProjectScreen:              translations_ProjectScreen,
       ProjectSettingsScreen:    translations_ProjectSettingsScreen,
-      TemplateScreen:     translations_TemplateScreen,
+      TemplateScreen:           translations_TemplateScreen,
       SampleCreationScreen:     translations_SampleCreationScreen,
       SampleScreen:             translations_SampleScreen,
         SampleSettingsScreen:   translations_SampleSettingsScreen,
+  },
+  Layout: {
+    Loading:                    translations_Layout_Loading,
   },
   Widgets: {
     Components: {

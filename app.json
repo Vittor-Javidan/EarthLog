@@ -1,5 +1,6 @@
 {
   "expo": {
+    "backgroundColor": "#000000",
     "name": "Earth Log",
     "slug": "EarthLog",
     "version": "1.0.0",

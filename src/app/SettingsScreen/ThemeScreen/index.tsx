@@ -1,9 +1,9 @@
 
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { ColorInput } from './LocalComponents/ColorInput';
 import { ExampleFigure } from './LocalComponents/ExampleFigure';
+import AllInputs from './LocalComponents/ColorInput';
 
 import { translations } from '@Translations/index';
 
@@ -19,6 +19,9 @@ export default function ThemeScreen(): JSX.Element {
   const { language } = useMemo(() => config, [config.theme]);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
+
+  useEffect(() => { setState('Loaded'); }, []);
   useBackPress(async () => await cancelAndExit());
 
   async function cancelAndExit() {
@@ -29,20 +32,16 @@ export default function ThemeScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      drawerChildren={<Drawer />}
+      drawerChildren={<></>}
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <ExampleFigure/>
-      <AllInputs />
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (<>
+        <ExampleFigure/>
+        <AllInputs />
+      </>)}
     </Layout.Root>
   );
-}
-
-function AllInputs(): JSX.Element {
-  return <>{Object.values(ColorInput).map((Component, index) => <Component key={index}/>)}</>;
-}
-
-function Drawer() {
-  return <></>;
 }

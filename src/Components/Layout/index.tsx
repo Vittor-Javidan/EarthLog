@@ -11,6 +11,7 @@ import { Button } from './Button';
 import { Input } from './Input';
 import { Text } from './Text';
 import { UI } from './UI';
+import Loading from './Loading';
 
 export const Layout = {
   Root: Root,
@@ -22,6 +23,7 @@ export const Layout = {
   ScreenButtons: ScreenButtons,
   Group: Group,
   Feedback: Feedback,
+  Loading: Loading,
   Modal: Modal,
   Button: Button,
   Input: Input,
