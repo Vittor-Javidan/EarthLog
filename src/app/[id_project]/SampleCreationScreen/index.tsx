@@ -36,7 +36,14 @@ export default function SampleCreationScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Inputs_SampleSettings />
+      <Layout.View
+        style={{
+          padding: 5,
+          gap: 5,
+        }}
+      >
+        <Inputs_SampleSettings />
+      </Layout.View>
     </Layout.Root>
   );
 }

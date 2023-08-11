@@ -5,7 +5,6 @@ import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import IconButton from '../Button/IconButton';
 
 export default function BooleanInput(props: {
@@ -20,83 +19,79 @@ export default function BooleanInput(props: {
   const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Data.Boolean[language], []);
 
-  const { label: LABEL_COLORS, dataDisplay: DATA_DISPLAY_COLORS } = props.colors;
-
   return (
     <View
-      style={{
-        backgroundColor: LABEL_COLORS.background,
-      }}
+    style={{
+      backgroundColor: theme.background,
+      paddingHorizontal: 5,
+    }}
     >
-      <View
+      <Text
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 40,
-          paddingHorizontal: 0,
-          paddingVertical: 0,
-          gap: 5,
-          padding: 5,
+          position: 'absolute',
+          backgroundColor: theme.background,
+          color: theme.onBackground,
+          fontSize: 20,
+          paddingHorizontal: 5,
+          top: 0,
+          left: 15,
+          zIndex: 1,
         }}
       >
-        <Text
+        {props.label}
+      </Text>
+      <View
+        style={{
+          height: 15,
+        }}
+      >
+        <View
           style={{
-            color: LABEL_COLORS.font,
-            fontSize: ThemeService.FONTS.h3,
-            paddingHorizontal: 10,
+            position: 'absolute',
+            flexDirection: 'row',
+            backgroundColor: theme.background,
+            zIndex: 1,
+            height: 30,
+            top: 0,
+            right: 15,
           }}
         >
-          {props.label}
-        </Text>
-        {props.locked ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text
-              style={{
-                color: theme.wrong,
-                fontSize: ThemeService.FONTS.h3,
-              }}
-            >
-              Locked
-            </Text>
+          {props.locked ? (
             <IconButton
               iconName="lock-closed-sharp"
               color={theme.wrong}
               onPress={() => {}}
               style={{
-                paddingHorizontal: 10,
-                paddingVertical: 5,
+                paddingHorizontal: 5,
+                paddingVertical: 0,
+                borderRadius: 10,
               }}
             />
-          </View>
-        ) : (
-          <Switch
-            style={{
-              paddingHorizontal: 0,
-            }}
-            trackColor={{ false: theme.wrong, true: theme.confirm }}
-            ios_backgroundColor={theme.wrong}
-            value={props.value}
-            onValueChange={props.onSwitchChange}
-          />
-        )}
+          ) : (
+            <Switch
+              trackColor={{ false: theme.wrong, true: theme.confirm }}
+              ios_backgroundColor={theme.wrong}
+              value={props.value}
+              onValueChange={props.onSwitchChange}
+            />
+          )}
+        </View>
       </View>
       <View
         style={{
-          backgroundColor: DATA_DISPLAY_COLORS.background,
-          paddingHorizontal: 10,
-          paddingVertical: 10,
+          width: '100%',
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
+          backgroundColor: theme.background,
+          borderColor: theme.primary,
+          borderWidth: 2,
+          borderRadius: 10,
         }}
       >
         <Text
           style={{
-            color: DATA_DISPLAY_COLORS.font,
+            color: theme.onBackground,
           }}
         >
           {props.value ? stringResources['True'] : stringResources['False']}

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleProp, TextStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 
 type Values = { whenTrue: string, whenFalse: string }
 
@@ -23,7 +22,7 @@ export default function Feedback(props: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: 40,
+        height: 20,
         paddingHorizontal: 0,
         paddingVertical: 0,
       }}
@@ -32,7 +31,7 @@ export default function Feedback(props: {
         adjustsFontSizeToFit={true}
         style={[{
           color: theme.onBackground,
-          fontSize: ThemeService.FONTS.h3,
+          fontSize: 200,
           paddingHorizontal: 10,
         }, props.textStyle_Label]}
       >
@@ -42,7 +41,7 @@ export default function Feedback(props: {
         adjustsFontSizeToFit={true}
         style={[{
           color: props.assert ? theme.confirm : theme.modified,
-          fontSize: ThemeService.FONTS.h3,
+          fontSize: 200,
           paddingHorizontal: 10,
         }, props.textStyle_Status]}
       >

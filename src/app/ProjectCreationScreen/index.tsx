@@ -33,8 +33,15 @@ export default function ProjectCreationScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Inputs_ProjectSettings />
-      <Widgets_Project />
+      <Layout.View
+        style={{
+          padding: 5,
+          gap: 5,
+        }}
+      >
+        <Inputs_ProjectSettings />
+        <Widgets_Project />
+      </Layout.View>
     </Layout.Root>
   );
 }

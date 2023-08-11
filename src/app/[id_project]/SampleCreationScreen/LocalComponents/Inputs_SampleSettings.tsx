@@ -8,7 +8,6 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
-import { InputColors } from '@Types/index';
 
 export default function Inputs_SampleSettings() {
 
@@ -31,38 +30,55 @@ export default function Inputs_SampleSettings() {
     setName(newName);
   }
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.secondary,
-      font: theme.onSecondary,
-    },
-    dataDisplay: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-      font_placeholder: theme.onTertiary_Placeholder,
-    },
-  };
-
   return (
     <Layout.View>
-      <Layout.Input.String
-        colors={inputColors}
-        label={stringResources['ID']}
-        placeholder={stringResources['Only numbers, letters and "-"']}
-        value={id}
-        locked={false}
-        onChangeText={(text) => onIDChange(text)}
-        onResetPress={() => setId(ProjectService.generateUuidV4())}
-      />
-      <Layout.Input.String
-        colors={inputColors}
-        label={stringResources['Name']}
-        placeholder={stringResources['Write the sample name here...']}
-        value={name}
-        locked={false}
-        onChangeText={(text) => onNameChange(text)}
-        onResetPress={() => setName('')}
-      />
+      <Layout.View
+        style={{
+          backgroundColor: theme.secondary,
+          height: 40,
+          padding: 5,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
+      >
+        <Layout.Icon
+          color={theme.onTertiary}
+          iconName="settings"
+        />
+      </Layout.View>
+      <Layout.View
+        style={{
+          backgroundColor: theme.tertiary,
+          padding: 5,
+          paddingBottom: 10,
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          label={stringResources['ID']}
+          placeholder={stringResources['Only numbers, letters and "-"']}
+          value={id}
+          onChangeText={(text) => onIDChange(text)}
+          onResetPress={() => setId(ProjectService.generateUuidV4())}
+          locked={false}
+        />
+        <Layout.Input.String
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          label={stringResources['Name']}
+          placeholder={stringResources['Write the sample name here...']}
+          value={name}
+          onChangeText={(text) => onNameChange(text)}
+          onResetPress={() => setName('')}
+          locked={false}
+        />
+      </Layout.View>
     </Layout.View>
   );
 }

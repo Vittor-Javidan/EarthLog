@@ -3,11 +3,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
 import { useTiming } from '@Hooks/index';
 
-import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import UtilService from '@Services/UtilService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -17,6 +17,7 @@ export default function Inputs_ProjectSettings() {
   const { theme, language } = useMemo(() => config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const defaultSettings = useMemo(() => UtilService.deepCloning(projectSettings), []);
   const { rules } = useMemo(() => projectSettings, []);
 
   const [name, setName] = useState<string>(projectSettings.name);
@@ -42,44 +43,66 @@ export default function Inputs_ProjectSettings() {
 
   function onNameReset() {
     if (rules.allowNameChange) {
-      setName(projectSettings.name);
+      setName(defaultSettings.name);
       setSaved(false);
     }
   }
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.secondary,
-      font: theme.onSecondary,
-    },
-    dataDisplay: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-      font_placeholder: theme.onTertiary_Placeholder,
-    },
-  };
-
-  return (<>
-    <Layout.Feedback
-      title={stringResources['Status:']}
-      assert={saved}
-      values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
-    />
-    <Layout.Input.String
-      label={stringResources['ID']}
-      colors={inputColors}
-      placeholder=""
-      value={projectSettings.id_project}
-      locked={true}
-    />
-    <Layout.Input.String
-      label={stringResources['Name']}
-      colors={inputColors}
-      placeholder={stringResources['Write the project name here...']}
-      value={name}
-      locked={!rules.allowNameChange}
-      onChangeText={(text) => onNameChange(text)}
-      onResetPress={() => onNameReset()}
-    />
-  </>);
+  return (
+    <Layout.View>
+      <Layout.View
+        style={{
+          backgroundColor: theme.secondary,
+          height: 40,
+          padding: 5,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
+      >
+        <Layout.Icon
+          color={theme.onTertiary}
+          iconName="settings"
+        />
+      </Layout.View>
+      <Layout.View
+        style={{
+          backgroundColor: theme.tertiary,
+          padding: 5,
+          paddingBottom: 10,
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          label={stringResources['ID']}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder=""
+          value={projectSettings.id_project}
+          locked={true}
+        />
+        <Layout.Input.String
+          label={stringResources['Name']}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder={stringResources['Write the project name here...']}
+          value={name}
+          locked={!rules.allowNameChange}
+          onChangeText={(text) => onNameChange(text)}
+          onResetPress={() => onNameReset()}
+        />
+        <Layout.Feedback
+          title={''}
+          assert={saved}
+          values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
+          textStyle_Label={{
+            color: theme.onTertiary,
+          }}
+        />
+      </Layout.View>
+    </Layout.View>
+  );
 }

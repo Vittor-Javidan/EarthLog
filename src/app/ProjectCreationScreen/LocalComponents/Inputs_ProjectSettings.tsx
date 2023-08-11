@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Layout } from '@Components/Layout';
 
-import { InputColors } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import UtilService from '@Services/UtilService';
@@ -42,36 +41,55 @@ export default function Inputs_ProjectSettings() {
     setName('');
   }
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.secondary,
-      font: theme.onSecondary,
-    },
-    dataDisplay: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-      font_placeholder: theme.onTertiary_Placeholder,
-    },
-  };
-
-  return (<>
-    <Layout.Input.String
-      colors={inputColors}
-      label={stringResources['ID']}
-      placeholder={stringResources['Only numbers, letters and "-".']}
-      value={id}
-      locked={false}
-      onChangeText={(text) => onIDChange(text)}
-      onResetPress={() => onRefreshID()}
-    />
-    <Layout.Input.String
-      colors={inputColors}
-      label={stringResources['Name']}
-      placeholder={stringResources['Write the project name here...']}
-      value={name}
-      locked={false}
-      onChangeText={(text) => onNameChange(text)}
-      onResetPress={() => onNameReset()}
-    />
-  </>);
+  return (
+    <Layout.View>
+      <Layout.View
+        style={{
+          backgroundColor: theme.secondary,
+          height: 40,
+          padding: 5,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
+      >
+        <Layout.Icon
+          color={theme.onTertiary}
+          iconName="settings"
+        />
+      </Layout.View>
+      <Layout.View
+        style={{
+          backgroundColor: theme.tertiary,
+          padding: 5,
+          paddingBottom: 10,
+          borderBottomLeftRadius: 10,
+          borderBottomRightRadius: 10,
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          label={stringResources['ID']}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder={stringResources['Only numbers, letters and "-".']}
+          value={id}
+          onChangeText={(text) => onIDChange(text)}
+          onResetPress={() => onRefreshID()}
+          locked={false}
+        />
+        <Layout.Input.String
+          label={stringResources['Name']}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder={stringResources['Write the project name here...']}
+          value={name}
+          onChangeText={(text) => onNameChange(text)}
+          onResetPress={() => onNameReset()}
+          locked={false}
+        />
+      </Layout.View>
+    </Layout.View>
+  );
 }

@@ -27,9 +27,16 @@ export default function ProjectSettingsScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Inputs_ProjectSettings />
-      <Widgets_Project />
-      <DeleteButton />
+      <Layout.View
+        style={{
+          padding: 5,
+          gap: 5,
+        }}
+      >
+        <Inputs_ProjectSettings />
+        <Widgets_Project />
+        <DeleteButton />
+      </Layout.View>
     </Layout.Root>
   );
 }

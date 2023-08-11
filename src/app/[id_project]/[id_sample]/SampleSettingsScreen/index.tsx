@@ -22,7 +22,8 @@ export default function SampleSettingsScreen() {
     >
       <Layout.View
         style={{
-          paddingHorizontal: 5,
+          padding: 5,
+          gap: 5,
         }}
       >
         <Inputs_SampleSettings />

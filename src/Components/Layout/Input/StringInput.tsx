@@ -1,18 +1,18 @@
 import React, { useMemo } from 'react';
 import { View, Text, TextInput } from 'react-native';
 
-import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 
-import { InputColors } from '@Types/index';
 import IconButton from '../Button/IconButton';
 
 export default function StringInput(props: {
-  colors : InputColors
   label: string
   value: string
   placeholder: string
   locked: boolean
+  backgroundColor?: string
+  color?: string
+  color_placeholder?: string
   onChangeText?: (text: string) => void
   onResetPress?: () => void
 }) {
@@ -20,85 +20,88 @@ export default function StringInput(props: {
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
 
-  const { label: LABEL_COLORS, dataDisplay: DATA_DISPLAY_COLORS } = props.colors;
+  const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
+  const color = props.color ? props.color : theme.onBackground;
+  const color_placeholder = props.color_placeholder ? props.color_placeholder : theme.onBackground_Placeholder;
 
   return (
     <View
       style={{
-        backgroundColor: LABEL_COLORS.background,
+        paddingHorizontal: 5,
       }}
     >
-      <View
+      <Text
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 40,
-          paddingHorizontal: 0,
-          paddingVertical: 0,
-          gap: 5,
-          padding: 5,
+          position: 'absolute',
+          backgroundColor: backgroundColor,
+          color: color,
+          fontSize: 20,
+          paddingHorizontal: 5,
+          top: 0,
+          left: 15,
+          zIndex: 1,
         }}
       >
-        <Text
+        {props.label}
+      </Text>
+      <View
+        style={{
+          height: 15,
+        }}
+      >
+        <View
           style={{
-            color: LABEL_COLORS.font,
-            fontSize: ThemeService.FONTS.h3,
-            paddingHorizontal: 10,
+            position: 'absolute',
+            flexDirection: 'row',
+            backgroundColor: backgroundColor,
+            zIndex: 1,
+            height: 30,
+            top: 0,
+            right: 15,
           }}
         >
-          {props.label}
-        </Text>
-        {props.locked ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text
-              style={{
-                color: theme.wrong,
-                fontSize: ThemeService.FONTS.h3,
-              }}
-            >
-              Locked
-            </Text>
+          {props.locked ? (
             <IconButton
               iconName="lock-closed-sharp"
               color={theme.wrong}
               onPress={() => {}}
               style={{
-                paddingHorizontal: 10,
-                paddingVertical: 5,
+                paddingHorizontal: 5,
+                paddingVertical: 0,
+                borderRadius: 10,
               }}
             />
-          </View>
-        ) : (
-          <IconButton
-            iconName="refresh-sharp"
-            color={LABEL_COLORS.font}
-            onPress={props.onResetPress}
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-            }}
-          />
-        )}
+          ) : (
+            <IconButton
+              iconName="refresh-sharp"
+              color={color}
+              onPress={props.onResetPress}
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 0,
+                borderRadius: 10,
+              }}
+            />
+          )}
+
+        </View>
       </View>
       <TextInput
         style={{
           width: '100%',
-          paddingHorizontal: 10,
-          paddingVertical: 10,
-          backgroundColor: DATA_DISPLAY_COLORS.background,
-          color: DATA_DISPLAY_COLORS.font,
+          paddingHorizontal: 20,
+          paddingTop: 20,
+          paddingBottom: 10,
+          backgroundColor: backgroundColor,
+          color: color,
+          borderColor: theme.primary,
+          borderWidth: 2,
+          borderRadius: 10,
         }}
         value={props.value}
         onChangeText={props.onChangeText}
         placeholder={props.placeholder}
-        placeholderTextColor={DATA_DISPLAY_COLORS.font_placeholder}
+        placeholderTextColor={color_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline
