@@ -132,11 +132,20 @@ function DeleteButton(props: {
           )}
         </Layout.View>
         <Layout.ScreenButtons
+          button_left={
+            <Layout.Button.IconRounded
+              iconName="arrow-back"
+              color_background={theme.secondary}
+              color={theme.onSecondary}
+              showPlusSign={false}
+              onPress={() => dismissModal()}
+            />
+          }
           button_right={isNameCorrect ? (
             <Layout.Button.IconRounded
+              iconName="checkmark-done-sharp"
               color_background={theme.wrong}
               color={theme.onWrong}
-              iconName="checkmark-done-sharp"
               showPlusSign={false}
               onPress={() => props.onDelete}
             />

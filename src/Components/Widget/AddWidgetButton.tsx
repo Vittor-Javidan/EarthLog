@@ -38,10 +38,10 @@ export default function AddWidgetButton(props: {
 
   return (<>
     <Layout.Button.IconRounded
-      iconName="add-sharp"
-      showPlusSign={false}
-      color_background={theme.secondary}
-      color={theme.onSecondary}
+      iconName="apps"
+      showPlusSign={true}
+      color_background={theme.confirm}
+      color={theme.onConfirm}
       onPress={() => setShowlModal(true)}
     />
     {showModal && (

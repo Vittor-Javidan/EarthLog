@@ -90,6 +90,15 @@ export default function DeleteButton() {
           )}
         </Layout.View>
         <Layout.ScreenButtons
+          button_left={
+            <Layout.Button.IconRounded
+              iconName="arrow-back"
+              showPlusSign={false}
+              color_background={theme.secondary}
+              color={theme.onSecondary}
+              onPress={() =>  dismissModal()}
+            />
+          }
           button_right={isNameCorrect ? (
             <Layout.Button.IconRounded
               color_background={theme.wrong}
