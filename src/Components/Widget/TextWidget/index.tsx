@@ -109,7 +109,7 @@ export default function TextWidget(props: {
         }}
       >
         <Layout.Input.String
-          label="Text"
+          label={stringResources['Text']}
           value={displayText}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
