@@ -14,7 +14,8 @@ export default function BooleanWidget(props: {
   onDelete: () => void
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
 
   const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -81,7 +82,7 @@ export default function BooleanWidget(props: {
             color: theme.onTertiary,
           }}
         >
-          {String(widgetData.value)}
+          {stringResources[`${widgetData.value}`]}
         </Layout.Text.P>
         <Switch
           style={{

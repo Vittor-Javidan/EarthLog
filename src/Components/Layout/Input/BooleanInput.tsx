@@ -96,7 +96,7 @@ export default function BooleanInput(props: {
             color: color,
           }}
         >
-          {props.value ? stringResources['True'] : stringResources['False']}
+          {stringResources[`${props.value}`]}
         </Text>
       </View>
     </View>
