@@ -53,7 +53,7 @@ function Label(props: {
           flexDirection: 'row',
           justifyContent: 'space-between',
           padding: 5,
-          gap: 10,
+          paddingLeft: 10,
         }}
       >
         <Icon
@@ -67,8 +67,8 @@ function Label(props: {
           fontSize: 200,
           color: theme.onSecondary,
           maxWidth: '90%',
-          paddingVertical: 5,
-          paddingRight: 5,
+          paddingVertical: 8,
+          paddingRight: 10,
         }}
       >
         {props.title_label}
@@ -88,8 +88,6 @@ function Button(props: {
     <View
       style={{
         alignItems: 'flex-start',
-        width: '100%',
-        paddingHorizontal: 1,
       }}
     >
       <TextWithIcon
@@ -99,7 +97,6 @@ function Button(props: {
         color_font={theme.onTertiary}
         iconName="arrow-forward-sharp"
         iconSide="Right"
-        style={{ borderRadius: 5 }}
       />
     </View>
   );

@@ -8,9 +8,11 @@ import { ThemeDTO } from '@Types/index';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-const { height: HEIGHT } = Dimensions.get('window');
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
+const NAVGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
@@ -21,7 +23,23 @@ export default function Root(props: {
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const [showDrawer, setShowDrawer] = useState<boolean>(false);
+  const [_, setShowDrawer] = useState<boolean>(false);
+
+  const slideX = useSharedValue(-WIDTH);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: slideX.value }],
+    };
+  });
+
+  const openDrawer = () => {
+    slideX.value = withTiming(0, {duration: 150});
+  };
+
+  const closeDrawer = () => {
+    slideX.value = withTiming(-WIDTH, {duration: 150});
+  };
 
   return (<>
     <StatusBar
@@ -37,7 +55,14 @@ export default function Root(props: {
     >
       <Navbar
         title={props.title}
-        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+        onMenuButtonPress={() => setShowDrawer(prev => {
+          if (prev) {
+            closeDrawer();
+          } else {
+            openDrawer();
+          }
+          return !prev;
+        })}
         style={{ height: NAVBAR_HEIGH }}
       />
       <View
@@ -52,11 +77,13 @@ export default function Root(props: {
         {props.screenButtons}
       </View>
     </View>
-    {showDrawer && (
+    <Animated.View
+      style={animatedStyle}
+    >
       <Drawer>
         {props.drawerChildren}
       </Drawer>
-    )}
+    </Animated.View>
   </>);
 }
 
@@ -141,15 +168,15 @@ function Drawer(props: {
         position: 'absolute',
         bottom: 0,
         left: 0,
-        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH),
+        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH - NAVGATION_TREE_HEIGHT),
         width: '100%',
       }}
     >
       <View
-        style={{
+        style={[{
           flex: 9,
           backgroundColor: theme.secondary,
-        }}
+        }]}
       >
         {props.children}
         <Text
