@@ -55,8 +55,6 @@ function Label(props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: props.wrongData ? theme.wrong : theme.secondary,
-        borderColor: theme.tertiary,
-        borderWidth: 1,
         height: 40,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
