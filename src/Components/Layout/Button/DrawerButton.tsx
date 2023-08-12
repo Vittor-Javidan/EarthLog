@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { GestureResponderEvent, Pressable, Text } from 'react-native';
+import { GestureResponderEvent, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import { ThemeDTO } from '@Types/index';
 
-import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
+import RootText from '../Text/Root';
 
 export default function DrawerButton(props: {
   title: string
@@ -37,18 +37,17 @@ export default function DrawerButton(props: {
         borderColor: theme.secondary,
         borderTopWidth: 1,
         borderBottomWidth: 1,
+        height: 55,
       }}
     >
-      <Text
-        adjustsFontSizeToFit={true}
-        maxFontSizeMultiplier={0}
+      <RootText
         style={{
           color: textColor,
-          fontSize: ThemeService.FONTS.h2,
+          fontSize: 200,
         }}
       >
         {props.title}
-      </Text>
+      </RootText>
     </Pressable>
   );
 }
