@@ -15,6 +15,7 @@ import { Translations_ProjectSettingsScreen, translations_ProjectSettingsScreen 
 import { Translations_WidgetsComponents_Modal, translations_WidgetsComponents_Modal } from './Widgets/Components_Modal';
 import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } from './Screens/ProjectScreen/SampleScreen/SampleSettingsScreen';
 import { Translations_TemplateScreen, translations_TemplateScreen } from './Screens/ProjectScreen/TemplateScreen';
+import { Translations_BooleanWidget, translations_BooleanWidget } from './Widgets/BooleanWidget';
 
 export const translations: {
   Screens: {
@@ -38,6 +39,7 @@ export const translations: {
       Modal:                    Translations_WidgetsComponents_Modal
     }
     TextWidget:                 Translations_TextWidget
+    BooleanWidget:              Translations_BooleanWidget
     AddWidgetButton:            Translations_AddWidgetButton
   }
   Data: {
@@ -66,6 +68,7 @@ export const translations: {
       Modal:                    translations_WidgetsComponents_Modal,
     },
     TextWidget:                 translations_TextWidget,
+    BooleanWidget:              translations_BooleanWidget,
     AddWidgetButton:            translations_AddWidgetButton,
   },
   Data: {

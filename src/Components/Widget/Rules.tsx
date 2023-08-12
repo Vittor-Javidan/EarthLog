@@ -1,10 +1,6 @@
-import { TextWidgetData, WidgetData } from '@Types/index';
+import { TextWidgetData } from '@Types/index';
 
 export class WidgetRules {
-
-  static noEmptyLabel(widgetData: WidgetData): boolean {
-    return widgetData.name === '';
-  }
 
   // ===============================================================================================
   // FLEXIBLE RULES

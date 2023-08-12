@@ -18,9 +18,8 @@ export default function TextWidget(props: {
   onDelete: () => void
 }) {
 
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
+  const { language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -29,12 +28,6 @@ export default function TextWidget(props: {
   function onConfirm(widgetData: TextWidgetData) {
 
     setShowModal(false);
-
-    if (WidgetRules.noEmptyLabel(widgetData)) {
-      alert(stringResources['Widget name cannot be empty.']);
-      setIsDataWrong(true);
-      return;
-    }
 
     if (WidgetRules.noSpaces(widgetData)) {
       alert(stringResources['Value cannot have empty spaces.']);

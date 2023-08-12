@@ -56,7 +56,7 @@ export default function DeleteButton() {
         >
           {!isNameCorrect ? (<>
             <Layout.Input.String
-              label={stringResources['Name']}
+              label={stringResources['Project name']}
               backgroundColor={theme.background}
               color={theme.wrong}
               color_placeholder={theme.wrong}
@@ -73,7 +73,7 @@ export default function DeleteButton() {
                 textAlignVertical: 'center',
               }}
             >
-              {`${stringResources['Name']}: ${projectSettings.name}`}
+              {`${stringResources['Tip']}: "${projectSettings.name}"`}
             </Layout.Text.P>
           </>) : (
             <Layout.Text.P
@@ -83,7 +83,7 @@ export default function DeleteButton() {
                 textAlignVertical: 'center',
               }}
             >
-              Click on the bottom right button to confirm
+              {stringResources['Click on the bottom right button to confirm.']}
             </Layout.Text.P>
           )}
         </Layout.View>

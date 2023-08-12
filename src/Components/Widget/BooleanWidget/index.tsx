@@ -4,10 +4,10 @@ import { Text, Switch } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
 import { BooleanWidgetData, ThemeDTO } from '@Types/index';
 import { Layout } from '@Components/Layout';
+import { translations } from '@Translations/index';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
@@ -34,12 +34,6 @@ export default function BooleanWidget(props: {
   function onConfirm(widgetData: BooleanWidgetData) {
 
     setShowModal(false);
-
-    if (WidgetRules.noEmptyLabel(widgetData)) {
-      alert('Labels cannot be empty');
-      setIsDataWrong(true);
-      return;
-    }
 
     if (showModal) {
       setIsDataWrong(false);
@@ -140,7 +134,8 @@ function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
@@ -164,18 +159,18 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
     >
       <Layout.Input.String
-        label="Label:"
+        label={stringResources['Widget name']}
         backgroundColor={theme.background}
         color={theme.onBackground}
         color_placeholder={theme.onBackground_Placeholder}
-        placeholder="Write widget name here..."
+        placeholder={stringResources['Write widget name here...']}
         value={label}
         onChangeText={setLabel}
         locked={!rules.allowLabelChange}
         onResetPress={() => setLabel('')}
       />
       <Layout.Input.Boolean
-        label="Value:"
+        label={stringResources['Value']}
         backgroundColor={theme.background}
         color={theme.onBackground}
         value={value}

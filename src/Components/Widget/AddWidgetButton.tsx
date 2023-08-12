@@ -19,10 +19,6 @@ export default function AddWidgetButton(props: {
   const [label, setLabel] = useState<string>('');
 
   function whenLabelValid(callback: () => void) {
-    if (label === '') {
-      alert('Label cannot be empty');
-      return;
-    }
     callback();
   }
 

@@ -100,7 +100,7 @@ function DeleteButton(props: {
         >
           {!isNameCorrect ? (<>
             <Layout.Input.String
-              label={stringResources['Delete']}
+              label={stringResources['Widget name']}
               backgroundColor={theme.background}
               color={theme.wrong}
               color_placeholder={theme.wrong}
@@ -117,7 +117,7 @@ function DeleteButton(props: {
                 textAlignVertical: 'center',
               }}
             >
-              {`${stringResources['Delete']}: ${props.widgetLabel}`}
+              {`${stringResources['Tip']}: "${props.widgetLabel}"`}
             </Layout.Text.P>
           </>) : (
             <Layout.Text.P
@@ -127,7 +127,7 @@ function DeleteButton(props: {
                 textAlignVertical: 'center',
               }}
             >
-              Click on the bottom right button to confirm
+              {stringResources['Click on the bottom right button to confirm.']}
             </Layout.Text.P>
           )}
         </Layout.View>
