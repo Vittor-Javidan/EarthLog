@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { Text } from 'react-native';
 import { WidgetComponent } from '@WidgetComponents/index';
 
 import { Languages, TextWidgetData, ThemeDTO } from '@Types/index';
@@ -7,10 +6,11 @@ import { translations } from '@Translations/index';
 import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 
 import { WidgetRules } from '../Rules';
 import { Layout } from '@Components/Layout';
+import UtilService from '@Services/UtilService';
+import { useTiming } from '@Hooks/index';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
@@ -18,12 +18,27 @@ export default function TextWidget(props: {
   onDelete: () => void
 }) {
 
-  const { language } = useMemo(() => ConfigService.config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
+  const [defaultData, setDefaultData] = useState(UtilService.deepCloning(props.widgetData));
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
+  const [displayText, setDisplayText] = useState<string>(props.widgetData.value);
+  const [saved, setSaved] = useState<boolean>(true);
+
+  useTiming(() => {
+    if (!saved) {
+      const newWidgetData = {
+        ...widgetData,
+        value: displayText,
+      };
+      setWidgetData(newWidgetData);
+      props.onConfirm(newWidgetData);
+      setSaved(true);
+    }
+  }, [saved], 1);
 
   function onConfirm(widgetData: TextWidgetData) {
 
@@ -44,8 +59,24 @@ export default function TextWidget(props: {
     if (showModal) {
       setIsDataWrong(false);
       setWidgetData(widgetData);
+      setDisplayText(widgetData.value);
       props.onConfirm(widgetData);
     }
+  }
+
+  function onConfirm_Modal(widgetData: TextWidgetData) {
+    onConfirm(widgetData);
+    setDefaultData(widgetData);
+  }
+
+  function onTextChange(text: string) {
+    setDisplayText(text);
+    setSaved(false);
+  }
+
+  function onResetText() {
+    setDisplayText(defaultData.value);
+    setSaved(false);
   }
 
   return (
@@ -55,32 +86,46 @@ export default function TextWidget(props: {
       isDataWrong={isDataWrong}
       showModal={showModal}
 
-      shortcutIconButtons={<>
-        <ShortcutIconButtons
+      iconButtons_Top={
+        <IconButtons_Top
           widgetData={widgetData}
           onPencilPress={() => setShowModal(true)}
         />
-      </>}
+      }
 
-      dataDisplay={<>
-        <DataDisplay
-          widgetData={widgetData}
-        />
-      </>}
-
-      modal={<>
+      modal={
         <Modal
           widgetData={widgetData}
-          onConfirm={(widgetData) => onConfirm(widgetData)}
+          onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={props.onDelete}
           onRequestClose={() => setShowModal(false)}
         />
-      </>}
-    />
+      }
+    >
+      <Layout.View
+        style={{
+          paddingVertical: 5,
+          gap: 5,
+        }}
+      >
+        <Layout.Input.String
+          label="Text"
+          value={displayText}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.modified}
+          placeholder={stringResources['Empty text']}
+          locked={false}
+          onChangeText={(text) => onTextChange(text)}
+          onResetPress={() => onResetText()}
+        />
+      </Layout.View>
+
+    </WidgetComponent.Root>
   );
 }
 
-function ShortcutIconButtons(props: {
+function IconButtons_Top(props: {
   widgetData: TextWidgetData
   onPencilPress: () => void
 }) {
@@ -102,31 +147,6 @@ function ShortcutIconButtons(props: {
   </>);
 }
 
-function DataDisplay(props: {
-  widgetData: TextWidgetData
-}) {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
-
-  const isDataEmpty = props.widgetData.value === '';
-
-  return (
-    <Text
-      maxFontSizeMultiplier={0}
-      adjustsFontSizeToFit={true}
-      style={{
-        fontSize: ThemeService.FONTS.h3,
-        color: isDataEmpty ? theme.modified : theme.onTertiary,
-      }}
-    >
-      {isDataEmpty ? stringResources['Empty text'] : props.widgetData.value}
-    </Text>
-  );
-}
-
 function Modal(props: {
   widgetData: TextWidgetData
   onConfirm: (value: TextWidgetData) => void
@@ -139,6 +159,7 @@ function Modal(props: {
     return translations.Widgets.TextWidget[ConfigService.config.language];
   }, []);
 
+  const [defaultData] = useState(UtilService.deepCloning(props.widgetData));
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
 
@@ -160,28 +181,34 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      <Layout.Input.String
-        label={stringResources['Widget Name']}
-        backgroundColor={theme.background}
-        color={theme.onBackground}
-        color_placeholder={theme.onBackground_Placeholder}
-        placeholder={stringResources['Write widget name here...']}
-        value={label}
-        onChangeText={setLabel}
-        locked={!rules.allowLabelChange}
-        onResetPress={() => setLabel('')}
-      />
-      <Layout.Input.String
-        label={stringResources['Text']}
-        backgroundColor={theme.background}
-        color={theme.onBackground}
-        color_placeholder={theme.onBackground_Placeholder}
-        placeholder={stringResources['Write anything here...']}
-        value={value}
-        onChangeText={setValue}
-        locked={!rules.allowValueChange}
-        onResetPress={() => setValue('')}
-      />
+      <Layout.View
+        style={{
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          label={stringResources['Widget Name']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          color_placeholder={theme.onBackground_Placeholder}
+          placeholder={stringResources['Write widget name here...']}
+          value={label}
+          onChangeText={setLabel}
+          locked={!rules.allowLabelChange}
+          onResetPress={() => setLabel(defaultData.name)}
+        />
+        <Layout.Input.String
+          label={stringResources['Text']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          color_placeholder={theme.onBackground_Placeholder}
+          placeholder={stringResources['Write anything here...']}
+          value={value}
+          onChangeText={setValue}
+          locked={!rules.allowValueChange}
+          onResetPress={() => setValue(defaultData.value)}
+        />
+      </Layout.View>
     </WidgetComponent.Modal>
   );
 }

@@ -31,7 +31,7 @@ export default function Modal(props: {
       <Layout.ScrollView
         style={{
           flex: 1,
-          paddingTop: 20,
+          paddingTop: 10,
         }}
       >
         {props.children}

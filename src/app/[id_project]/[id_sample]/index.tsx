@@ -27,7 +27,7 @@ export default function SampleScreens() {
     >
       <Layout.View
         style={{
-          paddingTop: 20,
+          paddingTop: 10,
           padding: 5,
           gap: 10,
         }}
