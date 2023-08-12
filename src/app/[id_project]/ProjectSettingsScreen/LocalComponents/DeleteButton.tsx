@@ -46,6 +46,8 @@ export default function DeleteButton() {
     {showModal && (
       <Layout.Modal
         title={stringResources['Delete']}
+        color_Navbar={theme.wrong}
+        color_onNavbar={theme.onWrong}
         onRequestClose={() => dismissModal()}
       >
         <Layout.View
@@ -66,15 +68,31 @@ export default function DeleteButton() {
               locked={false}
               onResetPress={() => setWidgetName('')}
             />
-            <Layout.Text.P
+            <Layout.View
               style={{
-                color: theme.onBackground,
-                marginLeft: 10,
-                textAlignVertical: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
             >
-              {`${stringResources['Tip']}: "${projectSettings.name}"`}
-            </Layout.Text.P>
+              <Layout.Text.P
+                style={{
+                  color: theme.onBackground,
+                  marginLeft: 10,
+                  textAlignVertical: 'center',
+                }}
+              >
+                {`${stringResources['Tip']}:`}
+              </Layout.Text.P>
+              <Layout.Text.P
+                style={{
+                  color: theme.onBackground,
+                  marginRight: 10,
+                  textAlignVertical: 'center',
+                }}
+              >
+                {`"${projectSettings.name}"`}
+              </Layout.Text.P>
+            </Layout.View>
           </>) : (
             <Layout.Text.P
               style={{

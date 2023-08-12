@@ -90,6 +90,8 @@ function DeleteButton(props: {
     {showModal && (
       <Layout.Modal
         title={stringResources['Delete']}
+        color_Navbar={theme.wrong}
+        color_onNavbar={theme.onWrong}
         onRequestClose={() => dismissModal()}
       >
         <Layout.View
@@ -110,15 +112,31 @@ function DeleteButton(props: {
               locked={false}
               onResetPress={() => setWidgetName('')}
             />
-            <Layout.Text.P
+            <Layout.View
               style={{
-                color: theme.onBackground,
-                marginLeft: 10,
-                textAlignVertical: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
               }}
             >
-              {`${stringResources['Tip']}: "${props.widgetLabel}"`}
-            </Layout.Text.P>
+              <Layout.Text.P
+                style={{
+                  color: theme.onBackground,
+                  marginLeft: 10,
+                  textAlignVertical: 'center',
+                }}
+              >
+                {`${stringResources['Tip']}:`}
+              </Layout.Text.P>
+              <Layout.Text.P
+                style={{
+                  color: theme.onBackground,
+                  marginRight: 10,
+                  textAlignVertical: 'center',
+                }}
+              >
+                {`"${props.widgetLabel}"`}
+              </Layout.Text.P>
+            </Layout.View>
           </>) : (
             <Layout.Text.P
               style={{

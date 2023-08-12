@@ -4,7 +4,6 @@ import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native
 import { ThemeDTO } from '@Types/index';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import IconButton from './Button/IconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,11 +11,16 @@ const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export default function Modal(props: {
   title: string
+  color_Navbar?: string
+  color_onNavbar?: string
+  color_background?: string
   children: ReactNode
   onRequestClose: () => void
 }) {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const backgroundColor = props.color_background ? props.color_background : theme.background;
+  const navbarColor = props.color_Navbar ? props.color_Navbar : theme.primary;
 
   return (
     <ReactNative_Modal
@@ -29,16 +33,21 @@ export default function Modal(props: {
       statusBarTranslucent={true}
     >
       <View
-        style={{ height: useSafeAreaInsets().top }}
+        style={{
+          height: useSafeAreaInsets().top,
+          backgroundColor: navbarColor,
+        }}
       />
       <Navbar
+        color_Navbar={props.color_Navbar}
+        color_onNavbar={props.color_onNavbar}
         title={props.title}
         onIconPress={props.onRequestClose}
       />
       <View
         style={{
           flex: 1,
-          backgroundColor: theme.background,
+          backgroundColor: backgroundColor,
           paddingBottom: 150,
         }}
       >
@@ -50,10 +59,15 @@ export default function Modal(props: {
 
 function Navbar(props: {
   title: string
+  color_Navbar?: string
+  color_onNavbar?: string
   onIconPress: () => void | undefined
 }): JSX.Element {
 
   const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+
+  const backgroundColor = props.color_Navbar ? props.color_Navbar : theme.primary;
+  const fontColor = props.color_onNavbar ? props.color_onNavbar : theme.onPrimary;
 
   return (
     <View
@@ -61,7 +75,7 @@ function Navbar(props: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: theme.primary,
+        backgroundColor: backgroundColor,
         height: 70,
       }}
     >
@@ -78,8 +92,8 @@ function Navbar(props: {
           adjustsFontSizeToFit={true}
           maxFontSizeMultiplier={0}
           style={{
-            color: theme.onPrimary,
-            fontSize: ThemeService.FONTS.h1,
+            color: fontColor,
+            fontSize: 200,
             fontWeight: '600',
           }}
         >
@@ -89,6 +103,7 @@ function Navbar(props: {
       <IconButton
         iconName="close"
         onPress={props.onIconPress}
+        color={fontColor}
         style={{
           paddingHorizontal: 10,
           paddingVertical: 10,
