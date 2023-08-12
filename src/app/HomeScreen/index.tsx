@@ -56,7 +56,11 @@ export default function HomeScreen() {
       screenButtons={<ScreenButtons />}
     >
       <Layout.View
-        style={{ paddingTop: 20 }}
+        style={{
+          paddingTop: 20,
+          padding: 5,
+          gap: 5,
+        }}
       >
         <LastProjectButton />
         <ProjectButtons />

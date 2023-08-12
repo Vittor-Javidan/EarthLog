@@ -12,16 +12,13 @@ export default function SampleUI(props: {
   onPress_Open: () => void
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View
       style={{
-        backgroundColor: theme.primary,
-        borderColor: theme.secondary,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        backgroundColor: theme.secondary,
+        borderRadius: 10,
       }}
     >
       <Label
@@ -40,8 +37,7 @@ function Label(props: {
   title_label: string
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View
@@ -62,13 +58,14 @@ function Label(props: {
       >
         <Icon
           iconName="clipboard"
+          color={theme.onSecondary}
         />
       </View>
       <RootText
         style={{
           textAlignVertical: 'center',
           fontSize: 200,
-          color: theme.onPrimary,
+          color: theme.onSecondary,
           maxWidth: '90%',
           paddingRight: 5,
           paddingVertical: 5,
@@ -85,6 +82,8 @@ function Button(props: {
   onPress_Open: () => void
 }) {
 
+  const { theme } = useMemo(() => ConfigService.config, []);
+
   return (
     <View
       style={{
@@ -96,8 +95,11 @@ function Button(props: {
       <TextWithIcon
         title={props.title_button}
         onPress={props.onPress_Open}
+        color_background={theme.tertiary}
+        color_font={theme.onTertiary}
         iconName="arrow-forward-sharp"
         iconSide="Right"
+        style={{ borderRadius: 5 }}
       />
     </View>
   );
@@ -105,8 +107,7 @@ function Button(props: {
 
 function Footer() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View
@@ -118,7 +119,7 @@ function Footer() {
     >
       <RootText
         style={{
-          color: theme.onPrimary,
+          color: theme.onSecondary,
           fontSize: 200,
         }}
       >

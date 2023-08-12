@@ -25,7 +25,11 @@ export default function ProjectScreen() {
       screenButtons={<ScreenButtons />}
     >
       <Layout.View
-        style={{ paddingTop: 20 }}
+        style={{
+          paddingTop: 20,
+          padding: 5,
+          gap: 5,
+        }}
       >
         <SampleButtons />
       </Layout.View>
