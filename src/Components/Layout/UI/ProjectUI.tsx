@@ -57,7 +57,7 @@ function Label(props: {
         }}
       >
         <Icon
-          iconName="file-tray"
+          iconName="folder"
           color={theme.onSecondary}
         />
       </View>

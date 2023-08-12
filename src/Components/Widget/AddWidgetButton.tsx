@@ -34,7 +34,7 @@ export default function AddWidgetButton(props: {
 
   return (<>
     <Layout.Button.IconRounded
-      iconName="apps"
+      iconName="list"
       showPlusSign={true}
       color_background={theme.confirm}
       color={theme.onConfirm}

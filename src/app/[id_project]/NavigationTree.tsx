@@ -13,7 +13,7 @@ export default function NavigationTree() {
         />,
         <Layout.Button.Icon
           key="treeIcon_2"
-          iconName="file-tray"
+          iconName="folder"
         />,
       ]}
     />

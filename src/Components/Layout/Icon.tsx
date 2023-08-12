@@ -41,5 +41,8 @@ export type IconName = (
   'arrow-forward-sharp' |
   'copy'                |
   'trash-outline'       |
-  'apps'
+  'apps'                |
+  'layers'              |
+  'list'                |
+  'folder'
 )
