@@ -26,7 +26,11 @@ export default function TemplateScreen() {
       screenButtons={<ScreenButtons />}
     >
       <Layout.View
-        style={{ paddingTop: 20 }}
+        style={{
+          paddingTop: 20,
+          padding: 5,
+          gap: 10,
+        }}
       >
         <Widgets_Template />
       </Layout.View>

@@ -29,7 +29,7 @@ export default function SampleScreens() {
         style={{
           paddingTop: 20,
           padding: 5,
-          gap: 5,
+          gap: 10,
         }}
       >
         <Widgets_Sample />

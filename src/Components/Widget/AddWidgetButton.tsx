@@ -48,7 +48,6 @@ export default function AddWidgetButton(props: {
         <Layout.View
           style={{
             padding: 5,
-            gap: 5,
           }}
         >
           <Layout.Input.String
@@ -59,20 +58,32 @@ export default function AddWidgetButton(props: {
             locked={false}
             onResetPress={() => setLabel('')}
           />
-          <Layout.ScrollView>
-            <Layout.Button.Text
-              title={stringResources['Boolean']}
-              color_background={theme.secondary}
-              color_font={theme.onSecondary}
-              onPress={() => onPress('boolean')}
-            />
-            <Layout.Button.Text
-              title={stringResources['Text']}
-              color_background={theme.secondary}
-              color_font={theme.onSecondary}
-              onPress={() => onPress('text')}
-            />
-          </Layout.ScrollView>
+          <Layout.View
+            style={{
+              marginTop: 10,
+              marginHorizontal: 5,
+              paddingVertical: 20,
+              borderRadius: 10,
+              backgroundColor: theme.secondary,
+            }}
+          >
+            <Layout.ScrollView
+              contenContainerStyle={{ gap: 2 }}
+            >
+              <Layout.Button.Text
+                title={stringResources['Boolean']}
+                color_background={theme.tertiary}
+                color_font={theme.onTertiary}
+                onPress={() => onPress('boolean')}
+              />
+              <Layout.Button.Text
+                title={stringResources['Text']}
+                color_background={theme.tertiary}
+                color_font={theme.onTertiary}
+                onPress={() => onPress('text')}
+              />
+            </Layout.ScrollView>
+          </Layout.View>
         </Layout.View>
       </Layout.Modal>
     )}

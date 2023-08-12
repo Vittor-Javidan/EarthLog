@@ -51,9 +51,7 @@ export default function SettingsScreen(): JSX.Element {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <Layout.View
-        style={{ paddingTop: 20 }}
-      >
+      <Layout.View>
         <Layout.Button.Text
           title={stringResources['Language']}
           onPress={async () => await useNavigate('LANGUAGES SCREEN')}

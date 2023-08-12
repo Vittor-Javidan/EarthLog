@@ -59,7 +59,7 @@ export default function HomeScreen() {
         style={{
           paddingTop: 20,
           padding: 5,
-          gap: 5,
+          gap: 10,
         }}
       >
         <LastProjectButton />

@@ -39,9 +39,7 @@ export default function ThemeScreen(): JSX.Element {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.View
-          style={{ paddingTop: 20 }}
-        >
+        <Layout.View>
           <ExampleFigure/>
           <AllInputs />
         </Layout.View>

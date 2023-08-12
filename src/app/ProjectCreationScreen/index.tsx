@@ -37,7 +37,7 @@ export default function ProjectCreationScreen() {
         style={{
           paddingTop: 20,
           padding: 5,
-          gap: 5,
+          gap: 10,
         }}
       >
         <Inputs_ProjectSettings />
