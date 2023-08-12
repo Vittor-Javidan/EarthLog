@@ -147,7 +147,7 @@ function DeleteButton(props: {
               color_background={theme.wrong}
               color={theme.onWrong}
               showPlusSign={false}
-              onPress={() => props.onDelete}
+              onPress={() => props.onDelete()}
             />
           ) : undefined}
         />
