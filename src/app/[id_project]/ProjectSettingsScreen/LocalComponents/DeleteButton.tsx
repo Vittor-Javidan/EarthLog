@@ -49,6 +49,13 @@ export default function DeleteButton() {
         color_Navbar={theme.wrong}
         color_onNavbar={theme.onWrong}
         onRequestClose={() => dismissModal()}
+        ScreenButtons={
+          <ScreenButtons
+            isNameCorrect={isNameCorrect}
+            onPress_back={() =>  dismissModal()}
+            onPress_delete={async () => await deleteProject()}
+          />
+        }
       >
         <Layout.View
           style={{
@@ -105,27 +112,39 @@ export default function DeleteButton() {
             </Layout.Text.P>
           )}
         </Layout.View>
-        <Layout.ScreenButtons
-          button_left={
-            <Layout.Button.IconRounded
-              iconName="arrow-back"
-              showPlusSign={false}
-              color_background={theme.secondary}
-              color={theme.onSecondary}
-              onPress={() =>  dismissModal()}
-            />
-          }
-          button_right={isNameCorrect ? (
-            <Layout.Button.IconRounded
-              color_background={theme.wrong}
-              color={theme.onWrong}
-              iconName="checkmark-done-sharp"
-              showPlusSign={false}
-              onPress={async () => await deleteProject()}
-            />
-          ) : undefined}
-        />
       </Layout.Modal>
     )}
   </>);
+}
+
+function ScreenButtons(props: {
+  isNameCorrect: boolean
+  onPress_back: () => void
+  onPress_delete: () => void
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <Layout.ScreenButtons
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
+          onPress={props.onPress_back}
+        />
+      }
+      button_right={props.isNameCorrect ? (
+        <Layout.Button.IconRounded
+          color_background={theme.wrong}
+          color={theme.onWrong}
+          iconName="checkmark-done-sharp"
+          showPlusSign={false}
+          onPress={props.onPress_delete}
+        />
+      ) : undefined}
+    />
+  );
 }

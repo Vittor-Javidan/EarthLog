@@ -14,6 +14,7 @@ export default function Modal(props: {
   color_Navbar?: string
   color_onNavbar?: string
   color_background?: string
+  ScreenButtons?: JSX.Element
   children: ReactNode
   onRequestClose: () => void
 }) {
@@ -53,6 +54,7 @@ export default function Modal(props: {
       >
         {props.children}
       </View>
+      {props.ScreenButtons}
     </ReactNative_Modal>
   );
 }

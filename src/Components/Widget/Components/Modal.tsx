@@ -14,14 +14,19 @@ export default function Modal(props: {
   onDelete: () => void
   onRequestClose: () => void
 }) {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const { rules } = props.widgetData;
-
   return (
     <Layout.Modal
       title={props.title}
       onRequestClose={props.onRequestClose}
+      ScreenButtons={
+        <ScreenButtons
+          title={props.title}
+          widgetData={props.widgetData}
+          onConfirm={props.onConfirm}
+          onDelete={props.onDelete}
+          onRequestClose={props.onRequestClose}
+        />
+      }
     >
       <Layout.ScrollView
         style={{
@@ -31,33 +36,48 @@ export default function Modal(props: {
       >
         {props.children}
       </Layout.ScrollView>
-      <Layout.ScreenButtons
-        button_left={
-          <Layout.Button.IconRounded
-            iconName="arrow-back"
-            showPlusSign={false}
-            color_background={theme.secondary}
-            color={theme.onSecondary}
-            onPress={props.onRequestClose}
-          />
-        }
-        button_middle={rules.allowWidgetErase ? (
-          <DeleteButton
-            widgetLabel={props.title}
-            onDelete={props.onDelete}
-          />
-        ) : undefined}
-        button_right={
-          <Layout.Button.IconRounded
-            iconName="save"
-            showPlusSign={false}
-            color_background={theme.confirm}
-            color={theme.onConfirm}
-            onPress={props.onConfirm}
-          />
-        }
-      />
     </Layout.Modal>
+  );
+}
+
+function ScreenButtons(props: {
+  title: string
+  widgetData: WidgetData
+  onConfirm: () => void
+  onDelete: () => void
+  onRequestClose: () => void
+}) {
+
+  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { rules } = props.widgetData;
+
+  return (
+    <Layout.ScreenButtons
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
+          onPress={props.onRequestClose}
+        />
+      }
+      button_middle={rules.allowWidgetErase ? (
+        <DeleteButton
+          widgetLabel={props.title}
+          onDelete={props.onDelete}
+        />
+      ) : undefined}
+      button_right={
+        <Layout.Button.IconRounded
+          iconName="save"
+          showPlusSign={false}
+          color_background={theme.confirm}
+          color={theme.onConfirm}
+          onPress={props.onConfirm}
+        />
+      }
+    />
   );
 }
 
@@ -93,6 +113,13 @@ function DeleteButton(props: {
         color_Navbar={theme.wrong}
         color_onNavbar={theme.onWrong}
         onRequestClose={() => dismissModal()}
+        ScreenButtons={
+          <ScreenButtons_Delete
+            isNameCorrect={isNameCorrect}
+            onPress_back={() => dismissModal()}
+            onPress_delete={() => props.onDelete()}
+          />
+        }
       >
         <Layout.View
           style={{
@@ -149,27 +176,39 @@ function DeleteButton(props: {
             </Layout.Text.P>
           )}
         </Layout.View>
-        <Layout.ScreenButtons
-          button_left={
-            <Layout.Button.IconRounded
-              iconName="arrow-back"
-              color_background={theme.secondary}
-              color={theme.onSecondary}
-              showPlusSign={false}
-              onPress={() => dismissModal()}
-            />
-          }
-          button_right={isNameCorrect ? (
-            <Layout.Button.IconRounded
-              iconName="checkmark-done-sharp"
-              color_background={theme.wrong}
-              color={theme.onWrong}
-              showPlusSign={false}
-              onPress={() => props.onDelete()}
-            />
-          ) : undefined}
-        />
       </Layout.Modal>
     )}
   </>);
+}
+
+function ScreenButtons_Delete(props: {
+  isNameCorrect: boolean
+  onPress_back: () => void
+  onPress_delete: () => void
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <Layout.ScreenButtons
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          color_background={theme.secondary}
+          color={theme.onSecondary}
+          showPlusSign={false}
+          onPress={props.onPress_back}
+        />
+      }
+      button_right={props.isNameCorrect ? (
+        <Layout.Button.IconRounded
+          iconName="checkmark-done-sharp"
+          color_background={theme.wrong}
+          color={theme.onWrong}
+          showPlusSign={false}
+          onPress={props.onPress_delete}
+        />
+      ) : undefined}
+    />
+  );
 }
