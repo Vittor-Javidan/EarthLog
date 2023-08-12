@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 import { WidgetComponent } from '@WidgetComponents/index';
 
-import { InputColors, Languages, TextWidgetData, ThemeDTO } from '@Types/index';
+import { Languages, TextWidgetData, ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 
@@ -151,18 +151,6 @@ function Modal(props: {
 
   const { rules } = props.widgetData;
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
-
   return (
     <WidgetComponent.Modal
       title={label}
@@ -180,8 +168,10 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
     >
       <Layout.Input.String
-        colors={inputColors}
         label={stringResources['Widget Name']}
+        backgroundColor={theme.background}
+        color={theme.onBackground}
+        color_placeholder={theme.onBackground_Placeholder}
         placeholder={stringResources['Write widget name here...']}
         value={label}
         onChangeText={setLabel}
@@ -189,8 +179,10 @@ function Modal(props: {
         onResetPress={() => setLabel('')}
       />
       <Layout.Input.String
-        colors={inputColors}
         label={stringResources['Text']}
+        backgroundColor={theme.background}
+        color={theme.onBackground}
+        color_placeholder={theme.onBackground_Placeholder}
         placeholder={stringResources['Write anything here...']}
         value={value}
         onChangeText={setValue}

@@ -120,19 +120,3 @@ export type WidgetTypes = 'boolean' | 'text'
 */
 export type IDsArray = ID[]
 export type ID = string
-
-// ===============================================================================================
-// UI COMPONENTS RELATED TYPES
-// ===============================================================================================
-
-export type InputColors = {
-  label: {
-    background: string,
-    font: string,
-  },
-  dataDisplay: {
-    background: string,
-    font: string,
-    font_placeholder: string,
-  }
-}

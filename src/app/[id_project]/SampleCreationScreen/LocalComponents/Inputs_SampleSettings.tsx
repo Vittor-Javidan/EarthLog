@@ -57,10 +57,10 @@ export default function Inputs_SampleSettings() {
         }}
       >
         <Layout.Input.String
+          label={stringResources['ID']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          label={stringResources['ID']}
           placeholder={stringResources['Only numbers, letters and "-"']}
           value={id}
           onChangeText={(text) => onIDChange(text)}
@@ -68,10 +68,10 @@ export default function Inputs_SampleSettings() {
           locked={false}
         />
         <Layout.Input.String
+          label={stringResources['Name']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          label={stringResources['Name']}
           placeholder={stringResources['Write the sample name here...']}
           value={name}
           onChangeText={(text) => onNameChange(text)}

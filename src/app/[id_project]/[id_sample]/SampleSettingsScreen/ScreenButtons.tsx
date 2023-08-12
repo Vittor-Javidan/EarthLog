@@ -4,6 +4,7 @@ import { useNavigate } from '@Hooks/index';
 import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
 import DeleteButton from './LocalComponents/DeleteButton';
+import ProjectService from '@Services/ProjectService';
 
 export default function ScreenButtons() {
 
@@ -12,6 +13,8 @@ export default function ScreenButtons() {
 
   const { config } = useMemo(() => ConfigService, []);
   const { theme } = useMemo(() => config, []);
+  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
+  const { rules } = useMemo(() => sampleSettings, []);
 
   return (
     <Layout.ScreenButtons
@@ -24,9 +27,9 @@ export default function ScreenButtons() {
           onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
         />
       }
-      button_right={
+      button_right={rules.allowSampleErase ? (
         <DeleteButton />
-      }
+      ) : undefined}
     />
   );
 }

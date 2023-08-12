@@ -6,7 +6,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
-import { BooleanWidgetData, InputColors, ThemeDTO } from '@Types/index';
+import { BooleanWidgetData, ThemeDTO } from '@Types/index';
 import { Layout } from '@Components/Layout';
 
 export default function BooleanWidget(props: {
@@ -147,18 +147,6 @@ function Modal(props: {
 
   const { rules } = props.widgetData;
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
-
   return (
     <WidgetComponent.Modal
       title={label}
@@ -176,8 +164,10 @@ function Modal(props: {
       onRequestClose={props.onRequestClose}
     >
       <Layout.Input.String
-        colors={inputColors}
         label="Label:"
+        backgroundColor={theme.background}
+        color={theme.onBackground}
+        color_placeholder={theme.onBackground_Placeholder}
         placeholder="Write widget name here..."
         value={label}
         onChangeText={setLabel}
@@ -186,7 +176,8 @@ function Modal(props: {
       />
       <Layout.Input.Boolean
         label="Value:"
-        colors={inputColors}
+        backgroundColor={theme.background}
+        color={theme.onBackground}
         value={value}
         locked={!rules.allowValueChange}
         onSwitchChange={setValue}
