@@ -2,7 +2,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useBackPress, useNavigate } from '@Hooks/index';
 import { Layout } from '@Layout/index';
-import { ExampleFigure } from './LocalComponents/ExampleFigure';
 import AllInputs from './LocalComponents/ColorInput';
 
 import { translations } from '@Translations/index';
@@ -12,6 +11,7 @@ import ConfigService from '@Services/ConfigService';
 import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
+import Drawer from './Drawer';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -32,7 +32,7 @@ export default function ThemeScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer state={state} />}
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
@@ -40,7 +40,6 @@ export default function ThemeScreen(): JSX.Element {
         <Layout.Loading />
       ) : (
         <Layout.View>
-          <ExampleFigure/>
           <AllInputs />
         </Layout.View>
       )}
