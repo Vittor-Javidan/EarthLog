@@ -20,7 +20,7 @@ export default function DeleteButton() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [widgetName, setWidgetName] = useState<string>('');
 
-  async function deleteProject() {
+  async function deleteSample() {
     await ProjectService.deleteSample(
       id_project,
       id_sample,
@@ -54,7 +54,7 @@ export default function DeleteButton() {
           <ScreenButtons
             isNameCorrect={isNameCorrect}
             onPress_back={() =>  dismissModal()}
-            onPress_delete={async () => await deleteProject()}
+            onPress_delete={async () => await deleteSample()}
           />
         }
       >

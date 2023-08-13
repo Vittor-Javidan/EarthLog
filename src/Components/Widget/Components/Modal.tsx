@@ -92,14 +92,14 @@ function DeleteButton(props: {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [widgetName, setWidgetName] = useState<string>('');
 
-  function dismissModal() {
-    setShowModal(false);
-    setWidgetName('');
-  }
-
   function onDelete() {
     props.onDelete();
     setShowModal(false);
+  }
+
+  function dismissModal() {
+    setShowModal(false);
+    setWidgetName('');
   }
 
   const isNameCorrect = widgetName === props.widgetLabel;
