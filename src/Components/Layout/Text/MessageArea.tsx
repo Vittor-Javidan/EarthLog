@@ -8,8 +8,7 @@ export default function MessageArea(props: {
   style?: StyleProp<ViewStyle>
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View

@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Text, StyleProp, ViewStyle, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { ThemeDTO } from '@Types/index';
 import Icon, { IconName } from '../Icon';
 
 import ConfigService from '@Services/ConfigService';
@@ -16,8 +15,8 @@ export default function IconButtonRounded(props: {
   onPress?: () => void
 }): JSX.Element {
 
+	const { theme } = useMemo(() => ConfigService.config, []);
 	const [pressed, setPressed] = useState<boolean>(false);
-	const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
 	return (
     <Pressable

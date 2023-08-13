@@ -2,8 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { GestureResponderEvent, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 import RootText from '../Text/Root';
 
@@ -14,9 +12,8 @@ export default function DrawerButton(props: {
   onPress: ((event: GestureResponderEvent) => void)
 }): JSX.Element {
 
+  const { theme } = useMemo(() => ConfigService.config, []);
   const [pressed, setPressed] = useState<boolean>(false);
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
   const backgroundColor = props.overrideBackgroundColor ? props.overrideBackgroundColor : theme.tertiary;
   const textColor = props.overrideTextColor ? props.overrideTextColor : theme.onTertiary;
 

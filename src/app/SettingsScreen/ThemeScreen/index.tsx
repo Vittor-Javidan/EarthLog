@@ -15,8 +15,7 @@ import Drawer from './Drawer';
 
 export default function ThemeScreen(): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, [config.theme]);
+  const { language } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');

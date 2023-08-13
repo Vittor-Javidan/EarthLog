@@ -11,9 +11,7 @@ import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
 
 export default function Inputs_SampleSettings() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   const [id, setId] = useState<string>(API_Inputs_SampleSettings.temporarySettings.id_sample);

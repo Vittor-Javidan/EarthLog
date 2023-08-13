@@ -9,12 +9,10 @@ import ScreenButtons from './ScreenButtons';
 
 export default function LanguagesScreen(): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
   const [_, refresh] = useState<boolean>(false);
-
-  const stringResources = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
   useBackPress(async () => await useNavigate('SETTINGS SCREEN'));
 

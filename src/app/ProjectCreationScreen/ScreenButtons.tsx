@@ -10,8 +10,7 @@ import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
 
 export default function ScreenButtons() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   async function exitScreen() {
     API_TemporaryProject.reset();

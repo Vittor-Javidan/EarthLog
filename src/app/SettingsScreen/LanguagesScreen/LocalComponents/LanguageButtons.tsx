@@ -9,8 +9,7 @@ export default function LanguageButtons(props: {
   onButtonClick: () => void
 }): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;

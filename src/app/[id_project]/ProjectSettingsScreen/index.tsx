@@ -13,8 +13,7 @@ export default function ProjectSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));

@@ -5,8 +5,7 @@ import ConfigService from '@Services/ConfigService';
 
 export default function ScreenButtons() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <Layout.ScreenButtons

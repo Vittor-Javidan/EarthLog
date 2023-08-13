@@ -15,8 +15,7 @@ import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
 
 export default function ProjectCreationScreen() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   useBackPress(async () => await exitScreen());

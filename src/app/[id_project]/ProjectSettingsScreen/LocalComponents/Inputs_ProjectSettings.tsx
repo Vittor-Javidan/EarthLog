@@ -13,8 +13,7 @@ export default function Inputs_ProjectSettings() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
   const defaultSettings = useMemo(() => UtilService.deepCloning(projectSettings), []);

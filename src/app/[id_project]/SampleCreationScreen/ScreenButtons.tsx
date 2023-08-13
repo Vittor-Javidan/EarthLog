@@ -11,8 +11,7 @@ export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   async function exitScreen(

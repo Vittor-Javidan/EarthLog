@@ -16,8 +16,7 @@ export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   useBackPress(async () => await exitScreen('PROJECT SCREEN'));

@@ -6,8 +6,7 @@ import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
 
 export default function ScreenButtons() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   function resetTheme() {
     API_ExampleFigure.reset();

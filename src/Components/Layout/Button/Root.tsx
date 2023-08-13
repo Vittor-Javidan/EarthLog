@@ -3,8 +3,6 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export default function RootButton(props: {
@@ -14,9 +12,8 @@ export default function RootButton(props: {
 	onPress: () => void
 }): JSX.Element {
 
+	const { theme } = useMemo(() => ConfigService.config, []);
 	const [pressed, setPressed] = useState<boolean>(false);
-	const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
 	const backgroundColor = props.color_background ? props.color_background : theme.secondary;
 
 	return (

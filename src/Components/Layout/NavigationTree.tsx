@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
@@ -15,9 +13,9 @@ export default function NavigationTree(props: {
     return <></>;
   }
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
+  const { theme } = useMemo(() => ConfigService.config, []);
   const tree: JSX.Element[] = [];
+
   for (let i = 0; i < props.iconButtons.length; i++) {
     tree.push(props.iconButtons[i]);
     if ( i !== props.iconButtons.length - 1) {

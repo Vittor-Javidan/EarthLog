@@ -11,8 +11,7 @@ export function Drawer() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectScreen[language], []);
 
   return (<>

@@ -12,8 +12,7 @@ import API_Inputs_ProjectSettings from './API_Inputs_ProjectSettings';
 
 export default function Inputs_ProjectSettings() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   const [id, setId] = useState<string>(API_TemporaryProject.project.projectSettings.id_project);

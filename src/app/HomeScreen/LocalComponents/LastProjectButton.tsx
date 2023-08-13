@@ -9,8 +9,7 @@ import ProjectService from '@Services/ProjectService';
 
 export default function LastProjectButton() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const { id_project } = ProjectService?.lastOpenProject;

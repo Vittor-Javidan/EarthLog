@@ -11,8 +11,7 @@ export default function Group(props: {
   children: ReactNode
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View

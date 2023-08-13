@@ -9,8 +9,8 @@ export default function ScreenButtons(props: {
   button_right?: JSX.Element
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, [config.theme]);
+  const { theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
+
   const COLORS = useMemo<string[]>(() => [
     'transparent',
     'transparent',

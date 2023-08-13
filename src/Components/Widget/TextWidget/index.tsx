@@ -1,9 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { WidgetComponent } from '@WidgetComponents/index';
 
-import { Languages, TextWidgetData, ThemeDTO } from '@Types/index';
+import { TextWidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -130,7 +129,7 @@ function IconButtons_Top(props: {
   onPencilPress: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (<>
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
@@ -154,10 +153,8 @@ function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [defaultData] = useState(UtilService.deepCloning(props.widgetData));
   const [label, setLabel] = useState<string>(props.widgetData.name);

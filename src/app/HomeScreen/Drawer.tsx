@@ -8,8 +8,7 @@ import { useNavigate } from '@Hooks/index';
 
 export default function Drawer() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   return (

@@ -15,8 +15,6 @@ import Animated, {
 
 } from 'react-native-reanimated';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export function ColorPicker(props: {
@@ -29,7 +27,7 @@ export function ColorPicker(props: {
   onColorSelected: (hexColor: string) => void
 }) {
 
-  // Constants
+  const { theme } = useMemo(() => ConfigService.config, []);
   const GRADIENT_COLORS = useMemo<string[]>(() => [
     '#000000', // Black
     '#0000FF', // Blue
@@ -40,9 +38,6 @@ export function ColorPicker(props: {
     '#FFFF00', // Yellow
     '#FFFFFF', // White
   ], []);
-
-  // Services
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
 
   // Shared Values
   const translateX = useSharedValue(0);

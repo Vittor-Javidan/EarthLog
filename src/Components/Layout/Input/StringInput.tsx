@@ -17,8 +17,7 @@ export default function StringInput(props: {
   onResetPress?: () => void
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
   const color = props.color ? props.color : theme.onBackground;

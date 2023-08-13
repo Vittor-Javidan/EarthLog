@@ -11,8 +11,7 @@ export default function AddWidgetButton(props: {
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Widgets.AddWidgetButton[language], []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);

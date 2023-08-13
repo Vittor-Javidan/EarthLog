@@ -15,8 +15,7 @@ export default function ScreenButtons() {
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const { rules: rules_project } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
   const { rules: rules_sample } = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
 

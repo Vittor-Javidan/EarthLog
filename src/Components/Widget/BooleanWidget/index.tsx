@@ -4,7 +4,7 @@ import { Switch } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 
 import { WidgetComponent } from '../Components';
-import { BooleanWidgetData, ThemeDTO } from '@Types/index';
+import { BooleanWidgetData } from '@Types/index';
 import { Layout } from '@Components/Layout';
 import { translations } from '@Translations/index';
 
@@ -104,7 +104,7 @@ function IconButtons_Top(props: {
   onPencilPress: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (<>
     {(props.widgetData.rules.allowLabelChange) && (

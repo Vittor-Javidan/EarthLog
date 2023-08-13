@@ -1,7 +1,7 @@
+import { WidgetData } from '@Types/index';
 import React, { useState, useMemo, ReactNode } from 'react';
 import { Layout } from '@Components/Layout';
 
-import { ThemeDTO, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
@@ -48,7 +48,7 @@ function ScreenButtons(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const { rules } = props.widgetData;
 
   return (
@@ -86,8 +86,8 @@ function DeleteButton(props: {
   onDelete: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.Components.Modal[language], []);
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [widgetName, setWidgetName] = useState<string>('');

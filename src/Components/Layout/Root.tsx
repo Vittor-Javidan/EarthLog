@@ -1,14 +1,12 @@
 import React, { ReactNode, useState, useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IconButton from './Button/IconButton';
 
-import { ThemeDTO } from '@Types/index';
-
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
@@ -22,7 +20,7 @@ export default function Root(props: {
   screenButtons: JSX.Element
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const [_, setShowDrawer] = useState<boolean>(false);
 
   const slideX = useSharedValue(-WIDTH);
@@ -93,7 +91,7 @@ function Navbar(props: {
   onMenuButtonPress: () => void | undefined
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (<>
     <View
@@ -158,7 +156,7 @@ function Drawer(props: {
   children: ReactNode
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const STATUS_BAR_HEIGHT = useSafeAreaInsets().top;
 
   return (

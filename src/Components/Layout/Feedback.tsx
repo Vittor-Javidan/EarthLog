@@ -13,8 +13,7 @@ export default function Feedback(props: {
   textStyle_Status?: StyleProp<TextStyle>
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View

@@ -13,8 +13,7 @@ export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
 
   async function onCreate(widgetData: WidgetData) {

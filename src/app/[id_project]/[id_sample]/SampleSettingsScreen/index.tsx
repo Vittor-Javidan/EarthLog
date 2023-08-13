@@ -8,8 +8,7 @@ import ConfigService from '@Services/ConfigService';
 
 export default function SampleSettingsScreen() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (

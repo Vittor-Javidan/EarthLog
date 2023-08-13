@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
-import { ThemeDTO } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 import RootButton from './Root';
 import RootText from '../Text/Root';
@@ -18,8 +16,7 @@ export default function TextWithIcon(props: {
 	onPress: () => void
 }): JSX.Element {
 
-	const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
+	const { theme } = useMemo(() => ConfigService.config, []);
 	const backgroundColor = props.color_background ? props.color_background : theme.secondary;
 	const textColor = props.color_font ? props.color_font : theme.onSecondary;
 

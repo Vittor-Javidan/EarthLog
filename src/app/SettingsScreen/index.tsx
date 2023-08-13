@@ -12,8 +12,7 @@ import ProjectService from '@Services/ProjectService';
 
 export default function SettingsScreen(): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
   useBackPress(async () => await useNavigate('HOME SCREEN'));

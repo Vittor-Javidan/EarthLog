@@ -9,8 +9,7 @@ import API_ExampleFigure from './API_ExampleFigure';
 
 export function ExampleFigure(): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language, theme } = useMemo(() => config, []);
+  const { language, theme } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const temporaryTheme = useMemo(

@@ -65,8 +65,9 @@ export async function useNavigate(
     called inside callbacks, and not directly inside a Component scope.
   */
 
+  const { language } = ConfigService.config;
+  const stringResources = translations.ErrorMessages[language];
   const navController = useRouter();
-  const stringResources = translations.ErrorMessages[ConfigService.config.language];
 
   switch (screen) {
 

@@ -15,8 +15,7 @@ import LastProjectButton from './LocalComponents/LastProjectButton';
 
 export default function HomeScreen() {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   useBackPress(async () => {

@@ -1,11 +1,9 @@
 import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native';
-
-import { ThemeDTO } from '@Types/index';
-
-import ConfigService from '@Services/ConfigService';
 import IconButton from './Button/IconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import ConfigService from '@Services/ConfigService';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
@@ -19,7 +17,7 @@ export default function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const backgroundColor = props.color_background ? props.color_background : theme.background;
   const navbarColor = props.color_Navbar ? props.color_Navbar : theme.primary;
 
@@ -66,7 +64,7 @@ function Navbar(props: {
   onIconPress: () => void | undefined
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   const backgroundColor = props.color_Navbar ? props.color_Navbar : theme.primary;
   const fontColor = props.color_onNavbar ? props.color_onNavbar : theme.onPrimary;

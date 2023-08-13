@@ -15,8 +15,7 @@ export default function BooleanInput(props: {
   onSwitchChange?: (value: boolean) => void
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme, language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Data.Boolean[language], []);
 
   const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
