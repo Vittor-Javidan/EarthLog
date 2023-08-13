@@ -140,6 +140,7 @@ function IconButtons_Top(props: {
         style={{
           paddingHorizontal: 10,
           paddingVertical: 5,
+          borderTopRightRadius: 10,
         }}
       />
     )}
