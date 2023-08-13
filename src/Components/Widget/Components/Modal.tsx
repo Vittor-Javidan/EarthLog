@@ -97,6 +97,11 @@ function DeleteButton(props: {
     setWidgetName('');
   }
 
+  function onDelete() {
+    props.onDelete();
+    setShowModal(false);
+  }
+
   const isNameCorrect = widgetName === props.widgetLabel;
 
   return (<>
@@ -117,7 +122,7 @@ function DeleteButton(props: {
           <ScreenButtons_Delete
             isNameCorrect={isNameCorrect}
             onPress_back={() => dismissModal()}
-            onPress_delete={() => props.onDelete()}
+            onPress_delete={() => onDelete()}
           />
         }
       >

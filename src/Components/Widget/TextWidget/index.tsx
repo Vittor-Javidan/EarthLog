@@ -96,7 +96,7 @@ export default function TextWidget(props: {
         <Modal
           widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
-          onDelete={props.onDelete}
+          onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />
       }

@@ -1,8 +1,8 @@
 import React, { ReactNode, useState, useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import IconButton from './Button/IconButton';
 
 import { APP_VERSION } from '@Globals/Version';
@@ -157,7 +157,7 @@ function Drawer(props: {
 }): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const STATUS_BAR_HEIGHT = useSafeAreaInsets().top;
+  const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
     <ScrollView
@@ -166,7 +166,7 @@ function Drawer(props: {
         position: 'absolute',
         bottom: 0,
         left: 0,
-        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH - NAVGATION_TREE_HEIGHT),
+        height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVGATION_TREE_HEIGHT),
         width: '100%',
       }}
     >

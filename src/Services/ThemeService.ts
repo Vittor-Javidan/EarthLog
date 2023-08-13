@@ -8,7 +8,7 @@ export default class ThemeService {
     onBackground: '#DDD',
     onBackground_Placeholder: '#444',
 
-    primary: '#DDD',
+    primary: '#FFF',
     onPrimary: '#222',
     onPrimary_Placeholder: '#999',
 

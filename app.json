@@ -1,6 +1,5 @@
 {
   "expo": {
-    "backgroundColor": "#000000",
     "name": "Earth Log",
     "slug": "EarthLog",
     "version": "1.0.0",
@@ -21,6 +20,7 @@
     "android": {
       "package": "com.lonewispapps.earthlog",
       "versionCode": 1,
+      "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
