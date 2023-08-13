@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { MotiView } from 'moti';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import IconButton from './Button/IconButton';
@@ -112,6 +112,7 @@ function ContentArea(props: {
   style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
+
   return (
     <ScrollView
       style={props.style}
@@ -173,18 +174,17 @@ function Animation_Drawer(props: {
   show: boolean
   children: ReactNode
 }) {
-
-  const slideX = useSharedValue(-WIDTH);
-  const animatedStyle = useAnimatedStyle(() => { return {
-    transform: [{ translateX: slideX.value }],
-  };});
-
-  slideX.value = withTiming((props.show ? 0 : -WIDTH), {duration: 150});
   return (
-    <Animated.View
-      style={animatedStyle}
+    <MotiView
+      transition={{
+        type: 'timing',
+        duration: 200,
+      }}
+      animate={{
+        transform: [{ translateX: props.show ? 0 : -WIDTH }],
+      }}
     >
       {props.children}
-    </Animated.View>
+    </MotiView>
   );
 }
