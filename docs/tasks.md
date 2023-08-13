@@ -186,13 +186,13 @@
 
 ## Save system
 
-- Change the current autosaving system, to be a more consistent model.
++ Change the current autosaving system, to be a more consistent model.
 
 ## Widgets
 
-- Implement a new Widget UI.
++ Implement a new Widget UI.
++ icon for widgets.
 - Implement the widgets rules.
-- "app" icon for widgets.
 
 ## Date System
 
