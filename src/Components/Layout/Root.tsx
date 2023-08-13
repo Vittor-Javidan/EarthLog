@@ -10,7 +10,7 @@ import ConfigService from '@Services/ConfigService';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
-const NAVGATION_TREE_HEIGHT = 30;
+const NAVIGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
@@ -21,23 +21,7 @@ export default function Root(props: {
 }): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const [_, setShowDrawer] = useState<boolean>(false);
-
-  const slideX = useSharedValue(-WIDTH);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: slideX.value }],
-    };
-  });
-
-  const openDrawer = () => {
-    slideX.value = withTiming(0, {duration: 150});
-  };
-
-  const closeDrawer = () => {
-    slideX.value = withTiming(-WIDTH, {duration: 150});
-  };
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
     <StatusBar
@@ -53,14 +37,7 @@ export default function Root(props: {
     >
       <Navbar
         title={props.title}
-        onMenuButtonPress={() => setShowDrawer(prev => {
-          if (prev) {
-            closeDrawer();
-          } else {
-            openDrawer();
-          }
-          return !prev;
-        })}
+        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
         style={{ height: NAVBAR_HEIGH }}
       />
       <View
@@ -75,13 +52,9 @@ export default function Root(props: {
         {props.screenButtons}
       </View>
     </View>
-    <Animated.View
-      style={animatedStyle}
-    >
-      <Drawer>
-        {props.drawerChildren}
-      </Drawer>
-    </Animated.View>
+    <Drawer show={showDrawer}>
+      {props.drawerChildren}
+    </Drawer>
   </>);
 }
 
@@ -153,6 +126,7 @@ function ContentArea(props: {
 }
 
 function Drawer(props: {
+  show: boolean
   children: ReactNode
 }): JSX.Element {
 
@@ -160,35 +134,57 @@ function Drawer(props: {
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flex: 1 }}
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVGATION_TREE_HEIGHT),
-        width: '100%',
-      }}
-    >
-      <View
-        style={[{
-          flex: 9,
-          backgroundColor: theme.secondary,
-        }]}
+    <Animation_Drawer show={props.show}>
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
+          width: '100%',
+        }}
       >
-        {props.children}
-        <Text
-          adjustsFontSizeToFit={true}
-          style={{
-            color: theme.onSecondary_PlaceHolder,
-            textAlign: 'right',
-            fontSize: 16,
-            padding: 8,
-          }}
+        <View
+          style={[{
+            flex: 9,
+            backgroundColor: theme.secondary,
+          }]}
         >
-          v: {APP_VERSION}
-        </Text>
-      </View>
-    </ScrollView>
+          {props.children}
+          <Text
+            adjustsFontSizeToFit={true}
+            style={{
+              color: theme.onSecondary_PlaceHolder,
+              textAlign: 'right',
+              fontSize: 16,
+              padding: 8,
+            }}
+          >
+            v: {APP_VERSION}
+          </Text>
+        </View>
+      </ScrollView>
+    </Animation_Drawer>
+  );
+}
+
+function Animation_Drawer(props: {
+  show: boolean
+  children: ReactNode
+}) {
+
+  const slideX = useSharedValue(-WIDTH);
+  const animatedStyle = useAnimatedStyle(() => { return {
+    transform: [{ translateX: slideX.value }],
+  };});
+
+  slideX.value = withTiming((props.show ? 0 : -WIDTH), {duration: 150});
+  return (
+    <Animated.View
+      style={animatedStyle}
+    >
+      {props.children}
+    </Animated.View>
   );
 }
