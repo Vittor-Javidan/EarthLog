@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, Platform } from 'react-native';
 
 import { translations } from '@Translations/index';
 
@@ -25,6 +25,7 @@ export default function BooleanInput(props: {
     <View
       style={{
         paddingHorizontal: 5,
+        paddingTop: 15,
       }}
     >
       <Text
@@ -43,40 +44,35 @@ export default function BooleanInput(props: {
       </Text>
       <View
         style={{
-          height: 15,
+          position: 'absolute',
+          flexDirection: 'row',
+          backgroundColor: backgroundColor,
+          zIndex: 1,
+          height: 30,
+          top: 0,
+          right: 15,
         }}
       >
-        <View
-          style={{
-            position: 'absolute',
-            flexDirection: 'row',
-            backgroundColor: backgroundColor,
-            zIndex: 1,
-            height: 30,
-            top: 0,
-            right: 15,
-          }}
-        >
-          {props.locked ? (
-            <IconButton
-              iconName="lock-closed-sharp"
-              color={theme.wrong}
-              onPress={() => {}}
-              style={{
-                paddingHorizontal: 5,
-                paddingVertical: 0,
-                borderRadius: 10,
-              }}
-            />
-          ) : (
-            <Switch
-              trackColor={{ false: theme.wrong, true: theme.confirm }}
-              ios_backgroundColor={theme.wrong}
-              value={props.value}
-              onValueChange={props.onSwitchChange}
-            />
-          )}
-        </View>
+        {props.locked ? (
+          <IconButton
+            iconName="lock-closed-sharp"
+            color={theme.wrong}
+            onPress={() => {}}
+            style={{
+              paddingHorizontal: 5,
+              paddingVertical: 0,
+              borderRadius: 10,
+            }}
+          />
+        ) : (
+          <Switch
+            style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
+            trackColor={{ false: theme.wrong, true: theme.confirm }}
+            ios_backgroundColor={theme.wrong}
+            value={props.value}
+            onValueChange={props.onSwitchChange}
+          />
+        )}
       </View>
       <View
         style={{

@@ -27,6 +27,7 @@ export default function StringInput(props: {
     <View
       style={{
         paddingHorizontal: 5,
+        paddingTop: 15,
       }}
     >
       <Text
@@ -45,45 +46,39 @@ export default function StringInput(props: {
       </Text>
       <View
         style={{
-          height: 15,
+          position: 'absolute',
+          flexDirection: 'row',
+          backgroundColor: backgroundColor,
+          zIndex: 1,
+          height: 30,
+          top: 0,
+          right: 15,
         }}
       >
-        <View
-          style={{
-            position: 'absolute',
-            flexDirection: 'row',
-            backgroundColor: backgroundColor,
-            zIndex: 1,
-            height: 30,
-            top: 0,
-            right: 15,
-          }}
-        >
-          {props.locked ? (
-            <IconButton
-              iconName="lock-closed-sharp"
-              color={theme.wrong}
-              onPress={() => {}}
-              style={{
-                paddingHorizontal: 5,
-                paddingVertical: 0,
-                borderRadius: 10,
-              }}
-            />
-          ) : (
-            <IconButton
-              iconName="refresh-sharp"
-              color={color}
-              onPress={props.onResetPress}
-              style={{
-                paddingHorizontal: 5,
-                paddingVertical: 0,
-                borderRadius: 10,
-              }}
-            />
-          )}
+        {props.locked ? (
+          <IconButton
+            iconName="lock-closed-sharp"
+            color={theme.wrong}
+            onPress={() => {}}
+            style={{
+              paddingHorizontal: 5,
+              paddingVertical: 0,
+              borderRadius: 10,
+            }}
+          />
+        ) : (
+          <IconButton
+            iconName="refresh-sharp"
+            color={color}
+            onPress={props.onResetPress}
+            style={{
+              paddingHorizontal: 5,
+              paddingVertical: 0,
+              borderRadius: 10,
+            }}
+          />
+        )}
 
-        </View>
       </View>
       <TextInput
         style={{

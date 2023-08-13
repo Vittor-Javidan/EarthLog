@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Switch } from 'react-native';
+import { Switch, Platform } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -87,6 +87,7 @@ export default function BooleanWidget(props: {
         <Switch
           style={{
             paddingHorizontal: 0,
+            transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }],
           }}
           trackColor={{ false: theme.wrong, true: theme.confirm }}
           ios_backgroundColor={theme.wrong}
