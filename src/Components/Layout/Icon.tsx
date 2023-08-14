@@ -44,5 +44,6 @@ export type IconName = (
   'apps'                |
   'layers'              |
   'list'                |
-  'folder'
+  'folder'              |
+  'finger-print'
 )
