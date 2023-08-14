@@ -8,7 +8,6 @@ import ConfigService from '@Services/ConfigService';
 
 import { WidgetRules } from '../Rules';
 import { Layout } from '@Components/Layout';
-import UtilService from '@Services/UtilService';
 import { useTiming } from '@Hooks/index';
 
 export default function TextWidget(props: {
@@ -20,11 +19,10 @@ export default function TextWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
-  const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
-  const [defaultData, setDefaultData] = useState(UtilService.deepCloning(props.widgetData));
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
+  const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
   const [displayText, setDisplayText] = useState<string>(props.widgetData.value);
+  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
   const [saved, setSaved] = useState<boolean>(true);
 
   useTiming(() => {
@@ -65,16 +63,10 @@ export default function TextWidget(props: {
 
   function onConfirm_Modal(widgetData: TextWidgetData) {
     onConfirm(widgetData);
-    setDefaultData(widgetData);
   }
 
   function onTextChange(text: string) {
     setDisplayText(text);
-    setSaved(false);
-  }
-
-  function onResetText() {
-    setDisplayText(defaultData.value);
     setSaved(false);
   }
 
@@ -104,11 +96,12 @@ export default function TextWidget(props: {
       <Layout.View
         style={{
           paddingVertical: 5,
+          paddingBottom: 10,
           gap: 5,
         }}
       >
         <Layout.Input.String
-          label={stringResources['Text']}
+          label={''}
           value={displayText}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
@@ -116,7 +109,6 @@ export default function TextWidget(props: {
           placeholder={stringResources['Empty text']}
           locked={false}
           onChangeText={(text) => onTextChange(text)}
-          onResetPress={() => onResetText()}
         />
       </Layout.View>
 
@@ -157,7 +149,6 @@ function Modal(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
-  const [defaultData] = useState(UtilService.deepCloning(props.widgetData));
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
 
@@ -191,9 +182,8 @@ function Modal(props: {
           color_placeholder={theme.onBackground_Placeholder}
           placeholder={stringResources['Write widget name here...']}
           value={label}
-          onChangeText={setLabel}
           locked={!rules.allowLabelChange}
-          onResetPress={() => setLabel(defaultData.name)}
+          onChangeText={(text) => setLabel(text)}
         />
         <Layout.Input.String
           label={stringResources['Text']}
@@ -202,9 +192,8 @@ function Modal(props: {
           color_placeholder={theme.onBackground_Placeholder}
           placeholder={stringResources['Write anything here...']}
           value={value}
-          onChangeText={setValue}
           locked={!rules.allowValueChange}
-          onResetPress={() => setValue(defaultData.value)}
+          onChangeText={(text) => setValue(text)}
         />
       </Layout.View>
     </WidgetComponent.Modal>

@@ -5,7 +5,6 @@ import { translations } from '@Translations/index';
 
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
 
 import API_TemporaryProject from './API_TemporaryProject';
 import API_Inputs_ProjectSettings from './API_Inputs_ProjectSettings';
@@ -24,20 +23,9 @@ export default function Inputs_ProjectSettings() {
     setId(normalizedText);
   }
 
-  function onRefreshID() {
-    const newID = ProjectService.generateUuidV4();
-    API_Inputs_ProjectSettings.setProjectID(newID);
-    setId(newID);
-  }
-
   function onNameChange(newName: string) {
     API_Inputs_ProjectSettings.setProjectName(newName);
     setName(newName);
-  }
-
-  function onNameReset() {
-    API_Inputs_ProjectSettings.setProjectName('');
-    setName('');
   }
 
   return (
@@ -74,7 +62,6 @@ export default function Inputs_ProjectSettings() {
           placeholder={stringResources['Only numbers, letters and "-".']}
           value={id}
           onChangeText={(text) => onIDChange(text)}
-          onResetPress={() => onRefreshID()}
           locked={false}
         />
         <Layout.Input.String
@@ -85,7 +72,6 @@ export default function Inputs_ProjectSettings() {
           placeholder={stringResources['Write the project name here...']}
           value={name}
           onChangeText={(text) => onNameChange(text)}
-          onResetPress={() => onNameReset()}
           locked={false}
         />
       </Layout.View>

@@ -53,9 +53,8 @@ export default function AddWidgetButton(props: {
             label={stringResources['Widget name']}
             placeholder={stringResources['Write a name to the widget here...']}
             value={label}
-            onChangeText={setLabel}
             locked={false}
-            onResetPress={() => setLabel('')}
+            onChangeText={(text) => setLabel(text)}
           />
           <Layout.View
             style={{

@@ -40,13 +40,6 @@ export default function Inputs_SampleSettings() {
     }
   }
 
-  function onNameReset() {
-    if (rules.allowNameChange) {
-      setName(sampleSettings.name);
-      setSaved(false);
-    }
-  }
-
   return (
     <Layout.View>
       <Layout.View
@@ -91,7 +84,6 @@ export default function Inputs_SampleSettings() {
           locked={!rules.allowNameChange}
           value={name}
           onChangeText={(text) => onNameChange(text)}
-          onResetPress={() => onNameReset()}
         />
         <Layout.Feedback
           title={stringResources['Status:']}

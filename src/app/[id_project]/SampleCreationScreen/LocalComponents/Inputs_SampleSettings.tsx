@@ -5,7 +5,6 @@ import { translations } from '@Translations/index';
 
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
 
 import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
 
@@ -62,7 +61,6 @@ export default function Inputs_SampleSettings() {
           placeholder={stringResources['Only numbers, letters and "-"']}
           value={id}
           onChangeText={(text) => onIDChange(text)}
-          onResetPress={() => setId(ProjectService.generateUuidV4())}
           locked={false}
         />
         <Layout.Input.String
@@ -73,7 +71,6 @@ export default function Inputs_SampleSettings() {
           placeholder={stringResources['Write the sample name here...']}
           value={name}
           onChangeText={(text) => onNameChange(text)}
-          onResetPress={() => setName('')}
           locked={false}
         />
       </Layout.View>

@@ -166,9 +166,8 @@ function Modal(props: {
           color_placeholder={theme.onBackground_Placeholder}
           placeholder={stringResources['Write widget name here...']}
           value={label}
-          onChangeText={setLabel}
           locked={!rules.allowLabelChange}
-          onResetPress={() => setLabel('')}
+          onChangeText={(text) => setLabel(text)}
         />
         <Layout.Input.Boolean
           label={stringResources['Value']}

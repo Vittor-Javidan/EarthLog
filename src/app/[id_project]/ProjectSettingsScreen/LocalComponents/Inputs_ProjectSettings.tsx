@@ -7,7 +7,6 @@ import { translations } from '@Translations/index';
 
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
-import UtilService from '@Services/UtilService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -16,7 +15,6 @@ export default function Inputs_ProjectSettings() {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
   const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-  const defaultSettings = useMemo(() => UtilService.deepCloning(projectSettings), []);
   const { rules } = useMemo(() => projectSettings, []);
 
   const [name, setName] = useState<string>(projectSettings.name);
@@ -36,13 +34,6 @@ export default function Inputs_ProjectSettings() {
   function onNameChange(newName: string) {
     if (rules.allowNameChange) {
       setName(newName);
-      setSaved(false);
-    }
-  }
-
-  function onNameReset() {
-    if (rules.allowNameChange) {
-      setName(defaultSettings.name);
       setSaved(false);
     }
   }
@@ -91,7 +82,6 @@ export default function Inputs_ProjectSettings() {
           value={name}
           locked={!rules.allowNameChange}
           onChangeText={(text) => onNameChange(text)}
-          onResetPress={() => onNameReset()}
         />
         <Layout.Feedback
           title={''}

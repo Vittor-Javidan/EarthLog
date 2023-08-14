@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -14,15 +14,52 @@ export default function StringInput(props: {
   color?: string
   color_placeholder?: string
   onChangeText?: (text: string) => void
-  onResetPress?: () => void
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
+  const [showUndo, setShowUndo] = useState<boolean>(false);
+  const [deletedText, setDeletedText] = useState<string>('');
+
+  function onChangeText(text: string) {
+
+    if (props.onChangeText === undefined) {
+      return;
+    }
+
+    props.onChangeText(text);
+    setShowUndo(false);
+  }
+
+  function onResetPress() {
+
+    if (props.onChangeText === undefined) {
+      return;
+    }
+
+    if (props.value === '') {
+      return;
+    }
+
+    setDeletedText(props.value);
+    setShowUndo(true);
+    props.onChangeText('');
+  }
+
+  function onUndoPress() {
+
+    if (props.onChangeText === undefined) {
+      return;
+    }
+
+    props.onChangeText(deletedText);
+    setShowUndo(false);
+  }
 
   const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
   const color = props.color ? props.color : theme.onBackground;
   const color_placeholder = props.color_placeholder ? props.color_placeholder : theme.onBackground_Placeholder;
 
+  const showLabel = props.label !== '';
   return (
     <View
       style={{
@@ -30,7 +67,7 @@ export default function StringInput(props: {
         paddingTop: 15,
       }}
     >
-      <Text
+      {showLabel && <Text
         style={{
           position: 'absolute',
           backgroundColor: backgroundColor,
@@ -43,7 +80,7 @@ export default function StringInput(props: {
         }}
       >
         {props.label}
-      </Text>
+      </Text>}
       <View
         style={{
           position: 'absolute',
@@ -66,18 +103,31 @@ export default function StringInput(props: {
               borderRadius: 10,
             }}
           />
-        ) : (
-          <IconButton
-            iconName="refresh-sharp"
-            color={color}
-            onPress={props.onResetPress}
-            style={{
-              paddingHorizontal: 5,
-              paddingVertical: 0,
-              borderRadius: 10,
-            }}
+        ) : (<>
+          {showUndo ? (
+            <IconButton
+              iconName="arrow-undo"
+              color={color}
+              onPress={() => onUndoPress()}
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 0,
+                borderRadius: 10,
+              }}
           />
-        )}
+          ) : (
+            <IconButton
+              iconName="close"
+              color={color}
+              onPress={() => onResetPress()}
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 0,
+                borderRadius: 10,
+              }}
+            />
+          )}
+        </>)}
 
       </View>
       <TextInput
@@ -93,12 +143,12 @@ export default function StringInput(props: {
           borderRadius: 10,
         }}
         value={props.value}
-        onChangeText={props.onChangeText}
         placeholder={props.placeholder}
         placeholderTextColor={color_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline
+        onChangeText={(text) => onChangeText(text)}
       />
     </View>
   );
