@@ -10,7 +10,7 @@ import IconButtonRounded from './IconButtonRounded';
 
 import ConfigService from '@Services/ConfigService';
 
-export default function SwipeButton(props: {
+export default function DeleteSwipeButton(props: {
   onSwipe: () => void
   onCancel: () => void
 }) {
@@ -21,7 +21,7 @@ export default function SwipeButton(props: {
   const PADDING = 10;
   const TARGET_AREA_WIDTH = 80;
   const CIRCLE_RADIUS = 40;
-  const THRESHOLD = WIDTH - TARGET_AREA_WIDTH - CIRCLE_RADIUS;
+  const THRESHOLD = WIDTH - TARGET_AREA_WIDTH - CIRCLE_RADIUS + PADDING;
 
   const translateX = useSharedValue(0);
   const circleBackground = useSharedValue(theme.tertiary);
@@ -139,6 +139,7 @@ export default function SwipeButton(props: {
               backgroundColor: theme.tertiary,
               justifyContent: 'center',
               alignItems: 'center',
+              zIndex: 20,
             }, animatedStyle_circle]}
           >
             <Icon

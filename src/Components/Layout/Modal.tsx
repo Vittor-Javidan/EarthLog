@@ -2,6 +2,7 @@ import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import IconButton from './Button/IconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -31,28 +32,30 @@ export default function Modal(props: {
       }}
       statusBarTranslucent={true}
     >
-      <View
-        style={{
-          height: useSafeAreaInsets().top,
-          backgroundColor: navbarColor,
-        }}
-      />
-      <Navbar
-        color_Navbar={props.color_Navbar}
-        color_onNavbar={props.color_onNavbar}
-        title={props.title}
-        onIconPress={props.onRequestClose}
-      />
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: backgroundColor,
-          paddingBottom: 150,
-        }}
-      >
-        {props.children}
-      </View>
-      {props.ScreenButtons}
+      <GestureHandlerRootView style={{ flex: 1}}>
+        <View
+          style={{
+            height: useSafeAreaInsets().top,
+            backgroundColor: navbarColor,
+          }}
+        />
+        <Navbar
+          color_Navbar={props.color_Navbar}
+          color_onNavbar={props.color_onNavbar}
+          title={props.title}
+          onIconPress={props.onRequestClose}
+        />
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: backgroundColor,
+            paddingBottom: 150,
+          }}
+        >
+          {props.children}
+        </View>
+        {props.ScreenButtons}
+      </GestureHandlerRootView>
     </ReactNative_Modal>
   );
 }

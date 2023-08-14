@@ -2,8 +2,6 @@ import { WidgetData } from '@Types/index';
 import React, { useState, useMemo, ReactNode } from 'react';
 import { Layout } from '@Components/Layout';
 
-import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export default function Modal(props: {
@@ -14,6 +12,7 @@ export default function Modal(props: {
   onDelete: () => void
   onRequestClose: () => void
 }) {
+
   return (
     <Layout.Modal
       title={props.title}
@@ -50,9 +49,11 @@ function ScreenButtons(props: {
 
   const { theme } = useMemo(() => ConfigService.config, []);
   const { rules } = props.widgetData;
+  const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   return (
     <Layout.ScreenButtons
+
       button_left={
         <Layout.Button.IconRounded
           iconName="arrow-back"
@@ -62,12 +63,17 @@ function ScreenButtons(props: {
           onPress={props.onRequestClose}
         />
       }
+
       button_middle={rules.allowWidgetErase ? (
-        <DeleteButton
-          widgetLabel={props.title}
-          onDelete={props.onDelete}
+        <Layout.Button.IconRounded
+          iconName="trash-outline"
+          showPlusSign={false}
+          color_background={theme.wrong}
+          color={theme.onWrong}
+          onPress={() => setShow_DeleteSwap(true)}
         />
       ) : undefined}
+
       button_right={
         <Layout.Button.IconRounded
           iconName="save"
@@ -77,143 +83,14 @@ function ScreenButtons(props: {
           onPress={props.onConfirm}
         />
       }
-    />
-  );
-}
 
-function DeleteButton(props: {
-  widgetLabel: string
-  onDelete: () => void
-}) {
-
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.Components.Modal[language], []);
-
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [widgetName, setWidgetName] = useState<string>('');
-
-  function onDelete() {
-    props.onDelete();
-    setShowModal(false);
-  }
-
-  function dismissModal() {
-    setShowModal(false);
-    setWidgetName('');
-  }
-
-  const isNameCorrect = widgetName === props.widgetLabel;
-
-  return (<>
-    <Layout.Button.IconRounded
-      iconName="trash-outline"
-      showPlusSign={false}
-      color_background={theme.wrong}
-      color={theme.onWrong}
-      onPress={() => setShowModal(true)}
-    />
-    {showModal && (
-      <Layout.Modal
-        title={stringResources['Delete']}
-        color_Navbar={theme.wrong}
-        color_onNavbar={theme.onWrong}
-        onRequestClose={() => dismissModal()}
-        ScreenButtons={
-          <ScreenButtons_Delete
-            isNameCorrect={isNameCorrect}
-            onPress_back={() => dismissModal()}
-            onPress_delete={() => onDelete()}
-          />
-        }
-      >
-        <Layout.View
-          style={{
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          {!isNameCorrect ? (<>
-            <Layout.Input.String
-              label={stringResources['Widget name']}
-              backgroundColor={theme.background}
-              color={theme.wrong}
-              color_placeholder={theme.wrong}
-              placeholder={`${stringResources['Type widget name perfectly to delete.']}`}
-              value={widgetName}
-              onChangeText={setWidgetName}
-              locked={false}
-              onResetPress={() => setWidgetName('')}
-            />
-            <Layout.View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Layout.Text.P
-                style={{
-                  color: theme.onBackground,
-                  marginLeft: 10,
-                  textAlignVertical: 'center',
-                }}
-              >
-                {`${stringResources['Tip']}:`}
-              </Layout.Text.P>
-              <Layout.Text.P
-                style={{
-                  color: theme.onBackground,
-                  marginRight: 10,
-                  textAlignVertical: 'center',
-                }}
-              >
-                {`"${props.widgetLabel}"`}
-              </Layout.Text.P>
-            </Layout.View>
-          </>) : (
-            <Layout.Text.P
-              style={{
-                color: theme.wrong,
-                margin: 10,
-                textAlignVertical: 'center',
-              }}
-            >
-              {stringResources['Click on the bottom right button to confirm.']}
-            </Layout.Text.P>
-          )}
-        </Layout.View>
-      </Layout.Modal>
-    )}
-  </>);
-}
-
-function ScreenButtons_Delete(props: {
-  isNameCorrect: boolean
-  onPress_back: () => void
-  onPress_delete: () => void
-}) {
-
-  const { theme } = useMemo(() => ConfigService.config, []);
-
-  return (
-    <Layout.ScreenButtons
-      button_left={
-        <Layout.Button.IconRounded
-          iconName="arrow-back"
-          color_background={theme.secondary}
-          color={theme.onSecondary}
-          showPlusSign={false}
-          onPress={props.onPress_back}
+      showSwipe={show_DeleteSwap}
+      SwipeButton={
+        <Layout.Button.DeleteSwipe
+          onSwipe={() => props.onDelete()}
+          onCancel={() => setShow_DeleteSwap(false)}
         />
       }
-      button_right={props.isNameCorrect ? (
-        <Layout.Button.IconRounded
-          iconName="checkmark-done-sharp"
-          color_background={theme.wrong}
-          color={theme.onWrong}
-          showPlusSign={false}
-          onPress={props.onPress_delete}
-        />
-      ) : undefined}
     />
   );
 }

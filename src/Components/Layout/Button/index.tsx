@@ -4,7 +4,7 @@ import IconButton from './IconButton';
 import IconButtonRounded from './IconButtonRounded';
 import DrawerButton from './DrawerButton';
 import TextWithIcon from './TextWithIcon';
-import SwipeButton from './SwipeButton';
+import DeleteSwipeButton from './DeleteSwipeButton';
 
 export const Button = {
   Root: RootButton,
@@ -12,6 +12,6 @@ export const Button = {
   Icon: IconButton,
   IconRounded: IconButtonRounded,
   TextWithIcon: TextWithIcon,
-  Swipe: SwipeButton,
+  DeleteSwipe: DeleteSwipeButton,
   Drawer: DrawerButton,
 };
