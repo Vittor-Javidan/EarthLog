@@ -4,7 +4,7 @@ import IconButton from './IconButton';
 import IconButtonRounded from './IconButtonRounded';
 import DrawerButton from './DrawerButton';
 import TextWithIcon from './TextWithIcon';
-import SwipeButton from './SlideButton';
+import SwipeButton from './SwipeButton';
 
 export const Button = {
   Root: RootButton,
