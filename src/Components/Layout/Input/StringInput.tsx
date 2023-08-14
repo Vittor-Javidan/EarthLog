@@ -26,6 +26,11 @@ export default function StringInput(props: {
   }
 
   function onResetPress() {
+
+    if (props.value === '') {
+      return;
+    }
+
     setDeletedText(props.value);
     setShowUndo(true);
     props.onChangeText('');
