@@ -114,7 +114,7 @@ export default function StringInput(props: {
                 paddingVertical: 0,
                 borderRadius: 10,
               }}
-          />
+            />
           ) : (
             <IconButton
               iconName="close"
