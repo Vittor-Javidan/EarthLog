@@ -13,7 +13,7 @@ export default function StringInput(props: {
   backgroundColor?: string
   color?: string
   color_placeholder?: string
-  onChangeText?: (text: string) => void
+  onChangeText: (text: string) => void
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
@@ -21,36 +21,17 @@ export default function StringInput(props: {
   const [deletedText, setDeletedText] = useState<string>('');
 
   function onChangeText(text: string) {
-
-    if (props.onChangeText === undefined) {
-      return;
-    }
-
     props.onChangeText(text);
     setShowUndo(false);
   }
 
   function onResetPress() {
-
-    if (props.onChangeText === undefined) {
-      return;
-    }
-
-    if (props.value === '') {
-      return;
-    }
-
     setDeletedText(props.value);
     setShowUndo(true);
     props.onChangeText('');
   }
 
   function onUndoPress() {
-
-    if (props.onChangeText === undefined) {
-      return;
-    }
-
     props.onChangeText(deletedText);
     setShowUndo(false);
   }

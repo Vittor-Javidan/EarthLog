@@ -72,6 +72,7 @@ export default function Inputs_ProjectSettings() {
           placeholder=""
           value={projectSettings.id_project}
           locked={true}
+          onChangeText={() => {}}
         />
         <Layout.Input.String
           label={stringResources['Name']}

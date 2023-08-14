@@ -61,8 +61,8 @@ export default function Inputs_ProjectSettings() {
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={stringResources['Only numbers, letters and "-".']}
           value={id}
-          onChangeText={(text) => onIDChange(text)}
           locked={false}
+          onChangeText={(text) => onIDChange(text)}
         />
         <Layout.Input.String
           label={stringResources['Name']}
@@ -71,8 +71,8 @@ export default function Inputs_ProjectSettings() {
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={stringResources['Write the project name here...']}
           value={name}
-          onChangeText={(text) => onNameChange(text)}
           locked={false}
+          onChangeText={(text) => onNameChange(text)}
         />
       </Layout.View>
     </Layout.View>

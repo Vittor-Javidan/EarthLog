@@ -175,7 +175,7 @@ function Modal(props: {
           color={theme.onBackground}
           value={value}
           locked={!rules.allowValueChange}
-          onSwitchChange={setValue}
+          onSwitchChange={(boolean) => setValue(boolean)}
         />
       </Layout.View>
     </WidgetComponent.Modal>

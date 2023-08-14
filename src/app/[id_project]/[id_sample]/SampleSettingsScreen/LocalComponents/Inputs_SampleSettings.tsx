@@ -74,6 +74,7 @@ export default function Inputs_SampleSettings() {
           placeholder=""
           locked={true}
           value={sampleSettings.id_sample}
+          onChangeText={() => {}}
         />
         <Layout.Input.String
           label={stringResources['Name']}
