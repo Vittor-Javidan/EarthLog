@@ -6,7 +6,7 @@ export type Translations_HomeScreen = Record<Languages, {
 	'Want to exit?': string
 	'NO': string
 	'YES': string
-	'Recently': string
+	'Recently Open': string
 	'Projects': string
 }>
 
@@ -17,7 +17,7 @@ export const translations_HomeScreen: Translations_HomeScreen = {
 		'Want to exit?': 'Want to exit?',
 		'NO': 'NO',
 		'YES': 'YES',
-		'Recently': 'Recently',
+		'Recently Open': 'Recently Open',
 		'Projects': 'Projects',
 	},
 	'pt-BR': {
@@ -26,7 +26,7 @@ export const translations_HomeScreen: Translations_HomeScreen = {
 		'Want to exit?': 'Deseja sair?',
 		'NO': 'NÃO',
 		'YES': 'SIM',
-		'Recently': 'Recente',
+		'Recently Open': 'Aberto Recentemente',
 		'Projects': 'Projetos',
 	},
 };
