@@ -13,9 +13,9 @@ export default function LastProjectButton() {
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const { id_project } = ProjectService?.lastOpenProject;
-  const showLastProjectButton = id_project !== '';
+  const lastProjectOpenExist = id_project !== '';
 
-  return showLastProjectButton ? (
+  return lastProjectOpenExist ? (
     <Layout.View
       style={{
         backgroundColor: theme.secondary,
