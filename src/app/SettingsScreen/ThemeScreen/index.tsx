@@ -38,9 +38,9 @@ export default function ThemeScreen(): JSX.Element {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.View>
+        <Layout.ScrollView>
           <AllInputs />
-        </Layout.View>
+        </Layout.ScrollView>
       )}
     </Layout.Root>
   );

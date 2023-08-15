@@ -114,15 +114,11 @@ function ContentArea(props: {
 }): JSX.Element {
 
   return (
-    <ScrollView
-      style={props.style}
-      automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={{
-        paddingBottom: 150,
-      }}
+    <View
+      style={[props.style]}
     >
       {props.children}
-    </ScrollView>
+    </View>
   );
 }
 

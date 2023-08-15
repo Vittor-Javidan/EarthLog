@@ -10,8 +10,8 @@ export default function SampleButtons() {
   const id_project = useLocalSearchParams().id_project as string;
 
   return (
-    <Layout.View
-      style={{
+    <Layout.ScrollView
+      contenContainerStyle={{
         paddingTop: 1,
         gap: 1,
       }}
@@ -25,6 +25,6 @@ export default function SampleButtons() {
           onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
         />
       ))}
-    </Layout.View>
+    </Layout.ScrollView>
   );
 }

@@ -10,7 +10,9 @@ export default function ScrollView(props: {
     <ReactNative_ScrollView
       style={props.style}
       automaticallyAdjustKeyboardInsets={true}
-      contentContainerStyle={props.contenContainerStyle}
+      contentContainerStyle={[{
+        paddingBottom: 150,
+      }, props.contenContainerStyle]}
     >
       {props.children}
     </ReactNative_ScrollView>

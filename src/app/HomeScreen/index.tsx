@@ -54,8 +54,8 @@ export default function HomeScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.View
-        style={{
+      <Layout.ScrollView
+        contenContainerStyle={{
           paddingTop: 10,
           padding: 5,
           gap: 10,
@@ -63,7 +63,7 @@ export default function HomeScreen() {
       >
         <LastProjectButton />
         <ProjectButtons />
-      </Layout.View>
+      </Layout.ScrollView>
     </Layout.Root>
   );
 }
