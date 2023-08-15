@@ -1,17 +1,17 @@
 import { Languages } from '@Types/index';
 
 export type Translations_ProjectScreen = Record<Languages, {
-	'Project settings': string
+	'Edit project': string
 	'Template': string
 }>
 
 export const translations_ProjectScreen: Translations_ProjectScreen = {
 	'en-US': {
-		'Project settings': 'Project settings',
+		'Edit project': 'Edit project',
 		'Template': 'Template',
 	},
 	'pt-BR': {
-		'Project settings': 'Configurações do projeto',
+		'Edit project': 'Editar projeto',
 		'Template': 'Template',
 	},
 };

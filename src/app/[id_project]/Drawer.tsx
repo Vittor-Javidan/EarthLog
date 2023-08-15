@@ -16,7 +16,7 @@ export function Drawer() {
 
   return (<>
     <Layout.Button.Drawer
-      title={stringResources['Project settings']}
+      title={stringResources['Edit project']}
       onPress={async () => await useNavigate('PROJECT SETTINGS SCREEN', id_project)}
     />
     <Layout.Button.Drawer
