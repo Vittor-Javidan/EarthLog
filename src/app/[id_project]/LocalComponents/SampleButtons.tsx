@@ -9,14 +9,22 @@ export default function SampleButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  return (<>
-    {ProjectService.allSamples.map(sampleSettings => (
-      <Layout.UI.Sample
-        key={sampleSettings.id_sample}
-        title_label=""
-        title_button={sampleSettings.name}
-        onPress_Open={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
-      />
-    ))}
-  </>);
+  return (
+    <Layout.View
+      style={{
+        paddingTop: 1,
+        gap: 1,
+      }}
+    >
+      {ProjectService.allSamples.map(sampleSettings => (
+        <Layout.Button.TextWithIcon
+          key={sampleSettings.id_sample}
+          title={sampleSettings.name}
+          iconSide="Right"
+          iconName="clipboard"
+          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
+        />
+      ))}
+    </Layout.View>
+  );
 }

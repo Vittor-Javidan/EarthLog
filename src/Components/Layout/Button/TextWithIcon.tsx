@@ -27,8 +27,6 @@ export default function TextWithIcon(props: {
       style={[{
         flexDirection: 'row',
         justifyContent: 'space-between',
-				borderColor: theme.tertiary,
-        borderWidth: 1,
 			}, props.style]}
     >
       {props.iconSide === 'Left' && (
