@@ -21,11 +21,6 @@ export default function ScreenButtons() {
     await useNavigate(screen, id_project);
   }
 
-  async function exitAndOpenSample(id_sample: string) {
-    API_Inputs_SampleSettings.reset();
-    await useNavigate('SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)', id_project, id_sample);
-  }
-
   async function onConfirm() {
 
     const { temporarySettings } = API_Inputs_SampleSettings;
@@ -38,7 +33,7 @@ export default function ScreenButtons() {
     await ProjectService.createSample(
       id_project,
       temporarySettings,
-      async () => await exitAndOpenSample(temporarySettings.id_sample),
+      async () => await exitScreen('PROJECT SCREEN'),
       (errorMessage) => alert(errorMessage)
     );
   }
