@@ -1,17 +1,17 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { useBackPress, useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Layout/index';
-import AllInputs from './LocalComponents/ColorInput';
-
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
-import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
+import Drawer from './Drawer';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
-import Drawer from './Drawer';
+import AllInputs from './LocalComponents/ColorInput';
+import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -21,12 +21,10 @@ export default function ThemeScreen(): JSX.Element {
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => { setState('Loaded'); }, []);
-  useBackPress(async () => await cancelAndExit());
-
-  async function cancelAndExit() {
+  useBackPress(async () => {
     API_ExampleFigure.discart();
-    await useNavigate('SETTINGS SCREEN');
-  }
+    navigate('SETTINGS SCREEN');
+  });
 
   return (
     <Layout.Root

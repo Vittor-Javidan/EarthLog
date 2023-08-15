@@ -1,21 +1,28 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ScreenButtons from './ScreenButtons';
+import ProjectService from '@Services/ProjectService';
+
 import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
 import Widgets_Template from './LocalComponents/Widgets_Template';
 
 export default function TemplateScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
   const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.TemplateScreen[language], []);
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
-  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+  useEffect(() => {
+    fetchWidgets(id_project, () => setState('Loaded'));
+  }, []);
+  useBackPress(() => navigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
@@ -24,15 +31,27 @@ export default function TemplateScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.View
-        style={{
-          paddingTop: 10,
-          padding: 5,
-          gap: 10,
-        }}
-      >
-        <Widgets_Template />
-      </Layout.View>
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView
+          contenContainerStyle={{
+            paddingTop: 10,
+            padding: 5,
+            gap: 10,
+          }}
+        >
+          <Widgets_Template />
+        </Layout.ScrollView>
+      )}
     </Layout.Root>
   );
+}
+
+async function fetchWidgets(
+  id_project: string,
+  whenLoaded: () => void
+) {
+  await ProjectService.loadAllWidgets_Template(id_project);
+  whenLoaded();
 }

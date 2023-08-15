@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Layout } from '@Components/Layout';
 
+import { Layout } from '@Components/Layout';
 import { WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 

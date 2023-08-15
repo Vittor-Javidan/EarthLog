@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Layout/index';
-
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-
 import ProjectService from '@Services/ProjectService';
 import ConfigService from '@Services/ConfigService';
 
@@ -26,7 +25,7 @@ export default function ProjectButtons() {
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         } : undefined}
-        onPress={async () => await useNavigate('PROJECT SCREEN', settings.id_project)}
+        onPress={() => navigate('PROJECT SCREEN', settings.id_project)}
       />
     );
   });

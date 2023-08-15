@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Layout } from '@Components/Layout';
 import { useTiming } from '@Hooks/index';
-
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 

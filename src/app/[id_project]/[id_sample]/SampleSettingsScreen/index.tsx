@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+
 import { Layout } from '@Components/Layout';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
+
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
 import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
-import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
 
 export default function SampleSettingsScreen() {
 

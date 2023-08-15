@@ -1,4 +1,5 @@
 import { WidgetData } from '@Types/index';
+
 import API_TemporaryProject from './API_TemporaryProject';
 
 export default class API_Widgets_Project {

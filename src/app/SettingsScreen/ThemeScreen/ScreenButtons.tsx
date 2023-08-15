@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
+
 import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
 
 export default function ScreenButtons() {
@@ -12,14 +14,14 @@ export default function ScreenButtons() {
     API_ExampleFigure.reset();
   }
 
-  async function cancelAndExit() {
+  function cancelAndExit() {
     API_ExampleFigure.discart();
-    await useNavigate('SETTINGS SCREEN');
+    navigate('SETTINGS SCREEN');
   }
 
   async function confirmAndSave() {
     await API_ExampleFigure.save();
-    await useNavigate('SETTINGS SCREEN');
+    navigate('SETTINGS SCREEN');
   }
 
   return (
@@ -30,7 +32,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.wrong}
           color={theme.onWrong}
-          onPress={async () => await cancelAndExit()}
+          onPress={() => cancelAndExit()}
         />
       }
       button_middle={
@@ -39,7 +41,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.primary}
           color={theme.onPrimary}
-          onPress={async () => resetTheme()}
+          onPress={() => resetTheme()}
         />
       }
       button_right={

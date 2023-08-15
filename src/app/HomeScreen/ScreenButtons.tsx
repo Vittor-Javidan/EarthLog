@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 
 export default function ScreenButtons() {
@@ -15,7 +16,7 @@ export default function ScreenButtons() {
           showPlusSign={true}
           color={theme.onConfirm}
           color_background={theme.confirm}
-          onPress={async () => await useNavigate('PROJECT CREATION SCREEN')}
+          onPress={() => navigate('PROJECT CREATION SCREEN')}
         />
       }
     />

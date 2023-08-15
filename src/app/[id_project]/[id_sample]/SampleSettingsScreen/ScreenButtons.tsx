@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
@@ -20,7 +21,7 @@ export default function ScreenButtons() {
     await ProjectService.deleteSample(
       id_project,
       id_sample,
-      async () => await useNavigate('PROJECT SCREEN', id_project),
+      () => navigate('PROJECT SCREEN', id_project),
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -34,7 +35,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
+          onPress={() => navigate('SAMPLE SCREEN', id_project, id_sample)}
         />
       }
 

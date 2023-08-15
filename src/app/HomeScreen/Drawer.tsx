@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
+
 import { Layout } from '@Layout/index';
-
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
-import { useNavigate } from '@Hooks/index';
 
 export default function Drawer() {
 
@@ -14,7 +13,7 @@ export default function Drawer() {
   return (
     <Layout.Button.Drawer
       title={stringResources['Settings']}
-      onPress={() => useNavigate('SETTINGS SCREEN')}
+      onPress={() => navigate('SETTINGS SCREEN')}
     />
   );
 }

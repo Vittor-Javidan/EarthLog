@@ -2,10 +2,6 @@ import { TextWidgetData } from '@Types/index';
 
 export class WidgetRules {
 
-  // ===============================================================================================
-  // FLEXIBLE RULES
-  // ===============================================================================================
-
   static noSpaces(widgetData: TextWidgetData): boolean {
     if (widgetData.rules.noSpaces && widgetData.value !== '') {
       const regex = /\s/;

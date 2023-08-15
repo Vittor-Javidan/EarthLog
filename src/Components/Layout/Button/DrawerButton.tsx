@@ -3,6 +3,7 @@ import { GestureResponderEvent, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
+
 import RootText from '../Text/Root';
 
 export default function DrawerButton(props: {

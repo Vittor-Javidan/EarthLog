@@ -1,6 +1,6 @@
+import { ThemeDTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import { ThemeDTO } from '@Types/index';
 
 export default class API_ExampleFigure {
 

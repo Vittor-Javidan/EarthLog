@@ -1,24 +1,23 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+
 import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
-import { useNavigate } from '@Hooks/index';
-import { translations } from '@Translations/index';
 
 export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
-  async function exitScreen(
-    screen: 'PROJECT SCREEN' | 'HOME SCREEN'
-  ) {
+  function exitScreen() {
     API_Inputs_SampleSettings.reset();
-    await useNavigate(screen, id_project);
+    navigate('PROJECT SCREEN', id_project);
   }
 
   async function onConfirm() {
@@ -33,7 +32,7 @@ export default function ScreenButtons() {
     await ProjectService.createSample(
       id_project,
       temporarySettings,
-      async () => await exitScreen('PROJECT SCREEN'),
+      () => exitScreen(),
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -46,7 +45,7 @@ export default function ScreenButtons() {
         showPlusSign={false}
         color_background={theme.wrong}
         color={theme.onWrong}
-        onPress={async () => await exitScreen('PROJECT SCREEN')}
+        onPress={() => exitScreen()}
       />
     }
     button_right={

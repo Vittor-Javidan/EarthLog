@@ -1,14 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { WidgetComponent } from '@WidgetComponents/index';
 
+import { Layout } from '@Components/Layout';
 import { TextWidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
-
+import { useTiming } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 
 import { WidgetRules } from '../Rules';
-import { Layout } from '@Components/Layout';
-import { useTiming } from '@Hooks/index';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData

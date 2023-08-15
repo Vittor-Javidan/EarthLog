@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
+
 import { Layout } from '@Components/Layout';
-
 import { translations } from '@Translations/index';
-
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 

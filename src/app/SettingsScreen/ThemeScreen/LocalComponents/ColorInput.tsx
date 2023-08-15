@@ -2,14 +2,14 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import * as Vibration from 'expo-haptics';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
 import { Layout } from '@Components/Layout';
 import { ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
-import API_ExampleFigure from './API_ExampleFigure';
 import UtilService from '@Services/UtilService';
+import ConfigService from '@Services/ConfigService';
 
-const { width: WIDTH } = Dimensions.get('window');
+import API_ExampleFigure from './API_ExampleFigure';
 
 export default function AllInputs(): JSX.Element {
 
@@ -45,6 +45,7 @@ function CustomInput(props: {
 
   const { language, theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
+  const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
   const [color, setColor] = useState<string>(props.savedValue);
   const [valid, setValid] = useState<boolean>(true);

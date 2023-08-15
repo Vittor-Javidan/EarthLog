@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 
 export default function ScreenButtons() {
@@ -15,7 +16,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={async () =>  await useNavigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCREEN')}
         />
       }
     />

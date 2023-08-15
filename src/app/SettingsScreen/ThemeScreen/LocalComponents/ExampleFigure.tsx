@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 import API_ExampleFigure from './API_ExampleFigure';

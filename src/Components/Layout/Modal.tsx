@@ -1,11 +1,11 @@
 import React, { useMemo, ReactNode } from 'react';
 import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native';
-import IconButton from './Button/IconButton';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ConfigService from '@Services/ConfigService';
 
+import IconButton from './Button/IconButton';
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export default function Modal(props: {

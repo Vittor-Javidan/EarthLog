@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
+
 import { Layout } from '@Layout/index';
-
 import { languageLabels, languageTags, LanguageTags } from '@Types/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export default function LanguageButtons(props: {

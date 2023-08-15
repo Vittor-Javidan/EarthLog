@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { View, Text, Switch, Platform } from 'react-native';
 
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+
 import IconButton from '../Button/IconButton';
 
 export default function BooleanInput(props: {

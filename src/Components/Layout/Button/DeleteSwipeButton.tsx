@@ -4,11 +4,11 @@ import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-g
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
 import * as Vibration from 'expo-haptics';
 
+import ConfigService from '@Services/ConfigService';
+
 import H1 from '../Text/H1';
 import Icon from '../Icon';
 import IconButtonRounded from './IconButtonRounded';
-
-import ConfigService from '@Services/ConfigService';
 
 export default function DeleteSwipeButton(props: {
   onSwipe: () => void

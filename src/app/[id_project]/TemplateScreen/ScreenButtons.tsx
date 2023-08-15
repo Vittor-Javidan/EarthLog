@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
+import { navigate } from '@Globals/NavigationControler';
 import { WidgetData } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+
 import API_Widgets_Template from './LocalComponents/API_Widgets_Template';
 
 export default function ScreenButtons() {
@@ -32,7 +34,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCREEN', id_project)}
         />
       }
       button_right={rules.allowWidgetCreation_Template ? (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
-import { Layout } from '@Components/Layout';
 
+import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ProjectService from '@Services/ProjectService';
 
 export default function SampleButtons() {
@@ -22,7 +22,7 @@ export default function SampleButtons() {
           title={sampleSettings.name}
           iconSide="Right"
           iconName="clipboard"
-          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
+          onPress={() => navigate('SAMPLE SCREEN', id_project, sampleSettings.id_sample)}
         />
       ))}
     </Layout.ScrollView>

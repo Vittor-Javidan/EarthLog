@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { Switch, Platform } from 'react-native';
 
+
+import { Layout } from '@Components/Layout';
+import { BooleanWidgetData } from '@Types/index';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { WidgetComponent } from '../Components';
-import { BooleanWidgetData } from '@Types/index';
-import { Layout } from '@Components/Layout';
-import { translations } from '@Translations/index';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
-
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export function Drawer() {
@@ -17,11 +16,11 @@ export function Drawer() {
   return (<>
     <Layout.Button.Drawer
       title={stringResources['Edit project']}
-      onPress={async () => await useNavigate('PROJECT SETTINGS SCREEN', id_project)}
+      onPress={() => navigate('PROJECT SETTINGS SCREEN', id_project)}
     />
     <Layout.Button.Drawer
       title={stringResources['Template']}
-      onPress={async () => await useNavigate('TEMPLATE SCREEN', id_project)}
+      onPress={() => navigate('TEMPLATE SCREEN', id_project)}
     />
   </>);
 }

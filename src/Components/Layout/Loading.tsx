@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import View from './View';
-import H1 from './Text/H1';
 
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+
+import View from './View';
+import H1 from './Text/H1';
 
 export default function Loading(): JSX.Element {
 

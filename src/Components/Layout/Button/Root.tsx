@@ -1,6 +1,5 @@
 import React, { useState, useMemo, ReactNode } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';

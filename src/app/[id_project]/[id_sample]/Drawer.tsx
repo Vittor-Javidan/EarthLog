@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Layout } from '@Components/Layout';
-import { useNavigate } from '@Hooks/index';
-
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export function Drawer() {
@@ -18,7 +17,7 @@ export function Drawer() {
   return (<>
     <Layout.Button.Drawer
       title={stringResources['Sample settings']}
-      onPress={async () => await useNavigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
+      onPress={() => navigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
     />
   </>);
 }

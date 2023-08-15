@@ -1,5 +1,4 @@
 import { SampleSettings } from '@Types/index';
-
 import ProjectService from '@Services/ProjectService';
 
 export default class API_Inputs_SampleSettings {

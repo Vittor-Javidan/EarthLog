@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Widget } from '@Components/Widget';
 
+import { Widget } from '@Components/Widget';
 import { WidgetData } from '@Types/index';
 
 import API_TemporaryProject from './API_TemporaryProject';

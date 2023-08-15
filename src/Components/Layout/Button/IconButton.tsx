@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import * as Vibration from 'expo-haptics';
-import Icon, { IconName } from '../Icon';
 
 import ConfigService from '@Services/ConfigService';
+
+import Icon, { IconName } from '../Icon';
 
 export default function IconButton(props: {
   iconName: IconName

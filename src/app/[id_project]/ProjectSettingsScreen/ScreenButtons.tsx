@@ -1,12 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
-import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
+import { navigate } from '@Globals/NavigationControler';
 import { WidgetData } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+
+import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
 
 export default function ScreenButtons() {
 
@@ -28,7 +30,7 @@ export default function ScreenButtons() {
   async function deleteProject() {
     await ProjectService.deleteProject(
       id_project,
-      async () => await useNavigate('HOME SCREEN'),
+      () => navigate('HOME SCREEN'),
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -42,7 +44,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCREEN', id_project)}
         />
       }
 

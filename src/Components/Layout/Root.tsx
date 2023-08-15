@@ -1,13 +1,13 @@
 import React, { ReactNode, useState, useMemo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
 import { MotiView } from 'moti';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import IconButton from './Button/IconButton';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 
+import IconButton from './Button/IconButton';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;

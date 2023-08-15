@@ -1,7 +1,7 @@
 import React, { useMemo, ReactNode } from 'react';
 import {View} from 'react-native';
-import { Layout } from '@Components/Layout';
 
+import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
 
 export default function Root(props: {

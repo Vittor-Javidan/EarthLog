@@ -1,7 +1,7 @@
 import { WidgetData } from '@Types/index';
 import React, { useState, useMemo, ReactNode } from 'react';
-import { Layout } from '@Components/Layout';
 
+import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
 
 export default function Modal(props: {

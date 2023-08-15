@@ -1,6 +1,7 @@
 import React from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 
 export default function NavigationTree() {
   return (
@@ -9,12 +10,12 @@ export default function NavigationTree() {
         <Layout.Button.Icon
           key="treeIcon_1"
           iconName="home"
-          onPress={async () => await useNavigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCREEN')}
         />,
         <Layout.Button.Icon
           key="treeIcon_2"
           iconName="settings"
-          onPress={async () => await useNavigate('SETTINGS SCREEN')}
+          onPress={() => navigate('SETTINGS SCREEN')}
         />,
         <Layout.Button.Icon
           key="treeIcon_3"

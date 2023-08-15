@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
-import ConfigService from '@Services/ConfigService';
 import { Widget } from '@Components/Widget';
-import ProjectService from '@Services/ProjectService';
+import { navigate } from '@Globals/NavigationControler';
 import { WidgetData } from '@Types/index';
+import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
+
 import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
 import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
 
@@ -12,14 +14,9 @@ export default function ScreenButtons() {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
-  async function exitScreen() {
+  function exitScreen() {
     API_TemporaryProject.reset();
-    await useNavigate('HOME SCREEN');
-  }
-
-  async function exitAndOpenProject(id_project: string) {
-    API_TemporaryProject.reset();
-    await useNavigate('PROJECT SCREEN (FROM PROJECT CREATION SCREEN)', id_project);
+    navigate('HOME SCREEN');
   }
 
   async function onConfirm() {
@@ -34,7 +31,7 @@ export default function ScreenButtons() {
 
     await ProjectService.createProject(
       newProject,
-      async () => await exitAndOpenProject(newProjectSettings.id_project),
+      () => exitScreen(),
       (errorMessage) => alert(errorMessage),
     );
   }
@@ -52,7 +49,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.wrong}
           color={theme.onWrong}
-          onPress={async () => await exitScreen()}
+          onPress={() => exitScreen()}
         />
       }
       button_middle={

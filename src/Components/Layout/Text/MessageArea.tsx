@@ -1,7 +1,9 @@
 import React, { useMemo, ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import View from '../View';
+
 import ConfigService from '@Services/ConfigService';
+
+import View from '../View';
 
 export default function MessageArea(props: {
   children: ReactNode

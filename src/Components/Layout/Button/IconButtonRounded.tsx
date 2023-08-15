@@ -2,9 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Text, StyleProp, ViewStyle, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import Icon, { IconName } from '../Icon';
-
 import ConfigService from '@Services/ConfigService';
+
+import Icon, { IconName } from '../Icon';
 
 export default function IconButtonRounded(props: {
   iconName: IconName

@@ -1,9 +1,10 @@
 import React, { useMemo, ReactNode } from 'react';
+
+import ConfigService from '@Services/ConfigService';
+
 import View from './View';
 import Icon, { IconName } from './Icon';
 import { Text } from './Text';
-
-import ConfigService from '@Services/ConfigService';
 
 export default function Group(props: {
   title: string

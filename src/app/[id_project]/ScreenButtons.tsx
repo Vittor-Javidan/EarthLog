@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
@@ -20,7 +21,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={async () => await useNavigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCREEN')}
         />
       }
       button_right={rules.allowSampleCreation ? (
@@ -29,7 +30,7 @@ export default function ScreenButtons() {
           showPlusSign={true}
           color_background={theme.confirm}
           color={theme.onConfirm}
-          onPress={async () => await useNavigate('SAMPLE CREATION SCREEN', id_project)}
+          onPress={() => navigate('SAMPLE CREATION SCREEN', id_project)}
         />
       ) : undefined}
     />

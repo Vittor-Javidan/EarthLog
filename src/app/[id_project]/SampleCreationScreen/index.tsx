@@ -1,32 +1,33 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
-import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
-
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
 
-import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
+import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
+import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
 
 export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
   const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
-  useBackPress(async () => await exitScreen('PROJECT SCREEN'));
+  useEffect(() => {
+    fetchWidgets(id_project, () => setState('Loaded'));
+  }, []);
 
-  async function exitScreen(
-    screen: 'PROJECT SCREEN' | 'HOME SCREEN'
-  ) {
+  useBackPress(() => {
     API_Inputs_SampleSettings.reset();
-    await useNavigate(screen, id_project);
-  }
+    navigate('PROJECT SCREEN', id_project);
+  });
 
   return (
     <Layout.Root
@@ -35,15 +36,27 @@ export default function SampleCreationScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.View
-        style={{
-          paddingTop: 10,
-          padding: 5,
-          gap: 10,
-        }}
-      >
-        <Inputs_SampleSettings />
-      </Layout.View>
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView
+          contenContainerStyle={{
+            paddingTop: 10,
+            padding: 5,
+            gap: 10,
+          }}
+        >
+          <Inputs_SampleSettings />
+        </Layout.ScrollView>
+      )}
     </Layout.Root>
   );
+}
+
+async function fetchWidgets(
+  id_project: string,
+  whenLoaded: () => void
+) {
+  await ProjectService.loadAllWidgets_Template(id_project);
+  whenLoaded();
 }

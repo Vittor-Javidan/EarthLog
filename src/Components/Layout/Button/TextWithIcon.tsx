@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
+
 import RootButton from './Root';
 import RootText from '../Text/Root';
 import Icon, { IconName } from '../Icon';

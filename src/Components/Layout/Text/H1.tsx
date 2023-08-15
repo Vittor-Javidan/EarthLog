@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-import RootText from './Root';
+
 import ThemeService from '@Services/ThemeService';
+
+import RootText from './Root';
 
 export default function H1(props: {
   children: string

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Layout } from '@Components/Layout';
-import { useNavigate } from '@Hooks/index';
+import { navigate } from '@Globals/NavigationControler';
 
 export default function NavigationTree() {
 
@@ -13,12 +14,12 @@ export default function NavigationTree() {
         <Layout.Button.Icon
           key="treeIcon_1"
           iconName="home"
-          onPress={async () => await useNavigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCREEN')}
         />,
         <Layout.Button.Icon
           key="treeIcon_2"
           iconName="folder"
-          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCREEN', id_project)}
         />,
         <Layout.Button.Icon
           key="treeIcon_3"

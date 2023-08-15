@@ -1,22 +1,28 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { BackHandler, Alert } from 'react-native';
 import * as Vibration from 'expo-haptics';
-import { useBackPress } from '@Hooks/index';
+
 import { Layout } from '@Layout/index';
-import Drawer from './Drawer';
-import ProjectButtons from './LocalComponents/ProjectButtons';
-
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+import ProjectService from '@Services/ProjectService';
+
+import Drawer from './Drawer';
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
 import LastProjectButton from './LocalComponents/LastProjectButton';
+import ProjectButtons from './LocalComponents/ProjectButtons';
 
 export default function HomeScreen() {
 
   const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
+
+  useEffect(() => {
+    fetchProject(() => setState('Loaded'));
+  }, []);
 
   useBackPress(async () => {
     await exitMessage();
@@ -54,16 +60,26 @@ export default function HomeScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.ScrollView
-        contenContainerStyle={{
-          paddingTop: 10,
-          padding: 5,
-          gap: 10,
-        }}
-      >
-        <LastProjectButton />
-        <ProjectButtons />
-      </Layout.ScrollView>
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView
+          contenContainerStyle={{
+            paddingTop: 10,
+            padding: 5,
+            gap: 10,
+          }}
+        >
+          <LastProjectButton />
+          <ProjectButtons />
+        </Layout.ScrollView>
+      )}
     </Layout.Root>
   );
+}
+
+async function fetchProject(whenLoaded: () => void) {
+  await ProjectService.loadAllProjectsSettings();
+  await ProjectService.loadLastOpenProject();
+  whenLoaded();
 }

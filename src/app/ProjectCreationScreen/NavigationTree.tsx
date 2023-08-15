@@ -1,13 +1,15 @@
 import React from 'react';
-import { useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
+
 import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
 
 export default function NavigationTree() {
 
-  async function exitScreen() {
+  function exitScreen() {
     API_TemporaryProject.reset();
-    await useNavigate('HOME SCREEN');
+    navigate('HOME SCREEN');
   }
 
   return (
@@ -16,7 +18,7 @@ export default function NavigationTree() {
         <Layout.Button.Icon
           key="treeIcon_1"
           iconName="home"
-          onPress={async () => await exitScreen()}
+          onPress={() => exitScreen()}
         />,
         <Layout.Button.Icon
           key="treeIcon_2"

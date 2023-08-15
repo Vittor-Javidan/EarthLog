@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Widget } from '@Components/Widget';
-
 import { WidgetData } from '@Types/index';
-
 import ProjectService from '@Services/ProjectService';
+
 import API_Widgets_Sample from './API_Widgets_Sample';
 
 export default function Widgets_Sample() {
