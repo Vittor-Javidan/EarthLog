@@ -55,7 +55,6 @@ function Label(props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: props.wrongData ? theme.wrong : theme.secondary,
-        height: 40,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
       }}
@@ -64,24 +63,26 @@ function Label(props: {
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-start',
+          maxWidth: '80%',
         }}
       >
-        <Layout.Text.Root
+        <Layout.Text.P
           style={{
             paddingVertical: 5,
             paddingHorizontal: 10,
-            fontSize: 200,
             color: props.wrongData ? theme.onWrong : theme.onSecondary,
           }}
         >
           {props.label}
-        </Layout.Text.Root>
+        </Layout.Text.P>
       </View>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
+          alignSelf: 'flex-start',
+          height: 40,
         }}
       >
         {props.iconButtons}
