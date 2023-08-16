@@ -25,7 +25,12 @@ export default function LanguagesScreen(): JSX.Element {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.View>
+      <Layout.View
+        style={{
+          paddingTop: 2,
+          gap: 2,
+        }}
+      >
         <LanguageButtons
           onButtonClick={() => refresh(prev => !prev)}
         />

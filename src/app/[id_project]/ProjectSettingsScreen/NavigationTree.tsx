@@ -23,7 +23,7 @@ export default function NavigationTree() {
         />,
         <Layout.Button.Icon
           key="treeIcon_3"
-          iconName="settings"
+          iconName="pencil-sharp"
         />,
       ]}
     />

@@ -27,17 +27,28 @@ export default function SettingsScreen(): JSX.Element {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <Layout.View>
-        <Layout.Button.Text
+      <Layout.View
+        style={{
+          paddingTop: 2,
+          gap: 2,
+        }}
+      >
+        <Layout.Button.TextWithIcon
           title={stringResources['Language']}
+          iconName="language"
+          iconSide="Right"
           onPress={() => navigate('LANGUAGES SCREEN')}
         />
-        <Layout.Button.Text
+        <Layout.Button.TextWithIcon
           title={stringResources['Theme']}
+          iconName="color-palette"
+          iconSide="Right"
           onPress={() => navigate('THEME SCREEN')}
         />
-        <Layout.Button.Text
+        <Layout.Button.TextWithIcon
           title={stringResources['Whipe Database']}
+          iconName="trash-outline"
+          iconSide="Right"
           color_background={theme.wrong}
           color_font={theme.onWrong}
           onPress={async () => await whipeDataBase()}

@@ -10,16 +10,24 @@ export function Drawer() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { language } = useMemo(() => ConfigService.config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectScreen[language], []);
 
   return (<>
-    <Layout.Button.Drawer
+    <Layout.Button.TextWithIcon
       title={stringResources['Edit project']}
+      iconName="pencil-sharp"
+      iconSide="Right"
+      color_background={theme.tertiary}
+      color_font={theme.onTertiary}
       onPress={() => navigate('PROJECT SETTINGS SCREEN', id_project)}
     />
-    <Layout.Button.Drawer
+    <Layout.Button.TextWithIcon
       title={stringResources['Edit template']}
+      iconName="copy"
+      iconSide="Right"
+      color_background={theme.tertiary}
+      color_font={theme.onTertiary}
       onPress={() => navigate('TEMPLATE SCREEN', id_project)}
     />
   </>);

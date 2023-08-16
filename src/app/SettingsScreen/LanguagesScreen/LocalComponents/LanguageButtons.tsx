@@ -20,9 +20,11 @@ export default function LanguageButtons(props: {
       languageLabels.map((languageLabel, index) => {
         const isSelected = language === languageTags[index];
         return (
-          <Layout.Button.Text
+          <Layout.Button.TextWithIcon
             key={languageLabel}
             title={languageLabel}
+            iconName="language"
+            iconSide="Right"
             color_background={isSelected ? theme.confirm : undefined}
             color_font={isSelected ? theme.onConfirm : undefined}
             onPress={async () => {
