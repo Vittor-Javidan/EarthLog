@@ -33,15 +33,7 @@ export default function SampleScreens() {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView
-          contenContainerStyle={{
-            paddingTop: 10,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <Widgets_Sample />
-        </Layout.ScrollView>
+        <Widgets_Sample />
       )}
     </Layout.Root>
   );

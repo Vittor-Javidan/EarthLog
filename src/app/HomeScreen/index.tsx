@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { BackHandler, Alert } from 'react-native';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { BackHandler, Alert, Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import * as Vibration from 'expo-haptics';
 
 import { Layout } from '@Layout/index';
@@ -63,15 +64,11 @@ export default function HomeScreen() {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView
-          contenContainerStyle={{
-            paddingTop: 10,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <LastProjectButton />
-          <ProjectButtons />
+        <Layout.ScrollView>
+          <Animation>
+            <LastProjectButton />
+            <ProjectButtons />
+          </Animation>
         </Layout.ScrollView>
       )}
     </Layout.Root>
@@ -82,4 +79,29 @@ async function fetchProject(whenLoaded: () => void) {
   await ProjectService.loadAllProjectsSettings();
   await ProjectService.loadLastOpenProject();
   whenLoaded();
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: 2 * height }}
+      transition={{
+        type: 'spring',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
+  );
 }

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Widget } from '@Components/Widget';
@@ -6,6 +8,7 @@ import { WidgetData } from '@Types/index';
 import ProjectService from '@Services/ProjectService';
 
 import API_Widgets_Sample from './API_Widgets_Sample';
+import { Layout } from '@Components/Layout';
 
 export default function Widgets_Sample() {
 
@@ -53,7 +56,37 @@ export default function Widgets_Sample() {
     );
   });
 
-  return (<>
-    {allWidgetsComponents}
-  </>);
+  return (
+    <Layout.ScrollView>
+      <Animation>
+        {allWidgetsComponents}
+      </Animation>
+    </Layout.ScrollView>
+  );
 }
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 300,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
+  );
+}
+
