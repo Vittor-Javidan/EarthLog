@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 
 import { Layout } from '@Components/Layout';
 import { translations } from '@Translations/index';
@@ -20,15 +22,36 @@ export default function SampleSettingsScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.View
-        style={{
-          paddingTop: 10,
-          padding: 5,
-          gap: 10,
-        }}
-      >
-        <Inputs_SampleSettings />
-      </Layout.View>
+      <Layout.ScrollView>
+        <Animation>
+          <Inputs_SampleSettings />
+        </Animation>
+      </Layout.ScrollView>
     </Layout.Root>
+  );
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

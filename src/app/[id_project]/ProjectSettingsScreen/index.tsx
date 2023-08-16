@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Layout } from '@Components/Layout';
@@ -36,15 +38,11 @@ export default function ProjectSettingsScreen() {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView
-          contenContainerStyle={{
-            paddingTop: 10,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <Inputs_ProjectSettings />
-          <Widgets_Project />
+        <Layout.ScrollView>
+          <Animation>
+            <Inputs_ProjectSettings />
+            <Widgets_Project />
+          </Animation>
         </Layout.ScrollView>
       )}
     </Layout.Root>
@@ -59,3 +57,27 @@ async function fetchWidgets(
   whenLoaded();
 }
 
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
+  );
+}
