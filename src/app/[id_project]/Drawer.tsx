@@ -24,7 +24,7 @@ export function Drawer() {
     />
     <Layout.Button.TextWithIcon
       title={stringResources['Edit template']}
-      iconName="copy"
+      iconName="layers"
       iconSide="Right"
       color_background={theme.tertiary}
       color_font={theme.onTertiary}
