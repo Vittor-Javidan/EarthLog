@@ -2,6 +2,7 @@ import { Languages } from '@Types/index';
 
 export type Translations_SampleCreationScreen = Record<Languages, {
   'New sample': string
+  'Sample info': string
   'ID cannot be empty': string
   'Name cannot be empty': string
   'ID': string
@@ -13,6 +14,7 @@ export type Translations_SampleCreationScreen = Record<Languages, {
 export const translations_SampleCreationScreen: Translations_SampleCreationScreen = {
 	'en-US': {
     'New sample': 'New sample',
+    'Sample info': 'Sample info',
     'ID cannot be empty': 'ID cannot be empty',
     'Name cannot be empty': 'Name cannot be empty',
     'ID': 'ID',
@@ -22,6 +24,7 @@ export const translations_SampleCreationScreen: Translations_SampleCreationScree
 	},
 	'pt-BR': {
     'New sample': 'Nova amostra',
+    'Sample info': 'Informações da amostra',
     'ID cannot be empty': 'ID não pode estar vazio',
     'Name cannot be empty': 'Nome não pode estar vazio',
     'ID': 'ID',

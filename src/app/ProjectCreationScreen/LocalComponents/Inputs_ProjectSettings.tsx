@@ -38,10 +38,15 @@ export default function Inputs_ProjectSettings() {
           borderTopRightRadius: 10,
         }}
       >
-        <Layout.Icon
-          color={theme.onTertiary}
-          iconName="settings"
-        />
+        <Layout.Text.P
+          style={{
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            color: theme.onSecondary,
+          }}
+        >
+          {stringResources['Project info']}
+        </Layout.Text.P>
       </Layout.View>
       <Layout.View
         style={{

@@ -37,10 +37,15 @@ export default function Inputs_SampleSettings() {
           borderTopRightRadius: 10,
         }}
       >
-        <Layout.Icon
-          color={theme.onTertiary}
-          iconName="settings"
-        />
+        <Layout.Text.P
+          style={{
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            color: theme.onSecondary,
+          }}
+        >
+          {stringResources['Sample info']}
+        </Layout.Text.P>
       </Layout.View>
       <Layout.View
         style={{

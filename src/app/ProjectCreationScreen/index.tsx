@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 
 import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
@@ -30,16 +32,37 @@ export default function ProjectCreationScreen() {
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
     >
-      <Layout.ScrollView
-        contenContainerStyle={{
-          paddingTop: 10,
-          padding: 5,
-          gap: 10,
-        }}
-      >
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
+      <Layout.ScrollView>
+        <Animation>
+          <Inputs_ProjectSettings />
+          <Widgets_Project />
+        </Animation>
       </Layout.ScrollView>
     </Layout.Root>
+  );
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }
