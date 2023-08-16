@@ -65,7 +65,10 @@ export default function AddWidgetButton(props: {
             }}
           >
             <Layout.ScrollView
-              contenContainerStyle={{ gap: 2 }}
+              contenContainerStyle={{
+                gap: 2,
+                paddingBottom: 0,
+              }}
             >
               <Layout.Button.Text
                 title={stringResources['Boolean']}
