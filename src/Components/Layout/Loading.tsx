@@ -1,28 +1,26 @@
 import React, { useMemo } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import View from './View';
-import H1 from './Text/H1';
 
 export default function Loading(): JSX.Element {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Layout.Loading[language], []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View
       style={{
-        backgroundColor: theme.modified,
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <H1
-        style={{ color: theme.onModified }}
-      >
-        {stringResources['Loading...']}
-      </H1>
+      <ActivityIndicator
+        size="large"
+        color={theme.onBackground}
+      />
     </View>
   );
 }
