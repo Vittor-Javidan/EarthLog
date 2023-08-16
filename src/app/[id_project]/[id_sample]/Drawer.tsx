@@ -16,7 +16,7 @@ export function Drawer() {
 
   return (<>
     <Layout.Button.Drawer
-      title={stringResources['Sample settings']}
+      title={stringResources['Edit sample']}
       onPress={() => navigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
     />
   </>);

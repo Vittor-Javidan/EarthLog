@@ -19,7 +19,7 @@ export function Drawer() {
       onPress={() => navigate('PROJECT SETTINGS SCREEN', id_project)}
     />
     <Layout.Button.Drawer
-      title={stringResources['Template']}
+      title={stringResources['Edit template']}
       onPress={() => navigate('TEMPLATE SCREEN', id_project)}
     />
   </>);
