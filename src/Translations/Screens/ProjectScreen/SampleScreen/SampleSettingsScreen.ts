@@ -1,10 +1,8 @@
 import { Languages } from '@Types/index';
 
 export type Translations_SampleSettingsScreen = Record<Languages, {
-  'Sample Settings': string
-  'Status:': string
-  'Saved': string
-  'Saving...': string
+  'Edit sample': string
+  'Sample info': string
   'ID': string
   'Name': string
   'Write the sample name here...': string
@@ -17,10 +15,8 @@ export type Translations_SampleSettingsScreen = Record<Languages, {
 
 export const translations_SampleSettingsScreen: Translations_SampleSettingsScreen = {
 	'en-US': {
-    'Sample Settings': 'Sample Settings',
-    'Status:': 'Status:',
-    'Saved': 'Saved',
-    'Saving...': 'Saving...',
+    'Edit sample': 'Edit sample',
+    'Sample info': 'Sample info',
     'ID': 'ID',
     'Name': 'Name',
     'Write the sample name here...': 'Write the sample name here...',
@@ -31,10 +27,8 @@ export const translations_SampleSettingsScreen: Translations_SampleSettingsScree
     'Click on the bottom right button to confirm.': 'Click on the bottom right button to confirm.',
   },
 	'pt-BR': {
-    'Sample Settings': 'Configurações da amostra',
-    'Status:': 'Estado:',
-    'Saved': 'Salvo',
-    'Saving...': 'Salvando...',
+    'Edit sample': 'Editar amostra',
+    'Sample info': 'Informações da amostra',
     'ID': 'ID',
     'Name': 'Nome',
     'Write the sample name here...': 'Escreva o nome do projeto aqui...',

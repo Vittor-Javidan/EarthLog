@@ -15,7 +15,7 @@ export default function SampleSettingsScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Sample Settings']}
+      title={stringResources['Edit sample']}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}
