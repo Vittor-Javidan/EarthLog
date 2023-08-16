@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, StyleProp, TextStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -10,6 +10,7 @@ export default function StringInput(props: {
   value: string
   placeholder: string
   locked: boolean
+  style_TextInput?: StyleProp<TextStyle>
   backgroundColor?: string
   color?: string
   color_placeholder?: string
@@ -117,7 +118,7 @@ export default function StringInput(props: {
 
       </View>
       <TextInput
-        style={{
+        style={[{
           width: '100%',
           paddingHorizontal: 20,
           paddingTop: 20,
@@ -127,7 +128,7 @@ export default function StringInput(props: {
           borderColor: color,
           borderWidth: 2,
           borderRadius: 10,
-        }}
+        }, props.style_TextInput]}
         value={props.value}
         placeholder={props.placeholder}
         placeholderTextColor={color_placeholder}

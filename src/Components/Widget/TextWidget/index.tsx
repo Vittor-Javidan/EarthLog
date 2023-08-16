@@ -92,6 +92,7 @@ export default function TextWidget(props: {
         />
       }
     >
+
       <Layout.View
         style={{
           paddingVertical: 5,
@@ -104,9 +105,14 @@ export default function TextWidget(props: {
           value={displayText}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
-          color_placeholder={theme.modified}
-          placeholder={stringResources['Empty text']}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder={stringResources['Write anything here...']}
           locked={false}
+          style_TextInput={{
+            paddingHorizontal: 10,
+            paddingTop: 10,
+            paddingBottom: 0,
+          }}
           onChangeText={(text) => onTextChange(text)}
         />
       </Layout.View>
