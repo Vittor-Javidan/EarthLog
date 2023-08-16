@@ -28,7 +28,7 @@ export default function ProjectSettingsScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Project Settings']}
+      title={stringResources['Edit project']}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}

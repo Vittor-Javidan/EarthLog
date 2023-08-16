@@ -57,7 +57,7 @@ export default function Inputs_ProjectSettings() {
             color: theme.onSecondary,
           }}
         >
-          Project Info
+          {stringResources['Project info']}
         </Layout.Text.P>
       </Layout.View>
       <Layout.View

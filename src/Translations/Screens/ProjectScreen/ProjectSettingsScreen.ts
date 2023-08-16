@@ -1,9 +1,8 @@
 import { Languages } from '@Types/index';
 
 export type Translations_ProjectSettingsScreen = Record<Languages, {
-  'Project Settings': string
-  'Saved': string
-  'Saving...': string
+  'Edit project': string
+  'Project info': string
   'ID': string
   'Name': string
   'Write the project name here...': string
@@ -16,9 +15,8 @@ export type Translations_ProjectSettingsScreen = Record<Languages, {
 
 export const translations_ProjectSettingsScreen: Translations_ProjectSettingsScreen = {
 	'en-US': {
-    'Project Settings': 'Project Settings',
-    'Saved': 'Saved',
-    'Saving...': 'Saving...',
+    'Edit project': 'Edit project',
+    'Project info': 'Project info',
     'ID': 'ID',
     'Name': 'Name',
     'Write the project name here...': 'Write the project name here...',
@@ -29,9 +27,8 @@ export const translations_ProjectSettingsScreen: Translations_ProjectSettingsScr
     'Click on the bottom right button to confirm.': 'Click on the bottom right button to confirm.',
   },
 	'pt-BR': {
-    'Project Settings': 'Configurações do projeto',
-    'Saved': 'Salvo',
-    'Saving...': 'Salvando...',
+    'Edit project': 'Editar projeto',
+    'Project info': 'Informações do projeto',
     'ID': 'ID',
     'Name': 'Nome',
     'Write the project name here...': 'Escreva o nome do projeto aqui...',
