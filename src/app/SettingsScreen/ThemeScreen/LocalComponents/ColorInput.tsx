@@ -15,27 +15,34 @@ export default function AllInputs(): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
 
-  return (<>
-    <CustomInput themeKey="background"               savedValue={theme.background} />
-    <CustomInput themeKey="onBackground"             savedValue={theme.onBackground} />
-    <CustomInput themeKey="onBackground_Placeholder" savedValue={theme.onBackground_Placeholder} />
-    <CustomInput themeKey="primary"                  savedValue={theme.primary} />
-    <CustomInput themeKey="onPrimary"                savedValue={theme.onPrimary} />
-    <CustomInput themeKey="onPrimary_Placeholder"    savedValue={theme.onPrimary_Placeholder} />
-    <CustomInput themeKey="secondary"                savedValue={theme.secondary} />
-    <CustomInput themeKey="onSecondary"              savedValue={theme.onSecondary} />
-    <CustomInput themeKey="onSecondary_PlaceHolder"  savedValue={theme.onSecondary_PlaceHolder} />
-    <CustomInput themeKey="tertiary"                 savedValue={theme.tertiary} />
-    <CustomInput themeKey="onTertiary"               savedValue={theme.onTertiary} />
-    <CustomInput themeKey="onTertiary_Placeholder"   savedValue={theme.onTertiary_Placeholder} />
-    <CustomInput themeKey="confirm"                  savedValue={theme.confirm} />
-    <CustomInput themeKey="onConfirm"                savedValue={theme.onConfirm} />
-    <CustomInput themeKey="modified"                 savedValue={theme.modified} />
-    <CustomInput themeKey="onModified"               savedValue={theme.onModified} />
-    <CustomInput themeKey="wrong"                    savedValue={theme.wrong} />
-    <CustomInput themeKey="onWrong"                  savedValue={theme.onWrong} />
-    <CustomInput themeKey="onPressColorPrimary"      savedValue={theme.onPressColorPrimary} />
-  </>);
+  return (
+    <Layout.View
+      style={{
+        paddingTop: 1,
+        gap: 1,
+      }}
+    >
+      <CustomInput themeKey="background"               savedValue={theme.background} />
+      <CustomInput themeKey="onBackground"             savedValue={theme.onBackground} />
+      <CustomInput themeKey="onBackground_Placeholder" savedValue={theme.onBackground_Placeholder} />
+      <CustomInput themeKey="primary"                  savedValue={theme.primary} />
+      <CustomInput themeKey="onPrimary"                savedValue={theme.onPrimary} />
+      <CustomInput themeKey="onPrimary_Placeholder"    savedValue={theme.onPrimary_Placeholder} />
+      <CustomInput themeKey="secondary"                savedValue={theme.secondary} />
+      <CustomInput themeKey="onSecondary"              savedValue={theme.onSecondary} />
+      <CustomInput themeKey="onSecondary_PlaceHolder"  savedValue={theme.onSecondary_PlaceHolder} />
+      <CustomInput themeKey="tertiary"                 savedValue={theme.tertiary} />
+      <CustomInput themeKey="onTertiary"               savedValue={theme.onTertiary} />
+      <CustomInput themeKey="onTertiary_Placeholder"   savedValue={theme.onTertiary_Placeholder} />
+      <CustomInput themeKey="confirm"                  savedValue={theme.confirm} />
+      <CustomInput themeKey="onConfirm"                savedValue={theme.onConfirm} />
+      <CustomInput themeKey="modified"                 savedValue={theme.modified} />
+      <CustomInput themeKey="onModified"               savedValue={theme.onModified} />
+      <CustomInput themeKey="wrong"                    savedValue={theme.wrong} />
+      <CustomInput themeKey="onWrong"                  savedValue={theme.onWrong} />
+      <CustomInput themeKey="onPressColorPrimary"      savedValue={theme.onPressColorPrimary} />
+    </Layout.View>
+  );
 }
 
 function CustomInput(props: {
@@ -65,12 +72,7 @@ function CustomInput(props: {
   }
 
   return (
-    <View
-      style={{
-        borderWidth: 1,
-        borderColor: theme.secondary,
-      }}
-    >
+    <View>
       {!valid && (
         <Text
           adjustsFontSizeToFit={true}

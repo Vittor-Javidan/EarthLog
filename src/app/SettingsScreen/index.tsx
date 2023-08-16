@@ -29,8 +29,8 @@ export default function SettingsScreen(): JSX.Element {
     >
       <Layout.View
         style={{
-          paddingTop: 2,
-          gap: 2,
+          paddingTop: 1,
+          gap: 1,
         }}
       >
         <Layout.Button.TextWithIcon

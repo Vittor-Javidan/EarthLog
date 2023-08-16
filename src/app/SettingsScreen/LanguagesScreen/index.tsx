@@ -27,8 +27,8 @@ export default function LanguagesScreen(): JSX.Element {
     >
       <Layout.View
         style={{
-          paddingTop: 2,
-          gap: 2,
+          paddingTop: 1,
+          gap: 1,
         }}
       >
         <LanguageButtons
