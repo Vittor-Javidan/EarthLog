@@ -1,4 +1,3 @@
-import { Translations_Layout_Loading, translations_Layout_Loading } from './Layout/LoadingScreen';
 import { Translations_HomeScreen, translations_HomeScreen } from './Screens/HomeScreen';
 import { Translations_ProjectCreationScreen, translations_ProjectCreationScreen } from './Screens/ProjectCreationScreen';
 import { Translations_SettingsScreen, translations_SettingsScreen } from './Screens/SettingsScreen/SettingsScreen';
@@ -31,9 +30,6 @@ export const translations: {
       SampleScreen:             Translations_SampleScreen
         SampleSettingsScreen:   Translations_SampleSettingsScreen
   }
-  Layout: {
-    Loading:                    Translations_Layout_Loading,
-  },
   Widgets: {
     Components: {
       Modal:                    Translations_WidgetsComponents_Modal
@@ -59,9 +55,6 @@ export const translations: {
       SampleCreationScreen:     translations_SampleCreationScreen,
       SampleScreen:             translations_SampleScreen,
         SampleSettingsScreen:   translations_SampleSettingsScreen,
-  },
-  Layout: {
-    Loading:                    translations_Layout_Loading,
   },
   Widgets: {
     Components: {
