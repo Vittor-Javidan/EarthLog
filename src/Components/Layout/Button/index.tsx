@@ -2,7 +2,6 @@ import RootButton from './Root';
 import Text from './Text';
 import IconButton from './IconButton';
 import IconButtonRounded from './IconButtonRounded';
-import DrawerButton from './DrawerButton';
 import TextWithIcon from './TextWithIcon';
 import DeleteSwipeButton from './DeleteSwipeButton';
 
@@ -13,5 +12,4 @@ export const Button = {
   IconRounded: IconButtonRounded,
   TextWithIcon: TextWithIcon,
   DeleteSwipe: DeleteSwipeButton,
-  Drawer: DrawerButton,
 };
