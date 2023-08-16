@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView} from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable} from 'react-native';
 import { MotiView } from 'moti';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -52,7 +52,10 @@ export default function Root(props: {
         {props.screenButtons}
       </View>
     </View>
-    <Drawer show={showDrawer}>
+    <Drawer
+      show={showDrawer}
+      onPress_Background={() => setShowDrawer(false)}
+    >
       {props.drawerChildren}
     </Drawer>
   </>);
@@ -125,6 +128,7 @@ function ContentArea(props: {
 function Drawer(props: {
   show: boolean
   children: ReactNode
+  onPress_Background: () => void
 }): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, []);
@@ -133,22 +137,28 @@ function Drawer(props: {
   return (
     <Animation_Drawer show={props.show}>
       <ScrollView
-        contentContainerStyle={{ flex: 1 }}
+        contentContainerStyle={{
+          flex: 1,
+          gap: 1,
+        }}
         style={{
+          backgroundColor: theme.secondary,
           position: 'absolute',
           bottom: 0,
           left: 0,
           height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
           width: '100%',
+          paddingRight: 1,
         }}
       >
-        <View
-          style={[{
-            flex: 9,
-            backgroundColor: theme.secondary,
-          }]}
+        {props.children}
+        <Pressable
+          onPress={() => props.onPress_Background()}
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+          }}
         >
-          {props.children}
           <Text
             adjustsFontSizeToFit={true}
             style={{
@@ -160,7 +170,7 @@ function Drawer(props: {
           >
             v: {APP_VERSION}
           </Text>
-        </View>
+        </Pressable>
       </ScrollView>
     </Animation_Drawer>
   );

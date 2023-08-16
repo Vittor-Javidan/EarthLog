@@ -32,9 +32,6 @@ export default function DrawerButton(props: {
         backgroundColor: pressed ? theme.onPressColorPrimary : backgroundColor,
         opacity: pressed ? 0.9 : 1,
         padding: 10,
-        borderColor: theme.secondary,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
         height: 55,
       }}
     >
