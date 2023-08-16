@@ -41,17 +41,24 @@ export default function Inputs_ProjectSettings() {
     <Layout.View>
       <Layout.View
         style={{
+          flexDirection: 'row',
           backgroundColor: theme.secondary,
           height: 40,
           padding: 5,
+          gap: 10,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
-        <Layout.Icon
-          color={theme.onTertiary}
-          iconName="settings"
-        />
+        <Layout.Text.P
+          style={{
+            paddingVertical: 5,
+            paddingHorizontal: 10,
+            color: theme.onSecondary,
+          }}
+        >
+          Project Info
+        </Layout.Text.P>
       </Layout.View>
       <Layout.View
         style={{
@@ -82,14 +89,6 @@ export default function Inputs_ProjectSettings() {
           value={name}
           locked={!rules.allowNameChange}
           onChangeText={(text) => onNameChange(text)}
-        />
-        <Layout.Feedback
-          title={''}
-          assert={saved}
-          values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
-          textStyle_Label={{
-            color: theme.onTertiary,
-          }}
         />
       </Layout.View>
     </Layout.View>

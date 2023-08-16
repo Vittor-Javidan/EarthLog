@@ -85,11 +85,6 @@ export default function Inputs_SampleSettings() {
           value={name}
           onChangeText={(text) => onNameChange(text)}
         />
-        <Layout.Feedback
-          title={stringResources['Status:']}
-          assert={saved}
-          values={{ whenTrue: stringResources['Saved'], whenFalse: stringResources['Saving...']}}
-        />
       </Layout.View>
     </Layout.View>
   );
