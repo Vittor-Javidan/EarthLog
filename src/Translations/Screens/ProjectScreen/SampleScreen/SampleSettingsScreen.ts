@@ -31,7 +31,7 @@ export const translations_SampleSettingsScreen: Translations_SampleSettingsScree
     'Sample info': 'Informações da amostra',
     'ID': 'ID',
     'Name': 'Nome',
-    'Write the sample name here...': 'Escreva o nome do projeto aqui...',
+    'Write the sample name here...': 'Escreva o nome da amostra aqui...',
     'Delete': 'Deletar',
     'Sample name': 'Nome amostra',
     'Tip': 'Dica',
