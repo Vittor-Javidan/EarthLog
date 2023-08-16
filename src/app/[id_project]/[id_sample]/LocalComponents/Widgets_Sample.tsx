@@ -79,7 +79,7 @@ function Animation(props: { children: ReactNode}) {
       from={{ top: -height }}
       transition={{
         type: 'timing',
-        duration: 300,
+        duration: 500,
       }}
       animate={{
         top: 0,

@@ -1,5 +1,7 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 
 import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
@@ -37,9 +39,31 @@ export default function ThemeScreen(): JSX.Element {
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
-          <AllInputs />
+          <Animation>
+            <AllInputs />
+          </Animation>
         </Layout.ScrollView>
       )}
     </Layout.Root>
+  );
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { width } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      from={{ left: -width }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        left: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

@@ -41,7 +41,7 @@ function Animation(props: { children: ReactNode}) {
       from={{ left: -width }}
       transition={{
         type: 'timing',
-        duration: 300,
+        duration: 500,
       }}
       animate={{
         left: 0,
