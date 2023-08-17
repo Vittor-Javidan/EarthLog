@@ -1,0 +1,19 @@
+# Pre-Realease Stage
++ Basic App Layout
++ Local Storage implementation
++ Basic Configuration / Customization
++ Language System
++ Navigation bar
++ Internal Database API
++ Text Widget
++ Boolean Widget
+- GPS Implementation
+- Server API communication
+- Word/PDF or CSV export
+- Photo Widget
+- Subscription Implementation
+
+# Play Store publishing
+- Audio Widget
+- Video Widget
+- Map visualization
