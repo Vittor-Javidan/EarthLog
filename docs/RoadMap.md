@@ -12,11 +12,15 @@
 - Server API communication
 - Word/PDF or CSV export
 - Photo Widget
+- Photo Upload API
 - Subscription Implementation
 
-# Play Store publishing
+# Apple/Play Store publishing
 
 # Post-Realease Stage
 - Audio Widget
+- Audio Upload API
 - Video Widget
+- Video Upload API
 - Map visualization
+- Compass Widget
