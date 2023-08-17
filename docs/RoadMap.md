@@ -15,6 +15,8 @@
 - Subscription Implementation
 
 # Play Store publishing
+
+# Post-Realease Stage
 - Audio Widget
 - Video Widget
 - Map visualization
