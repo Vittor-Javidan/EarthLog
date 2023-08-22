@@ -4,14 +4,14 @@ import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function LastProjectButton() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
-  const { id_project } = ProjectService?.lastOpenProject;
+  const { id_project } = CacheService?.lastOpenProject;
   const lastProjectOpenExist = id_project !== '';
 
   return lastProjectOpenExist ? (
@@ -37,7 +37,7 @@ export default function LastProjectButton() {
       <Layout.Button.TextWithIcon
         iconName="folder"
         iconSide="Right"
-        title={ProjectService.lastOpenProject.name}
+        title={CacheService.lastOpenProject.name}
         color_background={theme.tertiary}
         color_font={theme.onTertiary}
         style={{

@@ -8,10 +8,11 @@ import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
 
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
+import DatabaseService from '@Services/DatabaseService';
+import CacheService from '@Services/CacheService';
 
 export default function SettingsScreen(): JSX.Element {
 
@@ -79,7 +80,18 @@ async function whipeDataBase() {
         text: stringResources['YES'],
         onPress: async () => {
           await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
-          await ProjectService.deleteDatabase();
+          await DatabaseService.deleteDatabase();
+          await CacheService.deleteLastOpenProject();
+          CacheService.lastOpenProject = {
+            id_project: '',
+            name: '',
+            rules: {},
+          };
+          CacheService.allProjects = [];
+          CacheService.allWidgets_Project = [];
+          CacheService.allWidgets_Template = [];
+          CacheService.allSamples = [];
+          CacheService.allWidgets_Sample = [];
           navigate('RESTART APP');
         },
       },

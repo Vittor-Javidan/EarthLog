@@ -6,6 +6,7 @@ import { WidgetData } from '@Types/index';
 import ProjectService from '@Services/ProjectService';
 
 import API_Widgets_Template from './API_Widgets_Template';
+import CacheService from '@Services/CacheService';
 
 export default function Widgets_Template() {
 
@@ -18,7 +19,9 @@ export default function Widgets_Template() {
     await ProjectService.updateWidget_Template(
       id_project,
       widgetData,
-      () => {},
+      async () => {
+        await CacheService.loadAllWidgets_Template(id_project);
+      },
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -27,12 +30,15 @@ export default function Widgets_Template() {
     await ProjectService.deleteWidget_Template(
       id_project,
       widgetData.id_widget,
-      () => refresh(prev => !prev),
+      async () => {
+        await CacheService.loadAllWidgets_Template(id_project);
+        refresh(prev => !prev);
+      },
       (errorMessage) => alert(errorMessage)
     );
   }
 
-  const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Template.map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Template.map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}

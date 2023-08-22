@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 import { Drawer } from './Drawer';
 import NavigationTree from './NavigationTree';
@@ -15,7 +15,7 @@ export default function SampleScreens() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
-  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -44,6 +44,6 @@ async function fetchWidgets(
   id_sample: string,
   whenLoaded: () => void
 ) {
-  await ProjectService.loadAllWidgets_Sample(id_project, id_sample);
+  await CacheService.loadAllWidgets_Sample(id_project, id_sample);
   whenLoaded();
 }

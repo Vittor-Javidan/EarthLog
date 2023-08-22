@@ -9,6 +9,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_Widgets_Sample from './LocalComponents/API_Widgets_Sample';
+import CacheService from '@Services/CacheService';
 
 export default function ScreenButtons() {
 
@@ -16,15 +17,18 @@ export default function ScreenButtons() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules: rules_project } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
-  const { rules: rules_sample } = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
+  const { rules: rules_project } = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const { rules: rules_sample } = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   async function onCreateWidget(widgetData: WidgetData) {
     await ProjectService.createWidget_Sample(
       id_project,
       id_sample,
       widgetData,
-      () => API_Widgets_Sample.refresh(),
+      async () => {
+        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+        API_Widgets_Sample.refresh();
+      },
       (errorMessage) => alert(errorMessage)
     );
   }

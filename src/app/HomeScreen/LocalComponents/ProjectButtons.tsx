@@ -3,16 +3,16 @@ import React, { useMemo } from 'react';
 import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-import ProjectService from '@Services/ProjectService';
 import ConfigService from '@Services/ConfigService';
+import CacheService from '@Services/CacheService';
 
 export default function ProjectButtons() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
 
-  const allProjectButtons = ProjectService.allProjects.map((settings, index) => {
-    const isLastIndex = index === ProjectService.allProjects.length - 1;
+  const allProjectButtons = CacheService.allProjects.map((settings, index) => {
+    const isLastIndex = index === CacheService.allProjects.length - 1;
     return (
       <Layout.Button.TextWithIcon
         key={settings.id_project}
@@ -30,7 +30,7 @@ export default function ProjectButtons() {
     );
   });
 
-  const projectsAvailable = ProjectService.allProjects.length > 0;
+  const projectsAvailable = CacheService.allProjects.length > 0;
 
   return (<>
     {projectsAvailable && (

@@ -9,28 +9,38 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
+import CacheService from '@Services/CacheService';
 
 export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const { rules } = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   async function createWidget_Project(widgetData: WidgetData) {
     await ProjectService.createWidget_Project(
       id_project,
       widgetData,
-      () => API_Widgets_Project.refresh(),
+      async () => {
+        await CacheService.loadAllWidgets_Project(id_project);
+        API_Widgets_Project.refresh();
+      },
       (errorMessage) => alert(errorMessage)
     );
   }
 
   async function deleteProject() {
+    const isLatOpenProject = CacheService.lastOpenProject.id_project === id_project;
     await ProjectService.deleteProject(
       id_project,
-      () => navigate('HOME SCREEN'),
+      async () => {
+        if (isLatOpenProject) {
+          await CacheService.deleteLastOpenProject();
+        }
+        navigate('HOME SCREEN');
+      },
       (errorMessage) => alert(errorMessage)
     );
   }

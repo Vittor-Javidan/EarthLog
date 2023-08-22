@@ -5,6 +5,7 @@ import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function ScreenButtons() {
 
@@ -12,7 +13,7 @@ export default function ScreenButtons() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
   const { rules } = useMemo(() => sampleSettings, []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
@@ -21,7 +22,10 @@ export default function ScreenButtons() {
     await ProjectService.deleteSample(
       id_project,
       id_sample,
-      () => navigate('PROJECT SCREEN', id_project),
+      async () => {
+        await CacheService.loadAllSamplesSettings(id_project);
+        navigate('PROJECT SCREEN', id_project);
+      },
       (errorMessage) => alert(errorMessage)
     );
   }

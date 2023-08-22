@@ -8,7 +8,7 @@ import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 import NavigationTree from './NavigationTree';
 import ScreenButtons from './ScreenButtons';
@@ -53,7 +53,7 @@ async function fetchWidgets(
   id_project: string,
   whenLoaded: () => void
 ) {
-  await ProjectService.loadAllWidgets_Project(id_project);
+  await CacheService.loadAllWidgets_Project(id_project);
   whenLoaded();
 }
 

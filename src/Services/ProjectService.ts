@@ -7,31 +7,6 @@ import DatabaseService from './DatabaseService';
 export default class ProjectService {
 
   // ===============================================================================================
-  // CACHED DATA
-  // ===============================================================================================
-
-  static lastOpenProject: ProjectSettings = {
-    id_project: '',
-    name: '',
-    rules: {},
-  };
-  static allProjects: ProjectSettings[] = [];
-  static allWidgets_Project: WidgetData[] = [];
-  static allWidgets_Template: WidgetData[] = [];
-  static allSamples: SampleSettings[] = [];
-  static allWidgets_Sample: WidgetData[] = [];
-
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
   // DATA CREATION METHODS
   // ===============================================================================================
 
@@ -97,127 +72,6 @@ export default class ProjectService {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
-  // DATA CREATION METHODS
-  // ===============================================================================================
-
-  static async deleteDatabase() {
-    await DatabaseService.deleteDatabase();
-    await this.deleteLastOpenProject();
-    this.lastOpenProject = {
-      id_project: '',
-      name: '',
-      rules: {},
-    };
-    this.allProjects = [];
-    this.allWidgets_Project = [];
-    this.allWidgets_Template = [];
-    this.allSamples = [];
-    this.allWidgets_Sample = [];
-  }
-
-  // ===============================================================================================
-  // CACHE METHODS
-  // ===============================================================================================
-
-  static getProjectFromCache(id_project: string): ProjectSettings {
-    for (let i = 0; i < this.allProjects.length; i++) {
-      if (this.allProjects[i].id_project === id_project) {
-        return this.allProjects[i];
-      }
-    }
-    throw Error('Project does not exist on cache');
-  }
-
-  static getSampleFromCache(id_sample: string): SampleSettings {
-    for (let i = 0; i < this.allSamples.length; i++) {
-      if (this.allSamples[i].id_sample === id_sample) {
-        return this.allSamples[i];
-      }
-    }
-    throw Error('Sample does not exist on cache');
-  }
-
-  static getLastProjectFromCache(): ProjectSettings {
-    return this.lastOpenProject;
-  }
-
-  static getAllProjectWidgetsFromCache(): WidgetData[] {
-    return this.allWidgets_Project;
-  }
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
-  // DATABASE CACHING RELATED METHODS
-  // ===============================================================================================
-
-  static async saveLastOpenProject(id_project: string): Promise<void> {
-    await DatabaseService.saveLastOpenProject(id_project);
-    this.lastOpenProject = await DatabaseService.readProject(id_project);
-  }
-
-  static async loadLastOpenProject(): Promise<void> {
-
-    const lastProjectID = await DatabaseService.getLastOpenProject();
-    const allProjectSettingsIDs = this.allProjects.map(settings => settings.id_project);
-
-    if (lastProjectID === null) {
-      return;
-    }
-
-    if (!allProjectSettingsIDs.includes(lastProjectID)) {
-      return;
-    }
-
-    this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
-  }
-
-  static async deleteLastOpenProject(): Promise<void> {
-    await DatabaseService.deleteLastOpenProject();
-    this.lastOpenProject = {
-      id_project: '',
-      name: '',
-      rules: {},
-    };
-  }
-
-  static async loadAllProjectsSettings(): Promise<void> {
-    this.allProjects = await DatabaseService.getAllProjects();
-  }
-
-  static async loadAllSamplesSettings(id_project: string): Promise<void> {
-    this.allSamples = await DatabaseService.getAllSamples(id_project);
-  }
-
-  static async loadAllWidgets_Project(id_project: string): Promise<void> {
-    this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(id_project);
-  }
-
-  static async loadAllWidgets_Template(id_project: string): Promise<void> {
-    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(id_project);
-  }
-
-  static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
-    this.allWidgets_Sample = await DatabaseService.getAllWidgets_Sample(id_project, id_sample);
-  }
 
 
 
@@ -310,9 +164,6 @@ export default class ProjectService {
   ): Promise<void> {
     try {
       await DatabaseService.deleteProject(id_project);
-      if (this.lastOpenProject.id_project === id_project) {
-        await this.deleteLastOpenProject();
-      }
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -339,7 +190,6 @@ export default class ProjectService {
         await DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
       }
 
-      await this.loadAllSamplesSettings(id_project);
       onSuccess();
 
     } catch (error) {
@@ -356,7 +206,6 @@ export default class ProjectService {
   ): Promise<void> {
     try {
       await DatabaseService.updateSample(id_project, sampleSettings);
-      await this.loadAllSamplesSettings(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -371,7 +220,6 @@ export default class ProjectService {
   ): Promise<void> {
     try {
       await DatabaseService.deleteSample(id_project, id_sample);
-      await this.loadAllSamplesSettings(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -389,7 +237,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.createWidget_Project(id_project, widgetData);
-      await this.loadAllWidgets_Project(id_project);
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
@@ -406,7 +253,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.updateWidget_Project(id_project, widgetData);
-      await this.loadAllWidgets_Project(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -422,7 +268,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
-      await this.loadAllWidgets_Project(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -440,7 +285,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.createWidget_Template(id_project, widgetData);
-      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
@@ -457,7 +301,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.updateWidget_Template(id_project, widgetData);
-      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -473,7 +316,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
-      await this.loadAllWidgets_Template(id_project);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -492,7 +334,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.createWidget_Sample(id_project, id_sample, widgetData);
-      await this.loadAllWidgets_Sample(id_project, id_sample);
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
@@ -510,7 +351,6 @@ export default class ProjectService {
 
     try {
       await DatabaseService.updateWidget_Sample(id_project, id_sample, widgetData);
-      await this.loadAllWidgets_Sample(id_project, id_sample);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
@@ -527,11 +367,9 @@ export default class ProjectService {
 
     try {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
-      await this.loadAllWidgets_Sample(id_project, id_sample);
       onSuccess();
     } catch (error) {
       onError(JSON.stringify(error));
     }
   }
-
 }

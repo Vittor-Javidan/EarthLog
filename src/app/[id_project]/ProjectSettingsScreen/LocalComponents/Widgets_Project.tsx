@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { Widget } from '@Components/Widget';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 import { WidgetData } from '@Types/index';
 
 import API_Widgets_Project from './API_Widgets_Project';
@@ -18,7 +19,7 @@ export default function Widgets_Project() {
     await ProjectService.updateWidget_Project(
       id_project,
       widgetData,
-      () => {},
+      async () => await CacheService.loadAllWidgets_Project(id_project),
       (errorMessage) => alert(errorMessage)
     );
   }
@@ -27,12 +28,15 @@ export default function Widgets_Project() {
     await ProjectService.deleteWidget_Project(
       id_project,
       widgetData.id_widget,
-      () => refresh(prev => !prev),
+      async () => {
+        await CacheService.loadAllWidgets_Project(id_project);
+        refresh(prev => !prev);
+      },
       (errorMessage) => alert(errorMessage)
     );
   }
 
-  const allWidgetsComponents: JSX.Element[] = ProjectService.getAllProjectWidgetsFromCache().map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = CacheService.getAllProjectWidgetsFromCache().map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}

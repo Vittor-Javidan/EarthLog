@@ -7,6 +7,7 @@ import { navigate } from '@Globals/NavigationControler';
 import { WidgetData } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 import API_Widgets_Template from './LocalComponents/API_Widgets_Template';
 
@@ -15,13 +16,16 @@ export default function ScreenButtons() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const { rules } = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   async function onCreate(widgetData: WidgetData) {
     await ProjectService.createWidget_Template(
       id_project,
       widgetData,
-      () => API_Widgets_Template.refresh(),
+      async () => {
+        await CacheService.loadAllWidgets_Template(id_project);
+        API_Widgets_Template.refresh();
+      },
       (errorMessage) => alert(errorMessage)
     );
   }

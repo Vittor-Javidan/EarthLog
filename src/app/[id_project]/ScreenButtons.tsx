@@ -4,14 +4,14 @@ import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules } = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const { rules } = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   return (
     <Layout.ScreenButtons

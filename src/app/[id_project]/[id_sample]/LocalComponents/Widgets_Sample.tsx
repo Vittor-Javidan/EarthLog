@@ -3,12 +3,13 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
+import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 import { WidgetData } from '@Types/index';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 import API_Widgets_Sample from './API_Widgets_Sample';
-import { Layout } from '@Components/Layout';
 
 export default function Widgets_Sample() {
 
@@ -23,7 +24,9 @@ export default function Widgets_Sample() {
       id_project,
       id_sample,
       widgetData,
-      () => {},
+      async () => {
+        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+      },
       (errorMessage) => {
         alert(errorMessage);
       }
@@ -36,7 +39,8 @@ export default function Widgets_Sample() {
       id_project,
       id_sample,
       id_widget,
-      () => {
+      async () => {
+        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
         refresh(prev => !prev);
       },
       (errorMessage) => {
@@ -45,7 +49,7 @@ export default function Widgets_Sample() {
     );
   }
 
-  const allWidgetsComponents: JSX.Element[] = ProjectService.allWidgets_Sample.map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Sample.map(widgetData => {
     return (
       <Widget.Selector
         key={widgetData.id_widget}

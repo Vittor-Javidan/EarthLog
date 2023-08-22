@@ -8,6 +8,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
 import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
+import CacheService from '@Services/CacheService';
 
 export default function ScreenButtons() {
 
@@ -32,7 +33,10 @@ export default function ScreenButtons() {
     await ProjectService.createSample(
       id_project,
       temporarySettings,
-      () => exitScreen(),
+      async () => {
+        await CacheService.loadAllSamplesSettings(id_project);
+        exitScreen();
+      },
       (errorMessage) => alert(errorMessage)
     );
   }

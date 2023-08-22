@@ -6,17 +6,16 @@ import { useTiming } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function Inputs_SampleSettings() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
-
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
-  const sampleSettings = useMemo(() => ProjectService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
   const { rules } = useMemo(() => sampleSettings, []);
-
   const [name, setName] = useState<string>(sampleSettings.name);
   const [saved, setSaved] = useState<boolean>(true);
 
@@ -26,7 +25,10 @@ export default function Inputs_SampleSettings() {
       await ProjectService.updateSample(
         id_project,
         sampleSettings,
-        () => setSaved(true),
+        async () => {
+          await CacheService.loadAllSamplesSettings(id_project);
+          setSaved(true);
+        },
         (erroMessage) => alert(erroMessage)
       );
     }

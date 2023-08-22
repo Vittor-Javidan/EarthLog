@@ -5,7 +5,7 @@ import { MotiView } from 'moti';
 
 import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function SampleButtons() {
 
@@ -14,7 +14,7 @@ export default function SampleButtons() {
   return (
     <Layout.ScrollView>
       <Animation>
-        {ProjectService.allSamples.map(sampleSettings => (
+        {CacheService.allSamples.map(sampleSettings => (
           <Layout.Button.TextWithIcon
             key={sampleSettings.id_sample}
             title={sampleSettings.name}

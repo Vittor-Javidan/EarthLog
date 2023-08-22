@@ -6,6 +6,7 @@ import { useTiming } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -13,7 +14,7 @@ export default function Inputs_ProjectSettings() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
-  const projectSettings = useMemo(() => ProjectService.getProjectFromCache(id_project), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const { rules } = useMemo(() => projectSettings, []);
 
   const [name, setName] = useState<string>(projectSettings.name);

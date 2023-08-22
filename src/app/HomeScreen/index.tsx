@@ -7,7 +7,7 @@ import { Layout } from '@Layout/index';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
 import Drawer from './Drawer';
 import NavigationTree from './NavigationTree';
@@ -76,8 +76,8 @@ export default function HomeScreen() {
 }
 
 async function fetchProject(whenLoaded: () => void) {
-  await ProjectService.loadAllProjectsSettings();
-  await ProjectService.loadLastOpenProject();
+  await CacheService.loadAllProjectsSettings();
+  await CacheService.loadLastOpenProject();
   whenLoaded();
 }
 
