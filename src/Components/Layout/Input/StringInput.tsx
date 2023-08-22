@@ -5,6 +5,11 @@ import ConfigService from '@Services/ConfigService';
 
 import IconButton from '../Button/IconButton';
 
+/**
+ * @BUG https://github.com/facebook/react-native/issues/36494
+ * <TextInput /> ˜onChangeText˜ is fired on render. Be carefull on wich code is writed for this
+ * callback to trigger.
+ */
 export default function StringInput(props: {
   label: string
   value: string
@@ -21,9 +26,8 @@ export default function StringInput(props: {
   const [showUndo, setShowUndo] = useState<boolean>(false);
   const [deletedText, setDeletedText] = useState<string>('');
 
-  function onChangeText(text: string) {
+  function onChange(text: string) {
     props.onChangeText(text);
-    setShowUndo(false);
   }
 
   function onResetPress() {
@@ -45,8 +49,8 @@ export default function StringInput(props: {
   const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
   const color = props.color ? props.color : theme.onBackground;
   const color_placeholder = props.color_placeholder ? props.color_placeholder : theme.onBackground_Placeholder;
-
   const showLabel = props.label !== '';
+
   return (
     <View
       style={{
@@ -79,7 +83,7 @@ export default function StringInput(props: {
           right: 15,
         }}
       >
-        {props.locked ? (
+        {props.locked && (
           <IconButton
             iconName="lock-closed-sharp"
             color={theme.wrong}
@@ -90,8 +94,9 @@ export default function StringInput(props: {
               borderRadius: 10,
             }}
           />
-        ) : (<>
-          {showUndo ? (
+        )}
+        {!props.locked && (<>
+          {showUndo && (
             <IconButton
               iconName="arrow-undo"
               color={color}
@@ -102,20 +107,18 @@ export default function StringInput(props: {
                 borderRadius: 10,
               }}
             />
-          ) : (
-            <IconButton
-              iconName="close"
-              color={color}
-              onPress={() => onResetPress()}
-              style={{
-                paddingHorizontal: 5,
-                paddingVertical: 0,
-                borderRadius: 10,
-              }}
-            />
           )}
+          <IconButton
+            iconName="close"
+            color={color}
+            onPress={() => onResetPress()}
+            style={{
+              paddingHorizontal: 5,
+              paddingVertical: 0,
+              borderRadius: 10,
+            }}
+          />
         </>)}
-
       </View>
       <TextInput
         style={[{
@@ -135,7 +138,7 @@ export default function StringInput(props: {
         textAlign="left"
         textAlignVertical="top"
         multiline
-        onChangeText={(text) => onChangeText(text)}
+        onChangeText={(text) => onChange(text)}
       />
     </View>
   );
