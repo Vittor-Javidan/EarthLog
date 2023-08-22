@@ -75,21 +75,22 @@ function Navbar(props: {
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
         backgroundColor: theme.primary,
       }]}
     >
       <View
         style={{
           flex: 8,
-          justifyContent: 'center',
           alignItems: 'flex-start',
+          justifyContent: 'flex-end',
           paddingHorizontal: 10,
-          padding: 10,
+          paddingBottom: 10,
         }}
       >
         <H1
-          style={{ color: theme.onPrimary }}
+          style={{
+            color: theme.onPrimary,
+          }}
         >
           {props.title}
         </H1>
