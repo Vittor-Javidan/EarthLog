@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { View, Text, TextInput, StyleProp, TextStyle } from 'react-native';
+import { View, Text, TextInput, StyleProp, TextStyle, Platform } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
 import IconButton from '../Button/IconButton';
 
 /**
- * @BUG https://github.com/facebook/react-native/issues/36494
+ * @REACT_NATIVE_BUG https://github.com/facebook/react-native/issues/36494
  * <TextInput /> ˜onChangeText˜ is fired on render. Be carefull on wich code is writed for this
  * callback to trigger.
  */
@@ -123,9 +123,9 @@ export default function StringInput(props: {
       <TextInput
         style={[{
           width: '100%',
-          paddingHorizontal: 20,
-          paddingTop: 20,
-          paddingBottom: 10,
+          paddingHorizontal: 10,
+          paddingTop: 15,
+          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
           backgroundColor: backgroundColor,
           color: color,
           borderColor: color,

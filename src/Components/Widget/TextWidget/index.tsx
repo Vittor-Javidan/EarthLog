@@ -108,11 +108,6 @@ export default function TextWidget(props: {
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={stringResources['Write anything here...']}
           locked={false}
-          style_TextInput={{
-            paddingHorizontal: 10,
-            paddingTop: 10,
-            paddingBottom: 0,
-          }}
           onChangeText={(text) => onTextChange(text)}
         />
       </Layout.View>
