@@ -43,14 +43,19 @@ export default function Inputs_ProjectSettings() {
       <Layout.View
         style={{
           flexDirection: 'row',
+          alignItems: 'center',
           backgroundColor: theme.secondary,
           height: 40,
           padding: 5,
-          gap: 10,
+          paddingHorizontal: 10,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
+        <Layout.StatusFeedback
+          done={saved}
+          error={false}
+        />
         <Layout.Text.P
           style={{
             paddingVertical: 5,

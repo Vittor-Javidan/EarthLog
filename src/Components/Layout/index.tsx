@@ -12,6 +12,7 @@ import { Input } from './Input';
 import { Text } from './Text';
 import { UI } from './UI';
 import Loading from './Loading';
+import StatusFeedback from './StatusFeedback';
 
 export const Layout = {
   Root: Root,
@@ -24,6 +25,7 @@ export const Layout = {
   Group: Group,
   Feedback: Feedback,
   Loading: Loading,
+  StatusFeedback: StatusFeedback,
   Modal: Modal,
   Button: Button,
   Input: Input,

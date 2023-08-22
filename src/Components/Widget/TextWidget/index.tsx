@@ -75,6 +75,7 @@ export default function TextWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
+      saved={saved}
 
       iconButtons_Top={
         <IconButtons_Top

@@ -51,6 +51,7 @@ export default function BooleanWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
+      saved={true}
 
       iconButtons_Top={
         <IconButtons_Top

@@ -8,6 +8,7 @@ export default function Root(props: {
   label: string
   isDataWrong: boolean
   showModal: boolean
+  saved: boolean
   iconButtons_Top?: JSX.Element
   iconButtons_BottomLeft?: JSX.Element
   iconButtons_BottomRight?: JSX.Element
@@ -27,6 +28,7 @@ export default function Root(props: {
       <Label
         label={props.label}
         wrongData={props.isDataWrong}
+        saved={props.saved}
         iconButtons={props.iconButtons_Top}
       />
       {props.children}
@@ -42,6 +44,7 @@ export default function Root(props: {
 function Label(props: {
   label: string
   wrongData: boolean
+  saved: boolean
   iconButtons?: JSX.Element
 }) {
 
@@ -62,10 +65,16 @@ function Label(props: {
       <View
         style={{
           flexDirection: 'row',
+          alignItems: 'center',
           justifyContent: 'flex-start',
           maxWidth: '80%',
+          paddingHorizontal: 10,
         }}
       >
+        <Layout.StatusFeedback
+          done={props.saved}
+          error={false}
+        />
         <Layout.Text.P
           style={{
             paddingVertical: 5,

@@ -26,7 +26,11 @@ export default function Inputs_SampleSettings() {
         id_project,
         sampleSettings,
         async () => {
-          await CacheService.loadAllSamplesSettings(id_project);
+          CacheService.allSamples.forEach(cachedSettings => {
+            if (cachedSettings.id_sample === sampleSettings.id_sample) {
+              cachedSettings = sampleSettings;
+            }
+          });
           setSaved(true);
         },
         (erroMessage) => alert(erroMessage)
@@ -45,13 +49,20 @@ export default function Inputs_SampleSettings() {
     <Layout.View>
       <Layout.View
         style={{
+          flexDirection: 'row',
+          alignItems: 'center',
           backgroundColor: theme.secondary,
           height: 40,
           padding: 5,
+          paddingHorizontal: 10,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
+        <Layout.StatusFeedback
+          done={saved}
+          error={false}
+        />
         <Layout.Text.P
           style={{
             paddingVertical: 5,
