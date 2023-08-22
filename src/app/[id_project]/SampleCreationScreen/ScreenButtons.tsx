@@ -33,8 +33,8 @@ export default function ScreenButtons() {
     await ProjectService.createSample(
       id_project,
       temporarySettings,
-      async () => {
-        await CacheService.loadAllSamplesSettings(id_project);
+      () => {
+        CacheService.allSamples = [temporarySettings, ...CacheService.allSamples];
         exitScreen();
       },
       (errorMessage) => alert(errorMessage)
