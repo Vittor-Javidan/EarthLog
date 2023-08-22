@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable} from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
 import { MotiView } from 'moti';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,6 +8,7 @@ import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 
 import IconButton from './Button/IconButton';
+import H1 from './Text/H1';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;
@@ -87,17 +88,11 @@ function Navbar(props: {
           padding: 10,
         }}
       >
-        <Text
-          adjustsFontSizeToFit={true}
-          maxFontSizeMultiplier={0}
-          style={{
-            color: theme.onPrimary,
-            fontSize: 200,
-            fontWeight: '700',
-          }}
+        <H1
+          style={{ color: theme.onPrimary }}
         >
           {props.title}
-        </Text>
+        </H1>
       </View>
       <IconButton
         iconName="md-menu-sharp"
