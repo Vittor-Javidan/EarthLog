@@ -13,49 +13,15 @@ import API_Widgets_Sample from './API_Widgets_Sample';
 
 export default function Widgets_Sample() {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
-
   const [_, refresh] = useState<boolean>(false);
   API_Widgets_Sample.setterRegister(refresh);
 
-  async function onConfirm(widgetData: WidgetData) {
-    await ProjectService.updateWidget_Sample(
-      id_project,
-      id_sample,
-      widgetData,
-      async () => {
-        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
-  }
-
-  async function onDelete(widgetData: WidgetData) {
-    const { id_widget } = widgetData;
-    await ProjectService.deleteWidget_Sample(
-      id_project,
-      id_sample,
-      id_widget,
-      async () => {
-        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-        refresh(prev => !prev);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
-  }
-
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Sample.map(widgetData => {
     return (
-      <Widget.Selector
+      <WidgetUnit
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onConfirm={async (widgetData) => await onConfirm(widgetData)}
-        onDelete={async () => await onDelete(widgetData)}
+        onDelete={() => refresh(prev => !prev)}
       />
     );
   });
@@ -66,6 +32,61 @@ export default function Widgets_Sample() {
         {allWidgetsComponents}
       </Animation>
     </Layout.ScrollView>
+  );
+}
+
+function WidgetUnit(props: {
+  widgetData: WidgetData,
+  onDelete: () => void
+}) {
+
+  const id_project = useLocalSearchParams().id_project as string;
+  const id_sample = useLocalSearchParams().id_sample as string;
+  const [saved, setSaved] = useState<boolean>(true);
+
+  async function onConfirm(widgetData: WidgetData) {
+    setSaved(false);
+    await ProjectService.updateWidget_Sample(
+      id_project,
+      id_sample,
+      widgetData,
+      async () => {
+        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+        setSaved(true);
+      },
+      (errorMessage) => {
+        alert(errorMessage);
+      }
+    );
+  }
+
+  async function onDelete(id_widget: string) {
+    await ProjectService.deleteWidget_Sample(
+      id_project,
+      id_sample,
+      id_widget,
+      async () => {
+        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+        props.onDelete();
+      },
+      (errorMessage) => {
+        alert(errorMessage);
+      }
+    );
+  }
+
+  return (
+    <Widget.Selector
+      widgetData={props.widgetData}
+      onConfirm={async (widgetData) => await onConfirm(widgetData)}
+      onDelete={async () => await onDelete(props.widgetData.id_widget)}
+      statusFeedback={
+        <Layout.StatusFeedback
+          done={saved}
+          error={false}
+        />
+      }
+    />
   );
 }
 

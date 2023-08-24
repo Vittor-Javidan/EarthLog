@@ -2,15 +2,16 @@ import React, { useMemo, useState } from 'react';
 import { WidgetComponent } from '@WidgetComponents/index';
 
 import { Layout } from '@Components/Layout';
-import { TextWidgetData } from '@Types/index';
+import { TextWidgetData, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
-import { useTiming } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 
 import { WidgetRules } from '../Rules';
+import UtilService from '@Services/UtilService';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
+  statusFeedback?: JSX.Element
   onConfirm: (value: TextWidgetData) => void
   onDelete: () => void
 }) {
@@ -19,22 +20,8 @@ export default function TextWidget(props: {
   const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
-  const [displayText, setDisplayText] = useState<string>(props.widgetData.value);
+  const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCloning(props.widgetData));
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
-  const [saved, setSaved] = useState<boolean>(true);
-
-  useTiming(() => {
-    if (!saved) {
-      const newWidgetData = {
-        ...widgetData,
-        value: displayText,
-      };
-      setWidgetData(newWidgetData);
-      props.onConfirm(newWidgetData);
-      setSaved(true);
-    }
-  }, [saved], 1);
 
   function onConfirm(widgetData: TextWidgetData) {
 
@@ -52,12 +39,9 @@ export default function TextWidget(props: {
       return;
     }
 
-    if (showModal) {
-      setIsDataWrong(false);
-      setWidgetData(widgetData);
-      setDisplayText(widgetData.value);
-      props.onConfirm(widgetData);
-    }
+    setIsDataWrong(false);
+    setWidgetData(widgetData);
+    props.onConfirm(widgetData);
   }
 
   function onConfirm_Modal(widgetData: TextWidgetData) {
@@ -65,8 +49,15 @@ export default function TextWidget(props: {
   }
 
   function onTextChange(text: string) {
-    setDisplayText(text);
-    setSaved(false);
+    const newData: WidgetData = {
+      ...widgetData,
+      value: text,
+      rules: {
+        ...widgetData.rules,
+      },
+    };
+    setWidgetData(newData);
+    onConfirm(newData);
   }
 
   return (
@@ -75,7 +66,7 @@ export default function TextWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
-      saved={saved}
+      statusFeedback={props.statusFeedback}
 
       iconButtons_Top={
         <IconButtons_Top
@@ -103,7 +94,7 @@ export default function TextWidget(props: {
       >
         <Layout.Input.String
           label={''}
-          value={displayText}
+          value={widgetData.value}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}

@@ -11,6 +11,7 @@ import { WidgetComponent } from '../Components';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
+  statusFeedback?: JSX.Element
   onConfirm: (widgetData: BooleanWidgetData) => void
   onDelete: () => void
 }) {
@@ -51,7 +52,7 @@ export default function BooleanWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
-      saved={true}
+      statusFeedback={props.statusFeedback}
 
       iconButtons_Top={
         <IconButtons_Top

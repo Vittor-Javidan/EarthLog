@@ -6,6 +6,7 @@ import { WidgetData } from '@Types/index';
 
 export default function WidgetSelector(props: {
   widgetData: WidgetData
+  statusFeedback?: JSX.Element
   onConfirm: (widgetData: WidgetData) => void
   onDelete: () => void
 }) {
@@ -14,6 +15,7 @@ export default function WidgetSelector(props: {
     case 'text': return (
       <TextWidget
         widgetData={props.widgetData}
+        statusFeedback={props.statusFeedback}
         onConfirm={props.onConfirm}
         onDelete={props.onDelete}
       />
@@ -21,6 +23,7 @@ export default function WidgetSelector(props: {
     case 'boolean': return (
       <BooleanWidget
         widgetData={props.widgetData}
+        statusFeedback={props.statusFeedback}
         onConfirm={props.onConfirm}
         onDelete={props.onDelete}
       />
