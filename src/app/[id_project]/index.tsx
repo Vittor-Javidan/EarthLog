@@ -46,16 +46,10 @@ async function fetchSamples(
   id_project: string,
   whenLoaded: () => void
 ) {
-
   if (id_project !== CacheService.lastOpenProject.id_project) {
     await CacheService.saveLastOpenProject(id_project);
     await CacheService.loadAllSamplesSettings(id_project);
   }
-
-  if (CacheService.allSamples.length <= 0) {
-    await CacheService.loadAllSamplesSettings(id_project);
-  }
-
   whenLoaded();
 }
 

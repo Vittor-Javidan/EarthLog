@@ -55,6 +55,7 @@ export default class CacheService {
     }
 
     this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
+    this.allSamples = await DatabaseService.getAllSamples(lastProjectID);
   }
 
   static async deleteLastOpenProject(): Promise<void> {
