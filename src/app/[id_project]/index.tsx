@@ -1,15 +1,17 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
+import CacheService from '@Services/CacheService';
 
 import { Drawer } from './Drawer';
 import NavigationTree from './NavigationTree';
 import SampleButtons from './LocalComponents/SampleButtons';
 import ScreenButtons from './ScreenButtons';
-import CacheService from '@Services/CacheService';
 
 export default function ProjectScreen() {
 
@@ -32,7 +34,9 @@ export default function ProjectScreen() {
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <SampleButtons />
+        <Animation>
+          <SampleButtons />
+        </Animation>
       )}
     </Layout.Root>
   );
@@ -53,4 +57,25 @@ async function fetchSamples(
   }
 
   whenLoaded();
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { width } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      from={{ left: -width }}
+      transition={{
+        type: 'timing',
+        duration: 200,
+        delay: 300,
+      }}
+      animate={{
+        left: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
+  );
 }
