@@ -16,7 +16,7 @@ export default function Widgets_Project() {
   const [_, refresh] = useState<boolean>(false);
   API_Widgets_Project.setterRegister(refresh);
 
-  const allWidgetsComponents: JSX.Element[] = CacheService.getAllProjectWidgetsFromCache().map(widgetData => {
+  const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Project.map(widgetData => {
     return (
       <WidgetUnit
         key={widgetData.id_widget}

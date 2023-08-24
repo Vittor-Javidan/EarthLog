@@ -15,28 +15,6 @@ export default class CacheService {
   static allSamples: SampleSettings[] = [];
   static allWidgets_Sample: WidgetData[] = [];
 
-  static getProjectFromCache(id_project: string): ProjectSettings {
-    for (let i = 0; i < this.allProjects.length; i++) {
-      if (this.allProjects[i].id_project === id_project) {
-        return this.allProjects[i];
-      }
-    }
-    throw Error('Project does not exist on cache');
-  }
-
-  static getSampleFromCache(id_sample: string): SampleSettings {
-    for (let i = 0; i < this.allSamples.length; i++) {
-      if (this.allSamples[i].id_sample === id_sample) {
-        return this.allSamples[i];
-      }
-    }
-    throw Error('Sample does not exist on cache');
-  }
-
-  static getAllProjectWidgetsFromCache(): WidgetData[] {
-    return this.allWidgets_Project;
-  }
-
   static async saveLastOpenProject(id_project: string): Promise<void> {
     await DatabaseService.saveLastOpenProject(id_project);
     this.lastOpenProject = await DatabaseService.readProject(id_project);
@@ -68,12 +46,32 @@ export default class CacheService {
     };
   }
 
+  static getProjectFromCache(id_project: string): ProjectSettings {
+    for (let i = 0; i < this.allProjects.length; i++) {
+      if (this.allProjects[i].id_project === id_project) {
+        return this.allProjects[i];
+      }
+    }
+    throw Error('Project does not exist on cache');
+  }
+
+  static getSampleFromCache(id_sample: string): SampleSettings {
+    for (let i = 0; i < this.allSamples.length; i++) {
+      if (this.allSamples[i].id_sample === id_sample) {
+        return this.allSamples[i];
+      }
+    }
+    throw Error('Sample does not exist on cache');
+  }
+
   static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
         this.allProjects[i] = UtilService.deepCloning(projectSettings);
       }
+      return;
     }
+    throw Error('Project does not exist on cache');
   }
 
   static updateCache_SampleSettings(sampleSettings: SampleSettings) {
@@ -81,7 +79,9 @@ export default class CacheService {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
         this.allSamples[i] = UtilService.deepCloning(sampleSettings);
       }
+      return;
     }
+    throw Error('Sample does not exist on cache');
   }
 
   static updateCache_ProjectWidget(widgetData: WidgetData) {
@@ -89,7 +89,9 @@ export default class CacheService {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Project[i] = UtilService.deepCloning(widgetData);
       }
+      return;
     }
+    throw Error('Project Widget does not exist on cache');
   }
 
   static updateCache_TemplateWidget(widgetData: WidgetData) {
@@ -97,7 +99,9 @@ export default class CacheService {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Template[i] = UtilService.deepCloning(widgetData);
       }
+      return;
     }
+    throw Error('Template Widget does not exist on cache');
   }
 
   static updateCache_SampleWidget(widgetData: WidgetData) {
@@ -105,7 +109,9 @@ export default class CacheService {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Sample[i] = UtilService.deepCloning(widgetData);
       }
+      return;
     }
+    throw Error('Sample Widget does not exist on cache');
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
