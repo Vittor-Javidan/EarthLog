@@ -82,9 +82,8 @@ function Navbar(props: {
         style={{
           flex: 8,
           alignItems: 'flex-start',
-          justifyContent: 'flex-end',
+          justifyContent: 'center',
           paddingHorizontal: 10,
-          paddingBottom: 10,
         }}
       >
         <H1
@@ -98,9 +97,9 @@ function Navbar(props: {
       <IconButton
         iconName="md-menu-sharp"
         onPress={props.onMenuButtonPress}
+        color_onPressed={theme.secondary}
         style={{
           paddingHorizontal: 10,
-          paddingVertical: 10,
         }}
       />
     </View>

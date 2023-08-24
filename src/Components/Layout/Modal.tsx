@@ -107,6 +107,7 @@ function Navbar(props: {
         iconName="close"
         onPress={props.onIconPress}
         color={fontColor}
+        color_onPressed={theme.secondary}
         style={{
           paddingHorizontal: 10,
           paddingVertical: 10,
