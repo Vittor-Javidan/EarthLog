@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Platform } from 'react-native';
 
 export default function ScreenButtons(props: {
   button_left?: JSX.Element
@@ -11,13 +11,14 @@ export default function ScreenButtons(props: {
 
   const { width: WIDTH} = Dimensions.get('window');
   const HORIZONTAL_PADDING = 10;
+  const BOTTOM = Platform.OS === 'ios' ? 20 : 10;
 
   return (props.showSwipe ? (
     <View
       style={{
         position: 'absolute',
         width: '100%',
-        bottom: 10,
+        bottom: BOTTOM,
       }}
     >
       {props.SwipeButton}
@@ -27,7 +28,7 @@ export default function ScreenButtons(props: {
       style={{
         position: 'absolute',
         left: 10,
-        bottom: 10,
+        bottom: BOTTOM,
         justifyContent: 'center',
         alignItems: 'flex-start',
         paddingLeft: HORIZONTAL_PADDING,
@@ -39,7 +40,7 @@ export default function ScreenButtons(props: {
       style={{
         position: 'absolute',
         left: (WIDTH / 2) - 40,
-        bottom: 10,
+        bottom: BOTTOM,
       }}
     >
       {props.button_middle}
@@ -48,7 +49,7 @@ export default function ScreenButtons(props: {
       style={{
         position: 'absolute',
         right: 10,
-        bottom: 10,
+        bottom: BOTTOM,
         paddingRight: HORIZONTAL_PADDING,
       }}
     >
