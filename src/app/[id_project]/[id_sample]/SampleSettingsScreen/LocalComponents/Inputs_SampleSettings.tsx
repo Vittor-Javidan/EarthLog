@@ -22,18 +22,14 @@ export default function Inputs_SampleSettings() {
   const [saved, setSaved] = useState<boolean>(true);
   const { rules } = sampleSettings;
 
-  useTimeout(() => {
+  useTimeout(async () => {
     if (!saved) {
-      ProjectService.updateSample(
+      await ProjectService.updateSample(
         id_project,
         sampleSettings,
         () => {
-          for (let i = 0; i < CacheService.allSamples.length; i++) {
-            if (CacheService.allSamples[i].id_sample === sampleSettings.id_sample) {
-              CacheService.allSamples[i] = UtilService.deepCloning(sampleSettings);
-              setSaved(true);
-            }
-          }
+          CacheService.updateCache_SampleSettings(sampleSettings);
+          setSaved(true);
         },
         (erroMessage) => alert(erroMessage)
       );

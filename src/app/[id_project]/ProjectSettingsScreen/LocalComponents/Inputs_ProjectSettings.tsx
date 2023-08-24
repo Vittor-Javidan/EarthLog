@@ -26,11 +26,7 @@ export default function Inputs_ProjectSettings() {
       await ProjectService.updateProject(
         projectSettings,
         () => {
-          for (let i = 0; i < CacheService.allProjects.length; i++) {
-            if (CacheService.allProjects[i].id_project === projectSettings.id_project) {
-              CacheService.allProjects[i] = UtilService.deepCloning(projectSettings);
-            }
-          }
+          CacheService.updateCache_ProjectSettings(projectSettings);
           setSaved(true);
         },
         (erroMessage) => alert(erroMessage)
@@ -41,7 +37,7 @@ export default function Inputs_ProjectSettings() {
   function onNameChange(newName: string) {
     if (rules.allowNameChange) {
       setProjectSettings(prev => {
-        const newData = { ...prev};
+        const newData = { ...prev };
         newData.name = newName;
         return newData;
       });

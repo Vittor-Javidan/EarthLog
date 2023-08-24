@@ -8,6 +8,8 @@ import ProjectService from '@Services/ProjectService';
 import API_Widgets_Template from './API_Widgets_Template';
 import CacheService from '@Services/CacheService';
 import { Layout } from '@Components/Layout';
+import UtilService from '@Services/UtilService';
+import { useTimeout } from '@Hooks/index';
 
 export default function Widgets_Template() {
 
@@ -35,19 +37,26 @@ function WidgetUnit(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const [widgetData, setWidgetData] = useState<WidgetData>(UtilService.deepCloning(props.widgetData));
   const [saved, setSaved] = useState<boolean>(true);
 
+  useTimeout(async () => {
+    if (!saved) {
+      await ProjectService.updateWidget_Template(
+        id_project,
+        widgetData,
+        () => {
+          CacheService.updateCache_TemplateWidget(widgetData);
+          setSaved(true);
+        },
+        (errorMessage) => alert(errorMessage)
+      );
+    }
+  }, [widgetData], 200);
+
   async function onConfirm(widgetData: WidgetData) {
+    setWidgetData(widgetData);
     setSaved(false);
-    await ProjectService.updateWidget_Template(
-      id_project,
-      widgetData,
-      async () => {
-        await CacheService.loadAllWidgets_Template(id_project);
-        setSaved(true);
-      },
-      (errorMessage) => alert(errorMessage)
-    );
   }
 
   async function onDelete(id_widget: string) {

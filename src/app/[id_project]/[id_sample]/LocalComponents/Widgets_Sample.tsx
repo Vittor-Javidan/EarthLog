@@ -5,8 +5,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { Layout } from '@Components/Layout';
 import { Widget } from '@Components/Widget';
 import { WidgetData } from '@Types/index';
+import { useTimeout } from '@Hooks/index';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 import API_Widgets_Sample from './API_Widgets_Sample';
 
@@ -37,22 +39,29 @@ function WidgetUnit(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
+  const [widgetData, setWidgetData] = useState<WidgetData>(UtilService.deepCloning(props.widgetData));
   const [saved, setSaved] = useState<boolean>(true);
 
+  useTimeout(async () => {
+    if (!saved) {
+      await ProjectService.updateWidget_Sample(
+        id_project,
+        id_sample,
+        widgetData,
+        () => {
+          CacheService.updateCache_SampleWidget(widgetData);
+          setSaved(true);
+        },
+        (errorMessage) => {
+          alert(errorMessage);
+        }
+      );
+    }
+  }, [widgetData], 200);
+
   async function onConfirm(widgetData: WidgetData) {
+    setWidgetData(widgetData);
     setSaved(false);
-    await ProjectService.updateWidget_Sample(
-      id_project,
-      id_sample,
-      widgetData,
-      async () => {
-        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-        setSaved(true);
-      },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
-    );
   }
 
   async function onDelete(id_widget: string) {

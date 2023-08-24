@@ -1,5 +1,6 @@
 import { ProjectSettings, SampleSettings, WidgetData } from '@Types/index';
 import DatabaseService from './DatabaseService';
+import UtilService from './UtilService';
 
 export default class CacheService {
 
@@ -65,6 +66,46 @@ export default class CacheService {
       name: '',
       rules: {},
     };
+  }
+
+  static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
+    for (let i = 0; i < CacheService.allProjects.length; i++) {
+      if (this.allProjects[i].id_project === projectSettings.id_project) {
+        this.allProjects[i] = UtilService.deepCloning(projectSettings);
+      }
+    }
+  }
+
+  static updateCache_SampleSettings(sampleSettings: SampleSettings) {
+    for (let i = 0; i < CacheService.allSamples.length; i++) {
+      if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
+        this.allSamples[i] = UtilService.deepCloning(sampleSettings);
+      }
+    }
+  }
+
+  static updateCache_ProjectWidget(widgetData: WidgetData) {
+    for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
+      if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
+        this.allWidgets_Project[i] = UtilService.deepCloning(widgetData);
+      }
+    }
+  }
+
+  static updateCache_TemplateWidget(widgetData: WidgetData) {
+    for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
+      if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
+        this.allWidgets_Template[i] = UtilService.deepCloning(widgetData);
+      }
+    }
+  }
+
+  static updateCache_SampleWidget(widgetData: WidgetData) {
+    for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
+      if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
+        this.allWidgets_Sample[i] = UtilService.deepCloning(widgetData);
+      }
+    }
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
