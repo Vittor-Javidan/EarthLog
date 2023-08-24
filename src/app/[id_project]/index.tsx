@@ -44,16 +44,12 @@ async function fetchSamples(
 ) {
 
   if (id_project !== CacheService.lastOpenProject.id_project) {
-    console.log('database init');
     await CacheService.saveLastOpenProject(id_project);
     await CacheService.loadAllSamplesSettings(id_project);
-    console.log('database loaded');
   }
 
   if (CacheService.allSamples.length <= 0) {
-    console.log('database init');
     await CacheService.loadAllSamplesSettings(id_project);
-    console.log('database loaded');
   }
 
   whenLoaded();
