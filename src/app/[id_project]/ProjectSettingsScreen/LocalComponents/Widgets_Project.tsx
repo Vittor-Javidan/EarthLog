@@ -40,19 +40,9 @@ function WidgetUnit(props: {
   const [widgetData, setWidgetData] = useState<WidgetData>(UtilService.deepCloning(props.widgetData));
   const [saved, setSaved] = useState<boolean>(true);
 
-  useTimeout(async () => {
-    if (!saved) {
-      await ProjectService.updateWidget_Project(
-        id_project,
-        widgetData,
-        () => {
-          CacheService.updateCache_ProjectWidget(widgetData);
-          setSaved(true);
-        },
-        (errorMessage) => alert(errorMessage)
-      );
-    }
-  }, [widgetData], 200);
+  useAutoSave(() => {
+    setSaved(true);
+  }, [widgetData], saved);
 
   async function onConfirm(widgetData: WidgetData) {
     setWidgetData(widgetData);
@@ -84,4 +74,28 @@ function WidgetUnit(props: {
       }
     />
   );
+}
+
+
+function useAutoSave(
+  onSucces: () => void,
+  dependencyArray: [ WidgetData ],
+  saved: boolean,
+) {
+
+  const id_project = useLocalSearchParams().id_project as string;
+
+  useTimeout(async () => {
+    if (!saved) {
+      await ProjectService.updateWidget_Project(
+        id_project,
+        dependencyArray[0],
+        () => {
+          CacheService.updateCache_ProjectWidget(dependencyArray[0]);
+          onSucces();
+        },
+        (errorMessage) => alert(errorMessage)
+      );
+    }
+  }, dependencyArray, 200);
 }

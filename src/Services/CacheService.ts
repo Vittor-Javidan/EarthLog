@@ -68,8 +68,8 @@ export default class CacheService {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
         this.allProjects[i] = UtilService.deepCloning(projectSettings);
+        return;
       }
-      return;
     }
     throw Error('Project does not exist on cache');
   }
@@ -78,8 +78,8 @@ export default class CacheService {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
         this.allSamples[i] = UtilService.deepCloning(sampleSettings);
+        return;
       }
-      return;
     }
     throw Error('Sample does not exist on cache');
   }
@@ -88,8 +88,8 @@ export default class CacheService {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Project[i] = UtilService.deepCloning(widgetData);
+        return;
       }
-      return;
     }
     throw Error('Project Widget does not exist on cache');
   }
@@ -98,8 +98,8 @@ export default class CacheService {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Template[i] = UtilService.deepCloning(widgetData);
+        return;
       }
-      return;
     }
     throw Error('Template Widget does not exist on cache');
   }
@@ -108,8 +108,8 @@ export default class CacheService {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Sample[i] = UtilService.deepCloning(widgetData);
+        return;
       }
-      return;
     }
     throw Error('Sample Widget does not exist on cache');
   }

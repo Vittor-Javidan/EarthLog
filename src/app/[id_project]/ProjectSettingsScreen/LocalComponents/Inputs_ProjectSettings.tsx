@@ -21,18 +21,9 @@ export default function Inputs_ProjectSettings() {
   const [saved, setSaved] = useState<boolean>(true);
   const { rules } = projectSettings;
 
-  useTimeout(async () => {
-    if (!saved) {
-      await ProjectService.updateProject(
-        projectSettings,
-        () => {
-          CacheService.updateCache_ProjectSettings(projectSettings);
-          setSaved(true);
-        },
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-  }, [projectSettings], 200);
+  useAutoSave(() => {
+    setSaved(true);
+  }, [projectSettings], saved);
 
   function onNameChange(newName: string) {
     if (rules.allowNameChange) {
@@ -106,4 +97,23 @@ export default function Inputs_ProjectSettings() {
       </Layout.View>
     </Layout.View>
   );
+}
+
+function useAutoSave(
+  onSucces: () => void,
+  dependencyArray: [ ProjectSettings ],
+  saved: boolean,
+) {
+  useTimeout(async () => {
+    if (!saved) {
+      await ProjectService.updateProject(
+        dependencyArray[0],
+        () => {
+          CacheService.updateCache_ProjectSettings(dependencyArray[0]);
+          onSucces();
+        },
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+  }, dependencyArray, 200);
 }

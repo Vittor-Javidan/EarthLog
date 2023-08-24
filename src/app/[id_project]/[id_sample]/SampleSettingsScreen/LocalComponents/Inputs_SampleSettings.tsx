@@ -12,7 +12,6 @@ import UtilService from '@Services/UtilService';
 
 export default function Inputs_SampleSettings() {
 
-  const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
@@ -22,19 +21,9 @@ export default function Inputs_SampleSettings() {
   const [saved, setSaved] = useState<boolean>(true);
   const { rules } = sampleSettings;
 
-  useTimeout(async () => {
-    if (!saved) {
-      await ProjectService.updateSample(
-        id_project,
-        sampleSettings,
-        () => {
-          CacheService.updateCache_SampleSettings(sampleSettings);
-          setSaved(true);
-        },
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-  }, [sampleSettings], 200);
+  useAutoSave(() => {
+    setSaved(true);
+  }, [sampleSettings], saved);
 
   async function onNameChange(newName: string) {
     if (sampleSettings.rules.allowNameChange) {
@@ -108,4 +97,27 @@ export default function Inputs_SampleSettings() {
       </Layout.View>
     </Layout.View>
   );
+}
+
+function useAutoSave(
+  onSucces: () => void,
+  dependencyArray: [ SampleSettings ],
+  saved: boolean,
+) {
+
+  const id_project = useLocalSearchParams().id_project as string;
+
+  useTimeout(async () => {
+    if (!saved) {
+      await ProjectService.updateSample(
+        id_project,
+        dependencyArray[0],
+        () => {
+          CacheService.updateCache_SampleSettings(dependencyArray[0]);
+          onSucces();
+        },
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+  }, dependencyArray, 200);
 }
