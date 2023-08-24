@@ -1,3 +1,1 @@
-# Input String
-
-- undo button not showing when the text is deleted on IOS.
+# adjustsFontSizeToFit not working on ios devices

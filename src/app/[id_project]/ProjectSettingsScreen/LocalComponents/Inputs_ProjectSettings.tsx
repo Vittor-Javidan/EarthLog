@@ -2,11 +2,13 @@ import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Layout } from '@Components/Layout';
-import { useTiming } from '@Hooks/index';
+import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
+import { ProjectSettings } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 export default function Inputs_ProjectSettings() {
 
@@ -14,26 +16,35 @@ export default function Inputs_ProjectSettings() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
-  const { rules } = useMemo(() => projectSettings, []);
 
-  const [name, setName] = useState<string>(projectSettings.name);
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCloning(CacheService.getProjectFromCache(id_project)));
   const [saved, setSaved] = useState<boolean>(true);
+  const { rules } = projectSettings;
 
-  useTiming(async () => {
+  useTimeout(async () => {
     if (!saved) {
-      projectSettings.name = name;
       await ProjectService.updateProject(
         projectSettings,
-        () => setSaved(true),
+        () => {
+          for (let i = 0; i < CacheService.allProjects.length; i++) {
+            if (CacheService.allProjects[i].id_project === projectSettings.id_project) {
+              CacheService.allProjects[i] = UtilService.deepCloning(projectSettings);
+            }
+          }
+          setSaved(true);
+        },
         (erroMessage) => alert(erroMessage)
       );
     }
-  }, [saved], 100);
+  }, [projectSettings], 200);
 
   function onNameChange(newName: string) {
     if (rules.allowNameChange) {
-      setName(newName);
+      setProjectSettings(prev => {
+        const newData = { ...prev};
+        newData.name = newName;
+        return newData;
+      });
       setSaved(false);
     }
   }
@@ -92,7 +103,7 @@ export default function Inputs_ProjectSettings() {
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={stringResources['Write the project name here...']}
-          value={name}
+          value={projectSettings.name}
           locked={!rules.allowNameChange}
           onChangeText={(text) => onNameChange(text)}
         />

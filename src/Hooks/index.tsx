@@ -16,15 +16,15 @@ export function useBackPress(onPress: () => void) {
   }, []);
 }
 
-export function useTiming(
+export function useTimeout(
   execute: () => void,
   deps: React.DependencyList | undefined,
-  ms: number,
+  delay: number,
 ) {
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = setTimeout(() => {
       execute();
-    }, ms);
+    }, delay);
 
     return () => clearInterval(timer);
   }, deps);

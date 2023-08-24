@@ -2,45 +2,51 @@ import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Layout } from '@Components/Layout';
-import { useTiming } from '@Hooks/index';
 import { translations } from '@Translations/index';
+import { SampleSettings } from '@Types/index';
+import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 export default function Inputs_SampleSettings() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
+
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
-  const { rules } = useMemo(() => sampleSettings, []);
-  const [name, setName] = useState<string>(sampleSettings.name);
-  const [saved, setSaved] = useState<boolean>(true);
 
-  useTiming(async () => {
+  const [sampleSettings, setSampleSettings] = useState<SampleSettings>(UtilService.deepCloning(CacheService.getSampleFromCache(id_sample)));
+  const [saved, setSaved] = useState<boolean>(true);
+  const { rules } = sampleSettings;
+
+  useTimeout(() => {
     if (!saved) {
-      sampleSettings.name = name;
-      await ProjectService.updateSample(
+      ProjectService.updateSample(
         id_project,
         sampleSettings,
-        async () => {
-          CacheService.allSamples.forEach(cachedSettings => {
-            if (cachedSettings.id_sample === sampleSettings.id_sample) {
-              cachedSettings = sampleSettings;
+        () => {
+          for (let i = 0; i < CacheService.allSamples.length; i++) {
+            if (CacheService.allSamples[i].id_sample === sampleSettings.id_sample) {
+              CacheService.allSamples[i] = UtilService.deepCloning(sampleSettings);
+              setSaved(true);
             }
-          });
-          setSaved(true);
+          }
         },
         (erroMessage) => alert(erroMessage)
       );
     }
-  }, [saved], 100);
+  }, [sampleSettings], 200);
 
-  function onNameChange(newName: string) {
-    if (rules.allowNameChange) {
-      setName(newName);
+  async function onNameChange(newName: string) {
+    if (sampleSettings.rules.allowNameChange) {
+      setSampleSettings(prev => {
+        const newData = { ...prev };
+        newData.name = newName;
+        return newData;
+      });
       setSaved(false);
     }
   }
@@ -100,8 +106,8 @@ export default function Inputs_SampleSettings() {
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={stringResources['Write the sample name here...']}
           locked={!rules.allowNameChange}
-          value={name}
-          onChangeText={(text) => onNameChange(text)}
+          value={sampleSettings.name}
+          onChangeText={async (text) => await onNameChange(text)}
         />
       </Layout.View>
     </Layout.View>
