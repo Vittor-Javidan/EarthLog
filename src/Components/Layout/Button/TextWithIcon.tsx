@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle, Platform } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
 import RootButton from './Root';
 import RootText from '../Text/Root';
 import Icon, { IconName } from '../Icon';
+import ThemeService from '@Services/ThemeService';
 
 export default function TextWithIcon(props: {
 	title: string
@@ -20,6 +21,7 @@ export default function TextWithIcon(props: {
 	const { theme } = useMemo(() => ConfigService.config, []);
 	const backgroundColor = props.color_background ? props.color_background : theme.secondary;
 	const textColor = props.color_font ? props.color_font : theme.onSecondary;
+  const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 25;
 
 	return (
 		<RootButton
@@ -28,6 +30,8 @@ export default function TextWithIcon(props: {
       style={[{
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: iosLargeTitle ? 5 : 10,
 			}, props.style]}
     >
       {props.iconSide === 'Left' && (
@@ -38,7 +42,8 @@ export default function TextWithIcon(props: {
       )}
       <RootText
 				style={{
-					fontSize: 200,
+					fontSize: iosLargeTitle ? ThemeService.FONTS.h3 : 200,
+          width: '80%',
           color: textColor,
 				}}
 			>

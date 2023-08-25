@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
 import { MotiView } from 'moti';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import ConfigService from '@Services/ConfigService';
 
 import IconButton from './Button/IconButton';
 import RootText from './Text/Root';
+import ThemeService from '@Services/ThemeService';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;
@@ -69,6 +70,7 @@ function Navbar(props: {
 }): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, []);
+  const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
 
   return (<>
     <View
@@ -84,14 +86,13 @@ function Navbar(props: {
           alignItems: 'flex-start',
           justifyContent: 'center',
           paddingHorizontal: 10,
-          paddingVertical: 10,
+          paddingVertical: iosLargeTitle ? 5 : 10,
         }}
       >
         <RootText
           style={{
             color: theme.onPrimary,
-            fontSize: 200,
-            flex: 1,
+            fontSize: iosLargeTitle ? ThemeService.FONTS.h1 : 200,
           }}
         >
           {props.title}
