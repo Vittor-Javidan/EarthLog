@@ -56,7 +56,7 @@ export default function HomeScreen() {
 
   return (
     <Layout.Root
-      title="Earth Log"
+      title={stringResources['Home screen']}
       drawerChildren={<Drawer />}
       navigationTree={<NavigationTree />}
       screenButtons={<ScreenButtons />}

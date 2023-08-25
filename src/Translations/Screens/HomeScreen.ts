@@ -1,8 +1,9 @@
 import { Languages } from '@Types/index';
 
 export type Translations_HomeScreen = Record<Languages, {
+	'Home screen': string
 	'Settings': string
-	'Hold on!': string,
+	'Hold on!': string
 	'Want to exit?': string
 	'NO': string
 	'YES': string
@@ -12,6 +13,7 @@ export type Translations_HomeScreen = Record<Languages, {
 
 export const translations_HomeScreen: Translations_HomeScreen = {
 	'en-US': {
+		'Home screen': 'Main Screen',
 		'Settings': 'Settings',
 		'Hold on!': 'Hold on!',
 		'Want to exit?': 'Want to exit?',
@@ -21,6 +23,7 @@ export const translations_HomeScreen: Translations_HomeScreen = {
 		'Projects': 'Projects',
 	},
 	'pt-BR': {
+		'Home screen': 'Tela inicial',
 		'Settings': 'Configurações',
 		'Hold on!': 'Espere um pouco!',
 		'Want to exit?': 'Deseja sair?',

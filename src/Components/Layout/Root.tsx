@@ -8,7 +8,7 @@ import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 
 import IconButton from './Button/IconButton';
-import H1 from './Text/H1';
+import RootText from './Text/Root';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;
@@ -84,15 +84,18 @@ function Navbar(props: {
           alignItems: 'flex-start',
           justifyContent: 'center',
           paddingHorizontal: 10,
+          paddingVertical: 10,
         }}
       >
-        <H1
+        <RootText
           style={{
             color: theme.onPrimary,
+            fontSize: 200,
+            flex: 1,
           }}
         >
           {props.title}
-        </H1>
+        </RootText>
       </View>
       <IconButton
         iconName="md-menu-sharp"
