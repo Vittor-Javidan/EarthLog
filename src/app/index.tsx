@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import LoadingScreen from './LoadingScreen';
 
+import { Layout } from '@Components/Layout';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
-import { useNavigate } from '@Hooks/index';
 
 export default function Home() {
 
   useEffect(() => {
-    initApp(async () => await useNavigate('HOME SCREEN'));
+    initApp(() => navigate('HOME SCREEN'));
   }, []);
 
-  return <LoadingScreen />;
+  return <Layout.Loading />;
 }
 
 async function initApp(onFinish: () => void) {

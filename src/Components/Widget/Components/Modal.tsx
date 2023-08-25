@@ -1,10 +1,7 @@
+import { WidgetData } from '@Types/index';
 import React, { useState, useMemo, ReactNode } from 'react';
-import { Input } from '@Components/Inputs';
+
 import { Layout } from '@Components/Layout';
-
-import { InputColors, ThemeDTO, WidgetData } from '@Types/index';
-import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export default function Modal(props: {
@@ -16,71 +13,84 @@ export default function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
-
   return (
     <Layout.Modal
       title={props.title}
       onRequestClose={props.onRequestClose}
-    >
-      <Layout.ScrollView>
-        {props.children}
-        {props.widgetData.rules.allowValueChange && (
-          <DeleteButton
-            widgetLabel={props.title}
-            onDelete={props.onDelete}
-          />
-        )}
-        <Layout.Button
-          title={stringResources['Save']}
-          onPress={props.onConfirm}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
+      ScreenButtons={
+        <ScreenButtons
+          title={props.title}
+          widgetData={props.widgetData}
+          onConfirm={props.onConfirm}
+          onDelete={props.onDelete}
+          onRequestClose={props.onRequestClose}
         />
+      }
+    >
+      <Layout.ScrollView
+        style={{
+          flex: 1,
+          paddingTop: 10,
+        }}
+      >
+        {props.children}
       </Layout.ScrollView>
     </Layout.Modal>
   );
 }
 
-function DeleteButton(props: {
-  widgetLabel: string
+function ScreenButtons(props: {
+  title: string
+  widgetData: WidgetData
+  onConfirm: () => void
   onDelete: () => void
+  onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo(() => translations.Widgets.Components.Modal[ConfigService.config.language], []);
+  const { theme } = useMemo(() => ConfigService.config, []);
+  const { rules } = props.widgetData;
+  const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-  const [widgetName, setWidgetName] = useState<string>('');
-  const isNameCorrect = widgetName === props.widgetLabel;
+  return (
+    <Layout.ScreenButtons
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.wrong,
-      font: theme.onWrong,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
+      button_left={
+        <Layout.Button.IconRounded
+          iconName="arrow-back"
+          showPlusSign={false}
+          color_background={theme.secondary}
+          color={theme.onSecondary}
+          onPress={props.onRequestClose}
+        />
+      }
 
-  return (<>
-    <Input.String
-      colors={inputColors}
-      label={stringResources['Delete']}
-      placeholder={stringResources['Type widget name perfectly to delete.']}
-      value={widgetName}
-      onChangeText={setWidgetName}
-      locked={false}
-      onResetPress={() => setWidgetName('')}
+      button_middle={rules.allowWidgetErase ? (
+        <Layout.Button.IconRounded
+          iconName="trash-outline"
+          showPlusSign={false}
+          color_background={theme.wrong}
+          color={theme.onWrong}
+          onPress={() => setShow_DeleteSwap(true)}
+        />
+      ) : undefined}
+
+      button_right={
+        <Layout.Button.IconRounded
+          iconName="save"
+          showPlusSign={false}
+          color_background={theme.confirm}
+          color={theme.onConfirm}
+          onPress={props.onConfirm}
+        />
+      }
+
+      showSwipe={show_DeleteSwap}
+      SwipeButton={
+        <Layout.Button.DeleteSwipe
+          onSwipe={() => props.onDelete()}
+          onCancel={() => setShow_DeleteSwap(false)}
+        />
+      }
     />
-    {isNameCorrect && <Layout.Button
-      title={stringResources['Delete']}
-      overrideBackgroundColor={theme.wrong}
-      overrideTextColor={theme.onWrong}
-      onPress={props.onDelete}
-    />}
-  </>);
+  );
 }

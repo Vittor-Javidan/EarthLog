@@ -1,48 +1,83 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
+
 import { Layout } from '@Components/Layout';
-import Inputs_ProjectSettings from './Inputs_ProjectSettings';
-import Widgets_Project from './Widgets_Project';
-import DeleteButton from './DeleteButton';
-
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+import CacheService from '@Services/CacheService';
+
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import Widgets_Project from './LocalComponents/Widgets_Project';
+import Inputs_ProjectSettings from './LocalComponents/Inputs_ProjectSettings';
 
 export default function ProjectSettingsScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
-  useBackPress(async () => await useNavigate('PROJECT SCREEN', id_project));
+  useEffect(() => {
+    fetchWidgets(id_project, () => setState('Loaded'));
+  }, []);
+  useBackPress(() => navigate('PROJECT SCREEN', id_project));
 
   return (
     <Layout.Root
-      title={stringResources['Project Settings']}
-      iconName="settings"
-      showNavigationTree={true}
+      title={stringResources['Edit project']}
       drawerChildren={<></>}
-      navigationTreeIcons={[
-        <Icon.Home
-          key="treeIcon_1"
-          onPress={async () => await useNavigate('HOME SCREEN')}
-        />,
-        <Icon.Project
-          key="treeIcon_2"
-          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
-        />,
-      ]}
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
-      <Layout.ScrollView>
-        <Inputs_ProjectSettings />
-        <Widgets_Project />
-        <DeleteButton />
-      </Layout.ScrollView>
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView>
+          <Animation>
+            <Inputs_ProjectSettings />
+            <Widgets_Project />
+          </Animation>
+        </Layout.ScrollView>
+      )}
     </Layout.Root>
+  );
+}
+
+async function fetchWidgets(
+  id_project: string,
+  whenLoaded: () => void
+) {
+  await CacheService.loadAllWidgets_Project(id_project);
+  whenLoaded();
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

@@ -1,53 +1,40 @@
 import React, { useState, useMemo } from 'react';
-import { useBackPress, useNavigate } from '@Hooks/index';
+
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
-import AllButtons from './LanguageButtons';
-
-import { LanguageTags } from '@Types/index';
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import LanguageButtons from './LocalComponents/LanguageButtons';
 
 export default function LanguagesScreen(): JSX.Element {
 
-  const [currentLanguage, setCurrentLanguage] = useState(ConfigService.config.language);
+  const { language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
+  const [_, refresh] = useState<boolean>(false);
 
-  const stringResources = useMemo(
-    () => translations.Screens.LanguagesScreen[currentLanguage], [currentLanguage]
-  );
-
-  useBackPress(async () => await useNavigate('SETTINGS SCREEN'));
-
-  async function saveSelectedLanguage(languageTag: LanguageTags) {
-    ConfigService.config.language = languageTag;
-    await ConfigService.saveConfig();
-    setCurrentLanguage(languageTag);
-  }
+  useBackPress(() => navigate('SETTINGS SCREEN'));
 
   return (
     <Layout.Root
       title={stringResources['Languages']}
-      iconName="language"
-      showNavigationTree={true}
       drawerChildren={<></>}
-      navigationTreeIcons={[
-        <Icon.Home
-          key="treeIcon_1"
-          onPress={async () => await useNavigate('HOME SCREEN')}
-        />,
-        <Icon.Settings
-          key="treeIcon_2"
-          onPress={async () => await useNavigate('SETTINGS SCREEN')}
-        />,
-      ]}
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
-      <Layout.ScrollView>
-        <AllButtons
-          selectedLanguage={currentLanguage}
-          onButtonClick={saveSelectedLanguage}
+      <Layout.View
+        style={{
+          paddingTop: 1,
+          gap: 1,
+        }}
+      >
+        <LanguageButtons
+          onButtonClick={() => refresh(prev => !prev)}
         />
-      </Layout.ScrollView>
+      </Layout.View>
     </Layout.Root>
   );
 }

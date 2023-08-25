@@ -1,19 +1,33 @@
 import Root from './Root';
+import Icon from './Icon';
 import View from './View';
 import ScrollView from './ScrollView';
-import Text from './Text';
-import Button from './Button';
-import DrawerButton from './DrawerButton';
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import Group from './Group';
+import Feedback from './Feedback';
 import Modal from './Modal';
-import Feedback from './StatusFeedback';
+import { Button } from './Button';
+import { Input } from './Input';
+import { Text } from './Text';
+import { UI } from './UI';
+import Loading from './Loading';
+import StatusFeedback from './StatusFeedback';
 
 export const Layout = {
   Root: Root,
+  Icon: Icon,
+  Text: Text,
   View: View,
   ScrollView: ScrollView,
-  Text: Text,
-  Button: Button,
-  DrawerButton: DrawerButton,
-  Modal: Modal,
+  NavigationTree: NavigationTree,
+  ScreenButtons: ScreenButtons,
+  Group: Group,
   Feedback: Feedback,
+  Loading: Loading,
+  StatusFeedback: StatusFeedback,
+  Modal: Modal,
+  Button: Button,
+  Input: Input,
+  UI: UI,
 };

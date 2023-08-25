@@ -1,49 +1,57 @@
-import React, { useMemo } from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import { useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
+import React, { useMemo, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
+
 import { Layout } from '@Components/Layout';
-import Inputs_SampleSettings from './Inputs_SampleSettings';
-import DeleteButton from './DeleteButton';
-
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
 
 export default function SampleSettingsScreen() {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (
     <Layout.Root
-      title={stringResources['Sample Settings']}
-      iconName="settings"
-      showNavigationTree={true}
+      title={stringResources['Edit sample']}
       drawerChildren={<></>}
-      navigationTreeIcons={[
-        <Icon.Home
-          key="treeIcon_1"
-          onPress={async () => await useNavigate('HOME SCREEN')}
-        />,
-        <Icon.Project
-          key="treeIcon_2"
-          onPress={async () => await useNavigate('PROJECT SCREEN', id_project)}
-        />,
-        <Icon.Sample
-          key="treeIcon_3"
-          onPress={async () => await useNavigate('SAMPLE SCREEN', id_project, id_sample)}
-        />,
-      ]}
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
       <Layout.ScrollView>
-        <Inputs_SampleSettings />
-        <DeleteButton />
+        <Animation>
+          <Inputs_SampleSettings />
+        </Animation>
       </Layout.ScrollView>
     </Layout.Root>
+  );
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

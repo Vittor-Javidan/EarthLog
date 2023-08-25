@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
+
 import { Layout } from '@Components/Layout';
-import { useNavigate } from '@Hooks/index';
-
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
 
 export function Drawer() {
@@ -12,14 +11,17 @@ export function Drawer() {
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleScreen[language], []);
 
   return (<>
-    <Layout.DrawerButton
-      title={stringResources['Sample settings']}
-      onPress={async () => await useNavigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
+    <Layout.Button.TextWithIcon
+      title={stringResources['Edit sample']}
+      iconName="pencil-sharp"
+      iconSide="Right"
+      color_background={theme.tertiary}
+      color_font={theme.onTertiary}
+      onPress={() => navigate('SAMPLE SETTINGS SCREEN', id_project, id_sample)}
     />
   </>);
 }

@@ -1,21 +1,23 @@
 import React, { useMemo, useState } from 'react';
-import { Text, Switch } from 'react-native';
+import { Switch, Platform } from 'react-native';
 
+
+import { Layout } from '@Components/Layout';
+import { BooleanWidgetData } from '@Types/index';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 
-import { Icon } from '@Icon/index';
-import { Input } from '@Components/Inputs';
-
-import { WidgetRules } from '../Rules';
 import { WidgetComponent } from '../Components';
-import { BooleanWidgetData, InputColors, ThemeDTO } from '@Types/index';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
+  statusFeedback?: JSX.Element
   onConfirm: (widgetData: BooleanWidgetData) => void
   onDelete: () => void
 }) {
+
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
 
   const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -37,12 +39,6 @@ export default function BooleanWidget(props: {
 
     setShowModal(false);
 
-    if (WidgetRules.noEmptyLabel(widgetData)) {
-      alert('Labels cannot be empty');
-      setIsDataWrong(true);
-      return;
-    }
-
     if (showModal) {
       setIsDataWrong(false);
       setWidgetData(widgetData);
@@ -56,81 +52,78 @@ export default function BooleanWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
+      statusFeedback={props.statusFeedback}
 
-      shortcutIconButtons={<>
-        <ShortcutIconButtons
+      iconButtons_Top={
+        <IconButtons_Top
           widgetData={widgetData}
           onPencilPress={() => setShowModal(true)}
-          onSwitchChange={() => onSwitchChange()}
         />
-      </>}
+      }
 
-      dataDisplay={<>
-        <DataDisplay
-          widgetData={widgetData}
-        />
-      </>}
-
-      modal={<>
+      modal={
         <Modal
           widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm(widgetData)}
-          onDelete={props.onDelete}
+          onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />
-      </>}
-    />
+      }
+    >
+
+      <Layout.View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: 40,
+          paddingHorizontal: 10,
+        }}
+      >
+        <Layout.Text.P
+          style={{
+            color: theme.onTertiary,
+          }}
+        >
+          {stringResources[`${widgetData.value}`]}
+        </Layout.Text.P>
+        <Switch
+          style={{
+            paddingHorizontal: 0,
+            transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }],
+          }}
+          trackColor={{ false: theme.wrong, true: theme.confirm }}
+          ios_backgroundColor={theme.wrong}
+          value={widgetData.value}
+          onValueChange={() => onSwitchChange()}
+        />
+      </Layout.View>
+
+    </WidgetComponent.Root>
   </>);
 }
 
-function ShortcutIconButtons(props: {
+function IconButtons_Top(props: {
   widgetData: BooleanWidgetData
   onPencilPress: () => void
-  onSwitchChange: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (<>
-    <Switch
-      style={{
-        paddingHorizontal: 0,
-      }}
-      trackColor={{ false: theme.wrong, true: theme.confirm }}
-      value={props.widgetData.value}
-      onValueChange={props.onSwitchChange}
-    />
     {(props.widgetData.rules.allowLabelChange) && (
-      <Icon.Edit
-        color={theme.onPrimary}
+      <Layout.Button.Icon
+        iconName="pencil-sharp"
+        color={theme.onSecondary}
         onPress={props.onPencilPress}
         style={{
           paddingHorizontal: 10,
           paddingVertical: 5,
+          borderTopRightRadius: 10,
         }}
       />
     )}
   </>);
-}
-
-function DataDisplay(props : {
-  widgetData: BooleanWidgetData
-}) {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
-  return (
-    <Text
-      maxFontSizeMultiplier={0}
-      adjustsFontSizeToFit={true}
-      style={{
-        fontSize: ThemeService.FONTS.h3,
-        color: theme.onTertiary,
-      }}
-    >
-      {String(props.widgetData.value)}
-    </Text>
-  );
 }
 
 function Modal(props: {
@@ -140,24 +133,13 @@ function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
 
   const { rules } = props.widgetData;
-
-  const inputColors: InputColors = {
-    label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
 
   return (
     <WidgetComponent.Modal
@@ -175,22 +157,30 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      <Input.String
-        colors={inputColors}
-        label="Label:"
-        placeholder="Write widget name here..."
-        value={label}
-        onChangeText={setLabel}
-        locked={!rules.allowLabelChange}
-        onResetPress={() => setLabel('')}
-      />
-      <Input.Boolean
-        label="Value:"
-        colors={inputColors}
-        value={value}
-        locked={!rules.allowValueChange}
-        onSwitchChange={setValue}
-      />
+      <Layout.View
+        style={{
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          label={stringResources['Widget name']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          color_placeholder={theme.onBackground_Placeholder}
+          placeholder={stringResources['Write widget name here...']}
+          value={label}
+          locked={!rules.allowLabelChange}
+          onChangeText={(text) => setLabel(text)}
+        />
+        <Layout.Input.Boolean
+          label={stringResources['Value']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          value={value}
+          locked={!rules.allowValueChange}
+          onSwitchChange={(boolean) => setValue(boolean)}
+        />
+      </Layout.View>
     </WidgetComponent.Modal>
   );
 }

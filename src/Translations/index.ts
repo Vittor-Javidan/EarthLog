@@ -1,4 +1,3 @@
-import { Translations_LoadingScreen, translations_LoadingScreen } from './Screens/LoadingScreen';
 import { Translations_HomeScreen, translations_HomeScreen } from './Screens/HomeScreen';
 import { Translations_ProjectCreationScreen, translations_ProjectCreationScreen } from './Screens/ProjectCreationScreen';
 import { Translations_SettingsScreen, translations_SettingsScreen } from './Screens/SettingsScreen/SettingsScreen';
@@ -14,10 +13,11 @@ import { Translations_ErrorMessages, translations_ErrorMessages } from './ErrorM
 import { Translations_ProjectSettingsScreen, translations_ProjectSettingsScreen } from './Screens/ProjectScreen/ProjectSettingsScreen';
 import { Translations_WidgetsComponents_Modal, translations_WidgetsComponents_Modal } from './Widgets/Components_Modal';
 import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } from './Screens/ProjectScreen/SampleScreen/SampleSettingsScreen';
+import { Translations_TemplateScreen, translations_TemplateScreen } from './Screens/ProjectScreen/TemplateScreen';
+import { Translations_BooleanWidget, translations_BooleanWidget } from './Widgets/BooleanWidget';
 
 export const translations: {
   Screens: {
-    LoadingScreen:              Translations_LoadingScreen
     HomeScreen:                 Translations_HomeScreen
     ProjectCreationScreen:      Translations_ProjectCreationScreen
     SettingsScreen:             Translations_SettingsScreen
@@ -25,6 +25,7 @@ export const translations: {
       ThemeScreen:              Translations_ThemeScreen
     ProjectScreen:              Translations_ProjectScreen
       ProjectSettingsScreen:    Translations_ProjectSettingsScreen
+      TemplateScreen:           Translations_TemplateScreen
       SampleCreationScreen:     Translations_SampleCreationScreen
       SampleScreen:             Translations_SampleScreen
         SampleSettingsScreen:   Translations_SampleSettingsScreen
@@ -34,6 +35,7 @@ export const translations: {
       Modal:                    Translations_WidgetsComponents_Modal
     }
     TextWidget:                 Translations_TextWidget
+    BooleanWidget:              Translations_BooleanWidget
     AddWidgetButton:            Translations_AddWidgetButton
   }
   Data: {
@@ -42,7 +44,6 @@ export const translations: {
   ErrorMessages:                Translations_ErrorMessages
 } = {
   Screens: {
-    LoadingScreen:              translations_LoadingScreen,
     HomeScreen:                 translations_HomeScreen,
     ProjectCreationScreen:      translations_ProjectCreationScreen,
     SettingsScreen:             translations_SettingsScreen,
@@ -50,6 +51,7 @@ export const translations: {
       ThemeScreen:              translations_ThemeScreen,
     ProjectScreen:              translations_ProjectScreen,
       ProjectSettingsScreen:    translations_ProjectSettingsScreen,
+      TemplateScreen:           translations_TemplateScreen,
       SampleCreationScreen:     translations_SampleCreationScreen,
       SampleScreen:             translations_SampleScreen,
         SampleSettingsScreen:   translations_SampleSettingsScreen,
@@ -59,6 +61,7 @@ export const translations: {
       Modal:                    translations_WidgetsComponents_Modal,
     },
     TextWidget:                 translations_TextWidget,
+    BooleanWidget:              translations_BooleanWidget,
     AddWidgetButton:            translations_AddWidgetButton,
   },
   Data: {

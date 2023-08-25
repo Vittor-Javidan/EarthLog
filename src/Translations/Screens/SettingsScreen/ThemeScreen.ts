@@ -2,9 +2,6 @@ import { Languages, ThemeDTO } from '@Types/index';
 
 export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, string> & {
   'Theme': string
-  'Discart': string
-  'Save': string
-  'Reset Theme': string
   'Invalid Color': string
   'unlock': string
   'lock': string
@@ -13,9 +10,6 @@ export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, 
 export const translations_ThemeScreen: Translations_ThemeScreen = {
   'en-US': {
     'Theme': 'Theme',
-    'Discart': 'Exit',
-    'Save': 'Save',
-    'Reset Theme': 'Reset Theme',
     'Invalid Color': 'Invalid Color',
     'unlock': 'unlock',
     'lock': 'lock',
@@ -32,8 +26,8 @@ export const translations_ThemeScreen: Translations_ThemeScreen = {
     onTertiary: 'Tertiary font',
     onTertiary_Placeholder: 'Tertiary font (hint)',
     onPressColorPrimary: 'Button: press',
-    confirm: 'Button: confirm',
-    onConfirm: 'Button: confirm font',
+    confirm: 'Button: save / new',
+    onConfirm: 'Button: save / new font',
     modified: 'Button: modified',
     onModified: 'Button: modified font',
     wrong: 'Button: warning',
@@ -41,9 +35,6 @@ export const translations_ThemeScreen: Translations_ThemeScreen = {
   },
   'pt-BR': {
     'Theme': 'Tema',
-    'Discart': 'Descartar',
-    'Save': 'Salvar',
-    'Reset Theme': 'Resetar tema',
     'Invalid Color': 'Cor inválida',
     'unlock': 'destravar',
     'lock': 'travar',
@@ -60,8 +51,8 @@ export const translations_ThemeScreen: Translations_ThemeScreen = {
     onTertiary: 'Fonte terciária',
     onTertiary_Placeholder: 'Fonte terciária (dica)',
     onPressColorPrimary: 'Botão: pressionar',
-    confirm: 'Botão: confirmar',
-    onConfirm: 'Botão: fonte confirmar',
+    confirm: 'Botão: salvar / novo',
+    onConfirm: 'Botão: fonte salvar / novo',
     modified: 'Botão: modificado',
     onModified: 'Botão: fonte modificado',
     wrong: 'Botão: aviso',

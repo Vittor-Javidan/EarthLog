@@ -1,35 +1,35 @@
 import { Languages } from '@Types/index';
 
 export type Translations_HomeScreen = Record<Languages, {
+	'Home screen': string
 	'Settings': string
-  'New Project': string
-	'Hold on!': string,
+	'Hold on!': string
 	'Want to exit?': string
 	'NO': string
 	'YES': string
-	'Last Open': string
+	'Recently Open': string
 	'Projects': string
 }>
 
 export const translations_HomeScreen: Translations_HomeScreen = {
 	'en-US': {
+		'Home screen': 'Main Screen',
 		'Settings': 'Settings',
-    'New Project': 'New Project',
 		'Hold on!': 'Hold on!',
 		'Want to exit?': 'Want to exit?',
 		'NO': 'NO',
 		'YES': 'YES',
-		'Last Open': 'Last Open',
+		'Recently Open': 'Recently Open',
 		'Projects': 'Projects',
 	},
 	'pt-BR': {
+		'Home screen': 'Tela inicial',
 		'Settings': 'Configurações',
-    'New Project': 'Novo Projeto',
 		'Hold on!': 'Espere um pouco!',
 		'Want to exit?': 'Deseja sair?',
 		'NO': 'NÃO',
 		'YES': 'SIM',
-		'Last Open': 'Aberto recentemente',
+		'Recently Open': 'Aberto Recentemente',
 		'Projects': 'Projetos',
 	},
 };

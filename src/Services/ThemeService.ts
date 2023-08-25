@@ -8,7 +8,7 @@ export default class ThemeService {
     onBackground: '#DDD',
     onBackground_Placeholder: '#444',
 
-    primary: '#DDD',
+    primary: '#FFF',
     onPrimary: '#222',
     onPrimary_Placeholder: '#999',
 
@@ -33,9 +33,10 @@ export default class ThemeService {
   };
 
   static FONTS = {
-    h1: 36,
-    h2: 24,
-    h3: 14,
+    h1: 24,
+    h2: 21,
+    h3: 18,
+    p: 14,
     auto: 200,
   };
 }

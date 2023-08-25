@@ -1,18 +1,18 @@
 import { Languages } from '@Types/index';
 
 export type Translations_BooleanData = Record<Languages, {
-  'True': string
-  'False': string
+  'true': string
+  'false': string
 }>
 
 export const translations_BooleanData: Translations_BooleanData = {
   'en-US': {
-    'True': 'True',
-    'False': 'False',
+    'true': 'TRUE',
+    'false': 'FALSE',
   },
   'pt-BR': {
-    'True': 'Verdadeiro',
-    'False': 'Falso',
+    'true': 'VERDADEIRO',
+    'false': 'FALSO',
   },
 };
 

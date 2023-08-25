@@ -1,50 +1,100 @@
 
 import React, { useMemo } from 'react';
-import { useBackPress, useNavigate } from '@Hooks/index';
+import { Alert } from 'react-native';
+import * as Vibration from 'expo-haptics';
+
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
-
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
+
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import DatabaseService from '@Services/DatabaseService';
+import CacheService from '@Services/CacheService';
 
 export default function SettingsScreen(): JSX.Element {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { language } = useMemo(() => config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
-  useBackPress(async () => await useNavigate('HOME SCREEN'));
+  useBackPress(() => navigate('HOME SCREEN'));
 
   return (
     <Layout.Root
       title={stringResources['Settings']}
-      iconName="settings"
-      showNavigationTree={true}
-      drawerChildren={<Drawer />}
-      navigationTreeIcons={[
-        <Icon.Home
-          key="treeIcon_1"
-          onPress={async () => await useNavigate('HOME SCREEN')}
-        />,
-      ]}
+      screenButtons={<ScreenButtons />}
+      drawerChildren={<></>}
+      navigationTree={<NavigationTree />}
     >
-      <Layout.ScrollView
-        style={{ flex: 1 }}
+      <Layout.View
+        style={{
+          paddingTop: 1,
+          gap: 1,
+        }}
       >
-        <Layout.Button
+        <Layout.Button.TextWithIcon
           title={stringResources['Language']}
-          onPress={async () => await useNavigate('LANGUAGES SCREEN')}
+          iconName="language"
+          iconSide="Right"
+          onPress={() => navigate('LANGUAGES SCREEN')}
         />
-        <Layout.Button
+        <Layout.Button.TextWithIcon
           title={stringResources['Theme']}
-          onPress={async () => await useNavigate('THEME SCREEN')}
+          iconName="color-palette"
+          iconSide="Right"
+          onPress={() => navigate('THEME SCREEN')}
         />
-      </Layout.ScrollView>
+        <Layout.Button.TextWithIcon
+          title={stringResources['Whipe Database']}
+          iconName="trash-outline"
+          iconSide="Right"
+          color_background={theme.wrong}
+          color_font={theme.onWrong}
+          onPress={async () => await whipeDataBase()}
+        />
+      </Layout.View>
     </Layout.Root>
   );
 }
 
-function Drawer() {
-  return <></>;
+async function whipeDataBase() {
+
+  const stringResources = translations.Screens.SettingsScreen[ConfigService.config.language];
+  await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+
+  Alert.alert(
+    stringResources['Hold on!'],
+    stringResources['Want to whipe database?'],
+    [
+      {
+        text: stringResources['NO'],
+        onPress: async () => {
+          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+          return null;
+        },
+        style: 'cancel',
+      },
+      {
+        text: stringResources['YES'],
+        onPress: async () => {
+          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+          await DatabaseService.deleteDatabase();
+          await CacheService.deleteLastOpenProject();
+          CacheService.lastOpenProject = {
+            id_project: '',
+            name: '',
+            rules: {},
+          };
+          CacheService.allProjects = [];
+          CacheService.allWidgets_Project = [];
+          CacheService.allWidgets_Template = [];
+          CacheService.allSamples = [];
+          CacheService.allWidgets_Sample = [];
+          navigate('RESTART APP');
+        },
+      },
+    ]
+  );
 }

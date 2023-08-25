@@ -4,7 +4,11 @@ export type Translations_SettingsScreen = Record<Languages, {
   'Settings': string
   'Language': string
   'Theme': string
-  'Back': string
+  'Whipe Database': string
+  'Hold on!': string
+  'Want to whipe database?': string
+  'NO': string
+  'YES': string
 }>
 
 export const translations_SettingsScreen: Translations_SettingsScreen = {
@@ -12,12 +16,20 @@ export const translations_SettingsScreen: Translations_SettingsScreen = {
     'Settings': 'Settings',
     'Language': 'Language',
     'Theme': 'Theme',
-    'Back': 'Back',
+    'Whipe Database': 'Whipe Database',
+    'Hold on!': 'Hold on!',
+    'Want to whipe database?': 'Want to whipe database?',
+    'NO': 'NO',
+    'YES': 'YES',
   },
   'pt-BR': {
     'Settings': 'Configurações',
     'Language': 'Idioma',
     'Theme': 'Tema',
-    'Back': 'Voltar',
+    'Whipe Database': 'Deletar banco de dados',
+    'Hold on!': 'Espere um pouco!',
+    'Want to whipe database?': 'Deseja deletar o banco de dados?',
+    'NO': 'NÃO',
+    'YES': 'SIM',
   },
 };

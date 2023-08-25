@@ -22,14 +22,8 @@
       "@Translations/*": [
         "Translations/*"
       ],
-      "@Icon/*": [
-        "Components/Icon/*"
-      ],
       "@Layout/*": [
         "Components/Layout/*"
-      ],
-      "@Inputs/*": [
-        "Components/Inputs/*"
       ],
       "@Widget/*": [
         "Components/Widget/*"

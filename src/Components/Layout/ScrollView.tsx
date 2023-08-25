@@ -11,8 +11,7 @@ export default function ScrollView(props: {
       style={props.style}
       automaticallyAdjustKeyboardInsets={true}
       contentContainerStyle={[{
-        gap: 5,
-        padding: 5,
+        paddingBottom: 150,
       }, props.contenContainerStyle]}
     >
       {props.children}

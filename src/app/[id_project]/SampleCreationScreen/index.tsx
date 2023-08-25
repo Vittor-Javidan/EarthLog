@@ -1,101 +1,85 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import { Dimensions } from 'react-native';
+import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
-import { useBackPress, useNavigate } from '@Hooks/index';
-import { Icon } from '@Components/Icon';
+
 import { Layout } from '@Components/Layout';
-import Inputs_SampleSettings from './Inputs_SampleSettings';
-
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
-
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
 
-import API_SampleCreation from './API_SampleCreation';
+import NavigationTree from './NavigationTree';
+import ScreenButtons from './ScreenButtons';
+import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
+import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
 
 export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
-  const { language } = useMemo(() => config, []);
+  const { language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
-  useBackPress(async () => await exitScreen('PROJECT SCREEN'));
+  useEffect(() => {
+    fetchWidgets(id_project, () => setState('Loaded'));
+  }, []);
 
-  async function exitScreen(
-    screen: 'PROJECT SCREEN' | 'HOME SCREEN'
-  ) {
-    API_SampleCreation.reset();
-    await useNavigate(screen, id_project);
-  }
-
-  async function exitAndOpenSample(id_sample: string) {
-    API_SampleCreation.reset();
-    await useNavigate('SAMPLE SCREEN (FROM SAMPLE CREATION SCREEN)', id_project, id_sample);
-  }
-
-  async function onConfirm() {
-
-    const { temporarySettings } = API_SampleCreation;
-
-    if (temporarySettings.id_sample === '') {
-      alert(stringResources['ID cannot be empty']);
-      return;
-    }
-
-    if (temporarySettings.name === '') {
-      alert(stringResources['Name cannot be empty']);
-      return;
-    }
-
-    await ProjectService.createSample(
-      id_project,
-      temporarySettings,
-      async () => await exitAndOpenSample(temporarySettings.id_sample),
-      (errorMessage) => alert(errorMessage)
-    );
-  }
+  useBackPress(() => {
+    API_Inputs_SampleSettings.reset();
+    navigate('PROJECT SCREEN', id_project);
+  });
 
   return (
     <Layout.Root
       title={stringResources['New sample']}
-      iconName="clipboard"
-      showNavigationTree={true}
       drawerChildren={<></>}
-      navigationTreeIcons={[
-        <Icon.Home
-          key="treeIcon_1"
-          onPress={async () => await exitScreen('HOME SCREEN')}
-        />,
-        <Icon.Project
-          key="treeIcon_2"
-          onPress={async () => await exitScreen('PROJECT SCREEN')}
-        />,
-      ]}
+      navigationTree={<NavigationTree />}
+      screenButtons={<ScreenButtons />}
     >
-      <Layout.ScrollView>
-        <Inputs_SampleSettings />
-      </Layout.ScrollView>
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          gap: 10,
-        }}
-      >
-        <Layout.Button
-          title={stringResources['Cancel']}
-          overrideBackgroundColor={theme.wrong}
-          overrideTextColor={theme.onWrong}
-          onPress={async () => await exitScreen('PROJECT SCREEN')}
-        />
-        <Layout.Button
-          title={stringResources['Create']}
-          overrideBackgroundColor={theme.confirm}
-          overrideTextColor={theme.onConfirm}
-          onPress={async () => await onConfirm()}
-        />
-      </Layout.View>
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView>
+          <Animation>
+            <Inputs_SampleSettings />
+          </Animation>
+        </Layout.ScrollView>
+      )}
     </Layout.Root>
+  );
+}
+
+async function fetchWidgets(
+  id_project: string,
+  whenLoaded: () => void
+) {
+  await CacheService.loadAllWidgets_Template(id_project);
+  whenLoaded();
+}
+
+function Animation(props: { children: ReactNode}) {
+
+  const { height } = useMemo(() => Dimensions.get('window'), []);
+
+  return (
+    <MotiView
+      style={{
+        paddingTop: 10,
+        padding: 5,
+        gap: 10,
+      }}
+      from={{ top: -height }}
+      transition={{
+        type: 'timing',
+        duration: 500,
+      }}
+      animate={{
+        top: 0,
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

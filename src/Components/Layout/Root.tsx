@@ -1,30 +1,28 @@
 import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView } from 'react-native';
+import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
+import { MotiView } from 'moti';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Ionicons from '@expo/vector-icons/Ionicons';
-
-import { ThemeDTO } from '@Types/index';
 
 import { APP_VERSION } from '@Globals/Version';
-import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
-import { Icon, IconName } from '@Components/Icon';
 
-const { height: HEIGHT } = Dimensions.get('window');
+import IconButton from './Button/IconButton';
+import RootText from './Text/Root';
+import ThemeService from '@Services/ThemeService';
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;
 
 export default function Root(props: {
   title: string
-  iconName: IconName
-  showNavigationTree: boolean
   children: ReactNode
   drawerChildren: ReactNode
-  navigationTreeIcons?: JSX.Element[]
+  navigationTree: JSX.Element
+  screenButtons: JSX.Element
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
@@ -41,141 +39,85 @@ export default function Root(props: {
     >
       <Navbar
         title={props.title}
-        iconName={props.iconName}
         onMenuButtonPress={() => setShowDrawer(prev => !prev)}
         style={{ height: NAVBAR_HEIGH }}
       />
       <View
         style={{ flex: 1 }}
       >
-        {props.showNavigationTree && (
-          <NavigationTree
-            style={{ height: NAVIGATION_TREE_HEIGHT }}
-            treeElements={props.navigationTreeIcons}
-          />
-        )}
+        {props.navigationTree}
         <ContentArea
           style={{ flex: 1 }}
         >
           {props.children}
         </ContentArea>
+        {props.screenButtons}
       </View>
     </View>
-    {showDrawer && (
-      <Drawer>
-        {props.drawerChildren}
-      </Drawer>
-    )}
+    <Drawer
+      show={showDrawer}
+      onPress_Background={() => setShowDrawer(false)}
+    >
+      {props.drawerChildren}
+    </Drawer>
   </>);
 }
 
 function Navbar(props: {
   title: string
-  iconName: IconName
   style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
+  const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
 
   return (<>
     <View
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
         backgroundColor: theme.primary,
       }]}
     >
       <View
         style={{
           flex: 8,
-          justifyContent: 'center',
           alignItems: 'flex-start',
+          justifyContent: 'center',
           paddingHorizontal: 10,
-          padding: 10,
+          paddingVertical: iosLargeTitle ? 5 : 10,
         }}
       >
-        <Text
-          adjustsFontSizeToFit={true}
-          maxFontSizeMultiplier={0}
+        <RootText
           style={{
             color: theme.onPrimary,
-            fontSize: ThemeService.FONTS.h1,
-            fontWeight: '600',
+            fontSize: iosLargeTitle ? ThemeService.FONTS.h1 : 200,
           }}
         >
           {props.title}
-        </Text>
+        </RootText>
       </View>
-      <Icon.Root
-        iconName={props.iconName}
+      <IconButton
+        iconName="md-menu-sharp"
         onPress={props.onMenuButtonPress}
+        color_onPressed={theme.secondary}
         style={{
           paddingHorizontal: 10,
-          paddingVertical: 10,
         }}
       />
     </View>
   </>);
 }
 
-
-function NavigationTree(props: {
-  treeElements?: JSX.Element[]
-  style: StyleProp<ViewStyle>
-}) {
-
-  if (props.treeElements === undefined) {
-    return <></>;
-  }
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-
-  const tree: JSX.Element[] = [];
-  for (let i = 0; i < props.treeElements.length; i++) {
-    tree.push(props.treeElements[i]);
-    if ( i !== props.treeElements.length - 1) {
-      tree.push(
-        <Ionicons
-          key={`treeIcon_Chevrn_${i + 1}`}
-          name="chevron-forward"
-          adjustsFontSizeToFit={true}
-          maxFontSizeMultiplier={0}
-          style={{
-            color: theme.onPrimary,
-            fontSize: ThemeService.FONTS.auto,
-          }}
-        />
-      );
-    }
-  }
-
-  return (
-    <View
-      style={[props.style, {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: theme.primary,
-        borderColor: theme.secondary,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        gap: 5,
-      }]}
-    >
-      {tree}
-    </View>
-  );
-}
-
 function ContentArea(props: {
   style: StyleProp<ViewStyle>
   children: ReactNode
 }): JSX.Element {
+
   return (
     <View
-      style={props.style}
+      style={[props.style]}
     >
       {props.children}
     </View>
@@ -183,42 +125,71 @@ function ContentArea(props: {
 }
 
 function Drawer(props: {
+  show: boolean
   children: ReactNode
+  onPress_Background: () => void
 }): JSX.Element {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const STATUS_BAR_HEIGHT = useSafeAreaInsets().top;
+  const { theme } = useMemo(() => ConfigService.config, []);
+  const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flex: 1 }}
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        height: (HEIGHT - STATUS_BAR_HEIGHT - NAVBAR_HEIGH),
-        width: '100%',
-      }}
-    >
-      <View
+    <Animation_Drawer show={props.show}>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+          gap: 1,
+        }}
         style={{
-          flex: 9,
           backgroundColor: theme.secondary,
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
+          width: '100%',
+          paddingRight: 1,
         }}
       >
         {props.children}
-        <Text
-          adjustsFontSizeToFit={true}
+        <Pressable
+          onPress={() => props.onPress_Background()}
           style={{
-            color: theme.onSecondary_PlaceHolder,
-            textAlign: 'right',
-            fontSize: 16,
-            padding: 8,
+            flex: 1,
+            justifyContent: 'flex-end',
           }}
         >
-          v: {APP_VERSION}
-        </Text>
-      </View>
-    </ScrollView>
+          <Text
+            adjustsFontSizeToFit={true}
+            style={{
+              color: theme.onSecondary_PlaceHolder,
+              textAlign: 'right',
+              fontSize: 16,
+              padding: 8,
+            }}
+          >
+            v: {APP_VERSION}
+          </Text>
+        </Pressable>
+      </ScrollView>
+    </Animation_Drawer>
+  );
+}
+
+function Animation_Drawer(props: {
+  show: boolean
+  children: ReactNode
+}) {
+  return (
+    <MotiView
+      transition={{
+        type: 'timing',
+        duration: 200,
+      }}
+      animate={{
+        transform: [{ translateX: props.show ? 0 : -WIDTH }],
+      }}
+    >
+      {props.children}
+    </MotiView>
   );
 }

@@ -1,53 +1,25 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleProp, TextStyle } from 'react-native';
-
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
+import View from './View';
 
-type Values = { whenTrue: string, whenFalse: string }
-
-export default function Feedback(props: {
-  title: string
-  assert: boolean
-  values: Values
-  textStyle_Label?: StyleProp<TextStyle>
-  textStyle_Status?: StyleProp<TextStyle>
+export default function StatusFeedback(props: {
+  done: boolean
+  error: boolean
+  color_border?: string
 }) {
 
-  const { config } = useMemo(() => ConfigService, []);
-  const { theme } = useMemo(() => config, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (
     <View
       style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 40,
-        paddingHorizontal: 0,
-        paddingVertical: 0,
+        height: 12,
+        width: 12,
+        backgroundColor: props.error ? theme.wrong : props.done ? theme.confirm : theme.modified,
+        borderColor: props.color_border ? props.color_border : theme.background,
+        borderWidth: 1,
+        borderRadius: 6,
       }}
-    >
-      <Text
-        adjustsFontSizeToFit={true}
-        style={[{
-          color: theme.onBackground,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }, props.textStyle_Label]}
-      >
-        {props.title}
-      </Text>
-      <Text
-        adjustsFontSizeToFit={true}
-        style={[{
-          color: props.assert ? theme.confirm : theme.modified,
-          fontSize: ThemeService.FONTS.h3,
-          paddingHorizontal: 10,
-        }, props.textStyle_Status]}
-      >
-        {props.assert ? props.values.whenTrue : props.values.whenFalse}
-      </Text>
-    </View>
+    />
   );
 }

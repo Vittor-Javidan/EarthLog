@@ -56,7 +56,7 @@ export type ConfigDTO = {
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
-  sampleTemplate: WidgetData[]
+  template: WidgetData[]
   samples: SampleDTO[]
 }
 export type SampleDTO = {
@@ -69,21 +69,21 @@ export type WidgetData = TextWidgetData | BooleanWidgetData
 export type ProjectSettings = {
   id_project: string
   name: string
-  immutable: boolean
   rules: {
-    allowImmutableChange?: boolean
-    allowIDChange?: boolean
     allowNameChange?: boolean
     allowSampleCreation?: boolean
+    allowWidgetCreation_Project?: boolean
+    allowWidgetCreation_Template?: boolean
+    allowWidgetCreation_Sample?: boolean
   }
 }
 export type SampleSettings = {
   id_sample: string
   name: string
   rules: {
-    allowIDChange?: boolean,
     allowNameChange?: boolean,
     allowSampleErase?: boolean,
+    allowWidgetCreation?: boolean,
   }
 }
 
@@ -120,19 +120,3 @@ export type WidgetTypes = 'boolean' | 'text'
 */
 export type IDsArray = ID[]
 export type ID = string
-
-// ===============================================================================================
-// UI COMPONENTS RELATED TYPES
-// ===============================================================================================
-
-export type InputColors = {
-  label: {
-    background: string,
-    font: string,
-  },
-  dataDisplay: {
-    background: string,
-    font: string,
-    font_placeholder: string,
-  }
-}

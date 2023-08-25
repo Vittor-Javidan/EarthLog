@@ -1,12 +1,8 @@
-import React, { useState, useMemo, ReactNode } from 'react';
-import { View } from 'react-native';
+import React, { useState, useMemo } from 'react';
+
 import { Layout } from '@Components/Layout';
-import { Input } from '@Components/Inputs';
-
-import { InputColors, Languages, ThemeDTO, WidgetData, WidgetTypes } from '@Types/index';
+import { WidgetData, WidgetTypes } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_AddWidgetButton } from '@Translations/Widgets/AddWidgetButton';
-
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
@@ -14,19 +10,13 @@ export default function AddWidgetButton(props: {
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_AddWidgetButton[Languages]>(() => {
-    return translations.Widgets.AddWidgetButton[ConfigService.config.language];
-  }, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.AddWidgetButton[language], []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);
   const [label, setLabel] = useState<string>('');
 
   function whenLabelValid(callback: () => void) {
-    if (label === '') {
-      alert('Label cannot be empty');
-      return;
-    }
     callback();
   }
 
@@ -40,21 +30,12 @@ export default function AddWidgetButton(props: {
     setShowlModal(false);
   }
 
-  const inputColors: InputColors = {
-    label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
-
   return (<>
-    <Layout.Button
-      title={stringResources['Add']}
+    <Layout.Button.IconRounded
+      iconName="list"
+      showPlusSign={true}
+      color_background={theme.confirm}
+      color={theme.onConfirm}
       onPress={() => setShowlModal(true)}
     />
     {showModal && (
@@ -62,40 +43,49 @@ export default function AddWidgetButton(props: {
         title={stringResources['Add Widget']}
         onRequestClose={() => setShowlModal(false)}
       >
-        <Layout.View>
-          <Input.String
-            colors={inputColors}
+        <Layout.View
+          style={{
+            padding: 5,
+          }}
+        >
+          <Layout.Input.String
             label={stringResources['Widget name']}
             placeholder={stringResources['Write a name to the widget here...']}
             value={label}
-            onChangeText={setLabel}
             locked={false}
-            onResetPress={() => setLabel('')}
+            onChangeText={(text) => setLabel(text)}
           />
+          <Layout.View
+            style={{
+              marginTop: 10,
+              marginHorizontal: 5,
+              paddingVertical: 20,
+              borderRadius: 10,
+              backgroundColor: theme.secondary,
+            }}
+          >
+            <Layout.ScrollView
+              contenContainerStyle={{
+                gap: 2,
+                paddingBottom: 0,
+              }}
+            >
+              <Layout.Button.Text
+                title={stringResources['Boolean']}
+                color_background={theme.tertiary}
+                color_font={theme.onTertiary}
+                onPress={() => onPress('boolean')}
+              />
+              <Layout.Button.Text
+                title={stringResources['Text']}
+                color_background={theme.tertiary}
+                color_font={theme.onTertiary}
+                onPress={() => onPress('text')}
+              />
+            </Layout.ScrollView>
+          </Layout.View>
         </Layout.View>
-        <Layout.ScrollView>
-          <ButtonContainer>
-            <Layout.Button
-              title={stringResources['Boolean']}
-              overrideBackgroundColor={theme.tertiary}
-              overrideTextColor={theme.onTertiary}
-              onPress={() => onPress('boolean')}
-            />
-          </ButtonContainer>
-          <ButtonContainer>
-            <Layout.Button
-              title={stringResources['Text']}
-              overrideBackgroundColor={theme.tertiary}
-              overrideTextColor={theme.onTertiary}
-              onPress={() => onPress('text')}
-            />
-          </ButtonContainer>
-        </Layout.ScrollView>
       </Layout.Modal>
     )}
   </>);
-}
-
-function ButtonContainer(props: { children: ReactNode }) {
-  return <View style={{ height: 60 }}>{props.children}</View>;
 }

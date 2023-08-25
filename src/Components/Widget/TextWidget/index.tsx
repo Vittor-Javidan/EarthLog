@@ -1,41 +1,31 @@
 import React, { useMemo, useState } from 'react';
-import { Text } from 'react-native';
-import { Icon } from '@Icon/index';
-import { Input } from '@Inputs/index';
 import { WidgetComponent } from '@WidgetComponents/index';
 
-import { InputColors, Languages, TextWidgetData, ThemeDTO } from '@Types/index';
+import { Layout } from '@Components/Layout';
+import { TextWidgetData, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
-import { Translations_TextWidget } from '@Translations/Widgets/TextWidget';
-
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 
 import { WidgetRules } from '../Rules';
+import UtilService from '@Services/UtilService';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
+  statusFeedback?: JSX.Element
   onConfirm: (value: TextWidgetData) => void
   onDelete: () => void
 }) {
 
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
-  const [widgetData, setWidgetData] = useState<TextWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCloning(props.widgetData));
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
   function onConfirm(widgetData: TextWidgetData) {
 
     setShowModal(false);
-
-    if (WidgetRules.noEmptyLabel(widgetData)) {
-      alert(stringResources['Widget name cannot be empty.']);
-      setIsDataWrong(true);
-      return;
-    }
 
     if (WidgetRules.noSpaces(widgetData)) {
       alert(stringResources['Value cannot have empty spaces.']);
@@ -49,11 +39,25 @@ export default function TextWidget(props: {
       return;
     }
 
-    if (showModal) {
-      setIsDataWrong(false);
-      setWidgetData(widgetData);
-      props.onConfirm(widgetData);
-    }
+    setIsDataWrong(false);
+    setWidgetData(widgetData);
+    props.onConfirm(widgetData);
+  }
+
+  function onConfirm_Modal(widgetData: TextWidgetData) {
+    onConfirm(widgetData);
+  }
+
+  function onTextChange(text: string) {
+    const newData: WidgetData = {
+      ...widgetData,
+      value: text,
+      rules: {
+        ...widgetData.rules,
+      },
+    };
+    setWidgetData(newData);
+    onConfirm(newData);
   }
 
   return (
@@ -62,76 +66,69 @@ export default function TextWidget(props: {
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
+      statusFeedback={props.statusFeedback}
 
-      shortcutIconButtons={<>
-        <ShortcutIconButtons
+      iconButtons_Top={
+        <IconButtons_Top
           widgetData={widgetData}
           onPencilPress={() => setShowModal(true)}
         />
-      </>}
+      }
 
-      dataDisplay={<>
-        <DataDisplay
-          widgetData={widgetData}
-        />
-      </>}
-
-      modal={<>
+      modal={
         <Modal
           widgetData={widgetData}
-          onConfirm={(widgetData) => onConfirm(widgetData)}
-          onDelete={props.onDelete}
+          onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
+          onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />
-      </>}
-    />
+      }
+    >
+
+      <Layout.View
+        style={{
+          paddingVertical: 5,
+          paddingBottom: 10,
+          gap: 5,
+        }}
+      >
+        <Layout.Input.String
+          label={''}
+          value={widgetData.value}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          color_placeholder={theme.onTertiary_Placeholder}
+          placeholder={stringResources['Write anything here...']}
+          locked={false}
+          onChangeText={(text) => onTextChange(text)}
+        />
+      </Layout.View>
+
+    </WidgetComponent.Root>
   );
 }
 
-function ShortcutIconButtons(props: {
+function IconButtons_Top(props: {
   widgetData: TextWidgetData
   onPencilPress: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
   return (<>
     {(props.widgetData.rules.allowLabelChange || props.widgetData.rules.allowValueChange) && (
-      <Icon.Edit
-        color={theme.onPrimary}
+      <Layout.Button.Icon
+        iconName="pencil-sharp"
+        color={theme.onSecondary}
         onPress={props.onPencilPress}
         style={{
           paddingHorizontal: 10,
           paddingVertical: 5,
+          borderTopRightRadius: 10,
         }}
       />
     )}
   </>);
-}
-
-function DataDisplay(props: {
-  widgetData: TextWidgetData
-}) {
-
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
-
-  const isDataEmpty = props.widgetData.value === '';
-
-  return (
-    <Text
-      maxFontSizeMultiplier={0}
-      adjustsFontSizeToFit={true}
-      style={{
-        fontSize: ThemeService.FONTS.h3,
-        color: isDataEmpty ? theme.modified : theme.onTertiary,
-      }}
-    >
-      {isDataEmpty ? stringResources['Empty text'] : props.widgetData.value}
-    </Text>
-  );
 }
 
 function Modal(props: {
@@ -141,27 +138,13 @@ function Modal(props: {
   onRequestClose: () => void
 }) {
 
-  const theme = useMemo<ThemeDTO>(() => ConfigService.config.theme, []);
-  const stringResources = useMemo<Translations_TextWidget[Languages]>(() => {
-    return translations.Widgets.TextWidget[ConfigService.config.language];
-  }, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
 
   const { rules } = props.widgetData;
-
-  const inputColors: InputColors = {
-    label: {
-      background: theme.tertiary,
-      font: theme.onTertiary,
-    },
-    dataDisplay: {
-      background: theme.background,
-      font: theme.onBackground,
-      font_placeholder: theme.onBackground_Placeholder,
-    },
-  };
 
   return (
     <WidgetComponent.Modal
@@ -179,24 +162,32 @@ function Modal(props: {
       onDelete={props.onDelete}
       onRequestClose={props.onRequestClose}
     >
-      <Input.String
-        colors={inputColors}
-        label={stringResources['Widget Name']}
-        placeholder={stringResources['Write widget name here...']}
-        value={label}
-        onChangeText={setLabel}
-        locked={!rules.allowLabelChange}
-        onResetPress={() => setLabel('')}
-      />
-      <Input.String
-        colors={inputColors}
-        label={stringResources['Text']}
-        placeholder={stringResources['Write anything here...']}
-        value={value}
-        onChangeText={setValue}
-        locked={!rules.allowValueChange}
-        onResetPress={() => setValue('')}
-      />
+      <Layout.View
+        style={{
+          gap: 10,
+        }}
+      >
+        <Layout.Input.String
+          label={stringResources['Widget Name']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          color_placeholder={theme.onBackground_Placeholder}
+          placeholder={stringResources['Write widget name here...']}
+          value={label}
+          locked={!rules.allowLabelChange}
+          onChangeText={(text) => setLabel(text)}
+        />
+        <Layout.Input.String
+          label={stringResources['Text']}
+          backgroundColor={theme.background}
+          color={theme.onBackground}
+          color_placeholder={theme.onBackground_Placeholder}
+          placeholder={stringResources['Write anything here...']}
+          value={value}
+          locked={!rules.allowValueChange}
+          onChangeText={(text) => setValue(text)}
+        />
+      </Layout.View>
     </WidgetComponent.Modal>
   );
 }

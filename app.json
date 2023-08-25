@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Earth Log",
-    "slug": "EarthLog",
+    "slug": "earth-log",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,6 +20,7 @@
     "android": {
       "package": "com.lonewispapps.earthlog",
       "versionCode": 1,
+      "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
@@ -32,11 +33,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c48e4b2d-8b91-43ba-8d14-fcdc2bb1b195"
+        "projectId": "c5345f06-d7e6-49bd-ae5c-c3a2362d0dec"
       }
     },
     "plugins": [
       "expo-localization"
-    ]
+    ],
+    "owner": "vittorjavidan"
   }
 }
