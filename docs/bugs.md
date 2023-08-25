@@ -1,1 +1,0 @@
-# adjustsFontSizeToFit not working on ios devices
