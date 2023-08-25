@@ -37,7 +37,13 @@
       }
     },
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
     ],
     "owner": "vittorjavidan"
   }
