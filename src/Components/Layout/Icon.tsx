@@ -46,5 +46,6 @@ export type IconName = (
   'list'                |
   'folder'              |
   'finger-print'        |
-  'arrow-undo'
+  'arrow-undo'          |
+  'location'
 )
