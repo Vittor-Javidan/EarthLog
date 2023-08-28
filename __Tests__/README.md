@@ -2,13 +2,29 @@
 
 
 
-# Tests needed:
 
-## Layout:
+
+# Layout:
+
+## <Layout.Root />
 - Menu buttons click makes the <Drawer /> Component to animate to show or hide themselfs.
-- Drawer Buttons changes background color when clicked.
+
+## <Layout.Button.Icon>
 - Navigation Tree Icons changes background color when clicked.
 
+## <Layout.Button.TextWithIcon />
+- Drawer Buttons changes background color when clicked.
+
+## <Layout.Input.GPS />
+- When GPS pin is toggled, coordinates must change only when accuracy is better than before.
+- When GPS pin is toggled, altitude must change only when accuracy is better than before.
+- must show accuracy in real time.
+
+
+
+
+
+# Screens:
 ## Home Screen:
 - Layout Navigation Tree must show a <IconButton /> of a house.
 - Settings Drawer Button redirects to <SettingsScreen />.
