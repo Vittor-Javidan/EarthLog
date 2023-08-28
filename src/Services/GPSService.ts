@@ -18,22 +18,23 @@ export class GPSWatcherService {
     realTimeAltitudeAccuracy: (coord: number | null) => void
   ) {
 
-    let newDataAvailable: boolean = false;
+    const sendData = (coordinates: Location.LocationObject) => {
+      let newDataAvailable: boolean = false;
+      realTimeCoordinateAccuracy(Number((coordinates.coords.accuracy ?? 999).toFixed(2)));
+      realTimeAltitudeAccuracy(Number((coordinates.coords.altitudeAccuracy ?? 999).toFixed(2)));
+      this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
+      this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
+      if (newDataAvailable) {
+        callback(this.gpsData);
+      }
+    };
 
     if (Platform.OS === 'ios' && this.iosInterval === null) {
       await this.iosWatcher(
       {
         accuracy: Location.Accuracy.BestForNavigation,
         timeInterval: 1,
-      }, (coordinates) => {
-        realTimeCoordinateAccuracy(coordinates.coords.accuracy);
-        realTimeAltitudeAccuracy(coordinates.coords.altitudeAccuracy);
-        this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
-        this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-        if (newDataAvailable) {
-          callback(this.gpsData);
-        }
-      });
+      }, (coordinates) => sendData(coordinates));
       return;
     }
 
@@ -41,15 +42,7 @@ export class GPSWatcherService {
       await this.androidWatcher({
         accuracy: Location.Accuracy.BestForNavigation,
         timeInterval: 500,
-      }, (coordinates) => {
-        realTimeCoordinateAccuracy(coordinates.coords.accuracy);
-        realTimeAltitudeAccuracy(coordinates.coords.altitudeAccuracy);
-        this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
-        this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-        if (newDataAvailable) {
-          callback(this.gpsData);
-        }
-      });
+      }, (coordinates) => sendData(coordinates));
       return;
     }
   }
