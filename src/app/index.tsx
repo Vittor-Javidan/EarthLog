@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import * as Location from 'expo-location';
 
 import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
@@ -17,5 +18,6 @@ export default function Home() {
 async function initApp(onFinish: () => void) {
   await ConfigService.loadConfig();
   await DatabaseService.createDatabase();
+  await Location.requestForegroundPermissionsAsync();
   onFinish();
 }

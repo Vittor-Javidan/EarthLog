@@ -120,3 +120,23 @@ export type WidgetTypes = 'boolean' | 'text'
 */
 export type IDsArray = ID[]
 export type ID = string
+
+// ===============================================================================================
+// PROJECT RELATED TYPES
+// ===============================================================================================
+
+export type GPS_DTO = {
+  coordinates?: CoordinateDTO
+  altitude?: AltitudeDTO
+}
+
+export type CoordinateDTO = {
+  lat: number
+  long: number
+  accuracy: number
+}
+
+export type AltitudeDTO = {
+  value: number
+  accuracy: number
+}
