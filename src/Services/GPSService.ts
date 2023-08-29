@@ -6,6 +6,8 @@ export class GPSWatcherService {
 
   private iosInterval: NodeJS.Timer | null = null;
   private androidLocationSubscription: Location.LocationSubscription | null = null;
+  private watchCoordinate: boolean;
+  private watchAltitude: boolean;
   private gpsData: GPS_DTO;
   private minAccuracy: { coordinate: number, altitude: number };
 
@@ -14,6 +16,36 @@ export class GPSWatcherService {
     minCoordinateAccuracy: number,
     minAltitudeAccuracy: number,
   }) {
+    this.watchCoordinate = options.initialGPSData.coordinates === undefined ? false : true;
+    this.watchAltitude = options.initialGPSData.altitude === undefined ? false : true;
+    this.gpsData = options.initialGPSData;
+    this.minAccuracy = {
+      coordinate: options.minCoordinateAccuracy,
+      altitude: options.minAltitudeAccuracy,
+    };
+  }
+
+  enableCoordinates(boolean: boolean) {
+    this.watchCoordinate = boolean;
+    if (this.watchCoordinate === false && this.gpsData.coordinates !== undefined) {
+      delete this.gpsData.coordinates;
+    }
+  }
+
+  enableAltitude(boolean: boolean) {
+    this.watchAltitude = boolean;
+    if (this.watchAltitude === false && this.gpsData.altitude !== undefined) {
+      delete this.gpsData.altitude;
+    }
+  }
+
+  setGpsData(options: {
+    initialGPSData: GPS_DTO,
+    minCoordinateAccuracy: number,
+    minAltitudeAccuracy: number,
+  }) {
+    this.watchCoordinate = options.initialGPSData.coordinates === undefined ? false : true;
+    this.watchAltitude = options.initialGPSData.altitude === undefined ? false : true;
     this.gpsData = options.initialGPSData;
     this.minAccuracy = {
       coordinate: options.minCoordinateAccuracy,
@@ -92,6 +124,10 @@ export class GPSWatcherService {
     onNewData: () => void
   ) {
 
+    if (this.watchCoordinate === false) {
+      return;
+    }
+
     const newLat = coordinates.coords.latitude;
     const newLong = coordinates.coords.longitude;
     const newAccuracy = coordinates.coords.accuracy;
@@ -124,6 +160,10 @@ export class GPSWatcherService {
     onNewData: () => void
   ) {
 
+    if (this.watchAltitude === false) {
+      return;
+    }
+
     const newAltitude = coordinates.coords.altitude;
     const newAccuracy = coordinates.coords.altitudeAccuracy;
 
@@ -132,7 +172,7 @@ export class GPSWatcherService {
     }
 
     const altitudeDTO: AltitudeDTO = {
-      value: newAltitude,
+      value: Number(newAltitude.toFixed(2)),
       accuracy: Number(newAccuracy.toFixed(2)),
     };
 
