@@ -9,7 +9,7 @@ import UtilService from '@Services/UtilService';
 
 import IconButton from '@Components/Layout/Button/IconButton';
 import { LocalComponent } from './__LocalComponents__';
-import { useCheckBoxAlert, useEraseAlert, useOvewritteDataAlert } from './Alerts';
+import { alert_CheckBoxUncheck, alert_EraseData, alert_OverwritteData } from './Alerts';
 
 export default function GPSInput(props: {
   label: string
@@ -28,15 +28,17 @@ export default function GPSInput(props: {
     minAltitudeAccuracy: props.minAltitudeAccuracy ?? 10,
   }), []);
 
-  const [gpsON, setGpsOn] = useState<boolean>(false);
-  const [showCoordinate, setShowCoordinate] = useState<boolean>(props.initialGPSData?.coordinates === undefined ? false : true);
-  const [showAltitude, setShowAltitude] = useState<boolean>(props.initialGPSData?.altitude === undefined ? false : true);
   const [gpsData, setGPSData] = useState<GPS_DTO>({});
-  const [accuracy_Coordinate, setAccuracy_Coordinate] = useState<number | null>(null);
-  const [accuracy_Altitude, setAccuracy_Altitude] = useState<number | null>(null);
   const [erasedData, setErasedData] = useState<GPS_DTO | null>(null);
+  const [gpsON, setGpsOn] = useState<boolean>(false);
 
-  const anyGpsDataAvailable = Object.keys(gpsData).length > 0;
+  const [enableCoordinate, setEnableCoordinate] = useState<boolean>(props.initialGPSData?.coordinates === undefined ? false : true);
+  const [enableAltitude, setEnableAltitude] = useState<boolean>(props.initialGPSData?.altitude === undefined ? false : true);
+
+  const [realTimeAccuracy_Coordinate, setRealTimeAccuracy_Coordinate] = useState<number | null>(null);
+  const [realTimeAccuracy_Altitude, setRealTimeAccuracy_Altitude] = useState<number | null>(null);
+
+  const dataAvailable = Object.keys(gpsData).length > 0;
 
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher();};
@@ -50,37 +52,31 @@ export default function GPSInput(props: {
     }
 
     if (gpsON) {
-      setGpsOn(false);
       gpsWatcher.stopWatcher();
+      setGpsOn(false);
       return;
     }
 
-    if (!anyGpsDataAvailable) {
-      setGpsOn(true);
+    const handleAlert = (callback: () => void) => dataAvailable
+    ? alert_OverwritteData(() => callback())
+    : callback();
+
+    handleAlert(async () => {
       await gpsWatcher.watchPositionAsync(
         (gpsData) => setGPSData(gpsData),
-        (accuracy_Coordinate) => { setAccuracy_Coordinate(accuracy_Coordinate); },
-        (accuracy_Altitude) => { setAccuracy_Altitude(accuracy_Altitude); }
+        (accuracy_Coordinate) => { setRealTimeAccuracy_Coordinate(accuracy_Coordinate); },
+        (accuracy_Altitude) => { setRealTimeAccuracy_Altitude(accuracy_Altitude); }
       );
-      return;
-    }
-
-    useOvewritteDataAlert(async () => {
-      await gpsWatcher.watchPositionAsync(
-        (gpsData) => setGPSData(gpsData),
-        (accuracy_Coordinate) => { setAccuracy_Coordinate(accuracy_Coordinate); },
-        (accuracy_Altitude) => { setAccuracy_Altitude(accuracy_Altitude); }
-        );
       setGpsOn(true);
     });
   }
 
   async function eraseData() {
-    useEraseAlert(() => {
+    alert_EraseData(() => {
       setErasedData({ ...gpsData });
       setGPSData({});
-      setShowCoordinate(false);
-      setShowAltitude(false);
+      setEnableCoordinate(false);
+      setEnableAltitude(false);
     });
   }
 
@@ -92,21 +88,21 @@ export default function GPSInput(props: {
 
     setGPSData({ ...erasedData });
     setErasedData(null);
-    if (erasedData.coordinates !== undefined) { setShowCoordinate(true); }
-    if (erasedData.altitude !== undefined) { setShowAltitude(true); }
+    if (erasedData.coordinates !== undefined) { setEnableCoordinate(true); }
+    if (erasedData.altitude !== undefined) { setEnableAltitude(true); }
   }
 
   async function toogleCoordinate(checked: boolean) {
-    await useCheckBoxAlert(
+    await alert_CheckBoxUncheck(
       checked,
       'Coordinate',
       () => {
         gpsWatcher.enableCoordinates(true);
-        setShowCoordinate(true);
+        setEnableCoordinate(true);
       },
       () => {
         gpsWatcher.enableCoordinates(false);
-        setShowCoordinate(false);
+        setEnableCoordinate(false);
         setGPSData(prev => {
           const newData: GPS_DTO = { ...prev };
           if (newData.coordinates !== undefined) {
@@ -119,16 +115,16 @@ export default function GPSInput(props: {
   }
 
   async function toogleAltitude(checked: boolean) {
-    await useCheckBoxAlert(
+    await alert_CheckBoxUncheck(
       checked,
       'Altitude',
       () => {
         gpsWatcher.enableAltitude(true);
-        setShowAltitude(true);
+        setEnableAltitude(true);
       },
       () => {
         gpsWatcher.enableAltitude(false);
-        setShowAltitude(false);
+        setEnableAltitude(false);
         setGPSData(prev => {
           const newData: GPS_DTO = { ...prev };
           if (newData.altitude !== undefined) {
@@ -161,7 +157,7 @@ export default function GPSInput(props: {
             }}
           />
         )}
-        {anyGpsDataAvailable && (
+        {dataAvailable && (
           <IconButton
             iconName="trash-outline"
             color={theme.wrong}
@@ -187,34 +183,38 @@ export default function GPSInput(props: {
 
     >
       {gpsON && (
-        <View>
+        <View
+          style={{
+            gap: 5,
+          }}
+        >
           <LocalComponent.CheckboxOption
             title="Coordinate"
-            value={showCoordinate}
+            value={enableCoordinate}
             onChange={async (checked) => await toogleCoordinate(checked)}
           />
           <LocalComponent.CheckboxOption
             title="Altitude"
-            value={showAltitude}
+            value={enableAltitude}
             onChange={async (checked) => await toogleAltitude(checked)}
           />
         </View>
       )}
-      {showCoordinate && (
-        <LocalComponent.Display_Coordinate
-          gpsON={gpsON}
-          accuracyRealTime={accuracy_Coordinate}
-          coordinateData={gpsData.coordinates}
-        />
-      )}
-      {showAltitude && (
-        <LocalComponent.Display_Altitutde
-          gpsON={gpsON}
-          accuracyRealTime={accuracy_Altitude}
-          altitudeData={gpsData.altitude}
-        />
-      )}
-      {gpsON && <LocalComponent.Loading />}
+      <LocalComponent.DisplayData
+        gpsData={gpsData}
+      />
+      <LocalComponent.Display_RealTimeAccuracy
+        gpsON={gpsON}
+        coordinateEnable={enableCoordinate}
+        altitudeEnable={enableAltitude}
+        realTimeAccuracy_Coordinate={realTimeAccuracy_Coordinate}
+        realTimeAccuracy_Altitude={realTimeAccuracy_Altitude}
+      />
+      <LocalComponent.Loading
+        gpsON={gpsON}
+        coordinateEnable={enableCoordinate}
+        altitudeEnable={enableAltitude}
+      />
     </LocalComponent.Root>
   );
 }

@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-export async function useCheckBoxAlert(
+export async function alert_CheckBoxUncheck(
   checked: boolean,
   type: 'Coordinate' | 'Altitude',
   onCheckedTrue: () => void,
@@ -12,8 +12,8 @@ export async function useCheckBoxAlert(
     Alert.alert(
       'Hold on!',
       type === 'Coordinate'
-      ? 'If you procceed you gonna erase current coordinate saved data. Are you sure?'
-      : 'If you procceed you gonna erase current altitude saved data. Are you sure?',
+      ? 'This will delete current coordinates. Are you sure?'
+      : 'This will delete current altitude. Are you sure?',
       [
         {
           text: 'No',
@@ -36,7 +36,7 @@ export async function useCheckBoxAlert(
   onCheckedTrue();
 }
 
-export async function useEraseAlert(onErase: () => void) {
+export async function alert_EraseData(onErase: () => void) {
   await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
   Alert.alert(
     'Hold on!',
@@ -59,7 +59,7 @@ export async function useEraseAlert(onErase: () => void) {
   );
 }
 
-export async function useOvewritteDataAlert(onOverwritte: () => void) {
+export async function alert_OverwritteData(onOverwritte: () => void) {
   await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
   Alert.alert(
     'Hold on!',

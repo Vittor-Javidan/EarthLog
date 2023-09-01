@@ -27,7 +27,7 @@ export default function __CheckboxOption__(props: {
         onChange={(checked => props.onChange(checked))}
       />
       <H3
-        style={{ color: theme.onBackground }}
+        style={{ color: props.value ? theme.confirm : theme.onBackground }}
       >
         {props.title}
       </H3>

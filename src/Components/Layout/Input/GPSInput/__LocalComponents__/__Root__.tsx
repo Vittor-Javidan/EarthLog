@@ -56,8 +56,7 @@ export default function __Root__(props: {
         style={{
           width: '100%',
           paddingHorizontal: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingVertical: 10,
           gap: 10,
           backgroundColor: backgroundColor,
           borderColor: theme.primary,

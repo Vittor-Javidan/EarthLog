@@ -29,8 +29,8 @@ export default function Checkbox(props: {
           backgroundColor: props.value ? theme.confirm : theme.primary,
           justifyContent: 'center',
           alignItems: 'center',
-          height: 20,
-          width: 20,
+          height: 25,
+          width: 25,
           borderRadius: 6,
           opacity: 1,
         }}

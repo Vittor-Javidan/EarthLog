@@ -1,13 +1,13 @@
 import __CheckboxOption__ from './__CheckboxOption__';
-import __Display_Altitude__ from './__Display_Altitude__';
-import __Display_Coordinate__ from './__Display_Coordinate__';
 import __Root__ from './__Root__';
 import __LoadingFeedback_ from './__LoadingFeedback__';
+import __Display_Data__ from './__Display_Data__';
+import __Display_RealTimeAccuracy__ from './__Display_RealTimeAccuracy__';
 
 export const LocalComponent = {
   Root: __Root__,
   CheckboxOption: __CheckboxOption__,
-  Display_Coordinate: __Display_Coordinate__,
-  Display_Altitutde: __Display_Altitude__,
+  DisplayData: __Display_Data__,
+  Display_RealTimeAccuracy: __Display_RealTimeAccuracy__,
   Loading: __LoadingFeedback_,
 };

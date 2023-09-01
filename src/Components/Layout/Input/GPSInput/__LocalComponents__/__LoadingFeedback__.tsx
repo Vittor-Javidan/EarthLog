@@ -5,9 +5,18 @@ import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
 
-export default function __LoadingFeedback_() {
+export default function __LoadingFeedback_(props: {
+  gpsON: boolean
+  coordinateEnable: boolean
+  altitudeEnable: boolean
+}) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
+  const nothingEnable = props.coordinateEnable === false && props.altitudeEnable === false;
+
+  if (props.gpsON === false || nothingEnable) {
+    return <></>;
+  }
 
   return (
     <View
