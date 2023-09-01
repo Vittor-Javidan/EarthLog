@@ -1,11 +1,11 @@
 import React, { useMemo, ReactNode } from 'react';
+import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
-import View from '../View';
-import RootText from '../Text/Root';
+import RootText from '@Components/Layout/Text/Root';
 
-export default function InputContainer(props: {
+export default function __Root__(props: {
   label?: string
   backgroundColor?: string
   color?: string
@@ -58,6 +58,7 @@ export default function InputContainer(props: {
           paddingHorizontal: 10,
           paddingTop: 10,
           paddingBottom: 10,
+          gap: 10,
           backgroundColor: backgroundColor,
           borderColor: theme.primary,
           borderWidth: 2,
