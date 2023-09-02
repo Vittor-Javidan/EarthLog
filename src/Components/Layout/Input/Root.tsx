@@ -5,7 +5,7 @@ import ConfigService from '@Services/ConfigService';
 
 import RootText from '@Components/Layout/Text/Root';
 
-export default function __Root__(props: {
+export default function InputRoot(props: {
   label?: string
   backgroundColor?: string
   color?: string
@@ -56,7 +56,8 @@ export default function __Root__(props: {
         style={{
           width: '100%',
           paddingHorizontal: 10,
-          paddingVertical: 10,
+          paddingTop: 20,
+          paddingBottom: 10,
           gap: 10,
           backgroundColor: backgroundColor,
           borderColor: theme.primary,

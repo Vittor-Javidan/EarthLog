@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View } from 'react-native';
 import * as Location from 'expo-location';
 
 import { GPS_DTO } from '@Types/index';
 import { GPSWatcherService } from '@Services/GPSService';
-import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 
-import IconButton from '@Components/Layout/Button/IconButton';
-import { LocalComponent } from './__LocalComponents__';
+import InputRoot from '../Root';
+import IconButtons from './IconButtons';
+import { LC } from './__LocalComponents__';
 import { alert_CheckBoxUncheck, alert_EraseData, alert_OverwritteData } from './Alerts';
 
 export default function GPSInput(props: {
@@ -21,20 +20,15 @@ export default function GPSInput(props: {
   color_placeholder?: string
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
-  const gpsWatcher = useMemo(() => new GPSWatcherService({
-    initialGPSData: UtilService.deepCloning(props.initialGPSData ?? {}),
-    minCoordinateAccuracy: props.minCoordinateAccuracy ?? 20,
-    minAltitudeAccuracy: props.minAltitudeAccuracy ?? 10,
-  }), []);
+  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.initialGPSData ?? {})), []);
 
   const [gpsData, setGPSData] = useState<GPS_DTO>({});
   const [erasedData, setErasedData] = useState<GPS_DTO | null>(null);
-  const [gpsON, setGpsOn] = useState<boolean>(false);
 
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [gpsON, setGpsOn] = useState<boolean>(false);
   const [enableCoordinate, setEnableCoordinate] = useState<boolean>(props.initialGPSData?.coordinates === undefined ? false : true);
   const [enableAltitude, setEnableAltitude] = useState<boolean>(props.initialGPSData?.altitude === undefined ? false : true);
-
   const [realTimeAccuracy_Coordinate, setRealTimeAccuracy_Coordinate] = useState<number | null>(null);
   const [realTimeAccuracy_Altitude, setRealTimeAccuracy_Altitude] = useState<number | null>(null);
 
@@ -44,16 +38,10 @@ export default function GPSInput(props: {
     return () => { gpsWatcher.stopWatcher();};
   }, []);
 
-  async function togleGPSWatch() {
+  async function startGPS() {
 
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== Location.PermissionStatus.GRANTED) {
-      return;
-    }
-
-    if (gpsON) {
-      gpsWatcher.stopWatcher();
-      setGpsOn(false);
       return;
     }
 
@@ -71,9 +59,15 @@ export default function GPSInput(props: {
     });
   }
 
+  async function stopGPS() {
+    gpsWatcher.stopWatcher();
+    setGpsOn(false);
+  }
+
   async function eraseData() {
     alert_EraseData(() => {
-      setErasedData({ ...gpsData });
+      gpsWatcher.setGpsData({});
+      setErasedData(UtilService.deepCloning(gpsData));
       setGPSData({});
       setEnableCoordinate(false);
       setEnableAltitude(false);
@@ -86,7 +80,8 @@ export default function GPSInput(props: {
       return;
     }
 
-    setGPSData({ ...erasedData });
+    gpsWatcher.setGpsData(UtilService.deepCloning(erasedData));
+    setGPSData(UtilService.deepCloning(erasedData));
     setErasedData(null);
     if (erasedData.coordinates !== undefined) { setEnableCoordinate(true); }
     if (erasedData.altitude !== undefined) { setEnableAltitude(true); }
@@ -137,84 +132,49 @@ export default function GPSInput(props: {
   }
 
   return (
-    <LocalComponent.Root
-
+    <InputRoot
       label={props.label}
       backgroundColor={props.backgroundColor}
       color={props.color}
       color_placeholder={props.color_placeholder}
-
-      iconButtons={<>
-        {erasedData !== null && (
-          <IconButton
-            iconName="arrow-undo"
-            color={theme.onBackground}
-            onPress={async () => restoreData()}
-            style={{
-              paddingHorizontal: 5,
-              paddingVertical: 0,
-              borderRadius: 10,
-            }}
-          />
-        )}
-        {dataAvailable && (
-          <IconButton
-            iconName="trash-outline"
-            color={theme.wrong}
-            onPress={async () => await eraseData()}
-            style={{
-              paddingHorizontal: 5,
-              paddingVertical: 0,
-              borderRadius: 10,
-            }}
-          />
-        )}
-        <IconButton
-          iconName={gpsON ? 'stop' : 'play'}
-          color={gpsON ? theme.wrong : theme.confirm}
-          onPress={async () => await togleGPSWatch()}
-          style={{
-            paddingHorizontal: 5,
-            paddingVertical: 0,
-            borderRadius: 10,
-          }}
+      iconButtons={
+        <IconButtons
+          gpsData={gpsData}
+          erasedData={erasedData}
+          gpsON={gpsON}
+          editMode={editMode}
+          onPress_UndoButton={() => restoreData()}
+          onPress_PlayButton={async () => await startGPS()}
+          onPress_StopButton={async () => await stopGPS()}
+          onPress_TrashButton={async () => await eraseData()}
+          onPress_EditButton={() => setEditMode(true)}
+          onPress_CloseButton={() => setEditMode(false)}
         />
-      </>}
-
+      }
     >
-      {gpsON && (
-        <View
-          style={{
-            gap: 5,
-          }}
-        >
-          <LocalComponent.CheckboxOption
-            title="Coordinate"
-            value={enableCoordinate}
-            onChange={async (checked) => await toogleCoordinate(checked)}
-          />
-          <LocalComponent.CheckboxOption
-            title="Altitude"
-            value={enableAltitude}
-            onChange={async (checked) => await toogleAltitude(checked)}
-          />
-        </View>
-      )}
-      <LocalComponent.DisplayData
+      <LC.CheckboxOption
+        gpsON={gpsON}
+        editMode={editMode}
+        enableCoordinate={enableCoordinate}
+        enableAltitude={enableAltitude}
+        onToogle_Coordinate={async (checked) => await toogleCoordinate(checked)}
+        onToogle_Altitude={async (checked) => await toogleAltitude(checked)}
+      />
+      <LC.DisplayData
         gpsData={gpsData}
       />
-      <LocalComponent.Display_RealTimeAccuracy
+      <LC.Display_RealTimeAccuracy
         gpsON={gpsON}
         coordinateEnable={enableCoordinate}
         altitudeEnable={enableAltitude}
         realTimeAccuracy_Coordinate={realTimeAccuracy_Coordinate}
         realTimeAccuracy_Altitude={realTimeAccuracy_Altitude}
       />
-      <LocalComponent.Loading
+      <LC.Loading
         gpsON={gpsON}
         coordinateEnable={enableCoordinate}
         altitudeEnable={enableAltitude}
       />
-    </LocalComponent.Root>
+    </InputRoot>
   );
 }

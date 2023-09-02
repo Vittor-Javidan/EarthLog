@@ -9,20 +9,15 @@ export class GPSWatcherService {
   private watchCoordinate: boolean;
   private watchAltitude: boolean;
   private gpsData: GPS_DTO;
-  private minAccuracy: { coordinate: number, altitude: number };
+  private minAccuracy = {
+    coordinate: 20,
+    altitude: 10,
+  };
 
-  constructor(options: {
-    initialGPSData: GPS_DTO,
-    minCoordinateAccuracy: number,
-    minAltitudeAccuracy: number,
-  }) {
-    this.watchCoordinate = options.initialGPSData.coordinates === undefined ? false : true;
-    this.watchAltitude = options.initialGPSData.altitude === undefined ? false : true;
-    this.gpsData = options.initialGPSData;
-    this.minAccuracy = {
-      coordinate: options.minCoordinateAccuracy,
-      altitude: options.minAltitudeAccuracy,
-    };
+  constructor(initialGPSData: GPS_DTO) {
+    this.watchCoordinate = initialGPSData.coordinates === undefined ? false : true;
+    this.watchAltitude = initialGPSData.altitude === undefined ? false : true;
+    this.gpsData = initialGPSData;
   }
 
   enableCoordinates(boolean: boolean) {
@@ -39,18 +34,10 @@ export class GPSWatcherService {
     }
   }
 
-  setGpsData(options: {
-    initialGPSData: GPS_DTO,
-    minCoordinateAccuracy: number,
-    minAltitudeAccuracy: number,
-  }) {
-    this.watchCoordinate = options.initialGPSData.coordinates === undefined ? false : true;
-    this.watchAltitude = options.initialGPSData.altitude === undefined ? false : true;
-    this.gpsData = options.initialGPSData;
-    this.minAccuracy = {
-      coordinate: options.minCoordinateAccuracy,
-      altitude: options.minAltitudeAccuracy,
-    };
+  setGpsData(initialGPSData: GPS_DTO) {
+    this.watchCoordinate = initialGPSData.coordinates === undefined ? false : true;
+    this.watchAltitude = initialGPSData.altitude === undefined ? false : true;
+    this.gpsData = initialGPSData;
   }
 
   async watchPositionAsync(

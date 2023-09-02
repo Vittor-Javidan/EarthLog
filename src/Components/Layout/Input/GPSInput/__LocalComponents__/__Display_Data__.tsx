@@ -10,7 +10,6 @@ export default function __Display_Data__(props: {
   gpsData: GPS_DTO
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
   const isNoData = props.gpsData.coordinates === undefined && props.gpsData.altitude === undefined;
 
   if (isNoData) {
@@ -20,24 +19,53 @@ export default function __Display_Data__(props: {
   return (
     <View>
       {props.gpsData.coordinates !== undefined && <>
-        <P
-          style={{ color: theme.onBackground }}
-        >
-          {`Latitude: ${props.gpsData.coordinates.lat} (+-${props.gpsData.coordinates.accuracy}m)`}
-        </P>
-        <P
-          style={{ color: theme.onBackground }}
-        >
-          {`Longitude: ${props.gpsData.coordinates.long} (+-${props.gpsData.coordinates.accuracy}m)`}
-        </P>
+        <DataInfo
+          title="Latitude"
+          value={props.gpsData.coordinates.lat}
+          precision={props.gpsData.coordinates.accuracy}
+        />
+        <DataInfo
+          title="Longitude"
+          value={props.gpsData.coordinates.long}
+          precision={props.gpsData.coordinates.accuracy}
+        />
       </>}
       {props.gpsData.altitude !== undefined && <>
-        <P
-          style={{ color: theme.onBackground }}
-        >
-          {`Altitude: ${props.gpsData.altitude.value} (+-${props.gpsData.altitude.accuracy}m)`}
-        </P>
+        <DataInfo
+          title="Altitude"
+          value={props.gpsData.altitude.value}
+          precision={props.gpsData.altitude.accuracy}
+        />
       </>}
+    </View>
+  );
+}
+
+function DataInfo(props: {
+  title: string
+  value: number
+  precision: number
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}
+    >
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.title}:`}
+      </P>
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.value} (${props.precision}m)`}
+      </P>
     </View>
   );
 }

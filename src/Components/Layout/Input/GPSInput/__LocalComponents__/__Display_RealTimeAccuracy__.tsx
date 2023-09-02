@@ -22,20 +22,51 @@ export default function __Display_RealTimeAccuracy__(props: {
 
   return (
     <View>
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {'Real time accuracy:'}
+      </P>
       {props.coordinateEnable && props.realTimeAccuracy_Coordinate !== null && (
-        <P
-          style={{ color: theme.onBackground }}
-        >
-          {`real time accuracy (Coordinates): ${props.realTimeAccuracy_Coordinate}`}
-        </P>
+        <AccuracyInfo
+          title="Coordinates"
+          precision={props.realTimeAccuracy_Coordinate}
+        />
       )}
       {props.altitudeEnable && props.realTimeAccuracy_Altitude !== null && (
-        <P
-          style={{ color: theme.onBackground }}
-        >
-          {`real time accuracy (altitude): ${props.realTimeAccuracy_Altitude}`}
-        </P>
+        <AccuracyInfo
+          title="Altitude"
+          precision={props.realTimeAccuracy_Altitude}
+        />
       )}
+    </View>
+  );
+}
+
+function AccuracyInfo(props: {
+  title: string
+  precision: number
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}
+    >
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.title}:`}
+      </P>
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.precision}m`}
+      </P>
     </View>
   );
 }
