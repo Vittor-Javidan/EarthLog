@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleProp, ViewStyle, Platform } from 'react-native';
+import { StyleProp, ViewStyle, Platform, TextStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -15,6 +15,7 @@ export default function TextWithIcon(props: {
 	color_background?: string
 	color_font?: string
 	style?: StyleProp<ViewStyle>
+  styleText?: StyleProp<TextStyle>
 	onPress: () => void
 }): JSX.Element {
 
@@ -41,11 +42,10 @@ export default function TextWithIcon(props: {
         />
       )}
       <RootText
-				style={{
+				style={[{
 					fontSize: iosLargeTitle ? ThemeService.FONTS.h3 : 200,
-          width: '80%',
           color: textColor,
-				}}
+				}, props.styleText]}
 			>
 				{props.title}
 			</RootText>

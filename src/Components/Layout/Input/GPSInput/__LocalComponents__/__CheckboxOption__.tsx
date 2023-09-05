@@ -5,17 +5,17 @@ import ConfigService from '@Services/ConfigService';
 
 import Checkbox from '@Components/Layout/Button/Checkbox';
 import H3 from '@Components/Layout/Text/H3';
+import { GPSFeaturesDTO } from '@Types/index';
 
 export default function CheckboxOptions(props: {
-  gpsON: boolean
-  editMode: boolean
-  enableCoordinate: boolean
-  enableAltitude: boolean
+  features: GPSFeaturesDTO
   onToogle_Coordinate: (checked: boolean) => void
   onToogle_Altitude: (checked: boolean) => void
 }) {
 
-  if (props.editMode === false) {
+  const { editMode, enableCoordinate, enableAltitude } = props.features;
+
+  if (editMode === false) {
     return <></>;
   }
 
@@ -27,12 +27,12 @@ export default function CheckboxOptions(props: {
     >
       <Option
         title="Coordinate"
-        value={props.enableCoordinate}
+        value={enableCoordinate}
         onChange={(checked) => props.onToogle_Coordinate(checked)}
       />
       <Option
         title="Altitude"
-        value={props.enableAltitude}
+        value={enableAltitude}
         onChange={(checked) => props.onToogle_Altitude(checked)}
       />
     </View>

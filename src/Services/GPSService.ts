@@ -42,19 +42,18 @@ export class GPSWatcherService {
 
   async watchPositionAsync(
     callback: (gpsData: GPS_DTO) => void,
-    realTimeCoordinateAccuracy: (coord: number | null) => void,
-    realTimeAltitudeAccuracy: (coord: number | null) => void
+    accuracy: (coordinate: number | null, altitude: number | null) => void,
   ) {
 
     const sendData = (coordinates: Location.LocationObject) => {
+      accuracy(
+        Number((coordinates.coords.accuracy ?? 999).toFixed(2)),
+        Number((coordinates.coords.altitudeAccuracy ?? 999).toFixed(2))
+      );
       let newDataAvailable: boolean = false;
-      realTimeCoordinateAccuracy(Number((coordinates.coords.accuracy ?? 999).toFixed(2)));
-      realTimeAltitudeAccuracy(Number((coordinates.coords.altitudeAccuracy ?? 999).toFixed(2)));
       this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
       this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-      if (newDataAvailable) {
-        callback(this.gpsData);
-      }
+      if (newDataAvailable) { callback(this.gpsData); }
     };
 
     if (Platform.OS === 'ios' && this.iosInterval === null) {

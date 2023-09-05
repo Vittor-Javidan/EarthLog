@@ -4,19 +4,18 @@ import { View } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
+import { GPSAccuracyDTO, GPSFeaturesDTO } from '@Types/index';
 
 export default function __Display_RealTimeAccuracy__(props: {
-  gpsON: boolean
-  coordinateEnable: boolean
-  altitudeEnable: boolean
-  realTimeAccuracy_Coordinate: number | null
-  realTimeAccuracy_Altitude: number | null
+  accuracy: GPSAccuracyDTO
+  features: GPSFeaturesDTO
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const nothingEnable = props.coordinateEnable === false && props.altitudeEnable === false;
+  const { gpsON, enableCoordinate, enableAltitude} = props.features;
+  const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
-  if (props.gpsON === false || nothingEnable) {
+  if (gpsON === false || nothingEnable) {
     return <></>;
   }
 
@@ -27,16 +26,16 @@ export default function __Display_RealTimeAccuracy__(props: {
       >
         {'Real time accuracy:'}
       </P>
-      {props.coordinateEnable && props.realTimeAccuracy_Coordinate !== null && (
+      {enableCoordinate && props.accuracy.coordinate !== null && (
         <AccuracyInfo
           title="Coordinates"
-          precision={props.realTimeAccuracy_Coordinate}
+          precision={props.accuracy.coordinate}
         />
       )}
-      {props.altitudeEnable && props.realTimeAccuracy_Altitude !== null && (
+      {enableAltitude && props.accuracy.altitude !== null && (
         <AccuracyInfo
           title="Altitude"
-          precision={props.realTimeAccuracy_Altitude}
+          precision={props.accuracy.altitude}
         />
       )}
     </View>

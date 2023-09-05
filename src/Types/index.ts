@@ -122,7 +122,7 @@ export type IDsArray = ID[]
 export type ID = string
 
 // ===============================================================================================
-// PROJECT RELATED TYPES
+// GPS RELATED TYPES
 // ===============================================================================================
 
 export type GPS_DTO = {
@@ -139,4 +139,16 @@ export type CoordinateDTO = {
 export type AltitudeDTO = {
   value: number
   accuracy: number
+}
+
+export type GPSAccuracyDTO = {
+  coordinate: number | null,
+  altitude: number | null
+}
+
+export type GPSFeaturesDTO = {
+  editMode: boolean
+  gpsON: boolean
+  enableCoordinate: boolean
+  enableAltitude: boolean
 }

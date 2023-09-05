@@ -1,10 +1,16 @@
-# 0.1.1.7 GPSInput Edit iconButton
+# 0.1.1.8 GPSInput Manual data input
 
-- Removed options when GPSWatcherService is instantiated or when a new gpsData is setted inside it.
-- iconButton abstracted into its own component.
-- added edit icon button to GPSInput.
-- changed the render conditions for iconButtons on GPSInput
-- New Input Root Component Created for all Inputs to use.
-- Now local components namespaces have the alias "LC".
-- Checkbox Option abstracted into its own component.
-- GPSInput data and accuracy display design refactor.
+Buttons:
+- <TextWithIcon />:
+  - Title width removed.
+  - added a prop to modify text style.
+
+
+Inputs:
+- Added a display data dedicated for manual input.
+- New type GPSAccuracyDTO
+- __Display_Data__ renamed to __DataDisplayHandler. Component rendere optimized.
+- New type GPSFeaturesDTO
+- All local components now use GPSFeaturesDTO instead isolated features states.
+- __DataDisplayHandler__ now has 2 sub components: __DisplayStatic__ and __DisplayDataInterative__.
+- fixed longitude regex. Numbers less than Absolute(100) was giving false during validation.

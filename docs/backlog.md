@@ -1,6 +1,4 @@
 # GPS:
-- add manual input to GPS input.
-- add a note to tell user to put Coordinate on DD format.
 - add translations for alert messages.
 - add translations for checkbox.
 - add translations for labels.

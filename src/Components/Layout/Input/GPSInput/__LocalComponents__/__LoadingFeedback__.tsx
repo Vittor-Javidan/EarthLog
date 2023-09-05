@@ -4,17 +4,17 @@ import { View, ActivityIndicator } from 'react-native';
 import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
+import { GPSFeaturesDTO } from '@Types/index';
 
 export default function __LoadingFeedback_(props: {
-  gpsON: boolean
-  coordinateEnable: boolean
-  altitudeEnable: boolean
+  features: GPSFeaturesDTO
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const nothingEnable = props.coordinateEnable === false && props.altitudeEnable === false;
+  const { gpsON, enableCoordinate, enableAltitude } = props.features;
+  const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
-  if (props.gpsON === false || nothingEnable) {
+  if (gpsON === false) {
     return <></>;
   }
 
@@ -31,7 +31,7 @@ export default function __LoadingFeedback_(props: {
       <P
         style={{ color: theme.onBackground }}
       >
-        Updates can take a few seconds...
+        {nothingEnable ? 'Nothing enable' : 'Updates can take a few seconds...'}
       </P>
     </View>
   );

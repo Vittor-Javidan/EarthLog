@@ -1,38 +1,42 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Alert } from 'react-native';
 import * as Location from 'expo-location';
+import * as Vibration from 'expo-haptics';
 
-import { GPS_DTO } from '@Types/index';
+import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
 import { GPSWatcherService } from '@Services/GPSService';
 import UtilService from '@Services/UtilService';
 
 import InputRoot from '../Root';
 import IconButtons from './IconButtons';
 import { LC } from './__LocalComponents__';
-import { alert_CheckBoxUncheck, alert_EraseData, alert_OverwritteData } from './Alerts';
 
 export default function GPSInput(props: {
   label: string
-  initialGPSData?: GPS_DTO,
-  minCoordinateAccuracy?: number,
-  minAltitudeAccuracy?: number,
+  initialGPSData: GPS_DTO,
   backgroundColor?: string
   color?: string
   color_placeholder?: string
+  hideDeleteButton?: boolean
+  onPress_Save: (gpsData: GPS_DTO) => void
+  onPress_Delete: () => void
 }) {
 
-  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.initialGPSData ?? {})), []);
+  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.initialGPSData)), []);
+  const [initialGPSData, setInitalGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.initialGPSData));
+  const [gpsData, setGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.initialGPSData));
 
-  const [gpsData, setGPSData] = useState<GPS_DTO>({});
-  const [erasedData, setErasedData] = useState<GPS_DTO | null>(null);
+  const [accuracy, setAccuracy] = useState<GPSAccuracyDTO>({
+    coordinate: null,
+    altitude: null,
+  });
 
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [gpsON, setGpsOn] = useState<boolean>(false);
-  const [enableCoordinate, setEnableCoordinate] = useState<boolean>(props.initialGPSData?.coordinates === undefined ? false : true);
-  const [enableAltitude, setEnableAltitude] = useState<boolean>(props.initialGPSData?.altitude === undefined ? false : true);
-  const [realTimeAccuracy_Coordinate, setRealTimeAccuracy_Coordinate] = useState<number | null>(null);
-  const [realTimeAccuracy_Altitude, setRealTimeAccuracy_Altitude] = useState<number | null>(null);
-
-  const dataAvailable = Object.keys(gpsData).length > 0;
+  const [features, setFeatures] = useState<GPSFeaturesDTO>({
+    editMode: false,
+    gpsON: false,
+    enableCoordinate: props.initialGPSData?.coordinates === undefined ? false : true,
+    enableAltitude: props.initialGPSData?.altitude === undefined ? false : true,
+  });
 
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher();};
@@ -45,136 +49,148 @@ export default function GPSInput(props: {
       return;
     }
 
-    const handleAlert = (callback: () => void) => dataAvailable
-    ? alert_OverwritteData(() => callback())
-    : callback();
-
-    handleAlert(async () => {
-      await gpsWatcher.watchPositionAsync(
-        (gpsData) => setGPSData(gpsData),
-        (accuracy_Coordinate) => { setRealTimeAccuracy_Coordinate(accuracy_Coordinate); },
-        (accuracy_Altitude) => { setRealTimeAccuracy_Altitude(accuracy_Altitude); }
-      );
-      setGpsOn(true);
-    });
+    await gpsWatcher.watchPositionAsync(
+      (gpsData) => {
+        setGPSData(gpsData);
+      },
+      (accuracy_Coordinate, accuracy_Altitude) => {
+        setAccuracy({
+          coordinate: accuracy_Coordinate,
+          altitude: accuracy_Altitude,
+        });
+      }
+    );
+    setFeatures(prev => ({ ...prev, gpsON: true }));
   }
 
   async function stopGPS() {
     gpsWatcher.stopWatcher();
-    setGpsOn(false);
-  }
-
-  async function eraseData() {
-    alert_EraseData(() => {
-      gpsWatcher.setGpsData({});
-      setErasedData(UtilService.deepCloning(gpsData));
-      setGPSData({});
-      setEnableCoordinate(false);
-      setEnableAltitude(false);
-    });
-  }
-
-  function restoreData() {
-
-    if (erasedData === null) {
-      return;
-    }
-
-    gpsWatcher.setGpsData(UtilService.deepCloning(erasedData));
-    setGPSData(UtilService.deepCloning(erasedData));
-    setErasedData(null);
-    if (erasedData.coordinates !== undefined) { setEnableCoordinate(true); }
-    if (erasedData.altitude !== undefined) { setEnableAltitude(true); }
+    setFeatures(prev => ({ ...prev, gpsON: false }));
   }
 
   async function toogleCoordinate(checked: boolean) {
-    await alert_CheckBoxUncheck(
-      checked,
-      'Coordinate',
-      () => {
-        gpsWatcher.enableCoordinates(true);
-        setEnableCoordinate(true);
-      },
-      () => {
-        gpsWatcher.enableCoordinates(false);
-        setEnableCoordinate(false);
-        setGPSData(prev => {
-          const newData: GPS_DTO = { ...prev };
-          if (newData.coordinates !== undefined) {
-            delete newData.coordinates;
-          }
-          return newData;
-        });
-      }
-    );
+    if (checked) {
+      gpsWatcher.enableCoordinates(true);
+      setFeatures(prev => ({ ...prev, enableCoordinate: true }));
+    } else {
+      gpsWatcher.enableCoordinates(false);
+      setFeatures(prev => ({ ...prev, enableCoordinate: false }));
+      setGPSData(prev => {
+        const newData = { ...prev };
+        if (newData.coordinates !== undefined) { delete newData.coordinates; }
+        return newData;
+      });
+    }
   }
 
   async function toogleAltitude(checked: boolean) {
-    await alert_CheckBoxUncheck(
-      checked,
-      'Altitude',
-      () => {
-        gpsWatcher.enableAltitude(true);
-        setEnableAltitude(true);
-      },
-      () => {
-        gpsWatcher.enableAltitude(false);
-        setEnableAltitude(false);
-        setGPSData(prev => {
-          const newData: GPS_DTO = { ...prev };
-          if (newData.altitude !== undefined) {
-            delete newData.altitude;
-          }
-          return newData;
-        });
-      }
-    );
+    if (checked) {
+      gpsWatcher.enableAltitude(true);
+      setFeatures(prev => ({ ...prev, enableAltitude: true }));
+    } else {
+      gpsWatcher.enableAltitude(false);
+      setFeatures(prev => ({ ...prev, enableAltitude: false }));
+      setGPSData(prev => {
+        const newData: GPS_DTO = { ...prev };
+        if (newData.altitude !== undefined) { delete newData.altitude; }
+        return newData;
+      });
+    }
+  }
+
+  function onCancel() {
+    gpsWatcher.setGpsData(UtilService.deepCloning(initialGPSData));
+    setGPSData(UtilService.deepCloning(initialGPSData));
+    setFeatures(prev => ({
+      ...prev,
+      editMode: false,
+      enableCoordinate: initialGPSData.coordinates === undefined ? false : true,
+      enableAltitude: initialGPSData.altitude === undefined ? false : true,
+    }));
+  }
+
+  function onSave() {
+    setInitalGPSData(UtilService.deepCloning(gpsData));
+    props.onPress_Save(UtilService.deepCloning(gpsData));
+    setFeatures(prev => ({ ...prev, editMode: false }));
+  }
+
+  async function eraseData() {
+    await alert_EraseData(() => {
+      props.onPress_Delete();
+    });
   }
 
   return (
     <InputRoot
+
       label={props.label}
       backgroundColor={props.backgroundColor}
       color={props.color}
       color_placeholder={props.color_placeholder}
+
       iconButtons={
         <IconButtons
-          gpsData={gpsData}
-          erasedData={erasedData}
-          gpsON={gpsON}
-          editMode={editMode}
-          onPress_UndoButton={() => restoreData()}
+          hideDeleteButton={props.hideDeleteButton}
+          features={features}
           onPress_PlayButton={async () => await startGPS()}
           onPress_StopButton={async () => await stopGPS()}
-          onPress_TrashButton={async () => await eraseData()}
-          onPress_EditButton={() => setEditMode(true)}
-          onPress_CloseButton={() => setEditMode(false)}
+          onPress_TrashButton={async () => eraseData()}
+          onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: true }))}
         />
       }
+
+      style={{
+        gap: 20,
+      }}
+
     >
       <LC.CheckboxOption
-        gpsON={gpsON}
-        editMode={editMode}
-        enableCoordinate={enableCoordinate}
-        enableAltitude={enableAltitude}
+        features={features}
         onToogle_Coordinate={async (checked) => await toogleCoordinate(checked)}
         onToogle_Altitude={async (checked) => await toogleAltitude(checked)}
       />
-      <LC.DisplayData
+      <LC.DataDisplayHandler
         gpsData={gpsData}
+        features={features}
+        onError={() => {}}
+        onChange_gpsData={(newGPSData) => setGPSData(newGPSData)}
       />
       <LC.Display_RealTimeAccuracy
-        gpsON={gpsON}
-        coordinateEnable={enableCoordinate}
-        altitudeEnable={enableAltitude}
-        realTimeAccuracy_Coordinate={realTimeAccuracy_Coordinate}
-        realTimeAccuracy_Altitude={realTimeAccuracy_Altitude}
+        accuracy={accuracy}
+        features={features}
       />
       <LC.Loading
-        gpsON={gpsON}
-        coordinateEnable={enableCoordinate}
-        altitudeEnable={enableAltitude}
+        features={features}
+      />
+      <LC.FooterButtons
+        features={features}
+        onPress_Cancel={() => onCancel()}
+        onPress_Save={() => onSave()}
       />
     </InputRoot>
+  );
+}
+
+async function alert_EraseData(onErase: () => void) {
+  await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+  Alert.alert(
+    'Hold on!',
+    'Are you sure you want to delete all gps data?',
+    [
+      {
+        text: 'No',
+        onPress: async () => {
+          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+        },
+      },
+      {
+        text: 'Yes',
+        onPress: async () => {
+          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+          onErase();
+        },
+      },
+    ]
   );
 }

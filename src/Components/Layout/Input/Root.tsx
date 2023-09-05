@@ -1,5 +1,5 @@
 import React, { useMemo, ReactNode } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -12,6 +12,7 @@ export default function InputRoot(props: {
   color_placeholder?: string
   iconButtons?: JSX.Element
   children?: ReactNode
+  style: StyleProp<ViewStyle>
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
@@ -53,7 +54,7 @@ export default function InputRoot(props: {
         {props.iconButtons}
       </View>
       <View
-        style={{
+        style={[{
           width: '100%',
           paddingHorizontal: 10,
           paddingTop: 20,
@@ -63,7 +64,7 @@ export default function InputRoot(props: {
           borderColor: theme.primary,
           borderWidth: 2,
           borderRadius: 10,
-        }}
+        }, props.style]}
       >
         {props.children}
       </View>
