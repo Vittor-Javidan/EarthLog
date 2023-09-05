@@ -1,16 +1,18 @@
 import React, { useMemo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
+import { GPSFeaturesDTO } from '@Types/index';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
-import { GPSFeaturesDTO } from '@Types/index';
 
 export default function __LoadingFeedback_(props: {
   features: GPSFeaturesDTO
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
   const { gpsON, enableCoordinate, enableAltitude } = props.features;
   const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
@@ -24,14 +26,21 @@ export default function __LoadingFeedback_(props: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingHorizontal: 30,
         gap: 10,
       }}
     >
       <ActivityIndicator size="small" />
       <P
-        style={{ color: theme.onBackground }}
+        style={{
+          color: theme.onBackground,
+          textAlign: 'justify',
+        }}
       >
-        {nothingEnable ? 'Nothing enable' : 'Updates can take a few seconds...'}
+        {nothingEnable
+          ? stringResources['Nothing selected']
+          : stringResources['Collecting the best data. Updates can take a few seconds...']
+        }
       </P>
     </View>
   );

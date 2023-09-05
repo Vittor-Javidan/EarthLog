@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
+import { GPSFeaturesDTO } from '@Types/index';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import Checkbox from '@Components/Layout/Button/Checkbox';
 import H3 from '@Components/Layout/Text/H3';
-import { GPSFeaturesDTO } from '@Types/index';
 
 export default function CheckboxOptions(props: {
   features: GPSFeaturesDTO
@@ -13,6 +14,8 @@ export default function CheckboxOptions(props: {
   onToogle_Altitude: (checked: boolean) => void
 }) {
 
+  const { language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
   const { editMode, enableCoordinate, enableAltitude } = props.features;
 
   if (editMode === false) {
@@ -27,12 +30,12 @@ export default function CheckboxOptions(props: {
       }}
     >
       <Option
-        title="Coordinate"
+        title={stringResources['Coordinates']}
         value={enableCoordinate}
         onChange={(checked) => props.onToogle_Coordinate(checked)}
       />
       <Option
-        title="Altitude"
+        title={stringResources['Altitude']}
         value={enableAltitude}
         onChange={(checked) => props.onToogle_Altitude(checked)}
       />

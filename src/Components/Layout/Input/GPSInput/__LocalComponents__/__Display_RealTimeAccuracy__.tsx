@@ -1,17 +1,19 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
+import { GPSAccuracyDTO, GPSFeaturesDTO } from '@Types/index';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
-import { GPSAccuracyDTO, GPSFeaturesDTO } from '@Types/index';
 
 export default function __Display_RealTimeAccuracy__(props: {
   accuracy: GPSAccuracyDTO
   features: GPSFeaturesDTO
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
   const { gpsON, enableCoordinate, enableAltitude} = props.features;
   const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
@@ -24,17 +26,17 @@ export default function __Display_RealTimeAccuracy__(props: {
       <P
         style={{ color: theme.onBackground }}
       >
-        {'Real time accuracy:'}
+        {stringResources['Real time accuracy:']}
       </P>
       {enableCoordinate && props.accuracy.coordinate !== null && (
         <AccuracyInfo
-          title="Coordinates"
+          title={stringResources['Coordinates']}
           precision={props.accuracy.coordinate}
         />
       )}
       {enableAltitude && props.accuracy.altitude !== null && (
         <AccuracyInfo
-          title="Altitude"
+          title={stringResources['Altitude']}
           precision={props.accuracy.altitude}
         />
       )}

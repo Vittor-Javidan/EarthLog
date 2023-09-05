@@ -5,6 +5,7 @@ import { AltitudeDTO, CoordinateDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/inde
 import ConfigService from '@Services/ConfigService';
 
 import H3 from '@Components/Layout/Text/H3';
+import { translations } from '@Translations/index';
 
 export default function __DisplayDataInterative__(props: {
   gpsData: GPS_DTO
@@ -13,6 +14,8 @@ export default function __DisplayDataInterative__(props: {
   onChange_gpsData: (gpsData: GPS_DTO) => void
 }) {
 
+  const { language } = useMemo(() => ConfigService.config, []);
+  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
   const { editMode, gpsON, enableCoordinate, enableAltitude } = props.features;
 
   const showInterativeDisplay =
@@ -88,24 +91,24 @@ export default function __DisplayDataInterative__(props: {
           <View>
             <DataInfo_TextInput
               type="latitude"
-              title="Latitude (DD)"
-              value_placeholder="Latitude"
+              title={stringResources['Latitude (DD)']}
+              value_placeholder={stringResources['Latitude']}
               value={props.gpsData.coordinates?.lat}
               onChangeNumber={(newLat) => onChange_Latitude(newLat)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
               type="longitude"
-              title="Longitude (DD)"
-              value_placeholder="Longitude"
+              title={stringResources['Longitude (DD)']}
+              value_placeholder={stringResources['Longitude']}
               value={props.gpsData.coordinates?.long}
               onChangeNumber={(newLong) => onChange_Longitude(newLong)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
               type="meters"
-              title="Accuracy (m)"
-              value_placeholder="Accuracy"
+              title={stringResources['Accuracy (m)']}
+              value_placeholder={stringResources['Accuracy']}
               value={props.gpsData.coordinates?.accuracy}
               onChangeNumber={(newAcc) => onChange_CoordinateAcc(newAcc)}
               onError={() => props.onError()}
@@ -116,16 +119,16 @@ export default function __DisplayDataInterative__(props: {
           <View>
             <DataInfo_TextInput
               type="meters"
-              title="Altitude (m)"
-              value_placeholder="Altitude"
+              title={stringResources['Altitude (m)']}
+              value_placeholder={stringResources['Altitude']}
               value={props.gpsData.altitude?.value}
               onChangeNumber={(newAlt) => onChange_Altitude(newAlt)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
               type="meters"
-              title="Accuracy (m)"
-              value_placeholder="Accuracy"
+              title={stringResources['Accuracy (m)']}
+              value_placeholder={stringResources['Accuracy']}
               value={props.gpsData.altitude?.accuracy}
               onChangeNumber={(newAcc) => onChange_AltitudeAcc(newAcc)}
               onError={() => props.onError()}

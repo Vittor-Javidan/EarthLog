@@ -16,7 +16,7 @@ export default function BooleanInput(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
+  const stringResources = useMemo(() => translations.Input.BooleanInput[language], []);
 
   const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
   const color = props.color ? props.color : theme.onBackground;

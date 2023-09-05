@@ -17,7 +17,7 @@ export default function BooleanWidget(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
+  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);

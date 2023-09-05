@@ -1,4 +1,4 @@
-# 0.1.1.9 GPSInput Input optimization
+# 0.1.1.10 GPSInput Translations
 
-- States moved from __DisplayDatahandler__ to __DisplayDataInterative__
-- added numeric keyboard type for GPSInput internal TexInput components
+- Removed delete alert message, so parent components can implement alert messages on their own.
+- Added Translations for GPSInput on Translations index

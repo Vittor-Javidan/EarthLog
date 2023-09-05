@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Alert } from 'react-native';
 import * as Location from 'expo-location';
-import * as Vibration from 'expo-haptics';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
 import { GPSWatcherService } from '@Services/GPSService';
@@ -116,9 +114,7 @@ export default function GPSInput(props: {
   }
 
   async function eraseData() {
-    await alert_EraseData(() => {
-      props.onPress_Delete();
-    });
+    props.onPress_Delete();
   }
 
   return (
@@ -169,28 +165,5 @@ export default function GPSInput(props: {
         onPress_Save={() => onSave()}
       />
     </InputRoot>
-  );
-}
-
-async function alert_EraseData(onErase: () => void) {
-  await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
-  Alert.alert(
-    'Hold on!',
-    'Are you sure you want to delete all gps data?',
-    [
-      {
-        text: 'No',
-        onPress: async () => {
-          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
-        },
-      },
-      {
-        text: 'Yes',
-        onPress: async () => {
-          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
-          onErase();
-        },
-      },
-    ]
   );
 }
