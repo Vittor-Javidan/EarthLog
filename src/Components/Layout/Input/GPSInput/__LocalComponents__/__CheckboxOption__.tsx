@@ -22,7 +22,8 @@ export default function CheckboxOptions(props: {
   return (
     <View
       style={{
-        gap: 5,
+        gap: 20,
+        flexDirection: 'row',
       }}
     >
       <Option

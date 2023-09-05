@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, TextInput, Platform } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import { AltitudeDTO, CoordinateDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 
 import H3 from '@Components/Layout/Text/H3';
@@ -10,11 +10,7 @@ export default function __DisplayDataInterative__(props: {
   gpsData: GPS_DTO
   features: GPSFeaturesDTO
   onError: () => void
-  onChange_Latitude: (latitude: number) => void
-  onChange_Longitude: (longitude: number) => void
-  onChange_CoordinateAcc: (accuracy: number) => void
-  onChange_Altitude: (altitude: number) => void
-  onChange_AltitudeAcc: (accuracy: number) => void
+  onChange_gpsData: (gpsData: GPS_DTO) => void
 }) {
 
   const { editMode, gpsON, enableCoordinate, enableAltitude } = props.features;
@@ -27,6 +23,59 @@ export default function __DisplayDataInterative__(props: {
     editMode  === true  &&
     gpsON     === false
   ;
+
+  function onChange_Latitude(newLatitude: number) {
+    const newCoordinateDTO: CoordinateDTO = {
+      lat: newLatitude,
+      long: props.gpsData.coordinates?.long ?? 0,
+      accuracy: props.gpsData.coordinates?.accuracy ?? 999,
+    };
+    const newGPSData: GPS_DTO = { ...props.gpsData };
+    newGPSData.coordinates = newCoordinateDTO;
+    props.onChange_gpsData(newGPSData);
+  }
+
+  function onChange_Longitude(newLongitude: number) {
+    const newCoordinateDTO: CoordinateDTO = {
+      lat: props.gpsData.coordinates?.lat ?? 0,
+      long: newLongitude,
+      accuracy: props.gpsData.coordinates?.accuracy ?? 999,
+    };
+    const newGPSData: GPS_DTO = { ...props.gpsData };
+    newGPSData.coordinates = newCoordinateDTO;
+    props.onChange_gpsData(newGPSData);
+  }
+
+  function onChange_CoordinateAcc(newAccuracy:  number) {
+    const newCoordinateDTO: CoordinateDTO = {
+      lat: props.gpsData.coordinates?.lat ?? 0,
+      long: props.gpsData.coordinates?.long ?? 0,
+      accuracy: newAccuracy,
+    };
+    const newGPSData: GPS_DTO = { ...props.gpsData };
+    newGPSData.coordinates = newCoordinateDTO;
+    props.onChange_gpsData(newGPSData);
+  }
+
+  function onChange_Altitude(newAltitude: number) {
+    const newAltitudeDTO: AltitudeDTO = {
+      value: newAltitude,
+      accuracy: props.gpsData.altitude?.accuracy ?? 999,
+    };
+    const newGPSData: GPS_DTO = { ...props.gpsData };
+    newGPSData.altitude = newAltitudeDTO;
+    props.onChange_gpsData(newGPSData);
+  }
+
+  function onChange_AltitudeAcc(newAccuracy: number) {
+    const newAltitudeDTO: AltitudeDTO = {
+      value: props.gpsData.altitude?.value ?? 0,
+      accuracy: newAccuracy,
+    };
+    const newGPSData: GPS_DTO = { ...props.gpsData };
+    newGPSData.altitude = newAltitudeDTO;
+    props.onChange_gpsData(newGPSData);
+  }
 
   return (<>
     {showInterativeDisplay && (
@@ -42,7 +91,7 @@ export default function __DisplayDataInterative__(props: {
               title="Latitude (DD)"
               value_placeholder="Latitude"
               value={props.gpsData.coordinates?.lat}
-              onChangeNumber={(newLat) => props.onChange_Latitude(newLat)}
+              onChangeNumber={(newLat) => onChange_Latitude(newLat)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
@@ -50,7 +99,7 @@ export default function __DisplayDataInterative__(props: {
               title="Longitude (DD)"
               value_placeholder="Longitude"
               value={props.gpsData.coordinates?.long}
-              onChangeNumber={(newLong) => props.onChange_Longitude(newLong)}
+              onChangeNumber={(newLong) => onChange_Longitude(newLong)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
@@ -58,7 +107,7 @@ export default function __DisplayDataInterative__(props: {
               title="Accuracy (m)"
               value_placeholder="Accuracy"
               value={props.gpsData.coordinates?.accuracy}
-              onChangeNumber={(newAcc) => props.onChange_CoordinateAcc(newAcc)}
+              onChangeNumber={(newAcc) => onChange_CoordinateAcc(newAcc)}
               onError={() => props.onError()}
             />
           </View>
@@ -70,7 +119,7 @@ export default function __DisplayDataInterative__(props: {
               title="Altitude (m)"
               value_placeholder="Altitude"
               value={props.gpsData.altitude?.value}
-              onChangeNumber={(newAlt) => props.onChange_Altitude(newAlt)}
+              onChangeNumber={(newAlt) => onChange_Altitude(newAlt)}
               onError={() => props.onError()}
             />
             <DataInfo_TextInput
@@ -78,7 +127,7 @@ export default function __DisplayDataInterative__(props: {
               title="Accuracy (m)"
               value_placeholder="Accuracy"
               value={props.gpsData.altitude?.accuracy}
-              onChangeNumber={(newAcc) => props.onChange_AltitudeAcc(newAcc)}
+              onChangeNumber={(newAcc) => onChange_AltitudeAcc(newAcc)}
               onError={() => props.onError()}
             />
           </View>
@@ -152,6 +201,7 @@ function DataInfo_TextInput(props: {
         placeholderTextColor={theme.onTertiary_Placeholder}
         textAlign="right"
         onChangeText={(text) => onChange(text)}
+        keyboardType="decimal-pad"
       />
     </View>
   );
