@@ -1,10 +1,5 @@
-# 0.1.1.11 Project, Sample, Widget GPSdata.
+# 0.1.1.12 GPSInput external data update fix
 
-- Added gps to projectSettings inputs on Project Creation Screen
-- Added gps to projectSettings inputs on Project Settings Screen
-- Added gps to projectSettings inputs on Sample Creation Screen
-- Added gps to projectSettings inputs on Sample Settings Screen
-- GPSWidget created.
-
-Fix:
-- Widget Modal: bottom padding inside Modal children container, causing sum with scrollview default bottom padding, causing a total of 300 bottom padding.
+- Fixed the issue of GPSInput static display not updating when data got updated.
+- Now input has a hook to sincronize external and internal data.
+- Removed some unnecessary async notations from GPSInput.

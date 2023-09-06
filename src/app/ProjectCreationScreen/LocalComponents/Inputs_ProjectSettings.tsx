@@ -109,7 +109,7 @@ export default function Inputs_ProjectSettings() {
         {showGPS && (
           <Layout.Input.GPS
             label="GPS"
-            initialGPSData={gpsData ?? {}}
+            gpsData={gpsData ?? {}}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             color_placeholder={theme.onBackground_Placeholder}

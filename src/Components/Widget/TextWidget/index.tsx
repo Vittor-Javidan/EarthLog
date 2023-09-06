@@ -129,7 +129,7 @@ export default function TextWidget(props: {
         {showGPS && (
           <Layout.Input.GPS
             label="GPS"
-            initialGPSData={widgetData.gps ?? {}}
+            gpsData={widgetData.gps ?? {}}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             color_placeholder={theme.onBackground_Placeholder}
@@ -269,7 +269,7 @@ function Modal(props: {
         ) : (
           <Layout.Input.GPS
             label="GPS"
-            initialGPSData={gpsData}
+            gpsData={gpsData}
             backgroundColor={theme.background}
             color={theme.onBackground}
             color_placeholder={theme.onBackground_Placeholder}

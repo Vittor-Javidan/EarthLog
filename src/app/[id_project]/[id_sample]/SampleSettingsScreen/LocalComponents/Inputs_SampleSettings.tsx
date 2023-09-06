@@ -133,7 +133,7 @@ export default function Inputs_SampleSettings() {
         {showGPS && (
           <Layout.Input.GPS
             label="GPS"
-            initialGPSData={sampleSettings.gps ?? {}}
+            gpsData={sampleSettings.gps ?? {}}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             color_placeholder={theme.onBackground_Placeholder}

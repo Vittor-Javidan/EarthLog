@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import * as Location from 'expo-location';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
-import { GPSWatcherService } from '@Services/GPSService';
+import GPSService, { GPSWatcherService } from '@Services/GPSService';
 import UtilService from '@Services/UtilService';
 
 import InputRoot from '../Root';
@@ -12,7 +11,7 @@ import { LC } from './__LocalComponents__';
 
 export default function GPSInput(props: {
   label: string
-  initialGPSData: GPS_DTO,
+  gpsData: GPS_DTO,
   backgroundColor?: string
   color?: string
   color_placeholder?: string
@@ -22,9 +21,8 @@ export default function GPSInput(props: {
   onPress_Delete: () => void
 }) {
 
-  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.initialGPSData)), []);
-  const [initialGPSData, setInitalGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.initialGPSData));
-  const [gpsData, setGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.initialGPSData));
+  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.gpsData)), []);
+  const [localGPSData, setLocalGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.gpsData));
 
   const [accuracy, setAccuracy] = useState<GPSAccuracyDTO>({
     coordinate: null,
@@ -34,48 +32,46 @@ export default function GPSInput(props: {
   const [features, setFeatures] = useState<GPSFeaturesDTO>({
     editMode: false,
     gpsON: false,
-    enableCoordinate: props.initialGPSData?.coordinates === undefined ? false : true,
-    enableAltitude: props.initialGPSData?.altitude === undefined ? false : true,
+    enableCoordinate: props.gpsData?.coordinates === undefined ? false : true,
+    enableAltitude: props.gpsData?.altitude === undefined ? false : true,
   });
 
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher();};
   }, []);
 
-  async function startGPS() {
+  useSincronizeGPSData(() => {
+    setLocalGPSData(props.gpsData);
+  }, [props.gpsData]);
 
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== Location.PermissionStatus.GRANTED) {
-      return;
-    }
-
-    await gpsWatcher.watchPositionAsync(
-      (gpsData) => {
-        setGPSData(gpsData);
-      },
-      (accuracy_Coordinate, accuracy_Altitude) => {
-        setAccuracy({
-          coordinate: accuracy_Coordinate,
-          altitude: accuracy_Altitude,
-        });
-      }
-    );
-    setFeatures(prev => ({ ...prev, gpsON: true }));
+  function onCancel() {
+    gpsWatcher.setGpsData(UtilService.deepCloning(props.gpsData));
+    setLocalGPSData(props.gpsData);
+    setFeatures(prev => ({
+      ...prev,
+      editMode: false,
+      enableCoordinate: props.gpsData.coordinates === undefined ? false : true,
+      enableAltitude: props.gpsData.altitude === undefined ? false : true,
+    }));
   }
 
-  async function stopGPS() {
-    gpsWatcher.stopWatcher();
-    setFeatures(prev => ({ ...prev, gpsON: false }));
+  function onSave() {
+    props.onPress_Save(UtilService.deepCloning(localGPSData));
+    setFeatures(prev => ({ ...prev, editMode: false }));
   }
 
-  async function toogleCoordinate(checked: boolean) {
+  function eraseData() {
+    props.onPress_Delete();
+  }
+
+  function toogleCoordinate(checked: boolean) {
     if (checked) {
       gpsWatcher.enableCoordinates(true);
       setFeatures(prev => ({ ...prev, enableCoordinate: true }));
     } else {
       gpsWatcher.enableCoordinates(false);
       setFeatures(prev => ({ ...prev, enableCoordinate: false }));
-      setGPSData(prev => {
+      setLocalGPSData(prev => {
         const newData = { ...prev };
         if (newData.coordinates !== undefined) { delete newData.coordinates; }
         return newData;
@@ -83,14 +79,14 @@ export default function GPSInput(props: {
     }
   }
 
-  async function toogleAltitude(checked: boolean) {
+  function toogleAltitude(checked: boolean) {
     if (checked) {
       gpsWatcher.enableAltitude(true);
       setFeatures(prev => ({ ...prev, enableAltitude: true }));
     } else {
       gpsWatcher.enableAltitude(false);
       setFeatures(prev => ({ ...prev, enableAltitude: false }));
-      setGPSData(prev => {
+      setLocalGPSData(prev => {
         const newData: GPS_DTO = { ...prev };
         if (newData.altitude !== undefined) { delete newData.altitude; }
         return newData;
@@ -98,61 +94,49 @@ export default function GPSInput(props: {
     }
   }
 
-  function onCancel() {
-    gpsWatcher.setGpsData(UtilService.deepCloning(initialGPSData));
-    setGPSData(UtilService.deepCloning(initialGPSData));
-    setFeatures(prev => ({
-      ...prev,
-      editMode: false,
-      enableCoordinate: initialGPSData.coordinates === undefined ? false : true,
-      enableAltitude: initialGPSData.altitude === undefined ? false : true,
-    }));
+  async function startGPS() {
+    await GPSService.getPermission(async () => {
+      await gpsWatcher.watchPositionAsync(
+        (gpsData) => setLocalGPSData(gpsData),
+        (accuracy) => setAccuracy(accuracy)
+      );
+      setFeatures(prev => ({ ...prev, gpsON: true }));
+    });
   }
 
-  function onSave() {
-    setInitalGPSData(UtilService.deepCloning(gpsData));
-    props.onPress_Save(UtilService.deepCloning(gpsData));
-    setFeatures(prev => ({ ...prev, editMode: false }));
-  }
-
-  async function eraseData() {
-    props.onPress_Delete();
+  async function stopGPS() {
+    gpsWatcher.stopWatcher();
+    setFeatures(prev => ({ ...prev, gpsON: false }));
   }
 
   return (
     <InputRoot
-
       label={props.label}
       backgroundColor={props.backgroundColor}
       color={props.color}
       color_placeholder={props.color_placeholder}
-
+      style={[{ gap: 20 }, props.style]}
       iconButtons={
         <IconButtons
           hideDeleteButton={props.hideDeleteButton}
           features={features}
           onPress_PlayButton={async () => await startGPS()}
           onPress_StopButton={async () => await stopGPS()}
-          onPress_TrashButton={async () => eraseData()}
+          onPress_TrashButton={() => eraseData()}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: true }))}
         />
       }
-
-      style={[{
-        gap: 20,
-      }, props.style]}
-
     >
       <LC.CheckboxOption
         features={features}
-        onToogle_Coordinate={async (checked) => await toogleCoordinate(checked)}
-        onToogle_Altitude={async (checked) => await toogleAltitude(checked)}
+        onToogle_Coordinate={(checked) => toogleCoordinate(checked)}
+        onToogle_Altitude={(checked) => toogleAltitude(checked)}
       />
       <LC.DataDisplayHandler
-        gpsData={gpsData}
+        gpsData={localGPSData}
         features={features}
         onError={() => {}}
-        onChange_gpsData={(newGPSData) => setGPSData(newGPSData)}
+        onChange_gpsData={(newGPSData) => setLocalGPSData(newGPSData)}
       />
       <LC.Display_RealTimeAccuracy
         accuracy={accuracy}
@@ -168,4 +152,20 @@ export default function GPSInput(props: {
       />
     </InputRoot>
   );
+}
+
+/**
+ *  - This hook exist only for the purpose of syncronize external gpsData with localGPSData.
+ *  - LocalGPSData purpose is to update current component without triggering parent
+ *  components, so it's possible to cancel any changes during usage.
+ */
+function useSincronizeGPSData(
+  callback: () => void,
+  deps: React.DependencyList | undefined
+) {
+  // Facade hook.
+  // Its pupose is to add documentation and give an alias to useEffect usage
+  useEffect(() => {
+    callback();
+  }, deps);
 }

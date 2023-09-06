@@ -1,6 +1,17 @@
-import { AltitudeDTO, CoordinateDTO, GPS_DTO } from '@Types/index';
+import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@Types/index';
 import * as Location from 'expo-location';
 import { Platform } from 'react-native';
+import UtilService from './UtilService';
+
+export default class GPSService {
+
+  static async getPermission(onGranted: () => void) {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status === Location.PermissionStatus.GRANTED) {
+      onGranted();
+    }
+  }
+}
 
 export class GPSWatcherService {
 
@@ -42,18 +53,18 @@ export class GPSWatcherService {
 
   async watchPositionAsync(
     callback: (gpsData: GPS_DTO) => void,
-    accuracy: (coordinate: number | null, altitude: number | null) => void,
+    accuracy: (accuracy: GPSAccuracyDTO) => void,
   ) {
 
     const sendData = (coordinates: Location.LocationObject) => {
-      accuracy(
-        Number((coordinates.coords.accuracy ?? 999).toFixed(2)),
-        Number((coordinates.coords.altitudeAccuracy ?? 999).toFixed(2))
-      );
+      accuracy({
+        coordinate:  Number((coordinates.coords.accuracy ?? 999).toFixed(2)),
+        altitude: Number((coordinates.coords.altitudeAccuracy ?? 999).toFixed(2)),
+      });
       let newDataAvailable: boolean = false;
       this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
       this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-      if (newDataAvailable) { callback(this.gpsData); }
+      if (newDataAvailable) { callback(UtilService.deepCloning(this.gpsData)); }
     };
 
     if (Platform.OS === 'ios' && this.iosInterval === null) {
