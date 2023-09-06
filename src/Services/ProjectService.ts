@@ -74,7 +74,11 @@ export default class ProjectService {
         name: '',
         type: 'gps',
         value: {},
-        rules: {},
+        rules: {
+          allowLabelChange: true,
+          allowValueChange: true,
+          allowWidgetErase: true,
+        },
       };
     }
   }

@@ -32,8 +32,8 @@ export default function GPSInput(props: {
   const [features, setFeatures] = useState<GPSFeaturesDTO>({
     editMode: false,
     gpsON: false,
-    enableCoordinate: props.gpsData?.coordinates === undefined ? false : true,
-    enableAltitude: props.gpsData?.altitude === undefined ? false : true,
+    enableCoordinate: true,
+    enableAltitude: true,
   });
 
   useEffect(() => {
@@ -41,7 +41,16 @@ export default function GPSInput(props: {
   }, []);
 
   useSincronizeGPSData(() => {
+    gpsWatcher.setGpsData(UtilService.deepCloning(props.gpsData));
+    gpsWatcher.enableAltitude(true);
+    gpsWatcher.enableCoordinates(true);
     setLocalGPSData(props.gpsData);
+    setFeatures(prev => ({
+      ...prev,
+      editMode: false,
+      enableCoordinate: true,
+      enableAltitude: true,
+    }));
   }, [props.gpsData]);
 
   function onCancel() {
@@ -50,8 +59,8 @@ export default function GPSInput(props: {
     setFeatures(prev => ({
       ...prev,
       editMode: false,
-      enableCoordinate: props.gpsData.coordinates === undefined ? false : true,
-      enableAltitude: props.gpsData.altitude === undefined ? false : true,
+      enableCoordinate: true,
+      enableAltitude: true,
     }));
   }
 
@@ -107,6 +116,9 @@ export default function GPSInput(props: {
   async function stopGPS() {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false }));
+    if (features.editMode === false) {
+      props.onPress_Save(UtilService.deepCloning(localGPSData));
+    }
   }
 
   return (
@@ -123,7 +135,7 @@ export default function GPSInput(props: {
           onPress_PlayButton={async () => await startGPS()}
           onPress_StopButton={async () => await stopGPS()}
           onPress_TrashButton={() => eraseData()}
-          onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: true }))}
+          onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
         />
       }
     >

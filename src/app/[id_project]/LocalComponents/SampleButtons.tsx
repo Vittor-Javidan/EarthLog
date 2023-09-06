@@ -9,18 +9,29 @@ import CacheService from '@Services/CacheService';
 export default function SampleButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [loadFinished, setLoadFinished] = useState(false);
+
+  function onEndReached() {
+    setLoadFinished(true);
+    setIsDataLoading(false);
+  }
+
+  function onScroll() {
+    if (loadFinished) { return; }
+    setIsDataLoading(true);
+  }
 
   return (
     <FlatList
       data={CacheService.allSamples}
-      alwaysBounceHorizontal={true}
       maxToRenderPerBatch={5}
-      initialNumToRender={10}
+      initialNumToRender={5}
       keyExtractor={(item) => item.id_sample}
       refreshing={isDataLoading}
       ListFooterComponent={isDataLoading ? <Loading /> : null}
-      onEndReached={() => setIsDataLoading(false)}
+      onEndReached={() => onEndReached()}
+      onScroll={() => onScroll()}
       renderItem={({item}) => (
         <SampleButton
           title={item.name}
@@ -30,6 +41,7 @@ export default function SampleButtons() {
       )}
       contentContainerStyle={{
         paddingTop: 1,
+        paddingBottom: 150,
         gap: 1,
       }}
     />
@@ -51,10 +63,6 @@ const SampleButton = memo((props: {
 
 function Loading() {
   return (
-    <Layout.View
-      style={{ height: 200 }}
-    >
-      <Layout.Loading />
-    </Layout.View>
+    <Layout.Loading />
   );
 }

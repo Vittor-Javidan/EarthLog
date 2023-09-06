@@ -1,5 +1,7 @@
-# 0.1.1.12 GPSInput external data update fix
+# 0.1.1.13 GPSInput usage optimization
 
-- Fixed the issue of GPSInput static display not updating when data got updated.
-- Now input has a hook to sincronize external and internal data.
-- Removed some unnecessary async notations from GPSInput.
+- now both GPSInput and GPSWatcherService have coordinates and altitude enable by default.
+- gps now can be aquired and saved by a few clicks (avg 2-3 clicks).
+
+Project Screen:
+- Fix a UI bug, where loading Icon keep running forever if end of the list is not reached by scrolling.

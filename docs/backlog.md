@@ -1,5 +1,4 @@
 # GPS:
-- optimize the GPSInput internal features booleans to priorize a 2 click get and save gps data. For fast usage.
 - add Undo functionality for GPSInput and GPSWidget
 - add GPS erase alert for Project, sample and widgets. (Not needed on creation screens)
 - add GPS alert when sampleWigets coordinates go to far from sampleSettings coordinates.

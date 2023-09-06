@@ -18,9 +18,8 @@ export default function IconButtons(props: {
   const { theme } = useMemo(() => ConfigService.config, []);
   const { editMode, gpsON } = props.features;
 
-  const showPlayButton = editMode === true && gpsON === false;
+  const showPlayButton = gpsON === false;
   const showStopButton = gpsON === true;
-  const showEditButton = editMode === false;
   const showTrashButton = !props.hideDeleteButton && editMode === false && gpsON === false;
 
   return (
@@ -39,6 +38,16 @@ export default function IconButtons(props: {
           }}
         />
       )}
+      <Button.Icon
+        iconName={'options-outline'}
+        color={props.features.editMode ? theme.modified : theme.onBackground}
+        onPress={() => props.onPress_EditButton()}
+        style={{
+          paddingHorizontal: 5,
+          paddingVertical: 0,
+          borderRadius: 10,
+        }}
+      />
       {showPlayButton && (
         <Button.Icon
           iconName="play"
@@ -56,18 +65,6 @@ export default function IconButtons(props: {
           iconName="stop"
           color={theme.wrong}
           onPress={() => props.onPress_StopButton()}
-          style={{
-            paddingHorizontal: 5,
-            paddingVertical: 0,
-            borderRadius: 10,
-          }}
-        />
-      )}
-      {showEditButton && (
-        <Button.Icon
-          iconName="add-sharp"
-          color={theme.onBackground}
-          onPress={() => props.onPress_EditButton()}
           style={{
             paddingHorizontal: 5,
             paddingVertical: 0,

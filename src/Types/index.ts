@@ -124,7 +124,11 @@ export type GPSWidgetData = {
   name: string
   type: 'gps'
   value: GPS_DTO
-  rules: {}
+  rules: {
+    allowLabelChange?: boolean
+    allowValueChange?: boolean
+    allowWidgetErase?: boolean
+  }
 }
 
 export type WidgetTypes = 'boolean' | 'text' | 'gps'

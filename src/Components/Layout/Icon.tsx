@@ -51,5 +51,7 @@ export type IconName = (
   'play'                |
   'stop'                |
   'checkmark-sharp'     |
-  'locate'
+  'locate'              |
+  'add-circle-outline'  |
+  'options-outline'
 )

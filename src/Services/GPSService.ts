@@ -17,8 +17,8 @@ export class GPSWatcherService {
 
   private iosInterval: NodeJS.Timer | null = null;
   private androidLocationSubscription: Location.LocationSubscription | null = null;
-  private watchCoordinate: boolean;
-  private watchAltitude: boolean;
+  private watchCoordinate: boolean = true;
+  private watchAltitude: boolean = true;
   private gpsData: GPS_DTO;
   private minAccuracy = {
     coordinate: 20,
@@ -26,8 +26,6 @@ export class GPSWatcherService {
   };
 
   constructor(initialGPSData: GPS_DTO) {
-    this.watchCoordinate = initialGPSData.coordinates === undefined ? false : true;
-    this.watchAltitude = initialGPSData.altitude === undefined ? false : true;
     this.gpsData = initialGPSData;
   }
 
@@ -46,8 +44,6 @@ export class GPSWatcherService {
   }
 
   setGpsData(initialGPSData: GPS_DTO) {
-    this.watchCoordinate = initialGPSData.coordinates === undefined ? false : true;
-    this.watchAltitude = initialGPSData.altitude === undefined ? false : true;
     this.gpsData = initialGPSData;
   }
 
