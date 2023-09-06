@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import * as Location from 'expo-location';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
@@ -16,6 +17,7 @@ export default function GPSInput(props: {
   color?: string
   color_placeholder?: string
   hideDeleteButton?: boolean
+  style?: StyleProp<ViewStyle>
   onPress_Save: (gpsData: GPS_DTO) => void
   onPress_Delete: () => void
 }) {
@@ -136,9 +138,9 @@ export default function GPSInput(props: {
         />
       }
 
-      style={{
+      style={[{
         gap: 20,
-      }}
+      }, props.style]}
 
     >
       <LC.CheckboxOption

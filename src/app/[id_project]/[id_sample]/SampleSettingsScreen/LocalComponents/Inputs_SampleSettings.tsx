@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { Layout } from '@Components/Layout';
 import { translations } from '@Translations/index';
-import { SampleSettings } from '@Types/index';
+import { GPS_DTO, SampleSettings } from '@Types/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
@@ -18,6 +18,7 @@ export default function Inputs_SampleSettings() {
   const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   const [sampleSettings, setSampleSettings] = useState<SampleSettings>(UtilService.deepCloning(CacheService.getSampleFromCache(id_sample)));
+  const [showGPS, setShowGPS] = useState<boolean>(sampleSettings.gps !== undefined);
   const [saved, setSaved] = useState<boolean>(true);
   const { rules } = sampleSettings;
 
@@ -36,33 +37,68 @@ export default function Inputs_SampleSettings() {
     }
   }
 
+  function onSaveGPS(newGPSData: GPS_DTO) {
+    setSampleSettings(prev => ({ ...prev, gps: newGPSData }));
+    setSaved(false);
+  }
+
+  function onDeleteGPS() {
+    if (sampleSettings.gps !== undefined) {
+      const newProjectSettings = { ...sampleSettings };
+      delete newProjectSettings.gps;
+      setSampleSettings(newProjectSettings);
+      setSaved(false);
+    }
+    setShowGPS(false);
+  }
+
   return (
     <Layout.View>
       <Layout.View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
+          justifyContent: 'space-between',
           backgroundColor: theme.secondary,
-          height: 40,
-          padding: 5,
-          paddingHorizontal: 10,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
-        <Layout.StatusFeedback
-          done={saved}
-          error={false}
-        />
-        <Layout.Text.P
+        <Layout.View
           style={{
+            flexDirection: 'row',
+            alignItems: 'center',
             paddingVertical: 5,
             paddingHorizontal: 10,
-            color: theme.onSecondary,
           }}
         >
-          {stringResources['Sample info']}
-        </Layout.Text.P>
+          <Layout.StatusFeedback
+            done={saved}
+            error={false}
+          />
+          <Layout.Text.P
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+              color: theme.onSecondary,
+            }}
+          >
+            {stringResources['Sample info']}
+          </Layout.Text.P>
+        </Layout.View>
+        {!showGPS && (
+          <Layout.Button.Icon
+            iconName="location"
+            color_background={theme.secondary}
+            color={theme.onSecondary}
+            onPress={() => setShowGPS(true)}
+            style={{
+              height: 40,
+              borderTopRightRadius: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+          />
+        )}
       </Layout.View>
       <Layout.View
         style={{
@@ -94,6 +130,17 @@ export default function Inputs_SampleSettings() {
           value={sampleSettings.name}
           onChangeText={async (text) => await onNameChange(text)}
         />
+        {showGPS && (
+          <Layout.Input.GPS
+            label="GPS"
+            initialGPSData={sampleSettings.gps ?? {}}
+            backgroundColor={theme.tertiary}
+            color={theme.onTertiary}
+            color_placeholder={theme.onBackground_Placeholder}
+            onPress_Delete={() => onDeleteGPS()}
+            onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
+          />
+        )}
       </Layout.View>
     </Layout.View>
   );

@@ -49,7 +49,6 @@ export default function Modal(props: {
           style={{
             flex: 1,
             backgroundColor: backgroundColor,
-            paddingBottom: 150,
           }}
         >
           {props.children}

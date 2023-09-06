@@ -6,6 +6,7 @@ import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 
 import API_Inputs_SampleSettings from './API_Inputs_SampleSettings';
+import { GPS_DTO } from '@Types/index';
 
 export default function Inputs_SampleSettings() {
 
@@ -14,6 +15,8 @@ export default function Inputs_SampleSettings() {
 
   const [id, setId] = useState<string>(API_Inputs_SampleSettings.temporarySettings.id_sample);
   const [name, setName] = useState<string>(API_Inputs_SampleSettings.temporarySettings.name);
+  const [gpsData, setGPSData] = useState<GPS_DTO | undefined>(API_Inputs_SampleSettings.temporarySettings.gps);
+  const [showGPS, setShowGPS] = useState<boolean>(false);
 
   function onIDChange(newID: string) {
     const normalizedText = newID.replace(UtilService.idRegex, '');
@@ -26,26 +29,51 @@ export default function Inputs_SampleSettings() {
     setName(newName);
   }
 
+  function onSaveGPS(gpsData: GPS_DTO) {
+    API_Inputs_SampleSettings.setGPS(UtilService.deepCloning(gpsData));
+    setGPSData(UtilService.deepCloning(gpsData));
+  }
+
+  function onDeleteGPS() {
+    API_Inputs_SampleSettings.deleteGPS();
+    setGPSData(undefined);
+    setShowGPS(false);
+  }
+
   return (
     <Layout.View>
       <Layout.View
         style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           backgroundColor: theme.secondary,
-          height: 40,
-          padding: 5,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
       >
         <Layout.Text.P
           style={{
-            paddingVertical: 5,
-            paddingHorizontal: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 15,
             color: theme.onSecondary,
           }}
         >
           {stringResources['Sample info']}
         </Layout.Text.P>
+        {!showGPS && (
+          <Layout.Button.Icon
+            iconName="location"
+            color_background={theme.secondary}
+            color={theme.onSecondary}
+            onPress={() => setShowGPS(true)}
+            style={{
+              height: 40,
+              borderTopRightRadius: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+          />
+        )}
       </Layout.View>
       <Layout.View
         style={{
@@ -77,6 +105,17 @@ export default function Inputs_SampleSettings() {
           locked={false}
           onChangeText={(text) => onNameChange(text)}
         />
+        {showGPS && (
+          <Layout.Input.GPS
+            label="GPS"
+            initialGPSData={gpsData ?? {}}
+            backgroundColor={theme.tertiary}
+            color={theme.onTertiary}
+            color_placeholder={theme.onBackground_Placeholder}
+            onPress_Delete={() => onDeleteGPS()}
+            onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
+          />
+        )}
       </Layout.View>
     </Layout.View>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import TextWidget from './TextWidget';
 import BooleanWidget from './BooleanWidget';
+import GPSWidget from './GPSWidget';
 
 import { WidgetData } from '@Types/index';
 
@@ -22,6 +23,14 @@ export default function WidgetSelector(props: {
     );
     case 'boolean': return (
       <BooleanWidget
+        widgetData={props.widgetData}
+        statusFeedback={props.statusFeedback}
+        onConfirm={props.onConfirm}
+        onDelete={props.onDelete}
+      />
+    );
+    case 'gps': return (
+      <GPSWidget
         widgetData={props.widgetData}
         statusFeedback={props.statusFeedback}
         onConfirm={props.onConfirm}

@@ -65,7 +65,7 @@ export default function IconButtons(props: {
       )}
       {showEditButton && (
         <Button.Icon
-          iconName="pencil-sharp"
+          iconName="add-sharp"
           color={theme.onBackground}
           onPress={() => props.onPress_EditButton()}
           style={{

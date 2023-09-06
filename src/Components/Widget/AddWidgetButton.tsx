@@ -82,6 +82,12 @@ export default function AddWidgetButton(props: {
                 color_font={theme.onTertiary}
                 onPress={() => onPress('text')}
               />
+              <Layout.Button.Text
+                title={'GPS'}
+                color_background={theme.tertiary}
+                color_font={theme.onTertiary}
+                onPress={() => onPress('gps')}
+              />
             </Layout.ScrollView>
           </Layout.View>
         </Layout.View>

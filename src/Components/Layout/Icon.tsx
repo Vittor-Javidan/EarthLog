@@ -50,5 +50,6 @@ export type IconName = (
   'location'            |
   'play'                |
   'stop'                |
-  'checkmark-sharp'
+  'checkmark-sharp'     |
+  'locate'
 )

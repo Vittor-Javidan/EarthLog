@@ -7,8 +7,8 @@
 + Internal Database API
 + Text Widget
 + Boolean Widget
-~ GPS Implementation
-- GPS Widget
++ GPS Implementation
+~ GPS Widget
 - Server API communication
 - Word/PDF/CSV/GPX export
 - Photo Widget

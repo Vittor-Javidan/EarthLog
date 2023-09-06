@@ -64,11 +64,10 @@ export type SampleDTO = {
   sampleWidgets: WidgetData[]
 }
 
-export type WidgetData = TextWidgetData | BooleanWidgetData
-
 export type ProjectSettings = {
   id_project: string
   name: string
+  gps?: GPS_DTO
   rules: {
     allowNameChange?: boolean
     allowSampleCreation?: boolean
@@ -80,6 +79,7 @@ export type ProjectSettings = {
 export type SampleSettings = {
   id_sample: string
   name: string
+  gps?: GPS_DTO
   rules: {
     allowNameChange?: boolean,
     allowSampleErase?: boolean,
@@ -87,11 +87,18 @@ export type SampleSettings = {
   }
 }
 
+// ===============================================================================================
+// WIDGET RELATED TYPES
+// ===============================================================================================
+
+export type WidgetData = TextWidgetData | BooleanWidgetData | GPSWidgetData
+
 export type BooleanWidgetData = {
   id_widget: string
   name: string
   type: 'boolean'
   value: boolean
+  gps?: GPS_DTO
   rules: {
     allowLabelChange?: boolean
     allowValueChange?: boolean
@@ -103,6 +110,7 @@ export type TextWidgetData = {
   name: string
   type: 'text'
   value: string
+  gps?: GPS_DTO
   rules: {
     allowLabelChange?: boolean
     allowValueChange?: boolean
@@ -111,8 +119,15 @@ export type TextWidgetData = {
     noSpecialLetters?: boolean
   }
 }
+export type GPSWidgetData = {
+  id_widget: string
+  name: string
+  type: 'gps'
+  value: GPS_DTO
+  rules: {}
+}
 
-export type WidgetTypes = 'boolean' | 'text'
+export type WidgetTypes = 'boolean' | 'text' | 'gps'
 
 /*
   The index.json file has the purpose to allow the app to know how organized is the elements, since

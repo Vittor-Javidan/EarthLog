@@ -69,6 +69,13 @@ export default class ProjectService {
           allowWidgetErase: true,
         },
       };
+      case 'gps': return {
+        id_widget: this.generateUuidV4(),
+        name: '',
+        type: 'gps',
+        value: {},
+        rules: {},
+      };
     }
   }
 
