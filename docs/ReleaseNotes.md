@@ -1,11 +1,7 @@
-# 0.1.1.14 GPSInput Redesign
+# 0.1.1.15 GPSInput Alerts
 
-String Input:
-- erase iconButton changed from "close" to "backspace-outline"
+All autosave usages:
+- Fix where there gps was not changing the object reference, not allowing the useAutosave hook to detect if changes occured.
 
 GPSInput:
-- Manual Input was abstracted outside Data Display handler.
-- Display Data Handler replaced by Display Data.
-- Display Data now only shows current saved data.
-- Added a button and local form to manual add data.
-- Footer buttons moved to inside manual input form.
+- added alerts on situations where GPSInput overrides or delete data

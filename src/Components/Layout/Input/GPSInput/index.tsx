@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { Alert, StyleProp, ViewStyle } from 'react-native';
+import * as Vibration from 'expo-haptics';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
 import GPSService, { GPSWatcherService } from '@Services/GPSService';
@@ -83,24 +84,42 @@ export default function GPSInput(props: {
     }
   }
 
-  async function startGPS() {
-    await GPSService.getPermission(async () => {
-      await gpsWatcher.watchPositionAsync(
-        (gpsData) => setLocalGPSData(gpsData),
-        (accuracy) => setAccuracy(accuracy)
-      );
-      setFeatures(prev => ({ ...prev, gpsON: true }));
-    });
-  }
-
   function stopGPS() {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false }));
     props.onPress_Save(UtilService.deepCloning(localGPSData));
   }
 
-  function saveManualInput(newGPSData: GPS_DTO) {
-    props.onPress_Save(newGPSData);
+  async function startGPS() {
+    const noGPSData = Object.keys(localGPSData).length <= 0;
+    await handleAlert(
+      noGPSData === false,
+      async () => {
+        await GPSService.getPermission(async () => {
+          await gpsWatcher.watchPositionAsync(
+            (gpsData) => setLocalGPSData(gpsData),
+            (accuracy) => setAccuracy(accuracy)
+          );
+          setFeatures(prev => ({ ...prev, gpsON: true }));
+        });
+      }
+    );
+  }
+
+  async function saveManualInput(newGPSData: GPS_DTO) {
+    const noGPSData = Object.keys(localGPSData).length <= 0;
+    await handleAlert(
+      noGPSData === false,
+      () => props.onPress_Save(newGPSData)
+    );
+  }
+
+  async function onDelete() {
+    const noGPSData = Object.keys(localGPSData).length <= 0;
+    await handleAlert(
+      noGPSData === false,
+      () => props.onPress_Delete()
+    );
   }
 
   return (
@@ -114,7 +133,7 @@ export default function GPSInput(props: {
         <IconButtons
           hideDeleteButton={props.hideDeleteButton}
           features={features}
-          onPress_TrashButton={() => props.onPress_Delete()}
+          onPress_TrashButton={async () => await onDelete()}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
           onPress_PlayButton={async () => await startGPS()}
           onPress_StopButton={() => stopGPS()}
@@ -140,7 +159,7 @@ export default function GPSInput(props: {
       {features.editMode === true && (
         <LC.ManualInput
           features={features}
-          onConfirm={(newGPSData) => saveManualInput(newGPSData)}
+          onConfirm={async (newGPSData) => await saveManualInput(newGPSData)}
         />
       )}
     </InputRoot>
@@ -161,4 +180,36 @@ function useSincronizeGPSData(
   useEffect(() => {
     callback();
   }, deps);
+}
+
+async function handleAlert(
+  triggerAlert: boolean,
+  onAccept: () => void
+) {
+
+  if (!triggerAlert) {
+    onAccept();
+    return;
+  }
+
+  await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+  Alert.alert(
+    'Hold On',
+    'This will ovewritte current saved data. Are you sure.',
+    [
+      {
+        text: 'NO',
+        onPress: async () => {
+          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+        },
+        style: 'cancel',
+      },
+      {
+        text: 'YES',
+        onPress: async () => {
+          onAccept();
+        },
+      },
+    ]
+  );
 }

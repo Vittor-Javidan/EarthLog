@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
-import { Widget } from '@Components/Widget';
+import { WidgetData } from '@Types/index';
+import { useTimeout } from '@Hooks/index';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
-import { WidgetData } from '@Types/index';
 import UtilService from '@Services/UtilService';
 
+import { Layout } from '@Components/Layout';
+import { Widget } from '@Components/Widget';
 import API_Widgets_Project from './API_Widgets_Project';
-import { useTimeout } from '@Hooks/index';
 
 export default function Widgets_Project() {
 
@@ -45,7 +45,7 @@ function WidgetUnit(props: {
   }, [widgetData], saved);
 
   async function onConfirm(widgetData: WidgetData) {
-    setWidgetData(widgetData);
+    setWidgetData(UtilService.deepCloning(widgetData));
     setSaved(false);
   }
 

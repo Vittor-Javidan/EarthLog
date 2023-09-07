@@ -20,7 +20,7 @@ export default function IconButtons(props: {
 
   const showPlayButton = gpsON === false;
   const showStopButton = gpsON === true;
-  const showTrashButton = !props.hideDeleteButton && editMode === false && gpsON === false;
+  const showTrashButton = !props.hideDeleteButton && editMode === true && gpsON === false;
 
   return (
     <View

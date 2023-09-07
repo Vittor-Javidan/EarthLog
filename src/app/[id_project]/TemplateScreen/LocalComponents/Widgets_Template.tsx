@@ -4,11 +4,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { Widget } from '@Components/Widget';
 import { WidgetData } from '@Types/index';
 import ProjectService from '@Services/ProjectService';
+import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 import API_Widgets_Template from './API_Widgets_Template';
-import CacheService from '@Services/CacheService';
 import { Layout } from '@Components/Layout';
-import UtilService from '@Services/UtilService';
 import { useTimeout } from '@Hooks/index';
 
 export default function Widgets_Template() {
@@ -45,7 +45,7 @@ function WidgetUnit(props: {
   }, [widgetData], saved);
 
   async function onConfirm(widgetData: WidgetData) {
-    setWidgetData(widgetData);
+    setWidgetData(UtilService.deepCloning(widgetData));
     setSaved(false);
   }
 

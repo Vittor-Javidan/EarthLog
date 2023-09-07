@@ -1,7 +1,5 @@
 # GPS:
-- add GPS erase alert for Project, sample and widgets. (Not needed on creation screens).
-  - when playButton is clicked on edit.
-  - when delete button is clicked.
+- add new Translations to GPS manual input.
 - add GPS alert when sampleWigets coordinates go to far from sampleSettings coordinates.
 
 # fix the height for all widget labels and Project/Sample settings

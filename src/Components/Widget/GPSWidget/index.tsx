@@ -15,7 +15,6 @@ export default function GPSWidget(props: {
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  // const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<GPSWidgetData>(props.widgetData);
   const [showModal, setShowModal] = useState<boolean>(false);
