@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import ConfigService from '@Services/ConfigService';
 
-import __DisplayDataStatic__ from './__DisplayStatic__';
-import __DisplayDataInterative__ from './__DisplayDataInterative__';
+import P from '@Components/Layout/Text/P';
 
-export default function __DataDisplayHandler__(props: {
+export default function __DataDisplay__(props: {
   gpsData: GPS_DTO
   features: GPSFeaturesDTO
-  onError: () => void
-  onChange_gpsData: (gpsData: GPS_DTO) => void
 }) {
 
   const { coordinates, altitude } = props.gpsData;
   const { editMode } = props.features;
+
+  const showStaticDisplay =
+    (
+      coordinates !== undefined ||
+      altitude    !== undefined
+    )
+  ;
 
   const showNothing =
     editMode    === false     &&
@@ -25,17 +31,58 @@ export default function __DataDisplayHandler__(props: {
     return <></>;
   }
 
-
   return (<>
-    <__DisplayDataStatic__
-      gpsData={props.gpsData}
-      features={props.features}
-    />
-    <__DisplayDataInterative__
-      gpsData={props.gpsData}
-      features={props.features}
-      onError={() => props.onError()}
-      onChange_gpsData={(newGPSData => props.onChange_gpsData(newGPSData))}
-    />
+    {showStaticDisplay && (
+      <View>
+        {coordinates !== undefined && <>
+          <DataInfo
+            title="Latitude"
+            value={coordinates.lat}
+            precision={coordinates.accuracy}
+          />
+          <DataInfo
+            title="Longitude"
+            value={coordinates.long}
+            precision={coordinates.accuracy}
+          />
+        </>}
+        {altitude !== undefined && <>
+          <DataInfo
+            title="Altitude"
+            value={altitude.value}
+            precision={altitude.accuracy}
+          />
+        </>}
+      </View>
+    )}
   </>);
+}
+
+function DataInfo(props: {
+  title: string
+  value: number
+  precision: number
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}
+    >
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.title}:`}
+      </P>
+      <P
+        style={{ color: theme.onBackground }}
+      >
+        {`${props.value} (${props.precision}m)`}
+      </P>
+    </View>
+  );
 }

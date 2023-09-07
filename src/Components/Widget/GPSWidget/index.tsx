@@ -76,14 +76,13 @@ export default function GPSWidget(props: {
         }}
       >
         <Layout.Input.GPS
-          label="GPS"
+          label=""
           gpsData={widgetData.value ?? {}}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onBackground_Placeholder}
           onPress_Delete={() => onDeleteGPS()}
           onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
-          hideDeleteButton
         />
       </Layout.View>
     </WidgetComponent.Root>

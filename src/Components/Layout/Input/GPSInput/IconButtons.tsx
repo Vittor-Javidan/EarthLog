@@ -10,9 +10,9 @@ export default function IconButtons(props: {
   hideDeleteButton?: boolean
   features: GPSFeaturesDTO
   onPress_TrashButton: () => void
+  onPress_EditButton: () => void
   onPress_PlayButton: () => void
   onPress_StopButton: () => void
-  onPress_EditButton: () => void
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);

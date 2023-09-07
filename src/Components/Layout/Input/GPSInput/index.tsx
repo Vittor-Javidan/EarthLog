@@ -53,26 +53,6 @@ export default function GPSInput(props: {
     }));
   }, [props.gpsData]);
 
-  function onCancel() {
-    gpsWatcher.setGpsData(UtilService.deepCloning(props.gpsData));
-    setLocalGPSData(props.gpsData);
-    setFeatures(prev => ({
-      ...prev,
-      editMode: false,
-      enableCoordinate: true,
-      enableAltitude: true,
-    }));
-  }
-
-  function onSave() {
-    props.onPress_Save(UtilService.deepCloning(localGPSData));
-    setFeatures(prev => ({ ...prev, editMode: false }));
-  }
-
-  function eraseData() {
-    props.onPress_Delete();
-  }
-
   function toogleCoordinate(checked: boolean) {
     if (checked) {
       gpsWatcher.enableCoordinates(true);
@@ -113,12 +93,14 @@ export default function GPSInput(props: {
     });
   }
 
-  async function stopGPS() {
+  function stopGPS() {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false }));
-    if (features.editMode === false) {
-      props.onPress_Save(UtilService.deepCloning(localGPSData));
-    }
+    props.onPress_Save(UtilService.deepCloning(localGPSData));
+  }
+
+  function saveManualInput(newGPSData: GPS_DTO) {
+    props.onPress_Save(newGPSData);
   }
 
   return (
@@ -127,15 +109,15 @@ export default function GPSInput(props: {
       backgroundColor={props.backgroundColor}
       color={props.color}
       color_placeholder={props.color_placeholder}
-      style={[{ gap: 20 }, props.style]}
+      style={[{ gap: 10 }, props.style]}
       iconButtons={
         <IconButtons
           hideDeleteButton={props.hideDeleteButton}
           features={features}
-          onPress_PlayButton={async () => await startGPS()}
-          onPress_StopButton={async () => await stopGPS()}
-          onPress_TrashButton={() => eraseData()}
+          onPress_TrashButton={() => props.onPress_Delete()}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
+          onPress_PlayButton={async () => await startGPS()}
+          onPress_StopButton={() => stopGPS()}
         />
       }
     >
@@ -144,11 +126,9 @@ export default function GPSInput(props: {
         onToogle_Coordinate={(checked) => toogleCoordinate(checked)}
         onToogle_Altitude={(checked) => toogleAltitude(checked)}
       />
-      <LC.DataDisplayHandler
+      <LC.DataDisplay
         gpsData={localGPSData}
         features={features}
-        onError={() => {}}
-        onChange_gpsData={(newGPSData) => setLocalGPSData(newGPSData)}
       />
       <LC.Display_RealTimeAccuracy
         accuracy={accuracy}
@@ -157,11 +137,12 @@ export default function GPSInput(props: {
       <LC.Loading
         features={features}
       />
-      <LC.FooterButtons
-        features={features}
-        onPress_Cancel={() => onCancel()}
-        onPress_Save={() => onSave()}
-      />
+      {features.editMode === true && (
+        <LC.ManualInput
+          features={features}
+          onConfirm={(newGPSData) => saveManualInput(newGPSData)}
+        />
+      )}
     </InputRoot>
   );
 }

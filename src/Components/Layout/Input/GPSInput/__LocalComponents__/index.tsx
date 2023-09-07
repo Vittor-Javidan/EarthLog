@@ -1,13 +1,13 @@
 import CheckboxOptions from './__CheckboxOption__';
 import __LoadingFeedback_ from './__LoadingFeedback__';
-import __DataDisplayHandler__ from './__DisplayDataHandler__';
+import __DataDisplay__ from './__DisplayDataHandler__';
 import __Display_RealTimeAccuracy__ from './__Display_RealTimeAccuracy__';
-import __FooterButtons__ from './__FooterButtons__';
+import __ManualInput__ from './__ManualInput__';
 
 export const LC = {
   CheckboxOption: CheckboxOptions,
-  DataDisplayHandler: __DataDisplayHandler__,
+  DataDisplay: __DataDisplay__,
   Display_RealTimeAccuracy: __Display_RealTimeAccuracy__,
   Loading: __LoadingFeedback_,
-  FooterButtons: __FooterButtons__,
+  ManualInput: __ManualInput__,
 };

@@ -109,7 +109,7 @@ export default function StringInput(props: {
             />
           )}
           <IconButton
-            iconName="close"
+            iconName="backspace-outline"
             color={color}
             onPress={() => onResetPress()}
             style={{

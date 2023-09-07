@@ -1,7 +1,11 @@
-# 0.1.1.13 GPSInput usage optimization
+# 0.1.1.14 GPSInput Redesign
 
-- now both GPSInput and GPSWatcherService have coordinates and altitude enable by default.
-- gps now can be aquired and saved by a few clicks (avg 2-3 clicks).
+String Input:
+- erase iconButton changed from "close" to "backspace-outline"
 
-Project Screen:
-- Fix a UI bug, where loading Icon keep running forever if end of the list is not reached by scrolling.
+GPSInput:
+- Manual Input was abstracted outside Data Display handler.
+- Display Data Handler replaced by Display Data.
+- Display Data now only shows current saved data.
+- Added a button and local form to manual add data.
+- Footer buttons moved to inside manual input form.

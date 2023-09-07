@@ -12,16 +12,11 @@ export default function __DisplayDataStatic__(props: {
 }) {
 
   const { coordinates, altitude } = props.gpsData;
-  const { editMode, gpsON} = props.features;
 
   const showStaticDisplay =
     (
       coordinates !== undefined ||
       altitude    !== undefined
-    )                           &&
-    (
-      gpsON    === true   ||
-      editMode === false
     )
   ;
 

@@ -53,5 +53,6 @@ export type IconName = (
   'checkmark-sharp'     |
   'locate'              |
   'add-circle-outline'  |
-  'options-outline'
+  'options-outline'     |
+  'backspace-outline'
 )

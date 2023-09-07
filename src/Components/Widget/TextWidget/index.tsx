@@ -113,7 +113,7 @@ export default function TextWidget(props: {
         style={{
           paddingVertical: 5,
           paddingBottom: 10,
-          gap: 5,
+          gap: 10,
         }}
       >
         <Layout.Input.String
