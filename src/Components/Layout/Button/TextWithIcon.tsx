@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleProp, ViewStyle, Platform, TextStyle } from 'react-native';
+import { View, StyleProp, ViewStyle, Platform, TextStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -36,10 +36,14 @@ export default function TextWithIcon(props: {
 			}, props.style]}
     >
       {props.iconSide === 'Left' && (
-        <Icon
-          iconName={props.iconName}
-          color={textColor}
-        />
+        <View
+          style={{ paddingVertical: iosLargeTitle ? 5 : 0}}
+        >
+          <Icon
+            iconName={props.iconName}
+            color={textColor}
+          />
+        </View>
       )}
       <RootText
 				style={[{
@@ -50,10 +54,14 @@ export default function TextWithIcon(props: {
 				{props.title}
 			</RootText>
       {props.iconSide === 'Right' && (
-        <Icon
-          iconName={props.iconName}
-          color={textColor}
-        />
+        <View
+          style={{ paddingVertical: iosLargeTitle ? 5 : 0}}
+        >
+          <Icon
+            iconName={props.iconName}
+            color={textColor}
+          />
+        </View>
       )}
 		</RootButton>
 	);

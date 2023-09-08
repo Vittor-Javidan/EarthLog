@@ -1,4 +1,3 @@
-# 0.1.1.19 IOS GPSWidget and GPSInput design fix
+# 0.1.1.20 TextWithIcon Button IOS design fix
 
-- fixed widget labels pushing iconButton outside screen.
-- fixed GPS Widget and Input Design for IOS devices
+- icon was getting bigger when a big sample name was being detected.
