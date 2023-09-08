@@ -13,6 +13,13 @@ export type Translations_Input_GPSInput = Record<Languages, {
   'Accuracy (m)': string
   'Nothing selected': string
   'Collecting the best data. Updates can take a few seconds...': string
+  'Manual': string
+  '* All fields must be fulfill': string
+  'Hold on!': string
+  'current saved data will be erased. Are you sure?': string
+  'current saved data will be replaced. Are you sure?': string
+  'NO': string
+	'YES': string
 }>
 
 export const translations_Input_GPSInput: Translations_Input_GPSInput = {
@@ -29,6 +36,13 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Accuracy (m)': 'Accuracy (m)',
     'Nothing selected': 'Nothing selected',
     'Collecting the best data. Updates can take a few seconds...': 'Collecting the best data. Updates can take a few seconds...',
+    'Manual': 'Manual',
+    '* All fields must be fulfill': '* All coordinate fields must be fulfill',
+    'Hold on!': 'Hold on!',
+    'current saved data will be erased. Are you sure?': 'current saved data will be erased. Are you sure?',
+    'current saved data will be replaced. Are you sure?': 'current saved data will be replaced. Are you sure?',
+    'NO': 'NO',
+		'YES': 'YES',
   },
   'pt-BR': {
     'Coordinates': 'Coordenadas',
@@ -43,6 +57,13 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Accuracy (m)': 'Acurácia (m)',
     'Nothing selected': 'Nada selecionado',
     'Collecting the best data. Updates can take a few seconds...': 'Coletando o melhor dado. Atualizações podem demorar alguns segundos...',
+    'Manual': 'Manual',
+    '* All fields must be fulfill': '* todos campos precisam ser preenchidos',
+    'Hold on!': 'Espere um pouco!',
+    'current saved data will be erased. Are you sure?': 'Dados atuais serão deletados. Tem certeza?',
+    'current saved data will be replaced. Are you sure?': 'Dados atuais serão substituídos. Tem certeza?',
+    'NO': 'NÃO',
+		'YES': 'SIM',
   },
 };
 

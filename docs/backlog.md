@@ -1,6 +1,7 @@
 # GPS:
-- add new Translations to GPS manual input.
 - add GPS alert when sampleWigets coordinates go to far from sampleSettings coordinates.
+
+# Add the new LC/TC archquitecture to all Screens ([id_project] and its children already implemented)
 
 # fix the height for all widget labels and Project/Sample settings
 - Add a minimum height of 40, and set All iconButtons to 40 height

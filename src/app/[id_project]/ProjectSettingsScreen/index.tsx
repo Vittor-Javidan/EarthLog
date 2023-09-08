@@ -3,17 +3,15 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Widgets_Project from './LocalComponents/Widgets_Project';
-import Inputs_ProjectSettings from './LocalComponents/Inputs_ProjectSettings';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
 
 export default function ProjectSettingsScreen() {
 
@@ -32,16 +30,16 @@ export default function ProjectSettingsScreen() {
     <Layout.Root
       title={stringResources['Edit project']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
           <Animation>
-            <Inputs_ProjectSettings />
-            <Widgets_Project />
+            <LC.ProjectSettingsWidget />
+            <LC.ProjectWidgets />
           </Animation>
         </Layout.ScrollView>
       )}

@@ -71,7 +71,7 @@ export default function __ManualInput__(props: {
         tempCoordinate.accuracy === ''
       )
     ) {
-      setError('* You must fulfill all coordinate fields');
+      setError(stringResources['* All fields must be fulfill']);
       return true;
     }
 
@@ -81,7 +81,7 @@ export default function __ManualInput__(props: {
         tempAltitude.accuracy === ''
       )
     ) {
-      setError('* You must fulfill all altitude fields');
+      setError(stringResources['* All fields must be fulfill']);
       return true;
     }
 
@@ -106,7 +106,7 @@ export default function __ManualInput__(props: {
           }}
         >
           <Button.TextWithIcon
-            title="Manual"
+            title={stringResources['Manual']}
             iconSide="Right"
             iconName="pencil-sharp"
             color_background={theme.secondary}

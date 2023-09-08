@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Alert, StyleProp, ViewStyle } from 'react-native';
-import * as Vibration from 'expo-haptics';
+import { StyleProp, ViewStyle } from 'react-native';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
-import GPSService, { GPSWatcherService } from '@Services/GPSService';
 import UtilService from '@Services/UtilService';
+import GPSService, { GPSWatcherService } from '@Services/GPSService';
 
 import InputRoot from '../Root';
 import IconButtons from './IconButtons';
 import { LC } from './__LocalComponents__';
+import AlertService from '@Services/AlertService';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export default function GPSInput(props: {
   label: string
@@ -22,6 +24,8 @@ export default function GPSInput(props: {
   onPress_Delete: () => void
 }) {
 
+  const { language } = useMemo(() => ConfigService.config, []);
+  const R = useMemo(() => translations.Input.GPSInput[language], []);
   const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.gpsData)), []);
   const [localGPSData, setLocalGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.gpsData));
 
@@ -86,14 +90,15 @@ export default function GPSInput(props: {
 
   function stopGPS() {
     gpsWatcher.stopWatcher();
-    setFeatures(prev => ({ ...prev, gpsON: false }));
+    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
     props.onPress_Save(UtilService.deepCloning(localGPSData));
   }
 
   async function startGPS() {
     const noGPSData = Object.keys(localGPSData).length <= 0;
-    await handleAlert(
+    await AlertService.handleAlert(
       noGPSData === false,
+      R['current saved data will be replaced. Are you sure?'],
       async () => {
         await GPSService.getPermission(async () => {
           await gpsWatcher.watchPositionAsync(
@@ -108,21 +113,23 @@ export default function GPSInput(props: {
 
   async function saveManualInput(newGPSData: GPS_DTO) {
     const noGPSData = Object.keys(localGPSData).length <= 0;
-    await handleAlert(
+    await AlertService.handleAlert(
       noGPSData === false,
+      R['current saved data will be replaced. Are you sure?'],
       () => props.onPress_Save(newGPSData)
     );
   }
 
   async function onDelete() {
     const noGPSData = Object.keys(localGPSData).length <= 0;
-    await handleAlert(
+    await AlertService.handleAlert(
       noGPSData === false,
+      R['current saved data will be erased. Are you sure?'],
       () => props.onPress_Delete()
     );
   }
 
-  return (
+  return (<>
     <InputRoot
       label={props.label}
       backgroundColor={props.backgroundColor}
@@ -163,7 +170,7 @@ export default function GPSInput(props: {
         />
       )}
     </InputRoot>
-  );
+  </>);
 }
 
 /**
@@ -180,36 +187,4 @@ function useSincronizeGPSData(
   useEffect(() => {
     callback();
   }, deps);
-}
-
-async function handleAlert(
-  triggerAlert: boolean,
-  onAccept: () => void
-) {
-
-  if (!triggerAlert) {
-    onAccept();
-    return;
-  }
-
-  await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
-  Alert.alert(
-    'Hold On',
-    'This will ovewritte current saved data. Are you sure.',
-    [
-      {
-        text: 'NO',
-        onPress: async () => {
-          await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
-        },
-        style: 'cancel',
-      },
-      {
-        text: 'YES',
-        onPress: async () => {
-          onAccept();
-        },
-      },
-    ]
-  );
 }

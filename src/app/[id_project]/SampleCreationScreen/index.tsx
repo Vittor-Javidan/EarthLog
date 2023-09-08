@@ -3,17 +3,16 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
-import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
+import { API } from './__API__';
 
 export default function SampleCreationScreen() {
 
@@ -27,7 +26,7 @@ export default function SampleCreationScreen() {
   }, []);
 
   useBackPress(() => {
-    API_Inputs_SampleSettings.reset();
+    API.SampleSettingsWidget.reset();
     navigate('PROJECT SCREEN', id_project);
   });
 
@@ -35,15 +34,15 @@ export default function SampleCreationScreen() {
     <Layout.Root
       title={stringResources['New sample']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
           <Animation>
-            <Inputs_SampleSettings />
+            <LC.SampleSettingsWidgetCreation />
           </Animation>
         </Layout.ScrollView>
       )}
