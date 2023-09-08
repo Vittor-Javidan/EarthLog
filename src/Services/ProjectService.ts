@@ -73,7 +73,7 @@ export default class ProjectService {
         id_widget: this.generateUuidV4(),
         name: '',
         type: 'gps',
-        value: {},
+        gps: {},
         rules: {
           allowLabelChange: true,
           allowValueChange: true,

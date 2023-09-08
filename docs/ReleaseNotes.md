@@ -1,4 +1,3 @@
-# 0.1.1.17 GPS distance alert
+# 0.1.1.18 ProjectService quick fix
 
-- Now Widget Selector are capable to build gpsDistance alert messages, and this be the focus point to any other type of widget alerts.
-- Added translations for <WidgetSelector />
+- wrong type notations for the default GPSWidgetData receved when "getWidgetData('gps')" was being called, causing GPSWidgets to crash when widget modal get open.

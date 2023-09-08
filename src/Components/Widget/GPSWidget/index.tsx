@@ -78,7 +78,7 @@ export default function GPSWidget(props: {
       >
         <Layout.Input.GPS
           label=""
-          gpsData={widgetData.gps ?? {}}
+          gpsData={widgetData.gps}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onBackground_Placeholder}
