@@ -135,12 +135,17 @@ export default function __ManualInput__(props: {
         )}
         <View
           style={{
-            gap: 10,
+            gap: 30,
             paddingHorizontal: 10,
+            paddingTop: 10,
           }}
         >
           {enableCoordinate && (
-            <View>
+            <View
+              style={{
+                gap: Platform.OS === 'ios' ? 10 : 0,
+              }}
+            >
               <DataInfo_TextInput
                 type="latitude"
                 title={stringResources['Latitude (DD)']}
@@ -168,7 +173,11 @@ export default function __ManualInput__(props: {
             </View>
           )}
           {enableAltitude && (
-            <View>
+            <View
+              style={{
+                gap: Platform.OS === 'ios' ? 10 : 0,
+              }}
+            >
               <DataInfo_TextInput
                 type="meters"
                 title={stringResources['Altitude (m)']}
@@ -187,39 +196,37 @@ export default function __ManualInput__(props: {
               />
             </View>
           )}
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginTop: 20,
-            gap: 10,
-            paddingHorizontal: 10,
-          }}
-        >
-          <Button.Icon
-            iconName="close"
-            color_background={theme.wrong}
-            onPress={() => onCancel()}
+          <View
             style={{
-              height: 40,
-              flex: 1,
-              justifyContent: 'center',
-              paddingVertical: 0,
-              borderRadius: 10,
+              flexDirection: 'row',
+              gap: 10,
             }}
-          />
-          <Button.Icon
-            iconName="save"
-            color_background={theme.confirm}
-            onPress={() => onSave()}
-            style={{
-              height: 40,
-              flex: 1,
-              justifyContent: 'center',
-              paddingVertical: 5,
-              borderRadius: 10,
-            }}
-          />
+          >
+            <Button.Icon
+              iconName="close"
+              color_background={theme.wrong}
+              onPress={() => onCancel()}
+              style={{
+                height: 40,
+                flex: 1,
+                justifyContent: 'center',
+                paddingVertical: 0,
+                borderRadius: 10,
+              }}
+            />
+            <Button.Icon
+              iconName="save"
+              color_background={theme.confirm}
+              onPress={() => onSave()}
+              style={{
+                height: 40,
+                flex: 1,
+                justifyContent: 'center',
+                paddingVertical: 5,
+                borderRadius: 10,
+              }}
+            />
+          </View>
         </View>
       </>)}
     </View>
@@ -279,7 +286,7 @@ function DataInfo_TextInput(props: {
       <TextInput
         style={{
           width: '50%',
-          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+          paddingBottom: Platform.OS === 'ios' ? 5 : 0,
           paddingHorizontal: 5,
           color: wrongFormat ? theme.wrong : theme.onBackground,
           borderColor: wrongFormat ? theme.wrong : theme.secondary,

@@ -73,7 +73,7 @@ function Label(props: {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          maxWidth: '80%',
+          flex: 1,
           paddingHorizontal: 10,
         }}
       >

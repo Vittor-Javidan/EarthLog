@@ -1,3 +1,4 @@
-# 0.1.1.18 ProjectService quick fix
+# 0.1.1.19 IOS GPSWidget and GPSInput design fix
 
-- wrong type notations for the default GPSWidgetData receved when "getWidgetData('gps')" was being called, causing GPSWidgets to crash when widget modal get open.
+- fixed widget labels pushing iconButton outside screen.
+- fixed GPS Widget and Input Design for IOS devices
