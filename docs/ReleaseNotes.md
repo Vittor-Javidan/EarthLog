@@ -1,8 +1,4 @@
-# 0.1.1.16 GPSInput, autosave and Screen architecture
+# 0.1.1.17 GPS distance alert
 
-- A new Alert Component was created. Its a component layer on top of Layout Root, wich has indepenly render to support Component API pattern.
-- All Screens with settingsInput and Widget Unit had their state unify and useAutosave redesign. Necessary to fix any future issue with data changing and dependency array not updating.
-- New Translations added to GPSInput
-
-[id_project] screens and its children:
-- API/TC/LC architecture implemented.
+- Now Widget Selector are capable to build gpsDistance alert messages, and this be the focus point to any other type of widget alerts.
+- Added translations for <WidgetSelector />

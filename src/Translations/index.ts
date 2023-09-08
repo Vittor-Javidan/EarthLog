@@ -16,6 +16,7 @@ import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } 
 import { Translations_TemplateScreen, translations_TemplateScreen } from './Screens/ProjectScreen/TemplateScreen';
 import { Translations_BooleanWidget, translations_BooleanWidget } from './Widgets/BooleanWidget';
 import { Translations_Input_GPSInput, translations_Input_GPSInput } from './Input/GPSInput';
+import { Translations_WidgetSelector, translations_WidgetSelector } from './Widgets/WidgetSelector';
 
 export const translations: {
   Screens: {
@@ -35,6 +36,7 @@ export const translations: {
     Components: {
       Modal:                    Translations_WidgetsComponents_Modal
     }
+    WidgetSelector:             Translations_WidgetSelector
     TextWidget:                 Translations_TextWidget
     BooleanWidget:              Translations_BooleanWidget
     AddWidgetButton:            Translations_AddWidgetButton
@@ -62,6 +64,7 @@ export const translations: {
     Components: {
       Modal:                    translations_WidgetsComponents_Modal,
     },
+    WidgetSelector:             translations_WidgetSelector,
     TextWidget:                 translations_TextWidget,
     BooleanWidget:              translations_BooleanWidget,
     AddWidgetButton:            translations_AddWidgetButton,

@@ -1,17 +1,18 @@
 import React, { useMemo, useState } from 'react';
-import { WidgetComponent } from '@WidgetComponents/index';
 
-import { Layout } from '@Components/Layout';
-import { GPS_DTO, TextWidgetData, WidgetData } from '@Types/index';
+import { GPS_DTO, TextWidgetData, WidgetAlertMessage, WidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-
-import { WidgetRules } from '../Rules';
 import UtilService from '@Services/UtilService';
+import { WidgetRules } from '../Rules';
+
+import { Layout } from '@Components/Layout';
+import { WidgetComponent } from '@WidgetComponents/index';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
   statusFeedback?: JSX.Element
+  alertMessages?: WidgetAlertMessage
   onConfirm: (value: TextWidgetData) => void
   onDelete: () => void
 }) {
@@ -89,6 +90,7 @@ export default function TextWidget(props: {
       isDataWrong={isDataWrong}
       showModal={showModal}
       statusFeedback={props.statusFeedback}
+      alertMessages={props.alertMessages}
 
       iconButtons_Top={
         <IconButtons_Top

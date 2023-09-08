@@ -1,14 +1,17 @@
 import React, { useMemo, ReactNode } from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
+import { WidgetAlertMessage } from '@Types/index';
+import P from '@Components/Layout/Text/P';
 
 export default function Root(props: {
   label: string
   isDataWrong: boolean
   showModal: boolean
   statusFeedback?: JSX.Element
+  alertMessages?: WidgetAlertMessage
   iconButtons_Top?: JSX.Element
   iconButtons_BottomLeft?: JSX.Element
   iconButtons_BottomRight?: JSX.Element
@@ -30,6 +33,9 @@ export default function Root(props: {
         wrongData={props.isDataWrong}
         statusFeedback={props.statusFeedback}
         iconButtons={props.iconButtons_Top}
+      />
+      <AlertMessages
+        alertMessages={props.alertMessages}
       />
       {props.children}
       <Footer
@@ -93,6 +99,43 @@ function Label(props: {
       >
         {props.iconButtons}
       </View>
+    </View>
+  );
+}
+
+function AlertMessages(props: {
+  alertMessages: WidgetAlertMessage | undefined
+}) {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  if (
+    props.alertMessages === undefined           ||
+    Object.keys(props.alertMessages).length <= 0
+  ) {
+    return <></>;
+  }
+
+  const Messages = Object.values(props.alertMessages).map(alertMessage => (
+    <P
+      key={alertMessage}
+      style={{
+        color: theme.wrong,
+      }}
+    >
+      {alertMessage}
+    </P>
+  ));
+
+  return (
+    <View
+      style={{
+        marginTop: 15,
+        alignItems: 'flex-start',
+        paddingHorizontal: 10,
+      }}
+    >
+      {Messages}
     </View>
   );
 }

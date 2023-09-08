@@ -1,1 +1,0 @@
-# Boolean and String inputs using react native <Text /> instead <RootText />

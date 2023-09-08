@@ -8,7 +8,8 @@
 + Text Widget
 + Boolean Widget
 + GPS Implementation
-~ GPS Widget
++ GPS Widget
+- TextWidget Speech to text
 - Server API communication
 - Word/PDF/CSV/GPX export
 - Photo Widget

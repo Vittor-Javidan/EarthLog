@@ -3,7 +3,7 @@ import { Switch, Platform } from 'react-native';
 
 
 import { Layout } from '@Components/Layout';
-import { BooleanWidgetData, GPS_DTO } from '@Types/index';
+import { BooleanWidgetData, GPS_DTO, WidgetAlertMessage } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
@@ -12,6 +12,7 @@ import { WidgetComponent } from '../Components';
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
   statusFeedback?: JSX.Element
+  alertMessages?: WidgetAlertMessage
   onConfirm: (widgetData: BooleanWidgetData) => void
   onDelete: () => void
 }) {
@@ -24,7 +25,7 @@ export default function BooleanWidget(props: {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function onConfirm(widgetData: BooleanWidgetData) {
+  function onConfirm_Modal(widgetData: BooleanWidgetData) {
 
     setShowModal(false);
 
@@ -68,6 +69,7 @@ export default function BooleanWidget(props: {
       isDataWrong={isDataWrong}
       showModal={showModal}
       statusFeedback={props.statusFeedback}
+      alertMessages={props.alertMessages}
 
       iconButtons_Top={
         <IconButtons_Top
@@ -81,7 +83,7 @@ export default function BooleanWidget(props: {
       modal={
         <Modal
           widgetData={widgetData}
-          onConfirm={(widgetData) => onConfirm(widgetData)}
+          onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />

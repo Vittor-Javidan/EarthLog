@@ -1,15 +1,16 @@
 import React, { useMemo, useState } from 'react';
 
-import { Layout } from '@Components/Layout';
-import { GPSWidgetData, GPS_DTO } from '@Types/index';
+import { GPSWidgetData, GPS_DTO, WidgetAlertMessage } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
+import { Layout } from '@Components/Layout';
 import { WidgetComponent } from '../Components';
 
 export default function GPSWidget(props: {
   widgetData: GPSWidgetData
   statusFeedback?: JSX.Element
+  alertMessages?: WidgetAlertMessage
   onConfirm: (widgetData: GPSWidgetData) => void
   onDelete: () => void
 }) {
@@ -32,13 +33,13 @@ export default function GPSWidget(props: {
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData: GPSWidgetData = { ...widgetData, value: newGPSData };
+    const newWidgetData: GPSWidgetData = { ...widgetData, gps: newGPSData };
     setWidgetData(newWidgetData);
     props.onConfirm(newWidgetData);
   }
 
   function onDeleteGPS() {
-    const newWidgetData: GPSWidgetData = { ...widgetData, value: {} };
+    const newWidgetData: GPSWidgetData = { ...widgetData, gps: {} };
     setWidgetData(newWidgetData);
     props.onConfirm(newWidgetData);
   }
@@ -50,6 +51,7 @@ export default function GPSWidget(props: {
       isDataWrong={isDataWrong}
       showModal={showModal}
       statusFeedback={props.statusFeedback}
+      alertMessages={props.alertMessages}
 
       iconButtons_Top={
         <IconButtons_Top
@@ -76,7 +78,7 @@ export default function GPSWidget(props: {
       >
         <Layout.Input.GPS
           label=""
-          gpsData={widgetData.value ?? {}}
+          gpsData={widgetData.gps ?? {}}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onBackground_Placeholder}
@@ -120,7 +122,7 @@ function Modal(props: {
   const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
-  const [value, setValue] = useState<GPS_DTO>(props.widgetData.value);
+  const [gps, setGPS] = useState<GPS_DTO>(props.widgetData.gps);
 
   function onConfirm() {
 
@@ -128,7 +130,7 @@ function Modal(props: {
       id_widget: props.widgetData.id_widget,
       name: label,
       type: 'gps',
-      value: value,
+      gps: gps,
       rules: { ...props.widgetData.rules },
     };
 
@@ -160,12 +162,12 @@ function Modal(props: {
         />
         <Layout.Input.GPS
           label="GPS"
-          gpsData={value}
+          gpsData={gps}
           backgroundColor={theme.background}
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
-          onPress_Delete={() => setValue({})}
-          onPress_Save={(newGPSData) => setValue(newGPSData)}
+          onPress_Delete={() => setGPS({})}
+          onPress_Save={(newGPSData) => setGPS(newGPSData)}
         />
       </Layout.View>
     </WidgetComponent.Modal>

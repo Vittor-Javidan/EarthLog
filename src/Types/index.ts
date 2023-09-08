@@ -123,7 +123,7 @@ export type GPSWidgetData = {
   id_widget: string
   name: string
   type: 'gps'
-  value: GPS_DTO
+  gps: GPS_DTO
   rules: {
     allowLabelChange?: boolean
     allowValueChange?: boolean
@@ -132,6 +132,10 @@ export type GPSWidgetData = {
 }
 
 export type WidgetTypes = 'boolean' | 'text' | 'gps'
+
+export type WidgetAlertMessage = {
+  gpsDistanceAlertMessage?: string
+}
 
 /*
   The index.json file has the purpose to allow the app to know how organized is the elements, since

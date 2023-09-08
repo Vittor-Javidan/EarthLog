@@ -1,4 +1,4 @@
-import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@Types/index';
+import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO, WidgetData } from '@Types/index';
 import * as Location from 'expo-location';
 import { Platform } from 'react-native';
 import UtilService from './UtilService';
@@ -9,6 +9,42 @@ export default class GPSService {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status === Location.PermissionStatus.GRANTED) {
       onGranted();
+    }
+  }
+
+  static checkReferenceCoordinateDifference(
+    reference: GPS_DTO | undefined,
+    compareTo: WidgetData,
+    onTresholdbreak: (distance: number) => void
+  ) {
+
+    if (
+      reference === undefined                 ||
+      compareTo.gps === undefined
+    ) {
+      return;
+    }
+
+    if (
+      reference.coordinates === undefined ||
+      compareTo.gps.coordinates === undefined
+    ) {
+      return;
+    }
+
+    const METERS_PER_DEGREE = 111_321;
+    const MAX_DEGREE_DIFERENCE: number = 0.000_300_0; // 0.000_010_0 ~ 1.1 meters
+
+    const latitudeDegreesDifference = Math.abs(Math.abs(reference.coordinates.lat) - Math.abs(compareTo.gps.coordinates.lat));
+    const longitudeDegreesDifference = Math.abs(Math.abs(reference.coordinates.long) - Math.abs(compareTo.gps.coordinates.long));
+    const thresholdAlert = latitudeDegreesDifference > MAX_DEGREE_DIFERENCE || longitudeDegreesDifference > MAX_DEGREE_DIFERENCE;
+
+    const latitudeMetersDiference = METERS_PER_DEGREE * latitudeDegreesDifference;
+    const longitudeMetersDiference = METERS_PER_DEGREE * longitudeDegreesDifference;
+    const hypotenuse = Math.sqrt((Math.pow(latitudeMetersDiference, 2) + Math.pow(longitudeMetersDiference, 2)));
+
+    if (thresholdAlert) {
+      onTresholdbreak(Number(hypotenuse.toFixed(2)));
     }
   }
 }

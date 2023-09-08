@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { WidgetData } from '@Types/index';
@@ -43,6 +43,7 @@ function WidgetUnit(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [state, setState] = useState<States_WidgetUnit>({
     widgetData: UtilService.deepCloning(props.widgetData),
@@ -55,7 +56,7 @@ function WidgetUnit(props: {
 
   async function onConfirm(widgetData: WidgetData) {
     setState(({
-      widgetData: widgetData,
+      widgetData: { ...widgetData },
       saved: false,
     }));
   }
@@ -77,7 +78,8 @@ function WidgetUnit(props: {
 
   return (
     <Widget.Selector
-      widgetData={props.widgetData}
+      widgetData={state.widgetData}
+      gpsReference={sampleSettings.gps}
       onConfirm={async (widgetData) => await onConfirm(widgetData)}
       onDelete={async () => await onDelete(props.widgetData.id_widget)}
       statusFeedback={
