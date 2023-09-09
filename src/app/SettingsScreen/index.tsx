@@ -3,16 +3,15 @@ import React, { useMemo } from 'react';
 import { Alert } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
 import DatabaseService from '@Services/DatabaseService';
 import CacheService from '@Services/CacheService';
+
+import { Layout } from '@Layout/index';
+import { TC } from './__TC__';
 
 export default function SettingsScreen(): JSX.Element {
 
@@ -24,9 +23,9 @@ export default function SettingsScreen(): JSX.Element {
   return (
     <Layout.Root
       title={stringResources['Settings']}
-      screenButtons={<ScreenButtons />}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
     >
       <Layout.View
         style={{

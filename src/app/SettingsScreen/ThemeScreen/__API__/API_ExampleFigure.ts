@@ -2,7 +2,7 @@ import { ThemeDTO } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-export default class API_ExampleFigure {
+export default class ExampleFigureAPI {
 
   private static SETTER_KEY = 'Example Figure';
   private static registeredSetters: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};

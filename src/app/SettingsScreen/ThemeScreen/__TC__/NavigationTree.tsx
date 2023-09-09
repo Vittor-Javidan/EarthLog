@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 
-import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
+import { Layout } from '@Components/Layout';
+import { API } from '../__API__';
 
 export default function NavigationTree() {
 
   function cancelAndExit(
     screen: 'HOME SCREEN' | 'SETTINGS SCREEN'
   ) {
-    API_ExampleFigure.discart();
+    API.ExampleFigure.discart();
     navigate(screen);
   }
 

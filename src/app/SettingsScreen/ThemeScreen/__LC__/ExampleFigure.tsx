@@ -4,7 +4,7 @@ import { View, Text, Pressable } from 'react-native';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import API_ExampleFigure from './API_ExampleFigure';
+import { API } from '../__API__';
 
 export function ExampleFigure(): JSX.Element {
 
@@ -12,16 +12,15 @@ export function ExampleFigure(): JSX.Element {
   const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const temporaryTheme = useMemo(
-    () => API_ExampleFigure.temporaryConfig ?? { ...theme },
-    [API_ExampleFigure.temporaryConfig]
-  );
+    () => API.ExampleFigure.temporaryConfig ?? { ...theme },
+  [API.ExampleFigure.temporaryConfig]);
 
   const [confirmPressed, setConfirmPressed] = useState<boolean>(false);
   const [modifiedPressed, setModifiedPressed] = useState<boolean>(false);
   const [wrongPressed, setWrongPressed] = useState<boolean>(false);
   const [_, refresh] = useState<boolean>(true);
 
-  API_ExampleFigure.setterRegister(refresh, theme);
+  API.ExampleFigure.setterRegister(refresh, theme);
 
   return (
     <View

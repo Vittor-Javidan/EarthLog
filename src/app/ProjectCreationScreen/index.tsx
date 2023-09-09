@@ -2,18 +2,15 @@ import React, { useMemo, ReactNode } from 'react';
 import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import Drawer from './Drawer';
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Inputs_ProjectSettings from './LocalComponents/Inputs_ProjectSettings';
-import Widgets_Project from './LocalComponents/Widgets_Project';
-import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
+import { Layout } from '@Layout/index';
+import { API } from './__API__';
+import { LC } from './__LC__';
+import { TC } from './__TC__';
 
 export default function ProjectCreationScreen() {
 
@@ -21,21 +18,21 @@ export default function ProjectCreationScreen() {
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   useBackPress(async () => {
-    API_TemporaryProject.reset();
+    API.TemporaryProject.reset();
     navigate('HOME SCREEN');
   });
 
   return (
     <Layout.Root
       title={stringResources['Project creation']}
-      drawerChildren={<Drawer />}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      drawerChildren={<></>}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       <Layout.ScrollView>
         <Animation>
-          <Inputs_ProjectSettings />
-          <Widgets_Project />
+          <LC.ProjectSettingsWidget />
+          <LC.ProjectWidgets />
         </Animation>
       </Layout.ScrollView>
     </Layout.Root>

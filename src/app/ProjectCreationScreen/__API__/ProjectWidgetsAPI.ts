@@ -1,8 +1,7 @@
 import { WidgetData } from '@Types/index';
+import TemporaryProjectAPI from './TemporaryProjectAPI';
 
-import API_TemporaryProject from './API_TemporaryProject';
-
-export default class API_Widgets_Project {
+export default class ProjectWidgetsAPI {
 
   private static SETTER_KEY_PROJECT_WIDGET = 'ProjectSettingsScreen_Widgets';
   private static registeredSetters: Record<string, React.Dispatch<React.SetStateAction<boolean>>> = {};
@@ -16,14 +15,14 @@ export default class API_Widgets_Project {
   }
 
   static addProjectWidget(widgetData: WidgetData) {
-    const IDs = API_TemporaryProject.project.projectWidgets.map(widget => widget.id_widget);
+    const IDs = TemporaryProjectAPI.project.projectWidgets.map(widget => widget.id_widget);
     if (!IDs.includes(widgetData.id_widget)) {
-      API_TemporaryProject.project.projectWidgets.push(widgetData);
+      TemporaryProjectAPI.project.projectWidgets.push(widgetData);
     }
   }
 
   static updateProjectWidget(widgetData: WidgetData) {
-    API_TemporaryProject.project.projectWidgets.forEach(widget => {
+    TemporaryProjectAPI.project.projectWidgets.forEach(widget => {
       if (widget.id_widget === widgetData.id_widget) {
         widget = widgetData;
       }
@@ -31,7 +30,7 @@ export default class API_Widgets_Project {
   }
 
   static deleteProjectWidget(widgetData: WidgetData) {
-    API_TemporaryProject.project.projectWidgets = API_TemporaryProject.project.projectWidgets.filter(
+    TemporaryProjectAPI.project.projectWidgets = TemporaryProjectAPI.project.projectWidgets.filter(
       widget => widget.id_widget !== widgetData.id_widget
     );
   }

@@ -9,11 +9,8 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
-import Drawer from './Drawer';
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import LastProjectButton from './LocalComponents/LastProjectButton';
-import ProjectButtons from './LocalComponents/ProjectButtons';
+import { LC } from './__LC__';
+import { TC } from './__TC__';
 
 export default function HomeScreen() {
 
@@ -57,17 +54,17 @@ export default function HomeScreen() {
   return (
     <Layout.Root
       title={stringResources['Home screen']}
-      drawerChildren={<Drawer />}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      drawerChildren={<TC.Drawer />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
           <Animation>
-            <LastProjectButton />
-            <ProjectButtons />
+            <LC.LastProjectButton />
+            <LC.ProjectButtons />
           </Animation>
         </Layout.ScrollView>
       )}

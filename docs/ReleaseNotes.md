@@ -1,3 +1,1 @@
-# 0.1.1.20 TextWithIcon Button IOS design fix
-
-- icon was getting bigger when a big sample name was being detected.
+# 0.1.1.21 API, LC and TC screen pattern

@@ -1,27 +1,26 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Components/Layout';
-import { Widget } from '@Components/Widget';
-import { navigate } from '@Globals/NavigationControler';
 import { WidgetData } from '@Types/index';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 
-import API_TemporaryProject from './LocalComponents/API_TemporaryProject';
-import API_Widgets_Project from './LocalComponents/API_Widgets_Project';
+import { Widget } from '@Components/Widget';
+import { Layout } from '@Components/Layout';
+import { API } from '../__API__';
 
 export default function ScreenButtons() {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
   function exitScreen() {
-    API_TemporaryProject.reset();
+    API.TemporaryProject.reset();
     navigate('HOME SCREEN');
   }
 
   async function onConfirm() {
 
-    const newProject = API_TemporaryProject.project;
+    const newProject = API.TemporaryProject.project;
     const { projectSettings: newProjectSettings } = newProject;
 
     if (newProjectSettings.id_project === '') {
@@ -37,8 +36,8 @@ export default function ScreenButtons() {
   }
 
   function onCreateWidget(widgetData: WidgetData) {
-    API_Widgets_Project.addProjectWidget(widgetData);
-    API_Widgets_Project.refresh_ProjectWidgets();
+    API.ProjectWidgets.addProjectWidget(widgetData);
+    API.ProjectWidgets.refresh_ProjectWidgets();
   }
 
   return (

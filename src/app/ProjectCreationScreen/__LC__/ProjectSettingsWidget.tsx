@@ -1,42 +1,41 @@
 import React, { useState, useMemo } from 'react';
 
-import { Layout } from '@Components/Layout';
+import { GPS_DTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 
-import API_TemporaryProject from './API_TemporaryProject';
-import API_Inputs_ProjectSettings from './API_Inputs_ProjectSettings';
-import { GPS_DTO } from '@Types/index';
+import { Layout } from '@Components/Layout';
+import { API } from '../__API__';
 
-export default function Inputs_ProjectSettings() {
+export default function ProjectSettingsWidget() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
-  const [id, setId] = useState<string>(API_TemporaryProject.project.projectSettings.id_project);
-  const [name, setName] = useState<string>(API_TemporaryProject.project.projectSettings.name);
-  const [gpsData, setGPSData] = useState<GPS_DTO | undefined>(API_TemporaryProject.project.projectSettings.gps);
+  const [id, setId] = useState<string>(API.TemporaryProject.project.projectSettings.id_project);
+  const [name, setName] = useState<string>(API.TemporaryProject.project.projectSettings.name);
+  const [gpsData, setGPSData] = useState<GPS_DTO | undefined>(API.TemporaryProject.project.projectSettings.gps);
   const [showGPS, setShowGPS] = useState<boolean>(false);
 
   function onIDChange(newID: string) {
     const normalizedText = newID.replace(UtilService.idRegex, '');
-    API_Inputs_ProjectSettings.setID(normalizedText);
+    API.ProjectSettingsWidget.setID(normalizedText);
     setId(normalizedText);
   }
 
   function onNameChange(newName: string) {
-    API_Inputs_ProjectSettings.setName(newName);
+    API.ProjectSettingsWidget.setName(newName);
     setName(newName);
   }
 
   function onSaveGPS(gpsData: GPS_DTO) {
-    API_Inputs_ProjectSettings.setGPS(UtilService.deepCloning(gpsData));
+    API.ProjectSettingsWidget.setGPS(UtilService.deepCloning(gpsData));
     setGPSData(UtilService.deepCloning(gpsData));
   }
 
   function onDeleteGPS() {
-    API_Inputs_ProjectSettings.deleteGPS();
+    API.ProjectSettingsWidget.deleteGPS();
     setGPSData(undefined);
     setShowGPS(false);
   }

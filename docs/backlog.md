@@ -1,4 +1,3 @@
-# Add the new LC/TC archquitecture to all Screens ([id_project] and its children already implemented)
 # rename all "stringResource" variables to "R"
 
 # fix the height for all widget labels and Project/Sample settings

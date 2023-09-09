@@ -3,13 +3,13 @@ import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import * as Vibration from 'expo-haptics';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { Layout } from '@Components/Layout';
 import { ThemeDTO } from '@Types/index';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 
-import API_ExampleFigure from './API_ExampleFigure';
+import { Layout } from '@Components/Layout';
+import { API } from '../__API__';
 
 export default function AllInputs(): JSX.Element {
 
@@ -67,7 +67,7 @@ function CustomInput(props: {
     setColor(value);
     setValid(isValidColor(value));
     if (isValidColor(value)) {
-      API_ExampleFigure.update(props.themeKey, value);
+      API.ExampleFigure.update(props.themeKey, value);
     }
   }
 

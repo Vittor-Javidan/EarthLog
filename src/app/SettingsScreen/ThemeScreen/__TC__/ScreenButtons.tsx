@@ -1,26 +1,26 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 
-import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
+import { Layout } from '@Components/Layout';
+import { API } from '../__API__';
 
 export default function ScreenButtons() {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
   function resetTheme() {
-    API_ExampleFigure.reset();
+    API.ExampleFigure.reset();
   }
 
   function cancelAndExit() {
-    API_ExampleFigure.discart();
+    API.ExampleFigure.discart();
     navigate('SETTINGS SCREEN');
   }
 
   async function confirmAndSave() {
-    await API_ExampleFigure.save();
+    await API.ExampleFigure.save();
     navigate('SETTINGS SCREEN');
   }
 

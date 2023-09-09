@@ -3,17 +3,15 @@ import React, { useState, useMemo, useEffect, ReactNode } from 'react';
 import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import Drawer from './Drawer';
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import AllInputs from './LocalComponents/ColorInput';
-import API_ExampleFigure from './LocalComponents/API_ExampleFigure';
+import { Layout } from '@Layout/index';
+import { API } from './__API__';
+import { LC } from './__LC__';
+import { TC } from './__TC__';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -24,23 +22,23 @@ export default function ThemeScreen(): JSX.Element {
 
   useEffect(() => { setState('Loaded'); }, []);
   useBackPress(async () => {
-    API_ExampleFigure.discart();
+    API.ExampleFigure.discart();
     navigate('SETTINGS SCREEN');
   });
 
   return (
     <Layout.Root
       title={stringResources['Theme']}
-      drawerChildren={<Drawer state={state} />}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      drawerChildren={<TC.Drawer state={state} />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
           <Animation>
-            <AllInputs />
+            <LC.AllInputs />
           </Animation>
         </Layout.ScrollView>
       )}

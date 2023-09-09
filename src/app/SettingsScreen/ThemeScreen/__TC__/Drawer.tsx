@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ExampleFigure } from './LocalComponents/ExampleFigure';
+import { LC } from '../__LC__';
 
 export default function Drawer(props: {
   state: 'Loaded' | 'Loading'
 }) {
   return (<>
     {props.state === 'Loaded' && (
-      <ExampleFigure />
+      <LC.ExampleFigure />
     )}
   </>);
 }
