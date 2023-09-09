@@ -9,7 +9,7 @@ import CacheService from '@Services/CacheService';
 export default function ProjectButtons() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const R = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const allProjectButtons = CacheService.allProjects.map((settings, index) => {
     const isLastIndex = index === CacheService.allProjects.length - 1;
@@ -51,7 +51,7 @@ export default function ProjectButtons() {
             borderTopRightRadius: 10,
           }}
         >
-          {stringResources['Projects']}
+          {R['Projects']}
         </Layout.Text.H2>
         <Layout.View
           style={{ gap: 2 }}

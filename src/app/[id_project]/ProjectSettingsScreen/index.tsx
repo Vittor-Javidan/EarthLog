@@ -18,7 +18,7 @@ export default function ProjectSettingsScreen() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
+  const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function ProjectSettingsScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Edit project']}
+      title={R['Edit project']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

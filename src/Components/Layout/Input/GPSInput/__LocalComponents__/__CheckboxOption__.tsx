@@ -15,7 +15,7 @@ export default function CheckboxOptions(props: {
 }) {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
+  const R = useMemo(() => translations.Input.GPSInput[language], []);
   const { editMode, enableCoordinate, enableAltitude } = props.features;
 
   if (editMode === false) {
@@ -30,12 +30,12 @@ export default function CheckboxOptions(props: {
       }}
     >
       <Option
-        title={stringResources['Coordinates']}
+        title={R['Coordinates']}
         value={enableCoordinate}
         onChange={(checked) => props.onToogle_Coordinate(checked)}
       />
       <Option
-        title={stringResources['Altitude']}
+        title={R['Altitude']}
         value={enableAltitude}
         onChange={(checked) => props.onToogle_Altitude(checked)}
       />

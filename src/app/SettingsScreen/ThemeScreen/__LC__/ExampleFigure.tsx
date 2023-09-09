@@ -9,7 +9,7 @@ import { API } from '../__API__';
 export function ExampleFigure(): JSX.Element {
 
   const { language, theme } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
+  const R = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const temporaryTheme = useMemo(
     () => API.ExampleFigure.temporaryConfig ?? { ...theme },
@@ -47,10 +47,10 @@ export function ExampleFigure(): JSX.Element {
         >
           <View style={{ paddingBottom: 5 }}>
             <Text style={{ color: temporaryTheme.onBackground }}>
-              {stringResources['onBackground']}
+              {R['onBackground']}
             </Text>
             <Text style={{ color: temporaryTheme.onBackground_Placeholder }}>
-              {stringResources['onBackground_Placeholder']}
+              {R['onBackground_Placeholder']}
             </Text>
           </View>
         </View>
@@ -62,10 +62,10 @@ export function ExampleFigure(): JSX.Element {
         >
           <View style={{ paddingBottom: 5 }}>
             <Text style={{ color: temporaryTheme.onPrimary }}>
-              {stringResources['onPrimary']}
+              {R['onPrimary']}
             </Text>
             <Text style={{ color: temporaryTheme.onPrimary_Placeholder }}>
-              {stringResources['onPrimary_Placeholder']}
+              {R['onPrimary_Placeholder']}
             </Text>
           </View>
           <View
@@ -76,10 +76,10 @@ export function ExampleFigure(): JSX.Element {
           >
             <View style={{ paddingBottom: 5 }}>
               <Text style={{ color: temporaryTheme.onSecondary }}>
-                {stringResources['onSecondary']}
+                {R['onSecondary']}
               </Text>
               <Text style={{ color: temporaryTheme.onSecondary_PlaceHolder }}>
-                {stringResources['onSecondary_PlaceHolder']}
+                {R['onSecondary_PlaceHolder']}
               </Text>
             </View>
             <View
@@ -90,10 +90,10 @@ export function ExampleFigure(): JSX.Element {
             >
               <View>
                 <Text style={{ color: temporaryTheme.onTertiary }}>
-                  {stringResources['onTertiary']}
+                  {R['onTertiary']}
                 </Text>
                 <Text style={{ color: temporaryTheme.onTertiary_Placeholder }}>
-                  {stringResources['onTertiary_Placeholder']}
+                  {R['onTertiary_Placeholder']}
                 </Text>
               </View>
             </View>
@@ -130,7 +130,7 @@ export function ExampleFigure(): JSX.Element {
               lineBreakStrategyIOS="push-out"
               numberOfLines={2}
             >
-              {stringResources['confirm']}
+              {R['confirm']}
             </Text>
           </Pressable>
           <Pressable
@@ -154,7 +154,7 @@ export function ExampleFigure(): JSX.Element {
                 color: temporaryTheme.onModified,
               }}
             >
-              {stringResources['modified']}
+              {R['modified']}
             </Text>
           </Pressable>
           <Pressable
@@ -178,7 +178,7 @@ export function ExampleFigure(): JSX.Element {
                 color: temporaryTheme.onWrong,
               }}
             >
-              {stringResources['wrong']}
+              {R['wrong']}
             </Text>
           </Pressable>
         </View>

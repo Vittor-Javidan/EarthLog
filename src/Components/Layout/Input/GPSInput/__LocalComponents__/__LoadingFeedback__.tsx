@@ -12,7 +12,7 @@ export default function __LoadingFeedback_(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
+  const R = useMemo(() => translations.Input.GPSInput[language], []);
   const { gpsON, enableCoordinate, enableAltitude } = props.features;
   const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
@@ -38,8 +38,8 @@ export default function __LoadingFeedback_(props: {
         }}
       >
         {nothingEnable
-          ? stringResources['Nothing selected']
-          : stringResources['Collecting the best data. Updates can take a few seconds...']
+          ? R['Nothing selected']
+          : R['Collecting the best data. Updates can take a few seconds...']
         }
       </P>
     </View>

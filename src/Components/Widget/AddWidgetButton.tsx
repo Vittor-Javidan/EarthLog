@@ -11,7 +11,7 @@ export default function AddWidgetButton(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.AddWidgetButton[language], []);
+  const R = useMemo(() => translations.Widgets.AddWidgetButton[language], []);
 
   const [showModal, setShowlModal] = useState<boolean>(false);
   const [label, setLabel] = useState<string>('');
@@ -40,7 +40,7 @@ export default function AddWidgetButton(props: {
     />
     {showModal && (
       <Layout.Modal
-        title={stringResources['Add Widget']}
+        title={R['Add Widget']}
         onRequestClose={() => setShowlModal(false)}
       >
         <Layout.View
@@ -49,8 +49,8 @@ export default function AddWidgetButton(props: {
           }}
         >
           <Layout.Input.String
-            label={stringResources['Widget name']}
-            placeholder={stringResources['Write a name to the widget here...']}
+            label={R['Widget name']}
+            placeholder={R['Write a name to the widget here...']}
             value={label}
             locked={false}
             onChangeText={(text) => setLabel(text)}
@@ -71,13 +71,13 @@ export default function AddWidgetButton(props: {
               }}
             >
               <Layout.Button.Text
-                title={stringResources['Boolean']}
+                title={R['Boolean']}
                 color_background={theme.tertiary}
                 color_font={theme.onTertiary}
                 onPress={() => onPress('boolean')}
               />
               <Layout.Button.Text
-                title={stringResources['Text']}
+                title={R['Text']}
                 color_background={theme.tertiary}
                 color_font={theme.onTertiary}
                 onPress={() => onPress('text')}

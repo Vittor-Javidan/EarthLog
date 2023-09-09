@@ -17,7 +17,7 @@ export default function TemplateScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.TemplateScreen[language], []);
+  const R = useMemo(() => translations.Screens.TemplateScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function TemplateScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Template']}
+      title={R['Template']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

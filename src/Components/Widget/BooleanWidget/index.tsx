@@ -18,7 +18,7 @@ export default function BooleanWidget(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
+  const R = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
   const [showGPS, setShowGPS] = useState<boolean>(widgetData.gps !== undefined);
@@ -104,7 +104,7 @@ export default function BooleanWidget(props: {
             color: theme.onTertiary,
           }}
         >
-          {stringResources[`${widgetData.value}`]}
+          {R[`${widgetData.value}`]}
         </Layout.Text.P>
         <Switch
           style={{
@@ -180,7 +180,7 @@ function Modal(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
+  const R = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<boolean>(props.widgetData.value);
@@ -219,17 +219,17 @@ function Modal(props: {
         }}
       >
         <Layout.Input.String
-          label={stringResources['Widget name']}
+          label={R['Widget name']}
           backgroundColor={theme.background}
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write widget name here...']}
+          placeholder={R['Write widget name here...']}
           value={label}
           locked={!rules.allowLabelChange}
           onChangeText={(text) => setLabel(text)}
         />
         <Layout.Input.Boolean
-          label={stringResources['Value']}
+          label={R['Value']}
           backgroundColor={theme.background}
           color={theme.onBackground}
           value={value}

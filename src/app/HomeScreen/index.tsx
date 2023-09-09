@@ -15,7 +15,7 @@ import { TC } from './__TC__';
 export default function HomeScreen() {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const R = useMemo(() => translations.Screens.HomeScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -29,11 +29,11 @@ export default function HomeScreen() {
 
   async function exitMessage() {
     Alert.alert(
-      stringResources['Hold on!'],
-      stringResources['Want to exit?'],
+      R['Hold on!'],
+      R['Want to exit?'],
       [
         {
-          text: stringResources['NO'],
+          text: R['NO'],
           onPress: async () => {
             await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
             return null;
@@ -41,7 +41,7 @@ export default function HomeScreen() {
           style: 'cancel',
         },
         {
-          text: stringResources['YES'],
+          text: R['YES'],
           onPress: async () => {
             await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
             BackHandler.exitApp();
@@ -53,7 +53,7 @@ export default function HomeScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Home screen']}
+      title={R['Home screen']}
       drawerChildren={<TC.Drawer />}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

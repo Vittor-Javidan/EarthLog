@@ -15,7 +15,7 @@ import { TC } from './__TC__';
 export default function ProjectCreationScreen() {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
+  const R = useMemo(() => translations.Screens.ProjectCreationScreen[language], []);
 
   useBackPress(async () => {
     API.TemporaryProject.reset();
@@ -24,7 +24,7 @@ export default function ProjectCreationScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Project creation']}
+      title={R['Project creation']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

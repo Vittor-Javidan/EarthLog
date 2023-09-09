@@ -8,11 +8,11 @@ import ConfigService from '@Services/ConfigService';
 export default function Drawer() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const R = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   return (
     <Layout.Button.TextWithIcon
-      title={stringResources['Settings']}
+      title={R['Settings']}
       iconName="settings"
       iconSide="Right"
       color_background={theme.tertiary}

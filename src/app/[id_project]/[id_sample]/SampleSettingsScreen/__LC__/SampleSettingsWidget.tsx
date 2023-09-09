@@ -20,7 +20,7 @@ export default function SampleSettingsWidget() {
 
   const id_sample = useLocalSearchParams().id_sample as string;
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   const [state, setState] = useState<States_Inputs_SampleSettings>({
     sampleSettings: UtilService.deepCloning(CacheService.getSampleFromCache(id_sample)),
@@ -103,7 +103,7 @@ export default function SampleSettingsWidget() {
               color: theme.onSecondary,
             }}
           >
-            {stringResources['Sample info']}
+            {R['Sample info']}
           </Layout.Text.P>
         </Layout.View>
         {!state.showGPS && (
@@ -132,7 +132,7 @@ export default function SampleSettingsWidget() {
         }}
       >
         <Layout.Input.String
-          label={stringResources['ID']}
+          label={R['ID']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
@@ -142,11 +142,11 @@ export default function SampleSettingsWidget() {
           onChangeText={() => {}}
         />
         <Layout.Input.String
-          label={stringResources['Name']}
+          label={R['Name']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={stringResources['Write the sample name here...']}
+          placeholder={R['Write the sample name here...']}
           locked={!state.sampleSettings.rules.allowNameChange}
           value={state.sampleSettings.name}
           onChangeText={async (text) => await onNameChange(text)}

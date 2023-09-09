@@ -11,11 +11,11 @@ export default function Drawer() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.ProjectScreen[language], []);
+  const R = useMemo(() => translations.Screens.ProjectScreen[language], []);
 
   return (<>
     <Layout.Button.TextWithIcon
-      title={stringResources['Edit project']}
+      title={R['Edit project']}
       iconName="pencil-sharp"
       iconSide="Right"
       color_background={theme.tertiary}
@@ -23,7 +23,7 @@ export default function Drawer() {
       onPress={() => navigate('PROJECT SETTINGS SCREEN', id_project)}
     />
     <Layout.Button.TextWithIcon
-      title={stringResources['Edit template']}
+      title={R['Edit template']}
       iconName="layers"
       iconSide="Right"
       color_background={theme.tertiary}

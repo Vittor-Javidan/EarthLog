@@ -12,11 +12,11 @@ import { LC } from './__LC__';
 export default function SampleSettingsScreen() {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (
     <Layout.Root
-      title={stringResources['Edit sample']}
+      title={R['Edit sample']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

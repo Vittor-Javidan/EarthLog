@@ -119,7 +119,7 @@ function Modal(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
+  const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [gps, setGPS] = useState<GPS_DTO>(props.widgetData.gps);
@@ -151,11 +151,11 @@ function Modal(props: {
         }}
       >
         <Layout.Input.String
-          label={stringResources['Widget Name']}
+          label={R['Widget Name']}
           backgroundColor={theme.background}
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write widget name here...']}
+          placeholder={R['Write widget name here...']}
           value={label}
           locked={false}
           onChangeText={(text) => setLabel(text)}

@@ -14,7 +14,7 @@ export default function __ManualInput__(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
+  const R = useMemo(() => translations.Input.GPSInput[language], []);
   const { enableCoordinate, enableAltitude } = props.features;
   const [error, setError] = useState<string>('');
 
@@ -71,7 +71,7 @@ export default function __ManualInput__(props: {
         tempCoordinate.accuracy === ''
       )
     ) {
-      setError(stringResources['* All fields must be fulfill']);
+      setError(R['* All fields must be fulfill']);
       return true;
     }
 
@@ -81,7 +81,7 @@ export default function __ManualInput__(props: {
         tempAltitude.accuracy === ''
       )
     ) {
-      setError(stringResources['* All fields must be fulfill']);
+      setError(R['* All fields must be fulfill']);
       return true;
     }
 
@@ -106,7 +106,7 @@ export default function __ManualInput__(props: {
           }}
         >
           <Button.TextWithIcon
-            title={stringResources['Manual']}
+            title={R['Manual']}
             iconSide="Right"
             iconName="pencil-sharp"
             color_background={theme.secondary}
@@ -148,24 +148,24 @@ export default function __ManualInput__(props: {
             >
               <DataInfo_TextInput
                 type="latitude"
-                title={stringResources['Latitude (DD)']}
-                value_placeholder={stringResources['Latitude']}
+                title={R['Latitude (DD)']}
+                value_placeholder={R['Latitude']}
                 value={tempCoordinate.latitude}
                 onChangeText={(newLat) => setTempCoordinate(prev => ({ ...prev, latitude: newLat }))}
                 onError={() => {}}
               />
               <DataInfo_TextInput
                 type="longitude"
-                title={stringResources['Longitude (DD)']}
-                value_placeholder={stringResources['Longitude']}
+                title={R['Longitude (DD)']}
+                value_placeholder={R['Longitude']}
                 value={tempCoordinate.longitude}
                 onChangeText={(newLong) => setTempCoordinate(prev => ({ ...prev, longitude: newLong }))}
                 onError={() => {}}
               />
               <DataInfo_TextInput
                 type="meters"
-                title={stringResources['Accuracy (m)']}
-                value_placeholder={stringResources['Accuracy']}
+                title={R['Accuracy (m)']}
+                value_placeholder={R['Accuracy']}
                 value={tempCoordinate.accuracy}
                 onChangeText={(newAcc) => setTempCoordinate(prev => ({ ...prev, accuracy: newAcc }))}
                 onError={() => {}}
@@ -180,16 +180,16 @@ export default function __ManualInput__(props: {
             >
               <DataInfo_TextInput
                 type="meters"
-                title={stringResources['Altitude (m)']}
-                value_placeholder={stringResources['Altitude']}
+                title={R['Altitude (m)']}
+                value_placeholder={R['Altitude']}
                 value={tempAltitude.value}
                 onChangeText={(newAlt) => setTempAltitude(prev => ({ ...prev, value: newAlt }))}
                 onError={() => {}}
               />
               <DataInfo_TextInput
                 type="meters"
-                title={stringResources['Accuracy (m)']}
-                value_placeholder={stringResources['Accuracy']}
+                title={R['Accuracy (m)']}
+                value_placeholder={R['Accuracy']}
                 value={tempAltitude.accuracy}
                 onChangeText={(newAcc) => setTempAltitude(prev => ({ ...prev, accuracy: newAcc }))}
                 onError={() => {}}

@@ -27,7 +27,7 @@ export function navigate(
 ) {
 
   const { language } = ConfigService.config;
-  const stringResources = translations.ErrorMessages[language];
+  const R = translations.ErrorMessages[language];
   const navController = useRouter();
 
   switch (screen) {
@@ -65,7 +65,7 @@ export function navigate(
     case 'PROJECT SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
@@ -76,7 +76,7 @@ export function navigate(
     case 'PROJECT SETTINGS SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
@@ -87,7 +87,7 @@ export function navigate(
     case 'TEMPLATE SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
@@ -98,7 +98,7 @@ export function navigate(
     case 'SAMPLE CREATION SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
@@ -109,12 +109,12 @@ export function navigate(
     case 'SAMPLE SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
       if (id_sample === undefined) {
-        alert(stringResources['Sample ID undefined']);
+        alert(R['Sample ID undefined']);
         break;
       }
 
@@ -125,12 +125,12 @@ export function navigate(
     case 'SAMPLE SETTINGS SCREEN': {
 
       if (id_project === undefined) {
-        alert(stringResources['Project ID undefined']);
+        alert(R['Project ID undefined']);
         break;
       }
 
       if (id_sample === undefined) {
-        alert(stringResources['Sample ID undefined']);
+        alert(R['Sample ID undefined']);
         break;
       }
 

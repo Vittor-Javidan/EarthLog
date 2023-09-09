@@ -11,7 +11,7 @@ import { API } from '../__API__';
 export default function SampleSettingsWidgetCreation() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   const [id, setId] = useState<string>(API.SampleSettingsWidget.temporarySettings.id_sample);
   const [name, setName] = useState<string>(API.SampleSettingsWidget.temporarySettings.name);
@@ -58,7 +58,7 @@ export default function SampleSettingsWidgetCreation() {
             color: theme.onSecondary,
           }}
         >
-          {stringResources['Sample info']}
+          {R['Sample info']}
         </Layout.Text.P>
         {!showGPS && (
           <Layout.Button.Icon
@@ -86,21 +86,21 @@ export default function SampleSettingsWidgetCreation() {
         }}
       >
         <Layout.Input.String
-          label={stringResources['ID']}
+          label={R['ID']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={stringResources['Only numbers, letters and "-"']}
+          placeholder={R['Only numbers, letters and "-"']}
           value={id}
           locked={false}
           onChangeText={(text) => onIDChange(text)}
         />
         <Layout.Input.String
-          label={stringResources['Name']}
+          label={R['Name']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={stringResources['Write the sample name here...']}
+          placeholder={R['Write the sample name here...']}
           value={name}
           locked={false}
           onChangeText={(text) => onNameChange(text)}

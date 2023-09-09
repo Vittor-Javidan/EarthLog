@@ -9,7 +9,7 @@ import CacheService from '@Services/CacheService';
 export default function LastProjectButton() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const R = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   const { id_project } = CacheService?.lastOpenProject;
   const lastProjectOpenExist = id_project !== '';
@@ -32,7 +32,7 @@ export default function LastProjectButton() {
           borderTopRightRadius: 10,
         }}
       >
-        {stringResources['Recently Open']}
+        {R['Recently Open']}
       </Layout.Text.H2>
       <Layout.Button.TextWithIcon
         iconName="folder"

@@ -14,7 +14,7 @@ export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
 
   function exitScreen() {
     API.SampleSettingsWidget.reset();
@@ -26,7 +26,7 @@ export default function ScreenButtons() {
     const { temporarySettings } = API.SampleSettingsWidget;
 
     if (temporarySettings.id_sample === '') {
-      alert(stringResources['ID cannot be empty']);
+      alert(R['ID cannot be empty']);
       return;
     }
 

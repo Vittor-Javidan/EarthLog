@@ -18,7 +18,7 @@ export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function SampleCreationScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['New sample']}
+      title={R['New sample']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}

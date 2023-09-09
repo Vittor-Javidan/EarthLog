@@ -12,11 +12,11 @@ export function Drawer() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleScreen[language], []);
 
   return (<>
     <Layout.Button.TextWithIcon
-      title={stringResources['Edit sample']}
+      title={R['Edit sample']}
       iconName="pencil-sharp"
       iconSide="Right"
       color_background={theme.tertiary}

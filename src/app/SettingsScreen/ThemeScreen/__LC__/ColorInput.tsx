@@ -51,7 +51,7 @@ function CustomInput(props: {
 }) {
 
   const { language, theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
-  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
+  const R = useMemo(() => translations.Screens.ThemeScreen[language], []);
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
   const [color, setColor] = useState<string>(props.savedValue);
@@ -82,7 +82,7 @@ function CustomInput(props: {
             maxHeight: 48,
           }}
         >
-          {stringResources['Invalid Color']}
+          {R['Invalid Color']}
         </Text>
       )}
       <View
@@ -103,7 +103,7 @@ function CustomInput(props: {
             verticalAlign: 'middle',
           }}
         >
-          {stringResources[props.themeKey]}
+          {R[props.themeKey]}
         </Text>
         <View
           style={{

@@ -13,7 +13,7 @@ export default function __Display_RealTimeAccuracy__(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Input.GPSInput[language], []);
+  const R = useMemo(() => translations.Input.GPSInput[language], []);
   const { gpsON, enableCoordinate, enableAltitude} = props.features;
   const nothingEnable = enableCoordinate === false && enableAltitude === false;
 
@@ -26,17 +26,17 @@ export default function __Display_RealTimeAccuracy__(props: {
       <P
         style={{ color: theme.onBackground }}
       >
-        {stringResources['Real time accuracy:']}
+        {R['Real time accuracy:']}
       </P>
       {enableCoordinate && props.accuracy.coordinate !== null && (
         <AccuracyInfo
-          title={stringResources['Coordinates']}
+          title={R['Coordinates']}
           precision={props.accuracy.coordinate}
         />
       )}
       {enableAltitude && props.accuracy.altitude !== null && (
         <AccuracyInfo
-          title={stringResources['Altitude']}
+          title={R['Altitude']}
           precision={props.accuracy.altitude}
         />
       )}

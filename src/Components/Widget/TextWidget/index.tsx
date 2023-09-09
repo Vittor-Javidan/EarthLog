@@ -18,7 +18,7 @@ export default function TextWidget(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
+  const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCloning(props.widgetData));
   const [showGPS, setShowGPS] = useState<boolean>(widgetData.gps !== undefined);
@@ -28,13 +28,13 @@ export default function TextWidget(props: {
   function validateConfirm(widgetData: TextWidgetData) {
 
     if (WidgetRules.noSpaces(widgetData)) {
-      alert(stringResources['Value cannot have empty spaces.']);
+      alert(R['Value cannot have empty spaces.']);
       setIsDataWrong(true);
       return;
     }
 
     if (WidgetRules.noSpecialLetters(widgetData)) {
-      alert(stringResources['only numbers, and letter from "a" to "z" or "A" to "Z" is allow.']);
+      alert(R['only numbers, and letter from "a" to "z" or "A" to "Z" is allow.']);
       setIsDataWrong(true);
       return;
     }
@@ -124,7 +124,7 @@ export default function TextWidget(props: {
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={stringResources['Write anything here...']}
+          placeholder={R['Write anything here...']}
           locked={false}
           onChangeText={(text) => onTextChange(text)}
         />
@@ -191,7 +191,7 @@ function Modal(props: {
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.TextWidget[language], []);
+  const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [label, setLabel] = useState<string>(props.widgetData.name);
   const [value, setValue] = useState<string>(props.widgetData.value);
@@ -230,21 +230,21 @@ function Modal(props: {
         }}
       >
         <Layout.Input.String
-          label={stringResources['Widget Name']}
+          label={R['Widget Name']}
           backgroundColor={theme.background}
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write widget name here...']}
+          placeholder={R['Write widget name here...']}
           value={label}
           locked={!rules.allowLabelChange}
           onChangeText={(text) => setLabel(text)}
         />
         <Layout.Input.String
-          label={stringResources['Text']}
+          label={R['Text']}
           backgroundColor={theme.background}
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write anything here...']}
+          placeholder={R['Write anything here...']}
           value={value}
           locked={!rules.allowValueChange}
           onChangeText={(text) => setValue(text)}

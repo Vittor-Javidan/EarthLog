@@ -1,1 +1,1 @@
-# 0.1.1.21 API, LC and TC screen pattern
+# 0.1.1.22 All stringResources renamed to R

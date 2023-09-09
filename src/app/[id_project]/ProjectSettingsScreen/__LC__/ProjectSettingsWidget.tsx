@@ -21,7 +21,7 @@ export default function ProjectSettingsWidget() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
+  const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
   const [state, setState] = useState<States_Inputs_ProjectSettings>({
     projectSettings: UtilService.deepCloning(CacheService.getProjectFromCache(id_project)),
@@ -104,7 +104,7 @@ export default function ProjectSettingsWidget() {
               color: theme.onSecondary,
             }}
           >
-            {stringResources['Project info']}
+            {R['Project info']}
           </Layout.Text.P>
         </Layout.View>
         {!state.showGPS && (
@@ -133,7 +133,7 @@ export default function ProjectSettingsWidget() {
         }}
       >
         <Layout.Input.String
-          label={stringResources['ID']}
+          label={R['ID']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
@@ -143,11 +143,11 @@ export default function ProjectSettingsWidget() {
           onChangeText={() => {}}
         />
         <Layout.Input.String
-          label={stringResources['Name']}
+          label={R['Name']}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={stringResources['Write the project name here...']}
+          placeholder={R['Write the project name here...']}
           value={state.projectSettings.name}
           locked={!state.projectSettings.rules.allowNameChange}
           onChangeText={(text) => onNameChange(text)}

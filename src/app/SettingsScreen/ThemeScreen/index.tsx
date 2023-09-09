@@ -16,7 +16,7 @@ import { TC } from './__TC__';
 export default function ThemeScreen(): JSX.Element {
 
   const { language } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
-  const stringResources = useMemo(() => translations.Screens.ThemeScreen[language], []);
+  const R = useMemo(() => translations.Screens.ThemeScreen[language], []);
 
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
@@ -28,7 +28,7 @@ export default function ThemeScreen(): JSX.Element {
 
   return (
     <Layout.Root
-      title={stringResources['Theme']}
+      title={R['Theme']}
       drawerChildren={<TC.Drawer state={state} />}
       navigationTree={<TC.NavigationTree />}
       screenButtons={<TC.ScreenButtons />}
