@@ -1,8 +1,3 @@
-# rename all "stringResource" variables to "R"
-
-# fix the height for all widget labels and Project/Sample settings
-- Add a minimum height of 40, and set All iconButtons to 40 height
-
 # Boolean Input
   - Rename to True/False on UI, to be more user friendly.
   - Add a Not Applied option, using checkbox.

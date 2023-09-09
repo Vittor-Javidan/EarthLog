@@ -1,5 +1,5 @@
-import SampleSettingsWidgetCreation from './SampleSettingsWidgetCreation';
+import SampleSettingsWidget from './SampleSettingsWidget';
 
 export const LC = {
-  SampleSettingsWidgetCreation: SampleSettingsWidgetCreation,
+  SampleSettingsWidgetCreation: SampleSettingsWidget,
 };

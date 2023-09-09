@@ -66,6 +66,7 @@ function Label(props: {
         backgroundColor: props.wrongData ? theme.wrong : theme.secondary,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+        minHeight: 40,
       }}
     >
       <View

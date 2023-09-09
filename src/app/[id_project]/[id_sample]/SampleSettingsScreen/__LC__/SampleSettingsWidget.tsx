@@ -82,6 +82,7 @@ export default function SampleSettingsWidget() {
           backgroundColor: theme.secondary,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
+          minHeight: 40,
         }}
       >
         <Layout.View

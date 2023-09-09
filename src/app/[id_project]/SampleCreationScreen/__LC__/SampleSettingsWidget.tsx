@@ -8,7 +8,7 @@ import { Layout } from '@Components/Layout';
 import { GPS_DTO } from '@Types/index';
 import { API } from '../__API__';
 
-export default function SampleSettingsWidgetCreation() {
+export default function SampleSettingsWidget() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
@@ -49,6 +49,7 @@ export default function SampleSettingsWidgetCreation() {
           backgroundColor: theme.secondary,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
+          minHeight: 40,
         }}
       >
         <Layout.Text.P
