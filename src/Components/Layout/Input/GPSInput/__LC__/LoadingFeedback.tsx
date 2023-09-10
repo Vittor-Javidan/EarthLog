@@ -7,7 +7,7 @@ import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
 
-export default function __LoadingFeedback_(props: {
+export default function LoadingFeedback(props: {
   features: GPSFeaturesDTO
 }) {
 

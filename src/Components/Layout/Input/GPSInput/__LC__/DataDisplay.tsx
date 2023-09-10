@@ -6,19 +6,28 @@ import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
 
-export default function __DisplayDataStatic__(props: {
+export default function DataDisplay(props: {
   gpsData: GPS_DTO
   features: GPSFeaturesDTO
 }) {
 
   const { coordinates, altitude } = props.gpsData;
+  const { editMode } = props.features;
 
   const showStaticDisplay =
-    (
-      coordinates !== undefined ||
-      altitude    !== undefined
-    )
+    coordinates !== undefined ||
+    altitude    !== undefined
   ;
+
+  const showNothing =
+    editMode    === false     &&
+    coordinates === undefined &&
+    altitude    === undefined
+  ;
+
+  if (showNothing) {
+    return <></>;
+  }
 
   return (<>
     {showStaticDisplay && (

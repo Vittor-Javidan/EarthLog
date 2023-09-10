@@ -2,15 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
-import GPSService, { GPSWatcherService } from '@Services/GPSService';
-
-import InputRoot from '../Root';
-import IconButtons from './IconButtons';
-import { LC } from './__LocalComponents__';
 import AlertService from '@Services/AlertService';
 import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
+import { GPSWatcherService } from '@Services/GPSService';
+
+import InputRoot from '../Root';
+import { LC } from './__LC__';
+import { TC } from './__TC__';
 
 export default function GPSInput(props: {
   label: string
@@ -25,8 +25,11 @@ export default function GPSInput(props: {
 
   const { language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Input.GPSInput[language], []);
-  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCloning(props.gpsData)), []);
-  const [localGPSData, setLocalGPSData] = useState<GPS_DTO>(UtilService.deepCloning(props.gpsData));
+  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.gpsData)), []);
+
+  const [gpsData, setGPSData] = useState<GPS_DTO>(
+    UtilService.deepCopy(props.gpsData)
+  );
 
   const [accuracy, setAccuracy] = useState<GPSAccuracyDTO>({
     coordinate: null,
@@ -40,15 +43,17 @@ export default function GPSInput(props: {
     enableAltitude: true,
   });
 
+  const noGPSData = Object.keys(gpsData).length <= 0;
+
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher();};
   }, []);
 
-  useSincronizeGPSData(() => {
-    gpsWatcher.setGpsData(UtilService.deepCloning(props.gpsData));
+  useEffect(() => {
+    gpsWatcher.setGpsData(props.gpsData);
     gpsWatcher.enableAltitude(true);
     gpsWatcher.enableCoordinates(true);
-    setLocalGPSData(props.gpsData);
+    setGPSData(UtilService.deepCopy(props.gpsData));
     setFeatures(prev => ({
       ...prev,
       editMode: false,
@@ -58,31 +63,23 @@ export default function GPSInput(props: {
   }, [props.gpsData]);
 
   function toogleCoordinate(checked: boolean) {
-    if (checked) {
-      gpsWatcher.enableCoordinates(true);
-      setFeatures(prev => ({ ...prev, enableCoordinate: true }));
-    } else {
-      gpsWatcher.enableCoordinates(false);
-      setFeatures(prev => ({ ...prev, enableCoordinate: false }));
-      setLocalGPSData(prev => {
-        const newData = { ...prev };
-        if (newData.coordinates !== undefined) { delete newData.coordinates; }
-        return newData;
+    gpsWatcher.enableCoordinates(checked);
+    setFeatures(prev => ({ ...prev, enableCoordinate: checked }));
+    if (!checked) {
+      setGPSData(prev => {
+        if (prev.coordinates !== undefined) { delete prev.coordinates; }
+        return { ...prev };
       });
     }
   }
 
   function toogleAltitude(checked: boolean) {
-    if (checked) {
-      gpsWatcher.enableAltitude(true);
-      setFeatures(prev => ({ ...prev, enableAltitude: true }));
-    } else {
-      gpsWatcher.enableAltitude(false);
-      setFeatures(prev => ({ ...prev, enableAltitude: false }));
-      setLocalGPSData(prev => {
-        const newData: GPS_DTO = { ...prev };
-        if (newData.altitude !== undefined) { delete newData.altitude; }
-        return newData;
+    gpsWatcher.enableAltitude(checked);
+    setFeatures(prev => ({ ...prev, enableAltitude: checked }));
+    if (!checked) {
+      setGPSData(prev => {
+        if (prev.altitude !== undefined) { delete prev.altitude; }
+        return { ...prev};
       });
     }
   }
@@ -90,37 +87,24 @@ export default function GPSInput(props: {
   function stopGPS() {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
-    props.onPress_Save(UtilService.deepCloning(localGPSData));
+    props.onPress_Save(UtilService.deepCopy(gpsData));
   }
 
   async function startGPS() {
-    const noGPSData = Object.keys(localGPSData).length <= 0;
     await AlertService.handleAlert(
       noGPSData === false,
       R['current saved data will be replaced. Are you sure?'],
       async () => {
-        await GPSService.getPermission(async () => {
-          await gpsWatcher.watchPositionAsync(
-            (gpsData) => setLocalGPSData(gpsData),
-            (accuracy) => setAccuracy(accuracy)
-          );
-          setFeatures(prev => ({ ...prev, gpsON: true }));
-        });
+        await gpsWatcher.watchPositionAsync(
+          (gpsData) => setGPSData(gpsData),
+          (accuracy) => setAccuracy(accuracy)
+        );
+        setFeatures(prev => ({ ...prev, gpsON: true }));
       }
     );
   }
 
-  async function saveManualInput(newGPSData: GPS_DTO) {
-    const noGPSData = Object.keys(localGPSData).length <= 0;
-    await AlertService.handleAlert(
-      noGPSData === false,
-      R['current saved data will be replaced. Are you sure?'],
-      () => props.onPress_Save(newGPSData)
-    );
-  }
-
   async function onDelete() {
-    const noGPSData = Object.keys(localGPSData).length <= 0;
     await AlertService.handleAlert(
       noGPSData === false,
       R['current saved data will be erased. Are you sure?'],
@@ -140,7 +124,7 @@ export default function GPSInput(props: {
       },props.style]}
 
       iconButtons={
-        <IconButtons
+        <TC.IconButtons
           hideDeleteButton={props.hideDeleteButton}
           features={features}
           onPress_TrashButton={async () => await onDelete()}
@@ -156,7 +140,7 @@ export default function GPSInput(props: {
         onToogle_Altitude={(checked) => toogleAltitude(checked)}
       />
       <LC.DataDisplay
-        gpsData={localGPSData}
+        gpsData={gpsData}
         features={features}
       />
       <LC.Display_RealTimeAccuracy
@@ -168,26 +152,11 @@ export default function GPSInput(props: {
       />
       {features.editMode === true && (
         <LC.ManualInput
+          noGPSData={noGPSData === false}
           features={features}
-          onConfirm={async (newGPSData) => await saveManualInput(newGPSData)}
+          onConfirm={(newGPSData) => props.onPress_Save(newGPSData)}
         />
       )}
     </InputRoot>
   </>);
-}
-
-/**
- *  - This hook exist only for the purpose of syncronize external gpsData with localGPSData.
- *  - LocalGPSData purpose is to update current component without triggering parent
- *  components, so it's possible to cancel any changes during usage.
- */
-function useSincronizeGPSData(
-  callback: () => void,
-  deps: React.DependencyList | undefined
-) {
-  // Facade hook.
-  // Its pupose is to add documentation and give an alias to useEffect usage
-  useEffect(() => {
-    callback();
-  }, deps);
 }

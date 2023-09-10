@@ -7,7 +7,7 @@ import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
 
-export default function __Display_RealTimeAccuracy__(props: {
+export default function RealTimeAccuracy(props: {
   accuracy: GPSAccuracyDTO
   features: GPSFeaturesDTO
 }) {

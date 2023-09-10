@@ -25,7 +25,7 @@ export default function Modal(props: {
 
   const [state, setState] = useState<State>({
     label: props.widgetData.name,
-    gps: UtilService.deepCloning(props.widgetData.gps),
+    gps: UtilService.deepCopy(props.widgetData.gps),
   });
 
   function onConfirm() {

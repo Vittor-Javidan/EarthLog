@@ -19,8 +19,8 @@ export default class GPSService {
   ) {
 
     if (
-      reference === undefined                 ||
-      compareTo.gps === undefined
+      compareTo.gps === undefined ||
+      reference === undefined
     ) {
       return;
     }
@@ -61,8 +61,8 @@ export class GPSWatcherService {
     altitude: 10,
   };
 
-  constructor(initialGPSData: GPS_DTO) {
-    this.gpsData = initialGPSData;
+  constructor(gpsData: GPS_DTO) {
+    this.gpsData = UtilService.deepCopy(gpsData);
   }
 
   enableCoordinates(boolean: boolean) {
@@ -79,8 +79,8 @@ export class GPSWatcherService {
     }
   }
 
-  setGpsData(initialGPSData: GPS_DTO) {
-    this.gpsData = initialGPSData;
+  setGpsData(gpsData: GPS_DTO) {
+    this.gpsData = UtilService.deepCopy(gpsData);
   }
 
   async watchPositionAsync(
@@ -96,25 +96,28 @@ export class GPSWatcherService {
       let newDataAvailable: boolean = false;
       this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
       this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-      if (newDataAvailable) { callback(UtilService.deepCloning(this.gpsData)); }
+      if (newDataAvailable) { callback(UtilService.deepCopy(this.gpsData)); }
     };
 
-    if (Platform.OS === 'ios' && this.iosInterval === null) {
-      await this.iosWatcher(
-      {
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 1,
-      }, (coordinates) => sendData(coordinates));
-      return;
-    }
+    await GPSService.getPermission(async () => {
 
-    if (this.androidLocationSubscription === null) {
-      await this.androidWatcher({
-        accuracy: Location.Accuracy.BestForNavigation,
-        timeInterval: 500,
-      }, (coordinates) => sendData(coordinates));
-      return;
-    }
+      if (Platform.OS === 'ios' && this.iosInterval === null) {
+        await this.iosWatcher(
+        {
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 1,
+        }, (coordinates) => sendData(coordinates));
+        return;
+      }
+
+      if (this.androidLocationSubscription === null) {
+        await this.androidWatcher({
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 500,
+        }, (coordinates) => sendData(coordinates));
+        return;
+      }
+    });
   }
 
   stopWatcher() {

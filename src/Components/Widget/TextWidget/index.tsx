@@ -22,7 +22,7 @@ export default function TextWidget(props: {
   const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
   const [state, setState] = useState({
-    widgetData: UtilService.deepCloning(props.widgetData),
+    widgetData: UtilService.deepCopy(props.widgetData),
     showGPS: props.widgetData.gps !== undefined,
     showModal: false,
     isDataWrong: false,

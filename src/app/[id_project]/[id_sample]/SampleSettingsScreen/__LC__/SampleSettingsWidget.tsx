@@ -23,7 +23,7 @@ export default function SampleSettingsWidget() {
   const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   const [state, setState] = useState<States_Inputs_SampleSettings>({
-    sampleSettings: UtilService.deepCloning(CacheService.getSampleFromCache(id_sample)),
+    sampleSettings: UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)),
     showGPS: CacheService.getSampleFromCache(id_sample).gps !== undefined,
     saved: true,
   });

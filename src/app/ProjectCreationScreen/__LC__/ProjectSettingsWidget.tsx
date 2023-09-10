@@ -30,8 +30,8 @@ export default function ProjectSettingsWidget() {
   }
 
   function onSaveGPS(gpsData: GPS_DTO) {
-    API.ProjectSettingsWidget.setGPS(UtilService.deepCloning(gpsData));
-    setGPSData(UtilService.deepCloning(gpsData));
+    API.ProjectSettingsWidget.setGPS(UtilService.deepCopy(gpsData));
+    setGPSData(UtilService.deepCopy(gpsData));
   }
 
   function onDeleteGPS() {

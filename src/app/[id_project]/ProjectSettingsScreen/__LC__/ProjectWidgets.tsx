@@ -43,7 +43,7 @@ function WidgetUnit(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const [state, setState] = useState<States_WidgetUnit>({
-    widgetData: UtilService.deepCloning(props.widgetData),
+    widgetData: UtilService.deepCopy(props.widgetData),
     saved: true,
   });
 

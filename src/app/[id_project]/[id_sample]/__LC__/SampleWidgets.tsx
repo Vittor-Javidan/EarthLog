@@ -46,7 +46,7 @@ function WidgetUnit(props: {
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [state, setState] = useState<States_WidgetUnit>({
-    widgetData: UtilService.deepCloning(props.widgetData),
+    widgetData: UtilService.deepCopy(props.widgetData),
     saved: true,
   });
 

@@ -24,7 +24,7 @@ export default function ProjectSettingsWidget() {
   const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
   const [state, setState] = useState<States_Inputs_ProjectSettings>({
-    projectSettings: UtilService.deepCloning(CacheService.getProjectFromCache(id_project)),
+    projectSettings: UtilService.deepCopy(CacheService.getProjectFromCache(id_project)),
     showGPS: CacheService.getProjectFromCache(id_project).gps !== undefined,
     saved: true,
   });
