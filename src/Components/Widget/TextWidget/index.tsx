@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import { GPS_DTO, TextWidgetData, WidgetAlertMessage, WidgetData } from '@Types/index';
+import { GPS_DTO, TextWidgetData, WidgetAlertMessage } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
@@ -8,6 +8,7 @@ import { WidgetRules } from '../Rules';
 
 import { Layout } from '@Components/Layout';
 import { WidgetComponent } from '@WidgetComponents/index';
+import Modal from './Modal';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
@@ -20,97 +21,137 @@ export default function TextWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
-  const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCloning(props.widgetData));
-  const [showGPS, setShowGPS] = useState<boolean>(widgetData.gps !== undefined);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
+  const [state, setState] = useState({
+    widgetData: UtilService.deepCloning(props.widgetData),
+    showGPS: props.widgetData.gps !== undefined,
+    showModal: false,
+    isDataWrong: false,
+  });
 
-  function validateConfirm(widgetData: TextWidgetData) {
+  function isDataValid(widgetData: TextWidgetData) {
 
     if (WidgetRules.noSpaces(widgetData)) {
       alert(R['Value cannot have empty spaces.']);
-      setIsDataWrong(true);
-      return;
+      return false;
     }
 
     if (WidgetRules.noSpecialLetters(widgetData)) {
       alert(R['only numbers, and letter from "a" to "z" or "A" to "Z" is allow.']);
-      setIsDataWrong(true);
-      return;
+      return false;
     }
 
-    setIsDataWrong(false);
-    props.onConfirm(widgetData);
+    return true;
   }
 
   function onConfirm_Modal(widgetData: TextWidgetData) {
-
-    setShowModal(false);
-
-    widgetData.gps !== undefined
-    ? setShowGPS(true)
-    : setShowGPS(false);
-
-    setWidgetData(widgetData);
-    validateConfirm(widgetData);
+    if (isDataValid(widgetData)) {
+      setState(({
+        widgetData: widgetData,
+        showModal: false,
+        showGPS: widgetData.gps !== undefined,
+        isDataWrong: false,
+      }));
+      props.onConfirm(widgetData);
+    } else {
+      setState(({
+        widgetData: widgetData,
+        showModal: false,
+        showGPS: widgetData.gps !== undefined,
+        isDataWrong: true,
+      }));
+    }
   }
 
   function onTextChange(text: string) {
-    const newData: WidgetData = {
-      ...widgetData,
-      value: text,
-      rules: {
-        ...widgetData.rules,
-      },
-    };
-    setWidgetData(newData);
-    validateConfirm(newData);
+    const newWidgetData = { ...state.widgetData, value: text };
+    if (isDataValid(newWidgetData)) {
+      setState(prev => ({
+        ...prev,
+        widgetData: newWidgetData,
+        isDataWrong: false,
+      }));
+      props.onConfirm(newWidgetData);
+    } else {
+      setState(prev => ({
+        ...prev,
+        widgetData: newWidgetData,
+        isDataWrong: true,
+      }));
+    }
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData = { ...widgetData, gps: newGPSData };
-    setWidgetData(newWidgetData);
+    const newWidgetData = { ...state.widgetData, gps: newGPSData };
+    setState(prev => ({
+      ...prev,
+      widgetData: newWidgetData,
+    }));
     props.onConfirm(newWidgetData);
   }
 
   function onDeleteGPS() {
-    if (widgetData.gps !== undefined) {
-      const newWidgetData = { ...widgetData };
-      delete newWidgetData.gps;
-      setWidgetData(newWidgetData);
-      props.onConfirm(newWidgetData);
+    if (state.widgetData.gps === undefined) {
+      return;
     }
-    setShowGPS(false);
+    const newWidgetData = { ...state.widgetData };
+    delete newWidgetData.gps;
+    setState(prev => ({
+      ...prev,
+      widgetData: newWidgetData,
+      showGPS: false,
+    }));
+    props.onConfirm(newWidgetData);
+  }
+
+  function openModal() {
+    setState(prev => ({
+      ...prev,
+      showModal: true,
+    }));
+  }
+
+  function closeModal() {
+    setState(prev => ({
+      ...prev,
+      showModal: false,
+    }));
+  }
+
+  function createGPS() {
+    setState(prev => ({
+      ...prev,
+      widgetData: { ...prev.widgetData, gps: {}},
+      showGPS: true,
+    }));
   }
 
   return (
     <WidgetComponent.Root
 
-      label={widgetData.name}
-      isDataWrong={isDataWrong}
-      showModal={showModal}
+      label={state.widgetData.name}
+      isDataWrong={state.isDataWrong}
+      showModal={state.showModal}
       statusFeedback={props.statusFeedback}
       alertMessages={props.alertMessages}
 
       iconButtons_Top={
         <IconButtons_Top
-          widgetData={widgetData}
-          showGPS={showGPS}
-          onPencilPress={() => setShowModal(true)}
-          onGPSPress={() => setShowGPS(true)}
+          widgetData={state.widgetData}
+          showGPS={state.showGPS}
+          onPencilPress={() => openModal()}
+          onGPSPress={() => createGPS()}
         />
       }
 
       modal={
         <Modal
-          widgetData={widgetData}
+          widgetData={state.widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
-          onRequestClose={() => setShowModal(false)}
+          onRequestClose={() => closeModal()}
         />
       }
     >
-
       <Layout.View
         style={{
           paddingVertical: 5,
@@ -119,7 +160,7 @@ export default function TextWidget(props: {
       >
         <Layout.Input.String
           label={''}
-          value={widgetData.value}
+          value={state.widgetData.value}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
@@ -127,10 +168,10 @@ export default function TextWidget(props: {
           locked={false}
           onChangeText={(text) => onTextChange(text)}
         />
-        {showGPS && widgetData.gps !== undefined && (
+        {state.showGPS && state.widgetData.gps !== undefined && (
           <Layout.Input.GPS
             label="GPS"
-            gpsData={widgetData.gps}
+            gpsData={state.widgetData.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             onPress_Delete={() => onDeleteGPS()}
@@ -138,7 +179,6 @@ export default function TextWidget(props: {
           />
         )}
       </Layout.View>
-
     </WidgetComponent.Root>
   );
 }
@@ -179,105 +219,4 @@ function IconButtons_Top(props: {
       />
     )}
   </>);
-}
-
-function Modal(props: {
-  widgetData: TextWidgetData
-  onConfirm: (value: TextWidgetData) => void
-  onDelete: () => void
-  onRequestClose: () => void
-}) {
-
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Widgets.TextWidget[language], []);
-
-  const [label, setLabel] = useState<string>(props.widgetData.name);
-  const [value, setValue] = useState<string>(props.widgetData.value);
-  const [gpsData, setGPSData] = useState<GPS_DTO | undefined>(props.widgetData.gps);
-
-  const { rules } = props.widgetData;
-
-  function onConfirm() {
-
-    const newWidgetData: TextWidgetData = {
-      id_widget: props.widgetData.id_widget,
-      name: label,
-      type: 'text',
-      value: value,
-      rules: { ...props.widgetData.rules },
-    };
-
-    if (gpsData !== undefined) {
-      newWidgetData.gps = gpsData;
-    }
-
-    props.onConfirm(newWidgetData);
-  }
-
-  return (
-    <WidgetComponent.Modal
-      title={label}
-      widgetData={props.widgetData}
-      onConfirm={() => onConfirm()}
-      onDelete={props.onDelete}
-      onRequestClose={props.onRequestClose}
-    >
-      <Layout.View
-        style={{
-          gap: 10,
-        }}
-      >
-        <Layout.Input.String
-          label={R['Widget Name']}
-          backgroundColor={theme.background}
-          color={theme.onBackground}
-          color_placeholder={theme.onBackground_Placeholder}
-          placeholder={R['Write widget name here...']}
-          value={label}
-          locked={!rules.allowLabelChange}
-          onChangeText={(text) => setLabel(text)}
-        />
-        <Layout.Input.String
-          label={R['Text']}
-          backgroundColor={theme.background}
-          color={theme.onBackground}
-          color_placeholder={theme.onBackground_Placeholder}
-          placeholder={R['Write anything here...']}
-          value={value}
-          locked={!rules.allowValueChange}
-          onChangeText={(text) => setValue(text)}
-        />
-        {gpsData === undefined ? (
-          <Layout.View
-            style={{
-              alignItems: 'flex-end',
-              marginHorizontal: 10,
-            }}
-          >
-            <Layout.Button.Icon
-              iconName="location"
-              color_background={theme.secondary}
-              color={theme.onSecondary}
-              onPress={() => setGPSData({})}
-              style={{
-                borderRadius: 10,
-                height: 40,
-                width: 80,
-              }}
-            />
-          </Layout.View>
-        ) : (
-          <Layout.Input.GPS
-            label="GPS"
-            gpsData={gpsData}
-            backgroundColor={theme.background}
-            color={theme.onBackground}
-            onPress_Delete={() => setGPSData(undefined)}
-            onPress_Save={(newGPSData) => setGPSData(newGPSData)}
-            style={{ borderRadius: 10 }}
-          />
-        )}
-      </Layout.View>
-    </WidgetComponent.Modal>
-  );
 }

@@ -1,5 +1,6 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.1.27 GPSInput refactor
+# 0.1.1.28 String Input refactor
 
-- Removed "color_placeholder" prop from all GPSInputs
+- Now TextWidget and its modal has a single state.
+- GPS code security improved on TexWidget modal
