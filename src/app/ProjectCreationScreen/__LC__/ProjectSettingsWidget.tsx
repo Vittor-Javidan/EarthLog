@@ -112,7 +112,6 @@ export default function ProjectSettingsWidget() {
             gpsData={gpsData ?? {}}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => onDeleteGPS()}
             onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
           />

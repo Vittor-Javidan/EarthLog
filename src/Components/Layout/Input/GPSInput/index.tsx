@@ -17,7 +17,6 @@ export default function GPSInput(props: {
   gpsData: GPS_DTO,
   backgroundColor?: string
   color?: string
-  color_placeholder?: string
   hideDeleteButton?: boolean
   style?: StyleProp<ViewStyle>
   onPress_Save: (gpsData: GPS_DTO) => void

@@ -140,7 +140,6 @@ export default function BooleanWidget(props: {
             gpsData={state.widgetData.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => onDeleteGPS()}
             onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
           />
@@ -282,7 +281,6 @@ function Modal(props: {
             gpsData={state.gpsData}
             backgroundColor={theme.background}
             color={theme.onBackground}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => setState(prev => ({ ...prev, gpsData: undefined }))}
             onPress_Save={(newGPSData) => setState(prev => ({ ...prev, gpsData: newGPSData }))}
           />

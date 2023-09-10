@@ -1,3 +1,5 @@
-# 0.1.1.26 String Input Refactor
+// Before any commit, use the command line: tsc --noEmit
 
-- String input now uses the InputRoot component
+# 0.1.1.27 GPSInput refactor
+
+- Removed "color_placeholder" prop from all GPSInputs

@@ -133,7 +133,6 @@ export default function TextWidget(props: {
             gpsData={widgetData.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => onDeleteGPS()}
             onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
           />
@@ -273,7 +272,6 @@ function Modal(props: {
             gpsData={gpsData}
             backgroundColor={theme.background}
             color={theme.onBackground}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => setGPSData(undefined)}
             onPress_Save={(newGPSData) => setGPSData(newGPSData)}
             style={{ borderRadius: 10 }}

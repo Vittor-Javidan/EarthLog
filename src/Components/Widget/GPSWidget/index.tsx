@@ -80,7 +80,6 @@ export default function GPSWidget(props: {
           gpsData={widgetData.gps}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
-          color_placeholder={theme.onBackground_Placeholder}
           onPress_Delete={() => onDeleteGPS()}
           onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
         />
@@ -164,7 +163,6 @@ function Modal(props: {
           gpsData={gps}
           backgroundColor={theme.background}
           color={theme.onBackground}
-          color_placeholder={theme.onBackground_Placeholder}
           onPress_Delete={() => setGPS({})}
           onPress_Save={(newGPSData) => setGPS(newGPSData)}
         />

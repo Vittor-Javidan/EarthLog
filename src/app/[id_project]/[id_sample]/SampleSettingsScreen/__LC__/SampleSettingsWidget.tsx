@@ -158,7 +158,6 @@ export default function SampleSettingsWidget() {
             gpsData={state.sampleSettings.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
-            color_placeholder={theme.onBackground_Placeholder}
             onPress_Delete={() => onDeleteGPS()}
             onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
           />
