@@ -1,7 +1,3 @@
-# 0.1.1.24 Inputs and Widgets Redesign
+# 0.1.1.25 InputRoot Quick Fix
 
-- Text and Boolean Widgets gpsInput now shows only when gps is not undefined.
-- Boolean Input switch now stays inside the input area.
-- Boolean values now has colors.
-- allowWidgetCreation_Sample ProjectSettings rule removed.
-- Added comments on type for future documentation.
+- noLabel was inverted boolean value.

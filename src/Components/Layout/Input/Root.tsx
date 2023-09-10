@@ -17,7 +17,7 @@ export default function InputRoot(props: {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
-  const noLabel = props.label !== undefined && props.label !== '';
+  const noLabel = props.label === undefined || props.label === '';
   const noIconButtons = props.iconButtons === undefined;
 
   const backgroundColor = props.backgroundColor ?? theme.background;
