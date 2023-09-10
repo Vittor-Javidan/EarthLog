@@ -1,3 +1,5 @@
+- remove placeholder color from GPSInput
+
 # Text Widget
   - convert to have only one state.
   - add an empty object on GPS when GPS iconButton is clicked. 

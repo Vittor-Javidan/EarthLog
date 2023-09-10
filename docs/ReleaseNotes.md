@@ -1,3 +1,3 @@
-# 0.1.1.25 InputRoot Quick Fix
+# 0.1.1.26 String Input Refactor
 
-- noLabel was inverted boolean value.
+- String input now uses the InputRoot component

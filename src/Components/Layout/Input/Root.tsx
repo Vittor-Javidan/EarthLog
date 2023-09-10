@@ -9,10 +9,9 @@ export default function InputRoot(props: {
   label?: string
   backgroundColor?: string
   color?: string
-  color_placeholder?: string
   iconButtons?: JSX.Element
   children?: ReactNode
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
