@@ -1,12 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { Switch, Platform } from 'react-native';
 
-
-import { Layout } from '@Components/Layout';
 import { BooleanWidgetData, GPS_DTO, WidgetAlertMessage } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
+import { Layout } from '@Components/Layout';
 import { WidgetComponent } from '../Components';
 
 export default function BooleanWidget(props: {
@@ -17,119 +15,137 @@ export default function BooleanWidget(props: {
   onDelete: () => void
 }) {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Widgets.BooleanWidget[language], []);
-
-  const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
-  const [showGPS, setShowGPS] = useState<boolean>(widgetData.gps !== undefined);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
+  const { theme } = useMemo(() => ConfigService.config, []);
+  const [state, setState] = useState({
+    widgetData: props.widgetData,
+    showGPS: props.widgetData.gps !== undefined,
+    showModal: false,
+    isDataWrong: false,
+  });
 
   function onConfirm_Modal(widgetData: BooleanWidgetData) {
 
-    setShowModal(false);
-
-    widgetData.gps !== undefined
-    ? setShowGPS(true)
-    : setShowGPS(false);
-
-    if (showModal) {
-      setIsDataWrong(false);
-      setWidgetData(widgetData);
+    if (state.showModal) {
+      setState(prev => ({
+        ...prev,
+        widgetData: widgetData,
+        showGPS: widgetData.gps !== undefined,
+        showModal: false,
+        isDataWrong: false,
+      }));
       props.onConfirm(widgetData);
+    } else {
+      setState(prev => ({
+        ...prev,
+        showGPS: widgetData.gps !== undefined,
+        showModal: false,
+      }));
     }
   }
 
   function onSwitchChange(boolean: boolean) {
-    const newWidgetData = { ...widgetData, value: boolean };
-    setWidgetData(newWidgetData);
+    const newWidgetData: BooleanWidgetData = { ...state.widgetData, value: boolean };
+    setState(prev => ({
+      ...prev,
+      widgetData: newWidgetData,
+    }));
+    props.onConfirm(newWidgetData);
+  }
+
+  function onNotApplicableChange(boolean: boolean) {
+    const newWidgetData: BooleanWidgetData = { ...state.widgetData, notApplicable: boolean };
+    setState(prev => ({
+      ...prev,
+      widgetData: newWidgetData,
+    }));
     props.onConfirm(newWidgetData);
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData = { ...widgetData, gps: newGPSData };
-    setWidgetData(newWidgetData);
+    const newWidgetData: BooleanWidgetData = { ...state.widgetData, gps: newGPSData };
+    setState(prev => ({
+      ...prev,
+      widgetData: newWidgetData,
+    }));
     props.onConfirm(newWidgetData);
   }
 
   function onDeleteGPS() {
-    if (widgetData.gps !== undefined) {
-      const newWidgetData = { ...widgetData };
+    if (state.widgetData.gps !== undefined) {
+      const newWidgetData: BooleanWidgetData = { ...state.widgetData };
       delete newWidgetData.gps;
-      setWidgetData(newWidgetData);
+      setState(prev => ({
+        ...prev,
+        widgetData: newWidgetData,
+        showGPS: false,
+      }));
       props.onConfirm(newWidgetData);
     }
-    setShowGPS(false);
+  }
+
+  function onGPSCreate() {
+    setState(prev => ({
+      ...prev,
+      showGPS: true,
+      widgetData: { ...prev.widgetData, gps: {}},
+    }));
   }
 
   return (<>
     <WidgetComponent.Root
 
-      label={widgetData.name}
-      isDataWrong={isDataWrong}
-      showModal={showModal}
+      label={state.widgetData.name}
+      isDataWrong={state.isDataWrong}
+      showModal={state.showModal}
       statusFeedback={props.statusFeedback}
       alertMessages={props.alertMessages}
 
       iconButtons_Top={
         <IconButtons_Top
-          widgetData={widgetData}
-          showGPS={showGPS}
-          onPencilPress={() => setShowModal(true)}
-          onGPSPress={() => setShowGPS(true)}
+          widgetData={state.widgetData}
+          showGPS={state.showGPS}
+          onPencilPress={() => setState(prev => ({ ...prev, showModal: true }))}
+          onGPSPress={() => onGPSCreate()}
         />
       }
 
       modal={
         <Modal
-          widgetData={widgetData}
+          widgetData={state.widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
-          onRequestClose={() => setShowModal(false)}
+          onRequestClose={() => setState(prev => ({ ...prev, showModal: false }))}
         />
       }
     >
-
       <Layout.View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 40,
-          paddingHorizontal: 10,
+          paddingVertical: 5,
+          gap: 10,
         }}
       >
-        <Layout.Text.P
-          style={{
-            color: theme.onTertiary,
-          }}
-        >
-          {R[`${widgetData.value}`]}
-        </Layout.Text.P>
-        <Switch
-          style={{
-            paddingHorizontal: 0,
-            transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }],
-          }}
-          trackColor={{ false: theme.wrong, true: theme.confirm }}
-          ios_backgroundColor={theme.wrong}
-          value={widgetData.value}
-          onValueChange={(boolean) => onSwitchChange(boolean)}
-        />
-      </Layout.View>
-      {showGPS && (
-        <Layout.Input.GPS
-          label="GPS"
-          gpsData={widgetData.gps ?? {}}
+        <Layout.Input.Boolean
+          label=""
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
-          color_placeholder={theme.onBackground_Placeholder}
-          onPress_Delete={() => onDeleteGPS()}
-          onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
-          style={{ marginBottom: 10 }}
+          value={state.widgetData.value}
+          notApplicable={state.widgetData.notApplicable}
+          locked={!state.widgetData.rules.allowValueChange}
+          onSwitchChange={(boolean) => onSwitchChange(boolean)}
+          onNotApplicableChange={(boolean) => onNotApplicableChange(boolean)}
         />
-      )}
-
+        {state.showGPS && state.widgetData.gps !== undefined && (
+          <Layout.Input.GPS
+            label="GPS"
+            gpsData={state.widgetData.gps}
+            backgroundColor={theme.tertiary}
+            color={theme.onTertiary}
+            color_placeholder={theme.onBackground_Placeholder}
+            onPress_Delete={() => onDeleteGPS()}
+            onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
+          />
+        )}
+      </Layout.View>
     </WidgetComponent.Root>
   </>);
 }
@@ -182,9 +198,12 @@ function Modal(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Widgets.BooleanWidget[language], []);
 
-  const [label, setLabel] = useState<string>(props.widgetData.name);
-  const [value, setValue] = useState<boolean>(props.widgetData.value);
-  const [gpsData, setGPSData] = useState<GPS_DTO | undefined>(props.widgetData.gps);
+  const [state, setState] = useState({
+    label: props.widgetData.name,
+    value: props.widgetData.value,
+    notApplicable: props.widgetData.notApplicable,
+    gpsData: props.widgetData.gps,
+  });
 
   const { rules } = props.widgetData;
 
@@ -192,14 +211,14 @@ function Modal(props: {
 
     const newWidgetData: BooleanWidgetData = {
       id_widget: props.widgetData.id_widget,
-      name: label,
+      name: state.label,
       type: 'boolean',
-      value: value,
+      value: state.value,
       rules: { ...props.widgetData.rules },
     };
 
-    if (gpsData !== undefined) {
-      newWidgetData.gps = gpsData;
+    if (state.gpsData !== undefined) {
+      newWidgetData.gps = state.gpsData;
     }
 
     props.onConfirm(newWidgetData);
@@ -207,7 +226,7 @@ function Modal(props: {
 
   return (
     <WidgetComponent.Modal
-      title={label}
+      title={state.label}
       widgetData={props.widgetData}
       onConfirm={() => onConfirm()}
       onDelete={() => props.onDelete()}
@@ -224,19 +243,21 @@ function Modal(props: {
           color={theme.onBackground}
           color_placeholder={theme.onBackground_Placeholder}
           placeholder={R['Write widget name here...']}
-          value={label}
+          value={state.label}
           locked={!rules.allowLabelChange}
-          onChangeText={(text) => setLabel(text)}
+          onChangeText={(text) => setState(prev => ({ ...prev, label: text }))}
         />
         <Layout.Input.Boolean
           label={R['Value']}
           backgroundColor={theme.background}
           color={theme.onBackground}
-          value={value}
+          value={state.value}
+          notApplicable={state.notApplicable}
           locked={!rules.allowValueChange}
-          onSwitchChange={(boolean) => setValue(boolean)}
+          onSwitchChange={(boolean) => setState(prev => ({ ...prev, value: boolean }))}
+          onNotApplicableChange={(boolean) => setState(prev => ({ ...prev, notApplicable: boolean }))}
         />
-        {gpsData === undefined ? (
+        {state.gpsData === undefined ? (
           <Layout.View
             style={{
               alignItems: 'flex-end',
@@ -247,7 +268,7 @@ function Modal(props: {
               iconName="location"
               color_background={theme.secondary}
               color={theme.onSecondary}
-              onPress={() => setGPSData({})}
+              onPress={() => setState(prev => ({ ...prev, gpsData: {} }))}
               style={{
                 borderRadius: 10,
                 height: 40,
@@ -258,12 +279,12 @@ function Modal(props: {
         ) : (
           <Layout.Input.GPS
             label="GPS"
-            gpsData={gpsData}
+            gpsData={state.gpsData}
             backgroundColor={theme.background}
             color={theme.onBackground}
             color_placeholder={theme.onBackground_Placeholder}
-            onPress_Delete={() => setGPSData(undefined)}
-            onPress_Save={(newGPSData) => setGPSData(newGPSData)}
+            onPress_Delete={() => setState(prev => ({ ...prev, gpsData: undefined }))}
+            onPress_Save={(newGPSData) => setState(prev => ({ ...prev, gpsData: newGPSData }))}
           />
         )}
       </Layout.View>

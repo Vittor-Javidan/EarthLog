@@ -71,7 +71,7 @@ export default function AddWidgetButton(props: {
               }}
             >
               <Layout.Button.Text
-                title={R['Boolean']}
+                title={R['True/False']}
                 color_background={theme.tertiary}
                 color_font={theme.onTertiary}
                 onPress={() => onPress('boolean')}

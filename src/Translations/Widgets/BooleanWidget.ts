@@ -1,6 +1,7 @@
 import { Languages } from '@Types/index';
 
 export type Translations_BooleanWidget = Record<Languages, {
+  'T/F': string
   'Widget name': string
   'Write widget name here...': string
   'Value': string
@@ -10,6 +11,7 @@ export type Translations_BooleanWidget = Record<Languages, {
 
 export const translations_BooleanWidget: Translations_BooleanWidget = {
   'en-US': {
+    'T/F': 'True/False',
     'Widget name': 'Widget name',
     'Write widget name here...': 'Write widget name here...',
     'Value': 'Value',
@@ -17,6 +19,7 @@ export const translations_BooleanWidget: Translations_BooleanWidget = {
     'false': 'FALSE',
   },
   'pt-BR': {
+    'T/F': 'Verdadeiro/Falso',
     'Widget name': 'Nome do Widget',
     'Write widget name here...': 'Escreva o nome do widget aqui...',
     'Value': 'Valor',

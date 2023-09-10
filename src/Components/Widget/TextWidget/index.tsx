@@ -114,7 +114,6 @@ export default function TextWidget(props: {
       <Layout.View
         style={{
           paddingVertical: 5,
-          paddingBottom: 10,
           gap: 10,
         }}
       >
@@ -128,10 +127,10 @@ export default function TextWidget(props: {
           locked={false}
           onChangeText={(text) => onTextChange(text)}
         />
-        {showGPS && (
+        {showGPS && widgetData.gps !== undefined && (
           <Layout.Input.GPS
             label="GPS"
-            gpsData={widgetData.gps ?? {}}
+            gpsData={widgetData.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             color_placeholder={theme.onBackground_Placeholder}

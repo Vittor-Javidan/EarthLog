@@ -17,7 +17,6 @@ export default function ScreenButtons() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules: rules_project } = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const { rules: rules_sample } = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   async function onCreateWidget(widgetData: WidgetData) {
@@ -33,11 +32,6 @@ export default function ScreenButtons() {
     );
   }
 
-  const allowWidgetCreation = (
-    rules_project.allowWidgetCreation_Sample === true ||
-    rules_sample.allowWidgetCreation === true
-  );
-
   return (
     <Layout.ScreenButtons
       button_left={
@@ -49,7 +43,7 @@ export default function ScreenButtons() {
           onPress={() => navigate('PROJECT SCREEN', id_project)}
         />
       }
-      button_right={allowWidgetCreation ? (
+      button_right={rules_sample.allowWidgetCreation === true ? (
         <Widget.AddWidgetButton
           onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
         />

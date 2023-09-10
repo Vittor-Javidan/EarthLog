@@ -135,7 +135,10 @@ export default function GPSInput(props: {
       backgroundColor={props.backgroundColor}
       color={props.color}
       color_placeholder={props.color_placeholder}
-      style={[{ gap: 10 }, props.style]}
+      style={[{
+        paddingVertical: 10,
+        gap: 10,
+      },props.style]}
       iconButtons={
         <IconButtons
           hideDeleteButton={props.hideDeleteButton}

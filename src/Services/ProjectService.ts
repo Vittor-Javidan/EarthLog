@@ -24,7 +24,6 @@ export default class ProjectService {
           allowSampleCreation: true,
           allowWidgetCreation_Project: true,
           allowWidgetCreation_Template: true,
-          allowWidgetCreation_Sample: true,
         },
       },
       projectWidgets: [],
@@ -52,6 +51,7 @@ export default class ProjectService {
         name: '',
         type: 'boolean',
         value: false,
+        notApplicable: true,
         rules: {
           allowLabelChange: true,
           allowValueChange: true,

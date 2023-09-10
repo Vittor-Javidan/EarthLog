@@ -72,7 +72,6 @@ export default function GPSWidget(props: {
       <Layout.View
         style={{
           paddingVertical: 5,
-          paddingBottom: 10,
           gap: 5,
         }}
       >

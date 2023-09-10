@@ -1,10 +1,9 @@
-# Boolean Input
-  - Rename to True/False on UI, to be more user friendly.
-  - Add a Not Applied option, using checkbox.
+# Text Widget
+  - convert to have only one state.
+  - add an empty object on GPS when GPS iconButton is clicked. 
 
-# Boolean Widget
-  - instead implementing a switch, use the boolean input instead.
-
+# Add a enableGPS rule on all Widgets
+# Replace all alerts with the custom Alert
 # add labels to all widgets main inputs
 # add spech to text to all string inputs, and create a prop to enable/disable this feature.
 # implement the new <InputRoot /> on all Layout Inputs

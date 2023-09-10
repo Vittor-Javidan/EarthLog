@@ -1,4 +1,7 @@
-# 0.1.1.23 All widgets label heigh fix
+# 0.1.1.24 Inputs and Widgets Redesign
 
-- Now all widgets has a minHeight of 40, to avoid the label ajust to values lower than widget iconButtons height
-- SampleSettingsWidgetCreation file and Component renamed to SampleSettingsWidget
+- Text and Boolean Widgets gpsInput now shows only when gps is not undefined.
+- Boolean Input switch now stays inside the input area.
+- Boolean values now has colors.
+- allowWidgetCreation_Sample ProjectSettings rule removed.
+- Added comments on type for future documentation.
