@@ -36,5 +36,5 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ]
+, "src/Components/Widget/GPSWidget/__TC__", "src/Components/Widget/TextWidget/__TC__"  ]
 }

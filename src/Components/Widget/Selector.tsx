@@ -19,11 +19,12 @@ export default function WidgetSelector(props: {
   const { language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Widgets.WidgetSelector[language], []);
 
+  // Widge Alert Messages Build Area ===============================================================
   const alertMessages: WidgetAlertMessage = {};
-
   GPSService.checkReferenceCoordinateDifference(props.gpsReference, props.widgetData, (distance) => {
     alertMessages.gpsDistanceAlertMessage =  R['* Reference distance: '] + `${distance}m`;
   });
+  // ===============================================================================================
 
   switch (props.widgetData.type) {
     case 'text': return (

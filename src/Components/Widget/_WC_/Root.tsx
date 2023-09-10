@@ -1,9 +1,10 @@
 import React, { useMemo, ReactNode } from 'react';
 import { View } from 'react-native';
 
-import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
 import { WidgetAlertMessage } from '@Types/index';
+
+import { Layout } from '@Components/Layout';
 import P from '@Components/Layout/Text/P';
 
 export default function Root(props: {
@@ -12,9 +13,7 @@ export default function Root(props: {
   showModal: boolean
   statusFeedback?: JSX.Element
   alertMessages?: WidgetAlertMessage
-  iconButtons_Top?: JSX.Element
-  iconButtons_BottomLeft?: JSX.Element
-  iconButtons_BottomRight?: JSX.Element
+  iconButtons?: JSX.Element
   modal: JSX.Element
   children: ReactNode
 }) {
@@ -32,16 +31,14 @@ export default function Root(props: {
         label={props.label}
         wrongData={props.isDataWrong}
         statusFeedback={props.statusFeedback}
-        iconButtons={props.iconButtons_Top}
+        iconButtons={props.iconButtons}
       />
       <AlertMessages
         alertMessages={props.alertMessages}
       />
-      {props.children}
-      <Footer
-        left={props.iconButtons_BottomLeft}
-        right={props.iconButtons_BottomRight}
-      />
+      <ChildrenContainer>
+        {props.children}
+      </ChildrenContainer>
     </View>
     {props.showModal && props.modal}
   </>);
@@ -141,39 +138,17 @@ function AlertMessages(props: {
   );
 }
 
-function Footer(props: {
-  left?: JSX.Element
-  right?: JSX.Element
+function ChildrenContainer(props: {
+  children: ReactNode
 }) {
-
-  if (props.left === undefined && props.right === undefined) {
-    return <></>;
-  }
-
   return (
-    <View
+    <Layout.View
       style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 30,
+        paddingVertical: 5,
+        gap: 10,
       }}
     >
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-        }}
-      >
-        {props.left}
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-        }}
-      >
-        {props.right}
-      </View>
-    </View>
+      {props.children}
+    </Layout.View>
   );
 }

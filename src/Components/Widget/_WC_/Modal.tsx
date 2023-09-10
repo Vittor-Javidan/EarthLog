@@ -7,6 +7,7 @@ import ConfigService from '@Services/ConfigService';
 export default function Modal(props: {
   title: string
   widgetData: WidgetData
+  utilityButtons?: JSX.Element
   children: ReactNode
   onConfirm: () => void
   onDelete: () => void
@@ -32,11 +33,35 @@ export default function Modal(props: {
           flex: 1,
           paddingTop: 10,
         }}
+        contenContainerStyle={{
+          gap: 10,
+        }}
       >
         {props.children}
+        <UtilityButtonsContainer
+          utilityButtons={props.utilityButtons}
+        />
       </Layout.ScrollView>
     </Layout.Modal>
   );
+}
+
+function UtilityButtonsContainer(props: {
+  utilityButtons?: JSX.Element
+}) {
+
+  const render = props.utilityButtons !== undefined;
+
+  return render ? (
+    <Layout.View
+      style={{
+        alignItems: 'flex-end',
+        marginHorizontal: 10,
+      }}
+    >
+      {props.utilityButtons}
+    </Layout.View>
+  ) : <></>;
 }
 
 function ScreenButtons(props: {
