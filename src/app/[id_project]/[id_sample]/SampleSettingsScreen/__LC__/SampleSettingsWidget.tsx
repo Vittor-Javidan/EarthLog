@@ -1,20 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
-import { translations } from '@Translations/index';
 import { GPS_DTO, SampleSettings } from '@Types/index';
+import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
 
-type States_Inputs_SampleSettings = {
-  sampleSettings: SampleSettings
-  showGPS: boolean
-  saved: boolean
-}
+import { Layout } from '@Components/Layout';
 
 export default function SampleSettingsWidget() {
 
@@ -22,54 +17,41 @@ export default function SampleSettingsWidget() {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
-  const [state, setState] = useState<States_Inputs_SampleSettings>({
-    sampleSettings: UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)),
-    showGPS: CacheService.getSampleFromCache(id_sample).gps !== undefined,
-    saved: true,
-  });
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
+  const [showGPS,         setShowGPS        ] = useState<boolean>(CacheService.getSampleFromCache(id_sample).gps !== undefined);
+  const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutoSave(() => {
-    setState(prev => ({ ...prev, saved: true }));
-  }, [state]);
+    setSaved(true);
+  }, [sampleSettings, saved]);
 
   async function onNameChange(newName: string) {
-    if (state.sampleSettings.rules.allowNameChange) {
-      setState(prev => ({
-        ...prev,
-        sampleSettings: { ...prev.sampleSettings, name: newName },
-        saved: false,
-      }));
+    if (sampleSettings.rules.allowNameChange) {
+      setSampleSettings(prev => ({ ...prev, name: newName }));
+      setSaved(false);
     }
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    setState(prev => ({
-      ...prev,
-      sampleSettings: { ...prev.sampleSettings, gps: newGPSData },
-      saved: false,
-    }));
+    setSampleSettings(prev => ({ ...prev, gps: newGPSData }));
+    setSaved(false);
   }
 
   function createGPS() {
-    setState(prev => ({
-      ...prev,
-      sampleSettings: { ...prev.sampleSettings, gps: {} },
-      showGPS: true,
-      saved: false,
-    }));
+    setSampleSettings(prev => ({ ...prev, gps: {} }));
+    setShowGPS(true);
+    setSaved(false);
   }
 
   function onDeleteGPS() {
-    const { gps } = state.sampleSettings;
+    const { gps } = sampleSettings;
     if (gps !== undefined) {
-      setState(prev => {
-        delete prev.sampleSettings.gps;
-        return {
-          ...prev,
-          showGPS: false,
-          saved: false,
-        };
+      setSampleSettings(prev => {
+        delete prev.gps;
+        return { ...prev };
       });
+      setShowGPS(false);
+      setSaved(false);
     }
   }
 
@@ -94,7 +76,7 @@ export default function SampleSettingsWidget() {
           }}
         >
           <Layout.StatusFeedback
-            done={state.saved}
+            done={saved}
             error={false}
           />
           <Layout.Text.P
@@ -107,7 +89,7 @@ export default function SampleSettingsWidget() {
             {R['Sample info']}
           </Layout.Text.P>
         </Layout.View>
-        {!state.showGPS && (
+        {!showGPS && (
           <Layout.Button.Icon
             iconName="location"
             color_background={theme.secondary}
@@ -139,7 +121,7 @@ export default function SampleSettingsWidget() {
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder=""
           locked={true}
-          value={state.sampleSettings.id_sample}
+          value={sampleSettings.id_sample}
           onChangeText={() => {}}
         />
         <Layout.Input.String
@@ -148,14 +130,14 @@ export default function SampleSettingsWidget() {
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={R['Write the sample name here...']}
-          locked={!state.sampleSettings.rules.allowNameChange}
-          value={state.sampleSettings.name}
+          locked={!sampleSettings.rules.allowNameChange}
+          value={sampleSettings.name}
           onChangeText={async (text) => await onNameChange(text)}
         />
-        {state.showGPS && state.sampleSettings.gps !== undefined && (
+        {showGPS && sampleSettings.gps !== undefined && (
           <Layout.Input.GPS
             label="GPS"
-            gpsData={state.sampleSettings.gps}
+            gpsData={sampleSettings.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             onPress_Delete={() => onDeleteGPS()}
@@ -169,11 +151,11 @@ export default function SampleSettingsWidget() {
 
 function useAutoSave(
   onSucces: () => void,
-  dependecyArray: [ States_Inputs_SampleSettings ],
+  dependecyArray: [ SampleSettings, boolean ],
 ) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const { sampleSettings, saved } = dependecyArray[0];
+  const [sampleSettings, saved] = dependecyArray;
 
   useTimeout(async () => {
     if (!saved) {

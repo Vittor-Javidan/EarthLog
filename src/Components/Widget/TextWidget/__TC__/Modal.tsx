@@ -1,18 +1,12 @@
 import React, { useMemo, useState } from 'react';
 
-import { GPS_DTO, TextWidgetData } from '@Types/index';
+import { TextWidgetData } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 
 import { Layout } from '@Components/Layout';
 import { WC } from '@Components/Widget/_WC_/index';
-
-type State = {
-  label: string,
-  value: string,
-  gps: GPS_DTO | undefined
-}
 
 export default function Modal(props: {
   widgetData: TextWidgetData
@@ -24,60 +18,29 @@ export default function Modal(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Widgets.TextWidget[language], []);
   const { rules } = props.widgetData;
-
-  const [state, setState] = useState<State>({
-    label: props.widgetData.name,
-    value: props.widgetData.value,
-    gps: props.widgetData.gps !== undefined ? UtilService.deepCopy(props.widgetData.gps) : undefined,
-  });
-
-
-  function onConfirm() {
-    const newWidgetData: TextWidgetData = {
-      id_widget: props.widgetData.id_widget,
-      name: state.label,
-      type: 'text',
-      value: state.value,
-      rules: rules,
-    };
-    if (state.gps !== undefined) {
-      newWidgetData.gps = state.gps;
-    }
-    props.onConfirm(newWidgetData);
-  }
-
-  function onLabelChange(text: string) {
-    setState(prev => ({ ...prev, label: text }));
-  }
-
-  function onValueChange(text: string) {
-    setState(prev => ({ ...prev, value: text }));
-  }
-
-  function createGPS() {
-    setState(prev => ({ ...prev, gps: {} }));
-  }
-
-  function saveGPS(gpsData: GPS_DTO) {
-    setState(prev => ({ ...prev, gps: gpsData }));
-  }
+  const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCopy(props.widgetData));
 
   function deleteGPS() {
-    setState(prev => ({ ...prev, gps: undefined }));
+    if (widgetData.gps !== undefined) {
+      setWidgetData(prev => {
+        delete prev.gps;
+        return { ...prev };
+      });
+    }
   }
 
   return (
     <WC.Modal
-      title={state.label}
+      title={widgetData.name}
       widgetData={props.widgetData}
-      onConfirm={() => onConfirm()}
+      onConfirm={() => props.onConfirm(widgetData)}
       onDelete={() => props.onDelete()}
       onRequestClose={() => props.onRequestClose()}
 
       utilityButtons={
         <UtilityButtons
-          showGPSButton={state.gps === undefined}
-          onPress_GPSButton={() => createGPS()}
+          showGPSButton={widgetData.gps === undefined}
+          onPress_GPSButton={() => setWidgetData(prev => ({ ...prev, gps: {} }))}
         />
       }
     >
@@ -87,9 +50,9 @@ export default function Modal(props: {
         color={theme.onBackground}
         color_placeholder={theme.onBackground_Placeholder}
         placeholder={R['Write widget name here...']}
-        value={state.label}
+        value={widgetData.name}
         locked={!rules.allowLabelChange}
-        onChangeText={(text) => onLabelChange(text)}
+        onChangeText={(text) => setWidgetData(prev => ({ ...prev, name: text }))}
       />
       <Layout.Input.String
         label={R['Text']}
@@ -97,18 +60,18 @@ export default function Modal(props: {
         color={theme.onBackground}
         color_placeholder={theme.onBackground_Placeholder}
         placeholder={R['Write anything here...']}
-        value={state.value}
+        value={widgetData.value}
         locked={!rules.allowValueChange}
-        onChangeText={(text) => onValueChange(text)}
+        onChangeText={(text) => setWidgetData(prev => ({ ...prev, value: text }))}
       />
-      {state.gps !== undefined && (
+      {widgetData.gps !== undefined && (
         <Layout.Input.GPS
           label="GPS"
-          gpsData={state.gps}
+          gpsData={widgetData.gps}
           backgroundColor={theme.background}
           color={theme.onBackground}
           onPress_Delete={() => deleteGPS()}
-          onPress_Save={(newGPSData) => saveGPS(newGPSData)}
+          onPress_Save={(newGPSData) => setWidgetData(prev => ({ ...prev, gps: newGPSData }))}
         />
       )}
     </WC.Modal>

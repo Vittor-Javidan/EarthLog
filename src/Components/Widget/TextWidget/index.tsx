@@ -21,12 +21,10 @@ export default function TextWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Widgets.TextWidget[language], []);
 
-  const [state, setState] = useState({
-    widgetData: UtilService.deepCopy(props.widgetData),
-    showGPS: props.widgetData.gps !== undefined,
-    showModal: false,
-    isDataWrong: false,
-  });
+  const [widgetData,  setWidgetData ] = useState<TextWidgetData>(UtilService.deepCopy(props.widgetData));
+  const [showGPS,     setShowGPS    ] = useState<boolean>(props.widgetData.gps !== undefined);
+  const [showModal,   setShowModal  ] = useState<boolean>(false);
+  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
   function checkRules(
     widgetData: TextWidgetData,
@@ -52,121 +50,88 @@ export default function TextWidget(props: {
   function onConfirm_Modal(widgetData: TextWidgetData) {
     checkRules(widgetData,
       () => {
-        setState(({
-          widgetData: widgetData,
-          showModal: false,
-          showGPS: widgetData.gps !== undefined,
-          isDataWrong: false,
-        }));
+        setWidgetData(UtilService.deepCopy(widgetData));
+        setShowModal(false);
+        setShowGPS(widgetData.gps !== undefined);
+        setIsDataWrong(false);
         props.onConfirm(widgetData);
       },
       () => {
-        setState(({
-          widgetData: widgetData,
-          showModal: false,
-          showGPS: widgetData.gps !== undefined,
-          isDataWrong: true,
-        }));
+        setWidgetData(UtilService.deepCopy(widgetData));
+        setShowModal(false);
+        setShowGPS(widgetData.gps !== undefined);
+        setIsDataWrong(true);
       }
     );
   }
 
   function onTextChange(text: string) {
-    const newWidgetData = { ...state.widgetData, value: text };
+    const newWidgetData = { ...widgetData, value: text };
     checkRules(newWidgetData,
       () => {
-        setState(prev => ({
-          ...prev,
-          widgetData: newWidgetData,
-          isDataWrong: false,
-        }));
-        props.onConfirm(newWidgetData);
+        setWidgetData(newWidgetData);
+        setIsDataWrong(false);
+        props.onConfirm(UtilService.deepCopy(newWidgetData));
       },
       () => {
-        setState(prev => ({
-          ...prev,
-          widgetData: newWidgetData,
-          isDataWrong: true,
-        }));
+        setWidgetData(newWidgetData);
+        setIsDataWrong(true);
       },
     );
   }
 
   function createGPS() {
-    setState(prev => ({
-      ...prev,
-      widgetData: { ...prev.widgetData, gps: {}},
-      showGPS: true,
-    }));
+    setWidgetData(prev => ({ ...prev, gps: {} }));
+    setShowGPS(true);
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData = { ...state.widgetData, gps: newGPSData };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
+    const newWidgetData = { ...widgetData, gps: newGPSData };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   function onDeleteGPS() {
-    if (state.widgetData.gps === undefined) {
+    if (widgetData.gps !== undefined) {
+      const newWidgetData = { ...widgetData };
+      delete newWidgetData.gps;
+      setWidgetData(newWidgetData);
+      setShowGPS(false);
+      props.onConfirm(UtilService.deepCopy(newWidgetData));
       return;
     }
-    const newWidgetData = { ...state.widgetData };
-    delete newWidgetData.gps;
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-      showGPS: false,
-    }));
-    props.onConfirm(newWidgetData);
-  }
-
-  function openModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: true,
-    }));
-  }
-
-  function closeModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: false,
-    }));
   }
 
   return (
     <WC.Root
 
-      label={state.widgetData.name}
-      isDataWrong={state.isDataWrong}
-      showModal={state.showModal}
+      label={widgetData.name}
+      isDataWrong={isDataWrong}
+      showModal={showModal}
       statusFeedback={props.statusFeedback}
       alertMessages={props.alertMessages}
 
       iconButtons={
         <TC.IconButtons
-          widgetData={state.widgetData}
-          showGPS={state.showGPS}
-          onPencilPress={() => openModal()}
+          widgetData={widgetData}
+          showGPS={showGPS}
+          onPencilPress={() => setShowModal(true)}
           onGPSPress={() => createGPS()}
         />
       }
 
       modal={
         <TC.Modal
-          widgetData={state.widgetData}
+          widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
-          onRequestClose={() => closeModal()}
+          onRequestClose={() => setShowModal(false)}
         />
       }
     >
       <Layout.Input.String
         label={''}
-        value={state.widgetData.value}
+        value={widgetData.value}
         backgroundColor={theme.tertiary}
         color={theme.onTertiary}
         color_placeholder={theme.onTertiary_Placeholder}
@@ -174,10 +139,10 @@ export default function TextWidget(props: {
         locked={false}
         onChangeText={(text) => onTextChange(text)}
       />
-      {state.showGPS && state.widgetData.gps !== undefined && (
+      {showGPS && widgetData.gps !== undefined && (
         <Layout.Input.GPS
           label="GPS"
-          gpsData={state.widgetData.gps}
+          gpsData={widgetData.gps}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           onPress_Delete={() => onDeleteGPS()}

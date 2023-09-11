@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import { Layout } from '@Components/Layout';
 import { WC } from '../_WC_';
 import { TC } from './__TC__';
+import UtilService from '@Services/UtilService';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
@@ -16,111 +17,77 @@ export default function BooleanWidget(props: {
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const [state, setState] = useState({
-    widgetData: props.widgetData,
-    showGPS: props.widgetData.gps !== undefined,
-    showModal: false,
-    isDataWrong: false,
-  });
+
+  const [widgetData,  setWidgetData ] = useState<BooleanWidgetData>(UtilService.deepCopy(props.widgetData));
+  const [showGPS,     setShowGPS    ] = useState<boolean>(props.widgetData.gps !== undefined);
+  const [showModal,   setShowModal  ] = useState<boolean>(false);
+  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
   function onConfirm_Modal(widgetData: BooleanWidgetData) {
-    setState(prev => ({
-      ...prev,
-      widgetData: widgetData,
-      showGPS: widgetData.gps !== undefined,
-      showModal: false,
-      isDataWrong: false,
-    }));
+    setWidgetData(UtilService.deepCopy(widgetData));
+    setShowGPS( widgetData.gps !== undefined);
+    setShowModal(false);
+    setIsDataWrong(false);
     props.onConfirm(widgetData);
   }
 
   function onSwitchChange(boolean: boolean) {
-    const newWidgetData: BooleanWidgetData = { ...state.widgetData, value: boolean };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
+    const newWidgetData: BooleanWidgetData = { ...widgetData, value: boolean };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   function onNotApplicableChange(boolean: boolean) {
-    const newWidgetData: BooleanWidgetData = { ...state.widgetData, notApplicable: boolean };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
+    const newWidgetData: BooleanWidgetData = { ...widgetData, notApplicable: boolean };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   function onGPSCreate() {
-    setState(prev => ({
-      ...prev,
-      showGPS: true,
-      widgetData: { ...prev.widgetData, gps: {}},
-    }));
+    setShowGPS(true);
+    setWidgetData(prev => ({ ...prev, gps: {} }));
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData: BooleanWidgetData = { ...state.widgetData, gps: newGPSData };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
+    const newWidgetData: BooleanWidgetData = { ...widgetData, gps: newGPSData };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   function onDeleteGPS() {
-    if (state.widgetData.gps === undefined) {
-      return;
+    if (widgetData.gps !== undefined) {
+      const newWidgetData: BooleanWidgetData = { ...widgetData };
+      delete newWidgetData.gps;
+      setWidgetData(newWidgetData);
+      setShowGPS(false);
+      props.onConfirm(UtilService.deepCopy(newWidgetData));
     }
-    const newWidgetData: BooleanWidgetData = { ...state.widgetData };
-    delete newWidgetData.gps;
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-      showGPS: false,
-    }));
-    props.onConfirm(newWidgetData);
-  }
-
-  function openModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: true,
-    }));
-  }
-
-  function closeModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: false,
-    }));
   }
 
   return (<>
     <WC.Root
 
-      label={state.widgetData.name}
-      isDataWrong={state.isDataWrong}
-      showModal={state.showModal}
+      label={widgetData.name}
+      isDataWrong={isDataWrong}
+      showModal={showModal}
       statusFeedback={props.statusFeedback}
       alertMessages={props.alertMessages}
 
       iconButtons={
         <TC.IconButtons
-          widgetData={state.widgetData}
-          showGPS={state.showGPS}
-          onPencilPress={() => openModal()}
+          widgetData={widgetData}
+          showGPS={showGPS}
+          onPencilPress={() => setShowModal(true)}
           onGPSPress={() => onGPSCreate()}
         />
       }
 
       modal={
         <TC.Modal
-          widgetData={state.widgetData}
+          widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
-          onRequestClose={() => closeModal()}
+          onRequestClose={() => setShowModal(false)}
         />
       }
     >
@@ -128,16 +95,16 @@ export default function BooleanWidget(props: {
         label=""
         backgroundColor={theme.tertiary}
         color={theme.onTertiary}
-        value={state.widgetData.value}
-        notApplicable={state.widgetData.notApplicable}
-        locked={!state.widgetData.rules.allowValueChange}
+        value={widgetData.value}
+        notApplicable={widgetData.notApplicable}
+        locked={!widgetData.rules.allowValueChange}
         onSwitchChange={(boolean) => onSwitchChange(boolean)}
         onNotApplicableChange={(boolean) => onNotApplicableChange(boolean)}
       />
-      {state.showGPS && state.widgetData.gps !== undefined && (
+      {showGPS && widgetData.gps !== undefined && (
         <Layout.Input.GPS
           label="GPS"
-          gpsData={state.widgetData.gps}
+          gpsData={widgetData.gps}
           backgroundColor={theme.tertiary}
           color={theme.onTertiary}
           onPress_Delete={() => onDeleteGPS()}

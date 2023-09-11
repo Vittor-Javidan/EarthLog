@@ -11,66 +11,47 @@ import UtilService from '@Services/UtilService';
 
 import { Layout } from '@Components/Layout';
 
-type States_Inputs_ProjectSettings = {
-  projectSettings: ProjectSettings
-  showGPS: boolean
-  saved: boolean
-}
-
 export default function ProjectSettingsWidget() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
-  const [state, setState] = useState<States_Inputs_ProjectSettings>({
-    projectSettings: UtilService.deepCopy(CacheService.getProjectFromCache(id_project)),
-    showGPS: CacheService.getProjectFromCache(id_project).gps !== undefined,
-    saved: true,
-  });
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
+  const [showGPS,         setShowGPS        ] = useState<boolean>(CacheService.getProjectFromCache(id_project).gps !== undefined);
+  const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutoSave(() => {
-    setState(prev => ({ ...prev, saved: true }));
-  }, [state]);
+    setSaved(true);
+  }, [projectSettings, saved]);
 
   function onNameChange(newName: string) {
-    if (state.projectSettings.rules.allowNameChange) {
-      setState(prev => ({
-        ...prev,
-        projectSettings: { ...prev.projectSettings, name: newName },
-        saved: false,
-      }));
+    if (projectSettings.rules.allowNameChange) {
+      setProjectSettings(prev => ({ ...prev, name: newName }));
+      setSaved(false);
     }
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    setState(prev => ({
-      ...prev,
-      projectSettings: { ...prev.projectSettings, gps: newGPSData },
-      saved: false,
-    }));
+    setProjectSettings(prev => ({ ...prev, gps: newGPSData }));
+    setSaved(false);
   }
 
   function createGPS() {
-    setState(prev => ({
-      ...prev,
-      projectSettings: { ...prev.projectSettings, gps: {} },
-      showGPS: true,
-      saved: false,
-    }));
+    setProjectSettings(prev => ({ ...prev, gps: {} }));
+    setShowGPS(true);
+    setSaved(false);
   }
 
   function onDeleteGPS() {
-    const { gps } = state.projectSettings;
+    const { gps } = projectSettings;
     if (gps !== undefined) {
-      const newProjectSettings = { ...state.projectSettings };
-      delete newProjectSettings.gps;
-      setState(prev => ({
-        ...prev,
-        projectSettings: newProjectSettings,
-        showGPS: false,
-        saved: false,
-      }));
+      setProjectSettings(prev => {
+        delete prev.gps;
+        return { ...prev };
+      });
+      setShowGPS(false);
+      setSaved(false);
     }
   }
 
@@ -95,7 +76,7 @@ export default function ProjectSettingsWidget() {
           }}
         >
           <Layout.StatusFeedback
-            done={state.saved}
+            done={saved}
             error={false}
           />
           <Layout.Text.P
@@ -108,7 +89,7 @@ export default function ProjectSettingsWidget() {
             {R['Project info']}
           </Layout.Text.P>
         </Layout.View>
-        {!state.showGPS && (
+        {!showGPS && (
           <Layout.Button.Icon
             iconName="location"
             color_background={theme.secondary}
@@ -139,7 +120,7 @@ export default function ProjectSettingsWidget() {
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder=""
-          value={state.projectSettings.id_project}
+          value={projectSettings.id_project}
           locked={true}
           onChangeText={() => {}}
         />
@@ -149,14 +130,14 @@ export default function ProjectSettingsWidget() {
           color={theme.onTertiary}
           color_placeholder={theme.onTertiary_Placeholder}
           placeholder={R['Write the project name here...']}
-          value={state.projectSettings.name}
-          locked={!state.projectSettings.rules.allowNameChange}
+          value={projectSettings.name}
+          locked={!projectSettings.rules.allowNameChange}
           onChangeText={(text) => onNameChange(text)}
         />
-        {state.showGPS && state.projectSettings.gps !== undefined && (
+        {showGPS && projectSettings.gps !== undefined && (
           <Layout.Input.GPS
             label="GPS"
-            gpsData={state.projectSettings.gps}
+            gpsData={projectSettings.gps}
             backgroundColor={theme.tertiary}
             color={theme.onTertiary}
             onPress_Delete={() => onDeleteGPS()}
@@ -170,10 +151,10 @@ export default function ProjectSettingsWidget() {
 
 function useAutoSave(
   onSucces: () => void,
-  dependecyArray: [ States_Inputs_ProjectSettings ],
+  dependecyArray: [ ProjectSettings, boolean ],
 ) {
 
-  const { projectSettings, saved } = dependecyArray[0];
+  const [projectSettings, saved] = dependecyArray;
 
   useTimeout(async () => {
     if (!saved) {

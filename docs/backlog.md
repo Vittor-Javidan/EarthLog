@@ -1,3 +1,5 @@
+# Estudy a better solution for checkRules inside widgets.
+
 # revert all state unification into their own state back.
 
 # Update all deepclone usage with the new typing and handle all possible errors

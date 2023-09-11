@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import { GPSWidgetData, GPS_DTO, WidgetAlertMessage } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
+import UtilService from '@Services/UtilService';
 
 import { Layout } from '@Components/Layout';
 import { WC } from '../_WC_';
@@ -17,82 +18,57 @@ export default function GPSWidget(props: {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
-  const [state, setState] = useState({
-    widgetData: props.widgetData,
-    showModal: false,
-    isDataWrong: false,
-  });
+  const [widgetData, setWidgetData] = useState<GPSWidgetData>(UtilService.deepCopy(props.widgetData));
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
   function onConfirm_Modal(widgetData: GPSWidgetData) {
-    setState(prev => ({
-      ...prev,
-      widgetData: widgetData,
-      showModal: false,
-      isDataWrong: false,
-    }));
+    setWidgetData(UtilService.deepCopy(widgetData));
+    setShowModal(false);
+    setIsDataWrong(false);
     props.onConfirm(widgetData);
   }
 
   function onSaveGPS(newGPSData: GPS_DTO) {
-    const newWidgetData: GPSWidgetData = { ...state.widgetData, gps: newGPSData };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
+    const newWidgetData: GPSWidgetData = { ...widgetData, gps: newGPSData };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   function onDeleteGPS() {
-    const newWidgetData: GPSWidgetData = { ...state.widgetData, gps: {} };
-    setState(prev => ({
-      ...prev,
-      widgetData: newWidgetData,
-    }));
-    props.onConfirm(newWidgetData);
-  }
-
-  function openModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: true,
-    }));
-  }
-
-  function closeModal() {
-    setState(prev => ({
-      ...prev,
-      showModal: false,
-    }));
+    const newWidgetData: GPSWidgetData = { ...widgetData, gps: {} };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
   }
 
   return (
     <WC.Root
 
-      label={state.widgetData.name}
-      isDataWrong={state.isDataWrong}
-      showModal={state.showModal}
+      label={widgetData.name}
+      isDataWrong={isDataWrong}
+      showModal={showModal}
       statusFeedback={props.statusFeedback}
       alertMessages={props.alertMessages}
 
       iconButtons={
         <TC.IconButtons
-          widgetData={state.widgetData}
-          onPencilPress={() => openModal()}
+          widgetData={widgetData}
+          onPencilPress={() => setShowModal(true)}
         />
       }
 
       modal={
         <TC.Modal
-          widgetData={state.widgetData}
+          widgetData={widgetData}
           onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
-          onRequestClose={() => closeModal()}
+          onRequestClose={() => setShowModal(false)}
         />
       }
     >
       <Layout.Input.GPS
         label=""
-        gpsData={state.widgetData.gps}
+        gpsData={widgetData.gps}
         backgroundColor={theme.tertiary}
         color={theme.onTertiary}
         onPress_Delete={() => onDeleteGPS()}

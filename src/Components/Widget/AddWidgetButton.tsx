@@ -8,32 +8,25 @@ import ProjectService from '@Services/ProjectService';
 
 import { Layout } from '@Components/Layout';
 
-type State = {
-  showModal: boolean
-  label: string
-}
-
 export default function AddWidgetButton(props: {
   onCreateWidget: (widgetData: WidgetData) => void
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const [state, setState] = useState<State>({
-    showModal: false,
-    label: '',
-  });
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [label, setlabel] = useState<string>('');
 
   function onPress(widgetType: WidgetTypes) {
     const widgetData = ProjectService.getWidgetData(widgetType);
-    widgetData.name = state.label;
+    widgetData.name = label;
     props.onCreateWidget(widgetData);
     reset();
   }
 
-  function onLabelChange(text: string) { setState(prev => ({ ...prev, label: text })); }
-  function showModal()                 { setState(prev => ({ ...prev, showModal: true })); }
-  function closeModal()                { setState(prev => ({ ...prev, showModal: false })); }
-  function reset()                     { setState({ label: '', showModal: false }); }
+  function reset() {
+    setlabel('');
+    setShowModal(false);
+  }
 
   return (<>
     <Layout.Button.IconRounded
@@ -41,13 +34,13 @@ export default function AddWidgetButton(props: {
       showPlusSign={true}
       color_background={theme.confirm}
       color={theme.onConfirm}
-      onPress={() => showModal()}
+      onPress={() => setShowModal(true)}
     />
-    {state.showModal && (
+    {showModal && (
       <Modal
-        label={state.label}
-        onRequestClose={() => closeModal()}
-        onChangeText_Label={(text) => onLabelChange(text)}
+        label={label}
+        onRequestClose={() => setShowModal(false)}
+        onChangeText_Label={(text) => setlabel(text)}
         onPress_WidgetButton={(widgetType) => onPress(widgetType)}
       />
     )}

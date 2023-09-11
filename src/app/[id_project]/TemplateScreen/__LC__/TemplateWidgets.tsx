@@ -31,31 +31,22 @@ export default function TemplateWidgets() {
   </>);
 }
 
-type States_WidgetUnit = {
-  widgetData: WidgetData,
-  saved: boolean
-}
-
 function WidgetUnit(props: {
   widgetData: WidgetData,
   onDelete: () => void
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const [state, setState] = useState<States_WidgetUnit>({
-    widgetData: UtilService.deepCopy(props.widgetData),
-    saved: true,
-  });
+  const [widgetData,  setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
+  const [saved,       setSaved      ] = useState<boolean>(true);
 
   useAutoSave(() => {
-    setState(prev => ({ ...prev, saved: true}));
-  }, [state]);
+    setSaved(true);
+  }, [widgetData, saved]);
 
   async function onConfirm(widgetData: WidgetData) {
-    setState(({
-      widgetData: widgetData,
-      saved: false,
-    }));
+    setWidgetData({ ...widgetData });
+    setSaved(false);
   }
 
   async function onDelete(id_widget: string) {
@@ -78,7 +69,7 @@ function WidgetUnit(props: {
       onDelete={async () => await onDelete(props.widgetData.id_widget)}
       statusFeedback={
         <Layout.StatusFeedback
-          done={state.saved}
+          done={saved}
           error={false}
         />
       }
@@ -88,11 +79,11 @@ function WidgetUnit(props: {
 
 function useAutoSave(
   onSucces: () => void,
-  dependecyArray: [States_WidgetUnit],
+  dependecyArray: [WidgetData, boolean],
 ) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const { widgetData, saved } = dependecyArray[0];
+  const [widgetData, saved] = dependecyArray;
 
   useTimeout(async () => {
     if (!saved) {

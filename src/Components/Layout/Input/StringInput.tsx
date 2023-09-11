@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { TextInput, StyleProp, TextStyle, Platform } from 'react-native';
+import { TextInput, StyleProp, TextStyle } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 
@@ -70,7 +70,7 @@ export default function StringInput(props: {
         style={[{
           width: '100%',
           paddingTop: 10,
-          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+          paddingBottom: 10,
           backgroundColor: backgroundColor,
           color: color,
         }, props.style_TextInput]}

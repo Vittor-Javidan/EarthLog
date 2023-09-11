@@ -31,11 +31,6 @@ export default function SampleWidgets() {
   </>);
 }
 
-type States_WidgetUnit = {
-  widgetData: WidgetData,
-  saved: boolean
-}
-
 function WidgetUnit(props: {
   widgetData: WidgetData,
   onDelete: () => void
@@ -45,20 +40,16 @@ function WidgetUnit(props: {
   const id_sample = useLocalSearchParams().id_sample as string;
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const [state, setState] = useState<States_WidgetUnit>({
-    widgetData: UtilService.deepCopy(props.widgetData),
-    saved: true,
-  });
+  const [widgetData,  setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
+  const [saved,       setSaved      ] = useState<boolean>(true);
 
   useAutoSave(() => {
-    setState(prev => ({ ...prev, saved: true}));
-  }, [state]);
+    setSaved(true);
+  }, [widgetData, saved]);
 
   async function onConfirm(widgetData: WidgetData) {
-    setState(({
-      widgetData: { ...widgetData },
-      saved: false,
-    }));
+    setWidgetData({ ...widgetData });
+    setSaved(false);
   }
 
   async function onDelete(id_widget: string) {
@@ -78,13 +69,13 @@ function WidgetUnit(props: {
 
   return (
     <Widget.Selector
-      widgetData={state.widgetData}
+      widgetData={widgetData}
       gpsReference={sampleSettings.gps}
       onConfirm={async (widgetData) => await onConfirm(widgetData)}
       onDelete={async () => await onDelete(props.widgetData.id_widget)}
       statusFeedback={
         <Layout.StatusFeedback
-          done={state.saved}
+          done={saved}
           error={false}
         />
       }
@@ -94,12 +85,12 @@ function WidgetUnit(props: {
 
 function useAutoSave(
   onSucces: () => void,
-  dependecyArray: [ States_WidgetUnit ],
+  dependecyArray: [ WidgetData, boolean ],
 ) {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
-  const { widgetData, saved } = dependecyArray[0];
+  const [widgetData, saved] = dependecyArray;
 
   useTimeout(async () => {
     if (!saved) {
