@@ -19,7 +19,7 @@ export default function SampleSettingsWidget() {
   const [showGPS, setShowGPS] = useState<boolean>(false);
 
   function onIDChange(newID: string) {
-    const normalizedText = newID.replace(UtilService.idRegex, '');
+    const normalizedText = newID.replace(UtilService.regexRules['id'], '');
     API.SampleSettingsWidget.setSampleID(normalizedText);
     setId(normalizedText);
   }

@@ -4,11 +4,11 @@ import { GPS_DTO, TextWidgetData, WidgetAlertMessage } from '@Types/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
-import { WidgetRules } from '../Rules';
 
 import { Layout } from '@Components/Layout';
 import { WC } from '@Components/Widget/_WC_/index';
 import { TC } from './__TC__';
+import Rules_TextWidgets from './Rules';
 
 export default function TextWidget(props: {
   widgetData: TextWidgetData
@@ -26,58 +26,23 @@ export default function TextWidget(props: {
   const [showModal,   setShowModal  ] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function checkRules(
-    widgetData: TextWidgetData,
-    whenValid: () => void,
-    whenInvalid: () => void
-  ) {
-
-    if (WidgetRules.noSpaces(widgetData)) {
-      alert(R['Value cannot have empty spaces.']);
-      whenInvalid();
-      return false;
-    }
-
-    if (WidgetRules.noSpecialLetters(widgetData)) {
-      alert(R['only numbers, and letter from "a" to "z" or "A" to "Z" is allow.']);
-      whenInvalid();
-      return false;
-    }
-
-    whenValid();
-  }
-
   function onConfirm_Modal(widgetData: TextWidgetData) {
-    checkRules(widgetData,
-      () => {
-        setWidgetData(UtilService.deepCopy(widgetData));
-        setShowModal(false);
-        setShowGPS(widgetData.gps !== undefined);
-        setIsDataWrong(false);
-        props.onConfirm(widgetData);
-      },
-      () => {
-        setWidgetData(UtilService.deepCopy(widgetData));
-        setShowModal(false);
-        setShowGPS(widgetData.gps !== undefined);
-        setIsDataWrong(true);
-      }
-    );
+    setWidgetData(UtilService.deepCopy(widgetData));
+    setShowModal(false);
+    setShowGPS(widgetData.gps !== undefined);
+    setIsDataWrong(false);
+    props.onConfirm(widgetData);
   }
 
   function onTextChange(text: string) {
     const newWidgetData = { ...widgetData, value: text };
-    checkRules(newWidgetData,
-      () => {
-        setWidgetData(newWidgetData);
-        setIsDataWrong(false);
+    Rules_TextWidgets.checkRules(widgetData, (isValid) => {
+      setWidgetData(newWidgetData);
+      setIsDataWrong(!isValid);
+      if (isValid) {
         props.onConfirm(UtilService.deepCopy(newWidgetData));
-      },
-      () => {
-        setWidgetData(newWidgetData);
-        setIsDataWrong(true);
-      },
-    );
+      }
+    });
   }
 
   function createGPS() {

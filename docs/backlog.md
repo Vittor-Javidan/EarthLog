@@ -1,9 +1,3 @@
-# Estudy a better solution for checkRules inside widgets.
-
-# revert all state unification into their own state back.
-
-# Update all deepclone usage with the new typing and handle all possible errors
-
 # on GPSInput manual input, change "," for '.' when user type ","
 
 # Remove all Layout.View Calls. use <View /> instead

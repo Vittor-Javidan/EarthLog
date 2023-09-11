@@ -7,6 +7,7 @@ import UtilService from '@Services/UtilService';
 
 import { Layout } from '@Components/Layout';
 import { WC } from '@Components/Widget/_WC_/index';
+import Rules_TextWidgets from '../Rules';
 
 export default function Modal(props: {
   widgetData: TextWidgetData
@@ -19,6 +20,14 @@ export default function Modal(props: {
   const R = useMemo(() => translations.Widgets.TextWidget[language], []);
   const { rules } = props.widgetData;
   const [widgetData, setWidgetData] = useState<TextWidgetData>(UtilService.deepCopy(props.widgetData));
+
+  function onConfirm() {
+    Rules_TextWidgets.checkRules(widgetData, (isValid) => {
+      if (isValid) {
+        props.onConfirm(UtilService.deepCopy(widgetData));
+      }
+    });
+  }
 
   function deleteGPS() {
     if (widgetData.gps !== undefined) {
@@ -33,7 +42,7 @@ export default function Modal(props: {
     <WC.Modal
       title={widgetData.name}
       widgetData={props.widgetData}
-      onConfirm={() => props.onConfirm(widgetData)}
+      onConfirm={() => onConfirm()}
       onDelete={() => props.onDelete()}
       onRequestClose={() => props.onRequestClose()}
 

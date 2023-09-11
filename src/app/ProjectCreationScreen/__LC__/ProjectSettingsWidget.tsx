@@ -19,7 +19,7 @@ export default function ProjectSettingsWidget() {
   const [showGPS, setShowGPS] = useState<boolean>(false);
 
   function onIDChange(newID: string) {
-    const normalizedText = newID.replace(UtilService.idRegex, '');
+    const normalizedText = newID.replace(UtilService.regexRules['id'], '');
     API.ProjectSettingsWidget.setID(normalizedText);
     setId(normalizedText);
   }

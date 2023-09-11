@@ -175,3 +175,13 @@ export type GPSFeaturesDTO = {
   enableCoordinate: boolean
   enableAltitude: boolean
 }
+
+// ===============================================================================================
+// Rules related TYPES
+// ===============================================================================================
+
+export type RegexRules = {
+  'noSpaces': RegExp
+  'noSpecialLetter': RegExp
+  'id': RegExp
+}
