@@ -4,7 +4,7 @@ import { Translations_SettingsScreen, translations_SettingsScreen } from './Scre
 import { Translations_LanguagesScreen, translations_LanguagesScreen } from './Screens/SettingsScreen/LanguagesScreen';
 import { Translations_ThemeScreen, translations_ThemeScreen } from './Screens/SettingsScreen/ThemeScreen';
 import { Translations_TextWidget, translations_TextWidget } from './Widgets/TextWidget';
-import { Translations_BooleanData, translations_BooleanData } from './Data/Boolean';
+import { Translations_BooleanData, translations_BooleanData } from './Input/Boolean';
 import { Translations_AddWidgetButton, translations_AddWidgetButton } from './Widgets/AddWidgetButton';
 import { Translations_ProjectScreen, translations_ProjectScreen } from './Screens/ProjectScreen/ProjectScreen';
 import { Translations_SampleCreationScreen, translations_SampleCreationScreen } from './Screens/ProjectScreen/SampleCreationScreen';
@@ -15,6 +15,8 @@ import { Translations_WidgetsComponents_Modal, translations_WidgetsComponents_Mo
 import { Translations_SampleSettingsScreen, translations_SampleSettingsScreen } from './Screens/ProjectScreen/SampleScreen/SampleSettingsScreen';
 import { Translations_TemplateScreen, translations_TemplateScreen } from './Screens/ProjectScreen/TemplateScreen';
 import { Translations_BooleanWidget, translations_BooleanWidget } from './Widgets/BooleanWidget';
+import { Translations_Input_GPSInput, translations_Input_GPSInput } from './Input/GPSInput';
+import { Translations_WidgetSelector, translations_WidgetSelector } from './Widgets/WidgetSelector';
 
 export const translations: {
   Screens: {
@@ -34,12 +36,14 @@ export const translations: {
     Components: {
       Modal:                    Translations_WidgetsComponents_Modal
     }
+    WidgetSelector:             Translations_WidgetSelector
     TextWidget:                 Translations_TextWidget
     BooleanWidget:              Translations_BooleanWidget
     AddWidgetButton:            Translations_AddWidgetButton
   }
-  Data: {
-    Boolean:                    Translations_BooleanData
+  Input: {
+    BooleanInput:                    Translations_BooleanData
+    GPSInput:                   Translations_Input_GPSInput
   }
   ErrorMessages:                Translations_ErrorMessages
 } = {
@@ -60,12 +64,14 @@ export const translations: {
     Components: {
       Modal:                    translations_WidgetsComponents_Modal,
     },
+    WidgetSelector:             translations_WidgetSelector,
     TextWidget:                 translations_TextWidget,
     BooleanWidget:              translations_BooleanWidget,
     AddWidgetButton:            translations_AddWidgetButton,
   },
-  Data: {
-    Boolean:                    translations_BooleanData,
+  Input: {
+    BooleanInput:                    translations_BooleanData,
+    GPSInput:                   translations_Input_GPSInput,
   },
   ErrorMessages:                translations_ErrorMessages,
 };

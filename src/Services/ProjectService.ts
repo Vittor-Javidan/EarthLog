@@ -24,7 +24,6 @@ export default class ProjectService {
           allowSampleCreation: true,
           allowWidgetCreation_Project: true,
           allowWidgetCreation_Template: true,
-          allowWidgetCreation_Sample: true,
         },
       },
       projectWidgets: [],
@@ -52,6 +51,7 @@ export default class ProjectService {
         name: '',
         type: 'boolean',
         value: false,
+        notApplicable: true,
         rules: {
           allowLabelChange: true,
           allowValueChange: true,
@@ -63,6 +63,17 @@ export default class ProjectService {
         name: '',
         type: 'text',
         value: '',
+        rules: {
+          allowLabelChange: true,
+          allowValueChange: true,
+          allowWidgetErase: true,
+        },
+      };
+      case 'gps': return {
+        id_widget: this.generateUuidV4(),
+        name: '',
+        type: 'gps',
+        gps: {},
         rules: {
           allowLabelChange: true,
           allowValueChange: true,

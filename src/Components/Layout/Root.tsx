@@ -10,6 +10,7 @@ import ConfigService from '@Services/ConfigService';
 import IconButton from './Button/IconButton';
 import RootText from './Text/Root';
 import ThemeService from '@Services/ThemeService';
+import AppRootAlertLayer from '@Components/Alert/AlertModal';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
 const NAVIGATION_TREE_HEIGHT = 30;
@@ -26,6 +27,7 @@ export default function Root(props: {
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
+    <AppRootAlertLayer />
     <StatusBar
       animated={true}
       networkActivityIndicatorVisible={true}

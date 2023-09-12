@@ -3,15 +3,13 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import CacheService from '@Services/CacheService';
 
-import { Drawer } from './Drawer';
-import NavigationTree from './NavigationTree';
-import SampleButtons from './LocalComponents/SampleButtons';
-import ScreenButtons from './ScreenButtons';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
 
 export default function ProjectScreen() {
 
@@ -27,15 +25,15 @@ export default function ProjectScreen() {
   return (
     <Layout.Root
       title={projectSettings === null ? '...' : projectSettings.name}
-      drawerChildren={<Drawer />}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      drawerChildren={<TC.Drawer />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Animation>
-          <SampleButtons />
+          <LC.SampleButtons />
         </Animation>
       )}
     </Layout.Root>

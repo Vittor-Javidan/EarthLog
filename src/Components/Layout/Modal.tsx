@@ -1,5 +1,5 @@
 import React, { useMemo, ReactNode } from 'react';
-import { View, Text, Modal as ReactNative_Modal, Dimensions } from 'react-native';
+import { View, Text, Modal as ReactNative_Modal, Dimensions, StyleProp, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -14,6 +14,7 @@ export default function Modal(props: {
   color_onNavbar?: string
   color_background?: string
   ScreenButtons?: JSX.Element
+  style?: StyleProp<ViewStyle>
   children: ReactNode
   onRequestClose: () => void
 }) {
@@ -46,11 +47,10 @@ export default function Modal(props: {
           onIconPress={props.onRequestClose}
         />
         <View
-          style={{
+          style={[{
             flex: 1,
             backgroundColor: backgroundColor,
-            paddingBottom: 150,
-          }}
+          }, props.style]}
         >
           {props.children}
         </View>

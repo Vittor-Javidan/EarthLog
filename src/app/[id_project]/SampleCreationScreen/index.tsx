@@ -3,23 +3,22 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
-import API_Inputs_SampleSettings from './LocalComponents/API_Inputs_SampleSettings';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
+import { API } from './__API__';
 
 export default function SampleCreationScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleCreationScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -27,23 +26,23 @@ export default function SampleCreationScreen() {
   }, []);
 
   useBackPress(() => {
-    API_Inputs_SampleSettings.reset();
+    API.SampleSettingsWidget.reset();
     navigate('PROJECT SCREEN', id_project);
   });
 
   return (
     <Layout.Root
-      title={stringResources['New sample']}
+      title={R['New sample']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView>
           <Animation>
-            <Inputs_SampleSettings />
+            <LC.SampleSettingsWidgetCreation />
           </Animation>
         </Layout.ScrollView>
       )}

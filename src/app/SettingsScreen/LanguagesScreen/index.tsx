@@ -6,24 +6,23 @@ import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import LanguageButtons from './LocalComponents/LanguageButtons';
+import { LC } from './__LC__';
+import { TC } from './__TC__';
 
 export default function LanguagesScreen(): JSX.Element {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
+  const R = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
   const [_, refresh] = useState<boolean>(false);
 
   useBackPress(() => navigate('SETTINGS SCREEN'));
 
   return (
     <Layout.Root
-      title={stringResources['Languages']}
+      title={R['Languages']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       <Layout.View
         style={{
@@ -31,7 +30,7 @@ export default function LanguagesScreen(): JSX.Element {
           gap: 1,
         }}
       >
-        <LanguageButtons
+        <LC.LanguageButtons
           onButtonClick={() => refresh(prev => !prev)}
         />
       </Layout.View>

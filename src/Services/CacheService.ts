@@ -67,7 +67,7 @@ export default class CacheService {
   static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
-        this.allProjects[i] = UtilService.deepCloning(projectSettings);
+        this.allProjects[i] = UtilService.deepCopy(projectSettings);
         return;
       }
     }
@@ -77,7 +77,7 @@ export default class CacheService {
   static updateCache_SampleSettings(sampleSettings: SampleSettings) {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
-        this.allSamples[i] = UtilService.deepCloning(sampleSettings);
+        this.allSamples[i] = UtilService.deepCopy(sampleSettings);
         return;
       }
     }
@@ -87,7 +87,7 @@ export default class CacheService {
   static updateCache_ProjectWidget(widgetData: WidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Project[i] = UtilService.deepCloning(widgetData);
+        this.allWidgets_Project[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }
@@ -97,7 +97,7 @@ export default class CacheService {
   static updateCache_TemplateWidget(widgetData: WidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Template[i] = UtilService.deepCloning(widgetData);
+        this.allWidgets_Template[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }
@@ -107,7 +107,7 @@ export default class CacheService {
   static updateCache_SampleWidget(widgetData: WidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Sample[i] = UtilService.deepCloning(widgetData);
+        this.allWidgets_Sample[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }

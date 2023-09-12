@@ -1,186 +1,117 @@
 import React, { useMemo, useState } from 'react';
-import { Switch, Platform } from 'react-native';
 
-
-import { Layout } from '@Components/Layout';
-import { BooleanWidgetData } from '@Types/index';
-import { translations } from '@Translations/index';
+import { BooleanWidgetData, GPS_DTO, WidgetAlertMessage } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
 
-import { WidgetComponent } from '../Components';
+import { Layout } from '@Components/Layout';
+import { WC } from '../_WC_';
+import { TC } from './__TC__';
+import UtilService from '@Services/UtilService';
 
 export default function BooleanWidget(props: {
   widgetData: BooleanWidgetData
   statusFeedback?: JSX.Element
+  alertMessages?: WidgetAlertMessage
   onConfirm: (widgetData: BooleanWidgetData) => void
   onDelete: () => void
 }) {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
+  const { theme } = useMemo(() => ConfigService.config, []);
 
-  const [widgetData, setWidgetData] = useState<BooleanWidgetData>(props.widgetData);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [widgetData,  setWidgetData ] = useState<BooleanWidgetData>(UtilService.deepCopy(props.widgetData));
+  const [showGPS,     setShowGPS    ] = useState<boolean>(props.widgetData.gps !== undefined);
+  const [showModal,   setShowModal  ] = useState<boolean>(false);
   const [isDataWrong, setIsDataWrong] = useState<boolean>(false);
 
-  function onSwitchChange() {
-    setWidgetData(prev => {
-      const newWidgetData = {
-        ...prev,
-        value: !prev.value,
-        rules: {...prev.rules},
-      };
-      props.onConfirm(newWidgetData);
-      return newWidgetData;
-    });
+  function onConfirm_Modal(widgetData: BooleanWidgetData) {
+    setWidgetData(UtilService.deepCopy(widgetData));
+    setShowGPS( widgetData.gps !== undefined);
+    setShowModal(false);
+    setIsDataWrong(false);
+    props.onConfirm(widgetData);
   }
 
-  function onConfirm(widgetData: BooleanWidgetData) {
+  function onSwitchChange(boolean: boolean) {
+    const newWidgetData: BooleanWidgetData = { ...widgetData, value: boolean };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
+  }
 
-    setShowModal(false);
+  function onNotApplicableChange(boolean: boolean) {
+    const newWidgetData: BooleanWidgetData = { ...widgetData, notApplicable: boolean };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
+  }
 
-    if (showModal) {
-      setIsDataWrong(false);
-      setWidgetData(widgetData);
-      props.onConfirm(widgetData);
+  function onGPSCreate() {
+    setShowGPS(true);
+    setWidgetData(prev => ({ ...prev, gps: {} }));
+  }
+
+  function onSaveGPS(newGPSData: GPS_DTO) {
+    const newWidgetData: BooleanWidgetData = { ...widgetData, gps: newGPSData };
+    setWidgetData(newWidgetData);
+    props.onConfirm(UtilService.deepCopy(newWidgetData));
+  }
+
+  function onDeleteGPS() {
+    if (widgetData.gps !== undefined) {
+      const newWidgetData: BooleanWidgetData = { ...widgetData };
+      delete newWidgetData.gps;
+      setWidgetData(newWidgetData);
+      setShowGPS(false);
+      props.onConfirm(UtilService.deepCopy(newWidgetData));
     }
   }
 
   return (<>
-    <WidgetComponent.Root
+    <WC.Root
 
       label={widgetData.name}
       isDataWrong={isDataWrong}
       showModal={showModal}
       statusFeedback={props.statusFeedback}
+      alertMessages={props.alertMessages}
 
-      iconButtons_Top={
-        <IconButtons_Top
+      iconButtons={
+        <TC.IconButtons
           widgetData={widgetData}
+          showGPS={showGPS}
           onPencilPress={() => setShowModal(true)}
+          onGPSPress={() => onGPSCreate()}
         />
       }
 
       modal={
-        <Modal
+        <TC.Modal
           widgetData={widgetData}
-          onConfirm={(widgetData) => onConfirm(widgetData)}
+          onConfirm={(widgetData) => onConfirm_Modal(widgetData)}
           onDelete={() => props.onDelete()}
           onRequestClose={() => setShowModal(false)}
         />
       }
     >
-
-      <Layout.View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 40,
-          paddingHorizontal: 10,
-        }}
-      >
-        <Layout.Text.P
-          style={{
-            color: theme.onTertiary,
-          }}
-        >
-          {stringResources[`${widgetData.value}`]}
-        </Layout.Text.P>
-        <Switch
-          style={{
-            paddingHorizontal: 0,
-            transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }],
-          }}
-          trackColor={{ false: theme.wrong, true: theme.confirm }}
-          ios_backgroundColor={theme.wrong}
-          value={widgetData.value}
-          onValueChange={() => onSwitchChange()}
-        />
-      </Layout.View>
-
-    </WidgetComponent.Root>
-  </>);
-}
-
-function IconButtons_Top(props: {
-  widgetData: BooleanWidgetData
-  onPencilPress: () => void
-}) {
-
-  const { theme } = useMemo(() => ConfigService.config, []);
-
-  return (<>
-    {(props.widgetData.rules.allowLabelChange) && (
-      <Layout.Button.Icon
-        iconName="pencil-sharp"
-        color={theme.onSecondary}
-        onPress={props.onPencilPress}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          borderTopRightRadius: 10,
-        }}
+      <Layout.Input.Boolean
+        label=""
+        backgroundColor={theme.tertiary}
+        color={theme.onTertiary}
+        value={widgetData.value}
+        notApplicable={widgetData.notApplicable}
+        locked={!widgetData.rules.allowValueChange}
+        onSwitchChange={(boolean) => onSwitchChange(boolean)}
+        onNotApplicableChange={(boolean) => onNotApplicableChange(boolean)}
       />
-    )}
+      {showGPS && widgetData.gps !== undefined && (
+        <Layout.Input.GPS
+          label="GPS"
+          gpsData={widgetData.gps}
+          backgroundColor={theme.tertiary}
+          color={theme.onTertiary}
+          onPress_Delete={() => onDeleteGPS()}
+          onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
+        />
+      )}
+    </WC.Root>
   </>);
 }
 
-function Modal(props: {
-  widgetData: BooleanWidgetData
-  onConfirm: (value: BooleanWidgetData) => void
-  onDelete: () => void
-  onRequestClose: () => void
-}) {
-
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Widgets.BooleanWidget[language], []);
-
-  const [label, setLabel] = useState<string>(props.widgetData.name);
-  const [value, setValue] = useState<boolean>(props.widgetData.value);
-
-  const { rules } = props.widgetData;
-
-  return (
-    <WidgetComponent.Modal
-      title={label}
-      widgetData={props.widgetData}
-      onConfirm={() => {
-        props.onConfirm({
-          id_widget: props.widgetData.id_widget,
-          name: label,
-          type: 'boolean',
-          value: value,
-          rules: { ...props.widgetData.rules },
-        });
-      }}
-      onDelete={props.onDelete}
-      onRequestClose={props.onRequestClose}
-    >
-      <Layout.View
-        style={{
-          gap: 10,
-        }}
-      >
-        <Layout.Input.String
-          label={stringResources['Widget name']}
-          backgroundColor={theme.background}
-          color={theme.onBackground}
-          color_placeholder={theme.onBackground_Placeholder}
-          placeholder={stringResources['Write widget name here...']}
-          value={label}
-          locked={!rules.allowLabelChange}
-          onChangeText={(text) => setLabel(text)}
-        />
-        <Layout.Input.Boolean
-          label={stringResources['Value']}
-          backgroundColor={theme.background}
-          color={theme.onBackground}
-          value={value}
-          locked={!rules.allowValueChange}
-          onSwitchChange={(boolean) => setValue(boolean)}
-        />
-      </Layout.View>
-    </WidgetComponent.Modal>
-  );
-}

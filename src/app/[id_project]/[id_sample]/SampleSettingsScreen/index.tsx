@@ -2,29 +2,28 @@ import React, { useMemo, ReactNode } from 'react';
 import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 
-import { Layout } from '@Components/Layout';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Inputs_SampleSettings from './LocalComponents/Inputs_SampleSettings';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
 
 export default function SampleSettingsScreen() {
 
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
+  const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
   return (
     <Layout.Root
-      title={stringResources['Edit sample']}
+      title={R['Edit sample']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       <Layout.ScrollView>
         <Animation>
-          <Inputs_SampleSettings />
+          <LC.SampleSettings />
         </Animation>
       </Layout.ScrollView>
     </Layout.Root>

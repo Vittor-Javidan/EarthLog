@@ -1,99 +1,110 @@
 import React, { useMemo } from 'react';
-import { View, Text, Switch, Platform } from 'react-native';
+import { View, Switch, Platform } from 'react-native';
+import * as Vibration from 'expo-haptics';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import IconButton from '../Button/IconButton';
+import H3 from '../Text/H3';
+import Checkbox from '../Button/Checkbox';
+import InputRoot from './Root';
 
 export default function BooleanInput(props: {
-  label: string
+  label?: string
   backgroundColor: string
   color: string
   value: boolean
   locked: boolean
-  onSwitchChange?: (value: boolean) => void
+  notApplicable?: boolean
+  onSwitchChange: (value: boolean) => void
+  onNotApplicableChange?: (value: boolean) => void
 }) {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Data.Boolean[language], []);
+  const R = useMemo(() => translations.Input.BooleanInput[language], []);
 
-  const backgroundColor = props.backgroundColor ? props.backgroundColor : theme.background;
-  const color = props.color ? props.color : theme.onBackground;
+  const valueColor = props.notApplicable === true
+    ? props.color
+    : props.value === true
+      ? theme.confirm
+      : theme.wrong
+  ;
+
+  const trackColor_False = props.notApplicable === true ? props.color : theme.wrong;
+  const trackColor_True = props.notApplicable === true ? props.color : theme.confirm;
+
+  async function onSwitchChange(boolean: boolean) {
+    if (props.notApplicable === true) {
+      return;
+    }
+    props.onSwitchChange(boolean);
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+  }
+
+  function onNotApplicableChange(boolean: boolean) {
+    if (props.onNotApplicableChange === undefined) {
+      return;
+    }
+    props.onNotApplicableChange(boolean);
+  }
 
   return (
-    <View
+    <InputRoot
+      backgroundColor={props.backgroundColor}
+      color={props.color}
+      label={props.label}
       style={{
-        paddingHorizontal: 5,
-        paddingTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
-      <Text
+      <H3
         style={{
-          position: 'absolute',
-          backgroundColor: backgroundColor,
-          color: color,
-          fontSize: 20,
-          paddingHorizontal: 5,
-          top: 0,
-          left: 15,
-          zIndex: 1,
+          color: valueColor,
+          fontWeight: '900',
         }}
       >
-        {props.label}
-      </Text>
+        {R[`${props.value}`]}
+      </H3>
       <View
         style={{
-          position: 'absolute',
           flexDirection: 'row',
-          backgroundColor: backgroundColor,
-          zIndex: 1,
-          height: 30,
-          top: 0,
-          right: 15,
+          alignItems: 'center',
+          gap: 10,
         }}
       >
-        {props.locked ? (
-          <IconButton
-            iconName="lock-closed-sharp"
-            color={theme.wrong}
-            onPress={() => {}}
+        {props.notApplicable !== undefined && (
+          <View
             style={{
-              paddingHorizontal: 5,
-              paddingVertical: 0,
-              borderRadius: 10,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
             }}
-          />
-        ) : (
-          <Switch
-            style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
-            trackColor={{ false: theme.wrong, true: theme.confirm }}
-            ios_backgroundColor={theme.wrong}
-            value={props.value}
-            onValueChange={props.onSwitchChange}
-          />
+          >
+            <H3
+              style={{
+                color: props.color,
+                fontWeight: '900',
+              }}
+            >
+              N/A:
+            </H3>
+            <Checkbox
+              value={props.notApplicable}
+              onChange={(boolean) => onNotApplicableChange(boolean)}
+            />
+          </View>
         )}
+        <Switch
+          style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
+          trackColor={{ false: trackColor_False, true: trackColor_True }}
+          ios_backgroundColor={trackColor_False}
+          value={props.value}
+          onValueChange={(boolean) => onSwitchChange(boolean)}
+          thumbColor={props.notApplicable === true ? props.color : undefined}
+        />
       </View>
-      <View
-        style={{
-          width: '100%',
-          paddingHorizontal: 20,
-          paddingTop: 20,
-          paddingBottom: 20,
-          backgroundColor: backgroundColor,
-          borderColor: theme.primary,
-          borderWidth: 2,
-          borderRadius: 10,
-        }}
-      >
-        <Text
-          style={{
-            color: color,
-          }}
-        >
-          {stringResources[`${props.value}`]}
-        </Text>
-      </View>
-    </View>
+    </InputRoot>
   );
 }

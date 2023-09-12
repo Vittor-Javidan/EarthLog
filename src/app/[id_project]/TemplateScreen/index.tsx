@@ -3,22 +3,21 @@ import { Dimensions } from 'react-native';
 import { MotiView } from 'moti';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
-import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
+import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
-import NavigationTree from './NavigationTree';
-import ScreenButtons from './ScreenButtons';
-import Widgets_Template from './LocalComponents/Widgets_Template';
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
 
 export default function TemplateScreen() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const { language } = useMemo(() => ConfigService.config, []);
-  const stringResources = useMemo(() => translations.Screens.TemplateScreen[language], []);
+  const R = useMemo(() => translations.Screens.TemplateScreen[language], []);
   const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
 
   useEffect(() => {
@@ -28,10 +27,10 @@ export default function TemplateScreen() {
 
   return (
     <Layout.Root
-      title={stringResources['Template']}
+      title={R['Template']}
       drawerChildren={<></>}
-      navigationTree={<NavigationTree />}
-      screenButtons={<ScreenButtons />}
+      navigationTree={<TC.NavigationTree />}
+      screenButtons={<TC.ScreenButtons />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
@@ -44,7 +43,7 @@ export default function TemplateScreen() {
           }}
         >
           <Animation>
-            <Widgets_Template />
+            <LC.TemplateWidgets />
           </Animation>
         </Layout.ScrollView>
       )}

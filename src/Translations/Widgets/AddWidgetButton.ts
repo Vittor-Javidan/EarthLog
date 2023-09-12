@@ -5,7 +5,7 @@ export type Translations_AddWidgetButton = Record<Languages, {
   'Add Widget': string
   'Widget name': string
   'Write a name to the widget here...': string
-  'Boolean': string
+  'True/False': string
   'Text': string
 }>
 
@@ -15,7 +15,7 @@ export const translations_AddWidgetButton: Translations_AddWidgetButton = {
     'Add Widget': 'Add Widget',
     'Widget name': 'Widget name',
     'Write a name to the widget here...': 'write a name to the widget here...',
-    'Boolean': 'Boolean Widget',
+    'True/False': 'True/False',
     'Text': 'Text',
   },
   'pt-BR': {
@@ -23,7 +23,7 @@ export const translations_AddWidgetButton: Translations_AddWidgetButton = {
     'Add Widget': 'Adicionar Widget',
     'Widget name': 'Nome do Widget',
     'Write a name to the widget here...': 'Escreva um nome para o Widget aqui...',
-    'Boolean': 'Booleano',
+    'True/False': 'Verdadeiro/Falso',
     'Text': 'Texto',
   },
 };

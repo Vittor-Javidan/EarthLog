@@ -46,5 +46,13 @@ export type IconName = (
   'list'                |
   'folder'              |
   'finger-print'        |
-  'arrow-undo'
+  'arrow-undo'          |
+  'location'            |
+  'play'                |
+  'stop'                |
+  'checkmark-sharp'     |
+  'locate'              |
+  'add-circle-outline'  |
+  'options-outline'     |
+  'backspace-outline'
 )
