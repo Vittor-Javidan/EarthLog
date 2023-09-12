@@ -1,3 +1,5 @@
+# study if isWrong is acually necessary on WC
+
 # on GPSInput manual input, change "," for '.' when user type ","
 
 # Remove all Layout.View Calls. use <View /> instead
