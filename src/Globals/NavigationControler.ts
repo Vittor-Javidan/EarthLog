@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import AppRoutes from './AppRoutes';
 
 type ScreenName = (
+  'TEST SCREEN'                                       |
   'RESTART APP'                                       |
   'SETTINGS SCREEN'                                   |
     'LANGUAGES SCREEN'                                |
@@ -31,6 +32,11 @@ export function navigate(
   const navController = useRouter();
 
   switch (screen) {
+
+    case 'TEST SCREEN': {
+      navController.push(AppRoutes.TEST_SCREEN);
+      break;
+    }
 
     case 'RESTART APP': {
       navController.push(AppRoutes.RESTART_APP);

@@ -5,7 +5,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-export default function NavigationTree(props: {
+export default function NavigationTreeRoot(props: {
   iconButtons: JSX.Element[]
 }) {
 
@@ -42,8 +42,10 @@ export default function NavigationTree(props: {
         alignItems: 'center',
         backgroundColor: theme.primary,
         borderColor: theme.secondary,
-        height: 30,
+        height: 20,
+        paddingHorizontal: 1,
         borderTopWidth: 1,
+        paddingVertical: 1,
         gap: 5,
       }}
     >

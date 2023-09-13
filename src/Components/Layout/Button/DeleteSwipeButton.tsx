@@ -6,11 +6,12 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 
-import H1 from '../Text/H1';
 import Icon from '../Icon';
-import IconButtonRounded from './IconButtonRounded';
+import H3 from '../Text/H3';
+import TextWithIcon from './TextWithIcon';
 
 export default function DeleteSwipeButton(props: {
+  buttonRadius?: number
   onSwipe: () => void
   onCancel: () => void
 }) {
@@ -19,16 +20,16 @@ export default function DeleteSwipeButton(props: {
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
   const PADDING = 10;
-  const TARGET_AREA_WIDTH = 80;
-  const CIRCLE_RADIUS = 40;
-  const THRESHOLD = WIDTH - TARGET_AREA_WIDTH - CIRCLE_RADIUS + PADDING;
+  const CIRCLE_RADIUS = props.buttonRadius ?? 35;
+  const CIRCLE_DIAMETER = CIRCLE_RADIUS * 2;
+  const THRESHOLD = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10;
 
   const translateX = useSharedValue(0);
-  const circleBackground = useSharedValue(theme.tertiary);
+  const circleBackground = useSharedValue(theme.secondary);
   const adjustedTranslateX = useDerivedValue(() => {
     return Math.min(
       Math.max(translateX.value, 0),
-      WIDTH - (CIRCLE_RADIUS * 2) - (PADDING * 2),
+      WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2),
     );
   });
 
@@ -47,7 +48,7 @@ export default function DeleteSwipeButton(props: {
 
   const animatedStyle_targetArea = useAnimatedStyle(() => {
     return {
-      backgroundColor: translateX.value < THRESHOLD ? theme.wrong : theme.tertiary,
+      backgroundColor: translateX.value < THRESHOLD ? theme.wrong : theme.secondary,
     };
   });
 
@@ -66,11 +67,11 @@ export default function DeleteSwipeButton(props: {
     },
     onEnd: () => {
       'worklet';
-      circleBackground.value = theme.tertiary;
+      circleBackground.value = theme.secondary;
       if (translateX.value < THRESHOLD) {
         translateX.value = 0;
       } else {
-        translateX.value = WIDTH - 100;
+        translateX.value = WIDTH - PADDING - CIRCLE_RADIUS;
         runOnJS(vibrate)();
         runOnJS(props.onSwipe)();
       }
@@ -86,19 +87,31 @@ export default function DeleteSwipeButton(props: {
         gap: 10,
       }}
     >
-      <IconButtonRounded
+      <TextWithIcon
+        iconSide="Right"
         iconName="close"
+        title="Cancel"
         onPress={() => props.onCancel()}
-        showPlusSign={false}
         color_background={theme.secondary}
-        color={theme.onSecondary}
+        color_font={theme.onSecondary}
+        style={{
+          width: 100,
+          height: 30,
+          paddingRight: 10,
+          paddingLeft: 15,
+          paddingVertical: 0,
+          borderRadius: 15,
+        }}
+        styleText={{
+          paddingVertical: 5,
+        }}
       />
       <Animated.View
         style={[{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          height: 80,
+          height: CIRCLE_DIAMETER,
           width: '100%',
           paddingLeft: 20,
           backgroundColor: theme.tertiary,
@@ -106,15 +119,15 @@ export default function DeleteSwipeButton(props: {
           borderRadius: 40,
         }, animatedStyle_slider]}
       >
-        <H1 style={{ color: theme.tertiary }}>
+        <H3 style={{ color: theme.tertiary }}>
           Release to confirm
-        </H1>
+        </H3>
         <Animated.View
           style={[{
-            height: CIRCLE_RADIUS * 2,
-            width: TARGET_AREA_WIDTH,
-            borderRadius: 40,
-            borderWidth: 5,
+            height: CIRCLE_DIAMETER,
+            width: CIRCLE_DIAMETER,
+            borderRadius: CIRCLE_RADIUS,
+            borderWidth: 3,
             borderColor: theme.secondary,
             backgroundColor: theme.wrong,
             justifyContent: 'center',
@@ -131,12 +144,11 @@ export default function DeleteSwipeButton(props: {
             style={[{
               position: 'absolute',
               left: 0,
-              height: CIRCLE_RADIUS * 2,
-              width: CIRCLE_RADIUS * 2,
+              height: CIRCLE_DIAMETER,
+              width: CIRCLE_DIAMETER,
               borderRadius: CIRCLE_RADIUS,
-              borderWidth: 5,
-              borderColor: theme.secondary,
-              backgroundColor: theme.tertiary,
+              borderWidth: 3,
+              borderColor: theme.tertiary,
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: 20,
@@ -144,7 +156,7 @@ export default function DeleteSwipeButton(props: {
           >
             <Icon
               iconName="finger-print"
-              color={theme.onWrong}
+              color={theme.onSecondary}
             />
           </Animated.View>
         </PanGestureHandler>

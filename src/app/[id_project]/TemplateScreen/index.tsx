@@ -30,23 +30,26 @@ export default function TemplateScreen() {
       title={R['Template']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Layout.ScrollView
-          contenContainerStyle={{
-            paddingTop: 10,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <Animation>
-            <LC.TemplateWidgets />
-          </Animation>
-        </Layout.ScrollView>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Layout.ScrollView
+            contenContainerStyle={{
+              paddingTop: 10,
+              padding: 5,
+              gap: 10,
+            }}
+          >
+            <Animation>
+              <LC.TemplateWidgets />
+            </Animation>
+          </Layout.ScrollView>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }

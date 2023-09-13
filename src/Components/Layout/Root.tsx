@@ -3,24 +3,24 @@ import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Pl
 import { MotiView } from 'moti';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as Vibration from 'expo-haptics';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
-
-import IconButton from './Button/IconButton';
-import RootText from './Text/Root';
 import ThemeService from '@Services/ThemeService';
+
+import RootText from './Text/Root';
 import AppRootAlertLayer from '@Components/Alert/AlertModal';
+import Icon from './Icon';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 70;
-const NAVIGATION_TREE_HEIGHT = 30;
+const NAVIGATION_TREE_HEIGHT = 20;
 
 export default function Root(props: {
   title: string
   children: ReactNode
   drawerChildren: ReactNode
   navigationTree: JSX.Element
-  screenButtons: JSX.Element
 }): JSX.Element {
 
   const { theme } = useMemo(() => ConfigService.config, []);
@@ -48,12 +48,7 @@ export default function Root(props: {
         style={{ flex: 1 }}
       >
         {props.navigationTree}
-        <ContentArea
-          style={{ flex: 1 }}
-        >
-          {props.children}
-        </ContentArea>
-        {props.screenButtons}
+        {props.children}
       </View>
     </View>
     <Drawer
@@ -101,27 +96,56 @@ function Navbar(props: {
         </RootText>
       </View>
       <IconButton
-        iconName="md-menu-sharp"
         onPress={props.onMenuButtonPress}
-        color_onPressed={theme.secondary}
-        style={{
-          paddingHorizontal: 10,
-        }}
       />
     </View>
   </>);
 }
 
-function ContentArea(props: {
-  style: StyleProp<ViewStyle>
-  children: ReactNode
+function IconButton(props: {
+  onPress: () => void
 }): JSX.Element {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  async function onPressIn() {
+    setPressed(true);
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+  }
+
+  async function onPress() {
+    props.onPress();
+    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+  }
 
   return (
     <View
-      style={[props.style]}
+      style={{
+        paddingHorizontal: 1,
+        paddingVertical: 1,
+      }}
     >
-      {props.children}
+      <Pressable
+        onPressIn={async () => await onPressIn()}
+        onPressOut={() => setPressed(false)}
+        onPress={() => onPress()}
+        style={{
+          flexDirection: 'row',
+          backgroundColor: pressed ? theme.tertiary : theme.primary,
+          paddingHorizontal: 10,
+          paddingVertical: 0,
+          borderRadius: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <Icon
+          iconName="md-menu-sharp"
+          color={pressed ? theme.onTertiary : theme.onPrimary}
+        />
+      </Pressable>
     </View>
   );
 }

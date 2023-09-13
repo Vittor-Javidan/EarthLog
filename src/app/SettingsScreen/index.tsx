@@ -24,36 +24,39 @@ export default function SettingsScreen(): JSX.Element {
     <Layout.Root
       title={R['Settings']}
       drawerChildren={<></>}
-      screenButtons={<TC.ScreenButtons />}
       navigationTree={<TC.NavigationTree />}
     >
-      <Layout.View
-        style={{
-          paddingTop: 1,
-          gap: 1,
-        }}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
       >
-        <Layout.Button.TextWithIcon
-          title={R['Language']}
-          iconName="language"
-          iconSide="Right"
-          onPress={() => navigate('LANGUAGES SCREEN')}
-        />
-        <Layout.Button.TextWithIcon
-          title={R['Theme']}
-          iconName="color-palette"
-          iconSide="Right"
-          onPress={() => navigate('THEME SCREEN')}
-        />
-        <Layout.Button.TextWithIcon
-          title={R['Whipe Database']}
-          iconName="trash-outline"
-          iconSide="Right"
-          color_background={theme.wrong}
-          color_font={theme.onWrong}
-          onPress={async () => await whipeDataBase()}
-        />
-      </Layout.View>
+        <Layout.View
+          style={{
+            paddingTop: 1,
+            gap: 1,
+          }}
+        >
+          <Layout.Button.TextWithIcon
+            title={R['Language']}
+            iconName="language"
+            iconSide="Right"
+            onPress={() => navigate('LANGUAGES SCREEN')}
+          />
+          <Layout.Button.TextWithIcon
+            title={R['Theme']}
+            iconName="color-palette"
+            iconSide="Right"
+            onPress={() => navigate('THEME SCREEN')}
+          />
+          <Layout.Button.TextWithIcon
+            title={R['Whipe Database']}
+            iconName="trash-outline"
+            iconSide="Right"
+            color_background={theme.wrong}
+            color_font={theme.onWrong}
+            onPress={async () => await whipeDataBase()}
+          />
+        </Layout.View>
+      </Layout.Screen>
     </Layout.Root>
   );
 }

@@ -10,7 +10,7 @@ export default function ScreenButtons(props: {
 }) {
 
   const { width: WIDTH} = Dimensions.get('window');
-  const HORIZONTAL_PADDING = 10;
+  const HORIZONTAL_PADDING = 0;
   const BOTTOM = Platform.OS === 'ios' ? 20 : 10;
 
   return (props.showSwipe ? (
@@ -39,7 +39,7 @@ export default function ScreenButtons(props: {
     <View
       style={{
         position: 'absolute',
-        left: (WIDTH / 2) - 40,
+        left: (WIDTH / 2) - 35,
         bottom: BOTTOM,
       }}
     >

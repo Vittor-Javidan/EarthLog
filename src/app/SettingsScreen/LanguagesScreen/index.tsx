@@ -22,18 +22,21 @@ export default function LanguagesScreen(): JSX.Element {
       title={R['Languages']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      <Layout.View
-        style={{
-          paddingTop: 1,
-          gap: 1,
-        }}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
       >
-        <LC.LanguageButtons
-          onButtonClick={() => refresh(prev => !prev)}
-        />
-      </Layout.View>
+        <Layout.View
+          style={{
+            paddingTop: 1,
+            gap: 1,
+          }}
+        >
+          <LC.LanguageButtons
+            onButtonClick={() => refresh(prev => !prev)}
+          />
+        </Layout.View>
+      </Layout.Screen>
     </Layout.Root>
   );
 }

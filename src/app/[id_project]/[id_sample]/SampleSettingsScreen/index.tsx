@@ -19,13 +19,16 @@ export default function SampleSettingsScreen() {
       title={R['Edit sample']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      <Layout.ScrollView>
-        <Animation>
-          <LC.SampleSettings />
-        </Animation>
-      </Layout.ScrollView>
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        <Layout.ScrollView>
+          <Animation>
+            <LC.SampleSettings />
+          </Animation>
+        </Layout.ScrollView>
+      </Layout.Screen>
     </Layout.Root>
   );
 }

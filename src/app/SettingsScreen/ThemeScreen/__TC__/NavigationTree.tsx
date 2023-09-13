@@ -15,19 +15,19 @@ export default function NavigationTree() {
   }
 
   return (
-    <Layout.NavigationTree
+    <Layout.NavigationTree.Root
       iconButtons={[
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
           onPress={() => cancelAndExit('HOME SCREEN')}
         />,
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="settings"
           onPress={() => cancelAndExit('SETTINGS SCREEN')}
         />,
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_3"
           iconName="color-palette"
         />,

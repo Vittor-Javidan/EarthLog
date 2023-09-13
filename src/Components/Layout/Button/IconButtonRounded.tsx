@@ -10,6 +10,7 @@ export default function IconButtonRounded(props: {
   iconName: IconName
 	showPlusSign: boolean
   color_background: string
+	buttonDiameter?: number
   color?: string
   style?: StyleProp<ViewStyle>
   onPress?: () => void
@@ -17,6 +18,7 @@ export default function IconButtonRounded(props: {
 
 	const { theme } = useMemo(() => ConfigService.config, []);
 	const [pressed, setPressed] = useState<boolean>(false);
+	const diameter = props.buttonDiameter ?? 70;
 
 	return (
     <Pressable
@@ -33,9 +35,9 @@ export default function IconButtonRounded(props: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: pressed ? theme.onPressColorPrimary : props.color_background,
-				height: 80,
-				width: 80,
-				borderRadius: 80,
+				height: diameter,
+				width: diameter,
+				borderRadius: 35,
         paddingVertical: 15,
 				paddingHorizontal: 15,
 				borderColor: theme.tertiary,

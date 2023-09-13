@@ -1,5 +1,7 @@
 export default class AppRoutes {
 
+  static TEST_SCREEN = '/TestScreen';
+
   static RESTART_APP = '/';
 
   static HOME = '/HomeScreen';

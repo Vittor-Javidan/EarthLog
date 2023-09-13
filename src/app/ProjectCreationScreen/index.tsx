@@ -27,14 +27,17 @@ export default function ProjectCreationScreen() {
       title={R['Project creation']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      <Layout.ScrollView>
-        <Animation>
-          <LC.ProjectSettingsWidget />
-          <LC.ProjectWidgets />
-        </Animation>
-      </Layout.ScrollView>
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        <Layout.ScrollView>
+          <Animation>
+            <LC.ProjectSettingsWidget />
+            <LC.ProjectWidgets />
+          </Animation>
+        </Layout.ScrollView>
+      </Layout.Screen>
     </Layout.Root>
   );
 }

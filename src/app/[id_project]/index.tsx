@@ -27,15 +27,18 @@ export default function ProjectScreen() {
       title={projectSettings === null ? '...' : projectSettings.name}
       drawerChildren={<TC.Drawer />}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Animation>
-          <LC.SampleButtons />
-        </Animation>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Animation>
+            <LC.SampleButtons />
+          </Animation>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }

@@ -31,17 +31,20 @@ export default function ThemeScreen(): JSX.Element {
       title={R['Theme']}
       drawerChildren={<TC.Drawer state={state} />}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Layout.ScrollView>
-          <Animation>
-            <LC.AllInputs />
-          </Animation>
-        </Layout.ScrollView>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Layout.ScrollView>
+            <Animation>
+              <LC.AllInputs />
+            </Animation>
+          </Layout.ScrollView>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }

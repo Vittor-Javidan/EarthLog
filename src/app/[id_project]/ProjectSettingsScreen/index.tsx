@@ -31,18 +31,21 @@ export default function ProjectSettingsScreen() {
       title={R['Edit project']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Layout.ScrollView>
-          <Animation>
-            <LC.ProjectSettingsWidget />
-            <LC.ProjectWidgets />
-          </Animation>
-        </Layout.ScrollView>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Layout.ScrollView>
+            <Animation>
+              <LC.ProjectSettingsWidget />
+              <LC.ProjectWidgets />
+            </Animation>
+          </Layout.ScrollView>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }

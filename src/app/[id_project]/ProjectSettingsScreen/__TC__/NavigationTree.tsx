@@ -9,19 +9,19 @@ export default function NavigationTree() {
   const id_project = useLocalSearchParams().id_project as string;
 
   return (
-    <Layout.NavigationTree
+    <Layout.NavigationTree.Root
       iconButtons={[
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
           onPress={() => navigate('HOME SCREEN')}
         />,
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="folder"
           onPress={() => navigate('PROJECT SCREEN', id_project)}
         />,
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_3"
           iconName="pencil-sharp"
         />,

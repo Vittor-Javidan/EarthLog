@@ -14,14 +14,14 @@ export default function NavigationTree() {
   }
 
   return (
-    <Layout.NavigationTree
+    <Layout.NavigationTree.Root
       iconButtons={[
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
           onPress={() => exitScreen()}
         />,
-        <Layout.Button.Icon
+        <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="folder"
         />,

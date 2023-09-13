@@ -28,17 +28,20 @@ export default function SampleScreens() {
       title={sampleSettings.name}
       drawerChildren={<TC.Drawer />}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Layout.ScrollView>
-          <Animation>
-            <LC.SampleWidgets />
-          </Animation>
-        </Layout.ScrollView>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Layout.ScrollView>
+            <Animation>
+              <LC.SampleWidgets />
+            </Animation>
+          </Layout.ScrollView>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }

@@ -1,3 +1,7 @@
+- add icons to carousel buttons.
+- Reduce Layout Navigation tree height to 30. And ajust all other components to render accordling.
+- add an opiton on InputString to be inline or multiline. (Inline are used for labels.)
+
 # study if isWrong is acually necessary on WC
 
 # on GPSInput manual input, change "," for '.' when user type ","

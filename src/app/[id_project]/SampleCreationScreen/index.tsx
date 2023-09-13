@@ -35,17 +35,20 @@ export default function SampleCreationScreen() {
       title={R['New sample']}
       drawerChildren={<></>}
       navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Layout.ScrollView>
-          <Animation>
-            <LC.SampleSettingsWidgetCreation />
-          </Animation>
-        </Layout.ScrollView>
-      )}
+      <Layout.Screen
+        screenButtons={<TC.ScreenButtons />}
+      >
+        {state === 'Loading' ? (
+          <Layout.Loading />
+        ) : (
+          <Layout.ScrollView>
+            <Animation>
+              <LC.SampleSettingsWidgetCreation />
+            </Animation>
+          </Layout.ScrollView>
+        )}
+      </Layout.Screen>
     </Layout.Root>
   );
 }
