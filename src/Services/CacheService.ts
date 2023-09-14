@@ -34,6 +34,8 @@ export default class CacheService {
     }
 
     this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
+    this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(lastProjectID);
+    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(lastProjectID);
     this.allSamples = await DatabaseService.getAllSamples(lastProjectID);
   }
 

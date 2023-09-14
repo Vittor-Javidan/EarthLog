@@ -6,12 +6,13 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 
-import Icon from '../Icon';
+import { Icon } from '../Icon';
 import H3 from '../Text/H3';
 import TextWithIcon from './TextWithIcon';
 
 export default function DeleteSwipeButton(props: {
   buttonRadius?: number
+  compensateMargin?: number
   onSwipe: () => void
   onCancel: () => void
 }) {
@@ -19,17 +20,18 @@ export default function DeleteSwipeButton(props: {
   const { theme } = useMemo(() => ConfigService.config, []);
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
+  const COMPENSATE_MARGIN = props.compensateMargin ?? 0;
   const PADDING = 10;
   const CIRCLE_RADIUS = props.buttonRadius ?? 35;
   const CIRCLE_DIAMETER = CIRCLE_RADIUS * 2;
-  const THRESHOLD = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10;
+  const THRESHOLD = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10 - COMPENSATE_MARGIN - COMPENSATE_MARGIN;
 
   const translateX = useSharedValue(0);
   const circleBackground = useSharedValue(theme.secondary);
   const adjustedTranslateX = useDerivedValue(() => {
     return Math.min(
       Math.max(translateX.value, 0),
-      WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2),
+      WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2),
     );
   });
 

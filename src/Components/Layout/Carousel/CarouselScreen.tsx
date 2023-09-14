@@ -41,17 +41,16 @@ function CarouselButtonsRoot(props: {
       style={{
         position: 'absolute',
         flexDirection: 'row',
-        top: 20,
         zIndex: 1,
-        left: MARGIN,
         alignSelf: 'center',
-        backgroundColor: theme.tertiary,
-        width: SCREEN_WIDTH - (MARGIN * 2),
-        height: 30,
-        borderRadius: 20,
-        gap: 2,
+        width: SCREEN_WIDTH - MARGIN - MARGIN,
+        height: 35,
         borderColor: theme.tertiary,
+        backgroundColor: theme.tertiary,
+        borderRadius: 20,
         borderWidth: 2,
+        top: 10,
+        gap: 2,
       }}
     >
       {props.children}
@@ -71,9 +70,6 @@ function CarouselAnimation(props: {
     <MotiView
       style={{
         flexDirection: 'row',
-        left: 0,
-        top: 0,
-        position: 'absolute',
         height: '100%',
         width: SCREEN_WIDTH * props.amount,
       }}

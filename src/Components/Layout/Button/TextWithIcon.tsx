@@ -5,7 +5,7 @@ import ConfigService from '@Services/ConfigService';
 
 import RootButton from './Root';
 import RootText from '../Text/Root';
-import Icon, { IconName } from '../Icon';
+import { Icon, IconName } from '../Icon';
 import ThemeService from '@Services/ThemeService';
 
 export default function TextWithIcon(props: {

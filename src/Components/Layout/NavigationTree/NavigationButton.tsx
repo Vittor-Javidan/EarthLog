@@ -4,7 +4,7 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 
-import Icon, { IconName } from '../Icon';
+import { Icon, IconName } from '../Icon';
 
 export default function NavigationButton(props: {
   iconName: IconName

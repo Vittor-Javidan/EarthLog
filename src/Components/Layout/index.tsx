@@ -1,5 +1,5 @@
 import Root from './Root';
-import Icon from './Icon';
+import { Icon } from './Icon';
 import View from './View';
 import ScrollView from './ScrollView';
 import ScreenButtons from './ScreenButtons';

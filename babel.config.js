@@ -24,6 +24,7 @@ module.exports = function (api) {
           '@Layout': './src/Components/Layout',
           '@Widget': './src/Components/Widget',
           '@WidgetComponents': './src/Components/Widget/Components',
+          '@Screens': './src/Screens',
         },
       }],
     ],

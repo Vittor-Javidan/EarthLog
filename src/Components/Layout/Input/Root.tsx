@@ -66,7 +66,7 @@ export default function InputRoot(props: {
           paddingHorizontal: 10,
           gap: 10,
           backgroundColor: backgroundColor,
-          borderColor: theme.primary,
+          borderColor: color,
           borderWidth: 2,
           borderRadius: 10,
         }, props.style]}

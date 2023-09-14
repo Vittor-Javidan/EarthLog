@@ -16,8 +16,8 @@ export type Translations_Input_GPSInput = Record<Languages, {
   'Manual': string
   '* All fields must be fulfill': string
   'Hold on!': string
-  'current saved data will be erased. Are you sure?': string
-  'current saved data will be replaced. Are you sure?': string
+  'This Will delete current GPS data. Confirm to proceed.': string
+  'This will overwrite current gps data. Confirm to proceed.': string
   'NO': string
 	'YES': string
 }>
@@ -39,8 +39,8 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Manual': 'Manual',
     '* All fields must be fulfill': '* All coordinate fields must be fulfill',
     'Hold on!': 'Hold on!',
-    'current saved data will be erased. Are you sure?': 'current saved data will be erased. Are you sure?',
-    'current saved data will be replaced. Are you sure?': 'current saved data will be replaced. Are you sure?',
+    'This Will delete current GPS data. Confirm to proceed.': 'This Will delete current GPS data. Confirm to proceed.',
+    'This will overwrite current gps data. Confirm to proceed.': 'This will overwrite current gps data. Confirm to proceed.',
     'NO': 'NO',
 		'YES': 'YES',
   },
@@ -60,8 +60,8 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Manual': 'Manual',
     '* All fields must be fulfill': '* todos campos precisam ser preenchidos',
     'Hold on!': 'Espere um pouco!',
-    'current saved data will be erased. Are you sure?': 'Dados atuais serão deletados. Tem certeza?',
-    'current saved data will be replaced. Are you sure?': 'Dados atuais serão substituídos. Tem certeza?',
+    'This Will delete current GPS data. Confirm to proceed.': 'Isso irá deletar os dados de GPS atuais. Confirme para continuar.',
+    'This will overwrite current gps data. Confirm to proceed.': 'Isso irá substituir os dados de GPS atuais. Confirme para continuar.',
     'NO': 'NÃO',
 		'YES': 'SIM',
   },

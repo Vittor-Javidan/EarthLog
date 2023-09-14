@@ -3,7 +3,7 @@ import React, { useMemo, ReactNode } from 'react';
 import ConfigService from '@Services/ConfigService';
 
 import View from './View';
-import Icon, { IconName } from './Icon';
+import { Icon,  IconName } from './Icon';
 import { Text } from './Text';
 
 export default function Group(props: {

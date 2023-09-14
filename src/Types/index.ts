@@ -185,3 +185,13 @@ export type RegexRules = {
   'noSpecialLetter': RegExp
   'id': RegExp
 }
+
+
+export type AlertModalConfig = {
+  question: string
+  type: 'warning' | 'exit app' | 'project creation' | 'sample creation'
+  id_project?: string
+  id_sample?: string
+}
+
+export type ScopeState = 'Loaded' | 'Loading';

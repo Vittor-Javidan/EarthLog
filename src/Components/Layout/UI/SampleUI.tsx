@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import ConfigService from '@Services/ConfigService';
 
 import View from '../View';
-import Icon from '../Icon';
+import { Icon } from '../Icon';
 import TextWithIcon from '../Button/TextWithIcon';
 import RootText from '../Text/Root';
 

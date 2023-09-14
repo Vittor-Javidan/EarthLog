@@ -91,9 +91,11 @@ export default function GPSInput(props: {
   }
 
   async function startGPS() {
-    await AlertService.handleAlert(
-      noGPSData === false,
-      R['current saved data will be replaced. Are you sure?'],
+    await AlertService.handleAlert(noGPSData === false,
+      {
+        question: R['This will overwrite current gps data. Confirm to proceed.'],
+        type: 'warning',
+      },
       async () => {
         await gpsWatcher.watchPositionAsync(
           (gpsData) => setGPSData(gpsData),
@@ -105,9 +107,11 @@ export default function GPSInput(props: {
   }
 
   async function onDelete() {
-    await AlertService.handleAlert(
-      noGPSData === false,
-      R['current saved data will be erased. Are you sure?'],
+    await AlertService.handleAlert(noGPSData === false,
+      {
+        question: R['This Will delete current GPS data. Confirm to proceed.'],
+        type: 'warning',
+      },
       () => props.onPress_Delete()
     );
   }

@@ -1,0 +1,31 @@
+import React from 'react';
+
+import { ScopeState } from '@Types/index';
+
+import { Layout } from '@Components/Layout';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
+
+export default function TemplateScreen(props: {
+  projectScopeState: ScopeState
+}) {
+  return (
+    <Layout.Screen
+      screenButtons={<TC.ScreenButtons />}
+    >
+      {props.projectScopeState === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.ScrollView
+          contenContainerStyle={{
+            paddingTop: 55,
+            padding: 5,
+            gap: 10,
+          }}
+        >
+          <LC.TemplateWidgets />
+        </Layout.ScrollView>
+      )}
+    </Layout.Screen>
+  );
+}

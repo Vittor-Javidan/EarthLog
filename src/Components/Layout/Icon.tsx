@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function Icon(props: {
+export const Icon = memo((props: {
   iconName: IconName
   color?: string
-}): JSX.Element {
-
+}) => {
   return (
     <Ionicons
       name={props.iconName}
@@ -17,7 +16,7 @@ export default function Icon(props: {
       }}
     />
   );
-}
+});
 
 export type IconName = (
   'home'                |

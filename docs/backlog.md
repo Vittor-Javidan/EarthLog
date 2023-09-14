@@ -1,3 +1,9 @@
+- add translation for CreateProject Alert Window
+
+- refactor and move backpress pressing to LayoutRoot.
+- make all buttons vibrate twice
+- set the multiline property properly across the app code.
+- remove padding from DeletSwipeButton. Use "CompensateMargin" prop instead.
 - add icons to carousel buttons.
 - Reduce Layout Navigation tree height to 30. And ajust all other components to render accordling.
 - add an opiton on InputString to be inline or multiline. (Inline are used for labels.)
@@ -27,3 +33,5 @@
 # Use <Layout.Icon /> only when necessary on Screen components. Otherwise, use Ionicons library directly.
 
 # Normalize all Widgets code.
+
+# everytime a project is openned. Move the index to front. (Involves database minor refactor)

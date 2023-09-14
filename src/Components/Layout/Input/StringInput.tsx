@@ -20,16 +20,13 @@ export default function StringInput(props: {
   backgroundColor?: string
   color?: string
   color_placeholder?: string
+  inline?: boolean
   onChangeText: (text: string) => void
 }) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
   const [showUndo, setShowUndo] = useState<boolean>(false);
   const [deletedText, setDeletedText] = useState<string>('');
-
-  function onChange(text: string) {
-    props.onChangeText(text);
-  }
 
   function deleteText() {
     if (props.value === '') {
@@ -69,8 +66,7 @@ export default function StringInput(props: {
       <TextInput
         style={[{
           width: '100%',
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingVertical: 15,
           backgroundColor: backgroundColor,
           color: color,
         }, props.style_TextInput]}
@@ -79,8 +75,8 @@ export default function StringInput(props: {
         placeholderTextColor={color_placeholder}
         textAlign="left"
         textAlignVertical="top"
-        multiline
-        onChangeText={(text) => onChange(text)}
+        multiline={props.inline ? false : true}
+        onChangeText={(text) => props.onChangeText(text)}
       />
     </InputRoot>
   );

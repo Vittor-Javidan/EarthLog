@@ -44,8 +44,9 @@ export default function NavigationTreeRoot(props: {
         borderColor: theme.secondary,
         height: 20,
         paddingHorizontal: 1,
-        borderTopWidth: 1,
         paddingVertical: 1,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
         gap: 5,
       }}
     >

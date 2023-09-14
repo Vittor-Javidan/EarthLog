@@ -10,7 +10,6 @@ export default function CarouselButton(props: {
   title: string
   selected: boolean
   type: 'left' | 'middle' | 'right'
-	style?: StyleProp<ViewStyle>
 	onPress: () => void
 }): JSX.Element {
 
@@ -19,7 +18,7 @@ export default function CarouselButton(props: {
   async function onPressIn() {
     if (!props.selected) {
       props.onPress();
-      await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
     }
   }
 
@@ -35,7 +34,7 @@ export default function CarouselButton(props: {
 
 	return (
 		<Pressable
-			onPressIn={async () => await onPressIn()}
+			onPressIn={async () => onPressIn()}
 			style={[{
         flexDirection: 'row',
 				justifyContent: 'center',
@@ -48,7 +47,11 @@ export default function CarouselButton(props: {
 			}, leftPositionStyle, rightPositionStyle]}
 		>
       <P
-        style={{ color: props.selected ? theme.onTertiary : theme.onPrimary }}
+        style={{
+          color: props.selected ? theme.onTertiary : theme.onPrimary,
+          textDecorationLine: props.selected ? 'underline' : 'none',
+          fontWeight: '900',
+        }}
       >
         {props.title}
       </P>

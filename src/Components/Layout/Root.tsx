@@ -11,9 +11,9 @@ import ThemeService from '@Services/ThemeService';
 
 import RootText from './Text/Root';
 import AppRootAlertLayer from '@Components/Alert/AlertModal';
-import Icon from './Icon';
+import { Icon } from './Icon';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
-const NAVBAR_HEIGH = 70;
+const NAVBAR_HEIGH = 60;
 const NAVIGATION_TREE_HEIGHT = 20;
 
 export default function Root(props: {
@@ -48,7 +48,11 @@ export default function Root(props: {
         style={{ flex: 1 }}
       >
         {props.navigationTree}
-        {props.children}
+        <View
+          style={{ flex: 1 }}
+        >
+          {props.children}
+        </View>
       </View>
     </View>
     <Drawer

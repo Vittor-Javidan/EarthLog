@@ -19,9 +19,11 @@ export default function ManualInput(props: {
   const [error    , setError    ] = useState<boolean>(false);
 
   async function onSave(newGPSData: GPS_DTO) {
-    await AlertService.handleAlert(
-      props.noGPSData,
-      'current saved data will be replaced. Are you sure?',
+    await AlertService.handleAlert(props.noGPSData,
+      {
+        question: 'current saved data will be replaced. Are you sure?',
+        type: 'warning',
+      },
       () => {
         setShowInput(false);
         setError(false);

@@ -1,7 +1,9 @@
+import { AlertModalConfig } from '@Types/index';
+
 export default class AlertService {
 
   private static showModalSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
-  private static questionModalSetter: React.Dispatch<React.SetStateAction<string>> | null = null;
+  private static alertModalConfigSetter: React.Dispatch<React.SetStateAction<AlertModalConfig>> | null = null;
 
   private static onAcceptCallback: (() => void) | (() => Promise<void>) | null = null;
 
@@ -11,9 +13,9 @@ export default class AlertService {
     }
   }
 
-  private static setQuestion(question: string) {
-    if (this.questionModalSetter !== null) {
-      this.questionModalSetter(question);
+  private static setConfig(question: AlertModalConfig) {
+    if (this.alertModalConfigSetter !== null) {
+      this.alertModalConfigSetter(question);
     }
   }
 
@@ -23,13 +25,13 @@ export default class AlertService {
     this.showModalSetter = setter;
   }
 
-  static registterQuestionSetter(
-    setter: React.Dispatch<React.SetStateAction<string>>
+  static registterAlertModalConfigSetter(
+    setter: React.Dispatch<React.SetStateAction<AlertModalConfig>>
   ) {
-    this.questionModalSetter = setter;
+    this.alertModalConfigSetter = setter;
   }
 
-  static async handleAlert(trigger: boolean, question: string,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
+  static async handleAlert(trigger: boolean, question: AlertModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
 
     if (!trigger) {
       await onAcceptCallback();
@@ -37,7 +39,7 @@ export default class AlertService {
     }
 
     this.onAcceptCallback = onAcceptCallback;
-    this.setQuestion(question);
+    this.setConfig(question);
     this.setShowModal(true);
   }
 
@@ -45,6 +47,7 @@ export default class AlertService {
   static async runAcceptCallback() {
     if (this.onAcceptCallback !== null) {
       await this.onAcceptCallback();
+      this.onAcceptCallback = null;
     }
   }
 }
