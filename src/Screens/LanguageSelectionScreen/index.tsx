@@ -11,7 +11,7 @@ export default function LanguagesSelectionScreen(): JSX.Element {
 
   const [_, refresh] = useState<boolean>(false);
 
-  useBackPress(() => navigate('SETTINGS SCREEN'));
+  useBackPress(() => navigate('SETTINGS SCOPE'));
 
   return (
     <Layout.Screen

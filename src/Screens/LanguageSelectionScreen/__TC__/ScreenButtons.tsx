@@ -16,7 +16,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={() => navigate('SETTINGS SCREEN')}
+          onPress={() => navigate('SETTINGS SCOPE')}
         />
       }
     />

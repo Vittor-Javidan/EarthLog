@@ -18,8 +18,11 @@ export type Translations_Input_GPSInput = Record<Languages, {
   'Hold on!': string
   'This Will delete current GPS data. Confirm to proceed.': string
   'This will overwrite current gps data. Confirm to proceed.': string
+  'This will delete current saved coordinate. Confirm to proceed.': string
+  'This will delete current saved altitude. Confirm to proceed.': string
   'NO': string
 	'YES': string
+  '* Reference distance: ': string
 }>
 
 export const translations_Input_GPSInput: Translations_Input_GPSInput = {
@@ -41,8 +44,11 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Hold on!': 'Hold on!',
     'This Will delete current GPS data. Confirm to proceed.': 'This Will delete current GPS data. Confirm to proceed.',
     'This will overwrite current gps data. Confirm to proceed.': 'This will overwrite current gps data. Confirm to proceed.',
+    'This will delete current saved coordinate. Confirm to proceed.': 'This will delete current saved coordinate. Confirm to proceed.',
+    'This will delete current saved altitude. Confirm to proceed.': 'This will delete current saved altitude. Confirm to proceed.',
     'NO': 'NO',
 		'YES': 'YES',
+    '* Reference distance: ': '* Reference distance: ',
   },
   'pt-BR': {
     'Coordinates': 'Coordenadas',
@@ -62,8 +68,11 @@ export const translations_Input_GPSInput: Translations_Input_GPSInput = {
     'Hold on!': 'Espere um pouco!',
     'This Will delete current GPS data. Confirm to proceed.': 'Isso irá deletar os dados de GPS atuais. Confirme para continuar.',
     'This will overwrite current gps data. Confirm to proceed.': 'Isso irá substituir os dados de GPS atuais. Confirme para continuar.',
+    'This will delete current saved coordinate. Confirm to proceed.': 'Isso irá deletar os dados atuais de coordenadas. Confirme para continuar.',
+    'This will delete current saved altitude. Confirm to proceed.': 'Isso irá deletar os dados atuais de altitude. Confirme para continuar.',
     'NO': 'NÃO',
 		'YES': 'SIM',
+    '* Reference distance: ': '* Distância da referência: ',
   },
 };
 

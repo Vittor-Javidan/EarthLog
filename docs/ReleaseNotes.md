@@ -1,11 +1,15 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.2.2 Alerts / Screens / Screen Scope
+# 0.1.2.3 Part 1: Animations / New Widget / DataTypes creation.
 
-- All Screens moved into a screen folder.
-- AppRoute redesign.
-- App folders are now used to define screen scopes.
-- New CreateProject popup for Alert component.
-- New ExitApp popup for Alert component.
-- StringInput internal vertical padding set to 15, to minimize diferences between IOS and Android.
-- "memo" now is used on <Layout.Icon /> 
+- id Regex changed to avoid possible bugs with the flag "g"
+- All animations optimized.
+- reanimated library removed.
+- New Widget Component
+- New TextInput
+- New BooleanInput
+- New Input Selector
+- new @Icon/ path
+- new @Button/path
+- new @Input/path
+- New adapted Services

@@ -9,7 +9,8 @@ import DatabaseService from '@Services/DatabaseService';
 export default function Home() {
 
   useEffect(() => {
-    initApp(() => navigate('HOME SCREEN'));
+    // initApp(() => navigate('HOME SCREEN'));
+    initApp(() => navigate('TEST SCOPE'));
   }, []);
 
   return <Layout.Loading />;

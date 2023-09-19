@@ -1,0 +1,393 @@
+import uuid from 'react-native-uuid';
+
+import { NewProjectDTO, NewProjectSettings, NewSampleSettings, NewWidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
+
+import DatabaseService from './NewDatabaseService';
+
+export default class ProjectService {
+
+  // ===============================================================================================
+  // DATA CREATION METHODS
+  // ===============================================================================================
+
+  static generateUuidV4(): string {
+    return uuid.v4() as string;
+  }
+
+  static getDefaultProjectTemplate(): NewProjectDTO {
+    return {
+      projectSettings: {
+        id_project: this.generateUuidV4(),
+        name: '',
+        rules: {
+          allowGPSChange: true,
+          allowProjectNameChange: true,
+          allowSampleAliasChange: true,
+          showCreateWidgetButton_Project: true,
+          showCreateWidgetButton_Template: true,
+          showSampleCreationButton: true,
+        },
+      },
+      projectWidgets: [],
+      template: [],
+      samples: [],
+    };
+  }
+
+  static getDefaultSampleSettings(): NewSampleSettings {
+    return {
+      id_sample: this.generateUuidV4(),
+      name: '',
+      rules: {
+        allowGPSChange: true,
+        allowSampleNameChange: true,
+        showCreateWidgetButton: true,
+      },
+    };
+  }
+
+  static getWidgetData() : NewWidgetData {
+    return {
+      id_widget: this.generateUuidV4(),
+      widgetName: '',
+      inputs: [],
+      rules: {
+        allowWidgetNameChange: true,
+        showAddInputButton: true,
+        showColorButton: true,
+        showDeleteButton_Inputs: true,
+        showDeleteButton_Widget: true,
+        showInputsDeleteOption: true,
+        showOptionsButton: true,
+      },
+    };
+  }
+
+  static getInputData(inputType: InputTypes): InputData {
+    switch (inputType) {
+      case 'boolean': return {
+        id_input: this.generateUuidV4(),
+        label: '',
+        type: 'boolean',
+        value: false,
+        notApplicable: true,
+      };
+      case 'string': return {
+        id_input: this.generateUuidV4(),
+        label: '',
+        type: 'string',
+        value: '',
+        placeholder: 'write a text here',
+      };
+      case 'gps': return {
+        id_input: this.generateUuidV4(),
+        label: '',
+        type: 'gps',
+        value: {},
+      };
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  // ===============================================================================================
+  // BASIC DATABASE METHODS
+  // ===============================================================================================
+
+  static async createProject(
+    projectDTO: NewProjectDTO,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    const {
+      projectSettings,
+      projectWidgets,
+      template,
+      samples,
+    } = projectDTO;
+
+    const {
+      id_project,
+    } = projectSettings;
+
+    try {
+
+      // PROJECT FOLDER
+      await DatabaseService.createProject(projectSettings);
+
+      // PROJECT WIDGETS
+      for (let i = 0; i < projectWidgets.length; i++) {
+        await DatabaseService.createWidget_Project(id_project, projectWidgets[i]);
+      }
+
+      // SAMPLE TEMPLATE WIDGETS
+      for (let i = 0; i < template.length; i++) {
+        await DatabaseService.createWidget_Template(id_project, template[i]);
+      }
+
+      // SAMPLES
+      for (let i = 0; i < samples.length; i++) {
+
+        const {
+          sampleSettings,
+          sampleWidgets,
+        } = samples[i];
+
+        // SAMPLE FOLDER
+        await DatabaseService.createSample(id_project, sampleSettings);
+
+        // SAMPLE WIDGETS
+        for (let j = 0; j < sampleWidgets.length; j++) {
+          const { id_sample } = sampleSettings;
+          await DatabaseService.createWidget_Sample(id_project, id_sample, sampleWidgets[j]);
+        }
+      }
+
+      onSuccess();
+
+    } catch (error) {
+      DatabaseService.deleteProject(projectSettings.id_project);
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateProject(
+    projectSettings: NewProjectSettings,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+    try {
+      await DatabaseService.updateProject(projectSettings);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteProject(
+    id_project: string,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+    try {
+      await DatabaseService.deleteProject(id_project);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async createSample(
+    id_project: string,
+    sampleSettings: NewSampleSettings,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    const { id_sample } = sampleSettings;
+
+    try {
+
+      await DatabaseService.createSample(id_project, sampleSettings);
+
+      // COPY AUTOGENERATED WIDGETS FROM TEMPLATE
+      const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
+      for (let i = 0; i < templateWidgets.length; i++) {
+        if (templateWidgets[i].autoGenerate === true) {
+          templateWidgets[i].id_widget = this.generateUuidV4();
+          await DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
+        }
+      }
+
+      onSuccess();
+
+    } catch (error) {
+      await DatabaseService.deleteSample(id_project, id_sample);
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateSample(
+    id_project: string,
+    sampleSettings: NewSampleSettings,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+    try {
+      await DatabaseService.updateSample(id_project, sampleSettings);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteSample(
+    id_project: string,
+    id_sample: string,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+    try {
+      await DatabaseService.deleteSample(id_project, id_sample);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async createWidget_Project(
+    id_project: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    const { id_widget } = widgetData;
+
+    try {
+      await DatabaseService.createWidget_Project(id_project, widgetData);
+      onSuccess();
+    } catch (error) {
+      await DatabaseService.deleteWidget_Project(id_project, id_widget);
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateWidget_Project(
+    id_project: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.updateWidget_Project(id_project, widgetData);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteWidget_Project(
+    id_project: string,
+    id_widget: string,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.deleteWidget_Project(id_project, id_widget);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async createWidget_Template(
+    id_project: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    const { id_widget } = widgetData;
+
+    try {
+      await DatabaseService.createWidget_Template(id_project, widgetData);
+      onSuccess();
+    } catch (error) {
+      await DatabaseService.deleteWidget_Template(id_project, id_widget);
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateWidget_Template(
+    id_project: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.updateWidget_Template(id_project, widgetData);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteWidget_Template(
+    id_project: string,
+    id_widget: string,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.deleteWidget_Template(id_project, id_widget);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async createWidget_Sample(
+    id_project: string,
+    id_sample: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    const { id_widget } = widgetData;
+
+    try {
+      await DatabaseService.createWidget_Sample(id_project, id_sample, widgetData);
+      onSuccess();
+    } catch (error) {
+      await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async updateWidget_Sample(
+    id_project: string,
+    id_sample: string,
+    widgetData: NewWidgetData,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.updateWidget_Sample(id_project, id_sample, widgetData);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+
+  static async deleteWidget_Sample(
+    id_project: string,
+    id_sample: string,
+    id_widget: string,
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  ): Promise<void> {
+
+    try {
+      await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
+      onSuccess();
+    } catch (error) {
+      onError(JSON.stringify(error));
+    }
+  }
+}

@@ -1,12 +1,15 @@
-import React, { useMemo, ReactNode } from 'react';
+import React, { useMemo, ReactNode, useEffect, memo } from 'react';
 import { Dimensions } from 'react-native';
-import { MotiView } from 'moti';
+import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 import { ScopeState } from '@Types/index';
 
 import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
+
+const LC_LastProjectButton = memo(() => <LC.LastProjectButton />);
+const LC_ProjectButtons    = memo(() => <LC.ProjectButtons />   );
 
 export default function HomeScreen(props: {
   homeScopeState: ScopeState
@@ -18,12 +21,18 @@ export default function HomeScreen(props: {
       {props.homeScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView>
-          <Animation>
-            <LC.LastProjectButton />
-            <LC.ProjectButtons />
-          </Animation>
-        </Layout.ScrollView>
+        <Animation>
+          <Layout.ScrollView
+            contenContainerStyle={{
+              paddingTop: 10,
+              padding: 5,
+              gap: 10,
+            }}
+          >
+            <LC_LastProjectButton />
+            <LC_ProjectButtons />
+          </Layout.ScrollView>
+        </Animation>
       )}
     </Layout.Screen>
   );
@@ -31,25 +40,28 @@ export default function HomeScreen(props: {
 
 function Animation(props: { children: ReactNode}) {
 
-  const { height } = useMemo(() => Dimensions.get('window'), []);
+  const { width } = useMemo(() => Dimensions.get('window'), []);
+  const leftOffset = useSharedValue(0);
+
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(() => {
+      leftOffset.value = withDelay(300, withTiming(width, {
+        duration: 200,
+      }));
+    });
+    return () => { cancelAnimationFrame(animationFrameId); };
+  }, []);
 
   return (
-    <MotiView
-      style={{
-        paddingTop: 10,
-        padding: 5,
-        gap: 10,
-      }}
-      from={{ top: 2 * height }}
-      transition={{
-        type: 'spring',
-        duration: 500,
-      }}
-      animate={{
-        top: 0,
-      }}
+    <Animated.View
+      style={[
+        { left: -width },
+        useAnimatedStyle(() => ({
+          transform: [{ translateX: leftOffset.value }],
+        })),
+      ]}
     >
       {props.children}
-    </MotiView>
+    </Animated.View>
   );
 }

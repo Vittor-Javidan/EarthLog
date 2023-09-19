@@ -1,5 +1,6 @@
 - add translation for CreateProject Alert Window
 
+- create a path for animations
 - refactor and move backpress pressing to LayoutRoot.
 - make all buttons vibrate twice
 - set the multiline property properly across the app code.

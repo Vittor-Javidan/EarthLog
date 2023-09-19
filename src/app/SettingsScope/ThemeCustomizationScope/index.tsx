@@ -1,13 +1,16 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import ThemeScreen, { ThemePreviewScreen } from '@Screens/ThemeScreen';
+import { Layout } from '@Layout/index';
+import _ThemeScreen, { ThemePreviewScreen as _ThemePreviewScreen } from '@Screens/ThemeScreen';
+
+const ThemeScreen         = memo(() => <_ThemeScreen />       );
+const ThemePreviewScreen  = memo(() => <_ThemePreviewScreen />);
 
 export default function ThemeScope(): JSX.Element {
 
@@ -16,7 +19,7 @@ export default function ThemeScope(): JSX.Element {
   const [selectedScreen, setSelectedScreen] = useState<number>(1);
 
   useBackPress(async () => {
-    navigate('SETTINGS SCREEN');
+    navigate('SETTINGS SCOPE');
   });
 
   return (
@@ -71,12 +74,12 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
-          onPress={() => navigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="settings"
-          onPress={() => navigate('SETTINGS SCREEN')}
+          onPress={() => navigate('SETTINGS SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_3"

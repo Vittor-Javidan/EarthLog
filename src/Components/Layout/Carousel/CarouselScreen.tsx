@@ -1,13 +1,26 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo, useEffect } from 'react';
 import { View, Dimensions } from 'react-native';
-import { MotiView } from 'moti';
 import ConfigService from '@Services/ConfigService';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
-export default function CarouselScreen(props: {
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+function getOffSets(amount: number) {
+  const offsets = [];
+  for (let i = 0; i < amount; i++) {
+    offsets.push(((i)  * -SCREEN_WIDTH));
+  }
+  return offsets;
+}
+
+export function CarouselScreen(props: {
   selected: number
   screens: JSX.Element[]
   overlayButtons: JSX.Element
 }) {
+
+  const CAROUSEL_WIDTH = useMemo(() => props.screens.length * SCREEN_WIDTH, []);
+  const OFFSETS = useMemo(() => getOffSets(props.screens.length), []);
 
   return (
     <View
@@ -19,8 +32,8 @@ export default function CarouselScreen(props: {
         {props.overlayButtons}
       </CarouselButtonsRoot>
       <CarouselAnimation
-        selected={props.selected}
-        amount={props.screens.length}
+        offset={OFFSETS[props.selected - 1]}
+        width={CAROUSEL_WIDTH}
       >
         {props.screens}
       </CarouselAnimation>
@@ -59,30 +72,37 @@ function CarouselButtonsRoot(props: {
 }
 
 function CarouselAnimation(props: {
-  selected: number
-  amount: number
+  width: number
+  offset: number
   children: ReactNode
 }) {
 
-  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const leftOffset = useSharedValue(0);
 
-  return (
-    <MotiView
-      style={{
-        flexDirection: 'row',
-        height: '100%',
-        width: SCREEN_WIDTH * props.amount,
-      }}
-      transition={{
-        type: 'spring',
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(() => {
+      leftOffset.value = withSpring(props.offset, {
         stiffness: 170,
         damping: 25,
-      }}
-      animate={{
-        left: SCREEN_WIDTH - (props.selected * SCREEN_WIDTH),
-      }}
+      });
+    });
+    return () => { cancelAnimationFrame(animationFrameId); };
+  }, [props.offset]);
+
+  return (
+    <Animated.View
+      style={[
+        {
+          flexDirection: 'row',
+          height: '100%',
+          width: props.width,
+        },
+        useAnimatedStyle(() => ({
+          transform: [{ translateX: leftOffset.value }],
+        })),
+      ]}
     >
       {props.children}
-    </MotiView>
+    </Animated.View>
   );
 }

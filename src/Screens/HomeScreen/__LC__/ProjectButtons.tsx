@@ -29,7 +29,7 @@ export default function ProjectButtons() {
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         } : undefined}
-        onPress={() => navigate('PROJECT SCREEN', settings.id_project)}
+        onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
       />
     );
   });

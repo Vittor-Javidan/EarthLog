@@ -44,7 +44,7 @@ export default function LastProjectButton() {
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         }}
-        onPress={() => navigate('PROJECT SCREEN', id_project)}
+        onPress={() => navigate('PROJECT SCOPE', id_project)}
       />
     </Layout.View>
   ) : (

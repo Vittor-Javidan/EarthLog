@@ -40,7 +40,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={() => navigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCOPE', id_project)}
         />
       }
       button_right={rules_sample.allowWidgetCreation === true ? (

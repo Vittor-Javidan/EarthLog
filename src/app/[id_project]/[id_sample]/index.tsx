@@ -1,13 +1,20 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { navigate } from '@Globals/NavigationControler';
+import { ScopeState } from '@Types/index';
 import { useBackPress } from '@Hooks/index';
+import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
 
-import SampleDataScreens from '@Screens/SampleScreen';
-import SampleSettingsScreen from '@Screens/SampleInfoScreen';
 import { Layout } from '@Components/Layout';
+import { SampleDataScreens as _SampleDataScreens } from '@Screens/SampleScreen';
+import { SampleInfoScreen as _SampleSettingsScreen } from '@Screens/SampleInfoScreen';
+
+type MemoProps1 = { sampleScopeState: ScopeState; }
+type MemoProps2 = { sampleScopeState: ScopeState, onSampleNameUpdate: (newName: string) => void }
+
+const SampleDataScreens     = memo((props: MemoProps1) => <_SampleDataScreens {...props} />   );
+const SampleSettingsScreen  = memo((props: MemoProps2) => <_SampleSettingsScreen {...props} />);
 
 export default function SampleScope() {
 
@@ -19,7 +26,7 @@ export default function SampleScope() {
   const [state          , setState          ] = useState<'Loaded' | 'Loading'>('Loading');
   const [updatedName    , setUpdatedName    ] = useState<string | null>(null);
 
-  useBackPress(() => navigate('PROJECT SCREEN', id_project));
+  useBackPress(() => navigate('PROJECT SCOPE', id_project));
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setState('Loaded'));
   }, []);
@@ -82,12 +89,12 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
-          onPress={() => navigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="folder"
-          onPress={() => navigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCOPE', id_project)}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_3"

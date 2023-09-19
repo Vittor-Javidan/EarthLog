@@ -4,7 +4,6 @@ import View from './View';
 import ScrollView from './ScrollView';
 import ScreenButtons from './ScreenButtons';
 import Group from './Group';
-import Feedback from './Feedback';
 import Modal from './Modal';
 import { Button } from './Button';
 import { NavigationTree } from './NavigationTree';
@@ -27,7 +26,6 @@ export const Layout = {
   NavigationTree: NavigationTree,
   ScreenButtons: ScreenButtons,
   Group: Group,
-  Feedback: Feedback,
   Loading: Loading,
   StatusFeedback: StatusFeedback,
   Modal: Modal,

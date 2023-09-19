@@ -38,7 +38,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={() => navigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCOPE')}
         />
       }
       button_right={rules.allowWidgetCreation_Template ? (

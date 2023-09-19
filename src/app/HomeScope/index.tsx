@@ -73,7 +73,7 @@ function Drawer() {
       iconSide="Right"
       color_background={theme.tertiary}
       color_font={theme.onTertiary}
-      onPress={() => navigate('SETTINGS SCREEN')}
+      onPress={() => navigate('SETTINGS SCOPE')}
     />
   );
 }

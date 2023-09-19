@@ -6,7 +6,7 @@ import { Layout } from '@Components/Layout';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export default function TemplateScreen(props: {
+export function TemplateScreen(props: {
   projectScopeState: ScopeState
 }) {
   return (

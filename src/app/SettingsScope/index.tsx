@@ -14,7 +14,7 @@ export default function SettingsScope(): JSX.Element {
   const { language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.SettingsScreen[language], []);
 
-  useBackPress(() => navigate('HOME SCREEN'));
+  useBackPress(() => navigate('HOME SCOPE'));
 
   return (
     <Layout.Root
@@ -34,7 +34,7 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
-          onPress={() => navigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"

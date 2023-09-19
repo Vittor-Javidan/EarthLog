@@ -16,12 +16,12 @@ export default function ScreenButtons() {
 
   function cancelAndExit() {
     API.ExampleFigure.discart();
-    navigate('SETTINGS SCREEN');
+    navigate('SETTINGS SCOPE');
   }
 
   async function confirmAndSave() {
     await API.ExampleFigure.save();
-    navigate('SETTINGS SCREEN');
+    navigate('SETTINGS SCOPE');
   }
 
   return (

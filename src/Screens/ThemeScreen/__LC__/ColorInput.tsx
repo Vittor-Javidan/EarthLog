@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import * as Vibration from 'expo-haptics';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -40,10 +40,10 @@ export default function AllInputs(): JSX.Element {
   );
 }
 
-const CustomInput = memo((props: {
+function CustomInput(props: {
   themeKey: keyof ThemeDTO
   savedValue: string
-}) => {
+}) {
 
   const { language, theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
   const R = useMemo(() => translations.Screens.ThemeScreen[language], []);
@@ -194,4 +194,4 @@ const CustomInput = memo((props: {
       </View>}
     </View>
   );
-});
+}

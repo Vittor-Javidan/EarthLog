@@ -6,14 +6,14 @@ import ConfigService from '@Services/ConfigService';
 import AppRoutes from './AppRoutes';
 
 type ScreenName = (
-  'TEST SCREEN'                                       |
+  'TEST SCOPE'                                        |
   'RESTART APP'                                       |
-  'SETTINGS SCREEN'                                   |
-    'LANGUAGES SCREEN'                                |
-    'THEME SCREEN'                                    |
-  'HOME SCREEN'                                       |
-    'PROJECT SCREEN'                                  |
-      'SAMPLE SCREEN'
+  'SETTINGS SCOPE'                                    |
+    'LANGUAGE SELECTION SCOPE'                        |
+    'THEME CUSTOMIZATION SCOPE'                       |
+  'HOME SCOPE'                                        |
+    'PROJECT SCOPE'                                   |
+      'SAMPLE SCOPE'
 )
 
 export function navigate(
@@ -28,8 +28,8 @@ export function navigate(
 
   switch (screen) {
 
-    case 'TEST SCREEN': {
-      navController.push(AppRoutes.TEST_SCREEN);
+    case 'TEST SCOPE': {
+      navController.push(AppRoutes.TEST_SCOPE);
       break;
     }
 
@@ -38,38 +38,38 @@ export function navigate(
       break;
     }
 
-    case 'SETTINGS SCREEN': {
-      navController.push(AppRoutes.SETTINGS_SCREEN);
+    case 'SETTINGS SCOPE': {
+      navController.push(AppRoutes.SETTINGS_SCOPE);
       break;
     }
 
-    case 'LANGUAGES SCREEN': {
-      navController.push(AppRoutes.SS_LANGUAGES_SCREEN);
+    case 'LANGUAGE SELECTION SCOPE': {
+      navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE);
       break;
     }
 
-    case 'THEME SCREEN': {
-      navController.push(AppRoutes.SS_THEME_SCREEN);
+    case 'THEME CUSTOMIZATION SCOPE': {
+      navController.push(AppRoutes.SS_THEME_CUSTOMIZATION_SCOPE);
       break;
     }
 
-    case 'HOME SCREEN': {
-      navController.push(AppRoutes.HOME);
+    case 'HOME SCOPE': {
+      navController.push(AppRoutes.HOME_SCOPE);
       break;
     }
 
-    case 'PROJECT SCREEN': {
+    case 'PROJECT SCOPE': {
 
       if (id_project === undefined) {
         alert(R['Project ID undefined']);
         break;
       }
 
-      navController.push(AppRoutes.PROJECT_SCREEN(id_project));
+      navController.push(AppRoutes.PROJECT_SCOPE(id_project));
       break;
     }
 
-    case 'SAMPLE SCREEN': {
+    case 'SAMPLE SCOPE': {
 
       if (id_project === undefined) {
         alert(R['Project ID undefined']);
@@ -81,7 +81,7 @@ export function navigate(
         break;
       }
 
-      navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
+      navController.push(AppRoutes.PS_SAMPLE_SCOPE(id_project, id_sample));
       break;
     }
   }

@@ -31,13 +31,13 @@ export default function SettingsScreen(): JSX.Element {
           title={R['Language']}
           iconName="language"
           iconSide="Right"
-          onPress={() => navigate('LANGUAGES SCREEN')}
+          onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
         />
         <Layout.Button.TextWithIcon
           title={R['Theme']}
           iconName="color-palette"
           iconSide="Right"
-          onPress={() => navigate('THEME SCREEN')}
+          onPress={() => navigate('THEME CUSTOMIZATION SCOPE')}
         />
         <Layout.Button.TextWithIcon
           title={R['Whipe Database']}

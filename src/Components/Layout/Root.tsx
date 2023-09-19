@@ -1,6 +1,6 @@
-import React, { ReactNode, useState, useMemo } from 'react';
+import React, { ReactNode, useState, useMemo, useEffect, memo } from 'react';
 import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
-import { MotiView } from 'moti';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as Vibration from 'expo-haptics';
@@ -12,7 +12,7 @@ import ThemeService from '@Services/ThemeService';
 import RootText from './Text/Root';
 import AppRootAlertLayer from '@Components/Alert/AlertModal';
 import { Icon } from './Icon';
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
 const NAVIGATION_TREE_HEIGHT = 20;
 
@@ -55,12 +55,13 @@ export default function Root(props: {
         </View>
       </View>
     </View>
-    <Drawer
-      show={showDrawer}
-      onPress_Background={() => setShowDrawer(false)}
-    >
-      {props.drawerChildren}
-    </Drawer>
+    <DrawerAnimation show={showDrawer}>
+      <Drawer
+        onPress_Background={() => setShowDrawer(false)}
+      >
+        {props.drawerChildren}
+      </Drawer>
+    </DrawerAnimation>
   </>);
 }
 
@@ -154,72 +155,81 @@ function IconButton(props: {
   );
 }
 
-function Drawer(props: {
-  show: boolean
+const Drawer = memo((props: {
   children: ReactNode
   onPress_Background: () => void
-}): JSX.Element {
+}) => {
 
   const { theme } = useMemo(() => ConfigService.config, []);
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
-    <Animation_Drawer show={props.show}>
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          gap: 1,
-        }}
-        style={{
-          backgroundColor: theme.secondary,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
-          width: '100%',
-          paddingRight: 1,
-        }}
-      >
-        {props.children}
-        <Pressable
-          onPress={() => props.onPress_Background()}
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end',
-          }}
-        >
-          <Text
-            adjustsFontSizeToFit={true}
-            style={{
-              color: theme.onSecondary_PlaceHolder,
-              textAlign: 'right',
-              fontSize: 16,
-              padding: 8,
-            }}
-          >
-            v: {APP_VERSION}
-          </Text>
-        </Pressable>
-      </ScrollView>
-    </Animation_Drawer>
-  );
-}
-
-function Animation_Drawer(props: {
-  show: boolean
-  children: ReactNode
-}) {
-  return (
-    <MotiView
-      transition={{
-        type: 'timing',
-        duration: 200,
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        gap: 1,
       }}
-      animate={{
-        transform: [{ translateX: props.show ? 0 : -WIDTH }],
+      style={{
+        backgroundColor: theme.secondary,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
+        width: '100%',
+        paddingRight: 1,
       }}
     >
       {props.children}
-    </MotiView>
+      <Pressable
+        onPress={() => props.onPress_Background()}
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Text
+          adjustsFontSizeToFit={true}
+          style={{
+            color: theme.onSecondary_PlaceHolder,
+            textAlign: 'right',
+            fontSize: 16,
+            padding: 8,
+          }}
+        >
+          v: {APP_VERSION}
+        </Text>
+      </Pressable>
+    </ScrollView>
+
+  );
+});
+
+function DrawerAnimation(props: {
+  show: boolean
+  children: ReactNode
+}) {
+
+  const { width } = useMemo(() => Dimensions.get('window'), []);
+  const leftOffset = useSharedValue(-width);
+
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(() => {
+      leftOffset.value = withTiming(props.show ? 0 : -width, {
+        duration: 200,
+      });
+    });
+    return () => { cancelAnimationFrame(animationFrameId); };
+  }, [props.show]);
+
+  return (
+    <Animated.View
+      style={[
+        useAnimatedStyle(() => ({
+          transform: [{ translateX: leftOffset.value }],
+        })),
+      ]}
+    >
+      {props.children}
+    </Animated.View>
   );
 }

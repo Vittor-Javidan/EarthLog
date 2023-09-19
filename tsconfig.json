@@ -4,40 +4,24 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
-      "@Types/*": [
-        "Types/*"
-      ],
-      "@Components/*": [
-        "Components/*"
-      ],
-      "@Hooks/*": [
-        "Hooks/*"
-      ],
-      "@Services/*": [
-        "Services/*"
-      ],
-      "@Globals/*": [
-        "Globals/*"
-      ],
-      "@Translations/*": [
-        "Translations/*"
-      ],
-      "@Layout/*": [
-        "Components/Layout/*"
-      ],
-      "@Widget/*": [
-        "Components/Widget/*"
-      ],
-      "@WidgetComponents/*": [
-        "Components/Widget/Components/*"
-      ],
-      "@Screens/*": [
-        "Screens/*"
-      ]
+      "@Types/*":             [ "Types/*" ],
+      "@Components/*":        [ "Components/*" ],
+      "@Hooks/*":             [ "Hooks/*" ],
+      "@Services/*":          [ "Services/*" ],
+      "@Globals/*":           [ "Globals/*" ],
+      "@Translations/*":      [ "Translations/*" ],
+      "@Icon/*":              [ "Components/Icon/*" ],
+      "@Text/*":              [ "Components/Text/*" ],
+      "@Button/*":            [ "Components/Button/*" ],
+      "@Input/*":             [ "Components/Input/*" ],
+      "@Layout/*":            [ "Components/Layout/*" ],
+      "@Widget/*":            [ "Components/Widget/*" ],
+      "@WidgetComponents/*":  [ "Components/Widget/Components/*" ],
+      "@Screens/*":           [ "Screens/*" ]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx"
-, "src/Components/Widget/GPSWidget/__TC__", "src/Components/Widget/TextWidget/__TC__", "src/Components/Layout/Input/GPSInput/__LocalComponents__/ManualInput/index.tsx"  ]
+  ]
 }

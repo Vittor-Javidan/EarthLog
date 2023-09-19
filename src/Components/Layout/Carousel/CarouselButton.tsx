@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, {  useMemo, memo } from 'react';
 import { StyleProp, ViewStyle, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
@@ -6,35 +6,35 @@ import ConfigService from '@Services/ConfigService';
 
 import P from '@Components/Layout/Text/P';
 
-export default function CarouselButton(props: {
+export const CarouselButton = memo((props: {
   title: string
   selected: boolean
   type: 'left' | 'middle' | 'right'
 	onPress: () => void
-}): JSX.Element {
+}) => {
 
 	const { theme } = useMemo(() => ConfigService.config, []);
 
-  async function onPressIn() {
-    if (!props.selected) {
-      props.onPress();
+  const leftPositionStyle: StyleProp<ViewStyle> = useMemo(() => props.type === 'left' ? {
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+  } : undefined, []);
+
+  const rightPositionStyle: StyleProp<ViewStyle> = useMemo(() => props.type === 'right' ? {
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+  } : undefined, []);
+
+  function onPressIn(selected: boolean) {
+    if (!selected) {
       Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      props.onPress();
     }
   }
 
-  const leftPositionStyle: StyleProp<ViewStyle> = props.type === 'left' ? {
-    borderTopLeftRadius: 15,
-    borderBottomLeftRadius: 15,
-  } : undefined;
-
-  const rightPositionStyle: StyleProp<ViewStyle> = props.type === 'right' ? {
-    borderTopRightRadius: 15,
-    borderBottomRightRadius: 15,
-  } : undefined;
-
 	return (
 		<Pressable
-			onPressIn={async () => onPressIn()}
+			onPressIn={() => onPressIn(props.selected)}
 			style={[{
         flexDirection: 'row',
 				justifyContent: 'center',
@@ -57,4 +57,5 @@ export default function CarouselButton(props: {
       </P>
 		</Pressable>
 	);
-}
+});
+

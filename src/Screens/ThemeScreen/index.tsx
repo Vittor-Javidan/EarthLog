@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useMemo, ReactNode } from 'react';
+import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Layout } from '@Layout/index';
 import { API } from './__API__';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
 import { Dimensions } from 'react-native';
-import { MotiView } from 'moti';
 
 export default function ThemeScreen(): JSX.Element {
 
@@ -63,20 +63,27 @@ export function ThemePreviewScreen() {
 function Animation(props: { children: ReactNode}) {
 
   const { width } = useMemo(() => Dimensions.get('window'), []);
+  const leftOffset = useSharedValue(0);
+
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(() => {
+      leftOffset.value = withDelay(300, withTiming(width, {
+        duration: 200,
+      }));
+    });
+    return () => { cancelAnimationFrame(animationFrameId); };
+  }, []);
 
   return (
-    <MotiView
-      from={{ left: -width }}
-      transition={{
-        type: 'timing',
-        duration: 200,
-        delay: 300,
-      }}
-      animate={{
-        left: 0,
-      }}
+    <Animated.View
+      style={[
+        { left: -width },
+        useAnimatedStyle(() => ({
+          transform: [{ translateX: leftOffset.value }],
+        })),
+      ]}
     >
       {props.children}
-    </MotiView>
+    </Animated.View>
   );
 }

@@ -8,10 +8,11 @@ export default class UtilService {
   static regexRules: RegexRules = {
     'noSpaces': /\s/,
     'noSpecialLetter': /^[a-zA-Z0-9]+$/,
-    'id': /[^a-zA-Z0-9-]/g,
+    'id': /^[0-9A-Za-z-]+$/,
   };
 
-  static idRegex = /[^a-zA-Z0-9-]/g;
+  //TODO: Remove the usage of the regex bellow
+  static idRegex = /^[0-9A-Za-z-]+$/;
   static hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
   static deepCopy<T extends ExcludeNonObject<T>>(object: T): T {

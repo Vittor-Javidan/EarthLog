@@ -24,7 +24,7 @@ export default function ScreenButtons() {
       id_sample,
       async () => {
         await CacheService.loadAllSamplesSettings(id_project);
-        navigate('PROJECT SCREEN', id_project);
+        navigate('PROJECT SCOPE', id_project);
       },
       (errorMessage) => alert(errorMessage)
     );
@@ -39,7 +39,7 @@ export default function ScreenButtons() {
           showPlusSign={false}
           color_background={theme.secondary}
           color={theme.onSecondary}
-          onPress={() => navigate('PROJECT SCREEN', id_project)}
+          onPress={() => navigate('PROJECT SCOPE', id_project)}
         />
       }
 

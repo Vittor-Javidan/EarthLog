@@ -1,15 +1,14 @@
 export default class AppRoutes {
 
-  static TEST_SCREEN = '/TestScreen';
-
   static RESTART_APP = '/';
+  static TEST_SCOPE  = '/TestScope';
+  static HOME_SCOPE  = '/HomeScope';
 
-  static HOME = '/HomeScope';
+  static SETTINGS_SCOPE               = '/SettingsScope';
+  static SS_LANGUAGE_SELECTION_SCOPE  = `${this.SETTINGS_SCOPE}/LanguageSelectionScope`;
+  static SS_THEME_CUSTOMIZATION_SCOPE = `${this.SETTINGS_SCOPE}/ThemeCustomizationScope`;
 
-  static PROJECT_SCREEN =             (id_project: string) => `/${id_project}`;
-  static PS_SAMPLE_SCREEN =           (id_project: string, id_sample: string) => `${this.PROJECT_SCREEN(id_project)}/${id_sample}`;
+  static PROJECT_SCOPE   = (id_project: string) => `/${id_project}`;
+  static PS_SAMPLE_SCOPE = (id_project: string, id_sample: string) => `${this.PROJECT_SCOPE(id_project)}/${id_sample}`;
 
-  static SETTINGS_SCREEN =      '/SettingsScope';
-  static SS_LANGUAGES_SCREEN =  `${this.SETTINGS_SCREEN}/LanguageSelectionScope`;
-  static SS_THEME_SCREEN =      `${this.SETTINGS_SCREEN}/ThemeCustomizationScope`;
 }

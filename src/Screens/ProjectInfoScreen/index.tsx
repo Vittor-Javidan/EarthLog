@@ -6,7 +6,7 @@ import { Layout } from '@Components/Layout';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export default function ProjectInfoScreen(props: {
+export function ProjectInfoScreen(props: {
   projectScopeState: ScopeState
   onProjectNameUpdate: (newName: string) => void
 }) {

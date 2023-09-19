@@ -13,7 +13,7 @@ export default function LanguageSelectionScope(): JSX.Element {
   const { language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
-  useBackPress(() => navigate('SETTINGS SCREEN'));
+  useBackPress(() => navigate('SETTINGS SCOPE'));
 
   return (
     <Layout.Root
@@ -33,12 +33,12 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
-          onPress={() => navigate('HOME SCREEN')}
+          onPress={() => navigate('HOME SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="settings"
-          onPress={() => navigate('SETTINGS SCREEN')}
+          onPress={() => navigate('SETTINGS SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_3"

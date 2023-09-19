@@ -62,7 +62,7 @@ const SampleButton = memo((props: {
     title={props.title}
     iconSide="Right"
     iconName="clipboard"
-    onPress={() => navigate('SAMPLE SCREEN', props.id_project, props.id_sample)}
+    onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
   />
 ));
 

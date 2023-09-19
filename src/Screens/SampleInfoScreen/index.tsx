@@ -4,7 +4,7 @@ import { Layout } from '@Components/Layout';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export default function SampleInfoScreen(props: {
+export function SampleInfoScreen(props: {
   sampleScopeState: 'Loaded' | 'Loading'
   onSampleNameUpdate: (newName: string) => void
 }) {

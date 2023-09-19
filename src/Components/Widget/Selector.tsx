@@ -1,12 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import TextWidget from './TextWidget';
 import BooleanWidget from './BooleanWidget';
 import GPSWidget from './GPSWidget';
 
-import { GPS_DTO, WidgetAlertMessage, WidgetData } from '@Types/index';
-import GPSService from '@Services/GPSService';
-import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
+import { GPS_DTO, WidgetData } from '@Types/index';
 
 export default function WidgetSelector(props: {
   widgetData: WidgetData
@@ -16,14 +13,11 @@ export default function WidgetSelector(props: {
   onDelete: () => void
 }) {
 
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Widgets.WidgetSelector[language], []);
-
   // Widge Alert Messages Build Area ===============================================================
-  const alertMessages: WidgetAlertMessage = {};
-  GPSService.checkReferenceCoordinateDifference(props.gpsReference, props.widgetData, (distance) => {
-    alertMessages.gpsDistanceAlertMessage =  R['* Reference distance: '] + `${distance}m`;
-  });
+  // const alertMessages: WidgetAlertMessage = {};
+  // GPSService.checkReferenceCoordinateDifference(props.gpsReference, props.widgetData, (distance) => {
+  //   alertMessages.gpsDistanceAlertMessage =  R['* Reference distance: '] + `${distance}m`;
+  // });
   // ===============================================================================================
 
   switch (props.widgetData.type) {
@@ -31,7 +25,7 @@ export default function WidgetSelector(props: {
       <TextWidget
         widgetData={props.widgetData}
         statusFeedback={props.statusFeedback}
-        alertMessages={alertMessages}
+        alertMessages={{}}
         onConfirm={props.onConfirm}
         onDelete={props.onDelete}
       />
@@ -40,7 +34,7 @@ export default function WidgetSelector(props: {
       <BooleanWidget
         widgetData={props.widgetData}
         statusFeedback={props.statusFeedback}
-        alertMessages={alertMessages}
+        alertMessages={{}}
         onConfirm={props.onConfirm}
         onDelete={props.onDelete}
       />
@@ -49,7 +43,7 @@ export default function WidgetSelector(props: {
       <GPSWidget
         widgetData={props.widgetData}
         statusFeedback={props.statusFeedback}
-        alertMessages={alertMessages}
+        alertMessages={{}}
         onConfirm={props.onConfirm}
         onDelete={props.onDelete}
       />
