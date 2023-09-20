@@ -2,7 +2,7 @@ import React, { useMemo, ReactNode, memo,useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
-import { ScopeState } from '@Types/index';
+import { Loading } from '@Types/AppTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 
@@ -13,7 +13,7 @@ import { LC } from './__LC__';
 const LC_SampleButtons = memo(() => <LC.SampleButtons />);
 
 export function ProjectScreen(props: {
-  projectScopeState: ScopeState
+  projectScopeState: Loading
 }) {
 
   useBackPress(() => navigate('HOME SCOPE'));

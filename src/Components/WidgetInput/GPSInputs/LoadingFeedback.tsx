@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
-import { GPSFeaturesDTO } from '@Types/index';
+import { GPSFeaturesDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 

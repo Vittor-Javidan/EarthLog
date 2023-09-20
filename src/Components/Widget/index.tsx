@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, NewWidgetData, WidgetScope, WidgetThemeData } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeData } from '@Types/ProjectTypes';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
@@ -17,13 +17,13 @@ import { ThemeDisplay } from './ThemeDisplay';
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
 export function Widget(props: {
-  widgetData: NewWidgetData
+  widgetData: WidgetData
   widgetScope: WidgetScope
   referenceGPSData: GPS_DTO | undefined
   onDelete: () => void
 }) {
 
-  const [widgetData , setWidgetData ] = useState<NewWidgetData>(UtilService.deepCopy(props.widgetData));
+  const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
   const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
   const [editLabel  , setEditLabel  ] = useState<boolean>(false);
   const [editInputs , setEditInputs ] = useState<boolean>(false);
@@ -80,7 +80,7 @@ export function Widget(props: {
   function onCreateInput(inputData: InputData) {
     setSaved(false);
     setWidgetData(prev => {
-      const newData: NewWidgetData = { ...prev, inputs: [...prev.inputs, inputData]};
+      const newData: WidgetData = { ...prev, inputs: [...prev.inputs, inputData]};
       save(newData);
       return newData;
     });
@@ -115,7 +115,7 @@ export function Widget(props: {
     });
   }
 
-  function save(widgetData: NewWidgetData) {
+  function save(widgetData: WidgetData) {
 
     const { widgetScope } = props;
 

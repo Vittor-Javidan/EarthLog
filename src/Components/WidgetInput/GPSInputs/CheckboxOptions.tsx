@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { GPSFeaturesDTO } from '@Types/index';
+import { GPSFeaturesDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import { Button } from '@Button/index';
 import { Text } from '@Text/index';
+import { Button } from '@Button/index';
 import { GPSInputTheme } from './ThemeType';
 
 export default function CheckboxOptions(props: {

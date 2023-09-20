@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { AlertModalConfig } from '@Types/index';
+import { AlertModalConfig } from '@Types/AppTypes';
 
 import Warning from './PopUp/Warning';
-import CreateProject from './PopUp/CreateProject';
 import ExitApp from './PopUp/ExitApp';
+import CreateProject from './PopUp/CreateProject';
 import CreateSample from './PopUp/CreateSample';
 
 export default function Selector(props: {

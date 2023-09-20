@@ -1,4 +1,4 @@
-import { AlertModalConfig } from '@Types/index';
+import { AlertModalConfig } from '@Types/AppTypes';
 
 export default class AlertService {
 

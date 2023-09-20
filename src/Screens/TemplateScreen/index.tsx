@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ScopeState } from '@Types/index';
+import { Loading } from '@Types/AppTypes';
 
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
 export function TemplateScreen(props: {
-  projectScopeState: ScopeState
+  projectScopeState: Loading
 }) {
   return (
     <Layout.Screen

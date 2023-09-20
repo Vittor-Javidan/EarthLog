@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeData } from '@Types/ProjectTypes';
-import { Loading } from '@Types/otherTypes';
+import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 

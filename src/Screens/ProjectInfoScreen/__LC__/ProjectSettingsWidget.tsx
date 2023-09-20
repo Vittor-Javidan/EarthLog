@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { GPSInputData, InputStatus, NewProjectSettings, StringInputData } from '@Types/ProjectTypes';
+import { GPSInputData, InputStatus, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
@@ -20,7 +20,7 @@ export default function ProjectSettingsWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
-  const [projectSettings, setProjectSettings] = useState<NewProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   const pseudoWidgetTheme = {
@@ -39,7 +39,7 @@ export default function ProjectSettingsWidget(props: {
     }
     if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
-        const newData: NewProjectSettings = { ...prev, name: inputData.value };
+        const newData: ProjectSettings = { ...prev, name: inputData.value };
         props.onProjectNameUpdate(inputData.value);
         save(newData);
         return newData;
@@ -54,7 +54,7 @@ export default function ProjectSettingsWidget(props: {
     }
     if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
-        const newData: NewProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, singular: inputData.value }};
+        const newData: ProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, singular: inputData.value }};
         save(newData);
         return newData;
       });
@@ -68,7 +68,7 @@ export default function ProjectSettingsWidget(props: {
     }
     if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
-        const newData: NewProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, plural: inputData.value }};
+        const newData: ProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, plural: inputData.value }};
         save(newData);
         return newData;
       });
@@ -82,14 +82,14 @@ export default function ProjectSettingsWidget(props: {
     }
     if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
-        const newData: NewProjectSettings = { ...prev, gps: inputData.value };
+        const newData: ProjectSettings = { ...prev, gps: inputData.value };
         save(newData);
         return newData;
       });
     }
   }
 
-  function save(projectSettings: NewProjectSettings) {
+  function save(projectSettings: ProjectSettings) {
     ProjectService.updateProject(
       projectSettings,
       () => {

@@ -2,14 +2,14 @@ import React, { useMemo, ReactNode, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
-import { ScopeState } from '@Types/index';
+import { Loading } from '@Types/AppTypes';
 
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
 export function SampleDataScreens(props: {
-  sampleScopeState: ScopeState
+  sampleScopeState: Loading
 }) {
   return (
     <Layout.Screen

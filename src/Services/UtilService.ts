@@ -1,4 +1,4 @@
-import { RegexRules } from '@Types/index';
+import { RegexRules } from '@Types/AppTypes';
 
 type ExcludeNonObjectKeys<T> = { [K in keyof T]: T[K] extends object ? K : never; };
 type ExcludeNonObject<T> = Pick<T, Exclude<keyof T, ExcludeNonObjectKeys<T>[keyof T]>>;

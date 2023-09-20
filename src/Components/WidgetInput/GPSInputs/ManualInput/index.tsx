@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
 import AlertService from '@Services/AlertService';
 
 import ManualInputButton from './ManualInputButton';

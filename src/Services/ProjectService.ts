@@ -1,6 +1,6 @@
 import uuid from 'react-native-uuid';
 
-import { NewProjectDTO, NewProjectSettings, NewSampleSettings, NewWidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
 
 import DatabaseService from './DatabaseService';
 
@@ -14,7 +14,7 @@ export default class ProjectService {
     return uuid.v4() as string;
   }
 
-  static getDefaultProjectTemplate(): NewProjectDTO {
+  static getDefaultProjectTemplate(): ProjectDTO {
     return {
       projectSettings: {
         id_project: this.generateUuidV4(),
@@ -39,7 +39,7 @@ export default class ProjectService {
     };
   }
 
-  static getDefaultSampleSettings(): NewSampleSettings {
+  static getDefaultSampleSettings(): SampleSettings {
     return {
       id_sample: this.generateUuidV4(),
       name: '',
@@ -52,7 +52,7 @@ export default class ProjectService {
     };
   }
 
-  static getWidgetData() : NewWidgetData {
+  static getWidgetData() : WidgetData {
     return {
       id_widget: this.generateUuidV4(),
       widgetName: '',
@@ -109,7 +109,7 @@ export default class ProjectService {
   // ===============================================================================================
 
   static async createProject(
-    projectDTO: NewProjectDTO,
+    projectDTO: ProjectDTO,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -167,7 +167,7 @@ export default class ProjectService {
   }
 
   static async updateProject(
-    projectSettings: NewProjectSettings,
+    projectSettings: ProjectSettings,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -194,7 +194,7 @@ export default class ProjectService {
 
   static async createSample(
     id_project: string,
-    sampleSettings: NewSampleSettings,
+    sampleSettings: SampleSettings,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -224,7 +224,7 @@ export default class ProjectService {
 
   static async updateSample(
     id_project: string,
-    sampleSettings: NewSampleSettings,
+    sampleSettings: SampleSettings,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -252,7 +252,7 @@ export default class ProjectService {
 
   static async createWidget_Project(
     id_project: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -270,7 +270,7 @@ export default class ProjectService {
 
   static async updateWidget_Project(
     id_project: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -300,7 +300,7 @@ export default class ProjectService {
 
   static async createWidget_Template(
     id_project: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -318,7 +318,7 @@ export default class ProjectService {
 
   static async updateWidget_Template(
     id_project: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -349,7 +349,7 @@ export default class ProjectService {
   static async createWidget_Sample(
     id_project: string,
     id_sample: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -368,7 +368,7 @@ export default class ProjectService {
   static async updateWidget_Sample(
     id_project: string,
     id_sample: string,
-    widgetData: NewWidgetData,
+    widgetData: WidgetData,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {

@@ -3,7 +3,7 @@ import { View, Text, TextInput, Pressable, Dimensions } from 'react-native';
 import * as Vibration from 'expo-haptics';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { ThemeDTO } from '@Types/index';
+import { ThemeDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';

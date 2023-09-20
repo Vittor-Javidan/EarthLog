@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 

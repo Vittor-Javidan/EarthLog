@@ -1,4 +1,4 @@
-import { ThemeDTO } from '@Types/index';
+import { ThemeDTO } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 

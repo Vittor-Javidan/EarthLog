@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { languageLabels, languageTags, LanguageTags } from '@Types/index';
+import { languageLabels, languageTags, LanguageTags } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
 
 import { Button } from '@Button/index';

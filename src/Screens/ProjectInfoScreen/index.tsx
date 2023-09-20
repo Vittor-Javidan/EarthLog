@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ScopeState } from '@Types/index';
-
 import { Layout } from '@Layout/index';
+
 import { TC } from './__TC__';
 import { LC } from './__LC__';
+import { Loading } from '@Types/AppTypes';
 
 export function ProjectInfoScreen(props: {
-  projectScopeState: ScopeState
+  projectScopeState: Loading
   onProjectNameUpdate: (newName: string) => void
 }) {
   return (

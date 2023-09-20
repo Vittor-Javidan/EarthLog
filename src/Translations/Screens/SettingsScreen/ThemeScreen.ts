@@ -1,4 +1,5 @@
-import { Languages, ThemeDTO } from '@Types/index';
+import { ThemeDTO } from '@Types/AppTypes';
+import { Languages } from '@Types/AppTypes';
 
 export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, string> & {
   'Theme': string

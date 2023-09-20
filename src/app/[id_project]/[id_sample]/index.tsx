@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Loading } from '@Types/otherTypes';
+import { Loading } from '@Types/AppTypes';
 import { useBackPress } from '@Hooks/index';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';

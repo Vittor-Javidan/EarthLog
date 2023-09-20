@@ -1,4 +1,4 @@
-import { Languages } from '@Types/index';
+import { Languages } from '@Types/AppTypes';
 
 export type Translations_TextWidget = Record<Languages, {
   'Not possible to have 2 Widgets with the same name.': string

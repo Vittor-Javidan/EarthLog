@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { NewWidgetData } from '@Types/ProjectTypes';
+import { WidgetData } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 
@@ -29,7 +29,7 @@ export default function TemplateWidgets() {
 }
 
 function WidgetUnit(props: {
-  widgetData: NewWidgetData,
+  widgetData: WidgetData,
   onDelete: () => void
 }) {
 

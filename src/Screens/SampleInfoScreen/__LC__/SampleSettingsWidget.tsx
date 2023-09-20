@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { GPSInputData, InputStatus, NewSampleSettings, StringInputData } from '@Types/ProjectTypes';
+import { GPSInputData, InputStatus, SampleSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
@@ -21,7 +21,7 @@ export default function SampleSettingsWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.SampleSettingsScreen[language], []);
 
-  const [sampleSettings,  setSampleSettings ] = useState<NewSampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   const pseudoWidgetTheme = {
@@ -40,7 +40,7 @@ export default function SampleSettingsWidget(props: {
     }
     if (inputData !== null && status === 'ready to save') {
       setSampleSettings(prev => {
-        const newData: NewSampleSettings = { ...prev, name: inputData.value };
+        const newData: SampleSettings = { ...prev, name: inputData.value };
         props.onSampleNameUpdate(inputData.value);
         save(newData);
         return newData;
@@ -55,14 +55,14 @@ export default function SampleSettingsWidget(props: {
     }
     if (gpsData !== null && status === 'ready to save') {
       setSampleSettings(prev => {
-        const newData: NewSampleSettings = { ...prev, gps: gpsData.value };
+        const newData: SampleSettings = { ...prev, gps: gpsData.value };
         save(newData);
         return newData;
       });
     }
   }
 
-  function save(sampleSettings: NewSampleSettings) {
+  function save(sampleSettings: SampleSettings) {
     ProjectService.updateSample(
       id_project,
       sampleSettings,

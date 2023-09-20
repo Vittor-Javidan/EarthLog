@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/index';
+import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 import { GPSInputTheme } from './ThemeType';

@@ -1,4 +1,4 @@
-import { Languages } from '@Types/index';
+import { Languages } from '@Types/AppTypes';
 
 export type Translations_SampleScreen = Record<Languages, {
   'Edit sample': string

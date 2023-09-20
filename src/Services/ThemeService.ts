@@ -1,4 +1,4 @@
-import { ThemeDTO } from '@Types/index';
+import { ThemeDTO } from '@Types/AppTypes';
 
 export default class ThemeService {
 

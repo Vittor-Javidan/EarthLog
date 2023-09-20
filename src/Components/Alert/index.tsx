@@ -2,11 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { AlertModalConfig } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
-
 import AlertService from '@Services/AlertService';
+
 import Selector from './Selector';
-import { AlertModalConfig } from '@Types/index';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 

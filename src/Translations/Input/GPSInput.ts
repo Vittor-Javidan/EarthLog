@@ -1,4 +1,4 @@
-import { Languages } from '@Types/index';
+import { Languages } from '@Types/AppTypes';
 
 export type Translations_Input_GPSInput = Record<Languages, {
   'Coordinates': string

@@ -1,4 +1,4 @@
-import { Languages } from '@Types/index';
+import { Languages } from '@Types/AppTypes';
 
 export type Translations_WidgetsComponents_Modal = Record<Languages, {
   'Delete': string

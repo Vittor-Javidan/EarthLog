@@ -5,19 +5,19 @@
 export type IDsArray = ID[]
 export type ID = string
 
-export type NewProjectDTO = {
-  projectSettings: NewProjectSettings
-  projectWidgets: NewWidgetData[]
-  template: NewWidgetData[]
-  samples: NewSampleDTO[]
+export type ProjectDTO = {
+  projectSettings: ProjectSettings
+  projectWidgets: WidgetData[]
+  template: WidgetData[]
+  samples: SampleDTO[]
 }
 
-export type NewSampleDTO = {
-  sampleSettings: NewSampleSettings
-  sampleWidgets: NewWidgetData[]
+export type SampleDTO = {
+  sampleSettings: SampleSettings
+  sampleWidgets: WidgetData[]
 }
 
-export type NewProjectSettings = {
+export type ProjectSettings = {
   id_project: ID
   name: string
   sampleAlias: {
@@ -35,7 +35,7 @@ export type NewProjectSettings = {
   }
 }
 
-export type NewSampleSettings = {
+export type SampleSettings = {
   id_sample: ID
   name: string
   gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
@@ -50,7 +50,7 @@ export type NewSampleSettings = {
 // Widget TYPES
 // =================================================================================================
 
-export type NewWidgetData = {
+export type WidgetData = {
   id_widget: ID                                                                                     // No not share same id between Widgets, because its used to name actual folders inside user device, so it can leads into to crash or unexpected behaviors. Use ids validated by this regex: /^[0-9A-Za-z-]+$/
   widgetName: string                                                                                // You can use scape sequence on strings here, without break app layout, like "\n", "\t", etc.
   inputs: InputData[]

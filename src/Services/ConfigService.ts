@@ -1,5 +1,4 @@
-import { ConfigDTO, ThemeDTO } from '@Types/index';
-
+import { ConfigDTO, ThemeDTO } from '@Types/AppTypes';
 import LocalStorageService from './LocalStorageService';
 import LanguageService from './LanguageService';
 import ThemeService from './ThemeService';

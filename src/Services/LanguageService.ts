@@ -1,6 +1,6 @@
 import { getLocales } from 'expo-localization';
 
-import { Languages, languageTags } from '@Types/index';
+import { Languages, languageTags } from '@Types/AppTypes';
 
 export default class LanguageService {
 

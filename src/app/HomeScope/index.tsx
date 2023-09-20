@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { Loading } from '@Types/otherTypes';
+import { Loading } from '@Types/AppTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';

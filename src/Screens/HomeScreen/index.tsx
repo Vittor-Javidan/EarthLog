@@ -2,7 +2,7 @@ import React, { useMemo, ReactNode, useEffect, memo } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
-import { ScopeState } from '@Types/index';
+import { Loading } from '@Types/AppTypes';
 
 import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
@@ -12,7 +12,7 @@ const LC_LastProjectButton = memo(() => <LC.LastProjectButton />);
 const LC_ProjectButtons    = memo(() => <LC.ProjectButtons />   );
 
 export default function HomeScreen(props: {
-  homeScopeState: ScopeState
+  homeScopeState: Loading
 }) {
   return (
     <Layout.Screen
