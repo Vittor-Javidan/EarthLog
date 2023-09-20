@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { View } from 'react-native';
 
 import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
@@ -17,7 +18,7 @@ export default function LanguagesSelectionScreen(): JSX.Element {
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
-      <Layout.View
+      <View
         style={{
           paddingTop: 1,
           gap: 1,
@@ -26,7 +27,7 @@ export default function LanguagesSelectionScreen(): JSX.Element {
         <LC.LanguageButtons
           onButtonClick={() => refresh(prev => !prev)}
         />
-      </Layout.View>
+      </View>
     </Layout.Screen>
   );
 }

@@ -1,11 +1,7 @@
-import BooleanInput from './BooleanInput';
-import GPSInput from './GPSInputs';
-import InputSelector from './Selector';
+import { ColorPicker } from './ColorInput';
 import { StringInput } from './StringInput';
 
 export const Input = {
   String: StringInput,
-  Boolean: BooleanInput,
-  GPS: GPSInput,
-  Selector: InputSelector,
+  Color: ColorPicker,
 };

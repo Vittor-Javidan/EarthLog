@@ -5,8 +5,8 @@ import * as Vibration from 'expo-haptics';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 
-import { Button } from '@Components/Layout/Button';
-import H3 from '@Components/Layout/Text/H3';
+import { Text } from '@Text/index';
+import { Button } from '@Button/index';
 
 type Vibration = 'warning' | 'success'
 
@@ -49,14 +49,14 @@ export default function ExitApp(props: {
           alignItems: 'center',
         }}
       >
-        <H3
+        <Text.H3
           style={{
             textAlign: 'center',
             padding: 10,
           }}
         >
           {props.question}
-        </H3>
+        </Text.H3>
       </View>
       <View
         style={{
@@ -67,10 +67,13 @@ export default function ExitApp(props: {
       >
         <Button.Icon
           iconName="checkmark-done-sharp"
-          color_background={theme.secondary}
-          color={theme.confirm}
-          color_onPressed={theme.tertiary}
           onPress={async () => await onAccept()}
+          theme={{
+            font: theme.confirm,
+            font_Pressed: theme.secondary,
+            background: theme.secondary,
+            background_Pressed: theme.confirm,
+          }}
           style={{
             height: 40,
             flex: 1,
@@ -81,10 +84,13 @@ export default function ExitApp(props: {
         />
         <Button.Icon
           iconName="close"
-          color_background={theme.wrong}
-          color={theme.onWrong}
-          color_onPressed={theme.tertiary}
           onPress={async () => onRefuse()}
+          theme={{
+            font: theme.secondary,
+            font_Pressed: theme.wrong,
+            background: theme.wrong,
+            background_Pressed: theme.secondary,
+          }}
           style={{
             height: 40,
             flex: 1,

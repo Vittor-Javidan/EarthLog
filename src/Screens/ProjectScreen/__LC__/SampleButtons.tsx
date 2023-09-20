@@ -1,10 +1,13 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
+import ConfigService from '@Services/ConfigService';
+
+import { Button } from '@Button/index';
+import { Layout } from '@Layout/index';
 import { API } from '../__API__';
 
 export default function SampleButtons() {
@@ -57,14 +60,25 @@ const SampleButton = memo((props: {
   title: string,
   id_project: string,
   id_sample: string
-}) => (
-  <Layout.Button.TextWithIcon
-    title={props.title}
-    iconSide="Right"
-    iconName="clipboard"
-    onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
-  />
-));
+}) => {
+
+  const { theme } = useMemo(() => ConfigService.config, []);
+
+  return (
+    <Button.TextWithIcon
+      title={props.title}
+      iconSide="Right"
+      iconName="clipboard"
+      onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
+      theme={{
+        font: theme.onSecondary,
+        font_Pressed: theme.secondary,
+        background: theme.secondary,
+        background_Pressed: theme.onSecondary,
+      }}
+    />
+  );
+});
 
 function Loading() {
   return (

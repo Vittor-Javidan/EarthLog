@@ -1,15 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { GPS_DTO, ProjectSettings } from '@Types/index';
-import { useTimeout } from '@Hooks/index';
+import { GPSInputData, InputStatus, NewProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
 
-import { Layout } from '@Components/Layout';
+import { Text } from '@Text/index';
+import { Layout } from '@Layout/index';
+import { WidgetInput } from '@WidgetInput/index';
 
 export default function ProjectSettingsWidget(props: {
   onProjectNameUpdate: (newName: string) => void
@@ -19,156 +20,213 @@ export default function ProjectSettingsWidget(props: {
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
 
-  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
-  const [showGPS,         setShowGPS        ] = useState<boolean>(CacheService.getProjectFromCache(id_project).gps !== undefined);
+  const [projectSettings, setProjectSettings] = useState<NewProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutoSave(() => {
-    props.onProjectNameUpdate(projectSettings.name);
-    setSaved(true);
-  }, [projectSettings, saved]);
+  const pseudoWidgetTheme = {
+    font:             theme.onPrimary,
+    font_placeholder: theme.onPrimary_Placeholder,
+    background:       theme.primary,
+    confirm:          theme.confirm,
+    wrong:            theme.wrong,
+    modified:         theme.modified,
+  };
 
-  function onNameChange(newName: string) {
-    if (projectSettings.rules.allowNameChange) {
-      setProjectSettings(prev => ({ ...prev, name: newName }));
+  function onSaveName(inputData: StringInputData | null, status: InputStatus) {
+    if (status === 'modifying') {
       setSaved(false);
+      return;
     }
-  }
-
-  function onSaveGPS(newGPSData: GPS_DTO) {
-    setProjectSettings(prev => ({ ...prev, gps: newGPSData }));
-    setSaved(false);
-  }
-
-  function createGPS() {
-    setProjectSettings(prev => ({ ...prev, gps: {} }));
-    setShowGPS(true);
-    setSaved(false);
-  }
-
-  function onDeleteGPS() {
-    const { gps } = projectSettings;
-    if (gps !== undefined) {
+    if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
-        delete prev.gps;
-        return { ...prev };
+        const newData: NewProjectSettings = { ...prev, name: inputData.value };
+        props.onProjectNameUpdate(inputData.value);
+        save(newData);
+        return newData;
       });
-      setShowGPS(false);
-      setSaved(false);
     }
+  }
+
+  function onSaveAlias_Singular(inputData: StringInputData | null, status: InputStatus) {
+    if (status === 'modifying') {
+      setSaved(false);
+      return;
+    }
+    if (inputData !== null && status === 'ready to save') {
+      setProjectSettings(prev => {
+        const newData: NewProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, singular: inputData.value }};
+        save(newData);
+        return newData;
+      });
+    }
+  }
+
+  function onSaveAlias_Plural(inputData: StringInputData | null, status: InputStatus) {
+    if (status === 'modifying') {
+      setSaved(false);
+      return;
+    }
+    if (inputData !== null && status === 'ready to save') {
+      setProjectSettings(prev => {
+        const newData: NewProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, plural: inputData.value }};
+        save(newData);
+        return newData;
+      });
+    }
+  }
+
+  function onSaveGPS(inputData: GPSInputData | null, status: InputStatus) {
+    if (status === 'modifying') {
+      setSaved(false);
+      return;
+    }
+    if (inputData !== null && status === 'ready to save') {
+      setProjectSettings(prev => {
+        const newData: NewProjectSettings = { ...prev, gps: inputData.value };
+        save(newData);
+        return newData;
+      });
+    }
+  }
+
+  function save(projectSettings: NewProjectSettings) {
+    ProjectService.updateProject(
+      projectSettings,
+      () => {
+        CacheService.updateCache_ProjectSettings(projectSettings);
+        setSaved(true);
+      },
+      (erroMessage) => alert(erroMessage)
+    );
   }
 
   return (
-    <Layout.View>
-      <Layout.View
+    <Layout.PseudoWidget
+      saved={saved}
+      theme={pseudoWidgetTheme}
+    >
+      <Text.H2
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          backgroundColor: theme.secondary,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
-          minHeight: 40,
+          textAlign: 'center',
+          color: pseudoWidgetTheme.font,
+          paddingHorizontal: 5,
+          marginBottom: -10,
         }}
       >
-        <Layout.View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingVertical: 5,
-            paddingHorizontal: 10,
+        {R['Project info']}
+      </Text.H2>
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: R['ID'],
+          value: projectSettings.id_project,
+          type: 'string',
+          placeholder: '',
+          lockedLabel: true,
+          lockedData: true,
+        }}
+        multiline={false}
+        editWidget={false}
+        isFirstInput={false}
+        isLastInput={false}
+        onSave={() => {}}
+        onInputDelete={() => {}}
+        onInputMoveDow={() => {}}
+        onInputMoveUp={() => {}}
+        theme={pseudoWidgetTheme}
+      />
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: R['Name'],
+          value: projectSettings.name,
+          type: 'string',
+          placeholder: R['Write the project name here...'],
+          lockedLabel: true,
+          lockedData: false,
+        }}
+        onSave={(inputData, status) => onSaveName(inputData, status)}
+        multiline={false}
+        editWidget={false}
+        isFirstInput={false}
+        isLastInput={false}
+        onInputDelete={() => {}}
+        onInputMoveDow={() => {}}
+        onInputMoveUp={() => {}}
+        theme={pseudoWidgetTheme}
+      />
+      {projectSettings.gps !== undefined && (
+        <WidgetInput.GPS
+          inputData={{
+            id_input: '',
+            label: 'GPS',
+            value: projectSettings.gps,
+            type: 'gps',
+            lockedLabel: true,
+            lockedData: false,
           }}
-        >
-          <Layout.StatusFeedback
-            done={saved}
-            error={false}
-          />
-          <Layout.Text.P
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              color: theme.onSecondary,
-            }}
-          >
-            {R['Project info']}
-          </Layout.Text.P>
-        </Layout.View>
-        {!showGPS && (
-          <Layout.Button.Icon
-            iconName="location"
-            color_background={theme.secondary}
-            color={theme.onSecondary}
-            onPress={() => createGPS()}
-            style={{
-              height: 40,
-              borderTopRightRadius: 10,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-            }}
-          />
-        )}
-      </Layout.View>
-      <Layout.View
+          onSave={(inputData, status) => onSaveGPS(inputData, status)}
+          referenceGPSData={undefined}
+          editWidget={false}
+          isFirstInput={false}
+          isLastInput={false}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          theme={pseudoWidgetTheme}
+        />
+      )}
+      <Text.H2
         style={{
-          backgroundColor: theme.tertiary,
-          padding: 5,
-          paddingBottom: 10,
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-          gap: 10,
+          textAlign: 'center',
+          color: pseudoWidgetTheme.font,
+          paddingHorizontal: 5,
+          paddingTop: 10,
+          marginBottom: -10,
         }}
       >
-        <Layout.Input.String
-          label={R['ID']}
-          backgroundColor={theme.tertiary}
-          color={theme.onTertiary}
-          color_placeholder={theme.onTertiary_Placeholder}
-          placeholder=""
-          value={projectSettings.id_project}
-          locked={true}
-          onChangeText={() => {}}
-        />
-        <Layout.Input.String
-          label={R['Name']}
-          backgroundColor={theme.tertiary}
-          color={theme.onTertiary}
-          color_placeholder={theme.onTertiary_Placeholder}
-          placeholder={R['Write the project name here...']}
-          value={projectSettings.name}
-          locked={!projectSettings.rules.allowNameChange}
-          onChangeText={(text) => onNameChange(text)}
-        />
-        {showGPS && projectSettings.gps !== undefined && (
-          <Layout.Input.GPS
-            label="GPS"
-            gpsData={projectSettings.gps}
-            backgroundColor={theme.tertiary}
-            color={theme.onTertiary}
-            onPress_Delete={() => onDeleteGPS()}
-            onPress_Save={(newGPSData) => onSaveGPS(newGPSData)}
-          />
-        )}
-      </Layout.View>
-    </Layout.View>
+        {'Alias'}
+      </Text.H2>
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: 'Singular',
+          value: projectSettings.sampleAlias.singular,
+          type: 'string',
+          placeholder: 'Write your sample alias here',
+          lockedLabel: true,
+          lockedData: false,
+        }}
+        onSave={(inputData, status) => onSaveAlias_Singular(inputData, status)}
+        multiline={false}
+        editWidget={false}
+        isFirstInput={false}
+        isLastInput={false}
+        onInputDelete={() => {}}
+        onInputMoveDow={() => {}}
+        onInputMoveUp={() => {}}
+        theme={pseudoWidgetTheme}
+      />
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: 'Plural',
+          value: projectSettings.sampleAlias.plural,
+          type: 'string',
+          placeholder: 'Write your sample alias here',
+          lockedLabel: true,
+          lockedData: false,
+        }}
+        onSave={(inputData, status) => onSaveAlias_Plural(inputData, status)}
+        multiline={false}
+        editWidget={false}
+        isFirstInput={false}
+        isLastInput={false}
+        onInputDelete={() => {}}
+        onInputMoveDow={() => {}}
+        onInputMoveUp={() => {}}
+        theme={pseudoWidgetTheme}
+      />
+    </Layout.PseudoWidget>
   );
-}
-
-function useAutoSave(
-  onSucces: () => void,
-  dependecyArray: [ ProjectSettings, boolean ],
-) {
-
-  const [projectSettings, saved] = dependecyArray;
-
-  useTimeout(async () => {
-    if (!saved) {
-      await ProjectService.updateProject(
-        projectSettings,
-        () => {
-          CacheService.updateCache_ProjectSettings(projectSettings);
-          onSucces();
-        },
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-  }, dependecyArray, 200);
 }

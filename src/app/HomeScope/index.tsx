@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { ScopeState } from '@Types/index';
+import { Loading } from '@Types/otherTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
@@ -10,6 +10,7 @@ import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 
+import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import HomeScreen from '@Screens/HomeScreen';
 
@@ -17,7 +18,7 @@ export default function HomeScope() {
 
   const { language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.HomeScreen[language], []);
-  const [state, setState] = useState<ScopeState>('Loading');
+  const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(async () => {
     await exitMessage();
@@ -67,12 +68,16 @@ function Drawer() {
   const R = useMemo(() => translations.Screens.HomeScreen[language], []);
 
   return (
-    <Layout.Button.TextWithIcon
+    <Button.TextWithIcon
       title={R['Settings']}
       iconName="settings"
       iconSide="Right"
-      color_background={theme.tertiary}
-      color_font={theme.onTertiary}
+      theme={{
+        font: theme.onTertiary,
+        font_Pressed: theme.tertiary,
+        background: theme.tertiary,
+        background_Pressed: theme.onTertiary,
+      }}
       onPress={() => navigate('SETTINGS SCOPE')}
     />
   );

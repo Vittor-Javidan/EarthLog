@@ -4,7 +4,7 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 
-import P from '@Components/Layout/Text/P';
+import { Text } from '@Text/index';
 
 export const CarouselButton = memo((props: {
   title: string
@@ -46,7 +46,7 @@ export const CarouselButton = memo((props: {
 				paddingVertical: 5,
 			}, leftPositionStyle, rightPositionStyle]}
 		>
-      <P
+      <Text.P
         style={{
           color: props.selected ? theme.onTertiary : theme.onPrimary,
           textDecorationLine: props.selected ? 'underline' : 'none',
@@ -54,7 +54,7 @@ export const CarouselButton = memo((props: {
         }}
       >
         {props.title}
-      </P>
+      </Text.P>
 		</Pressable>
 	);
 });

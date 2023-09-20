@@ -6,7 +6,7 @@ import { ScopeState } from '@Types/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 

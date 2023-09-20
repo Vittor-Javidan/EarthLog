@@ -1,3 +1,4 @@
+- Remove all API from insie Project/Sample scope.
 - add translation for CreateProject Alert Window
 
 - create a path for animations

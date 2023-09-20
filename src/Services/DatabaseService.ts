@@ -1,4 +1,4 @@
-import { ID, IDsArray, ProjectSettings, SampleSettings, WidgetData } from '@Types/index';
+import { ID, IDsArray, NewProjectSettings, NewSampleSettings, NewWidgetData } from '@Types/ProjectTypes';
 
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
@@ -78,7 +78,7 @@ export default class DatabaseService {
     await LocalStorageService.removeData('LastProject');
   }
 
-  static async getAllProjects(): Promise<ProjectSettings[]> {
+  static async getAllProjects(): Promise<NewProjectSettings[]> {
 
     // GET ALL PROJECTS IDs
     const allProjectsIDs = await this.readIndexFile(
@@ -86,7 +86,7 @@ export default class DatabaseService {
     );
 
     // GET PROJECT SETTINGS FOR EACH ID
-    const allSettings: ProjectSettings[] = [];
+    const allSettings: NewProjectSettings[] = [];
     for (let i = 0; i < allProjectsIDs.length; i++) {
       allSettings.push(
         await this.readProject(allProjectsIDs[i])
@@ -96,7 +96,7 @@ export default class DatabaseService {
     return allSettings;
   }
 
-  static async createProject(projectSettings: ProjectSettings): Promise<void> {
+  static async createProject(projectSettings: NewProjectSettings): Promise<void> {
 
     const { id_project } = projectSettings;
     const allProjectsIDs = await this.readIndexFile(
@@ -147,16 +147,16 @@ export default class DatabaseService {
     );
   }
 
-  static async readProject(id_project: string): Promise<ProjectSettings> {
+  static async readProject(id_project: string): Promise<NewProjectSettings> {
 
     // READ PROJECT SETTINGS
     const fileData = await FileSystemService.readFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`
     );
-    return JSON.parse(fileData as string) as ProjectSettings;
+    return JSON.parse(fileData as string) as NewProjectSettings;
   }
 
-  static async updateProject(projectSettings: ProjectSettings): Promise<void> {
+  static async updateProject(projectSettings: NewProjectSettings): Promise<void> {
 
     // UPDATE PROJECT SETTINGS
     const { id_project } = projectSettings;
@@ -198,7 +198,7 @@ export default class DatabaseService {
   // SAMPLE
   // ===============================================================================================
 
-  static async getAllSamples(id_project: string): Promise<SampleSettings[]> {
+  static async getAllSamples(id_project: string): Promise<NewSampleSettings[]> {
 
     // GET ALL SAMPLES IDs
     const allSamplesIDs = await this.readIndexFile(
@@ -206,7 +206,7 @@ export default class DatabaseService {
     );
 
     // GET SAMPLE SETTINGS FOR EACH ID
-    const allSettings: SampleSettings[] = [];
+    const allSettings: NewSampleSettings[] = [];
     for (let i = 0; i < allSamplesIDs.length; i++) {
       allSettings.push(
         await this.readSample(id_project, allSamplesIDs[i])
@@ -218,7 +218,7 @@ export default class DatabaseService {
 
   static async createSample(
     id_project: string,
-    sampleSettings: SampleSettings,
+    sampleSettings: NewSampleSettings,
   ): Promise<void> {
 
     const { id_sample } = sampleSettings;
@@ -259,18 +259,18 @@ export default class DatabaseService {
   static async readSample(
     id_project: string,
     id_sample: string
-  ): Promise<SampleSettings> {
+  ): Promise<NewSampleSettings> {
 
     // READ PROJECT SETTINGS
     const fileData = await FileSystemService.readFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleSettings.json`
     );
-    return await JSON.parse(fileData as string) as SampleSettings;
+    return await JSON.parse(fileData as string) as NewSampleSettings;
   }
 
   static async updateSample(
     id_project: string,
-    sampleSettings: SampleSettings
+    sampleSettings: NewSampleSettings
   ): Promise<void> {
 
     const { id_sample } = sampleSettings;
@@ -320,14 +320,14 @@ export default class DatabaseService {
 
   static async getAllWidgets_Project(
     id_project: string
-  ): Promise<WidgetData[]> {
+  ): Promise<NewWidgetData[]> {
     return await this.getAllWidgets(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`
     );
   }
   static async getAllWidgets_Template(
     id_project: string
-  ): Promise<WidgetData[]> {
+  ): Promise<NewWidgetData[]> {
     return await this.getAllWidgets(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`
     );
@@ -335,12 +335,12 @@ export default class DatabaseService {
   static async getAllWidgets_Sample(
     id_project: string,
     id_sample: string
-  ): Promise<WidgetData[]> {
+  ): Promise<NewWidgetData[]> {
     return await this.getAllWidgets(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`
     );
   }
-  private static async getAllWidgets(allWidgetsFolderPath: string): Promise<WidgetData[]> {
+  private static async getAllWidgets(allWidgetsFolderPath: string): Promise<NewWidgetData[]> {
 
     // GET ALL WIDGETS IDs
     const allWidgetsIDs = await this.readIndexFile(
@@ -348,7 +348,7 @@ export default class DatabaseService {
     );
 
     // GET WIDGET DATA FOR EACH ID
-    const allWidgetsData: WidgetData[] = [];
+    const allWidgetsData: NewWidgetData[] = [];
     for (let i = 0; i < allWidgetsIDs.length; i++) {
       allWidgetsData.push(
         await this.readWidget(allWidgetsFolderPath, allWidgetsIDs[i])
@@ -362,7 +362,7 @@ export default class DatabaseService {
   //================================
   static async createWidget_Project(
     id_project: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.createWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`,
@@ -371,7 +371,7 @@ export default class DatabaseService {
   }
   static async createWidget_Template(
     id_project: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.createWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
@@ -381,7 +381,7 @@ export default class DatabaseService {
   static async createWidget_Sample(
     id_project: string,
     id_sample: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.createWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`,
@@ -390,7 +390,7 @@ export default class DatabaseService {
   }
   private static async createWidget(
     allWidgetsFolderPath: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ) {
 
     const { id_widget } = widgetData;
@@ -426,7 +426,7 @@ export default class DatabaseService {
   static async readWidget_Project(
     id_project: string,
     id_widget: string,
-  ): Promise<WidgetData> {
+  ): Promise<NewWidgetData> {
     return await this.readWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`,
       id_widget
@@ -435,7 +435,7 @@ export default class DatabaseService {
   static async readWidget_Template(
     id_project: string,
     id_widget: string,
-  ): Promise<WidgetData> {
+  ): Promise<NewWidgetData> {
     return await this.readWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       id_widget
@@ -445,7 +445,7 @@ export default class DatabaseService {
     id_project: string,
     id_sample: string,
     id_widget: string,
-  ): Promise<WidgetData> {
+  ): Promise<NewWidgetData> {
     return await this.readWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`,
       id_widget
@@ -454,20 +454,20 @@ export default class DatabaseService {
   private static async readWidget(
     allWidgetsFolderPath: string,
     id_widget: string,
-  ): Promise<WidgetData> {
+  ): Promise<NewWidgetData> {
 
     // READ WIDGET DATA
     const dataFile = await FileSystemService.readFile(
       `${allWidgetsFolderPath}/${id_widget}/data.json`
     );
-    return await JSON.parse(dataFile as string) as WidgetData;
+    return await JSON.parse(dataFile as string) as NewWidgetData;
   }
 
   //================================
   //================================
   static async updateWidget_Project(
     id_project: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.updateWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`,
@@ -476,7 +476,7 @@ export default class DatabaseService {
   }
   static async updateWidget_Template(
     id_project: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.updateWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
@@ -486,7 +486,7 @@ export default class DatabaseService {
   static async updateWidget_Sample(
     id_project: string,
     id_sample: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
     await this.updateWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`,
@@ -495,7 +495,7 @@ export default class DatabaseService {
   }
   private static async updateWidget(
     allWidgetsFolderPath: string,
-    widgetData: WidgetData,
+    widgetData: NewWidgetData,
   ): Promise<void> {
 
     const { id_widget } = widgetData;

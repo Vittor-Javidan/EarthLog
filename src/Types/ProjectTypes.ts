@@ -20,7 +20,7 @@ export type NewSampleDTO = {
 export type NewProjectSettings = {
   id_project: ID
   name: string
-  sampleAlias?: {
+  sampleAlias: {
     singular: string
     plural: string
   }
@@ -149,4 +149,10 @@ export type AltitudeDTO = {
 export type GPSAccuracyDTO = {
   coordinate: number | null,
   altitude: number | null
+}
+export type GPSFeaturesDTO = {
+  editMode: boolean
+  gpsON: boolean
+  enableCoordinate: boolean
+  enableAltitude: boolean
 }

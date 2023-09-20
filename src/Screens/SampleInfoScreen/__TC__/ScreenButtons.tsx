@@ -1,11 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+
+import { Layout } from '@Layout/index';
+import { Button } from '@Button/index';
 
 export default function ScreenButtons() {
 
@@ -13,8 +15,6 @@ export default function ScreenButtons() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
-  const { rules } = useMemo(() => sampleSettings, []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
@@ -33,29 +33,38 @@ export default function ScreenButtons() {
   return (
     <Layout.ScreenButtons
 
-      button_left={
-        <Layout.Button.IconRounded
+      buttons={[
+        <Button.RoundedIcon
+          key="1"
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.secondary}
-          color={theme.onSecondary}
+          buttonDiameter={60}
           onPress={() => navigate('PROJECT SCOPE', id_project)}
-        />
-      }
-
-      button_right={rules.allowSampleErase ? (
-        <Layout.Button.IconRounded
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.onTertiary,
+            background: theme.secondary,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+        <Button.RoundedIcon
+          key="2"
           iconName="trash-outline"
           showPlusSign={false}
-          color_background={theme.wrong}
-          color={theme.onWrong}
+          buttonDiameter={60}
           onPress={() => setShow_DeleteSwap(true)}
-        />
-      ) : undefined}
+          theme={{
+            font: theme.onWrong,
+            font_Pressed: theme.onTertiary,
+            background: theme.wrong,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+      ]}
 
       showSwipe={show_DeleteSwap}
       SwipeButton={
-        <Layout.Button.DeleteSwipe
+        <Button.ConfirmSwipe
           onSwipe={async () => await deleteSample()}
           onCancel={() => setShow_DeleteSwap(false)}
         />

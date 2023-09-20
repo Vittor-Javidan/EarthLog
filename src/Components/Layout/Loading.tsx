@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
-
-import View from './View';
 
 export default function Loading(): JSX.Element {
 

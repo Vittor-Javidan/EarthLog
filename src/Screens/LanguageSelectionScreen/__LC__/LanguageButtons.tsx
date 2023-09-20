@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Layout/index';
 import { languageLabels, languageTags, LanguageTags } from '@Types/index';
 import ConfigService from '@Services/ConfigService';
+
+import { Button } from '@Button/index';
 
 export default function LanguageButtons(props: {
   onButtonClick: () => void
@@ -15,25 +16,31 @@ export default function LanguageButtons(props: {
     await ConfigService.saveConfig();
   }
 
-  return <>
-    {
-      languageLabels.map((languageLabel, index) => {
-        const isSelected = language === languageTags[index];
-        return (
-          <Layout.Button.TextWithIcon
-            key={languageLabel}
-            title={languageLabel}
-            iconName="language"
-            iconSide="Right"
-            color_background={isSelected ? theme.confirm : undefined}
-            color_font={isSelected ? theme.onConfirm : undefined}
-            onPress={async () => {
-              props.onButtonClick();
-              await saveSelectedLanguage(languageTags[index]);
-            }}
-          />
-        );
-      })
+  const LanguageButtonsArray = languageLabels.map((languageLabel, index) => {
+
+    const isSelected = language === languageTags[index];
+
+    async function onSelectLanguage() {
+      props.onButtonClick();
+      await saveSelectedLanguage(languageTags[index]);
     }
-  </>;
+
+    return (
+      <Button.TextWithIcon
+        key={languageLabel}
+        title={languageLabel}
+        iconName="language"
+        iconSide="Right"
+        theme={{
+          font: isSelected ? theme.onConfirm : theme.onSecondary,
+          font_Pressed: isSelected ? theme.onConfirm : theme.onSecondary,
+          background: isSelected ? theme.confirm : theme.secondary,
+          background_Pressed: isSelected ? theme.confirm : theme.secondary,
+        }}
+        onPress={async () => await onSelectLanguage()}
+      />
+    );
+  });
+
+  return <>{LanguageButtonsArray}</>;
 }

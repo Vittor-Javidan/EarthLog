@@ -1,18 +1,18 @@
 import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { ScopeState } from '@Types/index';
-import { navigate } from '@Globals/NavigationControler';
+import { Loading } from '@Types/otherTypes';
 import { useBackPress } from '@Hooks/index';
+import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
 
-import { Layout } from '@Components/Layout';
+import { Layout } from '@Layout/index';
 import { ProjectScreen as _ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen as _TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen as _ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
 
-type MemoProps1 = { projectScopeState: ScopeState; };
-type MemoProps2 = { projectScopeState: ScopeState; onProjectNameUpdate: (newName: string) => void;};
+type MemoProps1 = { projectScopeState: Loading; };
+type MemoProps2 = { projectScopeState: Loading; onProjectNameUpdate: (newName: string) => void;};
 
 const ProjectScreen     = memo((props: MemoProps1) => <_ProjectScreen {...props} />    );
 const TemplateScreen    = memo((props: MemoProps1) => <_TemplateScreen {...props} />   );
@@ -24,7 +24,7 @@ export default function ProjectScope() {
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [selectedScreen , setSelectedScreen ] = useState<number>(1);
-  const [state          , setState          ] = useState<ScopeState>('Loading');
+  const [state          , setState          ] = useState<Loading>('Loading');
   const [updatedName    , setUpdatedName    ] = useState<string | null>(null);
 
   useBackPress(() => navigate('HOME SCOPE'));

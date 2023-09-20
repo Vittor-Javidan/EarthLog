@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Components/Layout';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
+
+import { Layout } from '@Layout/index';
+import { Button } from '@Button/index';
 
 export default function ScreenButtons() {
 
@@ -10,15 +12,21 @@ export default function ScreenButtons() {
 
   return (
     <Layout.ScreenButtons
-      button_left={
-        <Layout.Button.IconRounded
+      buttons={[
+        <Button.RoundedIcon
+          key="1"
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.secondary}
-          color={theme.onSecondary}
+          buttonDiameter={60}
           onPress={() => navigate('SETTINGS SCOPE')}
-        />
-      }
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.onTertiary,
+            background: theme.secondary,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+      ]}
     />
   );
 }

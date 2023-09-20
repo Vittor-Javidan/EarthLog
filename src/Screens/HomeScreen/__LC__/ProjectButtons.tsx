@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from 'react';
+import { View } from 'react-native';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
+
+import { Text } from '@Text/index';
+import { Button } from '@Button/index';
 import { API } from '../__API__';
 
 export default function ProjectButtons() {
@@ -18,18 +21,22 @@ export default function ProjectButtons() {
   const allProjectButtons = CacheService.allProjects.map((settings, index) => {
     const isLastIndex = index === CacheService.allProjects.length - 1;
     return (
-      <Layout.Button.TextWithIcon
+      <Button.TextWithIcon
         key={settings.id_project}
         title={settings.name}
         iconName="folder"
         iconSide="Right"
-        color_background={theme.tertiary}
-        color_font={theme.onTertiary}
+        onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
+        theme={{
+          font: theme.onTertiary,
+          font_Pressed: theme.tertiary,
+          background: theme.tertiary,
+          background_Pressed: theme.onTertiary,
+        }}
         style={isLastIndex ? {
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         } : undefined}
-        onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
       />
     );
   });
@@ -38,7 +45,7 @@ export default function ProjectButtons() {
 
   return (<>
     {projectsAvailable && (
-      <Layout.View
+      <View
         style={{
           backgroundColor: theme.secondary,
           paddingHorizontal: 2,
@@ -46,7 +53,7 @@ export default function ProjectButtons() {
           borderRadius: 10,
         }}
       >
-        <Layout.Text.H2
+        <Text.H2
           style={{
             marginVertical: 5,
             marginLeft: 5,
@@ -56,13 +63,13 @@ export default function ProjectButtons() {
           }}
         >
           {R['Projects']}
-        </Layout.Text.H2>
-        <Layout.View
+        </Text.H2>
+        <View
           style={{ gap: 2 }}
         >
           {allProjectButtons}
-        </Layout.View>
-      </Layout.View>
+        </View>
+      </View>
     )}
   </>);
 }

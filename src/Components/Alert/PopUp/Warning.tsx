@@ -5,8 +5,8 @@ import * as Vibration from 'expo-haptics';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 
-import { Button } from '@Components/Layout/Button';
-import H3 from '@Components/Layout/Text/H3';
+import { Button } from '@Button/index';
+import { Text } from '@Text/index';
 
 type Vibration = 'warning' | 'success'
 
@@ -43,16 +43,16 @@ export default function Warning(props: {
           alignItems: 'center',
         }}
       >
-        <H3
+        <Text.H3
           style={{
             textAlign: 'center',
             padding: 10,
           }}
         >
           {props.question}
-        </H3>
+        </Text.H3>
       </View>
-      <Button.DeleteSwipe
+      <Button.ConfirmSwipe
         onCancel={() => props.onRefuse()}
         onSwipe={async () => await onAccept()}
         buttonRadius={25}

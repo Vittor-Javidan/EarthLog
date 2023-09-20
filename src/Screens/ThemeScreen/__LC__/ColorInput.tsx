@@ -8,7 +8,7 @@ import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
 
-import { Layout } from '@Components/Layout';
+import { Input } from '@Input/index';
 import { API } from '../__API__';
 
 export default function AllInputs(): JSX.Element {
@@ -16,7 +16,7 @@ export default function AllInputs(): JSX.Element {
   const { theme } = useMemo(() => ConfigService.config, [ConfigService.config.theme]);
 
   return (
-    <Layout.View>
+    <View>
       <CustomInput themeKey="background"               savedValue={theme.background} />
       <CustomInput themeKey="onBackground"             savedValue={theme.onBackground} />
       <CustomInput themeKey="onBackground_Placeholder" savedValue={theme.onBackground_Placeholder} />
@@ -36,7 +36,7 @@ export default function AllInputs(): JSX.Element {
       <CustomInput themeKey="wrong"                    savedValue={theme.wrong} />
       <CustomInput themeKey="onWrong"                  savedValue={theme.onWrong} />
       <CustomInput themeKey="onPressColorPrimary"      savedValue={theme.onPressColorPrimary} />
-    </Layout.View>
+    </View>
   );
 }
 
@@ -182,7 +182,7 @@ function CustomInput(props: {
           backgroundColor: theme.secondary,
         }}
       >
-        <Layout.Input.Color
+        <Input.Color
           colorInputPadding={5}
           colorInputWidth={WIDTH}
           colorInputHeight={45}

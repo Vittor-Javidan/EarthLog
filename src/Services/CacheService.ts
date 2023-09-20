@@ -1,19 +1,23 @@
-import { ProjectSettings, SampleSettings, WidgetData } from '@Types/index';
+import { NewProjectSettings, NewSampleSettings, NewWidgetData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
 
 export default class CacheService {
 
-  static lastOpenProject: ProjectSettings = {
+  static lastOpenProject: NewProjectSettings = {
     id_project: '',
     name: '',
     rules: {},
+    sampleAlias: {
+      singular: '',
+      plural: '',
+    },
   };
-  static allProjects: ProjectSettings[] = [];
-  static allWidgets_Project: WidgetData[] = [];
-  static allWidgets_Template: WidgetData[] = [];
-  static allSamples: SampleSettings[] = [];
-  static allWidgets_Sample: WidgetData[] = [];
+  static allProjects: NewProjectSettings[] = [];
+  static allWidgets_Project: NewWidgetData[] = [];
+  static allWidgets_Template: NewWidgetData[] = [];
+  static allSamples: NewSampleSettings[] = [];
+  static allWidgets_Sample: NewWidgetData[] = [];
 
   static async saveLastOpenProject(id_project: string): Promise<void> {
     await DatabaseService.saveLastOpenProject(id_project);
@@ -45,10 +49,14 @@ export default class CacheService {
       id_project: '',
       name: '',
       rules: {},
+      sampleAlias: {
+        singular: '',
+        plural: '',
+      },
     };
   }
 
-  static getProjectFromCache(id_project: string): ProjectSettings {
+  static getProjectFromCache(id_project: string): NewProjectSettings {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         return this.allProjects[i];
@@ -57,7 +65,7 @@ export default class CacheService {
     throw Error('Project does not exist on cache');
   }
 
-  static getSampleFromCache(id_sample: string): SampleSettings {
+  static getSampleFromCache(id_sample: string): NewSampleSettings {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         return this.allSamples[i];
@@ -66,7 +74,7 @@ export default class CacheService {
     throw Error('Sample does not exist on cache');
   }
 
-  static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
+  static updateCache_ProjectSettings(projectSettings: NewProjectSettings) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
         this.allProjects[i] = UtilService.deepCopy(projectSettings);
@@ -76,7 +84,7 @@ export default class CacheService {
     throw Error('Project does not exist on cache');
   }
 
-  static updateCache_SampleSettings(sampleSettings: SampleSettings) {
+  static updateCache_SampleSettings(sampleSettings: NewSampleSettings) {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
         this.allSamples[i] = UtilService.deepCopy(sampleSettings);
@@ -86,7 +94,7 @@ export default class CacheService {
     throw Error('Sample does not exist on cache');
   }
 
-  static updateCache_ProjectWidget(widgetData: WidgetData) {
+  static updateCache_ProjectWidget(widgetData: NewWidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Project[i] = UtilService.deepCopy(widgetData);
@@ -96,7 +104,7 @@ export default class CacheService {
     throw Error('Project Widget does not exist on cache');
   }
 
-  static updateCache_TemplateWidget(widgetData: WidgetData) {
+  static updateCache_TemplateWidget(widgetData: NewWidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Template[i] = UtilService.deepCopy(widgetData);
@@ -106,7 +114,7 @@ export default class CacheService {
     throw Error('Template Widget does not exist on cache');
   }
 
-  static updateCache_SampleWidget(widgetData: WidgetData) {
+  static updateCache_SampleWidget(widgetData: NewWidgetData) {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Sample[i] = UtilService.deepCopy(widgetData);

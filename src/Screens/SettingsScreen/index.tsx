@@ -1,6 +1,6 @@
 
 import React, { useMemo } from 'react';
-import { Alert } from 'react-native';
+import { Alert, View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -9,6 +9,7 @@ import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
 import CacheService from '@Services/CacheService';
 
+import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 
@@ -21,33 +22,49 @@ export default function SettingsScreen(): JSX.Element {
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
-      <Layout.View
+      <View
         style={{
           paddingTop: 1,
           gap: 1,
         }}
       >
-        <Layout.Button.TextWithIcon
+        <Button.TextWithIcon
           title={R['Language']}
           iconName="language"
           iconSide="Right"
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.secondary,
+            background: theme.secondary,
+            background_Pressed: theme.onSecondary,
+          }}
         />
-        <Layout.Button.TextWithIcon
+        <Button.TextWithIcon
           title={R['Theme']}
           iconName="color-palette"
           iconSide="Right"
           onPress={() => navigate('THEME CUSTOMIZATION SCOPE')}
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.secondary,
+            background: theme.secondary,
+            background_Pressed: theme.onSecondary,
+          }}
         />
-        <Layout.Button.TextWithIcon
+        <Button.TextWithIcon
           title={R['Whipe Database']}
           iconName="trash-outline"
           iconSide="Right"
-          color_background={theme.wrong}
-          color_font={theme.onWrong}
           onPress={async () => await whipeDataBase()}
+          theme={{
+            font: theme.onWrong,
+            font_Pressed: theme.wrong,
+            background: theme.wrong,
+            background_Pressed: theme.onWrong,
+          }}
         />
-      </Layout.View>
+      </View>
     </Layout.Screen>
   );
 }
@@ -79,6 +96,10 @@ async function whipeDataBase() {
             id_project: '',
             name: '',
             rules: {},
+            sampleAlias: {
+              plural: '',
+              singular: '',
+            },
           };
           CacheService.allProjects = [];
           CacheService.allWidgets_Project = [];

@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, useEffect, memo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
+import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -9,9 +9,9 @@ import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-import RootText from './Text/Root';
-import AppRootAlertLayer from '@Components/Alert/AlertModal';
-import { Icon } from './Icon';
+import { Icon } from '@Icon/index';
+import { Text } from '@Text/index';
+import { AlertModal } from '@Alert/index';
 const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
 const NAVIGATION_TREE_HEIGHT = 20;
@@ -27,7 +27,7 @@ export default function Root(props: {
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
-    <AppRootAlertLayer />
+    <AlertModal />
     <StatusBar
       animated={true}
       networkActivityIndicatorVisible={true}
@@ -91,14 +91,14 @@ function Navbar(props: {
           paddingVertical: iosLargeTitle ? 5 : 10,
         }}
       >
-        <RootText
+        <Text.Root
           style={{
             color: theme.onPrimary,
             fontSize: iosLargeTitle ? ThemeService.FONTS.h1 : 200,
           }}
         >
           {props.title}
-        </RootText>
+        </Text.Root>
       </View>
       <IconButton
         onPress={props.onMenuButtonPress}
@@ -187,8 +187,7 @@ const Drawer = memo((props: {
           justifyContent: 'flex-end',
         }}
       >
-        <Text
-          adjustsFontSizeToFit={true}
+        <Text.Root
           style={{
             color: theme.onSecondary_PlaceHolder,
             textAlign: 'right',
@@ -196,8 +195,8 @@ const Drawer = memo((props: {
             padding: 8,
           }}
         >
-          v: {APP_VERSION}
-        </Text>
+          {'v: ' + APP_VERSION}
+        </Text.Root>
       </Pressable>
     </ScrollView>
 

@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Components/Layout';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
+
+import { Button } from '@Button/index';
+import { Layout } from '@Layout/index';
 import { API } from '../__API__';
 
 export default function ScreenButtons() {
@@ -20,15 +22,21 @@ export default function ScreenButtons() {
 
   return (
     <Layout.ScreenButtons
-      button_right={
-        <Layout.Button.IconRounded
+      buttons={[
+        <Button.RoundedIcon
+          key="1"
           iconName="folder"
           showPlusSign={true}
-          color={theme.onConfirm}
-          color_background={theme.confirm}
+          buttonDiameter={60}
           onPress={async () => await createProject()}
-        />
-      }
+          theme={{
+            font: theme.onConfirm,
+            font_Pressed: theme.onTertiary,
+            background: theme.confirm,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+      ]}
     />
   );
 }

@@ -5,18 +5,18 @@
     "baseUrl": "./src",
     "paths": {
       "@Types/*":             [ "Types/*" ],
-      "@Components/*":        [ "Components/*" ],
       "@Hooks/*":             [ "Hooks/*" ],
       "@Services/*":          [ "Services/*" ],
       "@Globals/*":           [ "Globals/*" ],
       "@Translations/*":      [ "Translations/*" ],
       "@Icon/*":              [ "Components/Icon/*" ],
+      "@Alert/*":             [ "Components/Alert/*" ],
       "@Text/*":              [ "Components/Text/*" ],
       "@Button/*":            [ "Components/Button/*" ],
       "@Input/*":             [ "Components/Input/*" ],
+      "@WidgetInput/*":       [ "Components/WidgetInput/*" ],
       "@Layout/*":            [ "Components/Layout/*" ],
       "@Widget/*":            [ "Components/Widget/*" ],
-      "@WidgetComponents/*":  [ "Components/Widget/Components/*" ],
       "@Screens/*":           [ "Screens/*" ]
     }
   },

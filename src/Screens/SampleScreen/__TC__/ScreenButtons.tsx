@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import { WidgetData } from '@Types/index';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 
-import { Layout } from '@Components/Layout';
-import { Widget } from '@Components/Widget';
+import { Button } from '@Button/index';
+import { Layout } from '@Layout/index';
 import { API } from '../__API__';
 
 export default function ScreenButtons() {
@@ -17,13 +16,12 @@ export default function ScreenButtons() {
   const id_sample = useLocalSearchParams().id_sample as string;
 
   const { theme } = useMemo(() => ConfigService.config, []);
-  const { rules: rules_sample } = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  async function onCreateWidget(widgetData: WidgetData) {
+  async function onCreateWidget() {
     await ProjectService.createWidget_Sample(
       id_project,
       id_sample,
-      widgetData,
+      ProjectService.getWidgetData(),
       async () => {
         await CacheService.loadAllWidgets_Sample(id_project, id_sample);
         API.SampleWidgets.refresh();
@@ -34,20 +32,34 @@ export default function ScreenButtons() {
 
   return (
     <Layout.ScreenButtons
-      button_left={
-        <Layout.Button.IconRounded
+      buttons={[
+        <Button.RoundedIcon
+          key="1"
           iconName="arrow-back"
           showPlusSign={false}
-          color_background={theme.secondary}
-          color={theme.onSecondary}
+          buttonDiameter={60}
           onPress={() => navigate('PROJECT SCOPE', id_project)}
-        />
-      }
-      button_right={rules_sample.allowWidgetCreation === true ? (
-        <Widget.AddWidgetButton
-          onCreateWidget={async (widgetData) => await onCreateWidget(widgetData)}
-        />
-      ) : undefined}
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.onTertiary,
+            background: theme.secondary,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+        <Button.RoundedIcon
+          key="2"
+          iconName="list"
+          showPlusSign={true}
+          buttonDiameter={60}
+          onPress={() => onCreateWidget()}
+          theme={{
+            font: theme.onConfirm,
+            font_Pressed: theme.onTertiary,
+            background: theme.confirm,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+      ]}
     />
   );
 }

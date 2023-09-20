@@ -1,31 +1,21 @@
 import React, { useState } from 'react';
 import { TextInput, Platform } from 'react-native';
 
-import { InputStatus, StringInputData } from '@Types/ProjectTypes';
-import { useTimeout } from '@Hooks/index';
-import UtilService from '@Services/UtilService';
-
 import { LC } from '../__LC__';
 
 type InputTheme = {
   font: string
   font_placeholder: string
   background: string
-  confirm: string
-  wrong: string
 }
 
 export function StringInput(props: {
-  inputData: StringInputData
-  editWidget: boolean
-  isFirstInput: boolean
-  isLastInput: boolean
+  label: string
+  value: string
+  placeholder: string
   theme: InputTheme
   multiline: boolean
-  onSave: (inputData: StringInputData | null, status: InputStatus ) => void
-  onInputDelete: () => void
-  onInputMoveUp: () => void
-  onInputMoveDow: () => void
+  onTextChange: (text: string) => void
 }) {
 
   /**
@@ -35,64 +25,33 @@ export function StringInput(props: {
   */
   const { theme } = props;
 
-  const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
-  const [saveSignal , setSaveSignal ] = useState<boolean>(false);
 
-  useTimeout(async () => {
-    if (saveSignal) {
-      props.onSave(UtilService.deepCopy(inputData), 'ready to save');
-      setSaveSignal(false);
-    }
-  }, [inputData, saveSignal], 200);
 
   function onTextDelete() {
-    if (inputData.value !== '') {
-      props.onSave(null, 'modifying');
-      setDeletedText(inputData.value);
-      setInputData(prev => ({ ...prev, value: ''}));
+    if (props.value !== '') {
+      setDeletedText(props.value);
       setShowUndo(true);
-      setSaveSignal(true);
+      props.onTextChange('');
     }
   }
 
   function undoDelete() {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, value: deletedText}));
+    props.onTextChange(deletedText);
     setShowUndo(false);
-    setSaveSignal(true);
-  }
-
-  function onTextChange(text: string) {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, value: text }));
-    setSaveSignal(true);
-  }
-
-  function onLabelChange(newLabel: string) {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, label: newLabel}));
-    setSaveSignal(true);
+    setDeletedText('');
   }
 
   return (
     <LC.Root
 
-      label={inputData.label}
-      editWidget={props.editWidget}
-      isFirstInput={props.isFirstInput}
-      isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label)}
-      onInputDelete={() => props.onInputDelete()}
-      onInputMoveUp={() => props.onInputMoveUp()}
-      onInputMoveDow={() => props.onInputMoveDow()}
+      label={props.label}
       theme={theme}
 
       iconButtons={
         <IconButtons
           showUndo={showUndo}
-          locked={inputData.lockedData}
           theme={theme}
           onPress_UndoButton={() => undoDelete()}
           onPress_BackspaceButton={() => onTextDelete()}
@@ -100,13 +59,13 @@ export function StringInput(props: {
       }
     >
       <TextInput
-        value={inputData.value}
-        placeholder={inputData.placeholder ?? 'Write Something here'}
+        value={props.value}
+        placeholder={props.placeholder}
         placeholderTextColor={theme.font_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline={props.multiline}
-        onChangeText={(text) => onTextChange(text)}
+        onChangeText={(text) => props.onTextChange(text)}
         style={{
           width: '100%',
           paddingVertical: 15,
@@ -120,7 +79,6 @@ export function StringInput(props: {
 }
 
 function IconButtons (props: {
-  locked: boolean | undefined
   showUndo: boolean
   theme: InputTheme
   onPress_UndoButton: () => void
@@ -130,36 +88,24 @@ function IconButtons (props: {
   const { theme } = props;
 
   return (<>
-    {props.locked && (
+    {props.showUndo && (
       <LC.NavbarIconButton
-        iconName="lock-closed-sharp"
-        onPress={() => {}}
-        theme={{
-          font: theme.wrong,
-          background: theme.background,
-        }}
-      />
-    )}
-    {!props.locked && (<>
-      {props.showUndo && (
-        <LC.NavbarIconButton
-          iconName="arrow-undo"
-          onPress={() => props.onPress_UndoButton()}
-          theme={{
-            font: theme.font,
-            background: theme.background,
-          }}
-        />
-      )}
-      <LC.NavbarIconButton
-        iconName="backspace-outline"
-        onPress={() => props.onPress_BackspaceButton()}
+        iconName="arrow-undo"
+        onPress={() => props.onPress_UndoButton()}
         theme={{
           font: theme.font,
           background: theme.background,
         }}
       />
-    </>)}
+    )}
+    <LC.NavbarIconButton
+      iconName="backspace-outline"
+      onPress={() => props.onPress_BackspaceButton()}
+      theme={{
+        font: theme.font,
+        background: theme.background,
+      }}
+    />
   </>);
 }
 

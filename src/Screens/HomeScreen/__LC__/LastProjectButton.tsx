@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
+import { View } from 'react-native';
 
-import { Layout } from '@Layout/index';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
+
+import { Button } from '@Button/index';
+import { Text } from '@Text/index';
 
 export default function LastProjectButton() {
 
@@ -15,7 +18,7 @@ export default function LastProjectButton() {
   const lastProjectOpenExist = id_project !== '';
 
   return lastProjectOpenExist ? (
-    <Layout.View
+    <View
       style={{
         backgroundColor: theme.secondary,
         paddingHorizontal: 2,
@@ -23,7 +26,7 @@ export default function LastProjectButton() {
         borderRadius: 10,
       }}
     >
-      <Layout.Text.H2
+      <Text.H2
         style={{
           marginVertical: 5,
           marginLeft: 5,
@@ -33,20 +36,24 @@ export default function LastProjectButton() {
         }}
       >
         {R['Recently Open']}
-      </Layout.Text.H2>
-      <Layout.Button.TextWithIcon
+      </Text.H2>
+      <Button.TextWithIcon
+        title={CacheService.lastOpenProject.name}
         iconName="folder"
         iconSide="Right"
-        title={CacheService.lastOpenProject.name}
-        color_background={theme.tertiary}
-        color_font={theme.onTertiary}
+        onPress={() => navigate('PROJECT SCOPE', id_project)}
+        theme={{
+          font: theme.onTertiary,
+          font_Pressed: theme.tertiary,
+          background: theme.tertiary,
+          background_Pressed: theme.onTertiary,
+        }}
         style={{
           borderBottomLeftRadius: 10,
           borderBottomRightRadius: 10,
         }}
-        onPress={() => navigate('PROJECT SCOPE', id_project)}
       />
-    </Layout.View>
+    </View>
   ) : (
     <></>
   );

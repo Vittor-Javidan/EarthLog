@@ -3,7 +3,8 @@ import React, { useMemo } from 'react';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 
-import { Layout } from '@Components/Layout';
+import { Button } from '@Button/index';
+import { Layout } from '@Layout/index';
 import { API } from '../__API__';
 
 export default function ScreenButtons() {
@@ -26,33 +27,47 @@ export default function ScreenButtons() {
 
   return (
     <Layout.ScreenButtons
-      button_left={
-        <Layout.Button.IconRounded
+      buttons={[
+        <Button.RoundedIcon
+          key="1"
           iconName="close"
           showPlusSign={false}
-          color_background={theme.wrong}
-          color={theme.onWrong}
+          buttonDiameter={60}
           onPress={() => cancelAndExit()}
-        />
-      }
-      button_middle={
-        <Layout.Button.IconRounded
+          theme={{
+            font: theme.onWrong,
+            font_Pressed: theme.onTertiary,
+            background: theme.wrong,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+        <Button.RoundedIcon
+          key="2"
           iconName="refresh-sharp"
           showPlusSign={false}
-          color_background={theme.primary}
-          color={theme.onPrimary}
+          buttonDiameter={60}
           onPress={() => resetTheme()}
-        />
-      }
-      button_right={
-        <Layout.Button.IconRounded
+          theme={{
+            font: theme.onSecondary,
+            font_Pressed: theme.onTertiary,
+            background: theme.secondary,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+        <Button.RoundedIcon
+          key="3"
           iconName="save"
           showPlusSign={false}
-          color_background={theme.confirm}
-          color={theme.onConfirm}
+          buttonDiameter={60}
           onPress={async () => await confirmAndSave()}
-        />
-      }
+          theme={{
+            font: theme.onConfirm,
+            font_Pressed: theme.onTertiary,
+            background: theme.confirm,
+            background_Pressed: theme.tertiary,
+          }}
+        />,
+      ]}
     />
   );
 }

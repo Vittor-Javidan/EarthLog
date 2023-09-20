@@ -4,11 +4,11 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
-
-import { Button } from '@Components/Layout/Button';
 import ProjectService from '@Services/ProjectService';
-import { Input } from '@Components/Layout/Input';
 import CacheService from '@Services/CacheService';
+
+import { Button } from '@Button/index';
+import { Input } from '@Input/index';
 
 type Vibration = 'warning' | 'success'
 
@@ -71,14 +71,15 @@ export default function CreateSample(props: {
       >
         <Input.String
           label="Sample name"
-          placeholder="Write sample's name here"
-          inline={true}
-          locked={false}
-          color={theme.onPrimary}
-          color_placeholder={theme.onPrimary_Placeholder}
-          backgroundColor={theme.primary}
           value={name}
-          onChangeText={(text) => setName(text)}
+          onTextChange={(text) => setName(text)}
+          placeholder="Write sample's name here"
+          multiline={false}
+          theme={{
+            font: theme.onPrimary,
+            font_placeholder: theme.onPrimary_Placeholder,
+            background: theme.primary,
+          }}
         />
       </View>
       <View
@@ -90,10 +91,13 @@ export default function CreateSample(props: {
       >
         <Button.Icon
           iconName="close"
-          color_background={theme.secondary}
-          color={theme.wrong}
-          color_onPressed={theme.tertiary}
           onPress={async () => onRefuse()}
+          theme={{
+            font: theme.wrong,
+            font_Pressed: theme.tertiary,
+            background: theme.tertiary,
+            background_Pressed: theme.wrong,
+          }}
           style={{
             height: 40,
             flex: 1,
@@ -104,10 +108,13 @@ export default function CreateSample(props: {
         />
         <Button.Icon
           iconName={name !== '' ? 'checkmark-done-sharp' : 'lock-closed-sharp'}
-          color_background={theme.confirm}
-          color={theme.onConfirm}
-          color_onPressed={theme.tertiary}
           onPress={async () => await onAccept()}
+          theme={{
+            font: theme.tertiary,
+            font_Pressed: theme.confirm,
+            background: theme.confirm,
+            background_Pressed: theme.tertiary,
+          }}
           style={{
             height: 40,
             flex: 1,

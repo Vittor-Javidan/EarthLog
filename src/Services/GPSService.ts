@@ -1,6 +1,7 @@
-import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@Types/index';
-import * as Location from 'expo-location';
 import { Platform } from 'react-native';
+import * as Location from 'expo-location';
+
+import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@Types/ProjectTypes';
 import UtilService from './UtilService';
 
 export default class GPSService {

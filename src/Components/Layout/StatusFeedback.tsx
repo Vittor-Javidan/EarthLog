@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
+import { View } from 'react-native';
+
 import ConfigService from '@Services/ConfigService';
-import View from './View';
 
 export default function StatusFeedback(props: {
   done: boolean
