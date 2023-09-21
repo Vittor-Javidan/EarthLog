@@ -8,7 +8,6 @@ import ConfigService from '@Services/ConfigService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import { API } from '../__API__';
 
 export default function SampleButtons() {
 
@@ -16,9 +15,6 @@ export default function SampleButtons() {
 
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [loadFinished , setLoadFinished ] = useState(false);
-  const [_            , refresh         ] = useState<boolean>(false);
-
-  API.SampleButtons.registerRefreshSetter(refresh);
 
   function onEndReached() {
     setLoadFinished(true);

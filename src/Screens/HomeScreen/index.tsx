@@ -1,4 +1,4 @@
-import React, { useMemo, ReactNode, useEffect, memo } from 'react';
+import React, { useMemo, ReactNode, useEffect, memo, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -8,15 +8,19 @@ import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
 
-const LC_LastProjectButton = memo(() => <LC.LastProjectButton />);
-const LC_ProjectButtons    = memo(() => <LC.ProjectButtons />   );
-
 export default function HomeScreen(props: {
   homeScopeState: Loading
 }) {
+
+  const [buttonsRefresher, setButtonsRefresher] = useState<boolean>(false);
+
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons />}
+      screenButtons={
+        <TC.ScreenButtons
+          onProjectCreation={() => setButtonsRefresher(prev => !prev)}
+        />
+      }
     >
       {props.homeScopeState === 'Loading' ? (
         <Layout.Loading />
@@ -30,13 +34,20 @@ export default function HomeScreen(props: {
             }}
           >
             <LC_LastProjectButton />
-            <LC_ProjectButtons />
+            <LC_ProjectButtons
+              key={'refresher:' + buttonsRefresher}
+            />
           </Layout.ScrollView>
         </Animation>
       )}
     </Layout.Screen>
   );
 }
+
+const LC_LastProjectButton = memo(() => <LC.LastProjectButton />);
+const LC_ProjectButtons    = memo(() => (
+  <LC.ProjectButtons />
+));
 
 function Animation(props: { children: ReactNode}) {
 

@@ -1,39 +1,6 @@
-- Remove all API from insie Project/Sample scope.
-- add translation for CreateProject Alert Window
-
-- create a path for animations
-- refactor and move backpress pressing to LayoutRoot.
-- make all buttons vibrate twice
-- set the multiline property properly across the app code.
-- remove padding from DeletSwipeButton. Use "CompensateMargin" prop instead.
 - add icons to carousel buttons.
-- Reduce Layout Navigation tree height to 30. And ajust all other components to render accordling.
-- add an opiton on InputString to be inline or multiline. (Inline are used for labels.)
-
-# study if isWrong is acually necessary on WC
-
-# on GPSInput manual input, change "," for '.' when user type ","
-
-# Remove all Layout.View Calls. use <View /> instead
-
-# Implement rules for Boolean and GPS widgets. Check if Text Widget has all implemented too.
-
-# add option to remove Warning vibration o Checkbox button.
-
-# Add a enableGPS rule on all Widgets
-
-# Replace all alerts with the custom Alert
-
-# add labels to all widgets main inputs
-
-# add spech to text to all string inputs, and create a prop to enable/disable this feature.
-
-# implement the new <InputRoot /> on all Layout Inputs
-
-# Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
-
-# Use <Layout.Icon /> only when necessary on Screen components. Otherwise, use Ionicons library directly.
-
-# Normalize all Widgets code.
-
-# everytime a project is openned. Move the index to front. (Involves database minor refactor)
+- add Fix all translations
+- create the theme display for widgets
+- add all rules
+- Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
+- on GPSInput manual input, change "," for '.' when user type ","

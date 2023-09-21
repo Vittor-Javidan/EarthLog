@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -8,15 +8,11 @@ import CacheService from '@Services/CacheService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
-import { API } from '../__API__';
 
 export default function ProjectButtons() {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
   const R = useMemo(() => translations.Screens.HomeScreen[language], []);
-  const [_, refresh] = useState<boolean>(false);
-
-  API.ProjectButtons.registerRefreshSetter(refresh);
 
   const allProjectButtons = CacheService.allProjects.map((settings, index) => {
     const isLastIndex = index === CacheService.allProjects.length - 1;

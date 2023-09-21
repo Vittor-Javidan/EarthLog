@@ -170,15 +170,6 @@ function IconButton(props: {
 }) {
 
   return (<>
-    <NavbarIconButton
-      iconName="trash-outline"
-      onPress={() => props.onPress_Trash()}
-      selected={false}
-      theme={{
-        background: props.theme.background,
-        font: props.theme.wrong,
-      }}
-    />
     {props.isFirstInput !== true && (
       <NavbarIconButton
         iconName="chevron-up-circle-outline"
@@ -201,5 +192,14 @@ function IconButton(props: {
         }}
       />
     )}
+    <NavbarIconButton
+      iconName="trash-outline"
+      onPress={() => props.onPress_Trash()}
+      selected={false}
+      theme={{
+        background: props.theme.background,
+        font: props.theme.wrong,
+      }}
+    />
   </>);
 }

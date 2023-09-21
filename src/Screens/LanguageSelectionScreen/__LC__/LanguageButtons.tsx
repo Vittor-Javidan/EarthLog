@@ -6,7 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import { Button } from '@Button/index';
 
 export default function LanguageButtons(props: {
-  onButtonClick: () => void
+  onLangaugeSelected: (languageTag: LanguageTags) => void
 }): JSX.Element {
 
   const { theme, language } = useMemo(() => ConfigService.config, []);
@@ -21,7 +21,7 @@ export default function LanguageButtons(props: {
     const isSelected = language === languageTags[index];
 
     async function onSelectLanguage() {
-      props.onButtonClick();
+      props.onLangaugeSelected(languageTags[index]);
       await saveSelectedLanguage(languageTags[index]);
     }
 

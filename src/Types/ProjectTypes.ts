@@ -26,12 +26,12 @@ export type ProjectSettings = {
   }
   gps?: GPS_DTO
   rules: {
-      allowProjectNameChange?: boolean
-      allowSampleAliasChange?: boolean
-      allowGPSChange?: boolean                                                                      //Hide GPSInput if both this and gps undefined
-      showCreateWidgetButton_Project?: boolean
-      showCreateWidgetButton_Template?: boolean
-      showSampleCreationButton?: boolean
+    allowProjectNameChange?: boolean
+    allowSampleAliasChange?: boolean
+    allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
+    showCreateWidgetButton_Project?: boolean
+    showCreateWidgetButton_Template?: boolean
+    showSampleCreationButton?: boolean
   }
 }
 
@@ -40,9 +40,9 @@ export type SampleSettings = {
   name: string
   gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
   rules: {
-      allowSampleNameChange?: boolean
-      allowGPSChange?: boolean                                                                      //Hide GPSInput if both this and gps undefined
-      showCreateWidgetButton?: boolean
+    allowSampleNameChange?: boolean
+    allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
+    showCreateWidgetButton?: boolean
   }
 }
 
@@ -63,7 +63,7 @@ export type WidgetData = {
     showInputsDeleteOption?: boolean
     showColorButton?: boolean
   }
-  autoGenerate?: boolean                                                                            // Used by template screen to auto add a Widget on new Samples user creates
+  addToNewSamples?: boolean                                                                            // Used by template screen to auto add a Widget on new Samples user creates
   widgetTheme?: WidgetThemeData                                                                     // When undefine, it renders with default theme
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Platform, Pressable, StyleProp, ViewStyle } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import ThemeService from '@Services/ThemeService';
+import FontService from '@Services/FontService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -59,7 +59,7 @@ export function TextWithIcon(props: {
       )}
       <Text.Root
 				style={{
-					fontSize: iosLargeTitle ? ThemeService.FONTS.h3 : 200,
+					fontSize: iosLargeTitle ? FontService.FONTS.h3 : 200,
           color: pressed ? theme.font_Pressed : theme.font,
 				}}
 			>

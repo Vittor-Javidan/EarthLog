@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import ThemeService from '@Services/ThemeService';
+import FontService from '@Services/FontService';
 
 import RootText from './Root';
 
@@ -15,7 +15,7 @@ export default function H2(props: {
       style={[{
         textAlign: 'left',
         fontWeight: '500',
-        fontSize: ThemeService.FONTS.h2,
+        fontSize: FontService.FONTS.h2,
       }, props.style]}
     >
       {props.children}

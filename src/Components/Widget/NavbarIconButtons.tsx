@@ -11,7 +11,7 @@ type ButtonTheme = {
 
 export function NavbarIconButton(props: {
   iconName: IconName
-  position: 'right' | 'other'
+  position: 'right' | 'other' | 'bottom right'
   selected?: boolean
   theme: ButtonTheme
   onPress: () => void
@@ -47,10 +47,10 @@ export function NavbarIconButton(props: {
         height: '100%',
         paddingHorizontal: 5,
         paddingVertical: 5,
-        borderTopLeftRadius: 0,
+        borderTopLeftRadius: position === 'bottom right' ? 10 : 0,
         borderTopRightRadius: position === 'right' ? 10 : 0,
         borderBottomRightRadius: position === 'right' ? 0 : 10,
-        borderBottomLeftRadius: 10,
+        borderBottomLeftRadius: position === 'bottom right' ? 0 : 10,
       }}
     >
       <Icon

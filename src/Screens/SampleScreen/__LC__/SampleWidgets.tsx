@@ -6,12 +6,10 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 
 import { Widget } from '@Widget/index';
-import { API } from '../__API__';
 
 export default function SampleWidgets() {
 
   const [_, refresh] = useState<boolean>(false);
-  API.SampleWidgets.setterRegister(refresh);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Sample.map(widgetData => {
     return (

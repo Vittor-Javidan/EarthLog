@@ -5,9 +5,10 @@ import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import { API } from '../__API__';
 
-export default function ScreenButtons() {
+export default function ScreenButtons(props: {
+  onProjectCreation: () => void
+}) {
 
   const { theme } = useMemo(() => ConfigService.config, []);
 
@@ -16,7 +17,7 @@ export default function ScreenButtons() {
       question: '',
       type: 'project creation',
     }, () => {
-      API.ProjectButtons.refresh();
+      props.onProjectCreation();
     });
   }
 

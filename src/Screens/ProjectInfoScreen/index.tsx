@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Layout } from '@Layout/index';
 
@@ -10,9 +10,16 @@ export function ProjectInfoScreen(props: {
   projectScopeState: Loading
   onProjectNameUpdate: (newName: string) => void
 }) {
+
+  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons />}
+      screenButtons={
+        <TC.ScreenButtons
+          onWidgetCreation={() => setWidgetsRefresher(prev => !prev)}
+        />
+      }
     >
       {props.projectScopeState === 'Loading' ? (
         <Layout.Loading />
@@ -27,7 +34,9 @@ export function ProjectInfoScreen(props: {
           <LC.ProjectSettingsWidget
             onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
           />
-          <LC.ProjectWidgets />
+          <LC.ProjectWidgets
+            key={'refresher:' + widgetsRefresher}
+          />
         </Layout.ScrollView>
       )}
     </Layout.Screen>

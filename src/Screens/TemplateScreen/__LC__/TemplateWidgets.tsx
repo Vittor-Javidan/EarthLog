@@ -6,12 +6,10 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 
 import { Widget } from '@Widget/index';
-import { API } from '../__API__';
 
 export default function TemplateWidgets() {
 
   const [_, refresh] = useState<boolean>(false);
-  API.TemplateWidgets.setterRegister(refresh);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Template.map(widgetData => {
     return (

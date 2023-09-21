@@ -3,7 +3,7 @@ import { Pressable, TextInput, View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import { WidgetThemeData } from '@Types/ProjectTypes';
-import ThemeService from '@Services/ThemeService';
+import FontService from '@Services/FontService';
 
 import { Text } from '@Text/index';
 
@@ -11,6 +11,7 @@ export function LabelButton(props: {
   label: string
   editLabel: boolean
   theme: WidgetThemeData
+  noInputs: boolean
   onPress: () => void
   onConfirm: () => void
   onLabelChange: (label: string) => void
@@ -37,7 +38,7 @@ export function LabelButton(props: {
             textAlign: 'center',
             backgroundColor: theme.font,
             color: theme.background,
-            fontSize: ThemeService.FONTS.h2,
+            fontSize: FontService.FONTS.h2,
             borderRadius: 5,
             paddingVertical: 0,
             paddingHorizontal: 5,
@@ -58,7 +59,7 @@ export function LabelButton(props: {
               textAlign: 'center',
               color: theme.font,
               paddingHorizontal: 5,
-              marginBottom: -10,
+              marginBottom: 0,
             }}
           >
             {props.label === '' ? '-------' : props.label}

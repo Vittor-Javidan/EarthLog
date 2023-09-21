@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
@@ -10,8 +10,6 @@ import CacheService from '@Services/CacheService';
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
 
-type Vibration = 'warning' | 'success'
-
 export default function CreateProject(props: {
   onAccept: () => void
   onRefuse: () => void
@@ -19,10 +17,6 @@ export default function CreateProject(props: {
 
   const { theme } = useMemo(() => ConfigService.config, []);
   const [name, setName] = useState<string>('');
-
-  useEffect(() => {
-    vibrate('success');
-  }, []);
 
   async function onAccept() {
     if (name !== '') {
@@ -34,19 +28,13 @@ export default function CreateProject(props: {
           await CacheService.loadAllProjectsSettings();
           props.onAccept();
           await AlertService.runAcceptCallback();
-          vibrate('success');
         },
         async (errorMesage) => {
           alert(errorMesage);
-          vibrate('warning');
+          Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
         }
       );
     }
-  }
-
-  function onRefuse() {
-    props.onRefuse();
-    vibrate('success');
   }
 
   return (
@@ -56,7 +44,7 @@ export default function CreateProject(props: {
         backgroundColor: theme.primary,
         borderRadius: 10,
         paddingVertical: 10,
-        gap: 30,
+        gap: 10,
       }}
     >
       <View
@@ -86,7 +74,7 @@ export default function CreateProject(props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={async () => onRefuse()}
+          onPress={() => props.onRefuse()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.tertiary,
@@ -121,11 +109,4 @@ export default function CreateProject(props: {
       </View>
     </View>
   );
-}
-
-function vibrate(type: Vibration) {
-  switch (type) {
-    case 'warning': Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning); break;
-    case 'success': Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success); break;
-  }
 }

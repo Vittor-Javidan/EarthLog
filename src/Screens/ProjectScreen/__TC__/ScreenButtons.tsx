@@ -7,9 +7,10 @@ import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import { API } from '../__API__';
 
-export default function ScreenButtons() {
+export default function ScreenButtons(props: {
+  onSampleCreation: () => void
+}) {
 
   const id_project = useLocalSearchParams().id_project as string;
 
@@ -21,7 +22,7 @@ export default function ScreenButtons() {
       type: 'sample creation',
       id_project: id_project,
     }, () => {
-      API.SampleButtons.refresh();
+      props.onSampleCreation();
     });
   }
 

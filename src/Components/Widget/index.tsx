@@ -11,7 +11,7 @@ import { LabelButton } from './LabelButton';
 import { NavbarIconButton } from './NavbarIconButtons';
 import { AllInputs } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
-import { AutogenerateCheckbox } from './AutogenerateCheckbox';
+import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
@@ -28,7 +28,7 @@ export function Widget(props: {
   const [editLabel  , setEditLabel  ] = useState<boolean>(false);
   const [editInputs , setEditInputs ] = useState<boolean>(false);
   const [saved      , setSaved      ] = useState<boolean>(true);
-  const [display    , setDisplay    ] = useState<WidgetDisplay>('data display');
+  const [display    , setDisplay    ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
 
   const widgetTheme = useMemo<WidgetThemeData>(() => ({
     font:             widgetData?.widgetTheme?.font             ?? '#444',
@@ -53,9 +53,14 @@ export function Widget(props: {
     setDisplay(newDisplay);
   }
 
-  function togleEditOption() {
+  function togleEditDisplay() {
     selectDisplay('data display');
-    setEditInputs(prev => !prev);
+    setEditInputs(true);
+  }
+
+  function togleDataDisplay() {
+    selectDisplay('data display');
+    setEditInputs(false);
   }
 
   function togleThemeDisplay() {
@@ -106,10 +111,10 @@ export function Widget(props: {
     }
   }
 
-  function onConfirmAutoGenerate(boolean: boolean) {
+  function onAddToNewSamplesChange(boolean: boolean) {
     setSaved(false);
     setWidgetData(prev => {
-      const newData = { ...prev, autoGenerate: boolean};
+      const newData: WidgetData = { ...prev, addToNewSamples: boolean};
       save(newData);
       return newData;
     });
@@ -234,12 +239,12 @@ export function Widget(props: {
         theme={widgetTheme}
         iconButtons={
           <IconButtons
-            editWidget={editInputs}
             display={display}
-            onPress_TrashButton={() => deleteWidget()}
-            onPress_NewInputButton={() => togleNewInputDisplay()}
+            editInputs={editInputs}
+            onPress_DataDisplayButton={() => togleDataDisplay()}
+            onPress_EditButton={() => togleEditDisplay()}
             onPress_ThemeButton={() => togleThemeDisplay()}
-            onPress_EditButton={() => togleEditOption()}
+            onPress_NewInputButton={() => togleNewInputDisplay()}
             theme={widgetTheme}
           />
         }
@@ -247,45 +252,54 @@ export function Widget(props: {
       <View
         style={{
           paddingTop: 10,
-          paddingBottom: 5,
           gap: 10,
         }}
       >
-        <LabelButton
-          label={tempLabel}
-          editLabel={editLabel}
-          onPress={() => setEditLabel(true)}
-          onConfirm={() => onConfirmLabel()}
-          onLabelChange={(label) => onLabelChange(label)}
-          theme={widgetTheme}
-        />
-        {display === 'data display' && (<>
-          <AllInputs
-            inputs={widgetData.inputs}
-            editInputs={editInputs}
-            referenceGPSData={props.referenceGPSData}
-            onSave={(inputData, status) => onConfirmInput(inputData, status)}
-            onInputDelete={(id_input) => onDelete(id_input)}
-            onInputMoveUp={(id_input) => onMoveUp(id_input)}
-            onInputMoveDow={(id_input) => onMoveDown(id_input)}
+        <View
+          style={{
+            paddingTop: 10,
+            paddingBottom: 5,
+          }}
+        >
+          <LabelButton
+            label={tempLabel}
+            editLabel={editLabel}
+            noInputs={widgetData.inputs.length <= 0}
+            onPress={() => setEditLabel(true)}
+            onConfirm={() => onConfirmLabel()}
+            onLabelChange={(label) => onLabelChange(label)}
             theme={widgetTheme}
           />
-        </>)}
-        {display === 'new input display' && (
-          <NewInputDisplay
-            onCreate={(inputData) => onCreateInput(inputData)}
-            theme={widgetTheme}
-          />
-        )}
-        {display === 'theme display' && (
-          <ThemeDisplay
-            theme={widgetTheme}
-          />
-        )}
-        <AutogenerateCheckbox
+          {display === 'data display' && (<>
+            <AllInputs
+              inputs={widgetData.inputs}
+              editInputs={editInputs}
+              referenceGPSData={props.referenceGPSData}
+              onSave={(inputData, status) => onConfirmInput(inputData, status)}
+              onInputDelete={(id_input) => onDelete(id_input)}
+              onInputMoveUp={(id_input) => onMoveUp(id_input)}
+              onInputMoveDow={(id_input) => onMoveDown(id_input)}
+              theme={widgetTheme}
+            />
+          </>)}
+          {display === 'new input display' && (
+            <NewInputDisplay
+              onCreate={(inputData) => onCreateInput(inputData)}
+              theme={widgetTheme}
+            />
+          )}
+          {display === 'theme display' && (
+            <ThemeDisplay
+              theme={widgetTheme}
+            />
+          )}
+        </View>
+        <Footer
+          showDeleteWidgetButton={editInputs}
           showCheckbox={props.widgetScope.type === 'template'}
-          value={widgetData.autoGenerate ?? false}
-          onChange={(checked) => onConfirmAutoGenerate(checked)}
+          AddToNewSamples={widgetData.addToNewSamples ?? false}
+          onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}
+          onDeleteWidget={() => deleteWidget()}
           theme={widgetTheme}
         />
       </View>
@@ -294,58 +308,53 @@ export function Widget(props: {
 }
 
 function IconButtons(props: {
-  editWidget: boolean
+  editInputs: boolean
   display: WidgetDisplay
   theme: WidgetThemeData
-  onPress_TrashButton: () => void
+  onPress_DataDisplayButton: () => void
+  onPress_EditButton: () => void
   onPress_NewInputButton: () => void
   onPress_ThemeButton: () => void
-  onPress_EditButton: () => void
 }) {
-
-  const { theme, editWidget, display } = props;
-
   return (<>
-    {editWidget && (
-      <NavbarIconButton
-        iconName="trash-outline"
-        position="other"
-        selected={true}
-        onPress={() => props.onPress_TrashButton()}
-        theme={{
-          font: theme.wrong,
-          background: theme.background,
-        }}
-      />
-    )}
     <NavbarIconButton
       iconName="pencil-sharp"
       position="other"
-      selected={display === 'data display' && editWidget}
+      selected={props.display === 'data display' && !props.editInputs}
+      onPress={() => props.onPress_DataDisplayButton()}
+      theme={{
+        font: props.theme.font,
+        background: props.theme.background,
+      }}
+    />
+    <NavbarIconButton
+      iconName="options-outline"
+      position="other"
+      selected={props.display === 'data display' && props.editInputs}
       onPress={() => props.onPress_EditButton()}
       theme={{
-        font: theme.font,
-        background: theme.background,
+        font: props.theme.font,
+        background: props.theme.background,
       }}
     />
     <NavbarIconButton
       iconName="color-palette"
       position="other"
-      selected={display === 'theme display'}
+      selected={props.display === 'theme display'}
       onPress={() => props.onPress_ThemeButton()}
       theme={{
-        font: theme.font,
-        background: theme.background,
+        font: props.theme.font,
+        background: props.theme.background,
       }}
     />
     <NavbarIconButton
       iconName="add-sharp"
       position="right"
-      selected={display === 'new input display'}
+      selected={props.display === 'new input display'}
       onPress={() => props.onPress_NewInputButton()}
       theme={{
-        font: theme.font,
-        background: theme.background,
+        font: props.theme.font,
+        background: props.theme.background,
       }}
     />
   </>);

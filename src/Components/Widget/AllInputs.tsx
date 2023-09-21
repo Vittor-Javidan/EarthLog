@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeData } from '@Types/ProjectTypes';
 import { Loading } from '@Types/AppTypes';
@@ -48,9 +48,15 @@ export function AllInputs(props: {
   return loading === 'Loaded' ? (
     <>{InputsArray}</>
   ) : (
-    <ActivityIndicator
-      size="large"
-      color={props.theme.font}
-    />
+    <View
+      style={{
+        paddingVertical: 20,
+      }}
+    >
+      <ActivityIndicator
+        size="large"
+        color={props.theme.font}
+      />
+    </View>
   );
 }

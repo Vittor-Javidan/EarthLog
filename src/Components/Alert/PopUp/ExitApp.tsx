@@ -40,7 +40,7 @@ export default function ExitApp(props: {
         backgroundColor: theme.primary,
         borderRadius: 10,
         paddingVertical: 10,
-        gap: 30,
+        gap: 10,
       }}
     >
       <View

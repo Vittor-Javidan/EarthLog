@@ -1,14 +1,41 @@
 import { ConfigDTO, ThemeDTO } from '@Types/AppTypes';
 import LocalStorageService from './LocalStorageService';
 import LanguageService from './LanguageService';
-import ThemeService from './ThemeService';
 
 export default class ConfigService {
 
   static LOCAL_STORAGE_KEY: string = 'config';
   static DEFAULT_CONFIG: ConfigDTO = {
     language: LanguageService.getDeviceLanguage(),
-    theme: ThemeService.default,
+    theme: {
+
+      background: '#000',
+      onBackground: '#DDD',
+      onBackground_Placeholder: '#444',
+
+      primary: '#FFF',
+      onPrimary: '#222',
+      onPrimary_Placeholder: '#999',
+
+      secondary: '#888',
+      onSecondary: '#DDD',
+      onSecondary_PlaceHolder: '#666',
+
+      tertiary: '#444',
+      onTertiary: '#DDD',
+      onTertiary_Placeholder: '#666',
+
+      confirm: '#5F5',
+      onConfirm: '#222',
+
+      modified: '#FF5',
+      onModified: '#222',
+
+      wrong: '#F55',
+      onWrong: '#222',
+
+      onPressColorPrimary: '#FFF',
+    },
   };
 
   // Used as actual Config in the App.

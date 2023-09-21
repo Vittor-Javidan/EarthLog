@@ -41,18 +41,6 @@ export default function SettingsScreen(): JSX.Element {
           }}
         />
         <Button.TextWithIcon
-          title={R['Theme']}
-          iconName="color-palette"
-          iconSide="Right"
-          onPress={() => navigate('THEME CUSTOMIZATION SCOPE')}
-          theme={{
-            font: theme.onSecondary,
-            font_Pressed: theme.secondary,
-            background: theme.secondary,
-            background_Pressed: theme.onSecondary,
-          }}
-        />
-        <Button.TextWithIcon
           title={R['Whipe Database']}
           iconName="trash-outline"
           iconSide="Right"

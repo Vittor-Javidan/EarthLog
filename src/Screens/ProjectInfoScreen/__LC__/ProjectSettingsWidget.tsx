@@ -185,7 +185,7 @@ export default function ProjectSettingsWidget(props: {
           marginBottom: -10,
         }}
       >
-        {'Alias'}
+        {'Sample Alias'}
       </Text.H2>
       <WidgetInput.String
         inputData={{

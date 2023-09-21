@@ -7,7 +7,7 @@ import * as Vibration from 'expo-haptics';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
+import FontService from '@Services/FontService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -94,7 +94,7 @@ function Navbar(props: {
         <Text.Root
           style={{
             color: theme.onPrimary,
-            fontSize: iosLargeTitle ? ThemeService.FONTS.h1 : 200,
+            fontSize: iosLargeTitle ? FontService.FONTS.h1 : 200,
           }}
         >
           {props.title}

@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 
 export default function NavigationTreeRoot(props: {
   iconButtons: JSX.Element[]
@@ -27,7 +26,7 @@ export default function NavigationTreeRoot(props: {
           maxFontSizeMultiplier={0}
           style={{
             color: theme.onPrimary,
-            fontSize: ThemeService.FONTS.auto,
+            fontSize: 200,
           }}
         />
       );

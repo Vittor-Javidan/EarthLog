@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import { Layout } from '@Layout/index';
-import { navigate } from '@Globals/NavigationControler';
-import { useBackPress } from '@Hooks/index';
 
 import { LC } from './__LC__';
 import { TC } from './__TC__';
+import { LanguageTags } from '@Types/AppTypes';
 
-export default function LanguagesSelectionScreen(): JSX.Element {
-
-  const [_, refresh] = useState<boolean>(false);
-
-  useBackPress(() => navigate('SETTINGS SCOPE'));
+export default function LanguagesSelectionScreen(props: {
+  onLanguageChange: (languageTag: LanguageTags) => void
+}): JSX.Element {
 
   return (
     <Layout.Screen
@@ -25,7 +22,7 @@ export default function LanguagesSelectionScreen(): JSX.Element {
         }}
       >
         <LC.LanguageButtons
-          onButtonClick={() => refresh(prev => !prev)}
+          onLangaugeSelected={(languageTag) => props.onLanguageChange(languageTag)}
         />
       </View>
     </Layout.Screen>

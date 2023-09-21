@@ -1,4 +1,4 @@
-import React, { useMemo, ReactNode, useEffect } from 'react';
+import React, { useMemo, ReactNode, useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -11,9 +11,14 @@ import { LC } from './__LC__';
 export function SampleDataScreens(props: {
   sampleScopeState: Loading
 }) {
+
+  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons />}
+      screenButtons={<TC.ScreenButtons
+        onCreateWidget={() => setWidgetsRefresher(prev => !prev)}
+      />}
     >
       {props.sampleScopeState === 'Loading' ? (
         <Layout.Loading />
@@ -26,7 +31,9 @@ export function SampleDataScreens(props: {
               gap: 10,
             }}
           >
-            <LC.SampleWidgets />
+            <LC.SampleWidgets
+              key={'refresher:' + widgetsRefresher}
+            />
           </Layout.ScrollView>
         </Animation>
       )}

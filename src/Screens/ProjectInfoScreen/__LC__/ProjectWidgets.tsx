@@ -6,19 +6,17 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 
 import { Widget } from '@Widget/index';
-import { API } from '../__API__';
 
 export default function ProjectWidgets() {
 
-  const [_, refresh] = useState<boolean>(false);
-  API.ProjectWidgets.setterRegister(refresh);
+  const [_, setWidgetUnitRefresher] = useState<boolean>(false);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Project.map(widgetData => {
     return (
       <WidgetUnit
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onDelete={() => refresh(prev => !prev)}
+        onDelete={() => setWidgetUnitRefresher(prev => !prev)}
       />
     );
   });

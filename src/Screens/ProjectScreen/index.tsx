@@ -1,10 +1,8 @@
-import React, { useMemo, ReactNode, memo,useEffect } from 'react';
+import React, { useMemo, ReactNode, memo,useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Loading } from '@Types/AppTypes';
-import { navigate } from '@Globals/NavigationControler';
-import { useBackPress } from '@Hooks/index';
 
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
@@ -16,17 +14,23 @@ export function ProjectScreen(props: {
   projectScopeState: Loading
 }) {
 
-  useBackPress(() => navigate('HOME SCOPE'));
+  const [buttonsRefresher, setButtonsRefresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons />}
+      screenButtons={
+        <TC.ScreenButtons
+          onSampleCreation={() => setButtonsRefresher(prev => !prev)}
+        />
+      }
     >
       {props.projectScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Animation>
-          <LC_SampleButtons />
+          <LC_SampleButtons
+            key={'refresher:' + buttonsRefresher}
+          />
         </Animation>
       )}
     </Layout.Screen>

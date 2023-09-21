@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Loading } from '@Types/AppTypes';
 
@@ -9,9 +9,14 @@ import { LC } from './__LC__';
 export function TemplateScreen(props: {
   projectScopeState: Loading
 }) {
+
+  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons />}
+      screenButtons={<TC.ScreenButtons
+        onWidgetCreation={() => setWidgetsRefresher(prev => !prev)}
+      />}
     >
       {props.projectScopeState === 'Loading' ? (
         <Layout.Loading />
@@ -23,7 +28,9 @@ export function TemplateScreen(props: {
             gap: 10,
           }}
         >
-          <LC.TemplateWidgets />
+          <LC.TemplateWidgets
+            key={'refresher:' + widgetsRefresher}
+          />
         </Layout.ScrollView>
       )}
     </Layout.Screen>

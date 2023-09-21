@@ -1,16 +1,17 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { Layout } from '@Layout/index';
+import { LanguageTags } from '@Types/AppTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
+import { Layout } from '@Layout/index';
 import LanguagesSelectionScreen from '@Screens/LanguageSelectionScreen';
 
 export default function LanguageSelectionScope(): JSX.Element {
 
-  const { language } = useMemo(() => ConfigService.config, []);
+  const [language, setLanguage] = useState<LanguageTags>(ConfigService.config.language);
   const R = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
   useBackPress(() => navigate('SETTINGS SCOPE'));
@@ -21,7 +22,9 @@ export default function LanguageSelectionScope(): JSX.Element {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <LanguagesSelectionScreen />
+      <LanguagesSelectionScreen
+        onLanguageChange={(languageTag) => setLanguage(languageTag)}
+      />
     </Layout.Root>
   );
 }

@@ -8,9 +8,10 @@ import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import { API } from '../__API__';
 
-export default function ScreenButtons() {
+export default function ScreenButtons(props: {
+  onCreateWidget: () => void
+}) {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample = useLocalSearchParams().id_sample as string;
@@ -24,7 +25,7 @@ export default function ScreenButtons() {
       ProjectService.getWidgetData(),
       async () => {
         await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-        API.SampleWidgets.refresh();
+        props.onCreateWidget();
       },
       (errorMessage) => alert(errorMessage)
     );

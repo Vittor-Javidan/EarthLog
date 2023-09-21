@@ -27,29 +27,33 @@ export function NewInputDisplay(props: {
     />
   ));
 
-  return (<>
-    <Text.H2
-      style={{
-        color: theme.font,
-        paddingHorizontal: 10,
-        alignSelf: 'center',
-      }}
-    >
-      {'Select a new Input:'}
-    </Text.H2>
+  return (
     <View
-      style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        gap: 5,
-        paddingTop: 10,
-        paddingHorizontal: 10,
-      }}
+      style={{ paddingTop: 10 }}
     >
-      {AllButtons}
+      <Text.H2
+        style={{
+          color: theme.font,
+          paddingHorizontal: 10,
+          alignSelf: 'center',
+        }}
+      >
+        {'Add a new Input:'}
+      </Text.H2>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: 5,
+          paddingTop: 10,
+          paddingHorizontal: 10,
+        }}
+      >
+        {AllButtons}
+      </View>
     </View>
-  </>);
+  );
 }
 
 function Button(props: {
