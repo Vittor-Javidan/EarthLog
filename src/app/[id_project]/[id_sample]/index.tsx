@@ -14,6 +14,7 @@ type MemoProps1 = { sampleScopeState: Loading; }
 type MemoProps2 = {
   sampleScopeState: Loading,
   onSampleNameUpdate: (newName: string) => void,
+  onGPSReferenceUpdate: () => void
 }
 
 const SampleDataScreens     = memo((props: MemoProps1) => <_SampleDataScreens {...props} />   );
@@ -25,13 +26,14 @@ export default function SampleScope() {
   const id_sample = useLocalSearchParams().id_sample as string;
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const [selectedScreen , setSelectedScreen ] = useState<number>(1);
-  const [state          , setState          ] = useState<Loading>('Loading');
-  const [updatedName    , setUpdatedName    ] = useState<string | null>(null);
+  const [selectedScreen     , setSelectedScreen     ] = useState<number>(1);
+  const [updatedName        , setUpdatedName        ] = useState<string | null>(null);
+  const [dataScreenRefresher, setDataScreenRefresher] = useState<boolean>(false);
+  const [loading            , setLoading            ] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('PROJECT SCOPE', id_project));
   useEffect(() => {
-    fetchWidgets(id_project, id_sample, () => setState('Loaded'));
+    fetchWidgets(id_project, id_sample, () => setLoading('Loaded'));
   }, []);
 
   return (
@@ -49,10 +51,15 @@ export default function SampleScope() {
           />
         }
         screens={[
-          <SampleDataScreens    sampleScopeState={state} key="1" />,
+          <SampleDataScreens
+            key={'refresher:' + dataScreenRefresher}
+            sampleScopeState={loading}
+          />,
           <SampleSettingsScreen
-            sampleScopeState={state} key="2"
+            key="2"
+            sampleScopeState={loading}
             onSampleNameUpdate={(newName) => setUpdatedName(newName)}
+            onGPSReferenceUpdate={() => setDataScreenRefresher(prev => !prev)}
           />,
         ]}
       />

@@ -14,6 +14,7 @@ import { WidgetInput } from '@WidgetInput/index';
 
 export default function SampleSettingsWidget(props: {
   onSampleNameUpdate: (newName: string) => void
+  onGPSReferenceUpdate: () => void
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
@@ -41,8 +42,7 @@ export default function SampleSettingsWidget(props: {
     if (inputData !== null && status === 'ready to save') {
       setSampleSettings(prev => {
         const newData: SampleSettings = { ...prev, name: inputData.value };
-        props.onSampleNameUpdate(inputData.value);
-        save(newData);
+        save(newData, 'name update');
         return newData;
       });
     }
@@ -56,19 +56,24 @@ export default function SampleSettingsWidget(props: {
     if (gpsData !== null && status === 'ready to save') {
       setSampleSettings(prev => {
         const newData: SampleSettings = { ...prev, gps: gpsData.value };
-        save(newData);
+        save(newData, 'gps update');
         return newData;
       });
+      props.onGPSReferenceUpdate();
     }
   }
 
-  function save(sampleSettings: SampleSettings) {
+  function save(sampleSettings: SampleSettings, type: 'name update' | 'gps update') {
     ProjectService.updateSample(
       id_project,
       sampleSettings,
       () => {
         CacheService.updateCache_SampleSettings(sampleSettings);
         setSaved(true);
+        switch (type) {
+          case 'name update': props.onSampleNameUpdate(sampleSettings.name); break;
+          case 'gps update': props.onGPSReferenceUpdate(); break;
+        }
       },
       (erroMessage) => alert(erroMessage)
     );

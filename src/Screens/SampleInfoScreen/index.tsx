@@ -7,6 +7,7 @@ import { LC } from './__LC__';
 export function SampleInfoScreen(props: {
   sampleScopeState: 'Loaded' | 'Loading'
   onSampleNameUpdate: (newName: string) => void
+  onGPSReferenceUpdate: () => void
 }) {
   return (
     <Layout.Screen
@@ -25,6 +26,7 @@ export function SampleInfoScreen(props: {
         >
           <LC.SampleSettings
             onSampleNameUpdate={(newName) => props.onSampleNameUpdate(newName)}
+            onGPSReferenceUpdate={() => props.onGPSReferenceUpdate()}
           />
         </Layout.ScrollView>
       )}
