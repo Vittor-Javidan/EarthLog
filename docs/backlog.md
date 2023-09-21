@@ -1,9 +1,9 @@
-- add icons to carousel buttons.
 - create the theme display for widgets
 - implement Sample Alias
 - implement the new Home Screen design
-- add Fix all translations
-- add all rules
-- validadete on IOS
-- Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
 - on GPSInput manual input, change "," for '.' when user type ","
+- Fix all translations
+- implement the "add custom widget" buttom
+- Implement all rules
+- Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
+- Validadete on IOS

@@ -63,7 +63,7 @@ export type WidgetData = {
     showInputsDeleteOption?: boolean
     showColorButton?: boolean
   }
-  addToNewSamples?: boolean                                                                            // Used by template screen to auto add a Widget on new Samples user creates
+  addToNewSamples?: boolean                                                                         // Used by template screen to auto add a Widget on new Samples user creates
   widgetTheme?: WidgetThemeData                                                                     // When undefine, it renders with default theme
 }
 

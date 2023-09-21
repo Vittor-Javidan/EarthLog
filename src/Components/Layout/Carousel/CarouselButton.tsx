@@ -5,11 +5,13 @@ import * as Vibration from 'expo-haptics';
 import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
+import { Icon, IconName } from '@Icon/index';
 
 export const CarouselButton = memo((props: {
   title: string
   selected: boolean
   type: 'left' | 'middle' | 'right'
+  iconName?: IconName
 	onPress: () => void
 }) => {
 
@@ -39,22 +41,29 @@ export const CarouselButton = memo((props: {
         flexDirection: 'row',
 				justifyContent: 'center',
 				alignItems: 'center',
-        gap: 1,
+        gap: 5,
 				backgroundColor: props.selected ? theme.tertiary : theme.primary,
         flex: 1,
 				paddingHorizontal: 5,
-				paddingVertical: 5,
 			}, leftPositionStyle, rightPositionStyle]}
 		>
-      <Text.P
-        style={{
-          color: props.selected ? theme.onTertiary : theme.onPrimary,
-          textDecorationLine: props.selected ? 'underline' : 'none',
-          fontWeight: '900',
-        }}
-      >
-        {props.title}
-      </Text.P>
+      {props.title !== '' && (
+        <Text.P
+          style={{
+            color: props.selected ? theme.onTertiary : theme.onPrimary,
+            textDecorationLine: props.selected ? 'underline' : 'none',
+            fontWeight: '900',
+          }}
+        >
+          {props.title}
+        </Text.P>
+      )}
+      {props.iconName !== undefined && (
+        <Icon
+          color={props.selected ? theme.onTertiary : theme.onPrimary}
+          iconName={props.iconName}
+        />
+      )}
 		</Pressable>
 	);
 });

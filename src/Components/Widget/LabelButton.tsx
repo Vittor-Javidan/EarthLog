@@ -30,6 +30,7 @@ export function LabelButton(props: {
         alignItems: 'flex-start',
         alignSelf: 'center',
         paddingHorizontal: 5,
+        marginBottom: -10,
       }}
     >
       {props.editLabel ? (

@@ -74,16 +74,17 @@ function OverlayButtons(props: {
   return (
     <>
       <Layout.Carousel.Button
-        selected={props.selectedScreen === 1}
         title="Data"
-        onPress={() => props.onSelect(1)}
         type="left"
+        selected={props.selectedScreen === 1}
+        onPress={() => props.onSelect(1)}
       />
       <Layout.Carousel.Button
-        selected={props.selectedScreen === 2}
-        title="Info"
-        onPress={() => props.onSelect(2)}
+        title=""
         type="right"
+        iconName="information-circle-sharp"
+        selected={props.selectedScreen === 2}
+        onPress={() => props.onSelect(2)}
       />
     </>
   );

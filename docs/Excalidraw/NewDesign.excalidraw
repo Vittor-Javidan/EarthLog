@@ -252,7 +252,7 @@
       "containerId": null,
       "originalText": "Tela inicial",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -438,7 +438,7 @@
       "containerId": null,
       "originalText": "Tela do projeto",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -474,7 +474,7 @@
       "containerId": null,
       "originalText": "Tela de amostra",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -515,7 +515,7 @@
       "containerId": null,
       "originalText": "Tela configuração do projeto",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -841,7 +841,7 @@
       "containerId": null,
       "originalText": "Tela configuração da amostra",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -959,7 +959,7 @@
       "containerId": null,
       "originalText": "Tela de Template",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -1221,7 +1221,7 @@
       "containerId": null,
       "originalText": "Tela de criação de amostra",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "text",
@@ -1355,7 +1355,7 @@
       "containerId": null,
       "originalText": "Tela de criação de projeto",
       "lineHeight": 1.2,
-      "baseline": 27
+      "baseline": 26
     },
     {
       "type": "arrow",
@@ -1479,7 +1479,7 @@
       "containerId": null,
       "originalText": "Fluxo principal de utilização do usuário",
       "lineHeight": 1.2,
-      "baseline": 142
+      "baseline": 141
     },
     {
       "type": "rectangle",
@@ -2156,7 +2156,7 @@
       "containerId": null,
       "originalText": "Clicar em cancelar, discarta\ntodas informações preenchidas,\ne nada é salvo.\n\nCancelar redireciona o usuário para\na tela inicial",
       "lineHeight": 1.2,
-      "baseline": 195
+      "baseline": 194
     },
     {
       "type": "text",
@@ -2192,7 +2192,7 @@
       "containerId": null,
       "originalText": "Clicar em cancelar, discarta\ntodas informações preenchidas,\ne nada é salvo.\n\nCancelar redireciona o usuário para\na tela do projeto",
       "lineHeight": 1.2,
-      "baseline": 195
+      "baseline": 194
     },
     {
       "type": "arrow",
@@ -2340,7 +2340,7 @@
       "containerId": null,
       "originalText": "O que é um widget no contexto do Earth Log?",
       "lineHeight": 1.2,
-      "baseline": 56
+      "baseline": 55
     },
     {
       "type": "text",
@@ -2412,7 +2412,7 @@
       "containerId": null,
       "originalText": "Design 2.0",
       "lineHeight": 1.2,
-      "baseline": 413
+      "baseline": 414
     },
     {
       "type": "rectangle",
@@ -2599,7 +2599,7 @@
       "containerId": null,
       "originalText": "Nome Widget",
       "lineHeight": 1.2,
-      "baseline": 114
+      "baseline": 115
     },
     {
       "type": "rectangle",
@@ -3045,7 +3045,7 @@
       "containerId": null,
       "originalText": "Display de Inputs ou Opções",
       "lineHeight": 1.2,
-      "baseline": 118
+      "baseline": 119
     },
     {
       "type": "arrow",
@@ -3138,7 +3138,7 @@
       "containerId": null,
       "originalText": "Estatus banco de dados (salvo, salvando)",
       "lineHeight": 1.2,
-      "baseline": 70
+      "baseline": 69
     },
     {
       "type": "rectangle",
@@ -3250,7 +3250,7 @@
       "containerId": null,
       "originalText": "Input",
       "lineHeight": 1.2,
-      "baseline": 143
+      "baseline": 144
     },
     {
       "type": "arrow",
@@ -3688,7 +3688,7 @@
       "containerId": null,
       "originalText": "Autosave signal",
       "lineHeight": 1.2,
-      "baseline": 98
+      "baseline": 96
     },
     {
       "type": "text",
@@ -3724,7 +3724,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "text",
@@ -3760,7 +3760,7 @@
       "containerId": null,
       "originalText": "Identifica o momento em que a informação\nparou de ser alterada, para assim\nenvia-la por meio de callback ao widget\npai. A informação ainda não é salva aqui",
       "lineHeight": 1.2,
-      "baseline": 164
+      "baseline": 163
     },
     {
       "type": "arrow",
@@ -4054,7 +4054,7 @@
       "containerId": null,
       "originalText": "Contextos: {\n    projeto\n    template\n    amostra\n}",
       "lineHeight": 1.2,
-      "baseline": 207
+      "baseline": 206
     },
     {
       "type": "rectangle",
@@ -4124,7 +4124,7 @@
       "containerId": null,
       "originalText": "Project Screen",
       "lineHeight": 1.2,
-      "baseline": 98
+      "baseline": 99
     },
     {
       "type": "text",
@@ -4602,7 +4602,7 @@
       "containerId": null,
       "originalText": "Project Screen",
       "lineHeight": 1.2,
-      "baseline": 88
+      "baseline": 86
     },
     {
       "type": "rectangle",
@@ -4924,7 +4924,7 @@
       "containerId": null,
       "originalText": "<Alias Sing.> Screen",
       "lineHeight": 1.2,
-      "baseline": 66
+      "baseline": 65
     },
     {
       "type": "text",
@@ -4965,7 +4965,7 @@
       "containerId": null,
       "originalText": "\n<SampleSettings />\n<SampleSettings />\n<SampleSettings />\n<SampleSettings />",
       "lineHeight": 1.2,
-      "baseline": 207
+      "baseline": 206
     },
     {
       "type": "text",
@@ -5001,7 +5001,7 @@
       "containerId": null,
       "originalText": "params: {\n    id_project\n}",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "line",
@@ -5271,7 +5271,7 @@
       "containerId": null,
       "originalText": "widgetDataArray.map(WidgetData => (\n    <Widget\n        scope={ WidgetScope }\n        widgetData={ WidgetData }\n        referenceGPSData={ GPS_DT) | undefined }\n        onDelete={ () => void } //used to remap when widget deleted\n    />\n)",
       "lineHeight": 1.2,
-      "baseline": 337
+      "baseline": 336
     },
     {
       "type": "text",
@@ -5311,8 +5311,8 @@
     },
     {
       "type": "text",
-      "version": 1974,
-      "versionNonce": 1550164240,
+      "version": 1989,
+      "versionNonce": 480211327,
       "isDeleted": false,
       "id": "9TP6OPzARlmFmFMVqp_Kh",
       "fillStyle": "solid",
@@ -5332,16 +5332,16 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1694802871066,
+      "updated": 1695295953402,
       "link": null,
       "locked": false,
       "fontSize": 36,
       "fontFamily": 3,
-      "text": "WidgetData: {\n    id_widget: string\n    widgetName: string\n    inputs: InputData[]\n    rules: {\n        allowWidgetNameChange?: boolean\n        showAddInputButton?: boolean\n        showDeleteButton_Inputs?: boolean\n        showDeleteButton_Widget?: boolean\n        showOptionsButton?: boolean\n        showInputsDeleteOption?: boolean\n        showColorButton?: boolean\n    }\n    autoGenerate?: boolean // Template screen only\n    widgetTheme?: WidgetThemeData // When undefine, it renders with default theme\n}",
+      "text": "WidgetData: {\n    id_widget: string\n    widgetName: string\n    inputs: InputData[]\n    rules: {\n        allowWidgetNameChange?: boolean\n        showAddInputButton?: boolean\n        showDeleteButton_Inputs?: boolean\n        showDeleteButton_Widget?: boolean\n        showOptionsButton?: boolean\n        showInputsDeleteOption?: boolean\n        showColorButton?: boolean\n    }\n    addToNewSamples?: boolean // Template screen only\n    widgetTheme?: WidgetThemeData // When undefine, it renders with default theme\n}",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "WidgetData: {\n    id_widget: string\n    widgetName: string\n    inputs: InputData[]\n    rules: {\n        allowWidgetNameChange?: boolean\n        showAddInputButton?: boolean\n        showDeleteButton_Inputs?: boolean\n        showDeleteButton_Widget?: boolean\n        showOptionsButton?: boolean\n        showInputsDeleteOption?: boolean\n        showColorButton?: boolean\n    }\n    autoGenerate?: boolean // Template screen only\n    widgetTheme?: WidgetThemeData // When undefine, it renders with default theme\n}",
+      "originalText": "WidgetData: {\n    id_widget: string\n    widgetName: string\n    inputs: InputData[]\n    rules: {\n        allowWidgetNameChange?: boolean\n        showAddInputButton?: boolean\n        showDeleteButton_Inputs?: boolean\n        showDeleteButton_Widget?: boolean\n        showOptionsButton?: boolean\n        showInputsDeleteOption?: boolean\n        showColorButton?: boolean\n    }\n    addToNewSamples?: boolean // Template screen only\n    widgetTheme?: WidgetThemeData // When undefine, it renders with default theme\n}",
       "lineHeight": 1.2,
       "baseline": 682
     },
@@ -5467,7 +5467,7 @@
       "containerId": null,
       "originalText": "StringInput = {\n    id_input: string\n    label: string\n    type: string\n    value: string\n    placeholder?: string\n    lockedLabel?: boolean\n    lockedData?: boolean\n}\n\nBooleanInput = {\n    id_input: string\n    label: string\n    type: boolean\n    value: boolean\n    NotApplicable?: boolean\n    lockedLabel?: boolean\n    lockedData?: boolean\n}\n\nGPSInput = {\n    id_input: string\n    label: string\n    type: \"gps\"\n    value: GPS_DTO\n    lockedLabel?: boolean\n    lockedData?: boolean\n}\n",
       "lineHeight": 1.2,
-      "baseline": 1244
+      "baseline": 1243
     },
     {
       "type": "rectangle",
@@ -5532,7 +5532,7 @@
       "containerId": null,
       "originalText": "Save Scope",
       "lineHeight": 1.2,
-      "baseline": 65
+      "baseline": 64
     },
     {
       "type": "rectangle",
@@ -5709,7 +5709,7 @@
       "containerId": null,
       "originalText": "Home Screen",
       "lineHeight": 1.2,
-      "baseline": 77
+      "baseline": 78
     },
     {
       "type": "ellipse",
@@ -8219,7 +8219,7 @@
       "containerId": null,
       "originalText": "SampleSettings = {\n    id_sample: string\n    name: string\n    gps?: GPS_DTO //Hide GPSInput if undefined\n    rules: {\n        allowSampleNameChange?: boolean\n        allowGPSChange?: //Hide GPSInput if both this and gps undefined\n        showCreateWidgetButton?: boolean\n    }\n}",
       "lineHeight": 1.2,
-      "baseline": 423
+      "baseline": 422
     },
     {
       "type": "text",
@@ -8327,7 +8327,7 @@
       "containerId": null,
       "originalText": "SampleDTO = {\n    sampleSettings: ProjectSettings\n    sampleWidgets: WidgetData[]\n}",
       "lineHeight": 1.2,
-      "baseline": 164
+      "baseline": 163
     },
     {
       "type": "rectangle",
@@ -8466,7 +8466,7 @@
       "containerId": null,
       "originalText": "Name Input",
       "lineHeight": 1.2,
-      "baseline": 143
+      "baseline": 144
     },
     {
       "type": "text",
@@ -8502,7 +8502,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "rectangle",
@@ -8567,7 +8567,7 @@
       "containerId": null,
       "originalText": "GPS Input",
       "lineHeight": 1.2,
-      "baseline": 143
+      "baseline": 144
     },
     {
       "type": "text",
@@ -8603,7 +8603,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "rectangle",
@@ -8701,7 +8701,7 @@
       "containerId": null,
       "originalText": "<ProjectSettingsWidget\n    projectSettings={ ProjectSettings }\n    onNameChange={ (text) => void }\n    onSampleAliasChange={ (text) => void }\n/>",
       "lineHeight": 1.2,
-      "baseline": 207
+      "baseline": 206
     },
     {
       "type": "text",
@@ -8773,7 +8773,7 @@
       "containerId": null,
       "originalText": "<SampleSettingsWidget\n    sampleSettings={ SampleSettings }\n    onNameChange={ (text) => void }\n    onGPSChange={ (latestGPSData) => void }\n/>",
       "lineHeight": 1.2,
-      "baseline": 207
+      "baseline": 206
     },
     {
       "type": "text",
@@ -9152,7 +9152,7 @@
       "containerId": null,
       "originalText": "Name Input",
       "lineHeight": 1.2,
-      "baseline": 143
+      "baseline": 144
     },
     {
       "type": "text",
@@ -9188,7 +9188,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "rectangle",
@@ -9262,7 +9262,7 @@
       "containerId": null,
       "originalText": "GPS Input",
       "lineHeight": 1.2,
-      "baseline": 143
+      "baseline": 144
     },
     {
       "type": "text",
@@ -9298,7 +9298,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "text",
@@ -9448,7 +9448,7 @@
       "containerId": null,
       "originalText": "Sample Buttons",
       "lineHeight": 1.2,
-      "baseline": 72
+      "baseline": 71
     },
     {
       "type": "text",
@@ -9484,7 +9484,7 @@
       "containerId": null,
       "originalText": "Uses SampleSettings just to render sample\nbuttons with sample's name, and uses its\nid to redirect to sample screen",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "arrow",
@@ -9637,7 +9637,7 @@
       "containerId": null,
       "originalText": "O usuário verá informações contidas\naqui dentro, não haverá necessidade de\nrerenderizar por conta de syncronização.",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "text",
@@ -9861,7 +9861,7 @@
       "containerId": null,
       "originalText": "params: {\n    id_project\n    id_sample\n}",
       "lineHeight": 1.2,
-      "baseline": 164
+      "baseline": 163
     },
     {
       "type": "text",
@@ -10710,7 +10710,7 @@
       "containerId": null,
       "originalText": "Project Screen",
       "lineHeight": 1.2,
-      "baseline": 88
+      "baseline": 86
     },
     {
       "type": "rectangle",
@@ -11107,7 +11107,7 @@
       "containerId": null,
       "originalText": "<alias plural>",
       "lineHeight": 1.2,
-      "baseline": 88
+      "baseline": 86
     },
     {
       "type": "rectangle",
@@ -11446,7 +11446,7 @@
       "containerId": null,
       "originalText": "Project Screen",
       "lineHeight": 1.2,
-      "baseline": 88
+      "baseline": 86
     },
     {
       "type": "rectangle",
@@ -12379,7 +12379,7 @@
       "containerId": null,
       "originalText": "Quando o botão de edição for clicado, o \nbotão de deletar projeto/amostra\nprecisa aparecer",
       "lineHeight": 1.2,
-      "baseline": 283
+      "baseline": 282
     },
     {
       "type": "text",
@@ -12415,7 +12415,7 @@
       "containerId": null,
       "originalText": "Scren Carousel",
       "lineHeight": 1.2,
-      "baseline": 413
+      "baseline": 414
     },
     {
       "type": "rectangle",
@@ -12941,7 +12941,7 @@
       "containerId": null,
       "originalText": "ScreenObject: {\n    buttonTitle: string\n    JSXComponent: JSX.Element\n}",
       "lineHeight": 1.2,
-      "baseline": 164
+      "baseline": 163
     },
     {
       "type": "text",
@@ -13013,7 +13013,7 @@
       "containerId": null,
       "originalText": "<Carousel\n    screens={ ScreenObject[] }\n/>",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "rectangle",
@@ -13158,7 +13158,7 @@
       "containerId": null,
       "originalText": "LN",
       "lineHeight": 1.2,
-      "baseline": 58
+      "baseline": 59
     },
     {
       "type": "text",
@@ -13367,7 +13367,7 @@
       "containerId": null,
       "originalText": "WidgetThemeData = { // Define colors for Widget Container and its inputs\n    font: string\n    background: string\n    disable: string\n    confirm: string\n    wrong: string\n    modified: string\n}",
       "lineHeight": 1.2,
-      "baseline": 337
+      "baseline": 336
     },
     {
       "type": "text",
@@ -13504,7 +13504,7 @@
       "containerId": null,
       "originalText": "Save Scope",
       "lineHeight": 1.2,
-      "baseline": 65
+      "baseline": 64
     },
     {
       "type": "text",
@@ -13605,7 +13605,7 @@
       "containerId": null,
       "originalText": "Save Scope",
       "lineHeight": 1.2,
-      "baseline": 65
+      "baseline": 64
     },
     {
       "type": "text",
@@ -13834,7 +13834,7 @@
       "containerId": null,
       "originalText": "Project\nScreen",
       "lineHeight": 1.2,
-      "baseline": 64
+      "baseline": 63
     },
     {
       "type": "ellipse",

@@ -257,8 +257,8 @@ export function Widget(props: {
       >
         <View
           style={{
-            paddingTop: 10,
             paddingBottom: 5,
+            gap: 5,
           }}
         >
           <LabelButton

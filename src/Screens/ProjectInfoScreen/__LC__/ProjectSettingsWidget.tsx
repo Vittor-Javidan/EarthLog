@@ -11,6 +11,7 @@ import UtilService from '@Services/UtilService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
+import { View } from 'react-native';
 
 export default function ProjectSettingsWidget(props: {
   onProjectNameUpdate: (newName: string) => void
@@ -105,68 +106,54 @@ export default function ProjectSettingsWidget(props: {
       saved={saved}
       theme={pseudoWidgetTheme}
     >
-      <Text.H2
+      <View
         style={{
-          textAlign: 'center',
-          color: pseudoWidgetTheme.font,
-          paddingHorizontal: 5,
-          marginBottom: -10,
+          paddingBottom: 5,
+          gap: 5,
         }}
       >
-        {R['Project info']}
-      </Text.H2>
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: R['ID'],
-          value: projectSettings.id_project,
-          type: 'string',
-          placeholder: '',
-          lockedLabel: true,
-          lockedData: true,
-        }}
-        multiline={false}
-        editWidget={false}
-        isFirstInput={false}
-        isLastInput={false}
-        onSave={() => {}}
-        onInputDelete={() => {}}
-        onInputMoveDow={() => {}}
-        onInputMoveUp={() => {}}
-        theme={pseudoWidgetTheme}
-      />
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: R['Name'],
-          value: projectSettings.name,
-          type: 'string',
-          placeholder: R['Write the project name here...'],
-          lockedLabel: true,
-          lockedData: false,
-        }}
-        onSave={(inputData, status) => onSaveName(inputData, status)}
-        multiline={false}
-        editWidget={false}
-        isFirstInput={false}
-        isLastInput={false}
-        onInputDelete={() => {}}
-        onInputMoveDow={() => {}}
-        onInputMoveUp={() => {}}
-        theme={pseudoWidgetTheme}
-      />
-      {projectSettings.gps !== undefined && (
-        <WidgetInput.GPS
+        <Text.H2
+          style={{
+            textAlign: 'center',
+            color: pseudoWidgetTheme.font,
+            paddingHorizontal: 5,
+            marginBottom: -10,
+          }}
+        >
+          {R['Project info']}
+        </Text.H2>
+        <WidgetInput.String
           inputData={{
             id_input: '',
-            label: 'GPS',
-            value: projectSettings.gps,
-            type: 'gps',
+            label: R['ID'],
+            value: projectSettings.id_project,
+            type: 'string',
+            placeholder: '',
+            lockedLabel: true,
+            lockedData: true,
+          }}
+          multiline={false}
+          editWidget={false}
+          isFirstInput={false}
+          isLastInput={false}
+          onSave={() => {}}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          theme={pseudoWidgetTheme}
+        />
+        <WidgetInput.String
+          inputData={{
+            id_input: '',
+            label: R['Name'],
+            value: projectSettings.name,
+            type: 'string',
+            placeholder: R['Write the project name here...'],
             lockedLabel: true,
             lockedData: false,
           }}
-          onSave={(inputData, status) => onSaveGPS(inputData, status)}
-          referenceGPSData={undefined}
+          onSave={(inputData, status) => onSaveName(inputData, status)}
+          multiline={false}
           editWidget={false}
           isFirstInput={false}
           isLastInput={false}
@@ -175,58 +162,86 @@ export default function ProjectSettingsWidget(props: {
           onInputMoveUp={() => {}}
           theme={pseudoWidgetTheme}
         />
-      )}
-      <Text.H2
+        {projectSettings.gps !== undefined && (
+          <WidgetInput.GPS
+            inputData={{
+              id_input: '',
+              label: 'GPS',
+              value: projectSettings.gps,
+              type: 'gps',
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={(inputData, status) => onSaveGPS(inputData, status)}
+            referenceGPSData={undefined}
+            editWidget={false}
+            isFirstInput={false}
+            isLastInput={false}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            theme={pseudoWidgetTheme}
+          />
+        )}
+      </View>
+      <View
         style={{
-          textAlign: 'center',
-          color: pseudoWidgetTheme.font,
-          paddingHorizontal: 5,
           paddingTop: 10,
-          marginBottom: -10,
+          gap: 5,
         }}
       >
-        {'Sample Alias'}
-      </Text.H2>
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: 'Singular',
-          value: projectSettings.sampleAlias.singular,
-          type: 'string',
-          placeholder: 'Write your sample alias here',
-          lockedLabel: true,
-          lockedData: false,
-        }}
-        onSave={(inputData, status) => onSaveAlias_Singular(inputData, status)}
-        multiline={false}
-        editWidget={false}
-        isFirstInput={false}
-        isLastInput={false}
-        onInputDelete={() => {}}
-        onInputMoveDow={() => {}}
-        onInputMoveUp={() => {}}
-        theme={pseudoWidgetTheme}
-      />
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: 'Plural',
-          value: projectSettings.sampleAlias.plural,
-          type: 'string',
-          placeholder: 'Write your sample alias here',
-          lockedLabel: true,
-          lockedData: false,
-        }}
-        onSave={(inputData, status) => onSaveAlias_Plural(inputData, status)}
-        multiline={false}
-        editWidget={false}
-        isFirstInput={false}
-        isLastInput={false}
-        onInputDelete={() => {}}
-        onInputMoveDow={() => {}}
-        onInputMoveUp={() => {}}
-        theme={pseudoWidgetTheme}
-      />
+        <Text.H2
+          style={{
+            textAlign: 'center',
+            color: pseudoWidgetTheme.font,
+            paddingHorizontal: 5,
+            paddingTop: 10,
+            marginBottom: -10,
+          }}
+        >
+          {'Sample Alias'}
+        </Text.H2>
+        <WidgetInput.String
+          inputData={{
+            id_input: '',
+            label: 'Singular',
+            value: projectSettings.sampleAlias.singular,
+            type: 'string',
+            placeholder: 'Write your sample alias here',
+            lockedLabel: true,
+            lockedData: false,
+          }}
+          onSave={(inputData, status) => onSaveAlias_Singular(inputData, status)}
+          multiline={false}
+          editWidget={false}
+          isFirstInput={false}
+          isLastInput={false}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          theme={pseudoWidgetTheme}
+        />
+        <WidgetInput.String
+          inputData={{
+            id_input: '',
+            label: 'Plural',
+            value: projectSettings.sampleAlias.plural,
+            type: 'string',
+            placeholder: 'Write your sample alias here',
+            lockedLabel: true,
+            lockedData: false,
+          }}
+          onSave={(inputData, status) => onSaveAlias_Plural(inputData, status)}
+          multiline={false}
+          editWidget={false}
+          isFirstInput={false}
+          isLastInput={false}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          theme={pseudoWidgetTheme}
+        />
+      </View>
     </Layout.PseudoWidget>
   );
 }

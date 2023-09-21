@@ -47,7 +47,7 @@ export default function ScreenButtons(props: {
         />,
         <Button.RoundedIcon
           key="2"
-          iconName="list"
+          iconName="square"
           showPlusSign={true}
           buttonDiameter={60}
           onPress={() => onCreateWidget()}
