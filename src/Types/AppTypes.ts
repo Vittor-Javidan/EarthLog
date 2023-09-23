@@ -101,7 +101,8 @@ export type AlertModalConfig = {
 }
 
 export type RegexRules = {
-  'noSpaces': RegExp
+  'noSpaces':        RegExp
   'noSpecialLetter': RegExp
-  'id': RegExp
+  'id':              RegExp
+  'hexColor':        RegExp
 }

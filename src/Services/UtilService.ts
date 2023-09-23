@@ -9,11 +9,8 @@ export default class UtilService {
     'noSpaces': /\s/,
     'noSpecialLetter': /^[a-zA-Z0-9]+$/,
     'id': /^[0-9A-Za-z-]+$/,
+    'hexColor': /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
   };
-
-  //TODO: Remove the usage of the regex bellow
-  static idRegex = /^[0-9A-Za-z-]+$/;
-  static hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
   static deepCopy<T extends ExcludeNonObject<T>>(object: T): T {
     return JSON.parse(JSON.stringify(object)) as T;
