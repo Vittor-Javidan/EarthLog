@@ -18,6 +18,10 @@ export default function TextInput_GPS(props: {
 
   function onChange(text: string) {
 
+    if (text.includes(',')) {
+      text = text.replace(',', '.');
+    }
+
     let regex;
     switch (props.type) {
       case 'latitude':  regex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/; break;

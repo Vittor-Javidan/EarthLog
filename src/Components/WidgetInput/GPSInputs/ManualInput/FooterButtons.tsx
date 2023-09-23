@@ -70,7 +70,7 @@ function FooterButton(props: {
     >
       <Icon
         iconName={props.iconName}
-        color={props.theme.background}
+        color={pressed ? backgroundColor : props.theme.font}
       />
     </Pressable>
   );
