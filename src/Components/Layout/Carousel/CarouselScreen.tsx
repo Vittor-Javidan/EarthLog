@@ -1,7 +1,9 @@
 import React, { ReactNode, useMemo, useEffect } from 'react';
 import { View, Dimensions } from 'react-native';
-import ConfigService from '@Services/ConfigService';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+
+import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -45,8 +47,8 @@ function CarouselButtonsRoot(props: {
   children: ReactNode
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
-  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const MARGIN = 10;
 
   return (

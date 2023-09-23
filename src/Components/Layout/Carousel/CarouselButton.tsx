@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle, Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -15,13 +16,13 @@ export const CarouselButton = memo((props: {
 	onPress: () => void
 }) => {
 
-	const { theme } = useMemo(() => ConfigService.config, []);
+	const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
-  const leftPositionStyle: StyleProp<ViewStyle> = useMemo(() => props.type === 'left' ? {
+  const leftPositionStyle: StyleProp<ViewStyle>  = useMemo(() => props.type === 'left' ? {
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15,
   } : undefined, []);
-
   const rightPositionStyle: StyleProp<ViewStyle> = useMemo(() => props.type === 'right' ? {
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
@@ -42,15 +43,16 @@ export const CarouselButton = memo((props: {
 				justifyContent: 'center',
 				alignItems: 'center',
         gap: 5,
-				backgroundColor: props.selected ? theme.tertiary : theme.primary,
+				backgroundColor: props.selected ? theme.tertiary : theme.secondary,
         flex: 1,
 				paddingHorizontal: 5,
+        paddingVertical: 2,
 			}, leftPositionStyle, rightPositionStyle]}
 		>
       {props.title !== '' && (
         <Text.P
           style={{
-            color: props.selected ? theme.onTertiary : theme.onPrimary,
+            color: props.selected ? theme.primary : theme.onSecondary,
             textDecorationLine: props.selected ? 'underline' : 'none',
             fontWeight: '900',
           }}
@@ -60,7 +62,7 @@ export const CarouselButton = memo((props: {
       )}
       {props.iconName !== undefined && (
         <Icon
-          color={props.selected ? theme.onTertiary : theme.onPrimary}
+          color={props.selected ? theme.primary : theme.onSecondary}
           iconName={props.iconName}
         />
       )}

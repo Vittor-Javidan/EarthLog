@@ -14,9 +14,6 @@ export function InputRoot(props: {
   iconButtons: JSX.Element
   children: ReactNode
 }) {
-
-  const { theme } = props;
-
   return (
     <View
       style={{
@@ -34,8 +31,8 @@ export function InputRoot(props: {
       >
         <Text.Root
           style={{
-            backgroundColor: theme.background,
-            color: theme.font,
+            backgroundColor: props.theme.background,
+            color: props.theme.font,
             fontSize: 20,
             paddingHorizontal: 5,
           }}
@@ -47,7 +44,7 @@ export function InputRoot(props: {
         style={{
           position: 'absolute',
           flexDirection: 'row',
-          backgroundColor: theme.background,
+          backgroundColor: props.theme.background,
           zIndex: 1,
           height: 30,
           top: 0,
@@ -62,8 +59,8 @@ export function InputRoot(props: {
           paddingTop: 5,
           paddingHorizontal: 10,
           gap: 10,
-          backgroundColor: theme.background,
-          borderColor: theme.font,
+          backgroundColor: props.theme.background,
+          borderColor: props.theme.font,
           borderWidth: 2,
           borderRadius: 10,
         }}

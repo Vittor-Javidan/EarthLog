@@ -8,13 +8,14 @@ import CacheService from '@Services/CacheService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
+import ThemeService from '@Services/ThemeService';
 
 export default function ScreenButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
-
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const id_sample  = useLocalSearchParams().id_sample as string;
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
@@ -67,6 +68,13 @@ export default function ScreenButtons() {
         <Button.ConfirmSwipe
           onSwipe={async () => await deleteSample()}
           onCancel={() => setShow_DeleteSwap(false)}
+          buttonRadius={30}
+          theme={{
+            font: theme.onTertiary,
+            background: theme.tertiary,
+            confirm: theme.confirm,
+            wrong: theme.wrong,
+          }}
         />
       }
     />

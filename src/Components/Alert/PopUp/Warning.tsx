@@ -4,6 +4,7 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
@@ -16,7 +17,8 @@ export default function Warning(props: {
   onRefuse: () => void
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   useEffect(() => {
     vibrate('warning');
@@ -57,6 +59,12 @@ export default function Warning(props: {
         onSwipe={async () => await onAccept()}
         buttonRadius={25}
         compensateMargin={30}
+        theme={{
+          font: theme.onTertiary,
+          background: theme.tertiary,
+          confirm: theme.confirm,
+          wrong: theme.wrong,
+        }}
       />
   </View>
   );

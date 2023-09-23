@@ -16,10 +16,7 @@ export default function LanguagesSelectionScreen(props: {
       screenButtons={<TC.ScreenButtons />}
     >
       <View
-        style={{
-          paddingTop: 1,
-          gap: 1,
-        }}
+        style={{ gap: 1 }}
       >
         <LC.LanguageButtons
           onLangaugeSelected={(languageTag) => props.onLanguageChange(languageTag)}

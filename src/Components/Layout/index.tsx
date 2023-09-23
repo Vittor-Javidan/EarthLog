@@ -5,7 +5,6 @@ import { Carousel } from './Carousel';
 import Loading from './Loading';
 import Screen from './Screen';
 import ScreenButtons from './ScreenButtons';
-import StatusFeedback from './StatusFeedback';
 import { PseudoWidget } from './PseudoWidget';
 
 export const Layout = {
@@ -16,6 +15,5 @@ export const Layout = {
   NavigationTree: NavigationTree,
   ScreenButtons: ScreenButtons,
   Loading: Loading,
-  StatusFeedback: StatusFeedback,
   PseudoWidget: PseudoWidget,
 };

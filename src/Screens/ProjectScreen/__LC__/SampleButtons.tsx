@@ -3,8 +3,9 @@ import { FlatList } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
-import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
+import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -58,7 +59,8 @@ const SampleButton = memo((props: {
   id_sample: string
 }) => {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   return (
     <Button.TextWithIcon

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GPS_DTO, InputData, InputStatus, WidgetThemeData } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';
@@ -11,7 +11,7 @@ export function InputSelector(props: {
   isFirstInput: boolean
   isLastInput: boolean
   referenceGPSData: GPS_DTO | undefined
-  widgetTheme: WidgetThemeData
+  widgetTheme: WidgetThemeDTO
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: () => void
   onInputMoveUp: () => void

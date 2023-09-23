@@ -1,0 +1,22 @@
+import { AppThemeDTO, ThemeNamesArray_APP, ThemeNamesArray_Widgets, ThemeNames_APP, ThemeNames_Widgets } from '@Types/AppTypes';
+import { WidgetThemeDTO } from '@Types/ProjectTypes';
+
+import { appThemes } from './AppThemes';
+import { widgetThemes } from './WidgetThemes';
+
+export default class ThemeService {
+
+  static themeNamesArray = {
+    App:    ThemeNamesArray_APP,
+    Widget: ThemeNamesArray_Widgets,
+  };
+
+  // Remake the theme colors to be more specific
+  static appThemes: Record<ThemeNames_APP, AppThemeDTO> = {
+    'default': appThemes.DEFAULT,
+  };
+
+  static widgetThemes: Record<ThemeNames_Widgets, WidgetThemeDTO> = {
+    'default': widgetThemes.DEFAULT,
+  };
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { WidgetThemeData } from '@Types/ProjectTypes';
+import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -12,7 +12,7 @@ export function Footer(props: {
   AddToNewSamples: boolean
   showCheckbox: boolean
   showDeleteWidgetButton: boolean
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
 }) {

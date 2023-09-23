@@ -1,21 +1,17 @@
 import React from 'react';
 
-import { WidgetThemeData } from '@Types/ProjectTypes';
+import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 
 export function ThemeDisplay(props: {
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
 }) {
-
-  const { theme } = props;
-
-  //TODO: Build a Widget Theme Change System here
   return (
     <Text.P
       style={{
         paddingHorizontal: 10,
-        color: theme.font,
+        color: props.theme.font,
       }}
     >
       Soon...

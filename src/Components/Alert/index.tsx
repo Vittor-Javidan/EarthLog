@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AlertModalConfig } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
+import ThemeService from '@Services/ThemeService';
 
 import Selector from './Selector';
 
@@ -12,7 +13,9 @@ const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export function AlertModal() {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<AlertModalConfig>({
     question: '',

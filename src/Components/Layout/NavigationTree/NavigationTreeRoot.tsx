@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 export default function NavigationTreeRoot(props: {
   iconButtons: JSX.Element[]
@@ -12,7 +13,8 @@ export default function NavigationTreeRoot(props: {
     return <></>;
   }
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const tree: JSX.Element[] = [];
 
   for (let i = 0; i < props.iconButtons.length; i++) {
@@ -40,7 +42,7 @@ export default function NavigationTreeRoot(props: {
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: theme.primary,
-        borderColor: theme.secondary,
+        borderColor: theme.onPrimary,
         height: 20,
         paddingHorizontal: 1,
         paddingVertical: 1,

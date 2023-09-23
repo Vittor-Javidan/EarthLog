@@ -18,7 +18,6 @@ export function IconButton(props: {
   onPress: () => void
 }) {
 
-  const { theme } = props;
   const [pressed, setPressed] = useState<boolean>(false);
 
   function onPress() {
@@ -38,7 +37,7 @@ export function IconButton(props: {
       onPress={() => onPress()}
       style={[{
         flexDirection: 'row',
-        backgroundColor: pressed ? theme.background_Pressed : theme.background,
+        backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
         paddingHorizontal: 20,
         paddingVertical: 5,
         justifyContent: 'center',
@@ -48,7 +47,7 @@ export function IconButton(props: {
     >
       <Icon
         iconName={props.iconName}
-        color={pressed ? theme.font_Pressed : theme.font}
+        color={pressed ? props.theme.font_Pressed : props.theme.font}
       />
     </Pressable>
   );

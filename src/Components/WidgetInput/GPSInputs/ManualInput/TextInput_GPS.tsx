@@ -13,7 +13,6 @@ export default function TextInput_GPS(props: {
   onChangeText: (value: string) => void
 }) {
 
-  const { theme } = props;
   const [value,         setValue        ] = useState<string>(props.value);
   const [invalidValue,  setInvalidValue ] = useState<boolean>(false);
 
@@ -44,7 +43,7 @@ export default function TextInput_GPS(props: {
     >
       <Text.P
         style={{
-          color: theme.font,
+          color: props.theme.font,
           textAlign: 'left',
         }}
       >
@@ -55,13 +54,13 @@ export default function TextInput_GPS(props: {
           width: '50%',
           paddingBottom: Platform.OS === 'ios' ? 5 : 0,
           paddingHorizontal: 5,
-          color: invalidValue ? theme.wrong : theme.font,
-          borderColor: invalidValue ? theme.wrong : theme.font,
+          color: invalidValue ? props.theme.wrong : props.theme.font,
+          borderColor: invalidValue ? props.theme.wrong : props.theme.font,
           borderBottomWidth: 1,
         }}
         value={value}
         placeholder={props.value_placeholder}
-        placeholderTextColor={theme.font_placeholder}
+        placeholderTextColor={props.theme.font_placeholder}
         textAlign="right"
         onChangeText={(text) => onChange(text)}
         keyboardType="decimal-pad"

@@ -32,7 +32,7 @@ function WidgetUnit(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
+  const id_sample  = useLocalSearchParams().id_sample as string;
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   async function onDelete(id_widget: string) {

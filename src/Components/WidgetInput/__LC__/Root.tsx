@@ -26,8 +26,6 @@ export function InputRoot(props: {
   onInputMoveDow: () => void
 }) {
 
-  const { theme } = props;
-
   const [label    , setLabel    ] = useState<string>(props.label);
   const [editLabel, setEditLabel] = useState<boolean>(false);
 
@@ -55,13 +53,13 @@ export function InputRoot(props: {
         onPress={() => setEditLabel(true)}
         confirmLabel={() => confirmLabel()}
         onLabelChange={(label) => onLabelChange(label)}
-        theme={theme}
+        theme={props.theme}
       />
       <View
         style={{
           position: 'absolute',
           flexDirection: 'row',
-          backgroundColor: theme.background,
+          backgroundColor: props.theme.background,
           zIndex: 1,
           height: 30,
           top: 0,
@@ -75,7 +73,7 @@ export function InputRoot(props: {
             onPress_Trash={() => props.onInputDelete()}
             onPress_ChevronUp={() => props.onInputMoveUp()}
             onPress_ChevronDown={() => props.onInputMoveDow()}
-            theme={theme}
+            theme={props.theme}
           />
         ) : ( props.iconButtons )}
       </View>
@@ -85,8 +83,8 @@ export function InputRoot(props: {
           paddingTop: 5,
           paddingHorizontal: 10,
           gap: 10,
-          backgroundColor: theme.background,
-          borderColor: theme.font,
+          backgroundColor: props.theme.background,
+          borderColor: props.theme.font,
           borderWidth: 2,
           borderRadius: 10,
         }}
@@ -106,8 +104,6 @@ function LabelButton(props: {
   confirmLabel: () => void
 }) {
 
-  const { theme, editLabel,label } = props;
-
   function onPress() {
     props.onPress();
     Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
@@ -117,24 +113,24 @@ function LabelButton(props: {
     <View
       style={{
         position: 'absolute',
-        top: editLabel ? 2 : 0,
+        top: props.editLabel ? 2 : 0,
         paddingLeft: 15,
         zIndex: 1,
       }}
     >
-      {editLabel ? (
+      {props.editLabel ? (
         <TextInput
           style={{
-            backgroundColor: theme.font,
+            backgroundColor: props.theme.font,
             paddingHorizontal: 5,
-            color: theme.background,
+            color: props.theme.background,
             fontSize: 20,
             borderRadius: 5,
             paddingVertical: 0,
             minWidth: 50,
             height: 25,
           }}
-          value={label}
+          value={props.label}
           onChangeText={(text) => props.onLabelChange(text)}
           onSubmitEditing={() => props.confirmLabel()}
           onBlur={() => props.confirmLabel()}
@@ -146,8 +142,8 @@ function LabelButton(props: {
         >
           <Text.Root
             style={{
-              backgroundColor: theme.background,
-              color: theme.font,
+              backgroundColor: props.theme.background,
+              color: props.theme.font,
               fontSize: 20,
               paddingHorizontal: 5,
             }}
@@ -168,7 +164,6 @@ function IconButton(props: {
   onPress_ChevronUp: () => void
   onPress_ChevronDown: () => void
 }) {
-
   return (<>
     {props.isFirstInput !== true && (
       <NavbarIconButton

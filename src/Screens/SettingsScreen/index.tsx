@@ -8,6 +8,7 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -15,8 +16,9 @@ import { TC } from './__TC__';
 
 export default function SettingsScreen(): JSX.Element {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Screens.SettingsScreen[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const R      = useMemo(() => translations.Screens.SettingsScreen[config.language], []);
 
   return (
     <Layout.Screen
@@ -24,7 +26,6 @@ export default function SettingsScreen(): JSX.Element {
     >
       <View
         style={{
-          paddingTop: 1,
           gap: 1,
         }}
       >
@@ -35,9 +36,9 @@ export default function SettingsScreen(): JSX.Element {
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
           theme={{
             font: theme.onSecondary,
-            font_Pressed: theme.secondary,
             background: theme.secondary,
-            background_Pressed: theme.onSecondary,
+            font_Pressed: theme.onTertiary,
+            background_Pressed: theme.tertiary,
           }}
         />
         <Button.TextWithIcon
@@ -46,10 +47,10 @@ export default function SettingsScreen(): JSX.Element {
           iconSide="Right"
           onPress={async () => await whipeDataBase()}
           theme={{
-            font: theme.onWrong,
-            font_Pressed: theme.wrong,
+            font: theme.tertiary,
             background: theme.wrong,
-            background_Pressed: theme.onWrong,
+            font_Pressed: theme.wrong,
+            background_Pressed: theme.tertiary,
           }}
         />
       </View>

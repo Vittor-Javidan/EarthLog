@@ -2,13 +2,15 @@ import React, { useMemo } from 'react';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
 
 export default function ScreenButtons() {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   return (
     <Layout.ScreenButtons

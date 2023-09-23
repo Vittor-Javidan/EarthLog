@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 
-import { Layout } from '@Layout/index';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
+
+import { Layout } from '@Layout/index';
 
 export function Screen1() {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   return (
     <Layout.Screen

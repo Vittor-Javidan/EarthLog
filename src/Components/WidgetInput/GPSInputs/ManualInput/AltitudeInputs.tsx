@@ -19,8 +19,8 @@ export default function AltitudeInputs(props: {
   onAccuracyChange_Alt: (newAcc: string) => void
 }) {
 
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 
   return (
     <View

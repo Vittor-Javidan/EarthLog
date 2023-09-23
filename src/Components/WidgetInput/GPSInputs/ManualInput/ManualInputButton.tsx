@@ -14,9 +14,8 @@ export default function ManualInputButton(props: {
 	onPress: () => void
 }): JSX.Element {
 
-	const { theme } = props;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 	const [pressed, setPressed] = useState<boolean>(false);
 
   function onPressIn() {
@@ -43,22 +42,22 @@ export default function ManualInputButton(props: {
         paddingVertical: 5,
 				paddingHorizontal: 10,
         borderWidth: 1,
-        borderColor: theme.font,
+        borderColor: props.theme.font,
         borderRadius: 10,
-				backgroundColor: pressed ? theme.background : theme.font,
+				backgroundColor: pressed ? props.theme.background : props.theme.font,
 			}}
 		>
       <Text.Root
 				style={{
 					fontSize: 200,
-          color: pressed ? theme.font : theme.background,
+          color: pressed ? props.theme.font : props.theme.background,
 				}}
 			>
 				{R['Manual']}
 			</Text.Root>
       <Icon
         iconName="pencil-sharp"
-        color={pressed ? theme.font : theme.background}
+        color={pressed ? props.theme.font : props.theme.background}
       />
 		</Pressable>
   );

@@ -64,7 +64,7 @@ export type WidgetData = {
     showColorButton?: boolean
   }
   addToNewSamples?: boolean                                                                         // Used by template screen to auto add a Widget on new Samples user creates
-  widgetTheme?: WidgetThemeData                                                                     // When undefine, it renders with default theme
+  widgetTheme?: WidgetThemeDTO                                                                     // When undefine, it renders with default theme
 }
 
 export type WidgetScope = {
@@ -79,7 +79,7 @@ export type WidgetScope = {
   id_sample: string
 }
 
-export type WidgetThemeData = {
+export type WidgetThemeDTO = {
   font: string                                                                                      // Defines color for fonts and Inputs Borders
   font_placeholder: string                                                                          // Defines color font for placeholders
   background: string                                                                                // Defines color for Widget static background color.

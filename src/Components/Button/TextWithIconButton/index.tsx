@@ -23,18 +23,24 @@ export function TextWithIcon(props: {
 	onPress: () => void
 }): JSX.Element {
 
-	const { theme } = props;
 	const [pressed, setPressed] = useState<boolean>(false);
   const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 25;
 
+  function onPressIn() {
+    setPressed(true);
+    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+  }
+
+  function onPress() {
+    props.onPress();
+    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+  }
+
 	return (
 		<Pressable
-			onPressIn={async () => {
-				setPressed(true);
-				await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
-			}}
+			onPressIn={() => onPressIn()}
 			onPressOut={() => { setPressed(false); }}
-			onPress={props.onPress}
+			onPress={() => onPress()}
 			style={[{
         opacity: pressed ? 0.9 : 1,
 				height: 55,
@@ -44,7 +50,7 @@ export function TextWithIcon(props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: iosLargeTitle ? 5 : 10,
-				backgroundColor: pressed ? theme.background_Pressed : theme.background,
+				backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
 			}, props.style]}
 		>
       {props.iconSide === 'Left' && (
@@ -53,14 +59,14 @@ export function TextWithIcon(props: {
         >
           <Icon
             iconName={props.iconName}
-            color={pressed ? theme.font_Pressed : theme.font}
+            color={pressed ? props.theme.font_Pressed : props.theme.font}
           />
         </View>
       )}
       <Text.Root
 				style={{
 					fontSize: iosLargeTitle ? FontService.FONTS.h3 : 200,
-          color: pressed ? theme.font_Pressed : theme.font,
+          color: pressed ? props.theme.font_Pressed : props.theme.font,
 				}}
 			>
 				{props.title}
@@ -71,7 +77,7 @@ export function TextWithIcon(props: {
         >
           <Icon
             iconName={props.iconName}
-            color={pressed ? theme.font_Pressed : theme.font}
+            color={pressed ? props.theme.font_Pressed : props.theme.font}
           />
         </View>
       )}

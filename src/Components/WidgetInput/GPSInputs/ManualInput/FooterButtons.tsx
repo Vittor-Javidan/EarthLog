@@ -10,9 +10,6 @@ export default function FooterButtons(props: {
   onCancel: () => void
   onSave: () => void
 }) {
-
-  const { theme } = props;
-
   return (
     <View
       style={{
@@ -22,13 +19,13 @@ export default function FooterButtons(props: {
     >
       <FooterButton
         iconName="close"
-        theme={theme}
+        theme={props.theme}
         onPress={() => props.onCancel()}
       />
       <FooterButton
         iconName="save"
         onPress={() => props.onSave()}
-        theme={theme}
+        theme={props.theme}
       />
     </View>
   );
@@ -40,9 +37,8 @@ function FooterButton(props: {
   onPress: () => void
 }) {
 
-  const { theme, iconName } = props;
   const [pressed, setPressed] = useState<boolean>(false);
-  const backgroundColor = iconName === 'close' ? theme.wrong : theme.confirm;
+  const backgroundColor = props.iconName === 'close' ? props.theme.wrong : props.theme.confirm;
 
   function onPress() {
     props.onPress();
@@ -63,7 +59,7 @@ function FooterButton(props: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? theme.font : backgroundColor,
+        backgroundColor: pressed ? props.theme.font : backgroundColor,
         flex: 1,
         height: 40,
         paddingHorizontal: 20,
@@ -73,7 +69,7 @@ function FooterButton(props: {
     >
       <Icon
         iconName={props.iconName}
-        color={theme.background}
+        color={props.theme.background}
       />
     </Pressable>
   );

@@ -14,8 +14,6 @@ export function AlertMessages(props: {
   theme: AlertTheme
 }) {
 
-  const { theme } = props;
-
   if (props.alertMessages === undefined || Object.keys(props.alertMessages).length <= 0) {
     return <></>;
   }
@@ -24,7 +22,7 @@ export function AlertMessages(props: {
     <Text.P
       key={alertMessage}
       style={{
-        color: theme.modified,
+        color: props.theme.modified,
       }}
     >
       {alertMessage}

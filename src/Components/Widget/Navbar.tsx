@@ -2,12 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 
 import SaveFeedback from './SaveFeedback';
-import { WidgetThemeData } from '@Types/ProjectTypes';
+import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 export function Navbar(props: {
   saved: boolean
   iconButtons: JSX.Element
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
 }) {
   return (
     <View

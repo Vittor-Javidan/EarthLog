@@ -17,12 +17,10 @@ export default function CheckboxOptions(props: {
   onToogle_Altitude: (checked: boolean) => void
 }) {
 
-  const { theme, features } = props;
-  const { editMode, enableCoordinate, enableAltitude } = features;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 
-  if (editMode === false) {
+  if (props.features.editMode === false) {
     return <></>;
   }
 
@@ -35,15 +33,15 @@ export default function CheckboxOptions(props: {
     >
       <Option
         title={R['Coordinates']}
-        value={enableCoordinate}
+        value={props.features.enableCoordinate}
         onChange={(checked) => props.onToogle_Coordinate(checked)}
-        theme={theme}
+        theme={props.theme}
       />
       <Option
         title={R['Altitude']}
-        value={enableAltitude}
+        value={props.features.enableAltitude}
         onChange={(checked) => props.onToogle_Altitude(checked)}
-        theme={theme}
+        theme={props.theme}
       />
     </View>
   );
@@ -55,8 +53,6 @@ function Option(props: {
   theme: GPSInputTheme
   onChange: (checked: boolean) => void
 }) {
-
-  const { theme } = props;
 
   function onChange(checked: boolean) {
     props.onChange(checked);
@@ -74,10 +70,10 @@ function Option(props: {
       <Button.Checkbox
         value={props.value}
         onChange={(checked => onChange(checked))}
-        theme={theme}
+        theme={props.theme}
       />
       <Text.H3
-        style={{ color: props.value ? theme.confirm : theme.font }}
+        style={{ color: props.value ? props.theme.confirm : props.theme.font }}
       >
         {props.title}
       </Text.H3>

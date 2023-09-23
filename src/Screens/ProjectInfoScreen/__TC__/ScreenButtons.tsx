@@ -3,8 +3,9 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
+import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
+import ProjectService from '@Services/ProjectService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -14,8 +15,8 @@ export default function ScreenButtons(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   async function createWidget_Project() {
@@ -93,6 +94,13 @@ export default function ScreenButtons(props: {
         <Button.ConfirmSwipe
           onSwipe={async () => await deleteProject()}
           onCancel={() => setShow_DeleteSwap(false)}
+          buttonRadius={30}
+          theme={{
+            font: theme.onTertiary,
+            background: theme.tertiary,
+            confirm: theme.confirm,
+            wrong: theme.wrong,
+          }}
         />
       }
     />

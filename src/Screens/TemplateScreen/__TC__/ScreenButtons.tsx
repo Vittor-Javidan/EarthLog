@@ -8,14 +8,15 @@ import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
+import ThemeService from '@Services/ThemeService';
 
 export default function ScreenButtons(props: {
   onWidgetCreation: () => void
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   async function onCreateWidget() {
     await ProjectService.createWidget_Template(

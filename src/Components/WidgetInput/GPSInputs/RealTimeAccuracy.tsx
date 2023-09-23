@@ -14,35 +14,37 @@ export default function RealTimeAccuracy(props: {
   theme: GPSInputTheme
 }) {
 
-  const { theme, features } = props;
-  const { gpsON, enableCoordinate, enableAltitude} = features;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
-  const nothingEnable = enableCoordinate === false && enableAltitude === false;
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 
-  if (gpsON === false || nothingEnable) {
+  const nothingEnable =
+    props.features.enableCoordinate === false &&
+    props.features.enableAltitude === false
+  ;
+
+  if (props.features.gpsON === false || nothingEnable) {
     return <></>;
   }
 
   return (
     <View>
       <Text.P
-        style={{ color: theme.font }}
+        style={{ color: props.theme.font }}
       >
         {R['Real time accuracy:']}
       </Text.P>
-      {enableCoordinate && props.accuracy.coordinate !== null && (
+      {props.features.enableCoordinate && props.accuracy.coordinate !== null && (
         <AccuracyInfo
           title={R['Coordinates']}
           precision={props.accuracy.coordinate}
-          theme={theme}
+          theme={props.theme}
         />
       )}
-      {enableAltitude && props.accuracy.altitude !== null && (
+      {props.features.enableAltitude && props.accuracy.altitude !== null && (
         <AccuracyInfo
           title={R['Altitude']}
           precision={props.accuracy.altitude}
-          theme={theme}
+          theme={props.theme}
         />
       )}
     </View>
@@ -54,9 +56,6 @@ function AccuracyInfo(props: {
   precision: number
   theme: GPSInputTheme
 }) {
-
-  const { theme } = props;
-
   return (
     <View
       style={{
@@ -65,12 +64,12 @@ function AccuracyInfo(props: {
       }}
     >
       <Text.P
-        style={{ color: theme.font }}
+        style={{ color: props.theme.font }}
       >
         {`${props.title}:`}
       </Text.P>
       <Text.P
-        style={{ color: theme.font }}
+        style={{ color: props.theme.font }}
       >
         {`${props.precision}m`}
       </Text.P>

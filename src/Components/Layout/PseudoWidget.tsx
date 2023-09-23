@@ -15,7 +15,6 @@ export function PseudoWidget(props: {
   children: ReactNode
   theme: WidgetTheme
 }) {
-
   return (
     <View
       style={{
@@ -57,9 +56,6 @@ function SaveFeedback(props: {
   saved: boolean
   theme: WidgetTheme
 }) {
-
-  const { theme, saved } = props;
-
   return (
     <View
       style={{
@@ -73,16 +69,16 @@ function SaveFeedback(props: {
         style={{
           height: 12,
           width: 12,
-          backgroundColor: saved ? theme.confirm : theme.modified,
+          backgroundColor: props.saved ? props.theme.confirm : props.theme.modified,
           borderRadius: 6,
         }}
       />
       <Text.P
         style={{
-          color: theme.font,
+          color: props.theme.font,
         }}
       >
-        {saved ? 'Saved' : 'Saving...'}
+        {props.saved ? 'Saved' : 'Saving...'}
       </Text.P>
     </View>
   );

@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -15,7 +16,8 @@ export default function CreateProject(props: {
   onRefuse: () => void
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [name, setName] = useState<string>('');
 
   async function onAccept() {

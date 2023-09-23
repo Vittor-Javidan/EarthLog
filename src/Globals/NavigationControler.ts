@@ -21,8 +21,8 @@ export function navigate(
   id_sample?: string,
 ) {
 
-  const { language } = ConfigService.config;
-  const R = translations.ErrorMessages[language];
+  const config = ConfigService.config;
+  const R      = translations.ErrorMessages[config.language];
   const navController = useRouter();
 
   switch (screen) {

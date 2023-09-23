@@ -4,54 +4,47 @@ import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-g
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
 import * as Vibration from 'expo-haptics';
 
-import ConfigService from '@Services/ConfigService';
-
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
+
+type ButtonTheme = {
+  font: string
+  background: string
+  confirm: string
+  wrong: string
+}
 
 export default function DeleteSwipeButton(props: {
   buttonRadius?: number
   compensateMargin?: number
+  theme: ButtonTheme
   onSwipe: () => void
   onCancel: () => void
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
   const COMPENSATE_MARGIN = props.compensateMargin ?? 0;
-  const PADDING = 10;
-  const CIRCLE_RADIUS = props.buttonRadius ?? 35;
-  const CIRCLE_DIAMETER = CIRCLE_RADIUS * 2;
-  const THRESHOLD = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10 - COMPENSATE_MARGIN - COMPENSATE_MARGIN;
+  const PADDING           = 10;
+  const CIRCLE_RADIUS     = props.buttonRadius ?? 35;
+  const CIRCLE_DIAMETER   = CIRCLE_RADIUS * 2;
+  const THRESHOLD         = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10 - COMPENSATE_MARGIN - COMPENSATE_MARGIN;
 
-  const translateX = useSharedValue(0);
-  const circleBackground = useSharedValue(theme.secondary);
-  const adjustedTranslateX = useDerivedValue(() => {
-    return Math.min(
-      Math.max(translateX.value, 0),
-      WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2),
-    );
-  });
+  const translateX         = useSharedValue(0);
+  const adjustedTranslateX = useDerivedValue(() => Math.min(
+    Math.max(translateX.value, 0),
+    WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2),
+  ));
 
-  const animatedStyle_circle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: adjustedTranslateX.value }],
-      backgroundColor: circleBackground.value,
-    };
-  });
-
-  const animatedStyle_slider = useAnimatedStyle(() => {
-    return {
-      backgroundColor: translateX.value < THRESHOLD ? theme.tertiary : theme.wrong,
-    };
-  });
-
-  const animatedStyle_targetArea = useAnimatedStyle(() => {
-    return {
-      backgroundColor: translateX.value < THRESHOLD ? theme.wrong : theme.secondary,
-    };
-  });
+  const animatedStyle_circle     = useAnimatedStyle(() => ({
+    transform: [{ translateX: adjustedTranslateX.value }],
+  }));
+  const animatedStyle_slider     = useAnimatedStyle(() => ({
+    backgroundColor: translateX.value < THRESHOLD ? props.theme.background : props.theme.wrong,
+  }));
+  const animatedStyle_targetArea = useAnimatedStyle(() => ({
+    backgroundColor: translateX.value < THRESHOLD ? props.theme.wrong : props.theme.background,
+  }));
 
   function vibrate() {
     Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
@@ -60,7 +53,6 @@ export default function DeleteSwipeButton(props: {
   const panGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { x: number }>({
     onStart: (_, context) => {
       context.x = adjustedTranslateX.value;
-      circleBackground.value = theme.confirm;
       runOnJS(vibrate)();
     },
     onActive: (event, context) => {
@@ -68,7 +60,6 @@ export default function DeleteSwipeButton(props: {
     },
     onEnd: () => {
       'worklet';
-      circleBackground.value = theme.secondary;
       if (translateX.value < THRESHOLD) {
         translateX.value = 0;
       } else {
@@ -90,12 +81,7 @@ export default function DeleteSwipeButton(props: {
     >
       <CancelButton
         onPress={() => props.onCancel()}
-        theme={{
-          font: theme.onSecondary,
-          font_Pressed: theme.secondary,
-          background: theme.secondary,
-          background_Pressed: theme.onSecondary,
-        }}
+        theme={props.theme}
       />
       <Animated.View
         style={[{
@@ -105,12 +91,12 @@ export default function DeleteSwipeButton(props: {
           height: CIRCLE_DIAMETER,
           width: '100%',
           paddingLeft: 20,
-          backgroundColor: theme.tertiary,
-          borderColor: theme.secondary,
+          backgroundColor: props.theme.background,
+          borderColor: props.theme.font,
           borderRadius: 40,
         }, animatedStyle_slider]}
       >
-        <Text.H3 style={{ color: theme.tertiary }}>
+        <Text.H3 style={{ color: props.theme.background }}>
           Release to confirm
         </Text.H3>
         <Animated.View
@@ -119,15 +105,15 @@ export default function DeleteSwipeButton(props: {
             width: CIRCLE_DIAMETER,
             borderRadius: CIRCLE_RADIUS,
             borderWidth: 3,
-            borderColor: theme.secondary,
-            backgroundColor: theme.wrong,
+            borderColor: props.theme.background,
+            backgroundColor: props.theme.wrong,
             justifyContent: 'center',
             alignItems: 'center',
           }, animatedStyle_targetArea]}
         >
           <Icon
             iconName="trash-outline"
-            color={theme.onWrong}
+            color={props.theme.background}
           />
         </Animated.View>
         <PanGestureHandler onGestureEvent={panGestureEvent}>
@@ -139,7 +125,8 @@ export default function DeleteSwipeButton(props: {
               width: CIRCLE_DIAMETER,
               borderRadius: CIRCLE_RADIUS,
               borderWidth: 3,
-              borderColor: theme.tertiary,
+              borderColor: props.theme.background,
+              backgroundColor: props.theme.confirm,
               justifyContent: 'center',
               alignItems: 'center',
               zIndex: 20,
@@ -147,20 +134,13 @@ export default function DeleteSwipeButton(props: {
           >
             <Icon
               iconName="finger-print"
-              color={theme.onSecondary}
+              color={props.theme.background}
             />
           </Animated.View>
         </PanGestureHandler>
       </Animated.View>
     </View>
   );
-}
-
-type ButtonTheme = {
-  font: string
-  font_Pressed: string
-  background: string
-  background_Pressed: string
 }
 
 function CancelButton(props: {
@@ -186,7 +166,7 @@ function CancelButton(props: {
 			onPressOut={() => setPressed(false)}
 			onPress={() => onPress()}
 			style={{
-				backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
+				backgroundColor: pressed ? props.theme.font : props.theme.background,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -194,13 +174,14 @@ function CancelButton(props: {
         height: 30,
         borderRadius: 15,
         paddingVertical: 0,
-				paddingHorizontal: 10,
+				paddingLeft: 10,
+        paddingRight: 6,
 			}}
 		>
       <Text.Root
 				style={{
 					fontSize: 200,
-          color: props.theme.font,
+          color: pressed ? props.theme.background : props.theme.font,
           paddingVertical: 5,
 				}}
 			>

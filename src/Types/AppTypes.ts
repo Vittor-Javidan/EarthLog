@@ -1,11 +1,16 @@
 export type Loading = 'Loaded' | 'Loading';
 
-export const languageTags = ['en-US', 'pt-BR'] as const;
+export const languageTags   = ['en-US', 'pt-BR'] as const;
 export const languageLabels = ['English', 'Português-Brasil'] as const;
-export type Languages = (typeof languageTags)[number];
+export type Languages    = (typeof languageTags)[number];
 export type LanguageTags = (typeof languageTags)[number];
 
-export type ThemeDTO = {
+export const ThemeNamesArray_APP     = ['default'] as const;
+export const ThemeNamesArray_Widgets = ['default'] as const;
+export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
+export type ThemeNames_Widgets = (typeof ThemeNamesArray_Widgets)[number];
+
+export type AppThemeDTO = {
   background: string
   onBackground: string
   onBackground_Placeholder: string
@@ -34,9 +39,19 @@ export type ThemeDTO = {
   onPressColorPrimary: string
 }
 
+export type NewAppThemeDTO = {
+  background: string
+  primary: string
+  secondary: string
+  tertiary: string
+  confirm: string
+  wrong: string
+  warning: string
+}
+
 export type ConfigDTO = {
   language: Languages
-  theme: ThemeDTO
+  appTheme: ThemeNames_APP
 }
 
 export type AlertModalConfig = {

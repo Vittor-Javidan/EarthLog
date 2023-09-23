@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
@@ -13,8 +14,8 @@ export default function ScreenButtons(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   async function createSample() {
     AlertService.handleAlert(true, {

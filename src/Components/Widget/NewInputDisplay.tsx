@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { InputData, InputTypes, InputTypesArray, WidgetThemeData } from '@Types/ProjectTypes';
+import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 
 import { Text } from '@Text/index';
 
 export function NewInputDisplay(props: {
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   onCreate: (inputData: InputData) => void
 }) {
-
-  const { theme } = props;
 
   function onCreate(inputType: InputTypes) {
     props.onCreate(ProjectService.getInputData(inputType));
@@ -23,7 +21,7 @@ export function NewInputDisplay(props: {
       key={type}
       title={type}
       onPress={(inputType) => onCreate(inputType)}
-      theme={theme}
+      theme={props.theme}
     />
   ));
 
@@ -33,7 +31,7 @@ export function NewInputDisplay(props: {
     >
       <Text.H2
         style={{
-          color: theme.font,
+          color: props.theme.font,
           paddingHorizontal: 10,
           alignSelf: 'center',
         }}
@@ -58,11 +56,10 @@ export function NewInputDisplay(props: {
 
 function Button(props: {
   title: InputTypes,
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   onPress: (inputType: InputTypes) => void
 }) {
 
-  const { title, theme } = props;
 	const [pressed, setPressed] = useState<boolean>(false);
 
   function onPressIn() {
@@ -78,18 +75,18 @@ function Button(props: {
 		<Pressable
 			onPressIn={() => onPressIn()}
 			onPressOut={() => onPressOut()}
-			onPress={() => props.onPress(title)}
+			onPress={() => props.onPress(props.title)}
 			style={{
         opacity: pressed ? 0.9 : 1,
 				paddingHorizontal: 10,
         paddingVertical: 2,
-				backgroundColor: pressed ? theme.confirm : theme.font,
+				backgroundColor: pressed ? props.theme.confirm : props.theme.font,
         borderRadius: 100,
 			}}
 		>
       <Text.P
 				style={{
-          color: theme.background,
+          color: props.theme.background,
 				}}
 			>
 				{props.title}

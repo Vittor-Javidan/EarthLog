@@ -15,7 +15,6 @@ export default function ManualInput(props: {
   onConfirm: (gpsData: GPS_DTO) => void
 }) {
 
-  const { theme } = props;
   const [showInput, setShowInput] = useState<boolean>(false);
   const [error    , setError    ] = useState<boolean>(false);
 
@@ -50,13 +49,13 @@ export default function ManualInput(props: {
         paddingBottom: showInput ? 10 : 0,
         gap: 10,
         borderWidth: showInput ? 1 : 0,
-        borderColor: error === true ? theme.wrong : theme.font,
+        borderColor: error === true ? props.theme.wrong : props.theme.font,
       }}
     >
       {!showInput && (
         <ManualInputButton
           onPress={() => openManualInput()}
-          theme={theme}
+          theme={props.theme}
         />
       )}
       {showInput && (
@@ -65,7 +64,7 @@ export default function ManualInput(props: {
           onSave={async (newGPSData) => await onSave(newGPSData)}
           onCancel={() => closeManualInput()}
           onError={() => setError(true)}
-          theme={theme}
+          theme={props.theme}
         />
       )}
     </View>

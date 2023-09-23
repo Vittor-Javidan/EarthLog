@@ -13,9 +13,6 @@ export function Checkbox(props: {
   theme: ButtonTheme
   onChange: (checked: boolean) => void
 }) {
-
-  const { theme } = props;
-
   return (
     <View
       style={{ flexDirection: 'row' }}
@@ -23,7 +20,7 @@ export function Checkbox(props: {
       <Pressable
         onPress={() => props.onChange(!props.value)}
         style={{
-          backgroundColor: props.value ? theme.confirm : theme.font,
+          backgroundColor: props.value ? props.theme.confirm : props.theme.font,
           justifyContent: 'center',
           alignItems: 'center',
           height: 25,
@@ -37,7 +34,7 @@ export function Checkbox(props: {
           adjustsFontSizeToFit={true}
           maxFontSizeMultiplier={0}
           style={{
-            color: theme.background,
+            color: props.theme.background,
             fontSize: 200,
           }}
         />}

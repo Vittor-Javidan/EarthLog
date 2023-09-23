@@ -23,7 +23,7 @@ const SampleSettingsScreen  = memo((props: MemoProps2) => <_SampleSettingsScreen
 export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
+  const id_sample  = useLocalSearchParams().id_sample as string;
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [selectedScreen     , setSelectedScreen     ] = useState<number>(1);

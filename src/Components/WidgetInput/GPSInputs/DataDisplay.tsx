@@ -12,18 +12,15 @@ export default function DataDisplay(props: {
   theme: GPSInputTheme
 }) {
 
-  const { coordinates, altitude } = props.gpsData;
-  const { editMode } = props.features;
-
   const showStaticDisplay =
-    coordinates !== undefined ||
-    altitude    !== undefined
+    props.gpsData.coordinates !== undefined ||
+    props.gpsData.altitude    !== undefined
   ;
 
   const showNothing =
-    editMode    === false     &&
-    coordinates === undefined &&
-    altitude    === undefined
+    props.features.editMode   === false     &&
+    props.gpsData.coordinates === undefined &&
+    props.gpsData.altitude    === undefined
   ;
 
   if (showNothing) {
@@ -33,25 +30,25 @@ export default function DataDisplay(props: {
   return (<>
     {showStaticDisplay && (
       <View>
-        {coordinates !== undefined && <>
+        {props.gpsData.coordinates !== undefined && <>
           <DataInfo
             title="Latitude"
-            value={coordinates.lat}
-            precision={coordinates.accuracy}
+            value={props.gpsData.coordinates.lat}
+            precision={props.gpsData.coordinates.accuracy}
             theme={props.theme}
           />
           <DataInfo
             title="Longitude"
-            value={coordinates.long}
-            precision={coordinates.accuracy}
+            value={props.gpsData.coordinates.long}
+            precision={props.gpsData.coordinates.accuracy}
             theme={props.theme}
           />
         </>}
-        {altitude !== undefined && <>
+        {props.gpsData.altitude !== undefined && <>
           <DataInfo
             title="Altitude"
-            value={altitude.value}
-            precision={altitude.accuracy}
+            value={props.gpsData.altitude.value}
+            precision={props.gpsData.altitude.accuracy}
             theme={props.theme}
           />
         </>}
@@ -66,9 +63,6 @@ function DataInfo(props: {
   precision: number
   theme: GPSInputTheme
 }) {
-
-  const { theme } = props;
-
   return (
     <View
       style={{
@@ -77,12 +71,12 @@ function DataInfo(props: {
       }}
     >
       <Text.P
-        style={{ color: theme.font }}
+        style={{ color: props.theme.font }}
       >
         {`${props.title}:`}
       </Text.P>
       <Text.P
-        style={{ color: theme.font }}
+        style={{ color: props.theme.font }}
       >
         {`${props.value} (${props.precision}m)`}
       </Text.P>

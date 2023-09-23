@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import { languageLabels, languageTags, LanguageTags } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 
@@ -9,7 +10,8 @@ export default function LanguageButtons(props: {
   onLangaugeSelected: (languageTag: LanguageTags) => void
 }): JSX.Element {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -18,7 +20,7 @@ export default function LanguageButtons(props: {
 
   const LanguageButtonsArray = languageLabels.map((languageLabel, index) => {
 
-    const isSelected = language === languageTags[index];
+    const isSelected = config.language === languageTags[index];
 
     async function onSelectLanguage() {
       props.onLangaugeSelected(languageTags[index]);
@@ -32,10 +34,10 @@ export default function LanguageButtons(props: {
         iconName="language"
         iconSide="Right"
         theme={{
-          font: isSelected ? theme.onConfirm : theme.onSecondary,
-          font_Pressed: isSelected ? theme.onConfirm : theme.onSecondary,
+          font: isSelected ? theme.tertiary : theme.onSecondary,
           background: isSelected ? theme.confirm : theme.secondary,
-          background_Pressed: isSelected ? theme.confirm : theme.secondary,
+          font_Pressed: isSelected ? theme.confirm : theme.onTertiary,
+          background_Pressed: isSelected ? theme.tertiary : theme.tertiary,
         }}
         onPress={async () => await onSelectLanguage()}
       />

@@ -16,7 +16,6 @@ export function NavbarIconButton(props: {
   onPress: () => void
 }) {
 
-  const { theme, selected } = props;
   const [pressed, setPressed] = useState<boolean>(false);
 
   function onPress() {
@@ -40,7 +39,7 @@ export function NavbarIconButton(props: {
       onPress={() => onPress()}
       style={{
         flexDirection: 'row',
-        backgroundColor: (selected || pressed) ? theme.font : theme.background,
+        backgroundColor: (props.selected || pressed) ? props.theme.font : props.theme.background,
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
@@ -51,7 +50,7 @@ export function NavbarIconButton(props: {
     >
       <Icon
         iconName={props.iconName}
-        color={(selected || pressed) ? theme.background : theme.font}
+        color={(props.selected || pressed) ? props.theme.background : props.theme.font}
       />
     </Pressable>
   );

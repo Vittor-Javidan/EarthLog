@@ -18,40 +18,6 @@ import { LC } from '../__LC__';
 import { GPSInputTheme } from './ThemeType';
 import { useTimeout } from '@Hooks/index';
 
-export function GPSInput_Simplified(props: {
-  label: string
-  gpsData: GPS_DTO
-  referenceGPSData: GPS_DTO | undefined
-  theme: GPSInputTheme
-  onSave: (gpdData: GPS_DTO | null, status: InputStatus) => void
-}) {
-
-  function onSave(inputData: GPSInputData | null, status: InputStatus) {
-    props.onSave(inputData?.value ?? null, status);
-  }
-
-  return (
-    <GPSInput
-      inputData={{
-        id_input: '',
-        label: props.label,
-        type: 'gps',
-        value: props.gpsData,
-        lockedLabel: true,
-      }}
-      referenceGPSData={props.referenceGPSData}
-      onSave={(inputData, status) => onSave(inputData, status)}
-      theme={props.theme}
-      editWidget={false}
-      isFirstInput={false}
-      isLastInput={false}
-      onInputDelete={() => {}}
-      onInputMoveUp={() => {}}
-      onInputMoveDow={() => {}}
-    />
-  );
-}
-
 export function GPSInput(props: {
   inputData: GPSInputData
   editWidget: boolean
@@ -65,8 +31,8 @@ export function GPSInput(props: {
   onInputMoveDow: () => void
 }) {
 
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
+  const config     = useMemo(() => ConfigService.config, []);
+  const R          = useMemo(() => translations.Input.GPSInput[config.language], []);
   const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.inputData.value)), []);
 
   const [inputData    , setInputData    ] = useState<GPSInputData>(UtilService.deepCopy(props.inputData));
@@ -261,26 +227,23 @@ function IconButtons(props: {
   onPress_StopButton: () => void
 }) {
 
-  const { theme } = props;
-  const { editMode, gpsON } = props.features;
-
-  const showPlayButton = gpsON === false;
-  const showStopButton = gpsON === true;
+  const showPlayButton = props.features.gpsON === false;
+  const showStopButton = props.features.gpsON === true;
 
   return (<>
     <LC.NavbarIconButton
       iconName={'options-outline'}
       onPress={() => props.onPress_EditButton()}
-      selected={editMode}
-      theme={theme}
+      selected={props.features.editMode}
+      theme={props.theme}
     />
     {showPlayButton && (
       <LC.NavbarIconButton
         iconName="play"
         onPress={() => props.onPress_PlayButton()}
         theme={{
-          font: theme.confirm,
-          background: theme.background,
+          font: props.theme.confirm,
+          background: props.theme.background,
         }}
       />
     )}
@@ -289,8 +252,8 @@ function IconButtons(props: {
         iconName="stop"
         onPress={() => props.onPress_StopButton()}
         theme={{
-          font: theme.wrong,
-          background: theme.background,
+          font: props.theme.wrong,
+          background: props.theme.background,
         }}
       />
     )}

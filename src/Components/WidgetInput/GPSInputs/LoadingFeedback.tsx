@@ -13,13 +13,15 @@ export default function LoadingFeedback(props: {
   theme: GPSInputTheme
 }) {
 
-  const { theme, features } = props;
-  const { gpsON, enableCoordinate, enableAltitude } = features;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
-  const nothingEnable = enableCoordinate === false && enableAltitude === false;
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 
-  if (gpsON === false) {
+  const nothingEnable =
+    props.features.enableCoordinate === false &&
+    props.features.enableAltitude   === false
+  ;
+
+  if (props.features.gpsON === false) {
     return <></>;
   }
 
@@ -36,7 +38,7 @@ export default function LoadingFeedback(props: {
       <ActivityIndicator size="small" />
       <Text.P
         style={{
-          color: theme.font,
+          color: props.theme.font,
           textAlign: 'justify',
         }}
       >

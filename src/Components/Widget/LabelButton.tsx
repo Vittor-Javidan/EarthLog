@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
-import { WidgetThemeData } from '@Types/ProjectTypes';
+import { WidgetThemeDTO } from '@Types/ProjectTypes';
 import FontService from '@Services/FontService';
 
 import { Text } from '@Text/index';
@@ -10,14 +10,12 @@ import { Text } from '@Text/index';
 export function LabelButton(props: {
   label: string
   editLabel: boolean
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   noInputs: boolean
   onPress: () => void
   onConfirm: () => void
   onLabelChange: (label: string) => void
 }) {
-
-  const { theme, label } = props;
 
   function onPress() {
     props.onPress();
@@ -37,15 +35,15 @@ export function LabelButton(props: {
         <TextInput
           style={{
             textAlign: 'center',
-            backgroundColor: theme.font,
-            color: theme.background,
+            backgroundColor: props.theme.font,
+            color: props.theme.background,
             fontSize: FontService.FONTS.h2,
             borderRadius: 5,
             paddingVertical: 0,
             paddingHorizontal: 5,
             minWidth: 50,
           }}
-          value={label}
+          value={props.label}
           onChangeText={(text) => props.onLabelChange(text)}
           onBlur={() => props.onConfirm()}
           multiline={props.editLabel ? true : false}
@@ -58,7 +56,7 @@ export function LabelButton(props: {
           <Text.H2
             style={{
               textAlign: 'center',
-              color: theme.font,
+              color: props.theme.font,
               paddingHorizontal: 5,
               marginBottom: 0,
             }}

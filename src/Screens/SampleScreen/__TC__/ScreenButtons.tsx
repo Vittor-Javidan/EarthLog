@@ -5,6 +5,7 @@ import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -14,9 +15,9 @@ export default function ScreenButtons(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const id_sample = useLocalSearchParams().id_sample as string;
-
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const id_sample  = useLocalSearchParams().id_sample as string;
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   async function onCreateWidget() {
     await ProjectService.createWidget_Sample(

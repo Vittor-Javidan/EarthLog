@@ -2,10 +2,12 @@ import React, { useMemo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 export default function Loading(): JSX.Element {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   return (
     <View
@@ -17,7 +19,7 @@ export default function Loading(): JSX.Element {
     >
       <ActivityIndicator
         size="large"
-        color={theme.onBackground}
+        color={theme.primary}
       />
     </View>
   );

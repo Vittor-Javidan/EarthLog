@@ -15,44 +15,6 @@ type InputTheme = {
   wrong: string
 }
 
-export function StringInput_Simplified(props: {
-  label: string
-  value: string
-  placeholder: string
-  theme: InputTheme
-  multiline: boolean
-  locked: boolean
-  onSave: (gpdData: string | null, status: InputStatus) => void
-}) {
-
-  function onSave(inputData: StringInputData | null, status: InputStatus) {
-    props.onSave(inputData?.value ?? null, status);
-  }
-
-  return (
-    <StringInput
-      inputData={{
-        id_input: '',
-        label: props.label,
-        type: 'string',
-        value: props.value,
-        lockedLabel: true,
-        lockedData: props.locked,
-        placeholder: props.placeholder,
-      }}
-      multiline={props.multiline}
-      onSave={(inputData, status) => onSave(inputData, status)}
-      theme={props.theme}
-      editWidget={false}
-      isFirstInput={false}
-      isLastInput={false}
-      onInputDelete={() => {}}
-      onInputMoveUp={() => {}}
-      onInputMoveDow={() => {}}
-    />
-  );
-}
-
 export function StringInput(props: {
   inputData: StringInputData
   editWidget: boolean
@@ -71,7 +33,6 @@ export function StringInput(props: {
    * <TextInput /> ˜onChangeText˜ is fired on render when `multiline === true` on IOS. Be carefull on wich code is writed for this
    * callback to trigger.
   */
-  const { theme } = props;
 
   const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
@@ -129,13 +90,13 @@ export function StringInput(props: {
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
-      theme={theme}
+      theme={props.theme}
 
       iconButtons={
         <IconButtons
           showUndo={showUndo}
           locked={inputData.lockedData}
-          theme={theme}
+          theme={props.theme}
           onPress_UndoButton={() => undoDelete()}
           onPress_BackspaceButton={() => onTextDelete()}
         />
@@ -144,7 +105,7 @@ export function StringInput(props: {
       <TextInput
         value={inputData.value}
         placeholder={inputData.placeholder ?? 'Write Something here'}
-        placeholderTextColor={theme.font_placeholder}
+        placeholderTextColor={props.theme.font_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline={props.multiline}
@@ -153,8 +114,9 @@ export function StringInput(props: {
           width: '100%',
           paddingVertical: 15,
           paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
-          backgroundColor: theme.background,
-          color: theme.font,
+          backgroundColor: props.theme.background,
+          color: props.theme.font,
+          fontStyle: props.inputData.value === '' ? 'italic' : 'normal',
         }}
       />
     </LC.Root>
@@ -168,17 +130,14 @@ function IconButtons (props: {
   onPress_UndoButton: () => void
   onPress_BackspaceButton: () => void
 }) {
-
-  const { theme } = props;
-
   return (<>
     {props.locked && (
       <LC.NavbarIconButton
         iconName="lock-closed-sharp"
         onPress={() => {}}
         theme={{
-          font: theme.wrong,
-          background: theme.background,
+          font: props.theme.wrong,
+          background: props.theme.background,
         }}
       />
     )}
@@ -188,8 +147,8 @@ function IconButtons (props: {
           iconName="arrow-undo"
           onPress={() => props.onPress_UndoButton()}
           theme={{
-            font: theme.font,
-            background: theme.background,
+            font: props.theme.font,
+            background: props.theme.background,
           }}
         />
       )}
@@ -197,8 +156,8 @@ function IconButtons (props: {
         iconName="backspace-outline"
         onPress={() => props.onPress_BackspaceButton()}
         theme={{
-          font: theme.font,
-          background: theme.background,
+          font: props.theme.font,
+          background: props.theme.background,
         }}
       />
     </>)}

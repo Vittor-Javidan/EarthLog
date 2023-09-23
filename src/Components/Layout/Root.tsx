@@ -7,11 +7,13 @@ import * as Vibration from 'expo-haptics';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 import FontService from '@Services/FontService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { AlertModal } from '@Alert/index';
+
 const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
 const NAVIGATION_TREE_HEIGHT = 20;
@@ -23,7 +25,8 @@ export default function Root(props: {
   navigationTree: JSX.Element
 }): JSX.Element {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
@@ -71,7 +74,8 @@ function Navbar(props: {
   onMenuButtonPress: () => void | undefined
 }): JSX.Element {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
 
   return (<>
@@ -100,18 +104,19 @@ function Navbar(props: {
           {props.title}
         </Text.Root>
       </View>
-      <IconButton
+      <MenuButton
         onPress={props.onMenuButtonPress}
       />
     </View>
   </>);
 }
 
-function IconButton(props: {
+function MenuButton(props: {
   onPress: () => void
 }): JSX.Element {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   async function onPressIn() {
@@ -137,7 +142,7 @@ function IconButton(props: {
         onPress={() => onPress()}
         style={{
           flexDirection: 'row',
-          backgroundColor: pressed ? theme.tertiary : theme.primary,
+          backgroundColor: pressed ? theme.onPrimary : theme.primary,
           paddingHorizontal: 10,
           paddingVertical: 0,
           borderRadius: 5,
@@ -148,7 +153,7 @@ function IconButton(props: {
       >
         <Icon
           iconName="md-menu-sharp"
-          color={pressed ? theme.onTertiary : theme.onPrimary}
+          color={pressed ? theme.primary : theme.onPrimary}
         />
       </Pressable>
     </View>
@@ -160,23 +165,25 @@ const Drawer = memo((props: {
   onPress_Background: () => void
 }) => {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
     <ScrollView
       contentContainerStyle={{
         flex: 1,
-        gap: 1,
+        flexDirection: 'row',
       }}
       style={{
-        backgroundColor: theme.secondary,
+        backgroundColor: theme.background,
+        borderColor: theme.primary,
         position: 'absolute',
-        bottom: 0,
-        left: 0,
         height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
         width: '100%',
-        paddingRight: 1,
+        bottom: 0,
+        left: 0,
+        borderRightWidth: 2,
       }}
     >
       {props.children}
@@ -189,7 +196,7 @@ const Drawer = memo((props: {
       >
         <Text.Root
           style={{
-            color: theme.onSecondary_PlaceHolder,
+            color: theme.onBackground,
             textAlign: 'right',
             fontSize: 16,
             padding: 8,

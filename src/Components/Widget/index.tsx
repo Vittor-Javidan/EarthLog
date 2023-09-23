@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeData } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
+import ThemeService from '@Services/ThemeService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -30,14 +31,15 @@ export function Widget(props: {
   const [saved      , setSaved      ] = useState<boolean>(true);
   const [display    , setDisplay    ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
 
-  const widgetTheme = useMemo<WidgetThemeData>(() => ({
-    font:             widgetData?.widgetTheme?.font             ?? '#444',
-    font_placeholder: widgetData?.widgetTheme?.font_placeholder ?? '#999',
-    background:       widgetData?.widgetTheme?.background       ?? '#EEE',
-    wrong:            widgetData?.widgetTheme?.wrong            ?? '#F55',
-    confirm:          widgetData?.widgetTheme?.confirm          ?? '#0C0',
-    modified:         widgetData?.widgetTheme?.modified         ?? '#AA0',
-    disabled:         widgetData?.widgetTheme?.disabled         ?? '#888',
+  const defaultTheme = useMemo(() => ThemeService.widgetThemes['default'], []);
+  const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
+    font:             widgetData?.widgetTheme?.font             ?? defaultTheme.font,
+    font_placeholder: widgetData?.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
+    background:       widgetData?.widgetTheme?.background       ?? defaultTheme.background,
+    wrong:            widgetData?.widgetTheme?.wrong            ?? defaultTheme.wrong,
+    confirm:          widgetData?.widgetTheme?.confirm          ?? defaultTheme.confirm,
+    modified:         widgetData?.widgetTheme?.modified         ?? defaultTheme.modified,
+    disabled:         widgetData?.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
   function onLabelChange(label: string) {
@@ -122,11 +124,9 @@ export function Widget(props: {
 
   function save(widgetData: WidgetData) {
 
-    const { widgetScope } = props;
-
-    if (widgetScope.type === 'project') {
+    if (props.widgetScope.type === 'project') {
       ProjectService.updateWidget_Project(
-        widgetScope.id_project,
+        props.widgetScope.id_project,
         widgetData,
         () => setSaved(true),
         (error) => alert(error)
@@ -134,9 +134,9 @@ export function Widget(props: {
       return;
     }
 
-    if (widgetScope.type === 'template') {
+    if (props.widgetScope.type === 'template') {
       ProjectService.updateWidget_Template(
-        widgetScope.id_project,
+        props.widgetScope.id_project,
         widgetData,
         () => setSaved(true),
         (error) => alert(error)
@@ -144,10 +144,10 @@ export function Widget(props: {
       return;
     }
 
-    if (widgetScope.type === 'sample') {
+    if (props.widgetScope.type === 'sample') {
       ProjectService.updateWidget_Sample(
-        widgetScope.id_project,
-        widgetScope.id_sample,
+        props.widgetScope.id_project,
+        props.widgetScope.id_sample,
         widgetData,
         () => setSaved(true),
         (error) => alert(error)
@@ -310,7 +310,7 @@ export function Widget(props: {
 function IconButtons(props: {
   editInputs: boolean
   display: WidgetDisplay
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   onPress_DataDisplayButton: () => void
   onPress_EditButton: () => void
   onPress_NewInputButton: () => void

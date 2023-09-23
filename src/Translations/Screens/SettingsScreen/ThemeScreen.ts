@@ -1,7 +1,7 @@
-import { ThemeDTO } from '@Types/AppTypes';
+import { AppThemeDTO } from '@Types/AppTypes';
 import { Languages } from '@Types/AppTypes';
 
-export type Translations_ThemeScreen = Record<Languages, Record<keyof ThemeDTO, string> & {
+export type Translations_ThemeScreen = Record<Languages, Record<keyof AppThemeDTO, string> & {
   'Theme': string
   'Invalid Color': string
   'unlock': string

@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
+import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { GPSInputData, InputStatus, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
@@ -11,15 +13,15 @@ import UtilService from '@Services/UtilService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import { View } from 'react-native';
 
 export default function ProjectSettingsWidget(props: {
   onProjectNameUpdate: (newName: string) => void
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Screens.ProjectSettingsScreen[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const R      = useMemo(() => translations.Screens.ProjectSettingsScreen[config.language], []);
 
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);

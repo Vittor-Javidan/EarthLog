@@ -29,10 +29,8 @@ export default function InputsDisplay(props: {
   onError: () => void
 }) {
 
-  const { theme, features } = props;
-  const { enableCoordinate, enableAltitude } = features;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.GPSInput[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 
   const [errorMessage,  setErrorMessage ] = useState<string>('');
   const [coordinates,   setCoordinates  ] = useState<TempCoordinates>({
@@ -47,13 +45,13 @@ export default function InputsDisplay(props: {
 
   function checkMissingInfo(whenOk: () => void) {
 
-    const missingInfo_Coord = enableCoordinate && (
+    const missingInfo_Coord = props.features.enableCoordinate && (
       coordinates.latitude  === ''  ||
       coordinates.longitude === ''  ||
       coordinates.accuracy  === ''
     );
 
-    const missingInfo_Alt = enableAltitude && (
+    const missingInfo_Alt = props.features.enableAltitude && (
       altitude.value    === '' ||
       altitude.accuracy === ''
     );
@@ -70,14 +68,14 @@ export default function InputsDisplay(props: {
   function onSave() {
     checkMissingInfo(() => {
       const newGPSData: GPS_DTO = {};
-      if (enableCoordinate) {
+      if (props.features.enableCoordinate) {
         newGPSData.coordinates = {
           lat: Number(coordinates.latitude),
           long: Number(coordinates.longitude),
           accuracy: Number(coordinates.accuracy),
         };
       }
-      if (enableAltitude) {
+      if (props.features.enableAltitude) {
         newGPSData.altitude = {
           value: Number(altitude.value),
           accuracy: Number(altitude.accuracy),
@@ -97,7 +95,7 @@ export default function InputsDisplay(props: {
     {errorMessage !== '' && (
       <Text.P
         style={{
-          color: theme.wrong,
+          color: props.theme.wrong,
           textAlign: 'left',
           marginTop: 10,
           marginLeft: 10,
@@ -113,27 +111,27 @@ export default function InputsDisplay(props: {
         paddingTop: 10,
       }}
     >
-      {enableCoordinate && (
+      {props.features.enableCoordinate && (
         <CoordinatesInputs
           tempCoordinate={coordinates}
           onLatitudeChange={(newLat) => setCoordinates(prev => ({ ...prev, latitude: newLat }))}
           onLongitudeChange={(newLong) => setCoordinates(prev => ({ ...prev, longitude: newLong }))}
           onAccuracyChange_Coord={(newAcc) => setCoordinates(prev => ({ ...prev, accuracy: newAcc }))}
-          theme={theme}
+          theme={props.theme}
         />
       )}
-      {enableAltitude && (
+      {props.features.enableAltitude && (
         <AltitudeInputs
           tempAltitude={altitude}
           onAltitudeChange={(newAlt) => setAltitude(prev => ({ ...prev, value: newAlt }))}
           onAccuracyChange_Alt={(newAcc) => setAltitude(prev => ({ ...prev, accuracy: newAcc}))}
-          theme={theme}
+          theme={props.theme}
         />
       )}
       <FooterButtons
         onCancel={() => onCancel()}
         onSave={() => onSave()}
-        theme={theme}
+        theme={props.theme}
       />
     </View>
   </>);

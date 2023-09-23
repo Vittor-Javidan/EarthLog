@@ -4,7 +4,6 @@ export default class AlertService {
 
   private static showModalSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static alertModalConfigSetter: React.Dispatch<React.SetStateAction<AlertModalConfig>> | null = null;
-
   private static onAcceptCallback: (() => void) | (() => Promise<void>) | null = null;
 
   private static setShowModal(boolean: boolean) {
@@ -42,7 +41,6 @@ export default class AlertService {
     this.setConfig(question);
     this.setShowModal(true);
   }
-
 
   static async runAcceptCallback() {
     if (this.onAcceptCallback !== null) {

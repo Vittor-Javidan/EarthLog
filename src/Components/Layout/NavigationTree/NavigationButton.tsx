@@ -3,6 +3,7 @@ import { Pressable } from 'react-native';
 import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Icon, IconName } from '@Icon/index';
 
@@ -11,7 +12,8 @@ export default function NavigationButton(props: {
   onPress?: () => void
 }): JSX.Element {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   return (
@@ -29,14 +31,14 @@ export default function NavigationButton(props: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? theme.tertiary : undefined,
+        backgroundColor: pressed ? theme.onPrimary : theme.primary,
         paddingHorizontal: 20,
         borderRadius: 5,
       }}
     >
       <Icon
         iconName={props.iconName}
-        color={pressed ? theme.onTertiary : theme.onPrimary}
+        color={pressed ? theme.primary : theme.onPrimary}
       />
     </Pressable>
   );

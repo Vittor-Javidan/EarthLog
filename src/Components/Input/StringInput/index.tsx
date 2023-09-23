@@ -23,11 +23,9 @@ export function StringInput(props: {
    * <TextInput /> ˜onChangeText˜ is fired on render when `multiline === true` on IOS. Be carefull on wich code is writed for this
    * callback to trigger.
   */
-  const { theme } = props;
 
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
-
 
   function onTextDelete() {
     if (props.value !== '') {
@@ -47,12 +45,12 @@ export function StringInput(props: {
     <LC.Root
 
       label={props.label}
-      theme={theme}
+      theme={props.theme}
 
       iconButtons={
         <IconButtons
           showUndo={showUndo}
-          theme={theme}
+          theme={props.theme}
           onPress_UndoButton={() => undoDelete()}
           onPress_BackspaceButton={() => onTextDelete()}
         />
@@ -61,7 +59,7 @@ export function StringInput(props: {
       <TextInput
         value={props.value}
         placeholder={props.placeholder}
-        placeholderTextColor={theme.font_placeholder}
+        placeholderTextColor={props.theme.font_placeholder}
         textAlign="left"
         textAlignVertical="top"
         multiline={props.multiline}
@@ -70,8 +68,9 @@ export function StringInput(props: {
           width: '100%',
           paddingVertical: 15,
           paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
-          backgroundColor: theme.background,
-          color: theme.font,
+          backgroundColor: props.theme.background,
+          color: props.theme.font,
+          fontStyle: props.value === '' ? 'italic' : 'normal',
         }}
       />
     </LC.Root>
@@ -84,17 +83,14 @@ function IconButtons (props: {
   onPress_UndoButton: () => void
   onPress_BackspaceButton: () => void
 }) {
-
-  const { theme } = props;
-
   return (<>
     {props.showUndo && (
       <LC.NavbarIconButton
         iconName="arrow-undo"
         onPress={() => props.onPress_UndoButton()}
         theme={{
-          font: theme.font,
-          background: theme.background,
+          font: props.theme.font,
+          background: props.theme.background,
         }}
       />
     )}
@@ -102,8 +98,8 @@ function IconButtons (props: {
       iconName="backspace-outline"
       onPress={() => props.onPress_BackspaceButton()}
       theme={{
-        font: theme.font,
-        background: theme.background,
+        font: props.theme.font,
+        background: props.theme.background,
       }}
     />
   </>);

@@ -32,9 +32,8 @@ export function BooleanInput(props: {
   onInputMoveDow: () => void
 }) {
 
-  const { theme } = props;
-  const { language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Input.BooleanInput[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.Input.BooleanInput[config.language], []);
 
   const [inputData  , setInputData  ] = useState<BooleanInputData>(UtilService.deepCopy(props.inputData));
   const [saveSignal , setSaveSignal ] = useState<boolean>(false);
@@ -43,14 +42,14 @@ export function BooleanInput(props: {
   const notApplicableFalse     = inputData.notApplicable === false;
 
   const valueColor = (notApplicableUndefined || notApplicableFalse) ? (
-    inputData.value === true ? theme.confirm : theme.wrong
-  ) : theme.disabled;
+    inputData.value === true ? props.theme.confirm : props.theme.wrong
+  ) : props.theme.disabled;
 
   const thumbColor = inputData.notApplicable === true
-    ? theme.disabled
+    ? props.theme.disabled
     : inputData.value
-      ? theme.confirm
-      : theme.wrong
+      ? props.theme.confirm
+      : props.theme.wrong
   ;
 
   useTimeout(async () => {
@@ -94,7 +93,7 @@ export function BooleanInput(props: {
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
-      theme={theme}
+      theme={props.theme}
 
       iconButtons={<></>}
     >
@@ -131,7 +130,7 @@ export function BooleanInput(props: {
             >
               <Text.H3
                 style={{
-                  color: theme.font,
+                  color: props.theme.font,
                   fontWeight: '900',
                 }}
               >
@@ -140,14 +139,14 @@ export function BooleanInput(props: {
               <Button.Checkbox
                 value={inputData.notApplicable}
                 onChange={(boolean) => onNotApplicableChange(boolean)}
-                theme={theme}
+                theme={props.theme}
               />
             </View>
           )}
           <Switch
             style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
-            trackColor={{ false: theme.font, true: theme.font }}
-            ios_backgroundColor={theme.font}
+            trackColor={{ false: props.theme.font, true: props.theme.font }}
+            ios_backgroundColor={props.theme.font}
             value={inputData.value}
             onValueChange={(boolean) => onSwitchChange(boolean)}
             thumbColor={thumbColor}

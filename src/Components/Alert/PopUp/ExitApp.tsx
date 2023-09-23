@@ -4,6 +4,7 @@ import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -16,7 +17,8 @@ export default function ExitApp(props: {
   onRefuse: () => void
 }) {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   useEffect(() => {
     vibrate('warning');
@@ -70,8 +72,8 @@ export default function ExitApp(props: {
           onPress={async () => await onAccept()}
           theme={{
             font: theme.confirm,
-            font_Pressed: theme.secondary,
-            background: theme.secondary,
+            font_Pressed: theme.tertiary,
+            background: theme.tertiary,
             background_Pressed: theme.confirm,
           }}
           style={{
@@ -86,10 +88,10 @@ export default function ExitApp(props: {
           iconName="close"
           onPress={async () => onRefuse()}
           theme={{
-            font: theme.secondary,
+            font: theme.tertiary,
             font_Pressed: theme.wrong,
             background: theme.wrong,
-            background_Pressed: theme.secondary,
+            background_Pressed: theme.tertiary,
           }}
           style={{
             height: 40,

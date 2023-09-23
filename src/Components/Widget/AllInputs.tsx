@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeData } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
@@ -10,7 +10,7 @@ export function AllInputs(props: {
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
-  theme: WidgetThemeData
+  theme: WidgetThemeDTO
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: (id_input: ID) => void
   onInputMoveUp: (id_input: ID) => void

@@ -8,14 +8,19 @@ import CacheService from '@Services/CacheService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
+import ThemeService from '@Services/ThemeService';
 
 export default function ProjectButtons() {
 
-  const { theme, language } = useMemo(() => ConfigService.config, []);
-  const R = useMemo(() => translations.Screens.HomeScreen[language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
+
+  const projectsAvailable = CacheService.allProjects.length > 0;
 
   const allProjectButtons = CacheService.allProjects.map((settings, index) => {
     const isLastIndex = index === CacheService.allProjects.length - 1;
+    const isFirstIndex = index === 0;
     return (
       <Button.TextWithIcon
         key={settings.id_project}
@@ -25,25 +30,25 @@ export default function ProjectButtons() {
         onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
         theme={{
           font: theme.onTertiary,
-          font_Pressed: theme.tertiary,
-          background: theme.tertiary,
-          background_Pressed: theme.onTertiary,
+          background: theme.secondary,
+          font_Pressed: theme.onTertiary,
+          background_Pressed: theme.tertiary,
         }}
-        style={isLastIndex ? {
-          borderBottomLeftRadius: 10,
-          borderBottomRightRadius: 10,
-        } : undefined}
+        style={{
+          borderTopLeftRadius: isFirstIndex ? 10 : 0,
+          borderTopRightRadius: isFirstIndex ? 10 : 0,
+          borderBottomLeftRadius: isLastIndex ? 10 : 0,
+          borderBottomRightRadius: isLastIndex ? 10 : 0,
+        }}
       />
     );
   });
-
-  const projectsAvailable = CacheService.allProjects.length > 0;
 
   return (<>
     {projectsAvailable && (
       <View
         style={{
-          backgroundColor: theme.secondary,
+          backgroundColor: theme.primary,
           paddingHorizontal: 2,
           paddingBottom: 2,
           borderRadius: 10,
@@ -53,7 +58,7 @@ export default function ProjectButtons() {
           style={{
             marginVertical: 5,
             marginLeft: 5,
-            color: theme.onSecondary,
+            color: theme.onPrimary,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}
