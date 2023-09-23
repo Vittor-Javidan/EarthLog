@@ -70,16 +70,16 @@ function DataInfo(props: {
         justifyContent: 'space-between',
       }}
     >
-      <Text.P
+      <Text p
         style={{ color: props.theme.font }}
       >
         {`${props.title}:`}
-      </Text.P>
-      <Text.P
+      </Text>
+      <Text p
         style={{ color: props.theme.font }}
       >
         {`${props.value} (${props.precision}m)`}
-      </Text.P>
+      </Text>
     </View>
   );
 }

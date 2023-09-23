@@ -104,13 +104,13 @@ export default function DeleteSwipeButton(props: {
             alignItems: 'center',
           }}
         >
-          <Text.H3
+          <Text h3
             style={{
               color: props.theme.background,
             }}
           >
             Release to confirm
-          </Text.H3>
+          </Text>
         </View>
         <Animated.View
           style={[{
@@ -191,7 +191,7 @@ function CancelButton(props: {
         paddingRight: 6,
 			}}
 		>
-      <Text.Root
+      <Text
 				style={{
 					fontSize: 200,
           color: pressed ? props.theme.background : props.theme.font,
@@ -199,7 +199,7 @@ function CancelButton(props: {
 				}}
 			>
 				{'Cancel'}
-			</Text.Root>
+			</Text>
       <Icon
         iconName="close"
         color={pressed ? props.theme.background : props.theme.font}

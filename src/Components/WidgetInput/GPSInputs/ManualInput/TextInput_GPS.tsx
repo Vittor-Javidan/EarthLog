@@ -45,14 +45,14 @@ export default function TextInput_GPS(props: {
         alignItems: 'flex-end',
       }}
     >
-      <Text.P
+      <Text p
         style={{
           color: props.theme.font,
           textAlign: 'left',
         }}
       >
         {`${props.title}:`}
-      </Text.P>
+      </Text>
       <TextInput
         style={{
           width: '50%',

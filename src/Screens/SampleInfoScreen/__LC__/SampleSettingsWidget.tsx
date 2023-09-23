@@ -84,7 +84,7 @@ export default function SampleSettingsWidget(props: {
           gap: 5,
         }}
       >
-        <Text.H2
+        <Text h2
           style={{
             textAlign: 'center',
             color: theme.font,
@@ -93,7 +93,7 @@ export default function SampleSettingsWidget(props: {
           }}
         >
           {R['Sample info']}
-        </Text.H2>
+        </Text>
         <WidgetInput.String
           inputData={{
             id_input: '',

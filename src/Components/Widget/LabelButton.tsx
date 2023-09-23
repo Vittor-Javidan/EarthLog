@@ -53,7 +53,7 @@ export function LabelButton(props: {
         <Pressable
           onPress={() => onPress()}
         >
-          <Text.H2
+          <Text h2
             style={{
               textAlign: 'center',
               color: props.theme.font,
@@ -62,7 +62,7 @@ export function LabelButton(props: {
             }}
           >
             {props.label === '' ? '-------' : props.label}
-          </Text.H2>
+          </Text>
         </Pressable>
       )}
     </View>

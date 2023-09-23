@@ -29,7 +29,7 @@ export function InputRoot(props: {
           zIndex: 1,
         }}
       >
-        <Text.Root
+        <Text
           style={{
             backgroundColor: props.theme.background,
             color: props.theme.font,
@@ -38,7 +38,7 @@ export function InputRoot(props: {
           }}
         >
           {props.label}
-        </Text.Root>
+        </Text>
       </View>
       <View
         style={{

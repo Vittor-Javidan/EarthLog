@@ -54,7 +54,7 @@ export default function ProjectButtons() {
           borderRadius: 10,
         }}
       >
-        <Text.H2
+        <Text h2
           style={{
             marginVertical: 5,
             marginLeft: 5,
@@ -64,7 +64,7 @@ export default function ProjectButtons() {
           }}
         >
           {R['Projects']}
-        </Text.H2>
+        </Text>
         <View
           style={{ gap: 2 }}
         >

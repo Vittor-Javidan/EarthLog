@@ -28,11 +28,11 @@ export default function RealTimeAccuracy(props: {
 
   return (
     <View>
-      <Text.P
+      <Text p
         style={{ color: props.theme.font }}
       >
         {R['Real time accuracy:']}
-      </Text.P>
+      </Text>
       {props.features.enableCoordinate && props.accuracy.coordinate !== null && (
         <AccuracyInfo
           title={R['Coordinates']}
@@ -63,16 +63,16 @@ function AccuracyInfo(props: {
         justifyContent: 'space-between',
       }}
     >
-      <Text.P
+      <Text p
         style={{ color: props.theme.font }}
       >
         {`${props.title}:`}
-      </Text.P>
-      <Text.P
+      </Text>
+      <Text p
         style={{ color: props.theme.font }}
       >
         {`${props.precision}m`}
-      </Text.P>
+      </Text>
     </View>
   );
 }

@@ -105,14 +105,14 @@ export function BooleanInput(props: {
           marginTop: props.editWidget ? 0 : -5,
         }}
       >
-        <Text.H3
+        <Text h3
           style={{
             color: valueColor,
             fontWeight: '900',
           }}
         >
           {R[`${inputData.value}`]}
-        </Text.H3>
+        </Text>
         <View
           style={{
             flexDirection: 'row',
@@ -128,14 +128,14 @@ export function BooleanInput(props: {
                 gap: 10,
               }}
             >
-              <Text.H3
+              <Text h3
                 style={{
                   color: props.theme.font,
                   fontWeight: '900',
                 }}
               >
                 N/A:
-              </Text.H3>
+              </Text>
               <Button.Checkbox
                 value={inputData.notApplicable}
                 onChange={(boolean) => onNotApplicableChange(boolean)}

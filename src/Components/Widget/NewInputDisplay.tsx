@@ -29,7 +29,7 @@ export function NewInputDisplay(props: {
     <View
       style={{ paddingTop: 10 }}
     >
-      <Text.H2
+      <Text h2
         style={{
           color: props.theme.font,
           paddingHorizontal: 10,
@@ -37,7 +37,7 @@ export function NewInputDisplay(props: {
         }}
       >
         {'Add a new Input:'}
-      </Text.H2>
+      </Text>
       <View
         style={{
           flexDirection: 'row',
@@ -84,13 +84,13 @@ function Button(props: {
         borderRadius: 100,
 			}}
 		>
-      <Text.P
+      <Text p
 				style={{
           color: props.theme.background,
 				}}
 			>
 				{props.title}
-			</Text.P>
+			</Text>
 		</Pressable>
   );
 }

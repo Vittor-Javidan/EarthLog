@@ -36,7 +36,7 @@ export default function LoadingFeedback(props: {
       }}
     >
       <ActivityIndicator size="small" />
-      <Text.P
+      <Text p
         style={{
           color: props.theme.font,
           textAlign: 'justify',
@@ -46,7 +46,7 @@ export default function LoadingFeedback(props: {
           ? R['Nothing selected']
           : R['Collecting the best data. Updates can take a few seconds...']
         }
-      </Text.P>
+      </Text>
     </View>
   );
 }

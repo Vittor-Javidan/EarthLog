@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Text,Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 
 import ApticsService from '@Services/ApticsService';
 
 import { Icon, IconName } from '@Icon/index';
+import { Text } from '@Text/index';
 
 type ButtonTheme = {
   font: string
@@ -53,8 +54,6 @@ export function RoundedIconButton(props: {
     >
       {props.showPlusSign && (
         <Text
-          maxFontSizeMultiplier={0}
-          adjustsFontSizeToFit={true}
           style={{
             color: pressed ? props.theme.font_Pressed : props.theme.font,
             fontSize: 25,

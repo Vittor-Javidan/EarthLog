@@ -47,14 +47,14 @@ export default function ManualInputButton(props: {
 				backgroundColor: pressed ? props.theme.background : props.theme.font,
 			}}
 		>
-      <Text.Root
+      <Text
 				style={{
 					fontSize: 200,
           color: pressed ? props.theme.font : props.theme.background,
 				}}
 			>
 				{R['Manual']}
-			</Text.Root>
+			</Text>
       <Icon
         iconName="pencil-sharp"
         color={pressed ? props.theme.font : props.theme.background}

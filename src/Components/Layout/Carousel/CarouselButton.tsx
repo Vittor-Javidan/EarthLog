@@ -50,7 +50,7 @@ export const CarouselButton = memo((props: {
 			}, leftPositionStyle, rightPositionStyle]}
 		>
       {props.title !== '' && (
-        <Text.P
+        <Text p
           style={{
             color: props.selected ? theme.font_active : theme.font,
             textDecorationLine: props.selected ? 'underline' : 'none',
@@ -58,7 +58,7 @@ export const CarouselButton = memo((props: {
           }}
         >
           {props.title}
-        </Text.P>
+        </Text>
       )}
       {props.iconName !== undefined && (
         <Icon

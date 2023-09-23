@@ -63,14 +63,14 @@ export function TextWithIcon(props: {
           />
         </View>
       )}
-      <Text.Root
+      <Text
 				style={{
 					fontSize: iosLargeTitle ? FontService.FONTS.h3 : 200,
           color: pressed ? props.theme.font_Pressed : props.theme.font,
 				}}
 			>
 				{props.title}
-			</Text.Root>
+			</Text>
       {props.iconSide === 'Right' && (
         <View
           style={{ paddingVertical: iosLargeTitle ? 5 : 0}}

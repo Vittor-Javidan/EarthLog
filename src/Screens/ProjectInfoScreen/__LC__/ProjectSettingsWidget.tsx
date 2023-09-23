@@ -108,7 +108,7 @@ export default function ProjectSettingsWidget(props: {
           gap: 5,
         }}
       >
-        <Text.H2
+        <Text h2
           style={{
             textAlign: 'center',
             color: pseudoWidgetTheme.font,
@@ -117,7 +117,7 @@ export default function ProjectSettingsWidget(props: {
           }}
         >
           {R['Project info']}
-        </Text.H2>
+        </Text>
         <WidgetInput.String
           inputData={{
             id_input: '',
@@ -186,7 +186,7 @@ export default function ProjectSettingsWidget(props: {
           gap: 5,
         }}
       >
-        <Text.H2
+        <Text h2
           style={{
             textAlign: 'center',
             color: pseudoWidgetTheme.font,
@@ -196,7 +196,7 @@ export default function ProjectSettingsWidget(props: {
           }}
         >
           {'Sample Alias'}
-        </Text.H2>
+        </Text>
         <WidgetInput.String
           inputData={{
             id_input: '',

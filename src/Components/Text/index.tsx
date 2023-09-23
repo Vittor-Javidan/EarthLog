@@ -1,13 +1,44 @@
-import RootText from './Root';
-import H1 from './H1';
-import H2 from './H2';
-import H3 from './H3';
-import P from './P';
+import React from 'react';
+import { Text as ReactNative_Text, StyleProp, TextStyle } from 'react-native';
 
-export const Text = {
-  Root: RootText,
-  H1: H1,
-  H2: H2,
-  H3: H3,
-  P: P,
-};
+import FontService from '@Services/FontService';
+
+export function Text(props: {
+  h1?: boolean
+  h2?: boolean
+  h3?: boolean
+  p?: boolean
+  children: string
+  style?: StyleProp<TextStyle>
+}) {
+
+  return (
+    <ReactNative_Text
+      maxFontSizeMultiplier={0}
+      adjustsFontSizeToFit={true}
+      style={[
+        props.h1 && {
+          textAlign: 'left',
+          fontWeight: '700',
+          fontSize: FontService.FONTS.h1,
+        },
+        props.h2 && {
+          textAlign: 'left',
+          fontWeight: '500',
+          fontSize: FontService.FONTS.h2,
+        },
+        props.h3 && {
+          textAlign: 'left',
+          fontSize: FontService.FONTS.h3,
+        },
+        props.p && {
+          textAlign: 'justify',
+          fontSize: FontService.FONTS.p,
+        },
+        props.style,
+      ]}
+    >
+      {props.children}
+    </ReactNative_Text>
+  );
+}

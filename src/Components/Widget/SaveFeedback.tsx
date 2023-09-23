@@ -26,13 +26,13 @@ export default function SaveFeedback(props: {
           borderRadius: 6,
         }}
       />
-      <Text.P
+      <Text p
         style={{
           color: props.theme.font,
         }}
       >
         {props.saved ? 'Saved' : 'Saving...'}
-      </Text.P>
+      </Text>
     </View>
   );
 }

@@ -49,14 +49,14 @@ export default function ExitApp(props: {
           alignItems: 'center',
         }}
       >
-        <Text.H3
+        <Text h3
           style={{
             textAlign: 'center',
             padding: 10,
           }}
         >
           {props.question}
-        </Text.H3>
+        </Text>
       </View>
       <View
         style={{

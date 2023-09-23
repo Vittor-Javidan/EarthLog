@@ -92,17 +92,17 @@ function Navbar(props: {
           paddingHorizontal: 10,
         }}
       >
-        <Text.H1
+        <Text h1
           style={{ color: theme.font }}
         >
           {props.title}
-        </Text.H1>
+        </Text>
         {props.subtitle !== '' && (
-          <Text.P
+          <Text p
             style={{ color: theme.font }}
           >
             {props.subtitle}
-          </Text.P>
+          </Text>
         )}
       </View>
       <MenuButton
@@ -201,7 +201,7 @@ const Drawer = memo((props: {
           backgroundColor: theme.background,
         }}
       >
-        <Text.Root
+        <Text
           style={{
             color: theme.font,
             textAlign: 'right',
@@ -210,7 +210,7 @@ const Drawer = memo((props: {
           }}
         >
           {'v: ' + APP_VERSION}
-        </Text.Root>
+        </Text>
       </Pressable>
     </ScrollView>
   );

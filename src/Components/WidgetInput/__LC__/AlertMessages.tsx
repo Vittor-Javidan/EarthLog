@@ -19,14 +19,14 @@ export function AlertMessages(props: {
   }
 
   const Messages = Object.values(props.alertMessages).map(alertMessage => (
-    <Text.P
+    <Text p
       key={alertMessage}
       style={{
         color: props.theme.modified,
       }}
     >
       {alertMessage}
-    </Text.P>
+    </Text>
   ));
 
   return (

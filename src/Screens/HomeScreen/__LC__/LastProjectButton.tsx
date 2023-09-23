@@ -28,7 +28,7 @@ export default function LastProjectButton() {
         borderRadius: 10,
       }}
     >
-      <Text.H2
+      <Text h2
         style={{
           marginVertical: 5,
           marginLeft: 5,
@@ -38,7 +38,7 @@ export default function LastProjectButton() {
         }}
       >
         {R['Recently Open']}
-      </Text.H2>
+      </Text>
       <Button.TextWithIcon
         title={CacheService.lastOpenProject.name}
         iconName="folder"

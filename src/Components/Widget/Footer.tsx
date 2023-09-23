@@ -45,12 +45,11 @@ export function Footer(props: {
             onChange={(checked) => onChangeCheckbox(checked)}
             theme={props.theme}
           />
-          <Text.P
-            //TODO:  Add to translation files
+          <Text p
             style={{ color: props.theme.font }}
           >
             Add to new samples
-          </Text.P>
+          </Text>
         </View>
       )}
       {props.showDeleteWidgetButton && (

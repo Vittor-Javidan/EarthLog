@@ -141,7 +141,7 @@ function LabelButton(props: {
         <Pressable
           onPress={() => onPress()}
         >
-          <Text.Root
+          <Text
             style={{
               backgroundColor: props.theme.background,
               color: props.theme.font,
@@ -150,7 +150,7 @@ function LabelButton(props: {
             }}
           >
             {props.label === '' ? '-------' : props.label}
-          </Text.Root>
+          </Text>
         </Pressable>
       )}
     </View>

@@ -93,7 +93,7 @@ export default function InputsDisplay(props: {
 
   return (<>
     {errorMessage !== '' && (
-      <Text.P
+      <Text p
         style={{
           color: props.theme.wrong,
           textAlign: 'left',
@@ -102,7 +102,7 @@ export default function InputsDisplay(props: {
         }}
       >
         {errorMessage}
-      </Text.P>
+      </Text>
     )}
     <View
       style={{

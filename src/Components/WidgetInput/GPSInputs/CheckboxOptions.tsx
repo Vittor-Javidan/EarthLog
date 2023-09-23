@@ -72,11 +72,11 @@ function Option(props: {
         onChange={(checked => onChange(checked))}
         theme={props.theme}
       />
-      <Text.H3
+      <Text h3
         style={{ color: props.value ? props.theme.confirm : props.theme.font }}
       >
         {props.title}
-      </Text.H3>
+      </Text>
     </View>
   );
 }

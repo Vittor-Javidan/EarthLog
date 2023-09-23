@@ -8,13 +8,13 @@ export function ThemeDisplay(props: {
   theme: WidgetThemeDTO
 }) {
   return (
-    <Text.P
+    <Text p
       style={{
         paddingHorizontal: 10,
         color: props.theme.font,
       }}
     >
       Soon...
-    </Text.P>
+    </Text>
   );
 }
