@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 import FontService from '@Services/FontService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 
@@ -19,7 +19,7 @@ export function LabelButton(props: {
 
   function onPress() {
     props.onPress();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+    ApticsService.vibrate('warning');
   }
 
   return (

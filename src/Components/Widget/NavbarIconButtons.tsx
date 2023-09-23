@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable } from 'react-native';
-import * as Vibration from 'expo-haptics';
+
+import ApticsService from '@Services/ApticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
@@ -21,12 +22,12 @@ export function NavbarIconButton(props: {
 
   function onPress() {
     props.onPress();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPressOut() {

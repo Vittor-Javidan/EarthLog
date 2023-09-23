@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -19,7 +19,7 @@ export function Footer(props: {
 
   function onChangeCheckbox(checked: boolean) {
     props.onChangeCheckbox(checked);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   return (props.showCheckbox || props.showDeleteWidgetButton) ? (

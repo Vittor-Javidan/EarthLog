@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
-import * as Vibration from 'expo-haptics';
+
+import ApticsService from '@Services/ApticsService';
 
 export function useBackPress(onPress: () => void) {
   useEffect(() => {
@@ -8,7 +9,7 @@ export function useBackPress(onPress: () => void) {
       'hardwareBackPress',
       () => {
         onPress();
-        Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+        ApticsService.vibrate('success');
         return true;
       },
     );

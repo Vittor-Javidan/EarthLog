@@ -2,7 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { View, Dimensions, Pressable } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
-import * as Vibration from 'expo-haptics';
+
+import ApticsService from '@Services/ApticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -47,7 +48,7 @@ export default function DeleteSwipeButton(props: {
   }));
 
   function vibrate() {
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+    ApticsService.vibrate('warning');
   }
 
   const panGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { x: number }>({
@@ -164,12 +165,12 @@ function CancelButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPress() {
     props.onPress();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
 	return (

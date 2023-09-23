@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { GPSFeaturesDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -56,7 +56,7 @@ function Option(props: {
 
   function onChange(checked: boolean) {
     props.onChange(checked);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   return (

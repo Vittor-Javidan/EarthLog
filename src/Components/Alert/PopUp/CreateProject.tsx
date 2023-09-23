@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import ApticsService from '@Services/ApticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -33,7 +33,7 @@ export default function CreateProject(props: {
         },
         async (errorMesage) => {
           alert(errorMesage);
-          Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+          ApticsService.vibrate('warning');
         }
       );
     }

@@ -1,9 +1,9 @@
 import React, {  useMemo, memo } from 'react';
 import { StyleProp, ViewStyle, Pressable } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -30,7 +30,7 @@ export const CarouselButton = memo((props: {
 
   function onPressIn(selected: boolean) {
     if (!selected) {
-      Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      ApticsService.vibrate('success');
       props.onPress();
     }
   }

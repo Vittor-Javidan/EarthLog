@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { View, Switch, Platform } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { BooleanInputData, InputStatus } from '@Types/ProjectTypes';
 import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -61,7 +61,7 @@ export function BooleanInput(props: {
 
   function onSwitchChange(boolean: boolean) {
     if (notApplicableUndefined || notApplicableFalse) {
-      Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+      ApticsService.vibrate('success');
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, value: boolean }));
       setSaveSignal(true);
@@ -70,7 +70,7 @@ export function BooleanInput(props: {
   }
 
   function onNotApplicableChange(boolean: boolean) {
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
     props.onSave(null, 'modifying');
     setInputData(prev => ({ ...prev, notApplicable: boolean }));
     setSaveSignal(true);

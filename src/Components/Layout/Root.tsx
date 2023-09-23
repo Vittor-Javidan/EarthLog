@@ -3,12 +3,12 @@ import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as Vibration from 'expo-haptics';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import FontService from '@Services/FontService';
+import ApticsService from '@Services/ApticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -123,12 +123,12 @@ function MenuButton(props: {
 
   async function onPressIn() {
     setPressed(true);
-    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   async function onPress() {
     props.onPress();
-    await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   return (

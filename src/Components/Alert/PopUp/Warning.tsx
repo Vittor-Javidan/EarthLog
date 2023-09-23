@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
+import ApticsService from '@Services/ApticsService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
-
-type Vibration = 'warning' | 'success'
 
 export default function Warning(props: {
   question: string
@@ -21,7 +19,7 @@ export default function Warning(props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
   useEffect(() => {
-    vibrate('warning');
+    ApticsService.vibrate('warning');
   }, []);
 
   async function onAccept() {
@@ -68,11 +66,4 @@ export default function Warning(props: {
       />
   </View>
   );
-}
-
-async function vibrate(type: Vibration) {
-  switch (type) {
-    case 'warning': await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning); break;
-    case 'success': await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success); break;
-  }
 }

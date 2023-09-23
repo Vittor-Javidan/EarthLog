@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Platform, Pressable, StyleProp, ViewStyle } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import FontService from '@Services/FontService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -28,12 +28,12 @@ export function TextWithIcon(props: {
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPress() {
     props.onPress();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
 	return (

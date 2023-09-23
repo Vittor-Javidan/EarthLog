@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { BackHandler } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { Loading } from '@Types/AppTypes';
 import { navigate } from '@Globals/NavigationControler';
@@ -10,6 +9,7 @@ import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import ApticsService from '@Services/ApticsService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -23,7 +23,7 @@ export default function HomeScope() {
 
   useBackPress(async () => {
     await exitMessage();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Warning);
+    ApticsService.vibrate('warning');
   });
 
   useEffect(() => {

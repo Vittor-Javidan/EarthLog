@@ -6,7 +6,7 @@ export const DEFAULT: AppThemeDTO = {
       background: '#000',
     },
     loadingIcon: {
-      font: '#f59842',
+      font: '#FFF',
     },
     statusBar: {
       background: '#FFF',

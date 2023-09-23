@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ApticsService from '@Services/ApticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -20,12 +20,12 @@ export default function ManualInputButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPressOut() {
     setPressed(false);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
 	return (

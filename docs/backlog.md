@@ -1,4 +1,3 @@
-- Create a vibration function to stop importing aptics.
 - implement Sample Alias
 - implement the new Home Screen design
 - on GPSInput manual input, change "," for '.' when user type ","

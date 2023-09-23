@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text,Pressable } from 'react-native';
-import * as Vibration from 'expo-haptics';
+
+import ApticsService from '@Services/ApticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
@@ -23,12 +24,12 @@ export function RoundedIconButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPress() {
     props.onPress();
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   return (

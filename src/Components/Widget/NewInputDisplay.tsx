@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
+import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 
@@ -64,7 +64,7 @@ function Button(props: {
 
   function onPressIn() {
     setPressed(true);
-    Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+    ApticsService.vibrate('success');
   }
 
   function onPressOut() {

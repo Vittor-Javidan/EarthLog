@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { Pressable } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
+import ApticsService from '@Services/ApticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
@@ -20,7 +20,7 @@ export default function NavigationButton(props: {
     <Pressable
       onPressIn={async () => {
         setPressed(true);
-        await Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+        ApticsService.vibrate('success');
       }}
       onPressOut={() => {
         setPressed(false);
