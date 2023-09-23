@@ -1,10 +1,10 @@
-- create the theme display for widgets
 - Create a vibration function to stop importing aptics.
 - implement Sample Alias
 - implement the new Home Screen design
 - on GPSInput manual input, change "," for '.' when user type ","
-- Fix all translations
 - implement the "add custom widget" buttom
+- create the theme display for widgets
 - Implement all rules
 - Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
+- Fix all translations
 - Validadete on IOS

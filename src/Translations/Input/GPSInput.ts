@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_Input_GPSInput = Record<Languages, {
+export type Translations_Input_GPSInput = Record<LanguageTag, {
   'Coordinates': string
   'Latitude': string
   'Longitude': string

@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_WidgetSelector = Record<Languages, {
+export type Translations_WidgetSelector = Record<LanguageTag, {
   '* Reference distance: ': string
 }>
 

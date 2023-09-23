@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_ErrorMessages = Record<Languages, {
+export type Translations_ErrorMessages = Record<LanguageTag, {
   'Project ID undefined': string
   'Sample ID undefined': string
 }>

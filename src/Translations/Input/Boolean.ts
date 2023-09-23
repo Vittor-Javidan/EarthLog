@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_BooleanData = Record<Languages, {
+export type Translations_BooleanData = Record<LanguageTag, {
   'true': string
   'false': string
 }>

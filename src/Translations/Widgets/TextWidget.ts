@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_TextWidget = Record<Languages, {
+export type Translations_TextWidget = Record<LanguageTag, {
   'Not possible to have 2 Widgets with the same name.': string
   'Value cannot have empty spaces.': string
   'only numbers, and letter from "a" to "z" or "A" to "Z" is allow.': string

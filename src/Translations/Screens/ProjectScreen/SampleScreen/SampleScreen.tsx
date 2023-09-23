@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_SampleScreen = Record<Languages, {
+export type Translations_SampleScreen = Record<LanguageTag, {
   'Edit sample': string
 }>
 

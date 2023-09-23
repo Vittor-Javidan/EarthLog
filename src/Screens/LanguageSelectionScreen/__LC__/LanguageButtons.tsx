@@ -1,36 +1,36 @@
 import React, { useMemo } from 'react';
 
-import { languageLabels, languageTags, LanguageTags } from '@Types/AppTypes';
+import { languageTags, LanguageTag } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 
 export default function LanguageButtons(props: {
-  onLangaugeSelected: (languageTag: LanguageTags) => void
+  onLangaugeSelected: (languageTag: LanguageTag) => void
 }): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
-  async function saveSelectedLanguage(languageTag: LanguageTags) {
+  async function saveSelectedLanguage(languageTag: LanguageTag) {
     ConfigService.config.language = languageTag;
     await ConfigService.saveConfig();
   }
 
-  const LanguageButtonsArray = languageLabels.map((languageLabel, index) => {
+  const LanguageButtonsArray = languageTags.map((languageTag) => {
 
-    const isSelected = config.language === languageTags[index];
+    const isSelected = config.language === languageTag;
 
     async function onSelectLanguage() {
-      props.onLangaugeSelected(languageTags[index]);
-      await saveSelectedLanguage(languageTags[index]);
+      props.onLangaugeSelected(languageTag);
+      await saveSelectedLanguage(languageTag);
     }
 
     return (
       <Button.TextWithIcon
-        key={languageLabel}
-        title={languageLabel}
+        key={languageTag}
+        title={languageTag}
         iconName="language"
         iconSide="Right"
         theme={{

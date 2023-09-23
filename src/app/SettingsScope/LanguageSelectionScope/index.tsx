@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import { LanguageTags } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
 import { translations } from '@Translations/index';
@@ -11,7 +11,7 @@ import LanguagesSelectionScreen from '@Screens/LanguageSelectionScreen';
 
 export default function LanguageSelectionScope(): JSX.Element {
 
-  const [language, setLanguage] = useState<LanguageTags>(ConfigService.config.language);
+  const [language, setLanguage] = useState<LanguageTag>(ConfigService.config.language);
   const R = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
   useBackPress(() => navigate('SETTINGS SCOPE'));

@@ -5,10 +5,10 @@ import { Layout } from '@Layout/index';
 
 import { LC } from './__LC__';
 import { TC } from './__TC__';
-import { LanguageTags } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
 export default function LanguagesSelectionScreen(props: {
-  onLanguageChange: (languageTag: LanguageTags) => void
+  onLanguageChange: (languageTag: LanguageTag) => void
 }): JSX.Element {
 
   return (

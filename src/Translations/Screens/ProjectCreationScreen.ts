@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_ProjectCreationScreen = Record<Languages, {
+export type Translations_ProjectCreationScreen = Record<LanguageTag, {
   'Project creation': string
   'Project info': string
   'ID': string

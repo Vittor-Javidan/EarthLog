@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_HomeScreen = Record<Languages, {
+export type Translations_HomeScreen = Record<LanguageTag, {
 	'Home screen': string
 	'Settings': string
 	'Hold on!': string

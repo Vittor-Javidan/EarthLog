@@ -1,9 +1,7 @@
 export type Loading = 'Loaded' | 'Loading';
 
 export const languageTags   = ['en-US', 'pt-BR'] as const;
-export const languageLabels = ['English', 'Português-Brasil'] as const;
-export type Languages    = (typeof languageTags)[number];
-export type LanguageTags = (typeof languageTags)[number];
+export type LanguageTag = (typeof languageTags)[number];
 
 export const ThemeNamesArray_APP     = ['default'] as const;
 export const ThemeNamesArray_Widgets = ['default'] as const;
@@ -89,7 +87,7 @@ export type AppThemeDTO = {
 }
 
 export type ConfigDTO = {
-  language: Languages
+  language: LanguageTag
   appTheme: ThemeNames_APP
 }
 

@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_WidgetsComponents_Modal = Record<Languages, {
+export type Translations_WidgetsComponents_Modal = Record<LanguageTag, {
   'Delete': string
   'Widget name': string
   'Tip': string

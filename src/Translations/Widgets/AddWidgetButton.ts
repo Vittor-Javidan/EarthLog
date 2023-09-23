@@ -1,6 +1,6 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
-export type Translations_AddWidgetButton = Record<Languages, {
+export type Translations_AddWidgetButton = Record<LanguageTag, {
   'Add': string
   'Add Widget': string
   'Widget name': string

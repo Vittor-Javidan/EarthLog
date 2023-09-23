@@ -1,7 +1,7 @@
-import { Languages } from '@Types/AppTypes';
+import { LanguageTag } from '@Types/AppTypes';
 
 
-export type Translations_LanguagesScreen = Record<Languages, {
+export type Translations_LanguagesScreen = Record<LanguageTag, {
   'Languages': string
   'Back': string
 }>
