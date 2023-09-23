@@ -12,7 +12,7 @@ export default function ScreenButtons(props: {
 }) {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
   async function createProject() {
     AlertService.handleAlert(true, {
@@ -33,10 +33,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={async () => await createProject()}
           theme={{
-            font: theme.tertiary,
-            font_Pressed: theme.secondary,
+            font: theme.font,
+            font_Pressed: theme.confirm,
             background: theme.confirm,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
         />,
       ]}

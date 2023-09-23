@@ -7,7 +7,7 @@ import ThemeService from '@Services/ThemeService';
 export default function Loading(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.loadingIcon, []);
 
   return (
     <View
@@ -19,7 +19,7 @@ export default function Loading(): JSX.Element {
     >
       <ActivityIndicator
         size="large"
-        color={theme.primary}
+        color={theme.font}
       />
     </View>
   );

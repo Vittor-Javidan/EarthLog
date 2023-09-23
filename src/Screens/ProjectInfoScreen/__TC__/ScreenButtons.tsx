@@ -16,7 +16,7 @@ export default function ScreenButtons(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   async function createWidget_Project() {
@@ -55,10 +55,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={() => navigate('HOME SCOPE')}
           theme={{
-            font: theme.onSecondary,
-            font_Pressed: theme.onTertiary,
-            background: theme.secondary,
-            background_Pressed: theme.tertiary,
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
           }}
         />,
         <Button.RoundedIcon
@@ -68,10 +68,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={() => setShow_DeleteSwap(true)}
           theme={{
-            font: theme.onWrong,
-            font_Pressed: theme.onTertiary,
+            font: theme.font,
+            font_Pressed: theme.wrong,
             background: theme.wrong,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
         />,
         <Button.RoundedIcon
@@ -81,10 +81,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={() => createWidget_Project()}
           theme={{
-            font: theme.onConfirm,
-            font_Pressed: theme.onTertiary,
+            font: theme.font,
+            font_Pressed: theme.confirm,
             background: theme.confirm,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
         />,
       ]}
@@ -96,8 +96,8 @@ export default function ScreenButtons(props: {
           onCancel={() => setShow_DeleteSwap(false)}
           buttonRadius={30}
           theme={{
-            font: theme.onTertiary,
-            background: theme.tertiary,
+            font: theme.confirm,
+            background: theme.background_active,
             confirm: theme.confirm,
             wrong: theme.wrong,
           }}

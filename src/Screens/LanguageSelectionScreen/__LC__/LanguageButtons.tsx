@@ -11,7 +11,7 @@ export default function LanguageButtons(props: {
 }): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
   async function saveSelectedLanguage(languageTag: LanguageTags) {
     ConfigService.config.language = languageTag;
@@ -34,10 +34,10 @@ export default function LanguageButtons(props: {
         iconName="language"
         iconSide="Right"
         theme={{
-          font: isSelected ? theme.tertiary : theme.onSecondary,
-          background: isSelected ? theme.confirm : theme.secondary,
-          font_Pressed: isSelected ? theme.confirm : theme.onTertiary,
-          background_Pressed: isSelected ? theme.tertiary : theme.tertiary,
+          font: isSelected ? theme.background : theme.font_Button,
+          font_Pressed: isSelected ? theme.confirm : theme.font,
+          background: isSelected ? theme.confirm : theme.background_Button,
+          background_Pressed: isSelected ? theme.background : theme.background,
         }}
         onPress={async () => await onSelectLanguage()}
       />

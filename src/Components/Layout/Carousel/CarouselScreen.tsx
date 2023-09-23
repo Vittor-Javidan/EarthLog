@@ -21,6 +21,8 @@ export function CarouselScreen(props: {
   overlayButtons: JSX.Element
 }) {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.carousel, []);
   const CAROUSEL_WIDTH = useMemo(() => props.screens.length * SCREEN_WIDTH, []);
   const OFFSETS = useMemo(() => getOffSets(props.screens.length), []);
 
@@ -28,9 +30,12 @@ export function CarouselScreen(props: {
     <View
       style={{
         flex: 1,
+        backgroundColor: theme.background_Screens,
       }}
     >
-      <CarouselButtonsRoot>
+      <CarouselButtonsRoot
+        theme={theme}
+      >
         {props.overlayButtons}
       </CarouselButtonsRoot>
       <CarouselAnimation
@@ -45,10 +50,12 @@ export function CarouselScreen(props: {
 
 function CarouselButtonsRoot(props: {
   children: ReactNode
+  theme: {
+    border: string
+    background: string
+  }
 }) {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const MARGIN = 10;
 
   return (
@@ -60,8 +67,8 @@ function CarouselButtonsRoot(props: {
         alignSelf: 'center',
         width: SCREEN_WIDTH - MARGIN - MARGIN,
         height: 35,
-        borderColor: theme.tertiary,
-        backgroundColor: theme.tertiary,
+        borderColor: props.theme.border,
+        backgroundColor: props.theme.background,
         borderRadius: 20,
         borderWidth: 2,
         top: 10,

@@ -17,7 +17,7 @@ export const CarouselButton = memo((props: {
 }) => {
 
 	const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.carouselButton, []);
 
   const leftPositionStyle: StyleProp<ViewStyle>  = useMemo(() => props.type === 'left' ? {
     borderTopLeftRadius: 15,
@@ -43,7 +43,7 @@ export const CarouselButton = memo((props: {
 				justifyContent: 'center',
 				alignItems: 'center',
         gap: 5,
-				backgroundColor: props.selected ? theme.tertiary : theme.secondary,
+				backgroundColor: props.selected ? theme.background_active : theme.background,
         flex: 1,
 				paddingHorizontal: 5,
         paddingVertical: 2,
@@ -52,7 +52,7 @@ export const CarouselButton = memo((props: {
       {props.title !== '' && (
         <Text.P
           style={{
-            color: props.selected ? theme.primary : theme.onSecondary,
+            color: props.selected ? theme.font_active : theme.font,
             textDecorationLine: props.selected ? 'underline' : 'none',
             fontWeight: '900',
           }}
@@ -62,7 +62,7 @@ export const CarouselButton = memo((props: {
       )}
       {props.iconName !== undefined && (
         <Icon
-          color={props.selected ? theme.primary : theme.onSecondary}
+          color={props.selected ? theme.font_active : theme.font}
           iconName={props.iconName}
         />
       )}

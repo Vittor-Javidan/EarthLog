@@ -13,7 +13,7 @@ export default function NavigationButton(props: {
 }): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navigationTreeButton, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   return (
@@ -31,14 +31,14 @@ export default function NavigationButton(props: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? theme.onPrimary : theme.primary,
+        backgroundColor: pressed ? theme.background_active : theme.background,
         paddingHorizontal: 20,
         borderRadius: 5,
       }}
     >
       <Icon
         iconName={props.iconName}
-        color={pressed ? theme.primary : theme.onPrimary}
+        color={pressed ? theme.font_active : theme.font}
       />
     </Pressable>
   );

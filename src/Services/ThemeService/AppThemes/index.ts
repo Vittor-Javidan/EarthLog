@@ -1,5 +1,5 @@
 import { DEFAULT } from './Default';
 
-export const appThemes = {
+export const newAppThemes = {
   DEFAULT: DEFAULT,
 };

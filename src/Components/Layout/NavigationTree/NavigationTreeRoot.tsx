@@ -14,7 +14,7 @@ export default function NavigationTreeRoot(props: {
   }
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navigationTree, []);
   const tree: JSX.Element[] = [];
 
   for (let i = 0; i < props.iconButtons.length; i++) {
@@ -27,7 +27,7 @@ export default function NavigationTreeRoot(props: {
           adjustsFontSizeToFit={true}
           maxFontSizeMultiplier={0}
           style={{
-            color: theme.onPrimary,
+            color: theme.font,
             fontSize: 200,
           }}
         />
@@ -41,8 +41,8 @@ export default function NavigationTreeRoot(props: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: theme.primary,
-        borderColor: theme.onPrimary,
+        backgroundColor: theme.background,
+        borderColor: theme.border,
         height: 20,
         paddingHorizontal: 1,
         paddingVertical: 1,

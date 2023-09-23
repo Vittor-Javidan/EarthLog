@@ -13,7 +13,7 @@ import { Text } from '@Text/index';
 export default function LastProjectButton() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
 
   const { id_project } = CacheService?.lastOpenProject;
@@ -22,7 +22,7 @@ export default function LastProjectButton() {
   return lastProjectOpenExist ? (
     <View
       style={{
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
         paddingHorizontal: 2,
         paddingBottom: 2,
         borderRadius: 10,
@@ -32,7 +32,7 @@ export default function LastProjectButton() {
         style={{
           marginVertical: 5,
           marginLeft: 5,
-          color: theme.onPrimary,
+          color: theme.font,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
         }}
@@ -45,10 +45,10 @@ export default function LastProjectButton() {
         iconSide="Right"
         onPress={() => navigate('PROJECT SCOPE', id_project)}
         theme={{
-          font: theme.onTertiary,
-          background: theme.secondary,
-          font_Pressed: theme.onTertiary,
-          background_Pressed: theme.tertiary,
+          font: theme.font_Button,
+          font_Pressed: theme.font,
+          background: theme.background_Button,
+          background_Pressed: theme.background,
         }}
         style={{
           borderRadius: 10,

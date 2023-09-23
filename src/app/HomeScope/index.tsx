@@ -66,7 +66,7 @@ function NavigationTree() {
 function Drawer() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
 
   return (<>
@@ -75,10 +75,10 @@ function Drawer() {
       iconName="settings"
       iconSide="Right"
       theme={{
-        font: theme.onSecondary,
-        background: theme.secondary,
-        font_Pressed: theme.onTertiary,
-        background_Pressed: theme.tertiary,
+        font: theme.font,
+        background: theme.background,
+        font_Pressed: theme.font_active,
+        background_Pressed: theme.background_active,
       }}
       onPress={() => navigate('SETTINGS SCOPE')}
     />

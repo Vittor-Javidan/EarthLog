@@ -15,7 +15,7 @@ export default function ScreenButtons(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
   async function createSample() {
     AlertService.handleAlert(true, {
@@ -38,10 +38,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={() => navigate('HOME SCOPE')}
           theme={{
-            font: theme.onSecondary,
-            font_Pressed: theme.onTertiary,
-            background: theme.secondary,
-            background_Pressed: theme.tertiary,
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
           }}
         />,
         <Button.RoundedIcon
@@ -51,10 +51,10 @@ export default function ScreenButtons(props: {
           buttonDiameter={60}
           onPress={async () => await createSample()}
           theme={{
-            font: theme.onConfirm,
-            font_Pressed: theme.onTertiary,
+            font: theme.font,
+            font_Pressed: theme.confirm,
             background: theme.confirm,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
         />,
       ]}

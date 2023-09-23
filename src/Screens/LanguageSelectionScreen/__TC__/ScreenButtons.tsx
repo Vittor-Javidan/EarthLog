@@ -10,7 +10,7 @@ import { Button } from '@Button/index';
 export default function ScreenButtons() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
   return (
     <Layout.ScreenButtons
@@ -22,10 +22,10 @@ export default function ScreenButtons() {
           buttonDiameter={60}
           onPress={() => navigate('SETTINGS SCOPE')}
           theme={{
-            font: theme.onSecondary,
-            font_Pressed: theme.onTertiary,
-            background: theme.secondary,
-            background_Pressed: theme.tertiary,
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
           }}
         />,
       ]}

@@ -18,7 +18,7 @@ export default function Warning(props: {
 }) {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
   useEffect(() => {
     vibrate('warning');
@@ -33,7 +33,7 @@ export default function Warning(props: {
     <View
       style={{
         width: '100%',
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,
         gap: 10,
@@ -60,8 +60,8 @@ export default function Warning(props: {
         buttonRadius={25}
         compensateMargin={30}
         theme={{
-          font: theme.onTertiary,
-          background: theme.tertiary,
+          font: theme.confirm,
+          background: theme.background_active,
           confirm: theme.confirm,
           wrong: theme.wrong,
         }}

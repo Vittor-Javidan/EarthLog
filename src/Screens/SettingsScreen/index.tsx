@@ -17,7 +17,7 @@ import { TC } from './__TC__';
 export default function SettingsScreen(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.Screens.SettingsScreen[config.language], []);
 
   return (
@@ -35,10 +35,10 @@ export default function SettingsScreen(): JSX.Element {
           iconSide="Right"
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
           theme={{
-            font: theme.onSecondary,
-            background: theme.secondary,
-            font_Pressed: theme.onTertiary,
-            background_Pressed: theme.tertiary,
+            font: theme.font_Button,
+            font_Pressed: theme.font,
+            background: theme.background_Button,
+            background_Pressed: theme.background,
           }}
         />
         <Button.TextWithIcon
@@ -47,10 +47,10 @@ export default function SettingsScreen(): JSX.Element {
           iconSide="Right"
           onPress={async () => await whipeDataBase()}
           theme={{
-            font: theme.tertiary,
+            font: theme.background,
             background: theme.wrong,
             font_Pressed: theme.wrong,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background,
           }}
         />
       </View>

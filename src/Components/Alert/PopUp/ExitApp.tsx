@@ -18,7 +18,7 @@ export default function ExitApp(props: {
 }) {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
   useEffect(() => {
     vibrate('warning');
@@ -39,7 +39,7 @@ export default function ExitApp(props: {
     <View
       style={{
         width: '100%',
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,
         gap: 10,
@@ -72,9 +72,9 @@ export default function ExitApp(props: {
           onPress={async () => await onAccept()}
           theme={{
             font: theme.confirm,
-            font_Pressed: theme.tertiary,
-            background: theme.tertiary,
-            background_Pressed: theme.confirm,
+            font_Pressed: theme.confirm,
+            background: theme.background_Button,
+            background_Pressed: theme.background_active,
           }}
           style={{
             height: 40,
@@ -88,10 +88,10 @@ export default function ExitApp(props: {
           iconName="close"
           onPress={async () => onRefuse()}
           theme={{
-            font: theme.tertiary,
+            font: theme.font,
             font_Pressed: theme.wrong,
             background: theme.wrong,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
           style={{
             height: 40,

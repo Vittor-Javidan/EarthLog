@@ -15,7 +15,7 @@ export default function ScreenButtons() {
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
@@ -42,10 +42,10 @@ export default function ScreenButtons() {
           buttonDiameter={60}
           onPress={() => navigate('PROJECT SCOPE', id_project)}
           theme={{
-            font: theme.onSecondary,
-            font_Pressed: theme.onTertiary,
-            background: theme.secondary,
-            background_Pressed: theme.tertiary,
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
           }}
         />,
         <Button.RoundedIcon
@@ -55,10 +55,10 @@ export default function ScreenButtons() {
           buttonDiameter={60}
           onPress={() => setShow_DeleteSwap(true)}
           theme={{
-            font: theme.onWrong,
-            font_Pressed: theme.onTertiary,
+            font: theme.font,
+            font_Pressed: theme.wrong,
             background: theme.wrong,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
         />,
       ]}
@@ -70,8 +70,8 @@ export default function ScreenButtons() {
           onCancel={() => setShow_DeleteSwap(false)}
           buttonRadius={30}
           theme={{
-            font: theme.onTertiary,
-            background: theme.tertiary,
+            font: theme.confirm,
+            background: theme.background_active,
             confirm: theme.confirm,
             wrong: theme.wrong,
           }}

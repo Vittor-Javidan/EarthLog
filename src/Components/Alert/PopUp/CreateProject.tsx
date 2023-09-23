@@ -17,7 +17,7 @@ export default function CreateProject(props: {
 }) {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const [name, setName] = useState<string>('');
 
   async function onAccept() {
@@ -43,7 +43,7 @@ export default function CreateProject(props: {
     <View
       style={{
         width: '100%',
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,
         gap: 10,
@@ -61,9 +61,9 @@ export default function CreateProject(props: {
           placeholder="Write project's name here"
           multiline={false}
           theme={{
-            font: theme.onPrimary,
-            font_placeholder: theme.onPrimary_Placeholder,
-            background: theme.primary,
+            font: theme.font,
+            font_placeholder: theme.font_placeHolder,
+            background: theme.background,
           }}
         />
       </View>
@@ -79,9 +79,9 @@ export default function CreateProject(props: {
           onPress={() => props.onRefuse()}
           theme={{
             font: theme.wrong,
-            font_Pressed: theme.tertiary,
-            background: theme.tertiary,
-            background_Pressed: theme.wrong,
+            font_Pressed: theme.wrong,
+            background: theme.background_Button,
+            background_Pressed: theme.background_active,
           }}
           style={{
             height: 40,
@@ -95,10 +95,10 @@ export default function CreateProject(props: {
           iconName={name !== '' ? 'checkmark-done-sharp' : 'lock-closed-sharp'}
           onPress={async () => await onAccept()}
           theme={{
-            font: theme.tertiary,
+            font: theme.font,
             font_Pressed: theme.confirm,
             background: theme.confirm,
-            background_Pressed: theme.tertiary,
+            background_Pressed: theme.background_active,
           }}
           style={{
             height: 40,

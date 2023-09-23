@@ -96,9 +96,21 @@ export default function DeleteSwipeButton(props: {
           borderRadius: 40,
         }, animatedStyle_slider]}
       >
-        <Text.H3 style={{ color: props.theme.background }}>
-          Release to confirm
-        </Text.H3>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text.H3
+            style={{
+              color: props.theme.background,
+            }}
+          >
+            Release to confirm
+          </Text.H3>
+        </View>
         <Animated.View
           style={[{
             height: CIRCLE_DIAMETER,
@@ -189,7 +201,7 @@ function CancelButton(props: {
 			</Text.Root>
       <Icon
         iconName="close"
-        color={props.theme.font}
+        color={pressed ? props.theme.background : props.theme.font}
       />
 		</Pressable>
 	);

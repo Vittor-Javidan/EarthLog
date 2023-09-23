@@ -20,20 +20,12 @@ export default function ProjectSettingsWidget(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const R      = useMemo(() => translations.Screens.ProjectSettingsScreen[config.language], []);
 
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  const pseudoWidgetTheme = {
-    font:             theme.onPrimary,
-    font_placeholder: theme.onPrimary_Placeholder,
-    background:       theme.primary,
-    confirm:          theme.confirm,
-    wrong:            theme.wrong,
-    modified:         theme.modified,
-  };
+  const pseudoWidgetTheme = ThemeService.widgetThemes['default'];
 
   function onSaveName(inputData: StringInputData | null, status: InputStatus) {
     if (status === 'modifying') {

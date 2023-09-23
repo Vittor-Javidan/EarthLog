@@ -2,7 +2,6 @@ import { Translations_HomeScreen, translations_HomeScreen } from './Screens/Home
 import { Translations_ProjectCreationScreen, translations_ProjectCreationScreen } from './Screens/ProjectCreationScreen';
 import { Translations_SettingsScreen, translations_SettingsScreen } from './Screens/SettingsScreen/SettingsScreen';
 import { Translations_LanguagesScreen, translations_LanguagesScreen } from './Screens/SettingsScreen/LanguagesScreen';
-import { Translations_ThemeScreen, translations_ThemeScreen } from './Screens/SettingsScreen/ThemeScreen';
 import { Translations_TextWidget, translations_TextWidget } from './Widgets/TextWidget';
 import { Translations_BooleanData, translations_BooleanData } from './Input/Boolean';
 import { Translations_AddWidgetButton, translations_AddWidgetButton } from './Widgets/AddWidgetButton';
@@ -24,7 +23,6 @@ export const translations: {
     ProjectCreationScreen:      Translations_ProjectCreationScreen
     SettingsScreen:             Translations_SettingsScreen
       LanguagesScreen:          Translations_LanguagesScreen
-      ThemeScreen:              Translations_ThemeScreen
     ProjectScreen:              Translations_ProjectScreen
       ProjectSettingsScreen:    Translations_ProjectSettingsScreen
       TemplateScreen:           Translations_TemplateScreen
@@ -52,7 +50,6 @@ export const translations: {
     ProjectCreationScreen:      translations_ProjectCreationScreen,
     SettingsScreen:             translations_SettingsScreen,
       LanguagesScreen:          translations_LanguagesScreen,
-      ThemeScreen:              translations_ThemeScreen,
     ProjectScreen:              translations_ProjectScreen,
       ProjectSettingsScreen:    translations_ProjectSettingsScreen,
       TemplateScreen:           translations_TemplateScreen,

@@ -11,42 +11,81 @@ export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
 export type ThemeNames_Widgets = (typeof ThemeNamesArray_Widgets)[number];
 
 export type AppThemeDTO = {
-  background: string
-  onBackground: string
-  onBackground_Placeholder: string
-
-  primary: string
-  onPrimary: string
-  onPrimary_Placeholder: string
-
-  secondary: string
-  onSecondary: string
-  onSecondary_PlaceHolder: string
-
-  tertiary: string
-  onTertiary: string
-  onTertiary_Placeholder: string
-
-  confirm: string
-  onConfirm: string
-
-  modified: string
-  onModified: string
-
-  wrong: string
-  onWrong: string
-
-  onPressColorPrimary: string
-}
-
-export type NewAppThemeDTO = {
-  background: string
-  primary: string
-  secondary: string
-  tertiary: string
-  confirm: string
-  wrong: string
-  warning: string
+  layout: {
+    root: {
+      background: string
+    }
+    loadingIcon: {
+      font: string
+    }
+    statusBar: {
+      background: string
+    }
+    navbar: {
+      font: string
+      background: string
+      font_active: string
+      background_active: string
+    }
+    navigationTree: {
+      font: string
+      background: string
+      border: string
+    }
+    navigationTreeButton: {
+      font: string
+      font_active: string
+      background: string
+      background_active: string
+    }
+    drawer: {
+      font: string
+      background: string
+      border: string
+    }
+    drawerButton: {
+      font: string
+      background: string
+      font_active: string
+      background_active: string
+    }
+    carousel: {
+      background: string
+      background_Screens: string
+      border: string
+    }
+    carouselButton: {
+      font: string
+      background: string
+      font_active: string
+      background_active: string
+    }
+    screenButtons: {
+      font: string
+      confirm: string
+      wrong: string
+      backgroud: string
+      background_active: string
+    }
+    modalPopUp: {
+      font: string
+      font_placeHolder: string
+      background: string
+      background_active: string
+      background_Button: string
+      confirm: string
+      wrong: string
+    }
+  }
+  component: {
+    font: string
+    font_Button: string
+    background: string
+    background_Button: string
+    confirm: string
+    wrong: string
+    warning: string
+  }
 }
 
 export type ConfigDTO = {

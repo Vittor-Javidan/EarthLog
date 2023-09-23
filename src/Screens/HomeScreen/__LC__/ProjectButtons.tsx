@@ -13,7 +13,7 @@ import ThemeService from '@Services/ThemeService';
 export default function ProjectButtons() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
 
   const projectsAvailable = CacheService.allProjects.length > 0;
@@ -29,10 +29,10 @@ export default function ProjectButtons() {
         iconSide="Right"
         onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
         theme={{
-          font: theme.onTertiary,
-          background: theme.secondary,
-          font_Pressed: theme.onTertiary,
-          background_Pressed: theme.tertiary,
+          font: theme.font_Button,
+          font_Pressed: theme.font,
+          background: theme.background_Button,
+          background_Pressed: theme.background,
         }}
         style={{
           borderTopLeftRadius: isFirstIndex ? 10 : 0,
@@ -48,7 +48,7 @@ export default function ProjectButtons() {
     {projectsAvailable && (
       <View
         style={{
-          backgroundColor: theme.primary,
+          backgroundColor: theme.background,
           paddingHorizontal: 2,
           paddingBottom: 2,
           borderRadius: 10,
@@ -58,7 +58,7 @@ export default function ProjectButtons() {
           style={{
             marginVertical: 5,
             marginLeft: 5,
-            color: theme.onPrimary,
+            color: theme.font,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}

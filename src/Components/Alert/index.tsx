@@ -1,20 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AlertModalConfig } from '@Types/AppTypes';
-import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
-import ThemeService from '@Services/ThemeService';
 
 import Selector from './Selector';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export function AlertModal() {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<AlertModalConfig>({
@@ -44,7 +39,7 @@ export function AlertModal() {
           <View
             style={{
               flex: 1,
-              backgroundColor: theme.background,
+              backgroundColor: '#000',
               opacity: 0.6,
             }}
           />

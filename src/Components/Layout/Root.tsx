@@ -25,38 +25,21 @@ export default function Root(props: {
   navigationTree: JSX.Element
 }): JSX.Element {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
     <AlertModal />
-    <StatusBar
-      animated={true}
-      networkActivityIndicatorVisible={true}
-      backgroundColor={theme.primary}
+    <AppStatusBar />
+    <Navbar
+      title={props.title}
+      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+      style={{ height: NAVBAR_HEIGH }}
     />
+    {props.navigationTree}
     <View
-      style={{
-        flex: 1,
-        backgroundColor: theme.background,
-      }}
+      style={{ flex: 1 }}
     >
-      <Navbar
-        title={props.title}
-        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-        style={{ height: NAVBAR_HEIGH }}
-      />
-      <View
-        style={{ flex: 1 }}
-      >
-        {props.navigationTree}
-        <View
-          style={{ flex: 1 }}
-        >
-          {props.children}
-        </View>
-      </View>
+      {props.children}
     </View>
     <DrawerAnimation show={showDrawer}>
       <Drawer
@@ -68,6 +51,20 @@ export default function Root(props: {
   </>);
 }
 
+function AppStatusBar() {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.statusBar, []);
+
+  return (
+    <StatusBar
+      animated={true}
+      networkActivityIndicatorVisible={true}
+      backgroundColor={theme.background}
+    />
+  );
+}
+
 function Navbar(props: {
   title: string
   style: StyleProp<ViewStyle>
@@ -75,7 +72,7 @@ function Navbar(props: {
 }): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navbar, []);
   const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
 
   return (<>
@@ -83,7 +80,7 @@ function Navbar(props: {
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
       }]}
     >
       <View
@@ -97,7 +94,7 @@ function Navbar(props: {
       >
         <Text.Root
           style={{
-            color: theme.onPrimary,
+            color: theme.font,
             fontSize: iosLargeTitle ? FontService.FONTS.h1 : 200,
           }}
         >
@@ -106,17 +103,22 @@ function Navbar(props: {
       </View>
       <MenuButton
         onPress={props.onMenuButtonPress}
+        theme={theme}
       />
     </View>
   </>);
 }
 
 function MenuButton(props: {
+  theme: {
+    font: string,
+    font_active: string,
+    background: string,
+    background_active: string,
+  }
   onPress: () => void
 }): JSX.Element {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   async function onPressIn() {
@@ -142,7 +144,7 @@ function MenuButton(props: {
         onPress={() => onPress()}
         style={{
           flexDirection: 'row',
-          backgroundColor: pressed ? theme.onPrimary : theme.primary,
+          backgroundColor: pressed ? props.theme.background_active : props.theme.background,
           paddingHorizontal: 10,
           paddingVertical: 0,
           borderRadius: 5,
@@ -153,7 +155,7 @@ function MenuButton(props: {
       >
         <Icon
           iconName="md-menu-sharp"
-          color={pressed ? theme.primary : theme.onPrimary}
+          color={pressed ? props.theme.font_active : props.theme.font}
         />
       </Pressable>
     </View>
@@ -166,24 +168,24 @@ const Drawer = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
     <ScrollView
       contentContainerStyle={{
         flex: 1,
-        flexDirection: 'row',
+        backgroundColor: theme.background,
       }}
       style={{
-        backgroundColor: theme.background,
-        borderColor: theme.primary,
         position: 'absolute',
+        borderColor: theme.border,
         height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
         width: '100%',
         bottom: 0,
         left: 0,
         borderRightWidth: 2,
+        zIndex: 2,
       }}
     >
       {props.children}
@@ -192,11 +194,12 @@ const Drawer = memo((props: {
         style={{
           flex: 1,
           justifyContent: 'flex-end',
+          backgroundColor: theme.background,
         }}
       >
         <Text.Root
           style={{
-            color: theme.onBackground,
+            color: theme.font,
             textAlign: 'right',
             fontSize: 16,
             padding: 8,
@@ -206,7 +209,6 @@ const Drawer = memo((props: {
         </Text.Root>
       </Pressable>
     </ScrollView>
-
   );
 });
 

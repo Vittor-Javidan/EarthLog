@@ -60,7 +60,7 @@ const SampleButton = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme], []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
   return (
     <Button.TextWithIcon
@@ -69,10 +69,10 @@ const SampleButton = memo((props: {
       iconName="clipboard"
       onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
       theme={{
-        font: theme.onSecondary,
-        font_Pressed: theme.secondary,
-        background: theme.secondary,
-        background_Pressed: theme.onSecondary,
+        font: theme.font_Button,
+        font_Pressed: theme.font,
+        background: theme.background_Button,
+        background_Pressed: theme.background,
       }}
     />
   );
