@@ -18,6 +18,7 @@ export default function HomeScope() {
   return (
     <Layout.Root
       title="Test Screen"
+      subtitle=""
       drawerChildren={ <></> }
       navigationTree={ <NavigationTree /> }
     >

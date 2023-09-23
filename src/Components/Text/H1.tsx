@@ -14,7 +14,7 @@ export default function H1(props: {
     <RootText
       style={[{
         textAlign: 'left',
-        fontWeight: '900',
+        fontWeight: '700',
         fontSize: FontService.FONTS.h1,
       }, props.style]}
     >

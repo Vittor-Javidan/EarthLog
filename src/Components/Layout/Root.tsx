@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, useEffect, memo } from 'react';
-import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
+import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import FontService from '@Services/FontService';
 import ApticsService from '@Services/ApticsService';
 
 import { Icon } from '@Icon/index';
@@ -20,6 +19,7 @@ const NAVIGATION_TREE_HEIGHT = 20;
 
 export default function Root(props: {
   title: string
+  subtitle: string
   children: ReactNode
   drawerChildren: ReactNode
   navigationTree: JSX.Element
@@ -32,6 +32,7 @@ export default function Root(props: {
     <AppStatusBar />
     <Navbar
       title={props.title}
+      subtitle={props.subtitle}
       onMenuButtonPress={() => setShowDrawer(prev => !prev)}
       style={{ height: NAVBAR_HEIGH }}
     />
@@ -67,13 +68,13 @@ function AppStatusBar() {
 
 function Navbar(props: {
   title: string
+  subtitle: string
   style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
 }): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navbar, []);
-  const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
 
   return (<>
     <View
@@ -89,17 +90,20 @@ function Navbar(props: {
           alignItems: 'flex-start',
           justifyContent: 'center',
           paddingHorizontal: 10,
-          paddingVertical: iosLargeTitle ? 5 : 10,
         }}
       >
-        <Text.Root
-          style={{
-            color: theme.font,
-            fontSize: iosLargeTitle ? FontService.FONTS.h1 : 200,
-          }}
+        <Text.H1
+          style={{ color: theme.font }}
         >
           {props.title}
-        </Text.Root>
+        </Text.H1>
+        {props.subtitle !== '' && (
+          <Text.P
+            style={{ color: theme.font }}
+          >
+            {props.subtitle}
+          </Text.P>
+        )}
       </View>
       <MenuButton
         onPress={props.onMenuButtonPress}

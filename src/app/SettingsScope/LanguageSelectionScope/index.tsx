@@ -19,6 +19,7 @@ export default function LanguageSelectionScope(): JSX.Element {
   return (
     <Layout.Root
       title={R['Languages']}
+      subtitle=""
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >

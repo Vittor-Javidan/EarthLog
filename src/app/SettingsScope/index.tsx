@@ -18,6 +18,7 @@ export default function SettingsScope(): JSX.Element {
   return (
     <Layout.Root
       title={R['Settings']}
+      subtitle=""
       drawerChildren={<></>}
       navigationTree={ <NavigationTree/> }
     >

@@ -24,6 +24,7 @@ export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [selectedScreen     , setSelectedScreen     ] = useState<number>(1);
@@ -38,7 +39,8 @@ export default function SampleScope() {
 
   return (
     <Layout.Root
-      title={updatedName ?? sampleSettings.name}
+      title={projectSettings.sampleAlias.singular}
+      subtitle={updatedName ?? sampleSettings.name}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >

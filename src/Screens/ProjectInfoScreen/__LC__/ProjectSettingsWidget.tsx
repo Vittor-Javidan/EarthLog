@@ -16,6 +16,7 @@ import { WidgetInput } from '@WidgetInput/index';
 
 export default function ProjectSettingsWidget(props: {
   onProjectNameUpdate: (newName: string) => void
+  onSampleAliasChange: (newSampleAlias: string) => void
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
@@ -64,6 +65,7 @@ export default function ProjectSettingsWidget(props: {
     if (inputData !== null && status === 'ready to save') {
       setProjectSettings(prev => {
         const newData: ProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, plural: inputData.value }};
+        props.onSampleAliasChange(inputData.value);
         save(newData);
         return newData;
       });

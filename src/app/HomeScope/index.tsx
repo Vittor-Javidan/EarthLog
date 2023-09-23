@@ -40,6 +40,7 @@ export default function HomeScope() {
   return (
     <Layout.Root
       title={R['Home screen']}
+      subtitle=""
       drawerChildren={ <Drawer /> }
       navigationTree={ <NavigationTree /> }
     >

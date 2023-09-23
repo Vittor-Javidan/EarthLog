@@ -9,6 +9,7 @@ import { Loading } from '@Types/AppTypes';
 export function ProjectInfoScreen(props: {
   projectScopeState: Loading
   onProjectNameUpdate: (newName: string) => void
+  onSampleAliasChange: (newAliasName: string) => void
 }) {
 
   const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
@@ -33,6 +34,7 @@ export function ProjectInfoScreen(props: {
         >
           <LC.ProjectSettingsWidget
             onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
+            onSampleAliasChange={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
           />
           <LC.ProjectWidgets
             key={'refresher:' + widgetsRefresher}

@@ -1,4 +1,3 @@
-- implement Sample Alias
 - implement the new Home Screen design
 - on GPSInput manual input, change "," for '.' when user type ","
 - implement the "add custom widget" buttom

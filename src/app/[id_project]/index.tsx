@@ -15,6 +15,7 @@ type MemoProps1 = { projectScopeState: Loading; };
 type MemoProps2 = {
   projectScopeState: Loading;
   onProjectNameUpdate: (newName: string) => void;
+  onSampleAliasChange: (newSampleAlias: string) => void
 };
 
 const ProjectScreen     = memo((props: MemoProps1) => <_ProjectScreen {...props} />    );
@@ -26,9 +27,10 @@ export default function ProjectScope() {
   const id_project = useLocalSearchParams().id_project as string;
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
-  const [selectedScreen , setSelectedScreen ] = useState<number>(1);
-  const [state          , setState          ] = useState<Loading>('Loading');
-  const [updatedName    , setUpdatedName    ] = useState<string | null>(null);
+  const [selectedScreen    , setSelectedScreen     ] = useState<number>(1);
+  const [state             , setState              ] = useState<Loading>('Loading');
+  const [updatedName       , setUpdatedName        ] = useState<string | null>(null);
+  const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
 
   useBackPress(() => navigate('HOME SCOPE'));
   useEffect(() => {
@@ -37,7 +39,8 @@ export default function ProjectScope() {
 
   return (
     <Layout.Root
-      title={updatedName ?? projectSettings.name}
+      title={'Project'}
+      subtitle={updatedName ?? projectSettings.name}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
@@ -46,6 +49,7 @@ export default function ProjectScope() {
         overlayButtons={
           <OverlayButtons
             selectedScreen={selectedScreen}
+            sampleAlias={updatedSampleAlias ?? projectSettings.sampleAlias.plural}
             onSelect={(screeNumber) => setSelectedScreen(screeNumber)}
           />
         }
@@ -55,6 +59,7 @@ export default function ProjectScope() {
           <ProjectInfoScreen
             projectScopeState={state} key="3"
             onProjectNameUpdate={(newName) => setUpdatedName(newName)}
+            onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAlias(newSampleAlias)}
           />,
         ]}
       />
@@ -64,12 +69,13 @@ export default function ProjectScope() {
 
 function OverlayButtons(props: {
   selectedScreen: number
+  sampleAlias: string
   onSelect: (screenNumber: number) => void
 }) {
   return (
     <>
       <Layout.Carousel.Button
-        title="Samples"
+        title={props.sampleAlias}
         type="left"
         selected={props.selectedScreen === 1}
         onPress={() => props.onSelect(1)}
