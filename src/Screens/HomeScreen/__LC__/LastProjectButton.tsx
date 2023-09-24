@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
@@ -7,8 +7,8 @@ import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 
-import { Button } from '@Button/index';
 import { Text } from '@Text/index';
+import ApticsService from '@Services/ApticsService';
 
 export default function LastProjectButton() {
 
@@ -16,46 +16,60 @@ export default function LastProjectButton() {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
 
-  const { id_project } = CacheService?.lastOpenProject;
-  const lastProjectOpenExist = id_project !== '';
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  const lastProjectSettings = CacheService.lastOpenProject;
+  const lastProjectOpenExist = lastProjectSettings.id_project !== '';
+
+  function onPressIn() {
+    setPressed(true);
+    ApticsService.vibrate('success');
+  }
+
+  function onPress() {
+    navigate('PROJECT SCOPE', lastProjectSettings.id_project);
+    ApticsService.vibrate('success');
+  }
 
   return lastProjectOpenExist ? (
     <View
       style={{
-        backgroundColor: theme.background,
-        paddingHorizontal: 2,
-        paddingBottom: 2,
-        borderRadius: 10,
+        height: 55,
+        width: '100%',
       }}
     >
-      <Text h2
+      <Pressable
+        onPressIn={() => onPressIn()}
+        onPressOut={() => setPressed(false)}
+        onPress={() => onPress()}
         style={{
-          marginVertical: 5,
-          marginLeft: 5,
-          color: theme.font,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          flex: 1,
+          justifyContent: 'center',
+          borderRadius: 10,
+          backgroundColor: pressed ? theme.background : theme.background_Button,
+          paddingLeft: 10,
         }}
       >
-        {R['Recently Open']}
-      </Text>
-      <Button.TextWithIcon
-        title={CacheService.lastOpenProject.name}
-        iconName="folder"
-        iconSide="Right"
-        onPress={() => navigate('PROJECT SCOPE', id_project)}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font,
-          background: theme.background_Button,
-          background_Pressed: theme.background,
-        }}
-        style={{
-          borderRadius: 10,
-        }}
-      />
+        <Text h1
+          style={{
+            color: theme.font_Button,
+            fontWeight: '900',
+          }}
+        >
+          {lastProjectSettings.name}
+        </Text>
+        <Text p
+          style={{
+            position: 'absolute',
+            right: 5,
+            bottom: 0,
+            color: theme.font_Button,
+            alignSelf: 'flex-end',
+          }}
+        >
+          {R['Recently Open']}
+        </Text>
+      </Pressable>
     </View>
-  ) : (
-    <></>
-  );
+  ) : <></>;
 }

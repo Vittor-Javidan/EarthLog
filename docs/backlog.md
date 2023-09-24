@@ -1,7 +1,5 @@
-- implement the new Home Screen design
 - implement the "add custom widget" buttom
 - create the theme display for widgets
 - Implement all rules
-- Refactor Custom text components, to be used like <Text p />, <Text h1 /> etc
 - Fix all translations
-- Validadete on IOS
+- Validate on IOS

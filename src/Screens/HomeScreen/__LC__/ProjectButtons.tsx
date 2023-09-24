@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
@@ -7,8 +7,9 @@ import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 
 import { Text } from '@Text/index';
-import { Button } from '@Button/index';
 import ThemeService from '@Services/ThemeService';
+import { Layout } from '@Layout/index';
+import ApticsService from '@Services/ApticsService';
 
 export default function ProjectButtons() {
 
@@ -16,61 +17,92 @@ export default function ProjectButtons() {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
 
-  const projectsAvailable = CacheService.allProjects.length > 0;
-
-  const allProjectButtons = CacheService.allProjects.map((settings, index) => {
-    const isLastIndex = index === CacheService.allProjects.length - 1;
-    const isFirstIndex = index === 0;
+  const allProjectButtons = CacheService.allProjects.map((settings) => {
     return (
-      <Button.TextWithIcon
+      <ProjectButton
         key={settings.id_project}
         title={settings.name}
-        iconName="folder"
-        iconSide="Right"
         onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font,
-          background: theme.background_Button,
-          background_Pressed: theme.background,
-        }}
-        style={{
-          borderTopLeftRadius: isFirstIndex ? 10 : 0,
-          borderTopRightRadius: isFirstIndex ? 10 : 0,
-          borderBottomLeftRadius: isLastIndex ? 10 : 0,
-          borderBottomRightRadius: isLastIndex ? 10 : 0,
-        }}
+        theme={theme}
       />
     );
   });
 
-  return (<>
-    {projectsAvailable && (
-      <View
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.background,
+        paddingBottom: 5,
+        borderRadius: 10,
+      }}
+    >
+      <Text h2
         style={{
-          backgroundColor: theme.background,
-          paddingHorizontal: 2,
-          paddingBottom: 2,
-          borderRadius: 10,
+          alignSelf: 'center',
+          color: theme.font,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          paddingVertical: 5,
         }}
       >
-        <Text h2
-          style={{
-            marginVertical: 5,
-            marginLeft: 5,
-            color: theme.font,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-          }}
-        >
-          {R['Projects']}
-        </Text>
-        <View
-          style={{ gap: 2 }}
-        >
-          {allProjectButtons}
-        </View>
-      </View>
-    )}
-  </>);
+        {R['Projects']}
+      </Text>
+      <Layout.ScrollView
+        contenContainerStyle={{
+          gap: 5,
+          paddingBottom: 0,
+          paddingHorizontal: 5,
+        }}
+      >
+        {allProjectButtons}
+      </Layout.ScrollView>
+    </View>
+  );
+}
+
+function ProjectButton(props: {
+  title: string
+  theme: {
+    font_Button: string;
+    background: string;
+    background_Button: string;
+  }
+  onPress: () => void
+}) {
+
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  function onPressIn() {
+    setPressed(true);
+    ApticsService.vibrate('success');
+  }
+
+  function onPress() {
+    props.onPress();
+    ApticsService.vibrate('success');
+  }
+
+  return (
+    <Pressable
+      onPressIn={() => onPressIn()}
+      onPressOut={() => setPressed(false)}
+      onPress={() => onPress()}
+      style={{
+        maxHeight: 60,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
+      }}
+    >
+      <Text h1
+        style={{
+          color: props.theme.font_Button,
+        }}
+      >
+        {props.title}
+      </Text>
+    </Pressable>
+  );
 }

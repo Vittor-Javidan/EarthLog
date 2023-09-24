@@ -1,5 +1,5 @@
-import React, { useMemo, ReactNode, useEffect, memo, useState } from 'react';
-import { Dimensions } from 'react-native';
+import React, { useMemo, ReactNode, useEffect, useState } from 'react';
+import { Dimensions, View } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 import { Loading } from '@Types/AppTypes';
@@ -24,30 +24,28 @@ export default function HomeScreen(props: {
     >
       {props.homeScopeState === 'Loading' ? (
         <Layout.Loading />
-      ) : (
+      ) : (<>
         <Animation>
-          <Layout.ScrollView
-            contenContainerStyle={{
+          <View
+            style={{
+              flex: 1,
               paddingTop: 10,
               padding: 5,
               gap: 10,
+              paddingBottom: 80,
             }}
           >
-            <LC_LastProjectButton />
-            <LC_ProjectButtons
+            <LC.SocialMediaButtons />
+            <LC.LastProjectButton />
+            <LC.ProjectButtons
               key={'refresher:' + buttonsRefresher}
             />
-          </Layout.ScrollView>
+          </View>
         </Animation>
-      )}
+      </>)}
     </Layout.Screen>
   );
 }
-
-const LC_LastProjectButton = memo(() => <LC.LastProjectButton />);
-const LC_ProjectButtons    = memo(() => (
-  <LC.ProjectButtons />
-));
 
 function Animation(props: { children: ReactNode}) {
 
@@ -66,7 +64,10 @@ function Animation(props: { children: ReactNode}) {
   return (
     <Animated.View
       style={[
-        { left: -width },
+        {
+          flex: 1,
+          left: -width,
+        },
         useAnimatedStyle(() => ({
           transform: [{ translateX: leftOffset.value }],
         })),
