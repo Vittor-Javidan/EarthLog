@@ -1,4 +1,4 @@
-import React, { useMemo, ReactNode, memo,useEffect, useState } from 'react';
+import React, { useMemo, ReactNode, useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -8,19 +8,17 @@ import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-const LC_SampleButtons = memo(() => <LC.SampleButtons />);
-
 export function ProjectScreen(props: {
   projectScopeState: Loading
 }) {
 
-  const [buttonsRefresher, setButtonsRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onSampleCreation={() => setButtonsRefresher(prev => !prev)}
+          onSampleCreation={() => refresher(prev => !prev)}
         />
       }
     >
@@ -28,9 +26,7 @@ export function ProjectScreen(props: {
         <Layout.Loading />
       ) : (
         <Animation>
-          <LC_SampleButtons
-            key={'refresher:' + buttonsRefresher}
-          />
+          <LC.SampleButtons />
         </Animation>
       )}
     </Layout.Screen>

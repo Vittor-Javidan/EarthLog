@@ -124,5 +124,6 @@ async function fetchWidgets(
   whenLoaded: () => void
 ) {
   await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+  await CacheService.loadAllWidgets_Template(id_project);
   whenLoaded();
 }

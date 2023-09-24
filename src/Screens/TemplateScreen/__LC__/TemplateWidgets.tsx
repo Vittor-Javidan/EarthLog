@@ -9,14 +9,14 @@ import { Widget } from '@Widget/index';
 
 export default function TemplateWidgets() {
 
-  const [_, refresh] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Template.map(widgetData => {
     return (
       <WidgetUnit
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onDelete={() => refresh(prev => !prev)}
+        onDelete={() => refresher(prev => !prev)}
       />
     );
   });

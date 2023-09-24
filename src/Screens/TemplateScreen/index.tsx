@@ -10,12 +10,12 @@ export function TemplateScreen(props: {
   projectScopeState: Loading
 }) {
 
-  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons
-        onWidgetCreation={() => setWidgetsRefresher(prev => !prev)}
+        onWidgetCreation={() => refresher(prev => !prev)}
       />}
     >
       {props.projectScopeState === 'Loading' ? (
@@ -28,9 +28,7 @@ export function TemplateScreen(props: {
             gap: 10,
           }}
         >
-          <LC.TemplateWidgets
-            key={'refresher:' + widgetsRefresher}
-          />
+          <LC.TemplateWidgets />
         </Layout.ScrollView>
       )}
     </Layout.Screen>

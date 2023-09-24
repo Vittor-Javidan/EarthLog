@@ -12,12 +12,12 @@ export function SampleDataScreens(props: {
   sampleScopeState: Loading
 }) {
 
-  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons
-        onCreateWidget={() => setWidgetsRefresher(prev => !prev)}
+        onCreateWidget={() => refresher(prev => !prev)}
       />}
     >
       {props.sampleScopeState === 'Loading' ? (
@@ -31,9 +31,7 @@ export function SampleDataScreens(props: {
               gap: 10,
             }}
           >
-            <LC.SampleWidgets
-              key={'refresher:' + widgetsRefresher}
-            />
+            <LC.SampleWidgets />
           </Layout.ScrollView>
         </Animation>
       )}

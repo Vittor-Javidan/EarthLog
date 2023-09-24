@@ -12,13 +12,13 @@ export default function HomeScreen(props: {
   homeScopeState: Loading
 }) {
 
-  const [buttonsRefresher, setButtonsRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onProjectCreation={() => setButtonsRefresher(prev => !prev)}
+          onProjectCreation={() => refresher(prev => !prev)}
         />
       }
     >
@@ -37,9 +37,7 @@ export default function HomeScreen(props: {
           >
             <LC.SocialMediaButtons />
             <LC.LastProjectButton />
-            <LC.ProjectButtons
-              key={'refresher:' + buttonsRefresher}
-            />
+            <LC.ProjectButtons />
           </View>
         </Animation>
       </>)}

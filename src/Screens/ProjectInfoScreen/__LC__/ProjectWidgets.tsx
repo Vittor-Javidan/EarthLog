@@ -9,14 +9,14 @@ import { Widget } from '@Widget/index';
 
 export default function ProjectWidgets() {
 
-  const [_, setWidgetUnitRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Project.map(widgetData => {
     return (
       <WidgetUnit
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onDelete={() => setWidgetUnitRefresher(prev => !prev)}
+        onDelete={() => refresher(prev => !prev)}
       />
     );
   });

@@ -93,7 +93,7 @@ export type ConfigDTO = {
 
 export type AlertModalConfig = {
   question: string
-  type: 'warning' | 'exit app' | 'project creation' | 'sample creation'
+  type: 'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy'
   id_project?: string
   id_sample?: string
 }

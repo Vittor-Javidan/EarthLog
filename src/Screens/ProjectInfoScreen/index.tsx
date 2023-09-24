@@ -12,13 +12,13 @@ export function ProjectInfoScreen(props: {
   onSampleAliasChange: (newAliasName: string) => void
 }) {
 
-  const [widgetsRefresher, setWidgetsRefresher] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onWidgetCreation={() => setWidgetsRefresher(prev => !prev)}
+          onWidgetCreation={() => refresher(prev => !prev)}
         />
       }
     >
@@ -36,9 +36,7 @@ export function ProjectInfoScreen(props: {
             onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
             onSampleAliasChange={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
           />
-          <LC.ProjectWidgets
-            key={'refresher:' + widgetsRefresher}
-          />
+          <LC.ProjectWidgets />
         </Layout.ScrollView>
       )}
     </Layout.Screen>

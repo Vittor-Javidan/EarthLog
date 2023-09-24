@@ -9,6 +9,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
+import AlertService from '@Services/AlertService';
 
 export default function ScreenButtons(props: {
   onCreateWidget: () => void
@@ -32,6 +33,20 @@ export default function ScreenButtons(props: {
     );
   }
 
+  async function onTemplateWidgetCopy() {
+    await AlertService.handleAlert(true,
+      {
+        question: 'Select a widget to copy',
+        type: 'template widget copy',
+        id_project: id_project,
+        id_sample: id_sample,
+      },
+      () => {
+        props.onCreateWidget();
+      }
+    );
+  }
+
   return (
     <Layout.ScreenButtons
       buttons={[
@@ -50,6 +65,19 @@ export default function ScreenButtons(props: {
         />,
         <Button.RoundedIcon
           key="2"
+          iconName="copy"
+          showPlusSign={true}
+          buttonDiameter={60}
+          onPress={() => onTemplateWidgetCopy()}
+          theme={{
+            font: theme.font,
+            font_Pressed: theme.confirm,
+            background: theme.confirm,
+            background_Pressed: theme.background_active,
+          }}
+        />,
+        <Button.RoundedIcon
+          key="3"
           iconName="square"
           showPlusSign={true}
           buttonDiameter={60}

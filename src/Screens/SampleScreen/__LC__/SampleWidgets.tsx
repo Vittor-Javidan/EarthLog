@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { WidgetData } from '@Types/ProjectTypes';
@@ -9,14 +9,14 @@ import { Widget } from '@Widget/index';
 
 export default function SampleWidgets() {
 
-  const [_, refresh] = useState<boolean>(false);
+  const [_, refresher] = useState<boolean>(false);
 
   const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Sample.map(widgetData => {
     return (
       <WidgetUnit
         key={widgetData.id_widget}
         widgetData={widgetData}
-        onDelete={() => refresh(prev => !prev)}
+        onDelete={() => refresher(prev => !prev)}
       />
     );
   });

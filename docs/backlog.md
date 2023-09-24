@@ -1,4 +1,3 @@
-- implement the "add custom widget" buttom
 - create the theme display for widgets
 - Implement all rules
 - Fix all translations
