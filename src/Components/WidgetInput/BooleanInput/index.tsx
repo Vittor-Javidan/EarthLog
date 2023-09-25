@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
 import { BooleanInputData, InputStatus } from '@Types/ProjectTypes';
@@ -20,7 +20,7 @@ type InputTheme = {
   disabled: string
 }
 
-export function BooleanInput(props: {
+export const BooleanInput = memo((props: {
   inputData: BooleanInputData
   editWidget: boolean
   isFirstInput: boolean
@@ -30,7 +30,7 @@ export function BooleanInput(props: {
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.BooleanInput[config.language], []);
@@ -155,4 +155,4 @@ export function BooleanInput(props: {
       </View>
     </LC.Root>
   );
-}
+});

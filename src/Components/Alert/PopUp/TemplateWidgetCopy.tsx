@@ -62,7 +62,6 @@ export default function TemplateWidgetCopy(props: {
         backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,
-        paddingHorizontal: 5,
         gap: 10,
       }}
     >
@@ -70,6 +69,7 @@ export default function TemplateWidgetCopy(props: {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
+          paddingHorizontal: 5,
         }}
       >
         <Text h3
@@ -88,6 +88,8 @@ export default function TemplateWidgetCopy(props: {
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 5,
           gap: 5,
         }}
       >
@@ -96,6 +98,8 @@ export default function TemplateWidgetCopy(props: {
       <View
         style={{
           flexDirection: 'row',
+          justifyContent: 'center',
+          width: '100%',
           paddingHorizontal: 10,
           gap: 10,
         }}
@@ -110,8 +114,8 @@ export default function TemplateWidgetCopy(props: {
             background_Pressed: theme.background_active,
           }}
           style={{
+            flex: 0.5,
             height: 40,
-            flex: 1,
             justifyContent: 'center',
             paddingVertical: 0,
             borderRadius: 10,
@@ -160,6 +164,7 @@ function TemplateWidgetButton(props: {
         <Text h3
           style={{
             color: props.theme.background,
+            textAlign: 'center',
           }}
         >
           {props.title}

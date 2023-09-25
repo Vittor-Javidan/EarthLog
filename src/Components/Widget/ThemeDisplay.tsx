@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 
-export function ThemeDisplay(props: {
+export const ThemeDisplay = memo((props: {
   theme: WidgetThemeDTO
-}) {
+}) => {
   return (
     <Text p
       style={{
@@ -17,4 +17,4 @@ export function ThemeDisplay(props: {
       Soon...
     </Text>
   );
-}
+});

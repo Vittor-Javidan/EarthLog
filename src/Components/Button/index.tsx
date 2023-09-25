@@ -1,5 +1,5 @@
 import { Checkbox } from './CheckboxButton';
-import DeleteSwipeButton from './DeleteSwipeButton';
+import { DeleteSwipeButton } from './DeleteSwipeButton';
 import { IconButton } from './IconButton';
 import { RoundedIconButton } from './RoundedIconButton';
 import { TextWithIcon } from './TextWithIconButton';

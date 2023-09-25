@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { Pressable } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -7,10 +7,10 @@ import ApticsService from '@Services/ApticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
-export default function NavigationButton(props: {
+export const NavigationButton = memo((props: {
   iconName: IconName
   onPress?: () => void
-}): JSX.Element {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navigationTreeButton, []);
@@ -42,4 +42,4 @@ export default function NavigationButton(props: {
       />
     </Pressable>
   );
-}
+});

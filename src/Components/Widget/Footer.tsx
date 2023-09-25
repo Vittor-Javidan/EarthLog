@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -8,14 +8,14 @@ import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 import { NavbarIconButton } from './NavbarIconButtons';
 
-export function Footer(props: {
+export const Footer = memo((props: {
   AddToNewSamples: boolean
   showCheckbox: boolean
   showDeleteWidgetButton: boolean
   theme: WidgetThemeDTO
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
-}) {
+}) => {
 
   function onChangeCheckbox(checked: boolean) {
     props.onChangeCheckbox(checked);
@@ -70,4 +70,4 @@ export function Footer(props: {
       )}
     </View>
   ) : <></>;
-}
+});

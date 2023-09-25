@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 
-export default function SaveFeedback(props: {
+export const SaveFeedback = memo((props: {
   saved: boolean
   theme: WidgetThemeDTO
-}) {
+}) => {
   return (
     <View
       style={{
@@ -35,4 +35,4 @@ export default function SaveFeedback(props: {
       </Text>
     </View>
   );
-}
+});

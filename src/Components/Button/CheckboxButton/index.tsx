@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -8,11 +8,11 @@ type ButtonTheme = {
   confirm: string
 }
 
-export function Checkbox(props: {
+export const Checkbox = memo((props: {
   value: boolean
   theme: ButtonTheme
   onChange: (checked: boolean) => void
-}) {
+}) => {
   return (
     <Pressable
       onPress={() => props.onChange(!props.value)}
@@ -36,4 +36,4 @@ export function Checkbox(props: {
       />}
     </Pressable>
   );
-}
+});

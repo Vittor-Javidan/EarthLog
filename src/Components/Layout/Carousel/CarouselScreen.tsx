@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useEffect } from 'react';
+import React, { ReactNode, useMemo, useEffect, memo } from 'react';
 import { View, Dimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
@@ -15,11 +15,11 @@ function getOffSets(amount: number) {
   return offsets;
 }
 
-export function CarouselScreen(props: {
+export const CarouselScreen = memo((props: {
   selected: number
   screens: JSX.Element[]
   overlayButtons: JSX.Element
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.carousel, []);
@@ -46,7 +46,7 @@ export function CarouselScreen(props: {
       </CarouselAnimation>
     </View>
   );
-}
+});
 
 function CarouselButtonsRoot(props: {
   children: ReactNode
@@ -80,11 +80,11 @@ function CarouselButtonsRoot(props: {
   );
 }
 
-function CarouselAnimation(props: {
+const CarouselAnimation = memo((props: {
   width: number
   offset: number
   children: ReactNode
-}) {
+}) => {
 
   const leftOffset = useSharedValue(0);
 
@@ -114,4 +114,4 @@ function CarouselAnimation(props: {
       {props.children}
     </Animated.View>
   );
-}
+});

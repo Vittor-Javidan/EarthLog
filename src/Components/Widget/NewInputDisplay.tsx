@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -7,10 +7,10 @@ import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 
-export function NewInputDisplay(props: {
+export const NewInputDisplay = memo((props: {
   theme: WidgetThemeDTO
   onCreate: (inputData: InputData) => void
-}) {
+}) => {
 
   function onCreate(inputType: InputTypes) {
     props.onCreate(ProjectService.getInputData(inputType));
@@ -52,13 +52,13 @@ export function NewInputDisplay(props: {
       </View>
     </View>
   );
-}
+});
 
-function Button(props: {
+const Button = memo((props: {
   title: InputTypes,
   theme: WidgetThemeDTO
   onPress: (inputType: InputTypes) => void
-}) {
+}) => {
 
 	const [pressed, setPressed] = useState<boolean>(false);
 
@@ -93,4 +93,4 @@ function Button(props: {
 			</Text>
 		</Pressable>
   );
-}
+});

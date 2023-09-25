@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -7,7 +7,7 @@ import ApticsService from '@Services/ApticsService';
 
 import { Text } from '@Text/index';
 
-export function LabelButton(props: {
+export const LabelButton = memo((props: {
   label: string
   editLabel: boolean
   theme: WidgetThemeDTO
@@ -15,7 +15,7 @@ export function LabelButton(props: {
   onPress: () => void
   onConfirm: () => void
   onLabelChange: (label: string) => void
-}) {
+}) => {
 
   function onPress() {
     props.onPress();
@@ -67,4 +67,4 @@ export function LabelButton(props: {
       )}
     </View>
   );
-}
+});

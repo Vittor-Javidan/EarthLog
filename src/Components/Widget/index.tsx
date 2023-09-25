@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, memo } from 'react';
 import { View } from 'react-native';
 
 import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -17,12 +17,12 @@ import { ThemeDisplay } from './ThemeDisplay';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
-export function Widget(props: {
+export const Widget = memo((props: {
   widgetData: WidgetData
   widgetScope: WidgetScope
   referenceGPSData: GPS_DTO | undefined
   onDelete: () => void
-}) {
+}) => {
 
   const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
   const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
@@ -305,7 +305,7 @@ export function Widget(props: {
       </View>
     </View>
   );
-}
+});
 
 function IconButtons(props: {
   editInputs: boolean

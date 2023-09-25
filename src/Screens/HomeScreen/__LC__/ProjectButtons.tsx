@@ -50,6 +50,9 @@ export default function ProjectButtons() {
       </Text>
       <Layout.ScrollView
         contenContainerStyle={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
           gap: 5,
           paddingBottom: 0,
           paddingHorizontal: 5,
@@ -92,7 +95,7 @@ function ProjectButton(props: {
         maxHeight: 60,
         paddingVertical: 5,
         paddingHorizontal: 10,
-        borderRadius: 10,
+        borderRadius: 20,
         backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
       }}
     >

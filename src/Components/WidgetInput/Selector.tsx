@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { GPS_DTO, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';
 
-export function InputSelector(props: {
+export const InputSelector = memo((props: {
   inputData: InputData
   editWidget: boolean
   isFirstInput: boolean
@@ -16,7 +16,7 @@ export function InputSelector(props: {
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
-}) {
+}) => {
   switch (props.inputData.type) {
     case 'string': return (
       <StringInput
@@ -60,4 +60,4 @@ export function InputSelector(props: {
       />
     );
   }
-}
+});

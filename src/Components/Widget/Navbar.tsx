@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import SaveFeedback from './SaveFeedback';
+import { SaveFeedback } from './SaveFeedback';
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
-export function Navbar(props: {
+export const Navbar = memo((props: {
   saved: boolean
   iconButtons: JSX.Element
   theme: WidgetThemeDTO
-}) {
+}) => {
   return (
     <View
       style={{
@@ -38,4 +38,4 @@ export function Navbar(props: {
       </View>
     </View>
   );
-}
+});

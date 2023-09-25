@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Pressable } from 'react-native';
 
 import ApticsService from '@Services/ApticsService';
@@ -10,12 +10,12 @@ type InputTheme = {
   background: string
 }
 
-export function NavbarIconButton(props: {
+export const NavbarIconButton = memo((props: {
   iconName: IconName
   selected?: boolean
   theme: InputTheme
   onPress: () => void
-}) {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -55,4 +55,4 @@ export function NavbarIconButton(props: {
       />
     </Pressable>
   );
-}
+});

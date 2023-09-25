@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { LC } from '../__LC__';
@@ -9,14 +9,14 @@ type InputTheme = {
   background: string
 }
 
-export function StringInput(props: {
+export const StringInput = memo((props: {
   label: string
   value: string
   placeholder: string
   theme: InputTheme
   multiline: boolean
   onTextChange: (text: string) => void
-}) {
+}) => {
 
   /**
    * @BUG https://github.com/facebook/react-native/issues/36494
@@ -75,14 +75,14 @@ export function StringInput(props: {
       />
     </LC.Root>
   );
-}
+});
 
-function IconButtons (props: {
+const IconButtons = memo((props: {
   showUndo: boolean
   theme: InputTheme
   onPress_UndoButton: () => void
   onPress_BackspaceButton: () => void
-}) {
+}) => {
   return (<>
     {props.showUndo && (
       <LC.NavbarIconButton
@@ -103,5 +103,4 @@ function IconButtons (props: {
       }}
     />
   </>);
-}
-
+});

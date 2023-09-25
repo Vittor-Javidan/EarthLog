@@ -1,11 +1,11 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo, memo } from 'react';
 import { Dimensions, StyleProp, View, ViewStyle } from 'react-native';
 
-export default function Screen(props: {
+export const Screen = memo((props: {
   screenButtons: JSX.Element
   children: ReactNode
   style?: StyleProp<ViewStyle>
-}) {
+}) => {
 
   const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
@@ -20,4 +20,4 @@ export default function Screen(props: {
       {props.screenButtons}
     </View>
   </>);
-}
+});

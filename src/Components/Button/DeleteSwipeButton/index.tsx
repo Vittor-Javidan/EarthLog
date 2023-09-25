@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, memo } from 'react';
 import { View, Dimensions, Pressable } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
@@ -15,13 +15,13 @@ type ButtonTheme = {
   wrong: string
 }
 
-export default function DeleteSwipeButton(props: {
+export const DeleteSwipeButton = memo((props: {
   buttonRadius?: number
   compensateMargin?: number
   theme: ButtonTheme
   onSwipe: () => void
   onCancel: () => void
-}) {
+}) => {
 
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
 
@@ -154,12 +154,12 @@ export default function DeleteSwipeButton(props: {
       </Animated.View>
     </View>
   );
-}
+});
 
-function CancelButton(props: {
+const CancelButton = memo((props: {
   theme: ButtonTheme
 	onPress: () => void
-}): JSX.Element {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -206,4 +206,4 @@ function CancelButton(props: {
       />
 		</Pressable>
 	);
-}
+});

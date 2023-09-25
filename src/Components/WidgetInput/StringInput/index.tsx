@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { InputStatus, StringInputData } from '@Types/ProjectTypes';
@@ -15,7 +15,7 @@ type InputTheme = {
   wrong: string
 }
 
-export function StringInput(props: {
+export const StringInput = memo((props: {
   inputData: StringInputData
   editWidget: boolean
   isFirstInput: boolean
@@ -26,7 +26,7 @@ export function StringInput(props: {
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
-}) {
+}) => {
 
   /**
    * @BUG https://github.com/facebook/react-native/issues/36494
@@ -121,7 +121,7 @@ export function StringInput(props: {
       />
     </LC.Root>
   );
-}
+});
 
 function IconButtons (props: {
   locked: boolean | undefined

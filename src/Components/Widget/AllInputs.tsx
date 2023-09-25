@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -6,7 +6,7 @@ import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 
-export function AllInputs(props: {
+export const AllInputs = memo((props: {
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
@@ -15,7 +15,7 @@ export function AllInputs(props: {
   onInputDelete: (id_input: ID) => void
   onInputMoveUp: (id_input: ID) => void
   onInputMoveDow: (id_input: ID) => void
-}) {
+}) => {
 
   const [loading, setLoading] = useState<Loading>(props.inputs.length < 4 ? 'Loaded' : 'Loading');
 
@@ -59,4 +59,4 @@ export function AllInputs(props: {
       />
     </View>
   );
-}
+});

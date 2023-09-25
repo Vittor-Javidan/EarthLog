@@ -17,13 +17,13 @@ const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
 const NAVIGATION_TREE_HEIGHT = 20;
 
-export default function Root(props: {
+export const Root = memo((props: {
   title: string
   subtitle: string
   children: ReactNode
   drawerChildren: ReactNode
   navigationTree: JSX.Element
-}): JSX.Element {
+}) => {
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
@@ -50,9 +50,9 @@ export default function Root(props: {
       </Drawer>
     </DrawerAnimation>
   </>);
-}
+});
 
-function AppStatusBar() {
+const AppStatusBar = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.statusBar, []);
@@ -64,14 +64,14 @@ function AppStatusBar() {
       backgroundColor={theme.background}
     />
   );
-}
+});
 
-function Navbar(props: {
+const Navbar = memo((props: {
   title: string
   subtitle: string
   style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
-}): JSX.Element {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navbar, []);
@@ -111,9 +111,9 @@ function Navbar(props: {
       />
     </View>
   </>);
-}
+});
 
-function MenuButton(props: {
+const MenuButton = memo((props: {
   theme: {
     font: string,
     font_active: string,
@@ -121,7 +121,7 @@ function MenuButton(props: {
     background_active: string,
   }
   onPress: () => void
-}): JSX.Element {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -164,7 +164,7 @@ function MenuButton(props: {
       </Pressable>
     </View>
   );
-}
+});
 
 const Drawer = memo((props: {
   children: ReactNode
@@ -216,10 +216,10 @@ const Drawer = memo((props: {
   );
 });
 
-function DrawerAnimation(props: {
+const DrawerAnimation = memo((props: {
   show: boolean
   children: ReactNode
-}) {
+}) => {
 
   const { width } = useMemo(() => Dimensions.get('window'), []);
   const leftOffset = useSharedValue(-width);
@@ -244,4 +244,4 @@ function DrawerAnimation(props: {
       {props.children}
     </Animated.View>
   );
-}
+});

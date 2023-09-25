@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-export default function Loading(): JSX.Element {
+export const Loading = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.loadingIcon, []);
@@ -23,4 +23,4 @@ export default function Loading(): JSX.Element {
       />
     </View>
   );
-}
+});

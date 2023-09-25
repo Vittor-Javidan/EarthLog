@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { View } from 'react-native';
 
 import { Text } from '@Text/index';
@@ -8,12 +8,12 @@ type InputTheme = {
   background: string
 }
 
-export function InputRoot(props: {
+export const InputRoot = memo((props: {
   label: string
   theme: InputTheme
   iconButtons: JSX.Element
   children: ReactNode
-}) {
+}) => {
   return (
     <View
       style={{
@@ -69,4 +69,4 @@ export function InputRoot(props: {
       </View>
     </View>
   );
-}
+});

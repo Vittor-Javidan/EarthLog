@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { InputAlertMessage } from '@Types/ProjectTypes';
@@ -9,10 +9,10 @@ type AlertTheme = {
   modified: string
 }
 
-export function AlertMessages(props: {
+export const AlertMessages = memo((props: {
   alertMessages: InputAlertMessage | undefined
   theme: AlertTheme
-}) {
+}) => {
 
   if (props.alertMessages === undefined || Object.keys(props.alertMessages).length <= 0) {
     return <></>;
@@ -39,4 +39,4 @@ export function AlertMessages(props: {
       {Messages}
     </View>
   );
-}
+});

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
@@ -18,7 +18,7 @@ import { LC } from '../__LC__';
 import { GPSInputTheme } from './ThemeType';
 import { useTimeout } from '@Hooks/index';
 
-export function GPSInput(props: {
+export const GPSInput = memo((props: {
   inputData: GPSInputData
   editWidget: boolean
   isFirstInput: boolean
@@ -29,7 +29,7 @@ export function GPSInput(props: {
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
-}) {
+}) => {
 
   const config     = useMemo(() => ConfigService.config, []);
   const R          = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -217,7 +217,7 @@ export function GPSInput(props: {
       </View>
     </LC.Root>
   </>);
-}
+});
 
 function IconButtons(props: {
   features: GPSFeaturesDTO

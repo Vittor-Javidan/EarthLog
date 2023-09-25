@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { View } from 'react-native';
 
 import { Text } from '@Text/index';
@@ -10,11 +10,11 @@ type WidgetTheme = {
   modified: string
 }
 
-export function PseudoWidget(props: {
+export const PseudoWidget = memo((props: {
   saved: boolean
   children: ReactNode
   theme: WidgetTheme
-}) {
+}) => {
   return (
     <View
       style={{
@@ -50,12 +50,12 @@ export function PseudoWidget(props: {
       </View>
     </View>
   );
-}
+});
 
-function SaveFeedback(props: {
+const SaveFeedback = memo((props: {
   saved: boolean
   theme: WidgetTheme
-}) {
+}) => {
   return (
     <View
       style={{
@@ -82,4 +82,4 @@ function SaveFeedback(props: {
       </Text>
     </View>
   );
-}
+});

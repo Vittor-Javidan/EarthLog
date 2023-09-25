@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text as ReactNative_Text, StyleProp, TextStyle } from 'react-native';
 
 import FontService from '@Services/FontService';
 
-export function Text(props: {
+export const Text = memo((props: {
   h1?: boolean
   h2?: boolean
   h3?: boolean
   p?: boolean
   children: string
   style?: StyleProp<TextStyle>
-}) {
+}) => {
 
   return (
     <ReactNative_Text
@@ -41,4 +41,4 @@ export function Text(props: {
       {props.children}
     </ReactNative_Text>
   );
-}
+});

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Pressable, StyleProp, ViewStyle } from 'react-native';
 
 import ApticsService from '@Services/ApticsService';
@@ -12,12 +12,12 @@ type ButtonTheme = {
   background_Pressed: string
 }
 
-export function IconButton(props: {
+export const IconButton = memo((props: {
   iconName: IconName
   theme: ButtonTheme
   style?: StyleProp<ViewStyle>
   onPress: () => void
-}) {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -52,4 +52,4 @@ export function IconButton(props: {
       />
     </Pressable>
   );
-}
+});

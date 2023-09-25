@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Pressable } from 'react-native';
 
 import ApticsService from '@Services/ApticsService';
@@ -13,13 +13,13 @@ type ButtonTheme = {
   background_Pressed: string
 }
 
-export function RoundedIconButton(props: {
+export const RoundedIconButton = memo((props: {
   iconName: IconName
   showPlusSign: boolean
   buttonDiameter: number
   theme: ButtonTheme
   onPress: () => void
-}): JSX.Element {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -68,4 +68,4 @@ export function RoundedIconButton(props: {
       />
     </Pressable>
   );
-}
+});

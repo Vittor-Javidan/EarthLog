@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, memo } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
 import ApticsService from '@Services/ApticsService';
@@ -13,7 +13,7 @@ type InputTheme = {
   wrong: string
 }
 
-export function InputRoot(props: {
+export const InputRoot = memo((props: {
   label: string
   editWidget: boolean
   isFirstInput: boolean
@@ -25,7 +25,7 @@ export function InputRoot(props: {
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
-}) {
+}) => {
 
   const [label    , setLabel    ] = useState<string>(props.label);
   const [editLabel, setEditLabel] = useState<boolean>(false);
@@ -94,16 +94,16 @@ export function InputRoot(props: {
       </View>
     </View>
   );
-}
+});
 
-function LabelButton(props: {
+const LabelButton = memo((props: {
   label: string
   editLabel: boolean
   theme: InputTheme
   onPress: () => void
   onLabelChange: (label: string) => void
   confirmLabel: () => void
-}) {
+}) => {
 
   function onPress() {
     props.onPress();
@@ -155,16 +155,16 @@ function LabelButton(props: {
       )}
     </View>
   );
-}
+});
 
-function IconButton(props: {
+const IconButton = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   theme: InputTheme
   onPress_Trash: () => void
   onPress_ChevronUp: () => void
   onPress_ChevronDown: () => void
-}) {
+}) => {
   return (<>
     {props.isFirstInput !== true && (
       <NavbarIconButton
@@ -198,4 +198,4 @@ function IconButton(props: {
       }}
     />
   </>);
-}
+});

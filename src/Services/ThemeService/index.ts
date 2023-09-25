@@ -11,7 +11,6 @@ export default class ThemeService {
     Widget: ThemeNamesArray_Widgets,
   };
 
-  // Remake the theme colors to be more specific
   static appThemes: Record<ThemeNames_APP, AppThemeDTO> = {
     'default': newAppThemes.DEFAULT,
   };

@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
-export default function NavigationTreeRoot(props: {
+export const NavigationTreeRoot = memo((props: {
   iconButtons: JSX.Element[]
-}) {
+}) => {
 
   if (props.iconButtons === undefined) {
     return <></>;
@@ -54,4 +54,4 @@ export default function NavigationTreeRoot(props: {
       {tree}
     </View>
   );
-}
+});

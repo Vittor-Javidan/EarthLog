@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Platform } from 'react-native';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   buttons: JSX.Element[]
   showSwipe?: boolean
   SwipeButton?: JSX.Element
-}) {
+}) => {
 
   const BOTTOM = Platform.OS === 'ios' ? 20 : 10;
 
@@ -33,4 +33,4 @@ export default function ScreenButtons(props: {
       {props.buttons}
     </View>
   </>));
-}
+});

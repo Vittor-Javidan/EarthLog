@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Platform, Pressable, StyleProp, ViewStyle } from 'react-native';
 
 import FontService from '@Services/FontService';
@@ -14,14 +14,14 @@ type ButtonTheme = {
   background_Pressed: string
 }
 
-export function TextWithIcon(props: {
+export const TextWithIcon = memo((props: {
 	title: string
   iconSide: 'Left' | 'Right'
   iconName: IconName
   theme: ButtonTheme
   style?: StyleProp<ViewStyle>
 	onPress: () => void
-}): JSX.Element {
+}) => {
 
 	const [pressed, setPressed] = useState<boolean>(false);
   const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 25;
@@ -83,4 +83,4 @@ export function TextWithIcon(props: {
       )}
 		</Pressable>
   );
-}
+});

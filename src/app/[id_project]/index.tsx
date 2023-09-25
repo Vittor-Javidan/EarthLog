@@ -11,16 +11,19 @@ import { ProjectScreen as _ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen as _TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen as _ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
 
-type MemoProps1 = { projectScopeState: Loading; };
-type MemoProps2 = {
-  projectScopeState: Loading;
-  onProjectNameUpdate: (newName: string) => void;
-  onSampleAliasChange: (newSampleAlias: string) => void
-};
+const ProjectScreen = memo((props: {
+  projectScopeState: Loading
+}) => <_ProjectScreen {...props} />    );
 
-const ProjectScreen     = memo((props: MemoProps1) => <_ProjectScreen {...props} />    );
-const TemplateScreen    = memo((props: MemoProps1) => <_TemplateScreen {...props} />   );
-const ProjectInfoScreen = memo((props: MemoProps2) => <_ProjectInfoScreen {...props} />);
+const TemplateScreen    = memo((props: {
+  projectScopeState: Loading
+}) => <_TemplateScreen {...props} />   );
+
+const ProjectInfoScreen = memo((props: {
+  projectScopeState: Loading
+  onProjectNameUpdate: (newName: string) => void
+  onSampleAliasChange: (newSampleAlias: string) => void
+}) => <_ProjectInfoScreen {...props} />);
 
 export default function ProjectScope() {
 
@@ -32,7 +35,9 @@ export default function ProjectScope() {
   const [updatedName       , setUpdatedName        ] = useState<string | null>(null);
   const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
 
-  useBackPress(() => navigate('HOME SCOPE'));
+  useBackPress(() => {
+    navigate('HOME SCOPE');
+  });
   useEffect(() => {
     fetchSamples(id_project, () => setState('Loaded'));
   }, []);
@@ -55,9 +60,13 @@ export default function ProjectScope() {
         }
         screens={[
           <ProjectScreen      projectScopeState={state} key="1" />,
-          <TemplateScreen     projectScopeState={state} key="2" />,
+          <TemplateScreen
+            key="2"
+            projectScopeState={state}
+          />,
           <ProjectInfoScreen
-            projectScopeState={state} key="3"
+            key="3"
+            projectScopeState={state}
             onProjectNameUpdate={(newName) => setUpdatedName(newName)}
             onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAlias(newSampleAlias)}
           />,
