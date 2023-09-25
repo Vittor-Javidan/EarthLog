@@ -21,13 +21,13 @@ export default function HomeScope() {
   const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
+  useEffect(() => {
+    fetchProject(() => setState('Loaded'));
+  }, []);
+
   useBackPress(async () => {
     await exitMessage();
     ApticsService.vibrate('warning');
-  });
-
-  useEffect(() => {
-    fetchProject(() => setState('Loaded'));
   }, []);
 
   async function exitMessage() {

@@ -13,7 +13,7 @@ export default function SettingsScope(): JSX.Element {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Screens.SettingsScreen[config.language], []);
 
-  useBackPress(() => navigate('HOME SCOPE'));
+  useBackPress(() => navigate('HOME SCOPE'), []);
 
   return (
     <Layout.Root

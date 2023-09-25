@@ -14,7 +14,7 @@ export default function LanguageSelectionScope(): JSX.Element {
   const [language, setLanguage] = useState<LanguageTag>(ConfigService.config.language);
   const R = useMemo(() => translations.Screens.LanguagesScreen[language], [language]);
 
-  useBackPress(() => navigate('SETTINGS SCOPE'));
+  useBackPress(() => navigate('SETTINGS SCOPE'), []);
 
   return (
     <Layout.Root
