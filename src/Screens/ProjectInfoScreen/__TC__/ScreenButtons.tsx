@@ -50,19 +50,6 @@ export default function ScreenButtons(props: {
       buttons={[
         <Button.RoundedIcon
           key="1"
-          iconName="arrow-back"
-          showPlusSign={false}
-          buttonDiameter={60}
-          onPress={() => navigate('HOME SCOPE')}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-        <Button.RoundedIcon
-          key="2"
           iconName="trash-outline"
           showPlusSign={false}
           buttonDiameter={60}
@@ -75,7 +62,7 @@ export default function ScreenButtons(props: {
           }}
         />,
         <Button.RoundedIcon
-          key="3"
+          key="2"
           iconName="square"
           showPlusSign={true}
           buttonDiameter={60}

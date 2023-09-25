@@ -1,5 +1,6 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.2.19 Reusable components optimization
+# 0.1.2.20 User usage optimization
 
-- All resusable components are now using the "memo" hook. because they are just a vessel for data anyways. The same was not done with local components of screen or any not reusable component, unless need for animation reasons.
+- return buttons removed from some screen, due the reason of being easy to exit the project.
+- Backpress button now returns to the first carousel screen when press. And when on fist screen, returns to previous scope instead.

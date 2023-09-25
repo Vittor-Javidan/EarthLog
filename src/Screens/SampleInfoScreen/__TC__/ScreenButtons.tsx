@@ -37,19 +37,6 @@ export default function ScreenButtons() {
       buttons={[
         <Button.RoundedIcon
           key="1"
-          iconName="arrow-back"
-          showPlusSign={false}
-          buttonDiameter={60}
-          onPress={() => navigate('PROJECT SCOPE', id_project)}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-        <Button.RoundedIcon
-          key="2"
           iconName="trash-outline"
           showPlusSign={false}
           buttonDiameter={60}

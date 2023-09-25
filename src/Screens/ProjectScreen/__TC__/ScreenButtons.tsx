@@ -33,7 +33,7 @@ export default function ScreenButtons(props: {
       buttons={[
         <Button.RoundedIcon
           key="1"
-          iconName="arrow-back"
+          iconName="home"
           showPlusSign={false}
           buttonDiameter={60}
           onPress={() => navigate('HOME SCOPE')}

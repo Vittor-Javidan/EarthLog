@@ -46,7 +46,7 @@ export const DEFAULT: AppThemeDTO = {
     },
     carouselButton: {
       font: '#DDD',
-      font_active: '#DDD',
+      font_active: '#5F5',
       background: '#666',
       background_active: '#333',
     },

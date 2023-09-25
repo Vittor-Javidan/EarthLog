@@ -36,7 +36,13 @@ export default function ProjectScope() {
   const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
 
   useBackPress(() => {
-    navigate('HOME SCOPE');
+    setSelectedScreen(prev => {
+      if (prev === 1) {
+        navigate('HOME SCOPE');
+        return prev;
+      }
+      return 1;
+    });
   });
   useEffect(() => {
     fetchSamples(id_project, () => setState('Loaded'));

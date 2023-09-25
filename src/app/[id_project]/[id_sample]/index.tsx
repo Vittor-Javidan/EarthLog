@@ -32,7 +32,15 @@ export default function SampleScope() {
   const [dataScreenRefresher, setDataScreenRefresher] = useState<boolean>(false);
   const [loading            , setLoading            ] = useState<Loading>('Loading');
 
-  useBackPress(() => navigate('PROJECT SCOPE', id_project));
+  useBackPress(() => {
+    setSelectedScreen(prev => {
+      if (prev === 1) {
+        navigate('PROJECT SCOPE', id_project);
+        return prev;
+      }
+      return 1;
+    });
+  });
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setLoading('Loaded'));
   }, []);
