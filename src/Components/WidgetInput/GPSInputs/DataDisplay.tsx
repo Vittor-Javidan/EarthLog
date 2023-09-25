@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
+import { GPSFeaturesDTO, GPSInputData } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 import { GPSInputTheme } from './ThemeType';
 
-export default function DataDisplay(props: {
-  gpsData: GPS_DTO
+export const DataDisplay = memo((props: {
+  inputData: GPSInputData
   features: GPSFeaturesDTO
   theme: GPSInputTheme
-}) {
+}) => {
 
   const showStaticDisplay =
-    props.gpsData.coordinates !== undefined ||
-    props.gpsData.altitude    !== undefined
+    props.inputData.value.coordinates !== undefined ||
+    props.inputData.value.altitude    !== undefined
   ;
 
   const showNothing =
     props.features.editMode   === false     &&
-    props.gpsData.coordinates === undefined &&
-    props.gpsData.altitude    === undefined
+    props.inputData.value.coordinates === undefined &&
+    props.inputData.value.altitude    === undefined
   ;
 
   if (showNothing) {
@@ -30,39 +30,39 @@ export default function DataDisplay(props: {
   return (<>
     {showStaticDisplay && (
       <View>
-        {props.gpsData.coordinates !== undefined && <>
+        {props.inputData.value.coordinates !== undefined && <>
           <DataInfo
             title="Latitude"
-            value={props.gpsData.coordinates.lat}
-            precision={props.gpsData.coordinates.accuracy}
+            value={props.inputData.value.coordinates.lat}
+            precision={props.inputData.value.coordinates.accuracy}
             theme={props.theme}
           />
           <DataInfo
             title="Longitude"
-            value={props.gpsData.coordinates.long}
-            precision={props.gpsData.coordinates.accuracy}
+            value={props.inputData.value.coordinates.long}
+            precision={props.inputData.value.coordinates.accuracy}
             theme={props.theme}
           />
         </>}
-        {props.gpsData.altitude !== undefined && <>
+        {props.inputData.value.altitude !== undefined && <>
           <DataInfo
             title="Altitude"
-            value={props.gpsData.altitude.value}
-            precision={props.gpsData.altitude.accuracy}
+            value={props.inputData.value.altitude.value}
+            precision={props.inputData.value.altitude.accuracy}
             theme={props.theme}
           />
         </>}
       </View>
     )}
   </>);
-}
+});
 
-function DataInfo(props: {
+const DataInfo = memo((props: {
   title: string
   value: number
   precision: number
   theme: GPSInputTheme
-}) {
+}) => {
   return (
     <View
       style={{
@@ -82,4 +82,4 @@ function DataInfo(props: {
       </Text>
     </View>
   );
-}
+});

@@ -47,6 +47,7 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_3"
           iconName="language"
+          onPress={() => {}}
         />,
       ]}
     />

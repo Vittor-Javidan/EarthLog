@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { View, Platform } from 'react-native';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import TextInput_GPS from './TextInput_GPS';
+import { TextInput_GPS } from './TextInput_GPS';
 import { GPSInputTheme } from '../ThemeType';
 
 type TempAltitude = {
@@ -12,12 +12,12 @@ type TempAltitude = {
   accuracy: string
 }
 
-export default function AltitudeInputs(props: {
+export const AltitudeInputs = memo((props: {
   tempAltitude: TempAltitude
   theme: GPSInputTheme
   onAltitudeChange: (newAlt: string) => void
   onAccuracyChange_Alt: (newAcc: string) => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -46,4 +46,4 @@ export default function AltitudeInputs(props: {
       />
     </View>
   );
-}
+});

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import { GPSAccuracyDTO, GPSFeaturesDTO } from '@Types/ProjectTypes';
@@ -8,11 +8,11 @@ import ConfigService from '@Services/ConfigService';
 import { Text } from '@Text/index';
 import { GPSInputTheme } from './ThemeType';
 
-export default function RealTimeAccuracy(props: {
+export const RealTimeAccuracy = memo((props: {
   accuracy: GPSAccuracyDTO
   features: GPSFeaturesDTO
   theme: GPSInputTheme
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -49,13 +49,13 @@ export default function RealTimeAccuracy(props: {
       )}
     </View>
   );
-}
+});
 
-function AccuracyInfo(props: {
+const AccuracyInfo = memo((props: {
   title: string
   precision: number
   theme: GPSInputTheme
-}) {
+}) => {
   return (
     <View
       style={{
@@ -75,4 +75,4 @@ function AccuracyInfo(props: {
       </Text>
     </View>
   );
-}
+});

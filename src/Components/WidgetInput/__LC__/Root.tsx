@@ -1,7 +1,7 @@
-import React, { ReactNode, useState, memo } from 'react';
+import React, { ReactNode, useState, memo, useCallback } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { NavbarIconButton } from './NavbarIconButtons';
@@ -30,16 +30,16 @@ export const InputRoot = memo((props: {
   const [label    , setLabel    ] = useState<string>(props.label);
   const [editLabel, setEditLabel] = useState<boolean>(false);
 
-  function onLabelChange(newLabel: string) {
+  const onLabelChange = useCallback((newLabel: string) => {
     if (newLabel.length <= 25) {
       setLabel(newLabel);
     }
-  }
+  }, []);
 
-  function confirmLabel() {
+  const confirmLabel = useCallback(() => {
     setEditLabel(false);
     props.onLabelChange(label);
-  }
+  }, [label, props.onLabelChange]);
 
   return (
     <View
@@ -107,7 +107,7 @@ const LabelButton = memo((props: {
 
   function onPress() {
     props.onPress();
-    ApticsService.vibrate('warning');
+    HapticsService.vibrate('warning');
   }
 
   return (

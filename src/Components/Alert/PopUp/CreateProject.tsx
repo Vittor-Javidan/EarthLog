@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -6,15 +6,14 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
 
-export default function CreateProject(props: {
-  onAccept: () => void
-  onRefuse: () => void
-}) {
+export const CreateProject = memo((props: {
+  onFinish: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
@@ -28,12 +27,12 @@ export default function CreateProject(props: {
         newProject,
         async () => {
           await CacheService.loadAllProjectsSettings();
-          props.onAccept();
           await AlertService.runAcceptCallback();
+          props.onFinish();
         },
         async (errorMesage) => {
           alert(errorMesage);
-          ApticsService.vibrate('warning');
+          HapticsService.vibrate('warning');
         }
       );
     }
@@ -76,7 +75,7 @@ export default function CreateProject(props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onRefuse()}
+          onPress={() => props.onFinish()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.wrong,
@@ -111,4 +110,4 @@ export default function CreateProject(props: {
       </View>
     </View>
   );
-}
+});

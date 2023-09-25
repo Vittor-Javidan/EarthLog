@@ -1,23 +1,23 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, memo } from 'react';
 import { View, ScrollView, Pressable } from 'react-native';
 
+import { WidgetData } from '@Types/ProjectTypes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
-import { Text } from '@Text/index';
-import ApticsService from '@Services/ApticsService';
-import { Button } from '@Button/index';
-import { WidgetData } from '@Types/ProjectTypes';
+import HapticsService from '@Services/HapticsService';
 import ProjectService from '@Services/ProjectService';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
 
-export default function TemplateWidgetCopy(props: {
+import { Text } from '@Text/index';
+import { Button } from '@Button/index';
+
+export const TemplateWidgetCopy = memo((props: {
   id_project: string | undefined
   id_sample: string | undefined
-  onAccept: () => void
-  onRefuse: () => void
-}) {
+  onFinish: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
@@ -33,12 +33,12 @@ export default function TemplateWidgetCopy(props: {
         newWidgetData,
         async () => {
           await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-          props.onAccept();
+          props.onFinish();
           await AlertService.runAcceptCallback();
         },
         (errorMesage) => {
           alert(errorMesage);
-          ApticsService.vibrate('warning');
+          HapticsService.vibrate('warning');
         }
       );
     } else {
@@ -106,7 +106,7 @@ export default function TemplateWidgetCopy(props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onRefuse()}
+          onPress={() => props.onFinish()}
           theme={{
             font: theme.font,
             font_Pressed: theme.wrong,
@@ -124,9 +124,9 @@ export default function TemplateWidgetCopy(props: {
       </View>
     </View>
   );
-}
+});
 
-function TemplateWidgetButton(props: {
+const TemplateWidgetButton = memo((props: {
   title: string
   theme: {
     font: string;
@@ -134,18 +134,18 @@ function TemplateWidgetButton(props: {
     background_Button: string;
   }
   onPress: () => void
-}) {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
     props.onPress();
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   return (
@@ -172,4 +172,4 @@ function TemplateWidgetButton(props: {
       </Pressable>
     </View>
   );
-}
+});

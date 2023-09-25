@@ -1,38 +1,38 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { GPSInputTheme } from '../ThemeType';
 
-export default function ManualInputButton(props: {
+export const ManualInputButton = memo((props: {
   theme: GPSInputTheme
 	onPress: () => void
-}): JSX.Element {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
 	const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
-    setPressed(true);
-    ApticsService.vibrate('success');
-  }
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
-  function onPressOut() {
-    setPressed(false);
-    ApticsService.vibrate('success');
-  }
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
 
 	return (
 		<Pressable
 			onPressIn={() => onPressIn()}
-			onPressOut={() => { onPressOut(); }}
-			onPress={() => props.onPress()}
+			onPressOut={() => setPressed(false)}
+			onPress={() => onPress()}
 			style={{
         width: '100%',
         flexDirection: 'row',
@@ -61,4 +61,4 @@ export default function ManualInputButton(props: {
       />
 		</Pressable>
   );
-}
+});

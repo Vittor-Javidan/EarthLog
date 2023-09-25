@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { View, TextInput, Platform } from 'react-native';
 
 import { Text } from '@Text/index';
 import { GPSInputTheme } from '../ThemeType';
 
-export default function TextInput_GPS(props: {
+export const TextInput_GPS = memo((props: {
   title: string
   value: string
   value_placeholder: string
   type: 'latitude' | 'longitude' | 'meters'
   theme: GPSInputTheme
   onChangeText: (value: string) => void
-}) {
+}) => {
 
   const [value,         setValue        ] = useState<string>(props.value);
   const [invalidValue,  setInvalidValue ] = useState<boolean>(false);
 
-  function onChange(text: string) {
+  const onChange = useCallback((text: string) => {
 
     if (text.includes(',')) {
       text = text.replace(',', '.');
@@ -35,7 +35,7 @@ export default function TextInput_GPS(props: {
     if (isValid) {
       props.onChangeText(text);
     }
-  }
+  }, [props.value, props.type, props.onChangeText]);
 
   return (
     <View
@@ -71,4 +71,4 @@ export default function TextInput_GPS(props: {
       />
     </View>
   );
-}
+});

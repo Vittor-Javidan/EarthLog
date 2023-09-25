@@ -22,7 +22,7 @@ export function TemplateScreen(props: {
         <Layout.Loading />
       ) : (
         <Layout.ScrollView
-          contenContainerStyle={{
+          contentContainerStyle={{
             paddingTop: 55,
             padding: 5,
             gap: 10,

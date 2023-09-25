@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
@@ -6,9 +6,9 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
-import AltitudeInputs from './AltitudeInputs';
-import CoordinatesInputs from './CoordinatesInputs';
-import FooterButtons from './FooterButtons';
+import { AltitudeInputs } from './AltitudeInputs';
+import { CoordinatesInputs } from './CoordinatesInputs';
+import { FooterButtons } from './FooterButtons';
 import { GPSInputTheme } from '../ThemeType';
 
 type TempCoordinates = {
@@ -21,13 +21,13 @@ type TempAltitude = {
   accuracy: string
 }
 
-export default function InputsDisplay(props: {
+export const InputsDisplay = memo((props: {
   features: GPSFeaturesDTO
   theme: GPSInputTheme
   onSave: (gpsData: GPS_DTO) => void
   onCancel: () => void
   onError: () => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -43,14 +43,13 @@ export default function InputsDisplay(props: {
     accuracy: '',
   });
 
-  function checkMissingInfo(whenOk: () => void) {
+  const checkMissingInfo = useCallback((whenOk: () => void) => {
 
     const missingInfo_Coord = props.features.enableCoordinate && (
       coordinates.latitude  === ''  ||
       coordinates.longitude === ''  ||
       coordinates.accuracy  === ''
     );
-
     const missingInfo_Alt = props.features.enableAltitude && (
       altitude.value    === '' ||
       altitude.accuracy === ''
@@ -63,9 +62,9 @@ export default function InputsDisplay(props: {
     }
 
     whenOk();
-  }
+  }, [props.features, altitude, coordinates]);
 
-  function onSave() {
+  const onSave = useCallback(() => {
     checkMissingInfo(() => {
       const newGPSData: GPS_DTO = {};
       if (props.features.enableCoordinate) {
@@ -84,12 +83,12 @@ export default function InputsDisplay(props: {
       setErrorMessage('');
       props.onSave(newGPSData);
     });
-  }
+  }, [props.features, props.onSave, coordinates, altitude, checkMissingInfo]);
 
-  function onCancel() {
+  const onCancel = useCallback(() => {
     setErrorMessage('');
     props.onCancel();
-  }
+  }, [props.onCancel]);
 
   return (<>
     {errorMessage !== '' && (
@@ -135,4 +134,4 @@ export default function InputsDisplay(props: {
       />
     </View>
   </>);
-}
+});

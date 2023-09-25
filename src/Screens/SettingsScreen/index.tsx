@@ -12,7 +12,7 @@ import ThemeService from '@Services/ThemeService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 import AlertService from '@Services/AlertService';
 
 export default function SettingsScreen(): JSX.Element {
@@ -67,7 +67,7 @@ async function whipeDataBase() {
       type: 'warning',
     },
     async () => {
-      ApticsService.vibrate('success');
+      HapticsService.vibrate('success');
       await DatabaseService.deleteDatabase();
       await CacheService.deleteLastOpenProject();
       CacheService.lastOpenProject = {

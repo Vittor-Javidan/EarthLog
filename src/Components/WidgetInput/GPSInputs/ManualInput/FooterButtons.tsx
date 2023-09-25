@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
 import { GPSInputTheme } from '../ThemeType';
 
-export default function FooterButtons(props: {
+export const FooterButtons = memo((props: {
   theme: GPSInputTheme
   onCancel: () => void
   onSave: () => void
-}) {
+}) => {
   return (
     <View
       style={{
@@ -30,26 +30,26 @@ export default function FooterButtons(props: {
       />
     </View>
   );
-}
+});
 
-function FooterButton(props: {
+const FooterButton = memo((props: {
   iconName: 'close' | 'save'
   theme: GPSInputTheme
   onPress: () => void
-}) {
+}) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
   const backgroundColor = props.iconName === 'close' ? props.theme.wrong : props.theme.confirm;
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, []);
 
   return (
     <Pressable
@@ -74,4 +74,4 @@ function FooterButton(props: {
       />
     </Pressable>
   );
-}
+});

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AlertModalConfig } from '@Types/AppTypes';
 import AlertService from '@Services/AlertService';
 
-import Selector from './Selector';
+import { Selector } from './Selector';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
-export function AlertModal() {
+export const AlertModal = memo(() => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<AlertModalConfig>({
@@ -30,7 +30,7 @@ export function AlertModal() {
       statusBarTranslucent={true}
       transparent
     >
-      <GestureHandlerRootView style={{ flex: 1}}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <View
           style={{
             flex: 1,
@@ -55,12 +55,11 @@ export function AlertModal() {
           >
             <Selector
               config={modalConfig}
-              onAccept={() => setShowModal(false)}
-              onRefuse={() => setShowModal(false)}
+              onFinish={() => setShowModal(false)}
             />
           </View>
         </View>
       </GestureHandlerRootView>
     </ReactNative_Modal>
   ) : <></>);
-}
+});

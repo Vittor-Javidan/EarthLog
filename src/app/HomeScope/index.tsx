@@ -9,7 +9,7 @@ import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -27,7 +27,7 @@ export default function HomeScope() {
 
   useBackPress(async () => {
     await exitMessage();
-    ApticsService.vibrate('warning');
+    HapticsService.vibrate('warning');
   }, []);
 
   async function exitMessage() {
@@ -58,6 +58,7 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
+          onPress={() => {}}
         />,
       ]}
     />

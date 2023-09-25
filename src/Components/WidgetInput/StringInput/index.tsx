@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { InputStatus, StringInputData } from '@Types/ProjectTypes';
@@ -46,7 +46,7 @@ export const StringInput = memo((props: {
     }
   }, [inputData, saveSignal], 200);
 
-  function onTextDelete() {
+  const onTextDelete = useCallback(() => {
     if (inputData.value !== '') {
       props.onSave(null, 'modifying');
       setDeletedText(inputData.value);
@@ -54,30 +54,30 @@ export const StringInput = memo((props: {
       setShowUndo(true);
       setSaveSignal(true);
     }
-  }
+  }, [props.onSave, inputData.value]);
 
-  function undoDelete() {
+  const undoDelete = useCallback(() => {
     props.onSave(null, 'modifying');
     setInputData(prev => ({ ...prev, value: deletedText}));
     setShowUndo(false);
     setSaveSignal(true);
-  }
+  }, [props.onSave, deletedText]);
 
-  function onTextChange(text: string) {
+  const onTextChange = useCallback((text: string) => {
     if (inputData.lockedData !== true) {
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, value: text }));
       setSaveSignal(true);
     }
-  }
+  }, [props.onSave, inputData.lockedData]);
 
-  function onLabelChange(newLabel: string) {
+  const onLabelChange = useCallback((newLabel: string) => {
     if (inputData.lockedLabel !== true) {
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, label: newLabel}));
       setSaveSignal(true);
     }
-  }
+  }, [props.onSave, inputData.lockedLabel]);
 
   return (
     <LC.Root

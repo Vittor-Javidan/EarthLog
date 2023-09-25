@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
 import { GPSFeaturesDTO } from '@Types/ProjectTypes';
@@ -8,10 +8,10 @@ import ConfigService from '@Services/ConfigService';
 import { Text } from '@Text/index';
 import { GPSInputTheme } from './ThemeType';
 
-export default function LoadingFeedback(props: {
+export const LoadingFeedback = memo((props: {
   features: GPSFeaturesDTO
   theme: GPSInputTheme
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -49,4 +49,4 @@ export default function LoadingFeedback(props: {
       </Text>
     </View>
   );
-}
+});

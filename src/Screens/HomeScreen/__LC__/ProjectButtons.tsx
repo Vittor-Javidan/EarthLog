@@ -9,7 +9,7 @@ import CacheService from '@Services/CacheService';
 import { Text } from '@Text/index';
 import ThemeService from '@Services/ThemeService';
 import { Layout } from '@Layout/index';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 export default function ProjectButtons() {
 
@@ -37,22 +37,24 @@ export default function ProjectButtons() {
         borderRadius: 10,
       }}
     >
-      <Text h2
+      <Text h1
         style={{
           alignSelf: 'center',
           color: theme.font,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          paddingVertical: 5,
+          paddingTop: 5,
+          paddingBottom: 15,
         }}
       >
         {R['Projects']}
       </Text>
       <Layout.ScrollView
-        contenContainerStyle={{
+        contentContainerStyle={{
           flexDirection: 'row',
-          flexWrap: 'wrap',
           justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap',
           gap: 5,
           paddingBottom: 0,
           paddingHorizontal: 5,
@@ -78,12 +80,12 @@ function ProjectButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
     props.onPress();
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   return (

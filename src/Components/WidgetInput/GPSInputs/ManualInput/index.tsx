@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
 import AlertService from '@Services/AlertService';
 
-import ManualInputButton from './ManualInputButton';
-import InputsDisplay from './InputsDisplay';
+import { ManualInputButton } from './ManualInputButton';
+import { InputsDisplay } from './InputsDisplay';
 import { GPSInputTheme } from '../ThemeType';
 
-export default function ManualInput(props: {
+export const ManualInput = memo((props: {
   noGPSData: boolean
   features: GPSFeaturesDTO
   theme: GPSInputTheme
   onConfirm: (gpsData: GPS_DTO) => void
-}) {
+}) => {
 
   const [showInput, setShowInput] = useState<boolean>(false);
   const [error    , setError    ] = useState<boolean>(false);
 
-  async function onSave(newGPSData: GPS_DTO) {
+  const onSave = useCallback(async (newGPSData: GPS_DTO) => {
     await AlertService.handleAlert(props.noGPSData,
       {
         question: 'current saved data will be replaced. Are you sure?',
@@ -30,17 +30,17 @@ export default function ManualInput(props: {
         props.onConfirm(newGPSData);
       }
     );
-  }
+  }, [props.noGPSData, props.onConfirm]);
 
-  function openManualInput() {
+  const openManualInput = useCallback(() => {
     setError(false);
     setShowInput(true);
-  }
+  }, []);
 
-  function closeManualInput() {
+  const closeManualInput = useCallback(() => {
     setError(false);
     setShowInput(false);
-  }
+  }, []);
 
   return (
     <View
@@ -69,4 +69,4 @@ export default function ManualInput(props: {
       )}
     </View>
   );
-}
+});

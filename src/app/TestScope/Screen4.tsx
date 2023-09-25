@@ -8,7 +8,7 @@ export function Screen4() {
       screenButtons={<></>}
     >
       <Layout.ScrollView
-        contenContainerStyle={{
+        contentContainerStyle={{
           paddingTop: 55,
           paddingHorizontal: 5,
           gap: 10,

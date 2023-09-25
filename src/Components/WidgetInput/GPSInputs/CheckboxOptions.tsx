@@ -1,21 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPSFeaturesDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 import { GPSInputTheme } from './ThemeType';
 
-export default function CheckboxOptions(props: {
+export const CheckboxOptions = memo((props: {
   features: GPSFeaturesDTO
   theme: GPSInputTheme
   onToogle_Coordinate: (checked: boolean) => void
   onToogle_Altitude: (checked: boolean) => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -45,19 +45,19 @@ export default function CheckboxOptions(props: {
       />
     </View>
   );
-}
+});
 
-function Option(props: {
+const Option = memo((props: {
   title: string
   value: boolean
   theme: GPSInputTheme
   onChange: (checked: boolean) => void
-}) {
+}) => {
 
-  function onChange(checked: boolean) {
+  const onChange = useCallback((checked: boolean) => {
     props.onChange(checked);
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onChange]);
 
   return (
     <View
@@ -69,7 +69,7 @@ function Option(props: {
     >
       <Button.Checkbox
         value={props.value}
-        onChange={(checked => onChange(checked))}
+        onChange={(checked) => onChange(checked)}
         theme={props.theme}
       />
       <Text h3
@@ -79,4 +79,4 @@ function Option(props: {
       </Text>
     </View>
   );
-}
+});

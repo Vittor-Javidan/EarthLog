@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, memo } from 'react';
 import { View, Platform } from 'react-native';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
-import TextInput_GPS from './TextInput_GPS';
+import { TextInput_GPS } from './TextInput_GPS';
 import { GPSInputTheme } from '../ThemeType';
 
 type TempCoordinates = {
@@ -13,13 +13,13 @@ type TempCoordinates = {
   accuracy: string
 }
 
-export default function CoordinatesInputs(props: {
+export const CoordinatesInputs = memo((props: {
   tempCoordinate: TempCoordinates
   theme: GPSInputTheme
   onLatitudeChange: (newLat: string) => void
   onLongitudeChange: (newLong: string) => void
   onAccuracyChange_Coord: (newAcc: string) => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
@@ -56,4 +56,4 @@ export default function CoordinatesInputs(props: {
       />
     </View>
   );
-}
+});

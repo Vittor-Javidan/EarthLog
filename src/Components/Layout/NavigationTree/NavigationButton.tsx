@@ -1,31 +1,36 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
 export const NavigationButton = memo((props: {
   iconName: IconName
-  onPress?: () => void
+  onPress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navigationTreeButton, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
+
   return (
     <Pressable
-      onPressIn={async () => {
-        setPressed(true);
-        ApticsService.vibrate('success');
-      }}
-      onPressOut={() => {
-        setPressed(false);
-      }}
-      onPress={props.onPress}
+      onPressIn={() => onPressIn()}
+      onPressOut={() => setPressed(false)}
+      onPress={() => onPress()}
       style={{
         flex: 1,
         flexDirection: 'row',

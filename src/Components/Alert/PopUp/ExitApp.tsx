@@ -1,36 +1,35 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 
-export default function ExitApp(props: {
+export const ExitApp = memo((props: {
   question: string
-  onAccept: () => void
-  onRefuse: () => void
-}) {
+  onFinish: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
   useEffect(() => {
-    ApticsService.vibrate('warning');
+    HapticsService.vibrate('warning');
   }, []);
 
   async function onAccept() {
-    props.onAccept();
+    props.onFinish();
     await AlertService.runAcceptCallback();
-    ApticsService.vibrate('warning');
+    HapticsService.vibrate('warning');
   }
 
   async function onRefuse() {
-    props.onRefuse();
-    ApticsService.vibrate('success');
+    props.onFinish();
+    HapticsService.vibrate('success');
   }
 
   return (
@@ -102,4 +101,4 @@ export default function ExitApp(props: {
       </View>
     </View>
   );
-}
+});

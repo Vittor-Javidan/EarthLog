@@ -1,7 +1,7 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon, IconName } from '@Icon/index';
 
@@ -20,24 +20,20 @@ export const NavbarIconButton = memo((props: {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
-    ApticsService.vibrate('success');
-  }
-
-  function onPressOut() {
-    setPressed(false);
-  }
+    HapticsService.vibrate('success');
+  }, []);
 
   return (
     <Pressable
       onPressIn={() => onPressIn()}
-      onPressOut={() => onPressOut()}
+      onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
         flexDirection: 'row',

@@ -1,9 +1,9 @@
-import React, {  useMemo, memo } from 'react';
+import React, {  useMemo, memo, useCallback } from 'react';
 import { StyleProp, ViewStyle, Pressable } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -23,21 +23,22 @@ export const CarouselButton = memo((props: {
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15,
   } : undefined, []);
+
   const rightPositionStyle: StyleProp<ViewStyle> = useMemo(() => props.type === 'right' ? {
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
   } : undefined, []);
 
-  function onPressIn(selected: boolean) {
-    if (!selected) {
-      ApticsService.vibrate('success');
+  const onPressIn = useCallback(() => {
+    if (!props.selected) {
+      HapticsService.vibrate('success');
       props.onPress();
     }
-  }
+  }, [props.selected, props.onPress]);
 
 	return (
 		<Pressable
-			onPressIn={() => onPressIn(props.selected)}
+			onPressIn={() => onPressIn()}
 			style={[{
         flexDirection: 'row',
 				justifyContent: 'center',

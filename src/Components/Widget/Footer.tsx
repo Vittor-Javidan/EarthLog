@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -17,10 +17,10 @@ export const Footer = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  function onChangeCheckbox(checked: boolean) {
+  const onChangeCheckbox = useCallback((checked: boolean) => {
     props.onChangeCheckbox(checked);
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onChangeCheckbox]);
 
   return (props.showCheckbox || props.showDeleteWidgetButton) ? (
     <View

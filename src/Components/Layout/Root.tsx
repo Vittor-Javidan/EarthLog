@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useMemo, useEffect, memo } from 'react';
+import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
 import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -125,15 +125,15 @@ const MenuButton = memo((props: {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
-  async function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, []);
 
-  async function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
   return (
     <View
@@ -143,7 +143,7 @@ const MenuButton = memo((props: {
       }}
     >
       <Pressable
-        onPressIn={async () => await onPressIn()}
+        onPressIn={() => onPressIn()}
         onPressOut={() => setPressed(false)}
         onPress={() => onPress()}
         style={{

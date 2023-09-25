@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
 import { BooleanInputData, InputStatus } from '@Types/ProjectTypes';
@@ -6,7 +6,7 @@ import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
@@ -59,28 +59,28 @@ export const BooleanInput = memo((props: {
     }
   }, [inputData, saveSignal], 200);
 
-  function onSwitchChange(boolean: boolean) {
+  const onSwitchChange = useCallback((boolean: boolean) => {
     if (notApplicableUndefined || notApplicableFalse) {
-      ApticsService.vibrate('success');
+      HapticsService.vibrate('success');
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, value: boolean }));
       setSaveSignal(true);
       return;
     }
-  }
+  }, [notApplicableUndefined, notApplicableFalse, props.onSave]);
 
-  function onNotApplicableChange(boolean: boolean) {
-    ApticsService.vibrate('success');
+  const onNotApplicableChange = useCallback((boolean: boolean) => {
+    HapticsService.vibrate('success');
     props.onSave(null, 'modifying');
     setInputData(prev => ({ ...prev, notApplicable: boolean }));
     setSaveSignal(true);
-  }
+  }, [props.onSave]);
 
-  function onLabelChange(newLabel: string) {
+  const onLabelChange = useCallback((newLabel: string) => {
     props.onSave(null, 'modifying');
     setInputData(prev => ({ ...prev, label: newLabel}));
     setSaveSignal(true);
-  }
+  }, [props.onSave]);
 
   return (
     <LC.Root

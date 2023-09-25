@@ -25,7 +25,7 @@ export function SampleDataScreens(props: {
       ) : (
         <Animation>
           <Layout.ScrollView
-            contenContainerStyle={{
+            contentContainerStyle={{
               paddingHorizontal: 5,
               paddingTop: 55,
               gap: 10,

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -6,16 +6,15 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
 
-export default function CreateSample(props: {
+export const CreateSample = memo((props: {
   id_project: string | undefined
-  onAccept: () => void
-  onRefuse: () => void
-}) {
+  onFinish: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
@@ -31,15 +30,16 @@ export default function CreateSample(props: {
         sampleSettings,
         async () => {
           await CacheService.loadAllSamplesSettings(id_project);
-          props.onAccept();
           await AlertService.runAcceptCallback();
+          props.onFinish();
         },
         async (errorMesage) => {
           alert(errorMesage);
-          ApticsService.vibrate('warning');
+          HapticsService.vibrate('warning');
         }
       );
-    } else {
+    }
+    if (props.id_project === undefined) {
       alert('No project ID found');
     }
   }
@@ -81,7 +81,7 @@ export default function CreateSample(props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onRefuse()}
+          onPress={() => props.onFinish()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.wrong,
@@ -116,4 +116,4 @@ export default function CreateSample(props: {
       </View>
     </View>
   );
-}
+});

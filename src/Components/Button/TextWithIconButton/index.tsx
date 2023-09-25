@@ -1,8 +1,8 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { View, Platform, Pressable, StyleProp, ViewStyle } from 'react-native';
 
 import FontService from '@Services/FontService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Icon, IconName } from '@Icon/index';
@@ -26,15 +26,16 @@ export const TextWithIcon = memo((props: {
 	const [pressed, setPressed] = useState<boolean>(false);
   const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 25;
 
-  function onPressIn() {
-    setPressed(true);
-    ApticsService.vibrate('success');
-  }
-
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
 
 	return (
 		<Pressable

@@ -5,7 +5,7 @@ import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import { Text } from '@Text/index';
 import { Icon } from '@Icon/index';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 export function SocialMediaButtons() {
 
@@ -56,11 +56,11 @@ function YoutubeTutorialButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
   }
 
@@ -107,11 +107,11 @@ function RoadMapButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
   }
 
@@ -153,11 +153,11 @@ function LinkedinCommunityButton(props: {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
   }
 

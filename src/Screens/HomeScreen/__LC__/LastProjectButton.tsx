@@ -8,7 +8,7 @@ import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 export default function LastProjectButton() {
 
@@ -23,12 +23,12 @@ export default function LastProjectButton() {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPress() {
     navigate('PROJECT SCOPE', lastProjectSettings.id_project);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   return lastProjectOpenExist ? (

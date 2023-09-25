@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
+import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
@@ -9,14 +10,13 @@ import ConfigService from '@Services/ConfigService';
 import GPSService, { GPSWatcherService } from '@Services/GPSService';
 
 
-import ManualInput from './ManualInput';
-import CheckboxOption from './CheckboxOptions';
-import DataDisplay from './DataDisplay';
-import LoadingFeedback from './LoadingFeedback';
-import RealTimeAccuracy from './RealTimeAccuracy';
 import { LC } from '../__LC__';
+import { ManualInput } from './ManualInput';
+import { CheckboxOptions } from './CheckboxOptions';
+import { DataDisplay } from './DataDisplay';
+import { LoadingFeedback } from './LoadingFeedback';
+import { RealTimeAccuracy } from './RealTimeAccuracy';
 import { GPSInputTheme } from './ThemeType';
-import { useTimeout } from '@Hooks/index';
 
 export const GPSInput = memo((props: {
   inputData: GPSInputData
@@ -74,21 +74,21 @@ export const GPSInput = memo((props: {
     );
   }, [props.referenceGPSData, inputData.value]);
 
-  function onLabelChange(newLabel: string) {
+  const onLabelChange = useCallback((newLabel: string) => {
     if (inputData.lockedLabel !== true) {
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, label: newLabel}));
       setSaveSignal(true);
     }
-  }
+  }, [props.onSave, inputData]);
 
-  function onManualInput(gpsData: GPS_DTO) {
+  const onManualInput = useCallback((gpsData: GPS_DTO) => {
     props.onSave(null, 'modifying');
     setInputData(prev => ({ ...prev, value: gpsData}));
     setSaveSignal(true);
-  }
+  }, [props.onSave]);
 
-  async function toogleCoordinate(checked: boolean) {
+  const toogleCoordinate = useCallback(async (checked: boolean) => {
     await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined,
       {
         question: R['This will delete current saved coordinate. Confirm to proceed.'],
@@ -107,9 +107,9 @@ export const GPSInput = memo((props: {
         }
       }
     );
-  }
+  }, [props.onSave, inputData.value.coordinates]);
 
-  async function toogleAltitude(checked: boolean) {
+  const toogleAltitude = useCallback(async (checked: boolean) => {
     await AlertService.handleAlert(checked === false && inputData.value.altitude !== undefined,
       {
         question: R['This will delete current saved altitude. Confirm to proceed.'],
@@ -128,9 +128,9 @@ export const GPSInput = memo((props: {
         }
       }
     );
-  }
+  }, [props.onSave, inputData.value.altitude]);
 
-  async function startGPS() {
+  const startGPS = useCallback(async () => {
     await AlertService.handleAlert(noGPSData === false,
       {
         question: R['This will overwrite current gps data. Confirm to proceed.'],
@@ -144,14 +144,14 @@ export const GPSInput = memo((props: {
         setFeatures(prev => ({ ...prev, gpsON: true }));
       }
     );
-  }
+  }, [noGPSData]);
 
-  function stopGPS() {
+  const stopGPS = useCallback(() => {
     props.onSave(null, 'modifying');
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
     setSaveSignal(true);
-  }
+  }, [props.onSave]);
 
   return (<>
     <LC.Root
@@ -186,14 +186,14 @@ export const GPSInput = memo((props: {
           alertMessages={alertMessages}
           theme={props.theme}
         />
-        <CheckboxOption
+        <CheckboxOptions
           features={features}
           onToogle_Coordinate={async (checked) => await toogleCoordinate(checked)}
           onToogle_Altitude={async (checked) => await toogleAltitude(checked)}
           theme={props.theme}
         />
         <DataDisplay
-          gpsData={inputData.value}
+          inputData={inputData}
           features={features}
           theme={props.theme}
         />
@@ -219,13 +219,13 @@ export const GPSInput = memo((props: {
   </>);
 });
 
-function IconButtons(props: {
+const IconButtons = memo((props: {
   features: GPSFeaturesDTO
   theme: GPSInputTheme
   onPress_EditButton: () => void
   onPress_PlayButton: () => void
   onPress_StopButton: () => void
-}) {
+}) => {
 
   const showPlayButton = props.features.gpsON === false;
   const showStopButton = props.features.gpsON === true;
@@ -258,4 +258,4 @@ function IconButtons(props: {
       />
     )}
   </>);
-}
+});

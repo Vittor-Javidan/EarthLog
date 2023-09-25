@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 import FontService from '@Services/FontService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 
@@ -17,10 +17,10 @@ export const LabelButton = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('warning');
-  }
+    HapticsService.vibrate('warning');
+  }, [props.onPress]);
 
   return (
     <View

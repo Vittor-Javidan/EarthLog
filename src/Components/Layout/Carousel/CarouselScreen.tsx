@@ -21,10 +21,10 @@ export const CarouselScreen = memo((props: {
   overlayButtons: JSX.Element
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.carousel, []);
+  const config         = useMemo(() => ConfigService.config, []);
+  const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.carousel, []);
   const CAROUSEL_WIDTH = useMemo(() => props.screens.length * SCREEN_WIDTH, []);
-  const OFFSETS = useMemo(() => getOffSets(props.screens.length), []);
+  const OFFSETS        = useMemo(() => getOffSets(props.screens.length), []);
 
   return (
     <View
@@ -48,13 +48,13 @@ export const CarouselScreen = memo((props: {
   );
 });
 
-function CarouselButtonsRoot(props: {
+const CarouselButtonsRoot = memo((props: {
   children: ReactNode
   theme: {
     border: string
     background: string
   }
-}) {
+}) => {
 
   const MARGIN = 10;
 
@@ -78,7 +78,7 @@ function CarouselButtonsRoot(props: {
       {props.children}
     </View>
   );
-}
+});
 
 const CarouselAnimation = memo((props: {
   width: number

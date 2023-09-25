@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 export function useBackPress(
   onPress: () => void,
@@ -12,7 +12,7 @@ export function useBackPress(
       'hardwareBackPress',
       () => {
         onPress();
-        ApticsService.vibrate('success');
+        HapticsService.vibrate('success');
         return true;
       },
     );

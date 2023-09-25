@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo } from 'react';
+import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -42,87 +42,40 @@ export const Widget = memo((props: {
     disabled:         widgetData?.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
-  function onLabelChange(label: string) {
+  const onLabelChange = useCallback((label: string) => {
     setTempLabel(label);
     setSaved(false);
-  }
+  }, []);
 
-  function selectDisplay(newDisplay: WidgetDisplay) {
+  const selectDisplay = useCallback((newDisplay: WidgetDisplay) => {
     if (display === newDisplay) {
       setDisplay('data display');
       return;
     }
     setDisplay(newDisplay);
-  }
+  }, [display]);
 
-  function togleEditDisplay() {
+  const togleEditDisplay = useCallback(() => {
     selectDisplay('data display');
     setEditInputs(true);
-  }
+  }, [selectDisplay]);
 
-  function togleDataDisplay() {
+  const togleDataDisplay = useCallback(() => {
     selectDisplay('data display');
     setEditInputs(false);
-  }
+  }, [selectDisplay]);
 
-  function togleThemeDisplay() {
+  const togleThemeDisplay = useCallback(() => {
     selectDisplay('theme display');
     setEditInputs(false);
-  }
+  }, [selectDisplay]);
 
-  function togleNewInputDisplay() {
+  const togleNewInputDisplay = useCallback(() => {
     selectDisplay('new input display');
     setEditInputs(false);
-  }
+  }, [selectDisplay]);
 
-  function onConfirmLabel() {
-    setEditLabel(false);
-    setWidgetData(prev => {
-      const newData = { ...prev, widgetName: tempLabel};
-      save(newData);
-      return newData;
-    });
-  }
-
-  function onCreateInput(inputData: InputData) {
-    setSaved(false);
-    setWidgetData(prev => {
-      const newData: WidgetData = { ...prev, inputs: [...prev.inputs, inputData]};
-      save(newData);
-      return newData;
-    });
-    togleNewInputDisplay();
-  }
-
-  function onConfirmInput(inputData: InputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (status === 'ready to save' && inputData !== null) {
-      setWidgetData(prev => {
-        for (let i = 0; i < prev.inputs.length; i++) {
-          if ( prev.inputs[i].id_input === inputData.id_input) {
-            prev.inputs[i] = inputData;
-          }
-        }
-        const newData = { ...prev };
-        save(newData);
-        return newData;
-      });
-    }
-  }
-
-  function onAddToNewSamplesChange(boolean: boolean) {
-    setSaved(false);
-    setWidgetData(prev => {
-      const newData: WidgetData = { ...prev, addToNewSamples: boolean};
-      save(newData);
-      return newData;
-    });
-  }
-
-  function save(widgetData: WidgetData) {
+  const save = useCallback((widgetData: WidgetData) => {
 
     if (props.widgetScope.type === 'project') {
       ProjectService.updateWidget_Project(
@@ -154,9 +107,56 @@ export const Widget = memo((props: {
       );
       return;
     }
-  }
+  }, [props.widgetScope]);
 
-  function deleteWidget() {
+  const onConfirmLabel = useCallback(() => {
+    setEditLabel(false);
+    setWidgetData(prev => {
+      const newData = { ...prev, widgetName: tempLabel};
+      save(newData);
+      return newData;
+    });
+  }, [tempLabel, save]);
+
+  const onCreateInput = useCallback((inputData: InputData) => {
+    setSaved(false);
+    setWidgetData(prev => {
+      const newData: WidgetData = { ...prev, inputs: [...prev.inputs, inputData]};
+      save(newData);
+      return newData;
+    });
+    togleNewInputDisplay();
+  }, [togleNewInputDisplay, save]);
+
+  const onConfirmInput = useCallback((inputData: InputData | null, status: InputStatus) => {
+    if (status === 'modifying') {
+      setSaved(false);
+      return;
+    }
+    if (status === 'ready to save' && inputData !== null) {
+      setWidgetData(prev => {
+        for (let i = 0; i < prev.inputs.length; i++) {
+          if ( prev.inputs[i].id_input === inputData.id_input) {
+            prev.inputs[i] = inputData;
+          }
+        }
+        const newData = { ...prev };
+        save(newData);
+        return newData;
+      });
+    }
+  }, [save]);
+
+  const onAddToNewSamplesChange = useCallback((boolean: boolean) => {
+    setSaved(false);
+    setWidgetData(prev => {
+      const newData: WidgetData = { ...prev, addToNewSamples: boolean};
+      save(newData);
+      return newData;
+    });
+  }, [save]);
+
+  const deleteWidget = useCallback(() => {
     AlertService.handleAlert(
       true,
       {
@@ -165,9 +165,9 @@ export const Widget = memo((props: {
       },
       () => props.onDelete()
     );
-  }
+  }, [props.onDelete]);
 
-  function onDelete(id_input: ID) {
+  const onDelete = useCallback((id_input: ID) => {
     AlertService.handleAlert(
       true,
       {
@@ -189,9 +189,9 @@ export const Widget = memo((props: {
         });
       }
     );
-  }
+  }, [save]);
 
-  function onMoveUp(id_input: ID) {
+  const onMoveUp = useCallback((id_input: ID) => {
     setSaved(false);
     setWidgetData(prev => {
       const newData = { ...prev };
@@ -207,9 +207,9 @@ export const Widget = memo((props: {
       save(newData);
       return newData;
     });
-  }
+  }, [save]);
 
-  function onMoveDown(id_input: ID) {
+  const onMoveDown = useCallback((id_input: ID) => {
     setSaved(false);
     setWidgetData(prev => {
       const newData = { ...prev };
@@ -225,7 +225,7 @@ export const Widget = memo((props: {
       save(newData);
       return newData;
     });
-  }
+  }, [save]);
 
   return (
     <View

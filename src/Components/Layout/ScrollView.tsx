@@ -4,7 +4,7 @@ import { ScrollView as ReactNative_ScrollView, StyleProp, ViewStyle } from 'reac
 export const ScrollView = memo((props: {
   children: ReactNode
   style?: StyleProp<ViewStyle>
-  contenContainerStyle?: StyleProp<ViewStyle>
+  contentContainerStyle?: StyleProp<ViewStyle>
 }) => {
   return (
     <ReactNative_ScrollView
@@ -12,7 +12,7 @@ export const ScrollView = memo((props: {
       automaticallyAdjustKeyboardInsets={true}
       contentContainerStyle={[{
         paddingBottom: 150,
-      }, props.contenContainerStyle]}
+      }, props.contentContainerStyle]}
     >
       {props.children}
     </ReactNative_ScrollView>

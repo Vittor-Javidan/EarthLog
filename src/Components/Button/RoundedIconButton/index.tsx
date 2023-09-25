@@ -1,7 +1,7 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Icon, IconName } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -23,15 +23,15 @@ export const RoundedIconButton = memo((props: {
 
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
-    setPressed(true);
-    ApticsService.vibrate('success');
-  }
-
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
-    ApticsService.vibrate('success');
-  }
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
 
   return (
     <Pressable

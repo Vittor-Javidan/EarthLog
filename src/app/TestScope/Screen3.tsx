@@ -8,7 +8,7 @@ export function Screen3() {
       screenButtons={<></>}
     >
       <Layout.ScrollView
-        contenContainerStyle={{
+        contentContainerStyle={{
           paddingTop: 55,
         }}
       >

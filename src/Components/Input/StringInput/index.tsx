@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { LC } from '../__LC__';
@@ -27,19 +27,19 @@ export const StringInput = memo((props: {
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
 
-  function onTextDelete() {
+  const onTextDelete = useCallback(() => {
     if (props.value !== '') {
       setDeletedText(props.value);
       setShowUndo(true);
       props.onTextChange('');
     }
-  }
+  }, [props.value]);
 
-  function undoDelete() {
+  const undoDelete = useCallback(() => {
     props.onTextChange(deletedText);
     setShowUndo(false);
     setDeletedText('');
-  }
+  }, [deletedText]);
 
   return (
     <LC.Root

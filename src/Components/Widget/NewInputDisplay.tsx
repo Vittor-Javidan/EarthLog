@@ -1,9 +1,9 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 
@@ -12,18 +12,9 @@ export const NewInputDisplay = memo((props: {
   onCreate: (inputData: InputData) => void
 }) => {
 
-  function onCreate(inputType: InputTypes) {
+  const onCreate = useCallback((inputType: InputTypes) => {
     props.onCreate(ProjectService.getInputData(inputType));
-  }
-
-  const AllButtons = InputTypesArray.map(type => (
-    <Button
-      key={type}
-      title={type}
-      onPress={(inputType) => onCreate(inputType)}
-      theme={props.theme}
-    />
-  ));
+  }, [props.onCreate]);
 
   return (
     <View
@@ -48,10 +39,27 @@ export const NewInputDisplay = memo((props: {
           paddingHorizontal: 10,
         }}
       >
-        {AllButtons}
+        <AllButton
+          theme={props.theme}
+          onCreate={(inputType) => onCreate(inputType)}
+        />
       </View>
     </View>
   );
+});
+
+const AllButton = memo((props: {
+  theme: WidgetThemeDTO
+  onCreate: (inputType: InputTypes) => void
+}) => {
+  return InputTypesArray.map(type => (
+    <Button
+      key={type}
+      title={type}
+      onPress={(inputType) => props.onCreate(inputType)}
+      theme={props.theme}
+    />
+  ));
 });
 
 const Button = memo((props: {
@@ -64,7 +72,7 @@ const Button = memo((props: {
 
   function onPressIn() {
     setPressed(true);
-    ApticsService.vibrate('success');
+    HapticsService.vibrate('success');
   }
 
   function onPressOut() {

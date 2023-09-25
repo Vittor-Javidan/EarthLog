@@ -2,7 +2,7 @@ import * as Vibration from 'expo-haptics';
 
 type VibrationType = 'success' | 'warning'
 
-export default class ApticsService {
+export default class HapticsService {
 
   static vibrate(type: VibrationType) {
     switch (type) {

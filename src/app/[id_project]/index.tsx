@@ -120,6 +120,7 @@ function NavigationTree() {
         <Layout.NavigationTree.Button
           key="treeIcon_2"
           iconName="folder"
+          onPress={() => {}}
         />,
       ]}
     />

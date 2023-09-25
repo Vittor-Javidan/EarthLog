@@ -20,7 +20,7 @@ export function SampleInfoScreen(props: {
         <Layout.Loading />
       ) : (
         <Layout.ScrollView
-          contenContainerStyle={{
+          contentContainerStyle={{
             paddingHorizontal: 5,
           }}
         >

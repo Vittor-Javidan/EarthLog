@@ -1,29 +1,28 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
-import ApticsService from '@Services/ApticsService';
+import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
 
-export default function Warning(props: {
+export const Warning = memo((props: {
   question: string
-  onAccept: () => void
-  onRefuse: () => void
-}) {
+  onFinish: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
   useEffect(() => {
-    ApticsService.vibrate('warning');
+    HapticsService.vibrate('warning');
   }, []);
 
   async function onAccept() {
-    props.onAccept();
+    props.onFinish();
     await AlertService.runAcceptCallback();
   }
 
@@ -53,7 +52,7 @@ export default function Warning(props: {
         </Text>
       </View>
       <Button.ConfirmSwipe
-        onCancel={() => props.onRefuse()}
+        onCancel={() => props.onFinish()}
         onSwipe={async () => await onAccept()}
         buttonRadius={25}
         compensateMargin={30}
@@ -66,4 +65,4 @@ export default function Warning(props: {
       />
   </View>
   );
-}
+});
