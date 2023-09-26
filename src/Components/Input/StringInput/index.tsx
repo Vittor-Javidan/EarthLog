@@ -1,7 +1,8 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useRef } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { LC } from '../__LC__';
+import { useTimeout } from '@Hooks/index';
 
 type InputTheme = {
   font: string
@@ -15,6 +16,7 @@ export const StringInput = memo((props: {
   placeholder: string
   theme: InputTheme
   multiline: boolean
+  autoFocus: boolean
   onTextChange: (text: string) => void
 }) => {
 
@@ -26,6 +28,7 @@ export const StringInput = memo((props: {
 
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
+  const inputRef = useRef<TextInput | null>(null);
 
   const onTextDelete = useCallback(() => {
     if (props.value !== '') {
@@ -40,6 +43,12 @@ export const StringInput = memo((props: {
     setShowUndo(false);
     setDeletedText('');
   }, [deletedText]);
+
+  useTimeout(() => {
+    if (props.autoFocus) {
+      inputRef.current?.focus();
+    }
+  }, [], 150);
 
   return (
     <LC.Root
@@ -57,6 +66,7 @@ export const StringInput = memo((props: {
       }
     >
       <TextInput
+        ref={inputRef}
         value={props.value}
         placeholder={props.placeholder}
         placeholderTextColor={props.theme.font_placeholder}

@@ -64,6 +64,7 @@ export const CreateProject = memo((props: {
             font_placeholder: theme.font_placeHolder,
             background: theme.background,
           }}
+          autoFocus
         />
       </View>
       <View
