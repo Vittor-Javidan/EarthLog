@@ -1,20 +1,105 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
+import { Pressable, View } from 'react-native';
+import ThemeService from '@Services/ThemeService';
+import HapticsService from '@Services/HapticsService';
+import { ThemeNames_Widgets } from '@Types/AppTypes';
 
 export const ThemeDisplay = memo((props: {
   theme: WidgetThemeDTO
+  onThemeSelected: (themeName: ThemeNames_Widgets) => void
 }) => {
   return (
-    <Text p
-      style={{
-        paddingHorizontal: 10,
-        color: props.theme.font,
-      }}
-    >
-      Soon...
-    </Text>
+    <View>
+      <Text h2
+        style={{
+          color: props.theme.font,
+          paddingHorizontal: 10,
+          alignSelf: 'center',
+        }}
+      >
+        {'Select a theme:'}
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: 5,
+          paddingTop: 10,
+          paddingHorizontal: 10,
+        }}
+      >
+        <ThemeButtons
+          onPress={(themeName) => props.onThemeSelected(themeName)}
+        />
+      </View>
+    </View>
+  );
+});
+
+
+const ThemeButtons = memo((props: {
+  onPress: (themeName: ThemeNames_Widgets) => void
+}) => {
+  const themes = useMemo(() => ThemeService.widgetThemes, []);
+  return ThemeService.themeNamesArray.Widget.map(themeName => (
+    <ThemeButton
+      key={themeName}
+      title={themeName}
+      theme={themes[themeName]}
+      onPress={() => props.onPress(themeName)}
+    />
+  ));
+});
+
+const ThemeButton = memo((props: {
+  title: ThemeNames_Widgets
+  theme: {
+    font: string
+    background: string
+    confirm: string
+  }
+  onPress: () => void
+}) => {
+
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
+	return (
+		<Pressable
+			onPressIn={() => onPressIn()}
+			onPressOut={() => setPressed(false)}
+			onPress={() => onPress()}
+			style={{
+        opacity: pressed ? 0.9 : 1,
+				paddingHorizontal: 10,
+        paddingVertical: 2,
+				backgroundColor: pressed ? props.theme.confirm : props.theme.background,
+        borderRadius: 100,
+        borderWidth: 1,
+        borderColor: '#000',
+			}}
+		>
+      <Text p
+				style={{
+          color: props.theme.font,
+				}}
+			>
+				{props.title}
+			</Text>
+		</Pressable>
   );
 });

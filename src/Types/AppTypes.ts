@@ -3,8 +3,8 @@ export type Loading = 'Loaded' | 'Loading';
 export const languageTags   = ['en-US', 'pt-BR'] as const;
 export type LanguageTag = (typeof languageTags)[number];
 
-export const ThemeNamesArray_APP     = ['default'] as const;
-export const ThemeNamesArray_Widgets = ['default'] as const;
+export const ThemeNamesArray_APP     = ['dark'] as const;
+export const ThemeNamesArray_Widgets = ['light', 'dark'] as const;
 export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
 export type ThemeNames_Widgets = (typeof ThemeNamesArray_Widgets)[number];
 

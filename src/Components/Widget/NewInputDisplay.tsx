@@ -17,9 +17,7 @@ export const NewInputDisplay = memo((props: {
   }, [props.onCreate]);
 
   return (
-    <View
-      style={{ paddingTop: 10 }}
-    >
+    <View>
       <Text h2
         style={{
           color: props.theme.font,
@@ -56,7 +54,7 @@ const AllButton = memo((props: {
     <Button
       key={type}
       title={type}
-      onPress={(inputType) => props.onCreate(inputType)}
+      onPress={() => props.onCreate(type)}
       theme={props.theme}
     />
   ));
@@ -65,25 +63,26 @@ const AllButton = memo((props: {
 const Button = memo((props: {
   title: InputTypes,
   theme: WidgetThemeDTO
-  onPress: (inputType: InputTypes) => void
+  onPress: () => void
 }) => {
 
 	const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
+
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
-
-  function onPressOut() {
-    setPressed(false);
-  }
+  }, []);
 
 	return (
 		<Pressable
 			onPressIn={() => onPressIn()}
-			onPressOut={() => onPressOut()}
-			onPress={() => props.onPress(props.title)}
+			onPressOut={() => setPressed(false)}
+			onPress={() => onPress()}
 			style={{
         opacity: pressed ? 0.9 : 1,
 				paddingHorizontal: 10,

@@ -41,7 +41,6 @@ export const PseudoWidget = memo((props: {
       </View>
       <View
         style={{
-          paddingTop: 10,
           paddingBottom: 5,
           gap: 10,
         }}

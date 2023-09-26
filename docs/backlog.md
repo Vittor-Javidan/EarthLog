@@ -1,4 +1,3 @@
-- create the theme display for widgets
-- Implement all rules
 - Fix all translations
+- Implement all rules
 - Validate on IOS

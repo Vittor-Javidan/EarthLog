@@ -8,7 +8,7 @@ export default class ConfigService {
   static LOCAL_STORAGE_KEY: string = 'config';
   static config: ConfigDTO = {
     language: LanguageService.getDeviceLanguage(),
-    appTheme: 'default',
+    appTheme: 'dark',
   };
 
   static async loadConfig(): Promise<void> {
@@ -27,7 +27,7 @@ export default class ConfigService {
   private static verifyConfigDTOIntegrity(dto: ConfigDTO): ConfigDTO {
     const verifiedConfigDTO: ConfigDTO = {
       language: dto.language ?? LanguageService.getDeviceLanguage(),
-      appTheme: ThemeService.themeNamesArray.App.includes(dto.appTheme) ? dto.appTheme : 'default',
+      appTheme: ThemeService.themeNamesArray.App.includes(dto.appTheme) ? dto.appTheme : 'dark',
     };
     return verifiedConfigDTO;
   }

@@ -46,14 +46,18 @@ export const TemplateWidgetCopy = memo((props: {
     }
   }
 
-  const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => (
-    <TemplateWidgetButton
-      key={widgetData.id_widget}
-      title={widgetData.widgetName}
-      theme={theme}
-      onPress={() => onWidgetCopyToSample(widgetData)}
-    />
-  ));
+  const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
+    if (widgetData.widgetName !== '') {
+      return (
+        <TemplateWidgetButton
+          key={widgetData.id_widget}
+          title={widgetData.widgetName}
+          theme={theme}
+          onPress={() => onWidgetCopyToSample(widgetData)}
+        />
+      );
+    }
+  });
 
   return (
     <View

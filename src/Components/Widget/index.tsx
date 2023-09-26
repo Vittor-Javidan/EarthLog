@@ -14,6 +14,7 @@ import { AllInputs } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
+import { ThemeNames_Widgets } from '@Types/AppTypes';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
@@ -31,7 +32,7 @@ export const Widget = memo((props: {
   const [saved      , setSaved      ] = useState<boolean>(true);
   const [display    , setDisplay    ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
 
-  const defaultTheme = useMemo(() => ThemeService.widgetThemes['default'], []);
+  const defaultTheme = useMemo(() => ThemeService.widgetThemes['light'], []);
   const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
     font:             widgetData?.widgetTheme?.font             ?? defaultTheme.font,
     font_placeholder: widgetData?.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
@@ -191,6 +192,15 @@ export const Widget = memo((props: {
     );
   }, [save]);
 
+  const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
+    setSaved(false);
+    setWidgetData(prev => {
+      const newData: WidgetData = { ...prev, widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName])};
+      save(newData);
+      return newData;
+    });
+  }, [save]);
+
   const onMoveUp = useCallback((id_input: ID) => {
     setSaved(false);
     setWidgetData(prev => {
@@ -261,16 +271,16 @@ export const Widget = memo((props: {
             gap: 5,
           }}
         >
-          <LabelButton
-            label={tempLabel}
-            editLabel={editLabel}
-            noInputs={widgetData.inputs.length <= 0}
-            onPress={() => setEditLabel(true)}
-            onConfirm={() => onConfirmLabel()}
-            onLabelChange={(label) => onLabelChange(label)}
-            theme={widgetTheme}
-          />
           {display === 'data display' && (<>
+            <LabelButton
+              label={tempLabel}
+              editLabel={editLabel}
+              noInputs={widgetData.inputs.length <= 0}
+              onPress={() => setEditLabel(true)}
+              onConfirm={() => onConfirmLabel()}
+              onLabelChange={(label) => onLabelChange(label)}
+              theme={widgetTheme}
+            />
             <AllInputs
               inputs={widgetData.inputs}
               editInputs={editInputs}
@@ -291,6 +301,7 @@ export const Widget = memo((props: {
           {display === 'theme display' && (
             <ThemeDisplay
               theme={widgetTheme}
+              onThemeSelected={(themeName) => onThemeChange(themeName)}
             />
           )}
         </View>

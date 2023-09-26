@@ -12,10 +12,11 @@ export default class ThemeService {
   };
 
   static appThemes: Record<ThemeNames_APP, AppThemeDTO> = {
-    'default': newAppThemes.DEFAULT,
+    'dark': newAppThemes.DEFAULT,
   };
 
   static widgetThemes: Record<ThemeNames_Widgets, WidgetThemeDTO> = {
-    'default': widgetThemes.DEFAULT,
+    'light': widgetThemes.DEFAULT,
+    'dark':    widgetThemes.DARK,
   };
 }
