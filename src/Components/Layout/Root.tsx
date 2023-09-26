@@ -11,7 +11,7 @@ import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
-import { AlertModal } from '@Alert/index';
+import { AlertLayer } from '@Alert/index';
 
 const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
@@ -21,19 +21,45 @@ export const Root = memo((props: {
   title: string
   subtitle: string
   children: ReactNode
-  drawerChildren: ReactNode
+  drawerChildren: JSX.Element
   navigationTree: JSX.Element
 }) => {
 
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
-    <AlertModal />
-    <AppStatusBar />
+    <StatusBarLayer />
+    <AlertLayer />
+    <AppLayer
+      title={props.title}
+      subtitle={props.subtitle}
+      navigationTree={props.navigationTree}
+      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+    >
+      {props.children}
+    </AppLayer>
+    <DrawerLayer
+      show={showDrawer}
+      onPress_Background={() => setShowDrawer(false)}
+    >
+      {props.drawerChildren}
+    </DrawerLayer>
+  </>);
+});
+
+const AppLayer = memo((props: {
+  title: string
+  subtitle: string
+  navigationTree: JSX.Element
+  children: ReactNode
+  onMenuButtonPress: () => void
+}) => {
+
+  return (<>
     <Navbar
       title={props.title}
       subtitle={props.subtitle}
-      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+      onMenuButtonPress={() => props.onMenuButtonPress()}
       style={{ height: NAVBAR_HEIGH }}
     />
     {props.navigationTree}
@@ -42,17 +68,10 @@ export const Root = memo((props: {
     >
       {props.children}
     </View>
-    <DrawerAnimation show={showDrawer}>
-      <Drawer
-        onPress_Background={() => setShowDrawer(false)}
-      >
-        {props.drawerChildren}
-      </Drawer>
-    </DrawerAnimation>
   </>);
 });
 
-const AppStatusBar = memo(() => {
+const StatusBarLayer = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.statusBar, []);
@@ -166,7 +185,8 @@ const MenuButton = memo((props: {
   );
 });
 
-const Drawer = memo((props: {
+const DrawerLayer = memo((props: {
+  show: boolean
   children: ReactNode
   onPress_Background: () => void
 }) => {
@@ -176,43 +196,45 @@ const Drawer = memo((props: {
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        flex: 1,
-        backgroundColor: theme.background,
-      }}
-      style={{
-        position: 'absolute',
-        borderColor: theme.border,
-        height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
-        width: '100%',
-        bottom: 0,
-        left: 0,
-        borderRightWidth: 2,
-        zIndex: 2,
-      }}
-    >
-      {props.children}
-      <Pressable
-        onPress={() => props.onPress_Background()}
-        style={{
+    <DrawerAnimation show={props.show}>
+      <ScrollView
+        contentContainerStyle={{
           flex: 1,
-          justifyContent: 'flex-end',
           backgroundColor: theme.background,
         }}
+        style={{
+          position: 'absolute',
+          borderColor: theme.border,
+          height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
+          width: '100%',
+          bottom: 0,
+          left: 0,
+          borderRightWidth: 2,
+          zIndex: 2,
+        }}
       >
-        <Text
+        {props.children}
+        <Pressable
+          onPress={() => props.onPress_Background()}
           style={{
-            color: theme.font,
-            textAlign: 'right',
-            fontSize: 16,
-            padding: 8,
+            flex: 1,
+            justifyContent: 'flex-end',
+            backgroundColor: theme.background,
           }}
         >
-          {'v: ' + APP_VERSION}
-        </Text>
-      </Pressable>
-    </ScrollView>
+          <Text
+            style={{
+              color: theme.font,
+              textAlign: 'right',
+              fontSize: 16,
+              padding: 8,
+            }}
+          >
+            {'v: ' + APP_VERSION}
+          </Text>
+        </Pressable>
+      </ScrollView>
+    </DrawerAnimation>
   );
 });
 

@@ -9,7 +9,7 @@ import { Selector } from './Selector';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
-export const AlertModal = memo(() => {
+export const AlertLayer = memo(() => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<AlertModalConfig>({
