@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
-import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
@@ -11,7 +11,7 @@ import SettingsScreen from '@Screens/SettingsScreen';
 export default function SettingsScope(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.Screens.SettingsScreen[config.language], []);
+  const R      = useMemo(() => translations.scope.settingsScope[config.language], []);
 
   useBackPress(() => navigate('HOME SCOPE'), []);
 

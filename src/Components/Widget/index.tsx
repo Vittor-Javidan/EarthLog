@@ -15,6 +15,8 @@ import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
 import { ThemeNames_Widgets } from '@Types/AppTypes';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
@@ -24,6 +26,9 @@ export const Widget = memo((props: {
   referenceGPSData: GPS_DTO | undefined
   onDelete: () => void
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
   const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
@@ -161,7 +166,7 @@ export const Widget = memo((props: {
     AlertService.handleAlert(
       true,
       {
-        question: 'Confirm to delete this widget.',
+        question: R['Confirm to delete this widget.'],
         type: 'warning',
       },
       () => props.onDelete()
@@ -172,7 +177,7 @@ export const Widget = memo((props: {
     AlertService.handleAlert(
       true,
       {
-        question: 'Confirm to delete this input.',
+        question: R['Confirm to delete this field.'],
         type: 'warning',
       },
       () => {

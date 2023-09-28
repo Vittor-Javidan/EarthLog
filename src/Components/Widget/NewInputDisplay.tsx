@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -6,11 +6,16 @@ import ProjectService from '@Services/ProjectService';
 import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const NewInputDisplay = memo((props: {
   theme: WidgetThemeDTO
   onCreate: (inputData: InputData) => void
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onCreate = useCallback((inputType: InputTypes) => {
     props.onCreate(ProjectService.getInputData(inputType));
@@ -25,7 +30,7 @@ export const NewInputDisplay = memo((props: {
           alignSelf: 'center',
         }}
       >
-        {'Add a new Input:'}
+        {R['Add a new field:']}
       </Text>
       <View
         style={{
@@ -50,10 +55,14 @@ const AllButton = memo((props: {
   theme: WidgetThemeDTO
   onCreate: (inputType: InputTypes) => void
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
+
   return InputTypesArray.map(type => (
     <Button
       key={type}
-      title={type}
+      title={R[type]}
       onPress={() => props.onCreate(type)}
       theme={props.theme}
     />
@@ -61,7 +70,7 @@ const AllButton = memo((props: {
 });
 
 const Button = memo((props: {
-  title: InputTypes,
+  title: string,
   theme: WidgetThemeDTO
   onPress: () => void
 }) => {

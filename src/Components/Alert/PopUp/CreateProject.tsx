@@ -1,6 +1,7 @@
 import React, { useState, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
@@ -17,6 +18,7 @@ export const CreateProject = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R      = useMemo(() => translations.component.alert[config.language], []);
   const [name, setName] = useState<string>('');
 
   async function onAccept() {
@@ -54,10 +56,10 @@ export const CreateProject = memo((props: {
         }}
       >
         <Input.String
-          label="Project name"
+          label={R['Project name']}
           value={name}
           onTextChange={(text) => setName(text)}
-          placeholder="Write project's name here"
+          placeholder={R["Write project's name here..."]}
           multiline={false}
           theme={{
             font: theme.font,

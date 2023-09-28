@@ -2,8 +2,8 @@ import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
-import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
 import ConfigService from '@Services/ConfigService';
@@ -32,7 +32,7 @@ export const GPSInput = memo((props: {
 }) => {
 
   const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.Input.GPSInput[config.language], []);
+  const R          = useMemo(() => translations.widgetInput.gpsInput[config.language], []);
   const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.inputData.value)), []);
 
   const [inputData    , setInputData    ] = useState<GPSInputData>(UtilService.deepCopy(props.inputData));

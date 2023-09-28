@@ -2,24 +2,24 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
-import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
+import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import HapticsService from '@Services/HapticsService';
+import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
-import HapticsService from '@Services/HapticsService';
-import AlertService from '@Services/AlertService';
 
 export default function SettingsScreen(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.Screens.SettingsScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.settingsScreen[config.language], []);
 
   return (
     <Layout.Screen
@@ -41,7 +41,7 @@ export default function SettingsScreen(): JSX.Element {
           }}
         />
         <Button.TextWithIcon
-          title={R['Whipe Database']}
+          title={'Whipe Database'}
           iconName="trash-outline"
           iconSide="Right"
           onPress={async () => await whipeDataBase()}
@@ -58,12 +58,9 @@ export default function SettingsScreen(): JSX.Element {
 }
 
 async function whipeDataBase() {
-
-  const R = translations.Screens.SettingsScreen[ConfigService.config.language];
-
   AlertService.handleAlert(true,
     {
-      question: R['Want to whipe database?'],
+      question: 'Want to whipe database?',
       type: 'warning',
     },
     async () => {

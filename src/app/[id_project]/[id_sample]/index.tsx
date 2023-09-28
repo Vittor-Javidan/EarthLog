@@ -32,6 +32,8 @@ export default function SampleScope() {
   const [dataScreenRefresher, setDataScreenRefresher] = useState<boolean>(false);
   const [loading            , setLoading            ] = useState<Loading>('Loading');
 
+  const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
+
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setLoading('Loaded'));
   }, []);
@@ -42,7 +44,7 @@ export default function SampleScope() {
 
   return (
     <Layout.Root
-      title={projectSettings.sampleAlias.singular}
+      title={sampleAlias}
       subtitle={updatedName ?? sampleSettings.name}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}

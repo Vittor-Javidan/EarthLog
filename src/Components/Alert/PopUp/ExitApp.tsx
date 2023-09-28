@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
@@ -10,12 +11,12 @@ import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 
 export const ExitApp = memo((props: {
-  question: string
   onFinish: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R      = useMemo(() => translations.component.alert[config.language], []);
 
   useEffect(() => {
     HapticsService.vibrate('warning');
@@ -54,7 +55,7 @@ export const ExitApp = memo((props: {
             padding: 10,
           }}
         >
-          {props.question}
+          {R['Want to exit?']}
         </Text>
       </View>
       <View

@@ -5,9 +5,9 @@ import { RoundedIconButton } from './RoundedIconButton';
 import { TextWithIcon } from './TextWithIconButton';
 
 export const Button = {
-  Icon: IconButton,
-  RoundedIcon: RoundedIconButton,
+  Icon:         IconButton,
+  RoundedIcon:  RoundedIconButton,
   TextWithIcon: TextWithIcon,
-  Checkbox: Checkbox,
+  Checkbox:     Checkbox,
   ConfirmSwipe: DeleteSwipeButton,
 };

@@ -1,14 +1,20 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const SaveFeedback = memo((props: {
   saved: boolean
   theme: WidgetThemeDTO
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
+
   return (
     <View
       style={{
@@ -31,7 +37,7 @@ export const SaveFeedback = memo((props: {
           color: props.theme.font,
         }}
       >
-        {props.saved ? 'Saved' : 'Saving...'}
+        {props.saved ? R['Saved'] : R['Saving...']}
       </Text>
     </View>
   );

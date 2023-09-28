@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
@@ -7,6 +7,8 @@ import HapticsService from '@Services/HapticsService';
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 import { NavbarIconButton } from './NavbarIconButtons';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const Footer = memo((props: {
   AddToNewSamples: boolean
@@ -16,6 +18,9 @@ export const Footer = memo((props: {
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onChangeCheckbox = useCallback((checked: boolean) => {
     props.onChangeCheckbox(checked);
@@ -48,7 +53,7 @@ export const Footer = memo((props: {
           <Text p
             style={{ color: props.theme.font }}
           >
-            Add to new samples
+            {R['Add automatically']}
           </Text>
         </View>
       )}

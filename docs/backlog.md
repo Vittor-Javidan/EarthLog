@@ -1,3 +1,3 @@
-- Fix all translations
+- Convert all functions to use useCallback on ALert component and its children.
 - Implement all rules
 - Validate on IOS

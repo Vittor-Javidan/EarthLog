@@ -1,11 +1,13 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { InputStatus, StringInputData } from '@Types/ProjectTypes';
 import { useTimeout } from '@Hooks/index';
+import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 
 import { LC } from '../__LC__';
+import { translations } from '@Translations/index';
 
 type InputTheme = {
   font: string
@@ -33,6 +35,9 @@ export const StringInput = memo((props: {
    * <TextInput /> ˜onChangeText˜ is fired on render when `multiline === true` on IOS. Be carefull on wich code is writed for this
    * callback to trigger.
   */
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.stringInput[config.language], []);
 
   const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
@@ -104,7 +109,7 @@ export const StringInput = memo((props: {
     >
       <TextInput
         value={inputData.value}
-        placeholder={inputData.placeholder ?? 'Write Something here'}
+        placeholder={inputData.placeholder ?? R['Write something here...']}
         placeholderTextColor={props.theme.font_placeholder}
         textAlign="left"
         textAlignVertical="top"

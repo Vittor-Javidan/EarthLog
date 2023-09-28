@@ -22,7 +22,7 @@ export function navigate(
 ) {
 
   const config = ConfigService.config;
-  const R      = translations.ErrorMessages[config.language];
+  const R      = translations.global.navigationController[config.language];
   const navController = useRouter();
 
   switch (screen) {

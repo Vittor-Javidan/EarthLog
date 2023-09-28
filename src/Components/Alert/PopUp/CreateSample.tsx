@@ -1,6 +1,7 @@
 import React, { useState, useMemo, memo } from 'react';
 import { View } from 'react-native';
 
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
@@ -18,6 +19,7 @@ export const CreateSample = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R      = useMemo(() => translations.component.alert[config.language], []);
   const [name, setName] = useState<string>('');
 
   async function onAccept() {
@@ -40,7 +42,7 @@ export const CreateSample = memo((props: {
       );
     }
     if (props.id_project === undefined) {
-      alert('No project ID found');
+      alert(R['No project ID found']);
     }
   }
 
@@ -60,10 +62,10 @@ export const CreateSample = memo((props: {
         }}
       >
         <Input.String
-          label="Sample name"
+          label={R['Sample name']}
           value={name}
           onTextChange={(text) => setName(text)}
-          placeholder="Write sample's name here"
+          placeholder={R["Write sample's name here"]}
           multiline={false}
           theme={{
             font: theme.font,

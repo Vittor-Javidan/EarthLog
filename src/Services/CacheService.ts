@@ -1,6 +1,8 @@
 import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
+import ConfigService from './ConfigService';
+import { translations } from '@Translations/index';
 
 export default class CacheService {
 
@@ -62,7 +64,8 @@ export default class CacheService {
         return this.allProjects[i];
       }
     }
-    throw Error('Project does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project does not exist on cache']);
   }
 
   static getSampleFromCache(id_sample: string): SampleSettings {
@@ -71,7 +74,8 @@ export default class CacheService {
         return this.allSamples[i];
       }
     }
-    throw Error('Sample does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
   static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
@@ -81,7 +85,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Project does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project does not exist on cache']);
   }
 
   static updateCache_SampleSettings(sampleSettings: SampleSettings) {
@@ -91,7 +96,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Sample does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
   static updateCache_ProjectWidget(widgetData: WidgetData) {
@@ -101,7 +107,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Project Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project Widget does not exist on cache']);
   }
 
   static updateCache_TemplateWidget(widgetData: WidgetData) {
@@ -111,7 +118,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Template Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Template Widget does not exist on cache']);
   }
 
   static updateCache_SampleWidget(widgetData: WidgetData) {
@@ -121,7 +129,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Sample Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample Widget does not exist on cache']);
   }
 
   static async loadAllProjectsSettings(): Promise<void> {

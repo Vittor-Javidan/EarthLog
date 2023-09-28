@@ -7,11 +7,17 @@ import { Pressable, View } from 'react-native';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
 import { ThemeNames_Widgets } from '@Types/AppTypes';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const ThemeDisplay = memo((props: {
   theme: WidgetThemeDTO
   onThemeSelected: (themeName: ThemeNames_Widgets) => void
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
+
   return (
     <View>
       <Text h2
@@ -21,7 +27,7 @@ export const ThemeDisplay = memo((props: {
           alignSelf: 'center',
         }}
       >
-        {'Select a theme:'}
+        {R['Select a theme:']}
       </Text>
       <View
         style={{
@@ -45,11 +51,15 @@ export const ThemeDisplay = memo((props: {
 const ThemeButtons = memo((props: {
   onPress: (themeName: ThemeNames_Widgets) => void
 }) => {
+
   const themes = useMemo(() => ThemeService.widgetThemes, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
+
   return ThemeService.themeNamesArray.Widget.map(themeName => (
     <ThemeButton
       key={themeName}
-      title={themeName}
+      title={R[themeName]}
       theme={themes[themeName]}
       onPress={() => props.onPress(themeName)}
     />
@@ -57,7 +67,7 @@ const ThemeButtons = memo((props: {
 });
 
 const ThemeButton = memo((props: {
-  title: ThemeNames_Widgets
+  title: string
   theme: {
     font: string
     background: string

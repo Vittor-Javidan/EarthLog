@@ -23,7 +23,7 @@ export default function SampleSettingsWidget(props: {
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.widgetThemes['light'], []);
-  const R      = useMemo(() => translations.Screens.SampleSettingsScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
 
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);

@@ -2,8 +2,8 @@ import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
 import { BooleanInputData, InputStatus } from '@Types/ProjectTypes';
-import { useTimeout } from '@Hooks/index';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 import HapticsService from '@Services/HapticsService';
@@ -33,7 +33,7 @@ export const BooleanInput = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.Input.BooleanInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.booleanInput[config.language], []);
 
   const [inputData  , setInputData  ] = useState<BooleanInputData>(UtilService.deepCopy(props.inputData));
   const [saveSignal , setSaveSignal ] = useState<boolean>(false);

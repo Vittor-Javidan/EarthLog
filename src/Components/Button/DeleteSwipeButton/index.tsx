@@ -3,7 +3,9 @@ import { View, Dimensions, Pressable } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
 
+import { translations } from '@Translations/index';
 import HapticsService from '@Services/HapticsService';
+import ConfigService from '@Services/ConfigService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
@@ -24,6 +26,8 @@ export const DeleteSwipeButton = memo((props: {
 }) => {
 
   const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const config           = useMemo(() => ConfigService.config, []);
+  const R                = useMemo(() => translations.component.button[config.language], []);
 
   const COMPENSATE_MARGIN = props.compensateMargin ?? 0;
   const PADDING           = 10;
@@ -109,7 +113,7 @@ export const DeleteSwipeButton = memo((props: {
               color: props.theme.background,
             }}
           >
-            Release to confirm
+            {R['Release to confirm']}
           </Text>
         </View>
         <Animated.View
@@ -161,6 +165,9 @@ const CancelButton = memo((props: {
 	onPress: () => void
 }) => {
 
+  const config           = useMemo(() => ConfigService.config, []);
+  const R                = useMemo(() => translations.component.button[config.language], []);
+
   const [pressed, setPressed] = useState<boolean>(false);
 
   function onPressIn() {
@@ -198,7 +205,7 @@ const CancelButton = memo((props: {
           paddingVertical: 5,
 				}}
 			>
-				{'Cancel'}
+				{R['Cancel']}
 			</Text>
       <Icon
         iconName="close"

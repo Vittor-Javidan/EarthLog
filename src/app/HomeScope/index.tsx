@@ -2,9 +2,9 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
 import { useBackPress } from '@Hooks/index';
-import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
@@ -18,7 +18,7 @@ import HomeScreen from '@Screens/HomeScreen';
 export default function HomeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
+  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useEffect(() => {
@@ -31,10 +31,11 @@ export default function HomeScope() {
   }, []);
 
   async function exitMessage() {
-    await AlertService.handleAlert(true, {
-      question: R['Want to exit?'],
-      type: 'exit app',
-    }, () => BackHandler.exitApp());
+    await AlertService.handleAlert(
+      true,
+      { type: 'exit app' },
+      () => BackHandler.exitApp()
+    );
   }
 
   return (
@@ -69,7 +70,7 @@ function Drawer() {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R      = useMemo(() => translations.Screens.HomeScreen[config.language], []);
+  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
 
   return (<>
     <Button.TextWithIcon

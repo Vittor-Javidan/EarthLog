@@ -2,9 +2,11 @@ import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import { useBackPress } from '@Hooks/index';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
+import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
 import { ProjectScreen as _ProjectScreen } from '@Screens/ProjectScreen';
@@ -28,12 +30,16 @@ const ProjectInfoScreen = memo((props: {
 export default function ProjectScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const config          = useMemo(() => ConfigService.config, []);
+  const R               = useMemo(() => translations.scope.projectScope[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [selectedScreen    , setSelectedScreen     ] = useState<number>(1);
   const [state             , setState              ] = useState<Loading>('Loading');
   const [updatedName       , setUpdatedName        ] = useState<string | null>(null);
   const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
+
+  const sampleAlias = projectSettings.sampleAlias.plural !== '' ? projectSettings.sampleAlias.plural : 'Samples';
 
   useEffect(() => {
     fetchSamples(id_project, () => setState('Loaded'));
@@ -45,7 +51,7 @@ export default function ProjectScope() {
 
   return (
     <Layout.Root
-      title={'Project'}
+      title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
@@ -55,12 +61,15 @@ export default function ProjectScope() {
         overlayButtons={
           <OverlayButtons
             selectedScreen={selectedScreen}
-            sampleAlias={updatedSampleAlias ?? projectSettings.sampleAlias.plural}
+            sampleAlias={updatedSampleAlias ?? sampleAlias}
             onSelect={(screeNumber) => setSelectedScreen(screeNumber)}
           />
         }
         screens={[
-          <ProjectScreen      projectScopeState={state} key="1" />,
+          <ProjectScreen
+            key="1"
+            projectScopeState={state}
+          />,
           <TemplateScreen
             key="2"
             projectScopeState={state}

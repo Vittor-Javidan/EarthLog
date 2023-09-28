@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, View, Linking } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -6,6 +6,7 @@ import ThemeService from '@Services/ThemeService';
 import { Text } from '@Text/index';
 import { Icon } from '@Icon/index';
 import HapticsService from '@Services/HapticsService';
+import { translations } from '@Translations/index';
 
 export function SocialMediaButtons() {
 
@@ -52,17 +53,21 @@ function YoutubeTutorialButton(props: {
   }
 }) {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const YOUTUBE_COLOR = 'red';
+
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
-  }
+  }, []);
 
   return (
     <Pressable
@@ -75,22 +80,22 @@ function YoutubeTutorialButton(props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : 'red',
+        backgroundColor: pressed ? props.theme.background : YOUTUBE_COLOR,
         paddingLeft: 5,
         paddingRight: 10,
       }}
     >
       <Icon
-        color={pressed ? 'red' : props.theme.font}
+        color={pressed ? YOUTUBE_COLOR : props.theme.font}
         iconName="logo-youtube"
       />
       <Text h3
         style={{
-          color: pressed ? 'red' : props.theme.font,
+          color: pressed ? YOUTUBE_COLOR : props.theme.font,
           fontWeight: '900',
         }}
       >
-        {'Tutorials'}
+        {R['Tutorials']}
       </Text>
     </Pressable>
   );
@@ -103,17 +108,21 @@ function RoadMapButton(props: {
   }
 }) {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const ROADMAP_COLOR = 'orange';
+
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
-  }
+  }, []);
 
   return (
     <Pressable
@@ -126,17 +135,17 @@ function RoadMapButton(props: {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : 'orange',
+        backgroundColor: pressed ? props.theme.background : ROADMAP_COLOR,
         paddingHorizontal: 10,
       }}
     >
       <Text h3
         style={{
-          color: pressed ? 'orange' : props.theme.font,
+          color: pressed ? ROADMAP_COLOR : props.theme.font,
           fontWeight: '900',
         }}
       >
-        {'ROADMAP'}
+        {R['ROADMAP']}
       </Text>
     </Pressable>
   );
@@ -149,17 +158,21 @@ function LinkedinCommunityButton(props: {
   }
 }) {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const LINKEDIN_COLOR = '#0e76a8';
+
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     HapticsService.vibrate('success');
     Linking.openURL('https://www.google.com/');
-  }
+  }, []);
 
   return (
     <Pressable
@@ -170,7 +183,7 @@ function LinkedinCommunityButton(props: {
         flex: 1,
         justifyContent: 'space-between',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : '#0e76a8',
+        backgroundColor: pressed ? props.theme.background : LINKEDIN_COLOR,
         paddingLeft: 10,
         paddingRight: 5,
       }}
@@ -183,7 +196,7 @@ function LinkedinCommunityButton(props: {
         }}
       >
         <Icon
-          color={pressed ? '#0e76a8' : props.theme.font}
+          color={pressed ? LINKEDIN_COLOR : props.theme.font}
           iconName="logo-linkedin"
         />
       </View>
@@ -196,11 +209,11 @@ function LinkedinCommunityButton(props: {
       >
         <Text h1
           style={{
-            color: pressed ? '#0e76a8' : props.theme.font,
+            color: pressed ? LINKEDIN_COLOR : props.theme.font,
             fontWeight: '900',
           }}
         >
-          {'Community'}
+          {R['Community']}
         </Text>
       </View>
     </Pressable>

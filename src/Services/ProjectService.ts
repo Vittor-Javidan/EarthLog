@@ -21,8 +21,8 @@ export default class ProjectService {
         name: '',
         gps: {},
         sampleAlias: {
-          singular: 'Sample',
-          plural: 'Samples',
+          singular: '',
+          plural: '',
         },
         rules: {
           allowGPSChange: true,
@@ -83,7 +83,6 @@ export default class ProjectService {
         label: '',
         type: 'string',
         value: '',
-        placeholder: 'write a text here',
       };
       case 'gps': return {
         id_input: this.generateUuidV4(),

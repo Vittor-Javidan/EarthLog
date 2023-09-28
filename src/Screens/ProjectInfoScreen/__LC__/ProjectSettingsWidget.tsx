@@ -21,7 +21,7 @@ export default function ProjectSettingsWidget(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.Screens.ProjectSettingsScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.projectInfoScreen[config.language], []);
 
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
@@ -195,7 +195,7 @@ export default function ProjectSettingsWidget(props: {
             marginBottom: -10,
           }}
         >
-          {'Sample Alias'}
+          {R['Sample Alias']}
         </Text>
         <WidgetInput.String
           inputData={{
@@ -203,7 +203,7 @@ export default function ProjectSettingsWidget(props: {
             label: 'Singular',
             value: projectSettings.sampleAlias.singular,
             type: 'string',
-            placeholder: 'Write your sample alias here',
+            placeholder: R['Write your sample alias here'],
             lockedLabel: true,
             lockedData: false,
           }}
@@ -223,7 +223,7 @@ export default function ProjectSettingsWidget(props: {
             label: 'Plural',
             value: projectSettings.sampleAlias.plural,
             type: 'string',
-            placeholder: 'Write your sample alias here',
+            placeholder: R['Write your sample alias here'],
             lockedLabel: true,
             lockedData: false,
           }}

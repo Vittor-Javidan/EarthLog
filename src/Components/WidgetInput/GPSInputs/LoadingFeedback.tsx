@@ -14,7 +14,7 @@ export const LoadingFeedback = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.Input.GPSInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.gpsInput[config.language], []);
 
   const nothingEnable =
     props.features.enableCoordinate === false &&

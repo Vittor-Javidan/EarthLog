@@ -10,7 +10,7 @@ import { Button } from '@Button/index';
 import { Text } from '@Text/index';
 
 export const Warning = memo((props: {
-  question: string
+  question: string | undefined
   onFinish: () => void
 }) => {
 
@@ -48,7 +48,7 @@ export const Warning = memo((props: {
             padding: 10,
           }}
         >
-          {props.question}
+          {props.question ?? ''}
         </Text>
       </View>
       <Button.ConfirmSwipe

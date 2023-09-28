@@ -22,7 +22,6 @@ export const Selector = memo((props: {
     );
     case 'exit app': return (
       <ExitApp
-        question={props.config.question}
         onFinish={() => props.onFinish()}
       />
     );
