@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo } from 'react';
+import React, { useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@Translations/index';
@@ -22,16 +22,16 @@ export const ExitApp = memo((props: {
     HapticsService.vibrate('warning');
   }, []);
 
-  async function onAccept() {
+  const onAccept = useCallback(async () => {
     props.onFinish();
     await AlertService.runAcceptCallback();
     HapticsService.vibrate('warning');
-  }
+  }, [props.onFinish]);
 
-  async function onRefuse() {
+  const onRefuse = useCallback(() => {
     props.onFinish();
     HapticsService.vibrate('success');
-  }
+  }, [props.onFinish]);
 
   return (
     <View

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo } from 'react';
+import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View, ScrollView, Pressable } from 'react-native';
 
 import { translations } from '@Translations/index';
@@ -24,7 +24,7 @@ export const TemplateWidgetCopy = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const R      = useMemo(() => translations.component.alert[config.language], []);
 
-  async function onWidgetCopyToSample(widgetData: WidgetData) {
+  const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
     if (props.id_project !== undefined && props.id_sample !== undefined) {
       const { id_project, id_sample } = props;
       const newWidgetData = UtilService.deepCopy(widgetData);
@@ -46,7 +46,7 @@ export const TemplateWidgetCopy = memo((props: {
     } else {
       alert(R['No project/sample ID found']);
     }
-  }
+  }, [props, R]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
     if (widgetData.widgetName !== '') {

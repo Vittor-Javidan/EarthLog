@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@Translations/index';
@@ -22,7 +22,7 @@ export const CreateSample = memo((props: {
   const R      = useMemo(() => translations.component.alert[config.language], []);
   const [name, setName] = useState<string>('');
 
-  async function onAccept() {
+  const onAccept = useCallback(async () => {
     if (name !== '' && props.id_project !== undefined) {
       const { id_project } = props;
       const sampleSettings = ProjectService.getDefaultSampleSettings();
@@ -44,7 +44,7 @@ export const CreateSample = memo((props: {
     if (props.id_project === undefined) {
       alert(R['No project ID found']);
     }
-  }
+  }, [props.id_project, props.onFinish, name, R]);
 
   return (
     <View

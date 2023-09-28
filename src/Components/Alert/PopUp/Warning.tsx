@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, memo } from 'react';
+import React, { useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import ConfigService from '@Services/ConfigService';
@@ -21,10 +21,10 @@ export const Warning = memo((props: {
     HapticsService.vibrate('warning');
   }, []);
 
-  async function onAccept() {
+  const onAccept = useCallback(async () => {
     props.onFinish();
     await AlertService.runAcceptCallback();
-  }
+  }, [props.onFinish]);
 
   return (
     <View

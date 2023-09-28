@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@Translations/index';
@@ -21,7 +21,7 @@ export const CreateProject = memo((props: {
   const R      = useMemo(() => translations.component.alert[config.language], []);
   const [name, setName] = useState<string>('');
 
-  async function onAccept() {
+  const onAccept = useCallback(async () => {
     if (name !== '') {
       const newProject = ProjectService.getDefaultProjectTemplate();
       newProject.projectSettings.name = name;
@@ -38,7 +38,7 @@ export const CreateProject = memo((props: {
         }
       );
     }
-  }
+  }, [props.onFinish, name]);
 
   return (
     <View
