@@ -1,8 +1,8 @@
+import { translations } from '@Translations/index';
 import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
 import ConfigService from './ConfigService';
-import { translations } from '@Translations/index';
 
 export default class CacheService {
 
