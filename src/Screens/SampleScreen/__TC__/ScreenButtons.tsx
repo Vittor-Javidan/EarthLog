@@ -21,13 +21,14 @@ export default function ScreenButtons(props: {
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  async function onCreateWidget() {
+  async function onCreateWidget_Sample() {
+    const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Sample(
       id_project,
       id_sample,
-      ProjectService.getWidgetData(),
-      async () => {
-        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+      newWidget,
+      () => {
+        CacheService.addToAllWidgets_Sample(newWidget);
         props.onCreateWidget();
       },
       (errorMessage) => alert(errorMessage)
@@ -82,7 +83,7 @@ export default function ScreenButtons(props: {
             iconName="square"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={() => onCreateWidget()}
+            onPress={() => onCreateWidget_Sample()}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,

@@ -1,10 +1,5 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.2.29 Rules implementation
+# 0.1.2.30 Cache optimization
 
-- all missing rules declared on all types implemented.
-- Now <ScreenButtons /> root accepts a JSX.Element instead JSX.Element[]
-- New type WidgetRules created.
-- added a new lock icon on Boolean input navbar when data is locked
-- added a new lock icon on widget footer when addToNewSamples is locked
-- <SampleSettingsWidget /> bottom padding reduced.
+- Now cache is not fully load for each modification. All add functionallity add the new data direcly into the cache. Deletion actions still loading the full cache.

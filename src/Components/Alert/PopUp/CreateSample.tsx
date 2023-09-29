@@ -31,7 +31,7 @@ export const CreateSample = memo((props: {
         id_project,
         sampleSettings,
         async () => {
-          await CacheService.loadAllSamplesSettings(id_project);
+          CacheService.addToAllSamples(sampleSettings);
           await AlertService.runAcceptCallback();
           props.onFinish();
         },

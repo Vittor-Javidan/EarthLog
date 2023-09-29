@@ -22,8 +22,8 @@ export const Warning = memo((props: {
   }, []);
 
   const onAccept = useCallback(async () => {
-    props.onFinish();
     await AlertService.runAcceptCallback();
+    props.onFinish();
   }, [props.onFinish]);
 
   return (

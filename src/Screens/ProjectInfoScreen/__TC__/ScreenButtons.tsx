@@ -21,11 +21,12 @@ export default function ScreenButtons(props: {
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   async function createWidget_Project() {
+    const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Project(
       id_project,
-      ProjectService.getWidgetData(),
-      async () => {
-        await CacheService.loadAllWidgets_Project(id_project);
+      newWidget,
+      () => {
+        CacheService.addToAllWidgets_Project(newWidget);
         props.onWidgetCreation();
       },
       (errorMessage) => alert(errorMessage)

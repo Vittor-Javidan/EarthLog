@@ -152,4 +152,39 @@ export default class CacheService {
   static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
     this.allWidgets_Sample = await DatabaseService.getAllWidgets_Sample(id_project, id_sample);
   }
+
+  /**
+   * Adds a project direcly into the cache, to avoid the necessity of loading all projects again.
+   */
+  static addToAllProjects(projectSettings: ProjectSettings): void {
+    this.allProjects = [UtilService.deepCopy(projectSettings), ...this.allProjects];
+  }
+
+  /**
+   * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
+   */
+  static addToAllSamples(sampleSettings: SampleSettings): void {
+    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Project(widgetData: WidgetData): void {
+    this.allWidgets_Project = [...this.allWidgets_Project, UtilService.deepCopy(widgetData)];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Template(widgetData: WidgetData): void {
+    this.allWidgets_Template = [...this.allWidgets_Template, UtilService.deepCopy(widgetData)];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Sample(widgetData: WidgetData): void {
+    this.allWidgets_Sample = [...this.allWidgets_Sample, UtilService.deepCopy(widgetData)];
+  }
 }

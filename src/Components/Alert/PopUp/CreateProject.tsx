@@ -28,7 +28,7 @@ export const CreateProject = memo((props: {
       await ProjectService.createProject(
         newProject,
         async () => {
-          await CacheService.loadAllProjectsSettings();
+          CacheService.addToAllProjects(newProject.projectSettings);
           await AlertService.runAcceptCallback();
           props.onFinish();
         },

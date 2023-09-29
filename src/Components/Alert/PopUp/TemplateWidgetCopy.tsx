@@ -34,9 +34,9 @@ export const TemplateWidgetCopy = memo((props: {
         id_sample,
         newWidgetData,
         async () => {
-          await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-          props.onFinish();
+          CacheService.addToAllWidgets_Sample(newWidgetData);
           await AlertService.runAcceptCallback();
+          props.onFinish();
         },
         (errorMesage) => {
           alert(errorMesage);

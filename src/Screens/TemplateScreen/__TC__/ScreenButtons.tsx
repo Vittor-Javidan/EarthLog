@@ -19,11 +19,12 @@ export default function ScreenButtons(props: {
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   async function onCreateWidget() {
+    const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Template(
       id_project,
-      ProjectService.getWidgetData(),
-      async () => {
-        await CacheService.loadAllWidgets_Template(id_project);
+      newWidget,
+      () => {
+        CacheService.addToAllWidgets_Template(newWidget);
         props.onWidgetCreation();
       },
       (errorMessage) => alert(errorMessage)
