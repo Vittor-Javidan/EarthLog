@@ -1,6 +1,7 @@
 import React, { ReactNode, useState, memo, useCallback } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
+import { WidgetRules } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
@@ -15,9 +16,11 @@ type InputTheme = {
 
 export const InputRoot = memo((props: {
   label: string
+  lockedLabel: boolean | undefined
   editWidget: boolean
   isFirstInput: boolean
   isLastInput: boolean
+  widgetRules: WidgetRules
   theme: InputTheme
   iconButtons: JSX.Element
   children: ReactNode
@@ -41,6 +44,12 @@ export const InputRoot = memo((props: {
     props.onLabelChange(label);
   }, [label, props.onLabelChange]);
 
+  const onEditLabel = useCallback(() => {
+    if (!props.lockedLabel) {
+      setEditLabel(true);
+    }
+  }, []);
+
   return (
     <View
       style={{
@@ -50,8 +59,9 @@ export const InputRoot = memo((props: {
     >
       <LabelButton
         label={label}
+        locked={props.lockedLabel}
         editLabel={editLabel}
-        onPress={() => setEditLabel(true)}
+        onPress={() => onEditLabel()}
         confirmLabel={() => confirmLabel()}
         onLabelChange={(label) => onLabelChange(label)}
         theme={props.theme}
@@ -69,6 +79,7 @@ export const InputRoot = memo((props: {
       >
         {props.editWidget ? (
           <IconButton
+            widgetRules={props.widgetRules}
             isFirstInput={props.isFirstInput}
             isLastInput={props.isLastInput}
             onPress_Trash={() => props.onInputDelete()}
@@ -98,6 +109,7 @@ export const InputRoot = memo((props: {
 
 const LabelButton = memo((props: {
   label: string
+  locked: boolean | undefined
   editLabel: boolean
   theme: InputTheme
   onPress: () => void
@@ -160,42 +172,47 @@ const LabelButton = memo((props: {
 const IconButton = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
+  widgetRules: WidgetRules
   theme: InputTheme
   onPress_Trash: () => void
   onPress_ChevronUp: () => void
   onPress_ChevronDown: () => void
 }) => {
   return (<>
-    {props.isFirstInput !== true && (
+    {props.widgetRules.showMoveButton_Inputs && (<>
+      {props.isFirstInput !== true && (
+        <NavbarIconButton
+          iconName="chevron-up-circle-outline"
+          onPress={() => props.onPress_ChevronUp()}
+          selected={false}
+          theme={{
+            background: props.theme.background,
+            font: props.theme.font,
+          }}
+        />
+      )}
+      {props.isLastInput !== true && (
+        <NavbarIconButton
+          iconName="chevron-down-circle-outline"
+          onPress={() => props.onPress_ChevronDown()}
+          selected={false}
+          theme={{
+            background: props.theme.background,
+            font: props.theme.font,
+          }}
+        />
+      )}
+    </>)}
+    {props.widgetRules.showDeleteButton_Inputs && (
       <NavbarIconButton
-        iconName="chevron-up-circle-outline"
-        onPress={() => props.onPress_ChevronUp()}
+        iconName="trash-outline"
+        onPress={() => props.onPress_Trash()}
         selected={false}
         theme={{
           background: props.theme.background,
-          font: props.theme.font,
+          font: props.theme.wrong,
         }}
       />
     )}
-    {props.isLastInput !== true && (
-      <NavbarIconButton
-        iconName="chevron-down-circle-outline"
-        onPress={() => props.onPress_ChevronDown()}
-        selected={false}
-        theme={{
-          background: props.theme.background,
-          font: props.theme.font,
-        }}
-      />
-    )}
-    <NavbarIconButton
-      iconName="trash-outline"
-      onPress={() => props.onPress_Trash()}
-      selected={false}
-      theme={{
-        background: props.theme.background,
-        font: props.theme.wrong,
-      }}
-    />
   </>);
 });

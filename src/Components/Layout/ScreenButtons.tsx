@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View, Platform } from 'react-native';
 
 export const ScreenButtons = memo((props: {
-  buttons: JSX.Element[]
+  buttons: JSX.Element
   showSwipe?: boolean
   SwipeButton?: JSX.Element
 }) => {

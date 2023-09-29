@@ -1,2 +1,1 @@
-- Implement all rules
 - Validate on IOS

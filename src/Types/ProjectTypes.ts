@@ -24,7 +24,7 @@ export type ProjectSettings = {
     singular: string
     plural: string
   }
-  gps?: GPS_DTO
+  gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
   rules: {
     allowProjectNameChange?: boolean
     allowSampleAliasChange?: boolean
@@ -43,6 +43,7 @@ export type SampleSettings = {
     allowSampleNameChange?: boolean
     allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
     showCreateWidgetButton?: boolean
+    showCopyWidgetFromTemplateButton?: boolean
   }
 }
 
@@ -54,17 +55,20 @@ export type WidgetData = {
   id_widget: ID                                                                                     // No not share same id between Widgets, because its used to name actual folders inside user device, so it can leads into to crash or unexpected behaviors. Use ids validated by this regex: /^[0-9A-Za-z-]+$/
   widgetName: string                                                                                // You can use scape sequence on strings here, without break app layout, like "\n", "\t", etc.
   inputs: InputData[]
-  rules: {
-    allowWidgetNameChange?: boolean
-    showAddInputButton?: boolean
-    showDeleteButton_Inputs?: boolean
-    showDeleteButton_Widget?: boolean
-    showOptionsButton?: boolean
-    showInputsDeleteOption?: boolean
-    showColorButton?: boolean
-  }
+  rules: WidgetRules
   addToNewSamples?: boolean                                                                         // Used by template screen to auto add a Widget on new Samples user creates
-  widgetTheme?: WidgetThemeDTO                                                                     // When undefine, it renders with default theme
+  widgetTheme?: WidgetThemeDTO                                                                      // When undefine, it renders with default theme
+}
+
+export type WidgetRules = {
+  allowWidgetNameChange?: boolean
+  showAddInputButton?: boolean
+  showOptionsButton?: boolean
+  showThemeButton?: boolean
+  showDeleteButton_Widget?: boolean
+  showDeleteButton_Inputs?: boolean
+  showMoveButton_Inputs?: boolean
+  unlockAddToNewSamples?: boolean
 }
 
 export type WidgetScope = {

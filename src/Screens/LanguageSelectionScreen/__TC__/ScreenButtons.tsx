@@ -14,9 +14,8 @@ export default function ScreenButtons() {
 
   return (
     <Layout.ScreenButtons
-      buttons={[
+      buttons={
         <Button.RoundedIcon
-          key="1"
           iconName="arrow-back"
           showPlusSign={false}
           buttonDiameter={60}
@@ -27,8 +26,8 @@ export default function ScreenButtons() {
             background: theme.backgroud,
             background_Pressed: theme.background_active,
           }}
-        />,
-      ]}
+        />
+      }
     />
   );
 }

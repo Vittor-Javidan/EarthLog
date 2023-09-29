@@ -1,19 +1,21 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import HapticsService from '@Services/HapticsService';
+import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 import { NavbarIconButton } from './NavbarIconButtons';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
+import { Icon } from '@Icon/index';
 
 export const Footer = memo((props: {
   AddToNewSamples: boolean
   showCheckbox: boolean
   showDeleteWidgetButton: boolean
+  rules: WidgetRules
   theme: WidgetThemeDTO
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
@@ -23,9 +25,11 @@ export const Footer = memo((props: {
   const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onChangeCheckbox = useCallback((checked: boolean) => {
-    props.onChangeCheckbox(checked);
-    HapticsService.vibrate('success');
-  }, [props.onChangeCheckbox]);
+    if (props.rules.unlockAddToNewSamples) {
+      props.onChangeCheckbox(checked);
+      HapticsService.vibrate('success');
+    }
+  }, [props.onChangeCheckbox, props.rules]);
 
   return (props.showCheckbox || props.showDeleteWidgetButton) ? (
     <View
@@ -51,13 +55,23 @@ export const Footer = memo((props: {
             theme={props.theme}
           />
           <Text p
-            style={{ color: props.theme.font }}
-          >
+            style={{ color: props.rules.unlockAddToNewSamples ? props.theme.font : props.theme.wrong }}
+            >
             {R['Add automatically']}
           </Text>
+          {!props.rules.unlockAddToNewSamples && (
+            <View
+              style={{ height: 20 }}
+            >
+              <Icon
+                iconName="lock-closed"
+                color={props.theme.wrong}
+              />
+            </View>
+          )}
         </View>
       )}
-      {props.showDeleteWidgetButton && (
+      {props.rules.showDeleteButton_Widget && props.showDeleteWidgetButton && (
         <View
           style={{ height: 40 }}
         >

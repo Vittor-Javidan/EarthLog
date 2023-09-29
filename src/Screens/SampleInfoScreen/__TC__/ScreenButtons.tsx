@@ -34,9 +34,8 @@ export default function ScreenButtons() {
   return (
     <Layout.ScreenButtons
 
-      buttons={[
+      buttons={
         <Button.RoundedIcon
-          key="1"
           iconName="trash-outline"
           showPlusSign={false}
           buttonDiameter={60}
@@ -47,8 +46,8 @@ export default function ScreenButtons() {
             background: theme.wrong,
             background_Pressed: theme.background_active,
           }}
-        />,
-      ]}
+        />
+      }
 
       showSwipe={show_DeleteSwap}
       SwipeButton={

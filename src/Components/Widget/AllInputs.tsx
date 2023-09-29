@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
@@ -10,6 +10,7 @@ export const AllInputs = memo((props: {
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
+  rules: WidgetRules
   theme: WidgetThemeDTO
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: (id_input: ID) => void
@@ -32,6 +33,7 @@ export const AllInputs = memo((props: {
       onInputDelete={(id_input) => props.onInputDelete(id_input)}
       onInputMoveUp={(id_input) => props.onInputMoveUp(id_input)}
       onInputMoveDow={(id_input) => props.onInputMoveDow(id_input)}
+      rules={props.rules}
       theme={props.theme}
     />
   ) : (
@@ -52,6 +54,7 @@ const InputsArray = memo((props: {
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
+  rules: WidgetRules
   theme: WidgetThemeDTO
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: (id_input: ID) => void
@@ -76,6 +79,7 @@ const InputsArray = memo((props: {
         onInputDelete={() => props.onInputDelete(inputData.id_input)}
         onInputMoveUp={() => props.onInputMoveUp(inputData.id_input)}
         onInputMoveDow={() => props.onInputMoveDow(inputData.id_input)}
+        widgetRules={props.rules}
         widgetTheme={props.theme}
       />
     );

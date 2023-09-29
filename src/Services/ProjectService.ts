@@ -48,6 +48,7 @@ export default class ProjectService {
         allowGPSChange: true,
         allowSampleNameChange: true,
         showCreateWidgetButton: true,
+        showCopyWidgetFromTemplateButton: true,
       },
     };
   }
@@ -60,11 +61,12 @@ export default class ProjectService {
       rules: {
         allowWidgetNameChange: true,
         showAddInputButton: true,
-        showColorButton: true,
-        showDeleteButton_Inputs: true,
-        showDeleteButton_Widget: true,
-        showInputsDeleteOption: true,
+        showThemeButton: true,
         showOptionsButton: true,
+        showDeleteButton_Widget: true,
+        showDeleteButton_Inputs: true,
+        showMoveButton_Inputs: true,
+        unlockAddToNewSamples: true,
       },
     };
   }

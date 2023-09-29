@@ -17,8 +17,9 @@ export default function ScreenButtons(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const config         = useMemo(() => ConfigService.config, []);
+  const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   async function onCreateWidget() {
     await ProjectService.createWidget_Sample(
@@ -49,9 +50,8 @@ export default function ScreenButtons(props: {
 
   return (
     <Layout.ScreenButtons
-      buttons={[
+      buttons={<>
         <Button.RoundedIcon
-          key="1"
           iconName="arrow-back"
           showPlusSign={false}
           buttonDiameter={60}
@@ -62,34 +62,36 @@ export default function ScreenButtons(props: {
             background: theme.backgroud,
             background_Pressed: theme.background_active,
           }}
-        />,
-        <Button.RoundedIcon
-          key="2"
-          iconName="copy"
-          showPlusSign={true}
-          buttonDiameter={60}
-          onPress={() => onTemplateWidgetCopy()}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.confirm,
-            background: theme.confirm,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-        <Button.RoundedIcon
-          key="3"
-          iconName="square"
-          showPlusSign={true}
-          buttonDiameter={60}
-          onPress={() => onCreateWidget()}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.confirm,
-            background: theme.confirm,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-      ]}
+        />
+        {sampleSettings.rules.showCopyWidgetFromTemplateButton && (
+          <Button.RoundedIcon
+            iconName="copy"
+            showPlusSign={true}
+            buttonDiameter={60}
+            onPress={() => onTemplateWidgetCopy()}
+            theme={{
+              font: theme.font,
+              font_Pressed: theme.confirm,
+              background: theme.confirm,
+              background_Pressed: theme.background_active,
+            }}
+          />
+        )}
+        {sampleSettings.rules.showCreateWidgetButton && (
+          <Button.RoundedIcon
+            iconName="square"
+            showPlusSign={true}
+            buttonDiameter={60}
+            onPress={() => onCreateWidget()}
+            theme={{
+              font: theme.font,
+              font_Pressed: theme.confirm,
+              background: theme.confirm,
+              background_Pressed: theme.background_active,
+            }}
+          />
+        )}
+      </>}
     />
   );
 }

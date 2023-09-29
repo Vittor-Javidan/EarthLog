@@ -1,11 +1,15 @@
 import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
+import { ThemeNames_Widgets } from '@Types/AppTypes';
 import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { IconName } from '@Icon/index';
+import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -14,9 +18,6 @@ import { AllInputs } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
-import { ThemeNames_Widgets } from '@Types/AppTypes';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
@@ -35,17 +36,17 @@ export const Widget = memo((props: {
   const [editLabel  , setEditLabel  ] = useState<boolean>(false);
   const [editInputs , setEditInputs ] = useState<boolean>(false);
   const [saved      , setSaved      ] = useState<boolean>(true);
-  const [display    , setDisplay    ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
+  const [display    , setDisplay    ] = useState<WidgetDisplay>('data display');
 
   const defaultTheme = useMemo(() => ThemeService.widgetThemes['light'], []);
   const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
-    font:             widgetData?.widgetTheme?.font             ?? defaultTheme.font,
-    font_placeholder: widgetData?.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
-    background:       widgetData?.widgetTheme?.background       ?? defaultTheme.background,
-    wrong:            widgetData?.widgetTheme?.wrong            ?? defaultTheme.wrong,
-    confirm:          widgetData?.widgetTheme?.confirm          ?? defaultTheme.confirm,
-    modified:         widgetData?.widgetTheme?.modified         ?? defaultTheme.modified,
-    disabled:         widgetData?.widgetTheme?.disabled         ?? defaultTheme.disabled,
+    font:             widgetData.widgetTheme?.font             ?? defaultTheme.font,
+    font_placeholder: widgetData.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
+    background:       widgetData.widgetTheme?.background       ?? defaultTheme.background,
+    wrong:            widgetData.widgetTheme?.wrong            ?? defaultTheme.wrong,
+    confirm:          widgetData.widgetTheme?.confirm          ?? defaultTheme.confirm,
+    modified:         widgetData.widgetTheme?.modified         ?? defaultTheme.modified,
+    disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
   const onLabelChange = useCallback((label: string) => {
@@ -114,6 +115,12 @@ export const Widget = memo((props: {
       return;
     }
   }, [props.widgetScope]);
+
+  const onEditLabel = useCallback(() => {
+    if (widgetData.rules.allowWidgetNameChange) {
+      setEditLabel(true);
+    }
+  }, []);
 
   const onConfirmLabel = useCallback(() => {
     setEditLabel(false);
@@ -260,6 +267,7 @@ export const Widget = memo((props: {
             onPress_EditButton={() => togleEditDisplay()}
             onPress_ThemeButton={() => togleThemeDisplay()}
             onPress_NewInputButton={() => togleNewInputDisplay()}
+            rules={widgetData.rules}
             theme={widgetTheme}
           />
         }
@@ -281,7 +289,7 @@ export const Widget = memo((props: {
               label={tempLabel}
               editLabel={editLabel}
               noInputs={widgetData.inputs.length <= 0}
-              onPress={() => setEditLabel(true)}
+              onPress={() => onEditLabel()}
               onConfirm={() => onConfirmLabel()}
               onLabelChange={(label) => onLabelChange(label)}
               theme={widgetTheme}
@@ -294,6 +302,7 @@ export const Widget = memo((props: {
               onInputDelete={(id_input) => onDelete(id_input)}
               onInputMoveUp={(id_input) => onMoveUp(id_input)}
               onInputMoveDow={(id_input) => onMoveDown(id_input)}
+              rules={widgetData.rules}
               theme={widgetTheme}
             />
           </>)}
@@ -316,6 +325,7 @@ export const Widget = memo((props: {
           AddToNewSamples={widgetData.addToNewSamples ?? false}
           onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}
           onDeleteWidget={() => deleteWidget()}
+          rules={widgetData.rules}
           theme={widgetTheme}
         />
       </View>
@@ -323,55 +333,75 @@ export const Widget = memo((props: {
   );
 });
 
-function IconButtons(props: {
+type Rules_IconButtons = {
+  showAddInputButton?: boolean
+  showOptionsButton?: boolean
+  showThemeButton?: boolean
+}
+
+const IconButtons = memo((props: {
   editInputs: boolean
   display: WidgetDisplay
+  rules: Rules_IconButtons
   theme: WidgetThemeDTO
   onPress_DataDisplayButton: () => void
   onPress_EditButton: () => void
   onPress_NewInputButton: () => void
   onPress_ThemeButton: () => void
-}) {
+}) => {
+
+  const buttonsData: {
+    iconName: IconName
+    selected: boolean
+    onPress: () => void
+  }[] = [{
+    iconName: 'pencil-sharp',
+    selected: props.display === 'data display' && !props.editInputs,
+    onPress: () => props.onPress_DataDisplayButton(),
+  }];
+
+  if (props.rules.showOptionsButton) {
+    buttonsData.push({
+      iconName: 'options-outline',
+      selected: props.display === 'data display' && props.editInputs,
+      onPress: () => props.onPress_EditButton(),
+    });
+  }
+
+  if (props.rules.showThemeButton) {
+    buttonsData.push({
+      iconName: 'color-palette',
+      selected: props.display === 'theme display',
+      onPress: () => props.onPress_ThemeButton(),
+    });
+  }
+
+  if (props.rules.showAddInputButton) {
+    buttonsData.push({
+      iconName: 'add-sharp',
+      selected: props.display === 'new input display',
+      onPress: () => props.onPress_NewInputButton(),
+    });
+  }
+
+  const Buttons = buttonsData.map((data, index) => {
+    const isLastIndex = index === buttonsData.length - 1;
+    return (
+      <NavbarIconButton
+        key={index}
+        iconName={data.iconName}
+        position={isLastIndex ? 'right' : 'other'}
+        selected={data.selected}
+        onPress={() => data.onPress()}
+        theme={{
+          font: props.theme.font,
+          background: props.theme.background,
+        }}
+      />
+    );
+  });
+
   return (<>
-    <NavbarIconButton
-      iconName="pencil-sharp"
-      position="other"
-      selected={props.display === 'data display' && !props.editInputs}
-      onPress={() => props.onPress_DataDisplayButton()}
-      theme={{
-        font: props.theme.font,
-        background: props.theme.background,
-      }}
-    />
-    <NavbarIconButton
-      iconName="options-outline"
-      position="other"
-      selected={props.display === 'data display' && props.editInputs}
-      onPress={() => props.onPress_EditButton()}
-      theme={{
-        font: props.theme.font,
-        background: props.theme.background,
-      }}
-    />
-    <NavbarIconButton
-      iconName="color-palette"
-      position="other"
-      selected={props.display === 'theme display'}
-      onPress={() => props.onPress_ThemeButton()}
-      theme={{
-        font: props.theme.font,
-        background: props.theme.background,
-      }}
-    />
-    <NavbarIconButton
-      iconName="add-sharp"
-      position="right"
-      selected={props.display === 'new input display'}
-      onPress={() => props.onPress_NewInputButton()}
-      theme={{
-        font: props.theme.font,
-        background: props.theme.background,
-      }}
-    />
+    {Buttons}
   </>);
-}
+});

@@ -80,7 +80,6 @@ export default function SampleSettingsWidget(props: {
     >
       <View
         style={{
-          paddingBottom: 5,
           gap: 5,
         }}
       >
@@ -112,6 +111,7 @@ export default function SampleSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={theme}
         />
         <WidgetInput.String
@@ -122,7 +122,7 @@ export default function SampleSettingsWidget(props: {
             type: 'string',
             placeholder: R['Write the sample name here...'],
             lockedLabel: true,
-            lockedData: false,
+            lockedData: !sampleSettings.rules.allowSampleNameChange,
           }}
           onSave={(inputData, status) => onSaveName(inputData, status)}
           multiline={false}
@@ -132,6 +132,7 @@ export default function SampleSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={theme}
         />
         {sampleSettings.gps !== undefined && (
@@ -142,7 +143,7 @@ export default function SampleSettingsWidget(props: {
               value: sampleSettings.gps,
               type: 'gps',
               lockedLabel: true,
-              lockedData: false,
+              lockedData: !sampleSettings.rules.allowGPSChange,
             }}
             onSave={(inputData, status) => onSaveGPS(inputData, status)}
             referenceGPSData={undefined}
@@ -152,6 +153,7 @@ export default function SampleSettingsWidget(props: {
             onInputDelete={() => {}}
             onInputMoveDow={() => {}}
             onInputMoveUp={() => {}}
+            widgetRules={{}}
             theme={theme}
           />
         )}

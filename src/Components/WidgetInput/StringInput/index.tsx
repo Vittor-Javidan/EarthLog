@@ -1,7 +1,7 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 import { TextInput, Platform } from 'react-native';
 
-import { InputStatus, StringInputData } from '@Types/ProjectTypes';
+import { InputStatus, StringInputData, WidgetRules } from '@Types/ProjectTypes';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
@@ -22,6 +22,7 @@ export const StringInput = memo((props: {
   editWidget: boolean
   isFirstInput: boolean
   isLastInput: boolean
+  widgetRules: WidgetRules
   theme: InputTheme
   multiline: boolean
   onSave: (inputData: StringInputData | null, status: InputStatus ) => void
@@ -77,17 +78,16 @@ export const StringInput = memo((props: {
   }, [props.onSave, inputData.lockedData]);
 
   const onLabelChange = useCallback((newLabel: string) => {
-    if (inputData.lockedLabel !== true) {
-      props.onSave(null, 'modifying');
-      setInputData(prev => ({ ...prev, label: newLabel}));
-      setSaveSignal(true);
-    }
-  }, [props.onSave, inputData.lockedLabel]);
+    props.onSave(null, 'modifying');
+    setInputData(prev => ({ ...prev, label: newLabel}));
+    setSaveSignal(true);
+  }, [props.onSave]);
 
   return (
     <LC.Root
 
       label={inputData.label}
+      lockedLabel={inputData.lockedLabel}
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
@@ -95,6 +95,7 @@ export const StringInput = memo((props: {
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
+      widgetRules={props.widgetRules}
       theme={props.theme}
 
       iconButtons={

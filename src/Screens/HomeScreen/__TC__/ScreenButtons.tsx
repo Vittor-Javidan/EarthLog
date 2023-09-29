@@ -25,9 +25,8 @@ export default function ScreenButtons(props: {
 
   return (
     <Layout.ScreenButtons
-      buttons={[
+      buttons={
         <Button.RoundedIcon
-          key="1"
           iconName="folder"
           showPlusSign={true}
           buttonDiameter={60}
@@ -38,8 +37,8 @@ export default function ScreenButtons(props: {
             background: theme.confirm,
             background_Pressed: theme.background_active,
           }}
-        />,
-      ]}
+        />
+      }
     />
   );
 }

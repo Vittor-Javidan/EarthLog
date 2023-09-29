@@ -15,8 +15,9 @@ export default function ScreenButtons(props: {
 }) {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   async function createWidget_Project() {
@@ -47,34 +48,36 @@ export default function ScreenButtons(props: {
 
   return (
     <Layout.ScreenButtons
-      buttons={[
-        <Button.RoundedIcon
-          key="1"
-          iconName="trash-outline"
-          showPlusSign={false}
-          buttonDiameter={60}
-          onPress={() => setShow_DeleteSwap(true)}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.wrong,
-            background: theme.wrong,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-        <Button.RoundedIcon
-          key="2"
-          iconName="square"
-          showPlusSign={true}
-          buttonDiameter={60}
-          onPress={() => createWidget_Project()}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.confirm,
-            background: theme.confirm,
-            background_Pressed: theme.background_active,
-          }}
-        />,
-      ]}
+      buttons={
+        <>
+          <Button.RoundedIcon
+            iconName="trash-outline"
+            showPlusSign={false}
+            buttonDiameter={60}
+            onPress={() => setShow_DeleteSwap(true)}
+            theme={{
+              font: theme.font,
+              font_Pressed: theme.wrong,
+              background: theme.wrong,
+              background_Pressed: theme.background_active,
+            }}
+          />
+          {projectSettings.rules.showCreateWidgetButton_Project && (
+            <Button.RoundedIcon
+              iconName="square"
+              showPlusSign={true}
+              buttonDiameter={60}
+              onPress={() => createWidget_Project()}
+              theme={{
+                font: theme.font,
+                font_Pressed: theme.confirm,
+                background: theme.confirm,
+                background_Pressed: theme.background_active,
+              }}
+            />
+          )}
+        </>
+      }
 
       showSwipe={show_DeleteSwap}
       SwipeButton={

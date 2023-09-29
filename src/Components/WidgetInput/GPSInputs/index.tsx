@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
+import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
@@ -24,6 +24,7 @@ export const GPSInput = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   referenceGPSData: GPS_DTO | undefined
+  widgetRules: WidgetRules
   theme: GPSInputTheme
   onSave: (inputData: GPSInputData | null, status: InputStatus ) => void
   onInputDelete: () => void
@@ -75,11 +76,9 @@ export const GPSInput = memo((props: {
   }, [props.referenceGPSData, inputData.value]);
 
   const onLabelChange = useCallback((newLabel: string) => {
-    if (inputData.lockedLabel !== true) {
-      props.onSave(null, 'modifying');
-      setInputData(prev => ({ ...prev, label: newLabel}));
-      setSaveSignal(true);
-    }
+    props.onSave(null, 'modifying');
+    setInputData(prev => ({ ...prev, label: newLabel}));
+    setSaveSignal(true);
   }, [props.onSave, inputData]);
 
   const onManualInput = useCallback((gpsData: GPS_DTO) => {
@@ -157,6 +156,7 @@ export const GPSInput = memo((props: {
     <LC.Root
 
       label={inputData.label}
+      lockedLabel={inputData.lockedLabel}
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
@@ -164,11 +164,13 @@ export const GPSInput = memo((props: {
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
+      widgetRules={props.widgetRules}
       theme={props.theme}
 
       iconButtons={
         <IconButtons
           features={features}
+          locked={inputData.lockedData}
           theme={props.theme}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
           onPress_PlayButton={async () => await startGPS()}
@@ -220,6 +222,7 @@ export const GPSInput = memo((props: {
 });
 
 const IconButtons = memo((props: {
+  locked: boolean | undefined
   features: GPSFeaturesDTO
   theme: GPSInputTheme
   onPress_EditButton: () => void
@@ -231,31 +234,43 @@ const IconButtons = memo((props: {
   const showStopButton = props.features.gpsON === true;
 
   return (<>
-    <LC.NavbarIconButton
-      iconName={'options-outline'}
-      onPress={() => props.onPress_EditButton()}
-      selected={props.features.editMode}
-      theme={props.theme}
-    />
-    {showPlayButton && (
+    {props.locked && (
       <LC.NavbarIconButton
-        iconName="play"
-        onPress={() => props.onPress_PlayButton()}
-        theme={{
-          font: props.theme.confirm,
-          background: props.theme.background,
-        }}
-      />
-    )}
-    {showStopButton && (
-      <LC.NavbarIconButton
-        iconName="stop"
-        onPress={() => props.onPress_StopButton()}
+        iconName="lock-closed-sharp"
+        onPress={() => {}}
         theme={{
           font: props.theme.wrong,
           background: props.theme.background,
         }}
       />
     )}
+    {!props.locked && (<>
+      <LC.NavbarIconButton
+        iconName={'options-outline'}
+        onPress={() => props.onPress_EditButton()}
+        selected={props.features.editMode}
+        theme={props.theme}
+      />
+      {showPlayButton && (
+        <LC.NavbarIconButton
+          iconName="play"
+          onPress={() => props.onPress_PlayButton()}
+          theme={{
+            font: props.theme.confirm,
+            background: props.theme.background,
+          }}
+        />
+      )}
+      {showStopButton && (
+        <LC.NavbarIconButton
+          iconName="stop"
+          onPress={() => props.onPress_StopButton()}
+          theme={{
+            font: props.theme.wrong,
+            background: props.theme.background,
+          }}
+        />
+      )}
+    </>)}
   </>);
 });

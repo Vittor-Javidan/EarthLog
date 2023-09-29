@@ -1,7 +1,7 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
-import { BooleanInputData, InputStatus } from '@Types/ProjectTypes';
+import { BooleanInputData, InputStatus, WidgetRules } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
@@ -25,6 +25,7 @@ export const BooleanInput = memo((props: {
   editWidget: boolean
   isFirstInput: boolean
   isLastInput: boolean
+  widgetRules: WidgetRules
   theme: InputTheme
   onSave: (inputData: BooleanInputData | null, status: InputStatus ) => void
   onInputDelete: () => void
@@ -60,21 +61,23 @@ export const BooleanInput = memo((props: {
   }, [inputData, saveSignal], 200);
 
   const onSwitchChange = useCallback((boolean: boolean) => {
-    if (notApplicableUndefined || notApplicableFalse) {
+    if (inputData.lockedData !== true && (notApplicableUndefined || notApplicableFalse)) {
       HapticsService.vibrate('success');
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, value: boolean }));
       setSaveSignal(true);
       return;
     }
-  }, [notApplicableUndefined, notApplicableFalse, props.onSave]);
+  }, [props.onSave, inputData.lockedData, notApplicableUndefined, notApplicableFalse]);
 
   const onNotApplicableChange = useCallback((boolean: boolean) => {
-    HapticsService.vibrate('success');
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, notApplicable: boolean }));
-    setSaveSignal(true);
-  }, [props.onSave]);
+    if (inputData.lockedData !== true) {
+      HapticsService.vibrate('success');
+      props.onSave(null, 'modifying');
+      setInputData(prev => ({ ...prev, notApplicable: boolean }));
+      setSaveSignal(true);
+    }
+  }, [props.onSave, inputData.lockedData]);
 
   const onLabelChange = useCallback((newLabel: string) => {
     props.onSave(null, 'modifying');
@@ -86,6 +89,7 @@ export const BooleanInput = memo((props: {
     <LC.Root
 
       label={inputData.label}
+      lockedLabel={inputData.lockedLabel}
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
@@ -93,16 +97,22 @@ export const BooleanInput = memo((props: {
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
+      widgetRules={props.widgetRules}
       theme={props.theme}
 
-      iconButtons={<></>}
+      iconButtons={
+        <IconButtons
+          locked={inputData.lockedData}
+          theme={props.theme}
+        />
+      }
     >
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginTop: props.editWidget ? 0 : -5,
+          marginTop: props.editWidget || inputData.lockedData ? 0 : -5,
         }}
       >
         <Text h3
@@ -155,4 +165,23 @@ export const BooleanInput = memo((props: {
       </View>
     </LC.Root>
   );
+});
+
+const IconButtons = memo((props: {
+  locked: boolean | undefined
+  theme: InputTheme
+}) => {
+
+  return (<>
+    {props.locked && (
+      <LC.NavbarIconButton
+        iconName="lock-closed-sharp"
+        onPress={() => {}}
+        theme={{
+          font: props.theme.wrong,
+          background: props.theme.background,
+        }}
+      />
+    )}
+  </>);
 });

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, InputData, InputStatus, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, InputStatus, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';
@@ -11,6 +11,7 @@ export const InputSelector = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   referenceGPSData: GPS_DTO | undefined
+  widgetRules: WidgetRules
   widgetTheme: WidgetThemeDTO
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: () => void
@@ -28,6 +29,7 @@ export const InputSelector = memo((props: {
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}
+        widgetRules={props.widgetRules}
         theme={props.widgetTheme}
         multiline
       />
@@ -42,6 +44,7 @@ export const InputSelector = memo((props: {
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}
+        widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />
     );
@@ -56,6 +59,7 @@ export const InputSelector = memo((props: {
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}
+        widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />
     );

@@ -104,7 +104,6 @@ export default function ProjectSettingsWidget(props: {
     >
       <View
         style={{
-          paddingBottom: 5,
           gap: 5,
         }}
       >
@@ -136,6 +135,7 @@ export default function ProjectSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={pseudoWidgetTheme}
         />
         <WidgetInput.String
@@ -146,7 +146,7 @@ export default function ProjectSettingsWidget(props: {
             type: 'string',
             placeholder: R['Write the project name here...'],
             lockedLabel: true,
-            lockedData: false,
+            lockedData: !projectSettings.rules.allowProjectNameChange,
           }}
           onSave={(inputData, status) => onSaveName(inputData, status)}
           multiline={false}
@@ -156,6 +156,7 @@ export default function ProjectSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={pseudoWidgetTheme}
         />
         {projectSettings.gps !== undefined && (
@@ -166,7 +167,7 @@ export default function ProjectSettingsWidget(props: {
               value: projectSettings.gps,
               type: 'gps',
               lockedLabel: true,
-              lockedData: false,
+              lockedData: !projectSettings.rules.allowGPSChange,
             }}
             onSave={(inputData, status) => onSaveGPS(inputData, status)}
             referenceGPSData={undefined}
@@ -176,13 +177,14 @@ export default function ProjectSettingsWidget(props: {
             onInputDelete={() => {}}
             onInputMoveDow={() => {}}
             onInputMoveUp={() => {}}
+            widgetRules={{}}
             theme={pseudoWidgetTheme}
           />
         )}
       </View>
       <View
         style={{
-          paddingTop: 10,
+          paddingTop: 15,
           gap: 5,
         }}
       >
@@ -205,7 +207,7 @@ export default function ProjectSettingsWidget(props: {
             type: 'string',
             placeholder: R['Write your sample alias here'],
             lockedLabel: true,
-            lockedData: false,
+            lockedData: !projectSettings.rules.allowSampleAliasChange,
           }}
           onSave={(inputData, status) => onSaveAlias_Singular(inputData, status)}
           multiline={false}
@@ -215,6 +217,7 @@ export default function ProjectSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={pseudoWidgetTheme}
         />
         <WidgetInput.String
@@ -225,7 +228,7 @@ export default function ProjectSettingsWidget(props: {
             type: 'string',
             placeholder: R['Write your sample alias here'],
             lockedLabel: true,
-            lockedData: false,
+            lockedData: !projectSettings.rules.allowSampleAliasChange,
           }}
           onSave={(inputData, status) => onSaveAlias_Plural(inputData, status)}
           multiline={false}
@@ -235,6 +238,7 @@ export default function ProjectSettingsWidget(props: {
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}
+          widgetRules={{}}
           theme={pseudoWidgetTheme}
         />
       </View>
