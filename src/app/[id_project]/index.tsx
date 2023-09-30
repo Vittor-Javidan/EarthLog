@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback, useTransition } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
@@ -30,23 +30,29 @@ const ProjectInfoScreen = memo((props: {
 export default function ProjectScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
+  const [_, startTransitions] = useTransition();
+
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.projectScope[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
+  const [loading           , setLoading            ] = useState<Loading>('Loading');
   const [selectedScreen    , setSelectedScreen     ] = useState<number>(1);
-  const [state             , setState              ] = useState<Loading>('Loading');
   const [updatedName       , setUpdatedName        ] = useState<string | null>(null);
   const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
 
   const sampleAlias = projectSettings.sampleAlias.plural !== '' ? projectSettings.sampleAlias.plural : 'Samples';
 
+  const onChangeScreen = useCallback((nextScreen: number) => {
+    startTransitions(() => setSelectedScreen(nextScreen));
+  }, []);
+
   useEffect(() => {
-    fetchSamples(id_project, () => setState('Loaded'));
+    fetchSamples(id_project, () => setLoading('Loaded'));
   }, []);
 
   useBackPress(() => {
-    selectedScreen !== 1 ? setSelectedScreen(1) : navigate('HOME SCOPE');
+    selectedScreen !== 1 ? onChangeScreen(1) : navigate('HOME SCOPE');
   }, [selectedScreen]);
 
   return (
@@ -62,21 +68,21 @@ export default function ProjectScope() {
           <OverlayButtons
             selectedScreen={selectedScreen}
             sampleAlias={updatedSampleAlias ?? sampleAlias}
-            onSelect={(screeNumber) => setSelectedScreen(screeNumber)}
+            onSelect={(screeNumber) => onChangeScreen(screeNumber)}
           />
         }
         screens={[
           <ProjectScreen
             key="1"
-            projectScopeState={state}
+            projectScopeState={loading}
           />,
           <TemplateScreen
             key="2"
-            projectScopeState={state}
+            projectScopeState={loading}
           />,
           <ProjectInfoScreen
             key="3"
-            projectScopeState={state}
+            projectScopeState={loading}
             onProjectNameUpdate={(newName) => setUpdatedName(newName)}
             onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAlias(newSampleAlias)}
           />,
@@ -86,11 +92,11 @@ export default function ProjectScope() {
   );
 }
 
-function OverlayButtons(props: {
+const OverlayButtons = memo((props: {
   selectedScreen: number
   sampleAlias: string
   onSelect: (screenNumber: number) => void
-}) {
+}) => {
   return (
     <>
       <Layout.Carousel.Button
@@ -115,9 +121,9 @@ function OverlayButtons(props: {
       />
     </>
   );
-}
+});
 
-function NavigationTree() {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -134,8 +140,7 @@ function NavigationTree() {
       ]}
     />
   );
-}
-
+});
 
 async function fetchSamples(
   id_project: string,

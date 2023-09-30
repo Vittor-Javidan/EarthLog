@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useTransition, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
@@ -24,22 +24,28 @@ export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
+  const [_, startTransitions] = useTransition();
+
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const [selectedScreen     , setSelectedScreen     ] = useState<number>(1);
-  const [updatedName        , setUpdatedName        ] = useState<string | null>(null);
-  const [dataScreenRefresher, setDataScreenRefresher] = useState<boolean>(false);
-  const [loading            , setLoading            ] = useState<Loading>('Loading');
+  const [loading              , setLoading               ] = useState<Loading>('Loading');
+  const [selectedScreen       , setSelectedScreen        ] = useState<number>(1);
+  const [gpsReferenceRefresher, setGPSReferenceRefresher ] = useState<boolean>(false);
+  const [updatedName          , setUpdatedName           ] = useState<string | null>(null);
 
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
+
+  const onChangeScreen = useCallback((nextScreen: number) => {
+    startTransitions(() => setSelectedScreen(nextScreen));
+  }, []);
 
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setLoading('Loaded'));
   }, []);
 
   useBackPress(() => {
-    selectedScreen !== 1 ? setSelectedScreen(1) : navigate('PROJECT SCOPE', id_project);
+    selectedScreen !== 1 ? onChangeScreen(1) : navigate('PROJECT SCOPE', id_project);
   }, [selectedScreen]);
 
   return (
@@ -54,19 +60,19 @@ export default function SampleScope() {
         overlayButtons={
           <OverlayButtons
             selectedScreen={selectedScreen}
-            onSelect={(screeNumber) => setSelectedScreen(screeNumber)}
+            onSelect={(screeNumber) => onChangeScreen(screeNumber)}
           />
         }
         screens={[
           <SampleDataScreens
-            key={'refresher:' + dataScreenRefresher}
+            key={'refresher:' + gpsReferenceRefresher}
             sampleScopeState={loading}
           />,
           <SampleSettingsScreen
             key="2"
             sampleScopeState={loading}
             onSampleNameUpdate={(newName) => setUpdatedName(newName)}
-            onGPSReferenceUpdate={() => setDataScreenRefresher(prev => !prev)}
+            onGPSReferenceUpdate={() => setGPSReferenceRefresher(prev => !prev)}
           />,
         ]}
       />
@@ -74,10 +80,10 @@ export default function SampleScope() {
   );
 }
 
-function OverlayButtons(props: {
+const OverlayButtons = memo((props: {
   selectedScreen: number
   onSelect: (screenNumber: number) => void
-}) {
+}) => {
   return (
     <>
       <Layout.Carousel.Button
@@ -95,12 +101,10 @@ function OverlayButtons(props: {
       />
     </>
   );
-}
+});
 
-function NavigationTree() {
-
+const NavigationTree = memo(() => {
   const id_project = useLocalSearchParams().id_project as string;
-
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -122,7 +126,7 @@ function NavigationTree() {
       ]}
     />
   );
-}
+});
 
 async function fetchWidgets(
   id_project: string,

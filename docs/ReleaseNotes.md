@@ -1,6 +1,7 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.2.32 Code refactor
+# 0.1.2.33 Performance Refactor
 
-- All imports reorganized.
-- Some components was abstracted. No functionality changed.
+- Now Carousel buttons transition using the hook useTransition.
+- some states renamed
+- some components now uses memo hook.
