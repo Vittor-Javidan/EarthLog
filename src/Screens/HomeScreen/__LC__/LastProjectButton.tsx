@@ -34,7 +34,7 @@ export default function LastProjectButton() {
   return lastProjectOpenExist ? (
     <View
       style={{
-        height: 55,
+        minHeight: 55,
         width: '100%',
       }}
     >
@@ -44,13 +44,15 @@ export default function LastProjectButton() {
         onPress={() => onPress()}
         style={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          paddingTop: 4,
           borderRadius: 10,
           backgroundColor: pressed ? theme.background : theme.background_Button,
-          paddingLeft: 10,
+          paddingHorizontal: 10,
         }}
       >
-        <Text h1
+        <Text h2
+          numberOfLine={1}
           style={{
             color: theme.font_Button,
             fontWeight: '900',
@@ -60,11 +62,10 @@ export default function LastProjectButton() {
         </Text>
         <Text p
           style={{
-            position: 'absolute',
-            right: 5,
-            bottom: 0,
             color: theme.font_Button,
             alignSelf: 'flex-end',
+            paddingBottom: 4,
+            paddingHorizontal: 4,
           }}
         >
           {R['Recently Open']}

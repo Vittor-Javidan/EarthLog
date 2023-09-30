@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 
 export const ScreenButtons = memo((props: {
   buttons: JSX.Element
@@ -7,7 +7,7 @@ export const ScreenButtons = memo((props: {
   SwipeButton?: JSX.Element
 }) => {
 
-  const BOTTOM = Platform.OS === 'ios' ? 20 : 10;
+  const BOTTOM = 10;
 
   return (props.showSwipe ? (
     <View

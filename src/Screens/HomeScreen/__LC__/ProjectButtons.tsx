@@ -94,14 +94,13 @@ function ProjectButton(props: {
       onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
-        maxHeight: 60,
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
         backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
       }}
     >
-      <Text h1
+      <Text h3
         style={{
           color: props.theme.font_Button,
         }}

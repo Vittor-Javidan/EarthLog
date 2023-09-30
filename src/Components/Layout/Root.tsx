@@ -55,6 +55,9 @@ const AppLayer = memo((props: {
   onMenuButtonPress: () => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const theme = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
+
   return (<>
     <Navbar
       title={props.title}
@@ -64,7 +67,10 @@ const AppLayer = memo((props: {
     />
     {props.navigationTree}
     <View
-      style={{ flex: 1 }}
+      style={{
+        flex: 1,
+        backgroundColor: theme.background,
+      }}
     >
       {props.children}
     </View>

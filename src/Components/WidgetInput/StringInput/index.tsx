@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
-import { TextInput, Platform } from 'react-native';
+import { TextInput, Platform, View } from 'react-native';
 
 import { InputStatus, StringInputData, WidgetRules } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
@@ -108,23 +108,29 @@ export const StringInput = memo((props: {
         />
       }
     >
-      <TextInput
-        value={inputData.value}
-        placeholder={inputData.placeholder ?? R['Write something here...']}
-        placeholderTextColor={props.theme.font_placeholder}
-        textAlign="left"
-        textAlignVertical="top"
-        multiline={props.multiline}
-        onChangeText={(text) => onTextChange(text)}
+      <View
         style={{
-          width: '100%',
-          paddingVertical: 15,
-          paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
-          backgroundColor: props.theme.background,
-          color: props.theme.font,
-          fontStyle: props.inputData.value === '' ? 'italic' : 'normal',
+          paddingVertical: Platform.OS === 'ios' ? 10 : 0,
         }}
-      />
+      >
+        <TextInput
+          value={inputData.value}
+          placeholder={inputData.placeholder ?? R['Write something here...']}
+          placeholderTextColor={props.theme.font_placeholder}
+          textAlign="left"
+          textAlignVertical="top"
+          multiline={props.multiline}
+          onChangeText={(text) => onTextChange(text)}
+          style={{
+            width: '100%',
+            paddingVertical: 15,
+            paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
+            backgroundColor: props.theme.background,
+            color: props.theme.font,
+            fontStyle: props.inputData.value === '' ? 'italic' : 'normal',
+          }}
+        />
+      </View>
     </LC.Root>
   );
 });

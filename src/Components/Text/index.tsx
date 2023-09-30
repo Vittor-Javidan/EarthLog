@@ -8,6 +8,7 @@ export const Text = memo((props: {
   h2?: boolean
   h3?: boolean
   p?: boolean
+  numberOfLine?: number
   children: string
   style?: StyleProp<TextStyle>
 }) => {
@@ -16,6 +17,7 @@ export const Text = memo((props: {
     <ReactNative_Text
       maxFontSizeMultiplier={0}
       adjustsFontSizeToFit={true}
+      numberOfLines={props.numberOfLine}
       style={[
         props.h1 && {
           textAlign: 'left',

@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, memo, useCallback } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View, Platform } from 'react-native';
 
 import { WidgetRules } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
@@ -126,7 +126,7 @@ const LabelButton = memo((props: {
     <View
       style={{
         position: 'absolute',
-        top: 2,
+        top: Platform.OS === 'ios' ? 4 : 2,
         paddingLeft: 15,
         zIndex: 1,
       }}
