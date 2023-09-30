@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 import { Layout } from '@Layout/index';
 import { Screen1 as _Screen1 } from './Screen1';
@@ -12,9 +12,6 @@ const Screen3 = memo(() => { return <_Screen3 />; });
 const Screen4 = memo(() => { return <_Screen4 />; });
 
 export default function HomeScope() {
-
-  const [selectedScreen , setSelectedScreen ] = useState<number>(1);
-
   return (
     <Layout.Root
       title="Test Screen"
@@ -22,19 +19,25 @@ export default function HomeScope() {
       drawerChildren={ <></> }
       navigationTree={ <NavigationTree /> }
     >
-      <Layout.Carousel.Screen
-        selected={selectedScreen}
-        overlayButtons={
-          <OverlayButtons
-            selectedScreen={selectedScreen}
-            onSelect={(screeNumber) => setSelectedScreen(screeNumber)}
-          />
-        }
+      <Layout.Carousel
+
+        onBackPress={() => {}}
+
+        buttonData={[{
+          title: 'screen_1',
+        }, {
+          title: 'screen_2',
+        }, {
+          title: 'screen_3',
+        }, {
+          title: 'screen_4',
+        }]}
+
         screens={[
-            <Screen1 key="1"/>,
-            <Screen2 key="2"/>,
-            <Screen3 key="3"/>,
-            <Screen4 key="4"/>,
+          <Screen1 key="1"/>,
+          <Screen2 key="2"/>,
+          <Screen3 key="3"/>,
+          <Screen4 key="4"/>,
         ]}
       />
     </Layout.Root>
@@ -46,39 +49,5 @@ function NavigationTree() {
     <Layout.NavigationTree.Root
       iconButtons={[]}
     />
-  );
-}
-
-function OverlayButtons(props: {
-  selectedScreen: number
-  onSelect: (screenNumber: number) => void
-}) {
-  return (
-    <>
-      <Layout.Carousel.Button
-        selected={props.selectedScreen === 1}
-        title="Screen 1"
-        onPress={() => props.onSelect(1)}
-        type="left"
-      />
-      <Layout.Carousel.Button
-        selected={props.selectedScreen === 2}
-        title="Screen 2"
-        onPress={() => props.onSelect(2)}
-        type="middle"
-      />
-      <Layout.Carousel.Button
-        selected={props.selectedScreen === 3}
-        title="Screen 3"
-        onPress={() => props.onSelect(3)}
-        type="middle"
-      />
-      <Layout.Carousel.Button
-        selected={props.selectedScreen === 4}
-        title="Screen 4"
-        onPress={() => props.onSelect(4)}
-        type="right"
-      />
-    </>
   );
 }
