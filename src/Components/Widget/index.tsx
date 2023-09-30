@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo, useCallback } from 'react';
+import React, { useMemo, useState, memo, useCallback, useTransition } from 'react';
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
@@ -30,6 +30,7 @@ export const Widget = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const [_, startTransitions] = useTransition();
 
   const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
   const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
@@ -55,11 +56,13 @@ export const Widget = memo((props: {
   }, []);
 
   const selectDisplay = useCallback((newDisplay: WidgetDisplay) => {
-    if (display === newDisplay) {
-      setDisplay('data display');
-      return;
-    }
-    setDisplay(newDisplay);
+    startTransitions(() => {
+      if (display === newDisplay) {
+        setDisplay('data display');
+        return;
+      }
+      setDisplay(newDisplay);
+    });
   }, [display]);
 
   const togleEditDisplay = useCallback(() => {
