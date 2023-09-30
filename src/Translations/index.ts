@@ -6,6 +6,7 @@ import { R_SettingsScreen } from './Screen/SettingsScreen';
 import { R_Widget } from './Widget/Root';
 import { R_Alert } from './component/Alert';
 import { R_Button } from './component/Button';
+import { R_PseudoWidget } from './component/Layout/PseudoWidget';
 import { R_NavController } from './global/navController';
 import { R_HomeScope } from './scope/HomeScope';
 import { R_LanguageScopeScope } from './scope/LanguageSelectionScope';
@@ -41,6 +42,9 @@ export const translations = {
   component: {
     alert:                    R_Alert,
     button:                   R_Button,
+    layout: {
+      pseudoWidget:           R_PseudoWidget,
+    },
   },
   widget: {
     Root:                     R_Widget,

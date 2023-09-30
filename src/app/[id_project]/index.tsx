@@ -34,11 +34,11 @@ export default function ProjectScope() {
   const R               = useMemo(() => translations.scope.projectScope[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
-  const [loading           , setLoading            ] = useState<Loading>('Loading');
-  const [updatedName       , setUpdatedName        ] = useState<string | null>(null);
-  const [updatedSampleAlias, setUpdatedSampleAlias ] = useState<string | null>(null);
+  const [loading                 , setLoading                  ] = useState<Loading>('Loading');
+  const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
+  const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
 
-  const sampleAlias = projectSettings.sampleAlias.plural !== '' ? projectSettings.sampleAlias.plural : 'Samples';
+  const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   useEffect(() => {
     fetchSamples(id_project, () => setLoading('Loaded'));
@@ -56,7 +56,7 @@ export default function ProjectScope() {
         onBackPress={() => navigate('HOME SCOPE')}
 
         buttonData={[{
-          title: updatedSampleAlias ?? sampleAlias,
+          title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
         }, {
           title: 'Template',
           iconName: 'copy-sharp',
@@ -78,7 +78,7 @@ export default function ProjectScope() {
             key="3"
             projectScopeState={loading}
             onProjectNameUpdate={(newName) => setUpdatedName(newName)}
-            onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAlias(newSampleAlias)}
+            onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAliasPlural(newSampleAlias)}
           />,
         ]}
       />

@@ -1,7 +1,10 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode, memo, useMemo } from 'react';
 import { View } from 'react-native';
 
+import ConfigService from '@Services/ConfigService';
+
 import { Text } from '@Text/index';
+import { translations } from '@Translations/index';
 
 type WidgetTheme = {
   font: string
@@ -55,6 +58,10 @@ const SaveFeedback = memo((props: {
   saved: boolean
   theme: WidgetTheme
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.component.layout.pseudoWidget[config.language], []);
+
   return (
     <View
       style={{
@@ -77,7 +84,7 @@ const SaveFeedback = memo((props: {
           color: props.theme.font,
         }}
       >
-        {props.saved ? 'Saved' : 'Saving...'}
+        {props.saved ? R['Saved'] : R['Saving...']}
       </Text>
     </View>
   );
