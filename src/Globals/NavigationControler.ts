@@ -6,18 +6,13 @@ import ConfigService from '@Services/ConfigService';
 import AppRoutes from './AppRoutes';
 
 type ScreenName = (
+  'TEST SCOPE'                                        |
   'RESTART APP'                                       |
-  'SETTINGS SCREEN'                                   |
-    'LANGUAGES SCREEN'                                |
-    'THEME SCREEN'                                    |
-  'HOME SCREEN'                                       |
-    'PROJECT CREATION SCREEN'                         |
-    'PROJECT SCREEN'                                  |
-      'PROJECT SETTINGS SCREEN'                       |
-      'TEMPLATE SCREEN'                               |
-      'SAMPLE CREATION SCREEN'                        |
-      'SAMPLE SCREEN'                                 |
-        'SAMPLE SETTINGS SCREEN'
+  'SETTINGS SCOPE'                                    |
+    'LANGUAGE SELECTION SCOPE'                        |
+  'HOME SCOPE'                                        |
+    'PROJECT SCOPE'                                   |
+      'SAMPLE SCOPE'
 )
 
 export function navigate(
@@ -26,87 +21,49 @@ export function navigate(
   id_sample?: string,
 ) {
 
-  const { language } = ConfigService.config;
-  const R = translations.ErrorMessages[language];
+  const config = ConfigService.config;
+  const R      = translations.global.navigationController[config.language];
   const navController = useRouter();
 
   switch (screen) {
+
+    case 'TEST SCOPE': {
+      navController.push(AppRoutes.TEST_SCOPE);
+      break;
+    }
 
     case 'RESTART APP': {
       navController.push(AppRoutes.RESTART_APP);
       break;
     }
 
-    case 'SETTINGS SCREEN': {
-      navController.push(AppRoutes.SETTINGS_SCREEN);
+    case 'SETTINGS SCOPE': {
+      navController.push(AppRoutes.SETTINGS_SCOPE);
       break;
     }
 
-    case 'LANGUAGES SCREEN': {
-      navController.push(AppRoutes.SS_LANGUAGES_SCREEN);
+    case 'LANGUAGE SELECTION SCOPE': {
+      navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE);
       break;
     }
 
-    case 'THEME SCREEN': {
-      navController.push(AppRoutes.SS_THEME_SCREEN);
+    case 'HOME SCOPE': {
+      navController.push(AppRoutes.HOME_SCOPE);
       break;
     }
 
-    case 'HOME SCREEN': {
-      navController.push(AppRoutes.HOME);
-      break;
-    }
-
-    case 'PROJECT CREATION SCREEN': {
-      navController.push(AppRoutes.PROJECT_CREATION_SCREEN);
-      break;
-    }
-
-    case 'PROJECT SCREEN': {
+    case 'PROJECT SCOPE': {
 
       if (id_project === undefined) {
         alert(R['Project ID undefined']);
         break;
       }
 
-      navController.push(AppRoutes.PROJECT_SCREEN(id_project));
+      navController.push(AppRoutes.PROJECT_SCOPE(id_project));
       break;
     }
 
-    case 'PROJECT SETTINGS SCREEN': {
-
-      if (id_project === undefined) {
-        alert(R['Project ID undefined']);
-        break;
-      }
-
-      navController.push(AppRoutes.PS_PROJECT_SETTINGS_SCREEN(id_project));
-      break;
-    }
-
-    case 'TEMPLATE SCREEN': {
-
-      if (id_project === undefined) {
-        alert(R['Project ID undefined']);
-        break;
-      }
-
-      navController.push(AppRoutes.PS_TEMPLATE_SCREEN(id_project));
-      break;
-    }
-
-    case 'SAMPLE CREATION SCREEN': {
-
-      if (id_project === undefined) {
-        alert(R['Project ID undefined']);
-        break;
-      }
-
-      navController.push(AppRoutes.PS_SAMPLE_CREATION_SCREEN(id_project));
-      break;
-    }
-
-    case 'SAMPLE SCREEN': {
+    case 'SAMPLE SCOPE': {
 
       if (id_project === undefined) {
         alert(R['Project ID undefined']);
@@ -118,23 +75,7 @@ export function navigate(
         break;
       }
 
-      navController.push(AppRoutes.PS_SAMPLE_SCREEN(id_project, id_sample));
-      break;
-    }
-
-    case 'SAMPLE SETTINGS SCREEN': {
-
-      if (id_project === undefined) {
-        alert(R['Project ID undefined']);
-        break;
-      }
-
-      if (id_sample === undefined) {
-        alert(R['Sample ID undefined']);
-        break;
-      }
-
-      navController.push(AppRoutes.PS_SAMPLE_SETTINGS_SCREEN(id_project, id_sample));
+      navController.push(AppRoutes.PS_SAMPLE_SCOPE(id_project, id_sample));
       break;
     }
   }

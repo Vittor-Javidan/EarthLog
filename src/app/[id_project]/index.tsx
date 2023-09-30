@@ -1,44 +1,109 @@
-import React, { useState, useMemo, useEffect, ReactNode } from 'react';
-import { Dimensions } from 'react-native';
-import { MotiView } from 'moti';
+import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
+import { Loading } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
-import { useBackPress } from '@Hooks/index';
 import CacheService from '@Services/CacheService';
+import ConfigService from '@Services/ConfigService';
 
-import { Layout } from '@Components/Layout';
-import { TC } from './__TC__';
-import { LC } from './__LC__';
+import { Layout } from '@Layout/index';
+import { ProjectScreen as _ProjectScreen } from '@Screens/ProjectScreen';
+import { TemplateScreen as _TemplateScreen } from '@Screens/TemplateScreen';
+import { ProjectInfoScreen as _ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
 
-export default function ProjectScreen() {
+const ProjectScreen = memo((props: {
+  projectScopeState: Loading
+}) => <_ProjectScreen {...props} />    );
+
+const TemplateScreen    = memo((props: {
+  projectScopeState: Loading
+}) => <_TemplateScreen {...props} />   );
+
+const ProjectInfoScreen = memo((props: {
+  projectScopeState: Loading
+  onProjectNameUpdate: (newName: string) => void
+  onSampleAliasChange: (newSampleAlias: string) => void
+}) => <_ProjectInfoScreen {...props} />);
+
+export default function ProjectScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
+
+  const config          = useMemo(() => ConfigService.config, []);
+  const R               = useMemo(() => translations.scope.projectScope[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
-  const [state, setState] = useState<'Loaded' | 'Loading'>('Loading');
+
+  const [loading                 , setLoading                  ] = useState<Loading>('Loading');
+  const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
+  const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
+
+  const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   useEffect(() => {
-    fetchSamples(id_project, () => setState('Loaded'));
+    fetchSamples(id_project, () => setLoading('Loaded'));
   }, []);
-  useBackPress(() => navigate('HOME SCREEN'));
 
   return (
     <Layout.Root
-      title={projectSettings === null ? '...' : projectSettings.name}
-      drawerChildren={<TC.Drawer />}
-      navigationTree={<TC.NavigationTree />}
-      screenButtons={<TC.ScreenButtons />}
+      title={R['Project']}
+      subtitle={updatedName ?? projectSettings.name}
+      drawerChildren={<></>}
+      navigationTree={<NavigationTree />}
     >
-      {state === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Animation>
-          <LC.SampleButtons />
-        </Animation>
-      )}
+      <Layout.Carousel
+
+        onBackPress={() => navigate('HOME SCOPE')}
+
+        buttonData={[{
+          title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
+        }, {
+          title: 'Template',
+          iconName: 'copy-sharp',
+        }, {
+          title: '',
+          iconName: 'information-circle-sharp',
+        }]}
+
+        screens={[
+          <ProjectScreen
+            key="1"
+            projectScopeState={loading}
+          />,
+          <TemplateScreen
+            key="2"
+            projectScopeState={loading}
+          />,
+          <ProjectInfoScreen
+            key="3"
+            projectScopeState={loading}
+            onProjectNameUpdate={(newName) => setUpdatedName(newName)}
+            onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAliasPlural(newSampleAlias)}
+          />,
+        ]}
+      />
     </Layout.Root>
   );
 }
+
+const NavigationTree = memo(() => {
+  return (
+    <Layout.NavigationTree.Root
+      iconButtons={[
+        <Layout.NavigationTree.Button
+          key="treeIcon_1"
+          iconName="home"
+          onPress={() => navigate('HOME SCOPE')}
+        />,
+        <Layout.NavigationTree.Button
+          key="treeIcon_2"
+          iconName="folder"
+          onPress={() => {}}
+        />,
+      ]}
+    />
+  );
+});
 
 async function fetchSamples(
   id_project: string,
@@ -47,27 +112,8 @@ async function fetchSamples(
   if (id_project !== CacheService.lastOpenProject.id_project) {
     await CacheService.saveLastOpenProject(id_project);
     await CacheService.loadAllSamplesSettings(id_project);
+    await CacheService.loadAllWidgets_Project(id_project);
+    await CacheService.loadAllWidgets_Template(id_project);
   }
   whenLoaded();
-}
-
-function Animation(props: { children: ReactNode}) {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-
-  return (
-    <MotiView
-      from={{ left: -width }}
-      transition={{
-        type: 'timing',
-        duration: 200,
-        delay: 300,
-      }}
-      animate={{
-        left: 0,
-      }}
-    >
-      {props.children}
-    </MotiView>
-  );
 }

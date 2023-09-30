@@ -1,7 +1,8 @@
-import { ID, IDsArray, ProjectSettings, SampleSettings, WidgetData } from '@Types/index';
-
+import { ID, IDsArray, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
+import ConfigService from './ConfigService';
 
 /**
  * Should never be called directly on UI. It meant to be used by other services.
@@ -105,7 +106,8 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE PROJECT ID
     if (allProjectsIDs.includes(id_project)) {
-      throw Error('You cannot create 2 projects with same ID');
+      const R = translations.service.DatabaseService[ConfigService.config.language];
+      throw Error(R['ERROR: Not possible to create 2 projects with same ID']);
     }
 
     // ADD TO ALL PROJECTS INDEX
@@ -228,7 +230,8 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE SAMPLE ID
     if (allSamplesIDs.includes(id_sample)) {
-      throw Error('You cannot create 2 Samples with same ID');
+      const R = translations.service.DatabaseService[ConfigService.config.language];
+      throw Error(R['ERROR: Not possible to create 2 samples with same ID']);
     }
 
     // ADD TO ALL SAMPLES INDEX
@@ -400,7 +403,8 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE WIDGET ID
     if (allWidgetsIDs.includes(id_widget)) {
-      throw Error('You cannot create 2 widgets with same ID');
+      const R = translations.service.DatabaseService[ConfigService.config.language];
+      throw Error(R['ERROR: Not possible to create 2 widgets with same ID']);
     }
 
     // ADD TO PROJECT WIDGETS INDEX
@@ -576,7 +580,8 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      throw Error(`ERROR: index.json file do not exist. Path: ${folderPath}`);
+      const R = translations.service.DatabaseService[ConfigService.config.language];
+      throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     return JSON.parse(indexDataString) as IDsArray;
   }
@@ -585,7 +590,8 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      throw Error(`ERROR: index.json file do not exist. Cannot be updated. Path: ${folderPath}`);
+      const R = translations.service.DatabaseService[ConfigService.config.language];
+      throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     await FileSystemService.writeFile(`${folderPath}/index.json`, JSON.stringify(IDsArray, null, 4));
   }

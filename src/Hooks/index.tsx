@@ -1,24 +1,28 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
-import * as Vibration from 'expo-haptics';
 
-export function useBackPress(onPress: () => void) {
+import HapticsService from '@Services/HapticsService';
+
+export function useBackPress(
+  onPress: () => void,
+  deps: React.DependencyList,
+) {
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
         onPress();
-        Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success);
+        HapticsService.vibrate('success');
         return true;
       },
     );
     return () => backHandler.remove();
-  }, []);
+  }, deps);
 }
 
 export function useTimeout(
   execute: () => void,
-  deps: React.DependencyList | undefined,
+  deps: React.DependencyList,
   delay: number,
 ) {
   useEffect(() => {

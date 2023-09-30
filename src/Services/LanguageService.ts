@@ -1,11 +1,11 @@
 import { getLocales } from 'expo-localization';
 
-import { Languages, languageTags } from '@Types/index';
+import { LanguageTag, languageTags } from '@Types/AppTypes';
 
 export default class LanguageService {
 
-  static getDeviceLanguage(): Languages {
-    const languageTag = getLocales()[0].languageTag as Languages;
+  static getDeviceLanguage(): LanguageTag {
+    const languageTag = getLocales()[0].languageTag as LanguageTag;
     if (languageTags.includes(languageTag)) {
       return languageTag;
     }

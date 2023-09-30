@@ -1,85 +1,112 @@
-import React, { ReactNode, useState, useMemo } from 'react';
-import { View, Text, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, Platform } from 'react-native';
-import { MotiView } from 'moti';
+import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
+import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
-
-import IconButton from './Button/IconButton';
-import RootText from './Text/Root';
 import ThemeService from '@Services/ThemeService';
-import AppRootAlertLayer from '@Components/Alert/AlertModal';
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
-const NAVBAR_HEIGH = 70;
-const NAVIGATION_TREE_HEIGHT = 30;
+import HapticsService from '@Services/HapticsService';
 
-export default function Root(props: {
+import { Icon } from '@Icon/index';
+import { Text } from '@Text/index';
+import { AlertLayer } from '@Alert/index';
+
+const { height: HEIGHT } = Dimensions.get('window');
+const NAVBAR_HEIGH = 60;
+const NAVIGATION_TREE_HEIGHT = 20;
+
+export const Root = memo((props: {
   title: string
+  subtitle: string
   children: ReactNode
-  drawerChildren: ReactNode
+  drawerChildren: JSX.Element
   navigationTree: JSX.Element
-  screenButtons: JSX.Element
-}): JSX.Element {
+}) => {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
   return (<>
-    <AppRootAlertLayer />
-    <StatusBar
-      animated={true}
-      networkActivityIndicatorVisible={true}
-      backgroundColor={theme.primary}
+    <StatusBarLayer />
+    <AlertLayer />
+    <AppLayer
+      title={props.title}
+      subtitle={props.subtitle}
+      navigationTree={props.navigationTree}
+      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+    >
+      {props.children}
+    </AppLayer>
+    <DrawerLayer
+      show={showDrawer}
+      onPress_Background={() => setShowDrawer(false)}
+    >
+      {props.drawerChildren}
+    </DrawerLayer>
+  </>);
+});
+
+const AppLayer = memo((props: {
+  title: string
+  subtitle: string
+  navigationTree: JSX.Element
+  children: ReactNode
+  onMenuButtonPress: () => void
+}) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
+
+  return (<>
+    <Navbar
+      title={props.title}
+      subtitle={props.subtitle}
+      onMenuButtonPress={() => props.onMenuButtonPress()}
+      style={{ height: NAVBAR_HEIGH }}
     />
+    {props.navigationTree}
     <View
       style={{
         flex: 1,
         backgroundColor: theme.background,
       }}
     >
-      <Navbar
-        title={props.title}
-        onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-        style={{ height: NAVBAR_HEIGH }}
-      />
-      <View
-        style={{ flex: 1 }}
-      >
-        {props.navigationTree}
-        <ContentArea
-          style={{ flex: 1 }}
-        >
-          {props.children}
-        </ContentArea>
-        {props.screenButtons}
-      </View>
+      {props.children}
     </View>
-    <Drawer
-      show={showDrawer}
-      onPress_Background={() => setShowDrawer(false)}
-    >
-      {props.drawerChildren}
-    </Drawer>
   </>);
-}
+});
 
-function Navbar(props: {
+const StatusBarLayer = memo(() => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.statusBar, []);
+
+  return (
+    <StatusBar
+      animated={true}
+      networkActivityIndicatorVisible={true}
+      backgroundColor={theme.background}
+    />
+  );
+});
+
+const Navbar = memo((props: {
   title: string
+  subtitle: string
   style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
-}): JSX.Element {
+}) => {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
-  const iosLargeTitle = Platform.OS === 'ios' && props.title.length >= 15;
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navbar, []);
 
   return (<>
     <View
       style={[props.style, {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: theme.primary,
+        backgroundColor: theme.background,
       }]}
     >
       <View
@@ -88,68 +115,108 @@ function Navbar(props: {
           alignItems: 'flex-start',
           justifyContent: 'center',
           paddingHorizontal: 10,
-          paddingVertical: iosLargeTitle ? 5 : 10,
         }}
       >
-        <RootText
-          style={{
-            color: theme.onPrimary,
-            fontSize: iosLargeTitle ? ThemeService.FONTS.h1 : 200,
-          }}
+        <Text h1
+          style={{ color: theme.font }}
         >
           {props.title}
-        </RootText>
+        </Text>
+        {props.subtitle !== '' && (
+          <Text p
+            style={{ color: theme.font }}
+          >
+            {props.subtitle}
+          </Text>
+        )}
       </View>
-      <IconButton
-        iconName="md-menu-sharp"
+      <MenuButton
         onPress={props.onMenuButtonPress}
-        color_onPressed={theme.secondary}
-        style={{
-          paddingHorizontal: 10,
-        }}
+        theme={theme}
       />
     </View>
   </>);
-}
+});
 
-function ContentArea(props: {
-  style: StyleProp<ViewStyle>
-  children: ReactNode
-}): JSX.Element {
+const MenuButton = memo((props: {
+  theme: {
+    font: string,
+    font_active: string,
+    background: string,
+    background_active: string,
+  }
+  onPress: () => void
+}) => {
+
+  const [pressed, setPressed] = useState<boolean>(false);
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
   return (
     <View
-      style={[props.style]}
+      style={{
+        paddingHorizontal: 1,
+        paddingVertical: 1,
+      }}
     >
-      {props.children}
+      <Pressable
+        onPressIn={() => onPressIn()}
+        onPressOut={() => setPressed(false)}
+        onPress={() => onPress()}
+        style={{
+          flexDirection: 'row',
+          backgroundColor: pressed ? props.theme.background_active : props.theme.background,
+          paddingHorizontal: 10,
+          paddingVertical: 0,
+          borderRadius: 5,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+        }}
+      >
+        <Icon
+          iconName="md-menu-sharp"
+          color={pressed ? props.theme.font_active : props.theme.font}
+        />
+      </Pressable>
     </View>
   );
-}
+});
 
-function Drawer(props: {
+const DrawerLayer = memo((props: {
   show: boolean
   children: ReactNode
   onPress_Background: () => void
-}): JSX.Element {
+}) => {
 
-  const { theme } = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
   const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
   return (
-    <Animation_Drawer show={props.show}>
+    <DrawerAnimation show={props.show}>
       <ScrollView
         contentContainerStyle={{
           flex: 1,
-          gap: 1,
+          backgroundColor: theme.background,
         }}
         style={{
-          backgroundColor: theme.secondary,
           position: 'absolute',
-          bottom: 0,
-          left: 0,
+          borderColor: theme.border,
           height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
           width: '100%',
-          paddingRight: 1,
+          bottom: 0,
+          left: 0,
+          borderRightWidth: 2,
+          zIndex: 2,
         }}
       >
         {props.children}
@@ -158,40 +225,51 @@ function Drawer(props: {
           style={{
             flex: 1,
             justifyContent: 'flex-end',
+            backgroundColor: theme.background,
           }}
         >
           <Text
-            adjustsFontSizeToFit={true}
             style={{
-              color: theme.onSecondary_PlaceHolder,
+              color: theme.font,
               textAlign: 'right',
               fontSize: 16,
               padding: 8,
             }}
           >
-            v: {APP_VERSION}
+            {'v: ' + APP_VERSION}
           </Text>
         </Pressable>
       </ScrollView>
-    </Animation_Drawer>
+    </DrawerAnimation>
   );
-}
+});
 
-function Animation_Drawer(props: {
+const DrawerAnimation = memo((props: {
   show: boolean
   children: ReactNode
-}) {
-  return (
-    <MotiView
-      transition={{
-        type: 'timing',
+}) => {
+
+  const { width } = useMemo(() => Dimensions.get('window'), []);
+  const leftOffset = useSharedValue(-width);
+
+  useEffect(() => {
+    const animationFrameId = requestAnimationFrame(() => {
+      leftOffset.value = withTiming(props.show ? 0 : -width, {
         duration: 200,
-      }}
-      animate={{
-        transform: [{ translateX: props.show ? 0 : -WIDTH }],
-      }}
+      });
+    });
+    return () => { cancelAnimationFrame(animationFrameId); };
+  }, [props.show]);
+
+  return (
+    <Animated.View
+      style={[
+        useAnimatedStyle(() => ({
+          transform: [{ translateX: leftOffset.value }],
+        })),
+      ]}
     >
       {props.children}
-    </MotiView>
+    </Animated.View>
   );
-}
+});

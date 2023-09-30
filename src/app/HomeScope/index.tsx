@@ -1,0 +1,95 @@
+import React, { useState, useMemo, useEffect } from 'react';
+import { BackHandler } from 'react-native';
+
+import { Loading } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
+import { navigate } from '@Globals/NavigationControler';
+import { useBackPress } from '@Hooks/index';
+import ConfigService from '@Services/ConfigService';
+import AlertService from '@Services/AlertService';
+import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
+import HapticsService from '@Services/HapticsService';
+
+import { Button } from '@Button/index';
+import { Layout } from '@Layout/index';
+import HomeScreen from '@Screens/HomeScreen';
+
+export default function HomeScope() {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+  const [state, setState] = useState<Loading>('Loading');
+
+  useEffect(() => {
+    fetchProject(() => setState('Loaded'));
+  }, []);
+
+  useBackPress(async () => {
+    await exitMessage();
+    HapticsService.vibrate('warning');
+  }, []);
+
+  async function exitMessage() {
+    await AlertService.handleAlert(
+      true,
+      { type: 'exit app' },
+      () => BackHandler.exitApp()
+    );
+  }
+
+  return (
+    <Layout.Root
+      title={R['Home screen']}
+      subtitle=""
+      drawerChildren={ <Drawer /> }
+      navigationTree={ <NavigationTree /> }
+    >
+      <HomeScreen
+        homeScopeState={state}
+      />
+    </Layout.Root>
+  );
+}
+
+function NavigationTree() {
+  return (
+    <Layout.NavigationTree.Root
+      iconButtons={[
+        <Layout.NavigationTree.Button
+          key="treeIcon_1"
+          iconName="home"
+          onPress={() => {}}
+        />,
+      ]}
+    />
+  );
+}
+
+function Drawer() {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
+  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+
+  return (<>
+    <Button.TextWithIcon
+      title={R['Settings']}
+      iconName="settings"
+      iconSide="Right"
+      theme={{
+        font: theme.font,
+        background: theme.background,
+        font_Pressed: theme.font_active,
+        background_Pressed: theme.background_active,
+      }}
+      onPress={() => navigate('SETTINGS SCOPE')}
+    />
+  </>);
+}
+
+async function fetchProject(whenLoaded: () => void) {
+  await CacheService.loadAllProjectsSettings();
+  await CacheService.loadLastOpenProject();
+  whenLoaded();
+}

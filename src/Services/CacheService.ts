@@ -1,6 +1,8 @@
-import { ProjectSettings, SampleSettings, WidgetData } from '@Types/index';
+import { translations } from '@Translations/index';
+import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
+import ConfigService from './ConfigService';
 
 export default class CacheService {
 
@@ -8,6 +10,10 @@ export default class CacheService {
     id_project: '',
     name: '',
     rules: {},
+    sampleAlias: {
+      singular: '',
+      plural: '',
+    },
   };
   static allProjects: ProjectSettings[] = [];
   static allWidgets_Project: WidgetData[] = [];
@@ -34,6 +40,8 @@ export default class CacheService {
     }
 
     this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
+    this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(lastProjectID);
+    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(lastProjectID);
     this.allSamples = await DatabaseService.getAllSamples(lastProjectID);
   }
 
@@ -43,6 +51,10 @@ export default class CacheService {
       id_project: '',
       name: '',
       rules: {},
+      sampleAlias: {
+        singular: '',
+        plural: '',
+      },
     };
   }
 
@@ -52,7 +64,8 @@ export default class CacheService {
         return this.allProjects[i];
       }
     }
-    throw Error('Project does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project does not exist on cache']);
   }
 
   static getSampleFromCache(id_sample: string): SampleSettings {
@@ -61,7 +74,8 @@ export default class CacheService {
         return this.allSamples[i];
       }
     }
-    throw Error('Sample does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
   static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
@@ -71,7 +85,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Project does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project does not exist on cache']);
   }
 
   static updateCache_SampleSettings(sampleSettings: SampleSettings) {
@@ -81,7 +96,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Sample does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
   static updateCache_ProjectWidget(widgetData: WidgetData) {
@@ -91,7 +107,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Project Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Project Widget does not exist on cache']);
   }
 
   static updateCache_TemplateWidget(widgetData: WidgetData) {
@@ -101,7 +118,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Template Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Template Widget does not exist on cache']);
   }
 
   static updateCache_SampleWidget(widgetData: WidgetData) {
@@ -111,7 +129,8 @@ export default class CacheService {
         return;
       }
     }
-    throw Error('Sample Widget does not exist on cache');
+    const R = translations.service.cacheService[ConfigService.config.language];
+    throw Error(R['ERROR: Sample Widget does not exist on cache']);
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
@@ -132,5 +151,40 @@ export default class CacheService {
 
   static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
     this.allWidgets_Sample = await DatabaseService.getAllWidgets_Sample(id_project, id_sample);
+  }
+
+  /**
+   * Adds a project direcly into the cache, to avoid the necessity of loading all projects again.
+   */
+  static addToAllProjects(projectSettings: ProjectSettings): void {
+    this.allProjects = [UtilService.deepCopy(projectSettings), ...this.allProjects];
+  }
+
+  /**
+   * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
+   */
+  static addToAllSamples(sampleSettings: SampleSettings): void {
+    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Project(widgetData: WidgetData): void {
+    this.allWidgets_Project = [...this.allWidgets_Project, UtilService.deepCopy(widgetData)];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Template(widgetData: WidgetData): void {
+    this.allWidgets_Template = [...this.allWidgets_Template, UtilService.deepCopy(widgetData)];
+  }
+
+  /**
+   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
+   */
+  static addToAllWidgets_Sample(widgetData: WidgetData): void {
+    this.allWidgets_Sample = [...this.allWidgets_Sample, UtilService.deepCopy(widgetData)];
   }
 }
