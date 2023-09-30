@@ -2,10 +2,10 @@ import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 
 export const SaveFeedback = memo((props: {
   saved: boolean

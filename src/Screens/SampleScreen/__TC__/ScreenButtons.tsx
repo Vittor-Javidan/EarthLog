@@ -6,10 +6,10 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import AlertService from '@Services/AlertService';
 
 export default function ScreenButtons(props: {
   onCreateWidget: () => void

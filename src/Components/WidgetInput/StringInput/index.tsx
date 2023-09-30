@@ -2,12 +2,12 @@ import React, { useState, memo, useCallback, useMemo } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { InputStatus, StringInputData, WidgetRules } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 
 import { LC } from '../__LC__';
-import { translations } from '@Translations/index';
 
 type InputTheme = {
   font: string

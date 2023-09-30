@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { Layout } from '@Layout/index';
+import { Loading } from '@Types/AppTypes';
 
+import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
-import { Loading } from '@Types/AppTypes';
 
 export function ProjectInfoScreen(props: {
   projectScopeState: Loading

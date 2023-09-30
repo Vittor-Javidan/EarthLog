@@ -2,12 +2,12 @@ import React, { useState, memo, useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import ProjectService from '@Services/ProjectService';
 import HapticsService from '@Services/HapticsService';
+import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 
 export const NewInputDisplay = memo((props: {
   theme: WidgetThemeDTO
@@ -42,7 +42,7 @@ export const NewInputDisplay = memo((props: {
           paddingHorizontal: 10,
         }}
       >
-        <AllButton
+        <AllButtons
           theme={props.theme}
           onCreate={(inputType) => onCreate(inputType)}
         />
@@ -51,7 +51,7 @@ export const NewInputDisplay = memo((props: {
   );
 });
 
-const AllButton = memo((props: {
+const AllButtons = memo((props: {
   theme: WidgetThemeDTO
   onCreate: (inputType: InputTypes) => void
 }) => {

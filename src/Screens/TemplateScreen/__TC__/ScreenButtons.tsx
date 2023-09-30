@@ -4,10 +4,10 @@ import { useLocalSearchParams } from 'expo-router';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import ThemeService from '@Services/ThemeService';
 
 export default function ScreenButtons(props: {
   onWidgetCreation: () => void

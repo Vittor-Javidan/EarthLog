@@ -1,8 +1,9 @@
 import React, { useState, memo, useCallback, useRef } from 'react';
 import { TextInput, Platform } from 'react-native';
 
-import { LC } from '../__LC__';
 import { useTimeout } from '@Hooks/index';
+
+import { LC } from '../__LC__';
 
 type InputTheme = {
   font: string

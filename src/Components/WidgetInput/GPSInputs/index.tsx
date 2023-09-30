@@ -87,6 +87,29 @@ export const GPSInput = memo((props: {
     setSaveSignal(true);
   }, [props.onSave]);
 
+  const startGPS = useCallback(async () => {
+    await AlertService.handleAlert(noGPSData === false,
+      {
+        question: R['This will overwrite current gps data. Confirm to proceed.'],
+        type: 'warning',
+      },
+      async () => {
+        await gpsWatcher.watchPositionAsync(
+          (gpsData) => setInputData(prev => ({ ...prev, value: gpsData})),
+          (accuracy) => setAccuracy(accuracy)
+        );
+        setFeatures(prev => ({ ...prev, gpsON: true }));
+      }
+    );
+  }, [noGPSData]);
+
+  const stopGPS = useCallback(() => {
+    props.onSave(null, 'modifying');
+    gpsWatcher.stopWatcher();
+    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
+    setSaveSignal(true);
+  }, [props.onSave]);
+
   const toogleCoordinate = useCallback(async (checked: boolean) => {
     await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined,
       {
@@ -128,29 +151,6 @@ export const GPSInput = memo((props: {
       }
     );
   }, [props.onSave, inputData.value.altitude]);
-
-  const startGPS = useCallback(async () => {
-    await AlertService.handleAlert(noGPSData === false,
-      {
-        question: R['This will overwrite current gps data. Confirm to proceed.'],
-        type: 'warning',
-      },
-      async () => {
-        await gpsWatcher.watchPositionAsync(
-          (gpsData) => setInputData(prev => ({ ...prev, value: gpsData})),
-          (accuracy) => setAccuracy(accuracy)
-        );
-        setFeatures(prev => ({ ...prev, gpsON: true }));
-      }
-    );
-  }, [noGPSData]);
-
-  const stopGPS = useCallback(() => {
-    props.onSave(null, 'modifying');
-    gpsWatcher.stopWatcher();
-    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
-    setSaveSignal(true);
-  }, [props.onSave]);
 
   return (<>
     <LC.Root

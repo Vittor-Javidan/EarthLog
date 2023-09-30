@@ -5,10 +5,10 @@ import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
-import ThemeService from '@Services/ThemeService';
 
 export default function ScreenButtons() {
 

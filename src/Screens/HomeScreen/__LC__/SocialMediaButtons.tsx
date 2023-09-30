@@ -1,12 +1,13 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, View, Linking } from 'react-native';
 
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import { Text } from '@Text/index';
-import { Icon } from '@Icon/index';
 import HapticsService from '@Services/HapticsService';
-import { translations } from '@Translations/index';
+
+import { Icon } from '@Icon/index';
+import { Text } from '@Text/index';
 
 export function SocialMediaButtons() {
 

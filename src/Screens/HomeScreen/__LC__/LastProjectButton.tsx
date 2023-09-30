@@ -6,9 +6,9 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
-import HapticsService from '@Services/HapticsService';
 
 export default function LastProjectButton() {
 

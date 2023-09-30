@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { Layout } from '@Layout/index';
-
-import { LC } from './__LC__';
-import { TC } from './__TC__';
 import { LanguageTag } from '@Types/AppTypes';
+
+import { Layout } from '@Layout/index';
+import { TC } from './__TC__';
+import { LC } from './__LC__';
 
 export default function LanguagesSelectionScreen(props: {
   onLanguageChange: (languageTag: LanguageTag) => void

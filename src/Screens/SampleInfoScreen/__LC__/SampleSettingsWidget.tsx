@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { GPSInputData, InputStatus, SampleSettings, StringInputData } from '@Types/ProjectTypes';
@@ -7,12 +8,11 @@ import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import ThemeService from '@Services/ThemeService';
-import { View } from 'react-native';
 
 export default function SampleSettingsWidget(props: {
   onSampleNameUpdate: (newName: string) => void

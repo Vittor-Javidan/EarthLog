@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 
 import { GPS_DTO, InputData, InputStatus, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';

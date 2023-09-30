@@ -1,5 +1,4 @@
 import { ID, IDsArray, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
-
 import { translations } from '@Translations/index';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';

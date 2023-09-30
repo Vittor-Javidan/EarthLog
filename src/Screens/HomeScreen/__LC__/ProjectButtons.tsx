@@ -5,11 +5,11 @@ import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
+import HapticsService from '@Services/HapticsService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
-import ThemeService from '@Services/ThemeService';
 import { Layout } from '@Layout/index';
-import HapticsService from '@Services/HapticsService';
 
 export default function ProjectButtons() {
 

@@ -6,19 +6,75 @@ import { translations } from '@Translations/index';
 import HapticsService from '@Services/HapticsService';
 import ConfigService from '@Services/ConfigService';
 
+import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 import { NavbarIconButton } from './NavbarIconButtons';
-import { Icon } from '@Icon/index';
 
 export const Footer = memo((props: {
-  AddToNewSamples: boolean
+  addToNewSamples: boolean
   showCheckbox: boolean
   showDeleteWidgetButton: boolean
   rules: WidgetRules
   theme: WidgetThemeDTO
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
+}) => {
+  return (props.showCheckbox || props.showDeleteWidgetButton) ? (
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: props.showCheckbox ? 'space-between' : 'flex-end',
+        alignItems: 'flex-end',
+      }}
+    >
+      <AddToNewSampleButton
+        showCheckbox={props.showCheckbox}
+        addToNewSamples={props.addToNewSamples}
+        onChangeCheckbox={(boolean) => props.onChangeCheckbox(boolean)}
+        rules={props.rules}
+        theme={props.theme}
+      />
+      <DeleteWidgetButton
+        showDeleteWidgetButton={props.showDeleteWidgetButton}
+        onDeleteWidget={() => props.onDeleteWidget()}
+        rules={props.rules}
+        theme={props.theme}
+      />
+    </View>
+  ) : <></>;
+});
+
+const DeleteWidgetButton = memo((props: {
+  showDeleteWidgetButton: boolean
+  rules: WidgetRules
+  theme: WidgetThemeDTO
+  onDeleteWidget: () => void
+}) => {
+  return (props.rules.showDeleteButton_Widget && props.showDeleteWidgetButton) ? (
+    <View
+      style={{ height: 40 }}
+    >
+      <NavbarIconButton
+        iconName="trash-outline"
+        position="bottom right"
+        selected={true}
+        onPress={() => props.onDeleteWidget()}
+        theme={{
+          font: props.theme.wrong,
+          background: props.theme.background,
+        }}
+      />
+    </View>
+  ) : <></>;
+});
+
+const AddToNewSampleButton = memo((props: {
+  showCheckbox: boolean
+  addToNewSamples: boolean
+  rules: WidgetRules
+  theme: WidgetThemeDTO
+  onChangeCheckbox: (checked: boolean) => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -31,62 +87,40 @@ export const Footer = memo((props: {
     }
   }, [props.onChangeCheckbox, props.rules]);
 
-  return (props.showCheckbox || props.showDeleteWidgetButton) ? (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: props.showCheckbox ? 'space-between' : 'flex-end',
-        alignItems: 'flex-end',
-      }}
-    >
-      {props.showCheckbox && (
-        <View
+  return (props.showCheckbox ? (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 5,
+          paddingBottom: 5,
+          gap: 5,
+        }}
+      >
+        <Button.Checkbox
+          value={props.addToNewSamples}
+          onChange={(checked) => onChangeCheckbox(checked)}
+          theme={props.theme}
+        />
+        <Text p
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 5,
-            paddingBottom: 5,
-            gap: 5,
+            color: props.rules.unlockAddToNewSamples
+              ? props.theme.font
+              : props.theme.wrong,
           }}
         >
-          <Button.Checkbox
-            value={props.AddToNewSamples}
-            onChange={(checked) => onChangeCheckbox(checked)}
-            theme={props.theme}
-          />
-          <Text p
-            style={{ color: props.rules.unlockAddToNewSamples ? props.theme.font : props.theme.wrong }}
-            >
-            {R['Add automatically']}
-          </Text>
-          {!props.rules.unlockAddToNewSamples && (
-            <View
-              style={{ height: 20 }}
-            >
-              <Icon
-                iconName="lock-closed"
-                color={props.theme.wrong}
-              />
-            </View>
-          )}
-        </View>
-      )}
-      {props.rules.showDeleteButton_Widget && props.showDeleteWidgetButton && (
-        <View
-          style={{ height: 40 }}
-        >
-          <NavbarIconButton
-            iconName="trash-outline"
-            position="bottom right"
-            selected={true}
-            onPress={() => props.onDeleteWidget()}
-            theme={{
-              font: props.theme.wrong,
-              background: props.theme.background,
-            }}
-          />
-        </View>
-      )}
-    </View>
-  ) : <></>;
+          {R['Add automatically']}
+        </Text>
+        {!props.rules.unlockAddToNewSamples && (
+          <View
+            style={{ height: 20 }}
+          >
+            <Icon
+              iconName="lock-closed"
+              color={props.theme.wrong}
+            />
+          </View>
+        )}
+      </View>
+    ) : <></>);
 });

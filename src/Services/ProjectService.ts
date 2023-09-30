@@ -1,7 +1,6 @@
 import uuid from 'react-native-uuid';
 
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
-
 import DatabaseService from './DatabaseService';
 
 export default class ProjectService {

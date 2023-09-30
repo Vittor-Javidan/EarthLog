@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import ThemeService from '@Services/ThemeService';
 
 export default function ScreenButtons(props: {
   onProjectCreation: () => void

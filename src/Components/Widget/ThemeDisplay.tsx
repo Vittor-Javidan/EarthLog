@@ -1,14 +1,15 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
-import { Text } from '@Text/index';
-import { Pressable, View } from 'react-native';
+import { ThemeNames_Widgets } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
-import { ThemeNames_Widgets } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
+
+import { Text } from '@Text/index';
 
 export const ThemeDisplay = memo((props: {
   theme: WidgetThemeDTO

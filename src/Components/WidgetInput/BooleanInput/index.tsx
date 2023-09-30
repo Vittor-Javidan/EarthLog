@@ -9,8 +9,8 @@ import UtilService from '@Services/UtilService';
 import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
-import { Button } from '@Button/index';
 import { LC } from '../__LC__';
+import { NotApplicableButton } from './NotApplicableButton';
 
 type InputTheme = {
   font: string
@@ -60,8 +60,17 @@ export const BooleanInput = memo((props: {
     }
   }, [inputData, saveSignal], 200);
 
+  const onLabelChange = useCallback((newLabel: string) => {
+    props.onSave(null, 'modifying');
+    setInputData(prev => ({ ...prev, label: newLabel}));
+    setSaveSignal(true);
+  }, [props.onSave]);
+
   const onSwitchChange = useCallback((boolean: boolean) => {
-    if (inputData.lockedData !== true && (notApplicableUndefined || notApplicableFalse)) {
+    if (
+      inputData.lockedData !== true &&
+      (notApplicableUndefined || notApplicableFalse)
+    ) {
       HapticsService.vibrate('success');
       props.onSave(null, 'modifying');
       setInputData(prev => ({ ...prev, value: boolean }));
@@ -78,12 +87,6 @@ export const BooleanInput = memo((props: {
       setSaveSignal(true);
     }
   }, [props.onSave, inputData.lockedData]);
-
-  const onLabelChange = useCallback((newLabel: string) => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, label: newLabel}));
-    setSaveSignal(true);
-  }, [props.onSave]);
 
   return (
     <LC.Root
@@ -130,29 +133,11 @@ export const BooleanInput = memo((props: {
             gap: 10,
           }}
         >
-          {inputData.notApplicable !== undefined && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-              }}
-            >
-              <Text h3
-                style={{
-                  color: props.theme.font,
-                  fontWeight: '900',
-                }}
-              >
-                N/A:
-              </Text>
-              <Button.Checkbox
-                value={inputData.notApplicable}
-                onChange={(boolean) => onNotApplicableChange(boolean)}
-                theme={props.theme}
-              />
-            </View>
-          )}
+          <NotApplicableButton
+            notApplicable={inputData.notApplicable}
+            onNotApplicableChange={(boolean) => onNotApplicableChange(boolean)}
+            theme={props.theme}
+          />
           <Switch
             style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
             trackColor={{ false: props.theme.font, true: props.theme.font }}
