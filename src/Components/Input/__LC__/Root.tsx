@@ -18,7 +18,7 @@ export const InputRoot = memo((props: {
     <View
       style={{
         paddingHorizontal: 5,
-        paddingTop: 15,
+        paddingTop: 13,
       }}
     >
       <View
@@ -33,7 +33,7 @@ export const InputRoot = memo((props: {
           style={{
             backgroundColor: props.theme.background,
             color: props.theme.font,
-            fontSize: 20,
+            fontSize: 18,
             paddingHorizontal: 5,
           }}
         >

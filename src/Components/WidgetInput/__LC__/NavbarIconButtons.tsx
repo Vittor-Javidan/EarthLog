@@ -40,7 +40,7 @@ export const NavbarIconButton = memo((props: {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        paddingHorizontal: 5,
+        paddingHorizontal: 2,
         paddingVertical: 0,
         borderRadius: 10,
       }}

@@ -28,7 +28,6 @@ export const LabelButton = memo((props: {
         alignItems: 'flex-start',
         alignSelf: 'center',
         paddingHorizontal: 5,
-        marginBottom: -10,
       }}
     >
       {props.editLabel ? (
@@ -58,7 +57,6 @@ export const LabelButton = memo((props: {
               textAlign: 'center',
               color: props.theme.font,
               paddingHorizontal: 5,
-              marginBottom: 0,
             }}
           >
             {props.label === '' ? '-------' : props.label}

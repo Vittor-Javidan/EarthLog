@@ -126,7 +126,7 @@ const LabelButton = memo((props: {
     <View
       style={{
         position: 'absolute',
-        top: props.editLabel ? 2 : 0,
+        top: 2,
         paddingLeft: 15,
         zIndex: 1,
       }}
@@ -137,7 +137,7 @@ const LabelButton = memo((props: {
             backgroundColor: props.theme.font,
             paddingHorizontal: 5,
             color: props.theme.background,
-            fontSize: 20,
+            fontSize: 18,
             borderRadius: 5,
             paddingVertical: 0,
             minWidth: 50,
@@ -157,7 +157,7 @@ const LabelButton = memo((props: {
             style={{
               backgroundColor: props.theme.background,
               color: props.theme.font,
-              fontSize: 20,
+              fontSize: 18,
               paddingHorizontal: 5,
             }}
           >

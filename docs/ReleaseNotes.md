@@ -1,5 +1,7 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.2.30 Cache optimization
+# 0.1.2.31 Design fix
 
-- Now cache is not fully load for each modification. All add functionallity add the new data direcly into the cache. Deletion actions still loading the full cache.
+- Widget Label overflowing through the bottom fix.
+- <AllInputs /> renamed to <DataDisplay /> on Widget index file.
+- Input labels font changed to 18 (equivalent to actual h3)

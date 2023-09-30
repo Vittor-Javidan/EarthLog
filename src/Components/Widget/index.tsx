@@ -14,7 +14,7 @@ import ConfigService from '@Services/ConfigService';
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
 import { NavbarIconButton } from './NavbarIconButtons';
-import { AllInputs } from './AllInputs';
+import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
@@ -284,17 +284,17 @@ export const Widget = memo((props: {
             gap: 5,
           }}
         >
+          <LabelButton
+            label={tempLabel}
+            editLabel={editLabel}
+            noInputs={widgetData.inputs.length <= 0}
+            onPress={() => onEditLabel()}
+            onConfirm={() => onConfirmLabel()}
+            onLabelChange={(label) => onLabelChange(label)}
+            theme={widgetTheme}
+          />
           {display === 'data display' && (<>
-            <LabelButton
-              label={tempLabel}
-              editLabel={editLabel}
-              noInputs={widgetData.inputs.length <= 0}
-              onPress={() => onEditLabel()}
-              onConfirm={() => onConfirmLabel()}
-              onLabelChange={(label) => onLabelChange(label)}
-              theme={widgetTheme}
-            />
-            <AllInputs
+            <DataDisplay
               inputs={widgetData.inputs}
               editInputs={editInputs}
               referenceGPSData={props.referenceGPSData}

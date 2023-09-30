@@ -20,7 +20,7 @@ export const ThemeDisplay = memo((props: {
 
   return (
     <View>
-      <Text h2
+      <Text h3
         style={{
           color: props.theme.font,
           paddingHorizontal: 10,

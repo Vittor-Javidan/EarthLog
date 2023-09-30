@@ -112,7 +112,6 @@ export default function ProjectSettingsWidget(props: {
             textAlign: 'center',
             color: pseudoWidgetTheme.font,
             paddingHorizontal: 5,
-            marginBottom: -10,
           }}
         >
           {R['Project info']}
@@ -194,7 +193,6 @@ export default function ProjectSettingsWidget(props: {
             color: pseudoWidgetTheme.font,
             paddingHorizontal: 5,
             paddingTop: 10,
-            marginBottom: -10,
           }}
         >
           {R['Sample Alias']}

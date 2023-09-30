@@ -6,7 +6,7 @@ import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 
-export const AllInputs = memo((props: {
+export const DataDisplay = memo((props: {
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined

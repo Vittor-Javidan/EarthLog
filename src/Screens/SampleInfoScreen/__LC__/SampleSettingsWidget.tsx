@@ -88,7 +88,6 @@ export default function SampleSettingsWidget(props: {
             textAlign: 'center',
             color: theme.font,
             paddingHorizontal: 5,
-            marginBottom: -10,
           }}
         >
           {R['Sample info']}
