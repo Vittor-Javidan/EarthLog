@@ -104,3 +104,11 @@ export type RegexRules = {
   'id':              RegExp
   'hexColor':        RegExp
 }
+
+export type CredentialDTO = {
+  credential_id: string
+  name: string
+  user: string
+  password: string
+  rootURL: string
+}

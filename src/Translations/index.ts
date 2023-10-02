@@ -1,3 +1,4 @@
+import { R_CredentialScreen } from './Screen/CredentialScreen';
 import { R_HomeScreen } from './Screen/HomeScreen';
 import { R_LanguageSelectionScreen } from './Screen/LanguageSelectionScreen';
 import { R_ProjectInfoScreen } from './Screen/ProjectInfoScreen';
@@ -8,6 +9,7 @@ import { R_Alert } from './component/Alert';
 import { R_Button } from './component/Button';
 import { R_PseudoWidget } from './component/Layout/PseudoWidget';
 import { R_NavController } from './global/navController';
+import { R_CredentialScope } from './scope/CredentialSope';
 import { R_HomeScope } from './scope/HomeScope';
 import { R_LanguageScopeScope } from './scope/LanguageSelectionScope';
 import { R_ProjectScope } from './scope/ProjectScope';
@@ -31,6 +33,7 @@ export const translations = {
     languageSelectionScope:   R_LanguageScopeScope,
     projectScope:             R_ProjectScope,
     settingsScope:            R_SettingsScope,
+    credentialScope:          R_CredentialScope,
   },
   screen: {
     homeScreen:               R_HomeScreen,
@@ -38,6 +41,7 @@ export const translations = {
     projectInfoScreen:        R_ProjectInfoScreen,
     sampleInfoScreen:         R_SampleInfoScreen,
     settingsScreen:           R_SettingsScreen,
+    credentialScreen:         R_CredentialScreen,
   },
   component: {
     alert:                    R_Alert,

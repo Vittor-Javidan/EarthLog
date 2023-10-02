@@ -6,6 +6,7 @@ export default class AppRoutes {
 
   static SETTINGS_SCOPE               = '/SettingsScope';
   static SS_LANGUAGE_SELECTION_SCOPE  = `${this.SETTINGS_SCOPE}/LanguageSelectionScope`;
+  static SS_CREDENTIALS_SCOPE         = `${this.SETTINGS_SCOPE}/CredentialScope`;
 
   static PROJECT_SCOPE   = (id_project: string) => `/${id_project}`;
   static PS_SAMPLE_SCOPE = (id_project: string, id_sample: string) => `${this.PROJECT_SCOPE(id_project)}/${id_sample}`;

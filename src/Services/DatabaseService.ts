@@ -24,7 +24,7 @@ export default class DatabaseService {
   // DATABASE
   // ===============================================================================================
 
-  static async createDatabase(): Promise<void> {
+  static async createDatabaseFolder(): Promise<void> {
     const databaseFolderContents = await FileSystemService.readDirectory(this.DATA_BASE_DIRECTORY);
     if (databaseFolderContents === null) {
 
@@ -39,7 +39,7 @@ export default class DatabaseService {
     }
   }
 
-  static async deleteDatabase(): Promise<void> {
+  static async deleteDatabaseFolder(): Promise<void> {
     await FileSystemService.delete(this.DATA_BASE_DIRECTORY);
     await this.deleteLastOpenProject();
   }

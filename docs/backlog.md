@@ -1,1 +1,1 @@
-- Validate on IOS
+- Simplify Project/Sample Settings Widgets to use InpuString from Inputs instead from Widget Inputs. And moves the autosave to outside from input.

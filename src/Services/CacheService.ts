@@ -3,9 +3,12 @@ import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
 import ConfigService from './ConfigService';
+import { CredentialDTO } from '@Types/AppTypes';
+import CredentialService from './CredentialService';
 
 export default class CacheService {
 
+  static allCredentials: CredentialDTO[] = [];
   static lastOpenProject: ProjectSettings = {
     id_project: '',
     name: '',
@@ -20,6 +23,22 @@ export default class CacheService {
   static allWidgets_Template: WidgetData[] = [];
   static allSamples: SampleSettings[] = [];
   static allWidgets_Sample: WidgetData[] = [];
+
+  // ===============================================================================================
+  // CREDENTIAL RELATED METHODS
+  // ===============================================================================================
+
+  static async loadAllCredentials(): Promise<void> {
+    this.allCredentials = await CredentialService.getAllCredentials();
+  }
+
+  static addToCredentials(credential: CredentialDTO) {
+    this.allCredentials = [...this.allCredentials, credential];
+  }
+
+  // ===============================================================================================
+  // PROJECT RELATED METHODS
+  // ===============================================================================================
 
   static async saveLastOpenProject(id_project: string): Promise<void> {
     await DatabaseService.saveLastOpenProject(id_project);

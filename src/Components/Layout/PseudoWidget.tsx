@@ -17,6 +17,7 @@ export const PseudoWidget = memo((props: {
   saved: boolean
   children: ReactNode
   theme: WidgetTheme
+  navbarIcons?: JSX.Element
 }) => {
   return (
     <View
@@ -30,7 +31,6 @@ export const PseudoWidget = memo((props: {
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
           paddingLeft: 10,
@@ -41,6 +41,15 @@ export const PseudoWidget = memo((props: {
           saved={props.saved}
           theme={props.theme}
         />
+        <View
+          style={{
+            flexDirection: 'row',
+          }}
+        >
+          {props.navbarIcons !== undefined && (
+            props.navbarIcons
+          )}
+        </View>
       </View>
       <View
         style={{
