@@ -25,7 +25,7 @@ export const Widget = memo((props: {
   widgetData: WidgetData
   widgetScope: WidgetScope
   referenceGPSData: GPS_DTO | undefined
-  onDelete: () => void
+  onDeleteWidget: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -179,9 +179,9 @@ export const Widget = memo((props: {
         question: R['Confirm to delete this widget.'],
         type: 'warning',
       },
-      () => props.onDelete()
+      () => props.onDeleteWidget()
     );
-  }, [props.onDelete]);
+  }, [props.onDeleteWidget]);
 
   const onDelete = useCallback((id_input: ID) => {
     AlertService.handleAlert(

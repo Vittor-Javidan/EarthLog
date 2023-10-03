@@ -13,6 +13,7 @@ import { Layout } from '@Layout/index';
 import { WidgetLabelButton } from './WidgetLabelButton';
 import { WidgetDeleteButton } from './WidgetDeleteButton';
 import { WidgetSensitiveDataButton } from './WidgetSensitiveDataButton';
+import AlertService from '@Services/AlertService';
 
 export const CredentialWidget = memo((props: {
   credential: CredentialDTO
@@ -52,6 +53,16 @@ export const CredentialWidget = memo((props: {
     setSaved(false);
   }, []);
 
+  const onDeleteCredential = useCallback(async () => {
+    await AlertService.handleAlert(true,
+      {
+        type: 'warning',
+        question: R['Confirm to delete this credential.'],
+      },
+      () => props.onCredentialDelete(),
+    );
+  }, [props.onCredentialDelete]);
+
   return (
     <Layout.PseudoWidget
 
@@ -68,7 +79,7 @@ export const CredentialWidget = memo((props: {
           }}
         />
         <WidgetDeleteButton
-          onPress={() => props.onCredentialDelete()}
+          onPress={async () => onDeleteCredential()}
           theme={{
             font: theme.wrong,
             background: theme.background,
