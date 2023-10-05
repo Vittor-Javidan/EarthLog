@@ -1,3 +1,4 @@
+import uuid from 'react-native-uuid';
 import { RegexRules } from '@Types/AppTypes';
 
 type ExcludeNonObjectKeys<T> = { [K in keyof T]: T[K] extends object ? K : never; };
@@ -14,5 +15,9 @@ export default class UtilService {
 
   static deepCopy<T extends ExcludeNonObject<T>>(object: T): T {
     return JSON.parse(JSON.stringify(object)) as T;
+  }
+
+  static generateUuidV4(): string {
+    return uuid.v4() as string;
   }
 }

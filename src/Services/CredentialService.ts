@@ -1,7 +1,6 @@
-import uuid from 'react-native-uuid';
-
 import { CredentialDTO } from '@Types/AppTypes';
 import FileSystemService from './FileSystemService';
+import UtilService from './UtilService';
 
 export default class CredentialService {
 
@@ -11,13 +10,9 @@ export default class CredentialService {
   // DATA CREATION
   // ===============================================================================================
 
-  static generateUuidV4(): string {
-    return uuid.v4() as string;
-  }
-
   static getNewCredential(): CredentialDTO {
     return {
-      credential_id: this.generateUuidV4(),
+      credential_id: UtilService.generateUuidV4(),
       name: '',
       user: '',
       password: '',

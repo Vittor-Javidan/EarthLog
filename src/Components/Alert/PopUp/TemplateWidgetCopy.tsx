@@ -29,7 +29,7 @@ export const TemplateWidgetCopy = memo((props: {
     if (props.id_project !== undefined && props.id_sample !== undefined) {
       const { id_project, id_sample } = props;
       const newWidgetData = UtilService.deepCopy(widgetData);
-      newWidgetData.id_widget = ProjectService.generateUuidV4();
+      newWidgetData.id_widget = UtilService.generateUuidV4();
       await ProjectService.createWidget_Sample(
         id_project,
         id_sample,

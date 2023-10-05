@@ -1,4 +1,3 @@
-- refactor the uuidv4 generator by moving it to UtilService.
 - implement the rules "allowMultipleDonwloads" to projects rules
   - this rules will use the change the uuid of all elements of the project copied before create inside the phone.
 - add the status properties for downloaded/uploaded projects.

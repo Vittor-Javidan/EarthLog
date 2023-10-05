@@ -1,4 +1,4 @@
-import uuid from 'react-native-uuid';
+import UtilService from './UtilService';
 
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
@@ -9,14 +9,10 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
-  static generateUuidV4(): string {
-    return uuid.v4() as string;
-  }
-
   static getDefaultProjectTemplate(): ProjectDTO {
     return {
       projectSettings: {
-        id_project: this.generateUuidV4(),
+        id_project: UtilService.generateUuidV4(),
         name: '',
         gps: {},
         sampleAlias: {
@@ -40,7 +36,7 @@ export default class ProjectService {
 
   static getDefaultSampleSettings(): SampleSettings {
     return {
-      id_sample: this.generateUuidV4(),
+      id_sample: UtilService.generateUuidV4(),
       name: '',
       gps: {},
       rules: {
@@ -54,7 +50,7 @@ export default class ProjectService {
 
   static getWidgetData() : WidgetData {
     return {
-      id_widget: this.generateUuidV4(),
+      id_widget: UtilService.generateUuidV4(),
       widgetName: '',
       inputs: [],
       rules: {
@@ -73,20 +69,20 @@ export default class ProjectService {
   static getInputData(inputType: InputTypes): InputData {
     switch (inputType) {
       case 'boolean': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'boolean',
         value: false,
         notApplicable: true,
       };
       case 'string': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'string',
         value: '',
       };
       case 'gps': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'gps',
         value: {},
@@ -240,7 +236,7 @@ export default class ProjectService {
       const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
       for (let i = 0; i < templateWidgets.length; i++) {
         if (templateWidgets[i].addToNewSamples === true) {
-          templateWidgets[i].id_widget = this.generateUuidV4();
+          templateWidgets[i].id_widget = UtilService.generateUuidV4();
           await DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
         }
       }
