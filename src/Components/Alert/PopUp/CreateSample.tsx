@@ -11,10 +11,11 @@ import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
+import { LC } from '../__LC__';
 
 export const CreateSample = memo((props: {
   id_project: string | undefined
-  onFinish: () => void
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -33,7 +34,7 @@ export const CreateSample = memo((props: {
         async () => {
           CacheService.addToAllSamples(sampleSettings);
           await AlertService.runAcceptCallback();
-          props.onFinish();
+          props.closeModal();
         },
         async (errorMesage) => {
           alert(errorMesage);
@@ -44,18 +45,10 @@ export const CreateSample = memo((props: {
     if (props.id_project === undefined) {
       alert(R['No project ID found']);
     }
-  }, [props.id_project, props.onFinish, name, R]);
+  }, [props.id_project, props.closeModal, name, R]);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           paddingHorizontal: 5,
@@ -84,7 +77,7 @@ export const CreateSample = memo((props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onFinish()}
+          onPress={() => props.closeModal()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.wrong,
@@ -117,6 +110,6 @@ export const CreateSample = memo((props: {
           }}
         />
       </View>
-    </View>
+    </LC.PopUp>
   );
 });

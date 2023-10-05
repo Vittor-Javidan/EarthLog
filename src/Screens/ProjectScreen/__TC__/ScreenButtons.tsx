@@ -21,12 +21,9 @@ export default function ScreenButtons(props: {
 
   async function createSample() {
     AlertService.handleAlert(true, {
-      question: '',
       type: 'sample creation',
       id_project: id_project,
-    }, () => {
-      props.onSampleCreation();
-    });
+    }, () => props.onSampleCreation());
   }
 
   return (

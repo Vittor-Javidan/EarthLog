@@ -108,6 +108,28 @@ export default class ProjectService {
   // BASIC DATABASE METHODS
   // ===============================================================================================
 
+  static async buildProject(project_id: string): Promise<ProjectDTO> {
+
+    // INITAL PROJECT STRUCTURE
+    const projectDTO: ProjectDTO = {
+      projectSettings: await DatabaseService.readProject(project_id),
+      projectWidgets:  await DatabaseService.getAllWidgets_Project(project_id),
+      template:        await DatabaseService.getAllWidgets_Template(project_id),
+      samples:         [],
+    };
+
+    // GET ALL SAMPLES
+    const allSampleSettings = await DatabaseService.getAllSamples(project_id);
+    for (let i = 0; i < allSampleSettings.length; i++) {
+      projectDTO.samples.push({
+        sampleSettings: allSampleSettings[i],
+        sampleWidgets: await DatabaseService.getAllWidgets_Sample(project_id, allSampleSettings[i].id_sample),
+      });
+    }
+
+    return projectDTO;
+  }
+
   static async createProject(
     projectDTO: ProjectDTO,
     onSuccess: () => void,
@@ -162,7 +184,10 @@ export default class ProjectService {
 
     } catch (error) {
       DatabaseService.deleteProject(projectSettings.id_project);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -175,7 +200,10 @@ export default class ProjectService {
       await DatabaseService.updateProject(projectSettings);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -188,7 +216,10 @@ export default class ProjectService {
       await DatabaseService.deleteProject(id_project);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -218,7 +249,10 @@ export default class ProjectService {
 
     } catch (error) {
       await DatabaseService.deleteSample(id_project, id_sample);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -232,7 +266,10 @@ export default class ProjectService {
       await DatabaseService.updateSample(id_project, sampleSettings);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -246,7 +283,10 @@ export default class ProjectService {
       await DatabaseService.deleteSample(id_project, id_sample);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -264,7 +304,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -279,7 +322,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Project(id_project, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -294,7 +340,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -312,7 +361,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -327,7 +379,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Template(id_project, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -342,7 +397,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -361,7 +419,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -377,7 +438,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Sample(id_project, id_sample, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -393,7 +457,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 }

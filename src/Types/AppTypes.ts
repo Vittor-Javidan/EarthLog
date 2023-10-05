@@ -67,6 +67,7 @@ export type AppThemeDTO = {
     }
     modalPopUp: {
       font: string
+      font_button: string
       font_placeHolder: string
       background: string
       background_active: string
@@ -91,8 +92,13 @@ export type ConfigDTO = {
   appTheme: ThemeNames_APP
 }
 
+type modalPopUp = (
+  'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy' |
+  'download project'
+)
+
 export type AlertModalConfig = {
-  type: 'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy'
+  type: modalPopUp
   id_project?: string
   id_sample?: string
   question?: string

@@ -19,17 +19,14 @@ export const ManualInput = memo((props: {
   const [error    , setError    ] = useState<boolean>(false);
 
   const onSave = useCallback(async (newGPSData: GPS_DTO) => {
-    await AlertService.handleAlert(props.noGPSData,
-      {
-        question: 'current saved data will be replaced. Are you sure?',
-        type: 'warning',
-      },
-      () => {
-        setShowInput(false);
-        setError(false);
-        props.onConfirm(newGPSData);
-      }
-    );
+    await AlertService.handleAlert(props.noGPSData, {
+      type: 'warning',
+      question: 'current saved data will be replaced. Are you sure?',
+    }, () => {
+      setShowInput(false);
+      setError(false);
+      props.onConfirm(newGPSData);
+    });
   }, [props.noGPSData, props.onConfirm]);
 
   const openManualInput = useCallback(() => {

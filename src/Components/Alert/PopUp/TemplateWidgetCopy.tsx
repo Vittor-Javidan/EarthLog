@@ -13,11 +13,12 @@ import AlertService from '@Services/AlertService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
+import { LC } from '../__LC__';
 
 export const TemplateWidgetCopy = memo((props: {
   id_project: string | undefined
   id_sample: string | undefined
-  onFinish: () => void
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -36,7 +37,7 @@ export const TemplateWidgetCopy = memo((props: {
         async () => {
           CacheService.addToAllWidgets_Sample(newWidgetData);
           await AlertService.runAcceptCallback();
-          props.onFinish();
+          props.closeModal();
         },
         (errorMesage) => {
           alert(errorMesage);
@@ -62,15 +63,7 @@ export const TemplateWidgetCopy = memo((props: {
   });
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           justifyContent: 'center',
@@ -87,9 +80,6 @@ export const TemplateWidgetCopy = memo((props: {
         </Text>
       </View>
       <ScrollView
-        style={{
-          maxHeight: 250,
-        }}
         contentContainerStyle={{
           flexDirection: 'row',
           flexWrap: 'wrap',
@@ -112,7 +102,7 @@ export const TemplateWidgetCopy = memo((props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onFinish()}
+          onPress={() => props.closeModal()}
           theme={{
             font: theme.font,
             font_Pressed: theme.wrong,
@@ -128,7 +118,7 @@ export const TemplateWidgetCopy = memo((props: {
           }}
         />
       </View>
-    </View>
+    </LC.PopUp>
   );
 });
 

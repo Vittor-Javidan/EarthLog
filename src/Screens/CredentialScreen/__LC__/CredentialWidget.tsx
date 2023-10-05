@@ -54,13 +54,10 @@ export const CredentialWidget = memo((props: {
   }, []);
 
   const onDeleteCredential = useCallback(async () => {
-    await AlertService.handleAlert(true,
-      {
-        type: 'warning',
-        question: R['Confirm to delete this credential.'],
-      },
-      () => props.onCredentialDelete(),
-    );
+    await AlertService.handleAlert(true, {
+      type: 'warning',
+      question: R['Confirm to delete this credential.'],
+    }, () => props.onCredentialDelete());
   }, [props.onCredentialDelete]);
 
   return (

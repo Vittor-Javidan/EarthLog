@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
@@ -14,18 +14,33 @@ export default function ScreenButtons(props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
-  async function createProject() {
-    AlertService.handleAlert(true, {
-      question: '',
+  const createProject = useCallback(async () => {
+    await AlertService.handleAlert(true, {
       type: 'project creation',
-    }, () => {
-      props.onProjectCreation();
-    });
-  }
+    }, () => props.onProjectCreation());
+  }, [props.onProjectCreation]);
+
+  const downloadProjects = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'download project',
+    }, () => props.onProjectCreation());
+  }, [props.onProjectCreation]);
 
   return (
     <Layout.ScreenButtons
-      buttons={
+      buttons={<>
+        <Button.RoundedIcon
+          iconName="cloud-download-outline"
+          showPlusSign={false}
+          buttonDiameter={60}
+          onPress={async () => await downloadProjects()}
+          theme={{
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
+          }}
+        />
         <Button.RoundedIcon
           iconName="folder"
           showPlusSign={true}
@@ -38,7 +53,7 @@ export default function ScreenButtons(props: {
             background_Pressed: theme.background_active,
           }}
         />
-      }
+      </>}
     />
   );
 }

@@ -173,38 +173,30 @@ export const Widget = memo((props: {
   }, [save]);
 
   const deleteWidget = useCallback(() => {
-    AlertService.handleAlert(
-      true,
-      {
-        question: R['Confirm to delete this widget.'],
-        type: 'warning',
-      },
-      () => props.onDeleteWidget()
-    );
+    AlertService.handleAlert(true, {
+      question: R['Confirm to delete this widget.'],
+      type: 'warning',
+    },() => props.onDeleteWidget());
   }, [props.onDeleteWidget]);
 
   const onDelete = useCallback((id_input: ID) => {
-    AlertService.handleAlert(
-      true,
-      {
-        question: R['Confirm to delete this field.'],
-        type: 'warning',
-      },
-      () => {
-        setSaved(false);
-        setWidgetData(prev => {
-          const newData = { ...prev };
-          for (let i = 0; i < newData.inputs.length; i++) {
-            if (newData.inputs[i].id_input === id_input) {
-              newData.inputs.splice(i, 1);
-              break;
-            }
+    AlertService.handleAlert(true, {
+      type: 'warning',
+      question: R['Confirm to delete this field.'],
+    }, () => {
+      setSaved(false);
+      setWidgetData(prev => {
+        const newData = { ...prev };
+        for (let i = 0; i < newData.inputs.length; i++) {
+          if (newData.inputs[i].id_input === id_input) {
+            newData.inputs.splice(i, 1);
+            break;
           }
-          save(newData);
-          return newData;
-        });
-      }
-    );
+        }
+        save(newData);
+        return newData;
+      });
+    });
   }, [save]);
 
   const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {

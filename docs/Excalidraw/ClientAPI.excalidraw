@@ -322,7 +322,7 @@
       "containerId": null,
       "originalText": "Express Server",
       "lineHeight": 1.2,
-      "baseline": 91
+      "baseline": 90
     },
     {
       "type": "rectangle",
@@ -348,7 +348,7 @@
       "roundness": {
         "type": 3
       },
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1696258357296,
       "link": null,
       "locked": false
@@ -387,7 +387,7 @@
       "containerId": null,
       "originalText": "ClientAPI",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "arrow",
@@ -475,7 +475,7 @@
       "containerId": null,
       "originalText": "Post a project",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "text",
@@ -511,7 +511,7 @@
       "containerId": null,
       "originalText": "- Uma api simples para que projetos\nsejam recebidos e enviados.\n\n- Responsavel por montar o projeto\ninteiro, e após montar, enviar para\num endpoint configurado pelo usuário.\n\n\n1° Logar utilizando a credencial e\nreceber o token de acesso.\n\n2° Enviar o DTO do projeto montado\npara o endpoint de projeto\n",
       "lineHeight": 1.2,
-      "baseline": 596
+      "baseline": 595
     },
     {
       "type": "arrow",
@@ -599,7 +599,7 @@
       "containerId": null,
       "originalText": "Get Projects",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "text",
@@ -639,8 +639,8 @@
     },
     {
       "type": "text",
-      "version": 1522,
-      "versionNonce": 193446306,
+      "version": 1553,
+      "versionNonce": 724435709,
       "isDeleted": false,
       "id": "K97UG_nInVkSr_2bTqvfH",
       "fillStyle": "solid",
@@ -649,29 +649,29 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": 2558.497254849979,
-      "y": -3066.464040835608,
+      "x": 2442.872254849979,
+      "y": -3091.464040835608,
       "strokeColor": "#e03131",
       "backgroundColor": "#868e96",
-      "width": 493.453125,
-      "height": 275.6531981900938,
+      "width": 560.7421875,
+      "height": 321.59539788844273,
       "seed": 103434702,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1696261311337,
+      "updated": 1696297382766,
       "link": null,
       "locked": false,
       "fontSize": 38.2851664152908,
       "fontFamily": 3,
-      "text": "type CredentialDTO = {\n    name: string\n    User: string\n    password: string\n    baseURL: string\n} ",
+      "text": "type CredentialDTO = {\n    credential_id: string\n    name: string\n    User: string\n    password: string\n    baseURL: string\n} ",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "type CredentialDTO = {\n    name: string\n    User: string\n    password: string\n    baseURL: string\n} ",
+      "originalText": "type CredentialDTO = {\n    credential_id: string\n    name: string\n    User: string\n    password: string\n    baseURL: string\n} ",
       "lineHeight": 1.2,
-      "baseline": 266
+      "baseline": 312
     },
     {
       "type": "text",
@@ -707,7 +707,7 @@
       "containerId": null,
       "originalText": "POST login = {\n    User: string\n    password: string\n}",
       "lineHeight": 1.2,
-      "baseline": 165
+      "baseline": 163
     },
     {
       "type": "arrow",
@@ -795,12 +795,12 @@
       "containerId": null,
       "originalText": "Login",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "text",
-      "version": 1154,
-      "versionNonce": 777443646,
+      "version": 1164,
+      "versionNonce": 358621875,
       "isDeleted": false,
       "id": "5JLAWTMlPq4BBSv5FBniD",
       "fillStyle": "solid",
@@ -813,25 +813,25 @@
       "y": -2650.846644977837,
       "strokeColor": "#e03131",
       "backgroundColor": "transparent",
-      "width": 485.15625,
+      "width": 548.4375,
       "height": 215.99999999999997,
       "seed": 1133214606,
       "groupIds": [],
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1696258343930,
+      "updated": 1696474809226,
       "link": null,
       "locked": false,
       "fontSize": 36,
       "fontFamily": 3,
-      "text": "POST project = {\n    User: string\n    accessToken: string\n    data: ProjectDTO\n}",
+      "text": "POST project = {\n    User: string\n    accessToken: string\n    projects: ProjectDTO[]\n}",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "POST project = {\n    User: string\n    accessToken: string\n    data: ProjectDTO\n}",
+      "originalText": "POST project = {\n    User: string\n    accessToken: string\n    projects: ProjectDTO[]\n}",
       "lineHeight": 1.2,
-      "baseline": 208
+      "baseline": 206
     },
     {
       "type": "text",
@@ -867,7 +867,7 @@
       "containerId": null,
       "originalText": "GET project = {\n    projects: ProjectDTO[] | undefined\n}",
       "lineHeight": 1.2,
-      "baseline": 121
+      "baseline": 120
     },
     {
       "type": "rectangle",
@@ -932,7 +932,7 @@
       "containerId": null,
       "originalText": "Credential 1",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "rectangle",
@@ -1084,7 +1084,7 @@
       "containerId": null,
       "originalText": "Credential 2",
       "lineHeight": 1.2,
-      "baseline": 35
+      "baseline": 34
     },
     {
       "type": "text",
@@ -1120,7 +1120,7 @@
       "containerId": null,
       "originalText": "type ProjectSetting = {\n    ...\n    status?: 'new' | 'modified' | 'uploaded' // Current project status. When User gets a project from a external server, it always start as 'new'. When new data is collected, it changes to 'modified'. When a project is uploaded, it changes to 'uploaded'. If new data is added after a upload, it changes back to 'modified'.\n    rules: {\n        ...\n        forceUploadTo?: string               // Forces the app to upload the project and its media only to this url. This is not meant to hide your server API base url.\n    }\n}\n",
       "lineHeight": 1.2,
-      "baseline": 381
+      "baseline": 379
     },
     {
       "type": "rectangle",
@@ -1165,51 +1165,87 @@
       "locked": false
     },
     {
-      "id": "MF7upNikWgpXDMR9tQL3T",
       "type": "text",
-      "x": 5014.61101026888,
-      "y": -1905.6515629417895,
-      "width": 358.59375,
-      "height": 43.199999999999996,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#ffec99",
-      "fillStyle": "solid",
-      "strokeWidth": 4,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "roundness": null,
-      "seed": 1359056930,
       "version": 33,
       "versionNonce": 1093497854,
       "isDeleted": false,
-      "boundElements": null,
+      "id": "MF7upNikWgpXDMR9tQL3T",
+      "fillStyle": "solid",
+      "strokeWidth": 4,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "x": 5014.61101026888,
+      "y": -1905.6515629417895,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffec99",
+      "width": 358.59375,
+      "height": 43.199999999999996,
+      "seed": 1359056930,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "boundElements": [],
       "updated": 1696260201332,
       "link": null,
       "locked": false,
-      "text": "CredentialService",
       "fontSize": 36,
       "fontFamily": 3,
+      "text": "CredentialService",
       "textAlign": "left",
       "verticalAlign": "top",
-      "baseline": 35,
       "containerId": null,
       "originalText": "CredentialService",
-      "lineHeight": 1.2
+      "lineHeight": 1.2,
+      "baseline": 34
     },
     {
-      "id": "QTLSNuQGb8BFnWcuCVigq",
       "type": "text",
+      "version": 808,
+      "versionNonce": 228213822,
+      "isDeleted": false,
+      "id": "QTLSNuQGb8BFnWcuCVigq",
+      "fillStyle": "solid",
+      "strokeWidth": 4,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
       "x": 5008.895865882712,
       "y": -1814.2092527630923,
-      "width": 801.5625,
-      "height": 647.9999999999999,
-      "angle": 0,
       "strokeColor": "#1e1e1e",
       "backgroundColor": "#ffec99",
+      "width": 801.5625,
+      "height": 647.9999999999999,
+      "seed": 2130438946,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "boundElements": [],
+      "updated": 1696260201332,
+      "link": null,
+      "locked": false,
+      "fontSize": 36,
+      "fontFamily": 3,
+      "text": "- Responsável por possuir acesso\nao filesytem para criação do diretório\ne arquivo.\n\n- Não há necessidade de salvar em\ncache para visualização, já que o\narquivo terá conteúdo curto e\nconsequentemente rápido carregamento\n\n- Todas as credenciais podem ser\nsalvas em um único arquivo.\n\nfunções:\n    getCredentials(): CredentialDTO[]\n    saveCredential(Credential[]): void",
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "- Responsável por possuir acesso\nao filesytem para criação do diretório\ne arquivo.\n\n- Não há necessidade de salvar em\ncache para visualização, já que o\narquivo terá conteúdo curto e\nconsequentemente rápido carregamento\n\n- Todas as credenciais podem ser\nsalvas em um único arquivo.\n\nfunções:\n    getCredentials(): CredentialDTO[]\n    saveCredential(Credential[]): void",
+      "lineHeight": 1.2,
+      "baseline": 638
+    },
+    {
+      "id": "oGSM_ebDIVzqOSs-R47bA",
+      "type": "text",
+      "x": 5050.394367629901,
+      "y": -654.5939519787271,
+      "width": 3164.0625,
+      "height": 777.5999999999999,
+      "angle": 0,
+      "strokeColor": "#000000",
+      "backgroundColor": "#fa5252",
       "fillStyle": "solid",
       "strokeWidth": 4,
       "strokeStyle": "solid",
@@ -1218,22 +1254,22 @@
       "groupIds": [],
       "frameId": null,
       "roundness": null,
-      "seed": 2130438946,
-      "version": 808,
-      "versionNonce": 228213822,
+      "seed": 1866540115,
+      "version": 3977,
+      "versionNonce": 958350259,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1696260201332,
+      "updated": 1696476462715,
       "link": null,
       "locked": false,
-      "text": "- Responsável por possuir acesso\nao filesytem para criação do diretório\ne arquivo.\n\n- Não há necessidade de salvar em\ncache para visualização, já que o\narquivo terá conteúdo curto e\nconsequentemente rápido carregamento\n\n- Todas as credenciais podem ser\nsalvas em um único arquivo.\n\nfunções:\n    getCredentials(): CredentialDTO[]\n    saveCredential(Credential[]): void",
+      "text": "How can i synchronize the server database with repetitive uploads from the same project?\n\n    - All you need to do is replace the current entry with the new one. This is the fastest way without the need of complex code logic.\n    For example, by deleting the old project version from your database, just to save a newer and updated version to the database again.\n\nIf the employees of my company uploads a project with new sample/widget/input, how can i create a more sophisticate synchronization code,\nwith the purpose to maintain data the user deleted?\n\n    - In that case you need to focus on the ids of each element, to check wich one you don't have on you database, and witch ones you \n    have or its missing. This will allow you develop a custom REST CRUD api between your current database and the mobile app API for example.\n    The idea itself is simple, the work spent building it otherwise, depends on you database architecture.\n\n    - Overall, when sending a project to a user or employee, its expected that the rules of project are reconfigured to satisfy the company needs.\n    Meaning most of the time, its expected to projects to be restricted in terms of modifying/creating widgets.\n\n    - The app was design to give total freedom to create any server you need, and to send the data you or your employees collect direct to any server,\n    without the need to pass through a third party company.\n  ",
       "fontSize": 36,
       "fontFamily": 3,
       "textAlign": "left",
       "verticalAlign": "top",
-      "baseline": 640,
+      "baseline": 768,
       "containerId": null,
-      "originalText": "- Responsável por possuir acesso\nao filesytem para criação do diretório\ne arquivo.\n\n- Não há necessidade de salvar em\ncache para visualização, já que o\narquivo terá conteúdo curto e\nconsequentemente rápido carregamento\n\n- Todas as credenciais podem ser\nsalvas em um único arquivo.\n\nfunções:\n    getCredentials(): CredentialDTO[]\n    saveCredential(Credential[]): void",
+      "originalText": "How can i synchronize the server database with repetitive uploads from the same project?\n\n    - All you need to do is replace the current entry with the new one. This is the fastest way without the need of complex code logic.\n    For example, by deleting the old project version from your database, just to save a newer and updated version to the database again.\n\nIf the employees of my company uploads a project with new sample/widget/input, how can i create a more sophisticate synchronization code,\nwith the purpose to maintain data the user deleted?\n\n    - In that case you need to focus on the ids of each element, to check wich one you don't have on you database, and witch ones you \n    have or its missing. This will allow you develop a custom REST CRUD api between your current database and the mobile app API for example.\n    The idea itself is simple, the work spent building it otherwise, depends on you database architecture.\n\n    - Overall, when sending a project to a user or employee, its expected that the rules of project are reconfigured to satisfy the company needs.\n    Meaning most of the time, its expected to projects to be restricted in terms of modifying/creating widgets.\n\n    - The app was design to give total freedom to create any server you need, and to send the data you or your employees collect direct to any server,\n    without the need to pass through a third party company.\n  ",
       "lineHeight": 1.2
     }
   ],

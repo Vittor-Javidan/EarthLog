@@ -8,10 +8,11 @@ import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
+import { LC } from '../__LC__';
 
 export const Warning = memo((props: {
   question: string | undefined
-  onFinish: () => void
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -23,19 +24,11 @@ export const Warning = memo((props: {
 
   const onAccept = useCallback(async () => {
     await AlertService.runAcceptCallback();
-    props.onFinish();
-  }, [props.onFinish]);
+    props.closeModal();
+  }, [props.closeModal]);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           justifyContent: 'center',
@@ -45,14 +38,14 @@ export const Warning = memo((props: {
         <Text h3
           style={{
             textAlign: 'center',
-            padding: 10,
+            paddingHorizontal: 10,
           }}
         >
           {props.question ?? ''}
         </Text>
       </View>
       <Button.ConfirmSwipe
-        onCancel={() => props.onFinish()}
+        onCancel={() => props.closeModal()}
         onSwipe={async () => await onAccept()}
         buttonRadius={25}
         compensateMargin={30}
@@ -63,6 +56,6 @@ export const Warning = memo((props: {
           wrong: theme.wrong,
         }}
       />
-  </View>
+  </LC.PopUp>
   );
 });

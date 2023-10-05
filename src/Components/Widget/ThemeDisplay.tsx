@@ -57,7 +57,7 @@ const ThemeButtons = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widget.Root[config.language], []);
 
-  return ThemeService.themeNamesArray.Widget.map(themeName => (
+  const AllThemeButtons = ThemeService.themeNamesArray.Widget.map(themeName => (
     <ThemeButton
       key={themeName}
       title={R[themeName]}
@@ -65,6 +65,8 @@ const ThemeButtons = memo((props: {
       onPress={() => props.onPress(themeName)}
     />
   ));
+
+  return <>{AllThemeButtons}</>;
 });
 
 const ThemeButton = memo((props: {

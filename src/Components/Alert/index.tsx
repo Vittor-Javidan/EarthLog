@@ -40,7 +40,7 @@ export const AlertLayer = memo(() => {
             style={{
               flex: 1,
               backgroundColor: '#000',
-              opacity: 0.6,
+              opacity: 0.8,
             }}
           />
           <View
@@ -55,7 +55,7 @@ export const AlertLayer = memo(() => {
           >
             <Selector
               config={modalConfig}
-              onFinish={() => setShowModal(false)}
+              closeModal={() => setShowModal(false)}
             />
           </View>
         </View>
