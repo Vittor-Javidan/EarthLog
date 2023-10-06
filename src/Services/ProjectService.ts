@@ -1,6 +1,6 @@
 import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 
 export default class ProjectService {
@@ -89,6 +89,53 @@ export default class ProjectService {
       };
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+  // ===============================================================================================
+  // PROJECT MODIFICATION
+  // ===============================================================================================
+
+  /**
+   * Changes the ID of all elements inside a projectDTO.
+   * All IDs are changed by reference. No need to return a value;
+   */
+  static changeAllIDs(projectDTO: ProjectDTO): void {
+
+    projectDTO.projectSettings.id_project = UtilService.generateUuidV4();
+    changeAllWidgetsIds(projectDTO.projectWidgets);
+    changeAllWidgetsIds(projectDTO.template);
+    changeAllSamplesIds(projectDTO.samples);
+
+    function changeAllSamplesIds(sampleDTO: SampleDTO[]): void {
+      for (let i = 0; i < sampleDTO.length; i++) {
+        sampleDTO[i].sampleSettings.id_sample = UtilService.generateUuidV4();
+        changeAllWidgetsIds(sampleDTO[i].sampleWidgets);
+      }
+    }
+
+    function changeAllWidgetsIds(widgetDataArray: WidgetData[]): void {
+      for (let i = 0; i < widgetDataArray.length; i++) {
+        widgetDataArray[i].id_widget = UtilService.generateUuidV4();
+        changeAllInputsIds(widgetDataArray[i].inputs);
+      }
+    }
+
+    function changeAllInputsIds(inputDataArray: InputData[]): void {
+      for (let i = 0; i < inputDataArray.length; i++) {
+        inputDataArray[i].id_input = UtilService.generateUuidV4();
+      }
+    }
+  }
+
 
 
 

@@ -4,7 +4,6 @@ import { CredentialDTO } from '@Types/AppTypes';
 export default class AppAPI {
 
   credential: CredentialDTO;
-  accessToken: string = '';
   endpoints = {
     AUTH: '/auth',
     PROJECT: '/projects',
@@ -22,6 +21,7 @@ export default class AppAPI {
     signal: AbortSignal,
   ): Promise<Response> {
     return fetch(this.credential.rootURL + this.endpoints.AUTH, {
+      signal: signal,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,18 +30,17 @@ export default class AppAPI {
         user: this.credential.user,
         password: this.credential.password,
       }),
-      signal: signal,
     });
   }
 
   private async getProjects(accessToken: string, signal: AbortSignal) {
     return fetch(this.credential.rootURL + this.endpoints.PROJECT, {
+      signal: signal,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`,
       },
-      signal: signal,
     });
   }
 
@@ -104,7 +103,9 @@ export default class AppAPI {
         return;
       }
 
+      // TODO: add the "status" propertie on received projects here as "new".
       onSuccess(body.projects);
+      // ===========================
 
     } catch (error) {
 

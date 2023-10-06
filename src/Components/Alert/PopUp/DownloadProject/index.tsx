@@ -45,9 +45,7 @@ export const DownloadProjects = memo((props: {
 
   const onCancel = useCallback(() => {
     props.closeModal();
-    if (controller !== null) {
-      controller.abort();
-    }
+    controller.abort();
   }, [props.closeModal, controller]);
 
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
@@ -85,13 +83,17 @@ export const DownloadProjects = memo((props: {
     const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
+
+      if (allSelectedProjects[i].projectSettings.rules.allowMultipleDownloads) {
+        ProjectService.changeAllIDs(allSelectedProjects[i]);
+      }
+
       await ProjectService.createProject(
         allSelectedProjects[i],
-        () => {
-          CacheService.addToAllProjects(allSelectedProjects[i].projectSettings);
-        },
+        () => CacheService.addToAllProjects(allSelectedProjects[i].projectSettings),
         (errorMessage) => alert(errorMessage),
       );
+      // ======================================
     }
 
     await AlertService.runAcceptCallback();

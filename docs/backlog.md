@@ -1,6 +1,5 @@
-- implement the rules "allowMultipleDonwloads" to projects rules
-  - this rules will use the change the uuid of all elements of the project copied before create inside the phone.
 - add the status properties for downloaded/uploaded projects.
+
 - add the upload project button.
 - add all ProjectDownload pop translations
 - add a rule on widgets to no be deleted on template scope

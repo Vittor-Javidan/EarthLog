@@ -48,23 +48,11 @@ export const ProjectsDisplay = memo((props: {
               paddingBottom: 9,
             }}
           >
-            {'Available to download:'}
+            {'Projects available:'}
           </Text>
           {NewProjectButtons}
         </View>
       )}
-
-      {/* NOTE */}
-      <Text p
-        style={{
-          alignSelf: 'center',
-          paddingHorizontal: 10,
-          paddingBottom: 9,
-        }}
-      >
-        {'* Projects already downloaded will not be shown here. If you want to download a project again, delete the version saved on your device first.'}
-      </Text>
-
     </ScrollView>
   ) : <></>;
 });

@@ -26,6 +26,7 @@ export type ProjectSettings = {
   }
   gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
   rules: {
+    allowMultipleDownloads?: boolean                                                                // When true, the app will make a copy of the projects and replace the ids of all elements (project/samples/widgets/inputs) with new ones. This does not remove the need to give an id to all elements inside the project that will be copied.
     allowProjectNameChange?: boolean
     allowSampleAliasChange?: boolean
     allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
