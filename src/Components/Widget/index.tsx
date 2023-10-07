@@ -2,8 +2,7 @@ import React, { useMemo, useState, memo, useCallback, useTransition } from 'reac
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
-import { IconName } from '@Icon/index';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetDisplay, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
@@ -13,15 +12,12 @@ import ConfigService from '@Services/ConfigService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
-import { NavbarIconButton } from './NavbarIconButtons';
 import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
 import { useLocalSearchParams } from 'expo-router';
 import CacheService from '@Services/CacheService';
-
-type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
 export const Widget = memo((props: {
   widgetData: WidgetData
@@ -270,19 +266,15 @@ export const Widget = memo((props: {
     >
       <Navbar
         saved={saved}
+        isTemplate={props.widgetScope.type === 'template'}
+        display={display}
+        editInputs={editInputs}
+        onPress_DataDisplayButton={() => togleDataDisplay()}
+        onPress_EditButton={() => togleEditDisplay()}
+        onPress_ThemeButton={() => togleThemeDisplay()}
+        onPress_NewInputButton={() => togleNewInputDisplay()}
+        rules={widgetData.rules}
         theme={widgetTheme}
-        iconButtons={
-          <IconButtons
-            display={display}
-            editInputs={editInputs}
-            onPress_DataDisplayButton={() => togleDataDisplay()}
-            onPress_EditButton={() => togleEditDisplay()}
-            onPress_ThemeButton={() => togleThemeDisplay()}
-            onPress_NewInputButton={() => togleNewInputDisplay()}
-            rules={widgetData.rules}
-            theme={widgetTheme}
-          />
-        }
       />
       <View
         style={{
@@ -343,77 +335,4 @@ export const Widget = memo((props: {
       </View>
     </View>
   );
-});
-
-type Rules_IconButtons = {
-  showAddInputButton?: boolean
-  showOptionsButton?: boolean
-  showThemeButton?: boolean
-}
-
-const IconButtons = memo((props: {
-  editInputs: boolean
-  display: WidgetDisplay
-  rules: Rules_IconButtons
-  theme: WidgetThemeDTO
-  onPress_DataDisplayButton: () => void
-  onPress_EditButton: () => void
-  onPress_NewInputButton: () => void
-  onPress_ThemeButton: () => void
-}) => {
-
-  const buttonsData: {
-    iconName: IconName
-    selected: boolean
-    onPress: () => void
-  }[] = [{
-    iconName: 'pencil-sharp',
-    selected: props.display === 'data display' && !props.editInputs,
-    onPress: () => props.onPress_DataDisplayButton(),
-  }];
-
-  if (props.rules.showOptionsButton) {
-    buttonsData.push({
-      iconName: 'options-outline',
-      selected: props.display === 'data display' && props.editInputs,
-      onPress: () => props.onPress_EditButton(),
-    });
-  }
-
-  if (props.rules.showThemeButton) {
-    buttonsData.push({
-      iconName: 'color-palette',
-      selected: props.display === 'theme display',
-      onPress: () => props.onPress_ThemeButton(),
-    });
-  }
-
-  if (props.rules.showAddInputButton) {
-    buttonsData.push({
-      iconName: 'add-sharp',
-      selected: props.display === 'new input display',
-      onPress: () => props.onPress_NewInputButton(),
-    });
-  }
-
-  const Buttons = buttonsData.map((data, index) => {
-    const isLastIndex = index === buttonsData.length - 1;
-    return (
-      <NavbarIconButton
-        key={index}
-        iconName={data.iconName}
-        position={isLastIndex ? 'right' : 'other'}
-        selected={data.selected}
-        onPress={() => data.onPress()}
-        theme={{
-          font: props.theme.font,
-          background: props.theme.background,
-        }}
-      />
-    );
-  });
-
-  return (<>
-    {Buttons}
-  </>);
 });

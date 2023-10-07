@@ -1,1 +1,0 @@
-- Not having a way to hide the template widget deletion button without hide the its copied version.

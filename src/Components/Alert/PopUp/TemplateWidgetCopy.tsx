@@ -50,7 +50,10 @@ export const TemplateWidgetCopy = memo((props: {
   }, [props, R]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
-    if (widgetData.widgetName !== '') {
+    if (
+      widgetData.rules.template_AllowCopies === true &&
+      widgetData.widgetName                 !== ''
+    ) {
       return (
         <TemplateWidgetButton
           key={widgetData.id_widget}

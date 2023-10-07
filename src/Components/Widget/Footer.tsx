@@ -92,7 +92,7 @@ const AddToNewSampleButton = memo((props: {
   const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onChangeCheckbox = useCallback((checked: boolean) => {
-    if (props.rules.unlockAddToNewSamples) {
+    if (props.rules.template_unlockAddAutomatically) {
       props.onChangeCheckbox(checked);
       HapticsService.vibrate('success');
     }
@@ -115,14 +115,14 @@ const AddToNewSampleButton = memo((props: {
       />
       <Text p
         style={{
-          color: props.rules.unlockAddToNewSamples
+          color: props.rules.template_unlockAddAutomatically
             ? props.theme.font
             : props.theme.wrong,
         }}
       >
         {R['Add automatically']}
       </Text>
-      {!props.rules.unlockAddToNewSamples && (
+      {!props.rules.template_unlockAddAutomatically && (
         <View
           style={{ height: 20 }}
         >

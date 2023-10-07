@@ -1,5 +1,7 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.3.8 project rule "template_ShowDeleteButton_Widget"
+# 0.1.3.9 Widget Rules
 
-- Rule implemented.
+- "unlockAddToNewSamples" renamed to "template_unlockAddAutomatically"
+- "template_showOptionsButton" implemented
+- "template_AllowCopies" implemented

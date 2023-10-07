@@ -77,7 +77,9 @@ export type WidgetRules = {
   showDeleteButton_Inputs?: boolean
   showMoveButton_Inputs?: boolean
   template_ShowDeleteButton_Widget?: boolean
-  unlockAddToNewSamples?: boolean
+  template_showOptionsButton?: boolean
+  template_unlockAddAutomatically?: boolean
+  template_AllowCopies?: boolean
 }
 
 export type WidgetScope = {
@@ -91,6 +93,8 @@ export type WidgetScope = {
   id_project: string
   id_sample: string
 }
+
+export type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
 export type WidgetThemeDTO = {
   font: string
