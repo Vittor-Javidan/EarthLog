@@ -13,45 +13,57 @@ import { NavbarIconButton } from './NavbarIconButtons';
 
 export const Footer = memo((props: {
   addToNewSamples: boolean
-  showCheckbox: boolean
-  showDeleteWidgetButton: boolean
+  isTemplate: boolean
+  editInputs: boolean
   rules: WidgetRules
   theme: WidgetThemeDTO
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
 }) => {
-  return (props.showCheckbox || props.showDeleteWidgetButton) ? (
+  return (props.isTemplate || props.editInputs) ? (
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: props.showCheckbox ? 'space-between' : 'flex-end',
+        justifyContent: props.isTemplate ? 'space-between' : 'flex-end',
         alignItems: 'flex-end',
       }}
     >
-      <AddToNewSampleButton
-        showCheckbox={props.showCheckbox}
-        addToNewSamples={props.addToNewSamples}
-        onChangeCheckbox={(boolean) => props.onChangeCheckbox(boolean)}
-        rules={props.rules}
-        theme={props.theme}
-      />
-      <DeleteWidgetButton
-        showDeleteWidgetButton={props.showDeleteWidgetButton}
-        onDeleteWidget={() => props.onDeleteWidget()}
-        rules={props.rules}
-        theme={props.theme}
-      />
+      {props.isTemplate && (
+        <AddToNewSampleButton
+          addToNewSamples={props.addToNewSamples}
+          onChangeCheckbox={(boolean) => props.onChangeCheckbox(boolean)}
+          rules={props.rules}
+          theme={props.theme}
+        />
+      )}
+      {props.editInputs && (
+        <DeleteWidgetButton
+          isTemplate={props.isTemplate}
+          onDeleteWidget={() => props.onDeleteWidget()}
+          rules={props.rules}
+          theme={props.theme}
+        />
+      )}
     </View>
   ) : <></>;
 });
 
 const DeleteWidgetButton = memo((props: {
-  showDeleteWidgetButton: boolean
+  isTemplate: boolean
   rules: WidgetRules
   theme: WidgetThemeDTO
   onDeleteWidget: () => void
 }) => {
-  return (props.rules.showDeleteButton_Widget && props.showDeleteWidgetButton) ? (
+
+  const showButton = (
+    props.isTemplate &&
+    props.rules.template_ShowDeleteButton_Widget === true
+  ) || (
+    !props.isTemplate &&
+    props.rules.showDeleteButton_Widget === true
+  );
+
+  return showButton ? (
     <View
       style={{ height: 40 }}
     >
@@ -70,7 +82,6 @@ const DeleteWidgetButton = memo((props: {
 });
 
 const AddToNewSampleButton = memo((props: {
-  showCheckbox: boolean
   addToNewSamples: boolean
   rules: WidgetRules
   theme: WidgetThemeDTO
@@ -87,40 +98,40 @@ const AddToNewSampleButton = memo((props: {
     }
   }, [props.onChangeCheckbox, props.rules]);
 
-  return (props.showCheckbox ? (
-      <View
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 5,
+        paddingBottom: 5,
+        gap: 5,
+      }}
+    >
+      <Button.Checkbox
+        value={props.addToNewSamples}
+        onChange={(checked) => onChangeCheckbox(checked)}
+        theme={props.theme}
+      />
+      <Text p
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingHorizontal: 5,
-          paddingBottom: 5,
-          gap: 5,
+          color: props.rules.unlockAddToNewSamples
+            ? props.theme.font
+            : props.theme.wrong,
         }}
       >
-        <Button.Checkbox
-          value={props.addToNewSamples}
-          onChange={(checked) => onChangeCheckbox(checked)}
-          theme={props.theme}
-        />
-        <Text p
-          style={{
-            color: props.rules.unlockAddToNewSamples
-              ? props.theme.font
-              : props.theme.wrong,
-          }}
+        {R['Add automatically']}
+      </Text>
+      {!props.rules.unlockAddToNewSamples && (
+        <View
+          style={{ height: 20 }}
         >
-          {R['Add automatically']}
-        </Text>
-        {!props.rules.unlockAddToNewSamples && (
-          <View
-            style={{ height: 20 }}
-          >
-            <Icon
-              iconName="lock-closed"
-              color={props.theme.wrong}
-            />
-          </View>
-        )}
-      </View>
-    ) : <></>);
+          <Icon
+            iconName="lock-closed"
+            color={props.theme.wrong}
+          />
+        </View>
+      )}
+    </View>
+  );
 });

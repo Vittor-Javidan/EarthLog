@@ -332,8 +332,8 @@ export const Widget = memo((props: {
           )}
         </View>
         <Footer
-          showDeleteWidgetButton={editInputs}
-          showCheckbox={props.widgetScope.type === 'template'}
+          editInputs={editInputs}
+          isTemplate={props.widgetScope.type === 'template'}
           addToNewSamples={widgetData.addToNewSamples ?? false}
           onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}
           onDeleteWidget={() => deleteWidget()}

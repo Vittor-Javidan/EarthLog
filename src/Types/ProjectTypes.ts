@@ -76,6 +76,7 @@ export type WidgetRules = {
   showDeleteButton_Widget?: boolean
   showDeleteButton_Inputs?: boolean
   showMoveButton_Inputs?: boolean
+  template_ShowDeleteButton_Widget?: boolean
   unlockAddToNewSamples?: boolean
 }
 

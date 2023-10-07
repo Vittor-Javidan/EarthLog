@@ -1,4 +1,5 @@
-- add a rule on widgets to no be deleted on template scope
+- add a rule to not allow template copies
+- add a rule to not show options buttons for templates
 
 - add the project rule "deleteAfterUpload"
 
