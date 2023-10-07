@@ -34,6 +34,7 @@ export type ProjectSettings = {
     showCreateWidgetButton_Project?: boolean
     showCreateWidgetButton_Template?: boolean
     showSampleCreationButton?: boolean
+    deleteAfterUpload?: boolean
   }
   uploads?: {
     date: string
