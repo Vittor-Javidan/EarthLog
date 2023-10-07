@@ -1,5 +1,3 @@
-- add a location zone to project settings "upload.date" propertie, to add more context.
-
 - add a rule on widgets to no be deleted on template scope
 
 - add the project rule "deleteAfterUpload"
