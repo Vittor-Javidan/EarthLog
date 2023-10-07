@@ -94,7 +94,7 @@ export type ConfigDTO = {
 
 type modalPopUp = (
   'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy' |
-  'download project'
+  'download projects' | 'upload projects'
 )
 
 export type AlertModalConfig = {

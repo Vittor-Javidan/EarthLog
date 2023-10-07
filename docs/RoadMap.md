@@ -9,9 +9,10 @@
 + Boolean Widget
 + GPS Implementation
 + GPS Widget
-- TextWidget Speech to text
-- Server API communication
++ Design 2.0
++ Server API communication
 - Word/PDF/CSV/GPX export
+- TextWidget Speech to text
 - Photo Input
 - Photo Upload API
 - Subscription Implementation

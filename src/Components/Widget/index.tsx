@@ -18,6 +18,8 @@ import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
+import { useLocalSearchParams } from 'expo-router';
+import CacheService from '@Services/CacheService';
 
 type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
@@ -28,16 +30,18 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const id_project = useLocalSearchParams().id_project as string;
+  const config          = useMemo(() => ConfigService.config, []);
+  const R               = useMemo(() => translations.widget.Root[config.language], []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [_, startTransitions] = useTransition();
 
-  const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
-  const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
-  const [editLabel  , setEditLabel  ] = useState<boolean>(false);
-  const [editInputs , setEditInputs ] = useState<boolean>(false);
-  const [saved      , setSaved      ] = useState<boolean>(true);
-  const [display    , setDisplay    ] = useState<WidgetDisplay>('data display');
+  const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
+  const [tempLabel      , setTempLabel      ] = useState<string>(widgetData.widgetName);
+  const [editLabel      , setEditLabel      ] = useState<boolean>(false);
+  const [editInputs     , setEditInputs     ] = useState<boolean>(false);
+  const [saved          , setSaved          ] = useState<boolean>(true);
+  const [display        , setDisplay        ] = useState<WidgetDisplay>('data display');
 
   const defaultTheme = useMemo(() => ThemeService.widgetThemes['light'], []);
   const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
@@ -85,38 +89,50 @@ export const Widget = memo((props: {
     setEditInputs(false);
   }, [selectDisplay]);
 
-  const save = useCallback((widgetData: WidgetData) => {
+  const save = useCallback(async (widgetData: WidgetData) => {
 
-    if (props.widgetScope.type === 'project') {
-      ProjectService.updateWidget_Project(
-        props.widgetScope.id_project,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
+    // TODO: extract this save function to outside this component. This will become a autosaveHook in the futures.
+
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
       );
-      return;
     }
 
-    if (props.widgetScope.type === 'template') {
-      ProjectService.updateWidget_Template(
-        props.widgetScope.id_project,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
-      );
-      return;
+    switch (props.widgetScope.type) {
+
+      case 'project': {
+        await ProjectService.updateWidget_Project(
+          props.widgetScope.id_project,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'template': {
+        await ProjectService.updateWidget_Template(
+          props.widgetScope.id_project,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'sample': {
+        await ProjectService.updateWidget_Sample(
+          props.widgetScope.id_project,
+          props.widgetScope.id_sample,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
     }
 
-    if (props.widgetScope.type === 'sample') {
-      ProjectService.updateWidget_Sample(
-        props.widgetScope.id_project,
-        props.widgetScope.id_sample,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
-      );
-      return;
-    }
   }, [props.widgetScope]);
 
   const onEditLabel = useCallback(() => {
@@ -145,6 +161,7 @@ export const Widget = memo((props: {
   }, [togleNewInputDisplay, save]);
 
   const onConfirmInput = useCallback((inputData: InputData | null, status: InputStatus) => {
+
     if (status === 'modifying') {
       setSaved(false);
       return;

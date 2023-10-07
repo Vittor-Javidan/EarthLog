@@ -8,6 +8,7 @@ import { CreateProject } from './PopUp/CreateProject';
 import { CreateSample } from './PopUp/CreateSample';
 import { TemplateWidgetCopy } from './PopUp/TemplateWidgetCopy';
 import { DownloadProjects } from './PopUp/DownloadProject';
+import { UploadProjects } from './PopUp/UploadProject';
 
 export const Selector = memo((props: {
   config: AlertModalConfig
@@ -44,8 +45,14 @@ export const Selector = memo((props: {
         closeModal={() => props.closeModal()}
       />
     );
-    case 'download project': return (
+    case 'download projects': return (
       <DownloadProjects
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'upload projects': return (
+      <UploadProjects
+        id_project={props.config.id_project}
         closeModal={() => props.closeModal()}
       />
     );

@@ -24,25 +24,32 @@ export type ProjectSettings = {
     singular: string
     plural: string
   }
-  gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
+  gps?: GPS_DTO
+  status?: ProjectStatus
   rules: {
-    allowMultipleDownloads?: boolean                                                                // When true, the app will make a copy of the projects and replace the ids of all elements (project/samples/widgets/inputs) with new ones. This does not remove the need to give an id to all elements inside the project that will be copied.
+    allowMultipleDownloads?: boolean
     allowProjectNameChange?: boolean
     allowSampleAliasChange?: boolean
-    allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
+    allowGPSChange?: boolean
     showCreateWidgetButton_Project?: boolean
     showCreateWidgetButton_Template?: boolean
     showSampleCreationButton?: boolean
   }
+  uploads?: {
+    date: string
+    url: string
+  }[]
 }
+
+export type ProjectStatus = 'uploaded' | 'modified'
 
 export type SampleSettings = {
   id_sample: ID
   name: string
-  gps?: GPS_DTO                                                                                     //Hide GPSInput if undefined
+  gps?: GPS_DTO
   rules: {
     allowSampleNameChange?: boolean
-    allowGPSChange?: boolean                                                                        //Hide GPSInput if both this and gps undefined
+    allowGPSChange?: boolean
     showCreateWidgetButton?: boolean
     showCopyWidgetFromTemplateButton?: boolean
   }
@@ -53,12 +60,12 @@ export type SampleSettings = {
 // =================================================================================================
 
 export type WidgetData = {
-  id_widget: ID                                                                                     // No not share same id between Widgets, because its used to name actual folders inside user device, so it can leads into to crash or unexpected behaviors. Use ids validated by this regex: /^[0-9A-Za-z-]+$/
-  widgetName: string                                                                                // You can use scape sequence on strings here, without break app layout, like "\n", "\t", etc.
+  id_widget: ID
+  widgetName: string
   inputs: InputData[]
   rules: WidgetRules
-  addToNewSamples?: boolean                                                                         // Used by template screen to auto add a Widget on new Samples user creates
-  widgetTheme?: WidgetThemeDTO                                                                      // When undefine, it renders with default theme
+  addToNewSamples?: boolean
+  widgetTheme?: WidgetThemeDTO
 }
 
 export type WidgetRules = {
@@ -85,13 +92,13 @@ export type WidgetScope = {
 }
 
 export type WidgetThemeDTO = {
-  font: string                                                                                      // Defines color for fonts and Inputs Borders
-  font_placeholder: string                                                                          // Defines color font for placeholders
-  background: string                                                                                // Defines color for Widget static background color.
-  confirm: string                                                                                   // Defines a color for confirm feedback. Ex: "True" value on boolean Input; Confirm button when editing input label name; Saved feedback.
-  wrong: string                                                                                     // Defines a color for negation feedback. Ex: "False" value on boolean input; Trash color on input.
-  modified: string                                                                                  // Defines a color for changes feedback. Ex: "Saved" status changing to "Saving" status on top left Widget corner.
-  disabled: string                                                                                  // Defines a color for disabled things. Ex: When N/A is clicked on a boolean input, turning the switch and boolean value to disbled color.
+  font: string
+  font_placeholder: string
+  background: string
+  confirm: string
+  wrong: string
+  modified: string
+  disabled: string
 }
 
 // =================================================================================================
@@ -109,34 +116,34 @@ export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
 export type StringInputData = {
-  id_input: ID                                                                                      // Do not share same id betweens Inputs of the same Widget. this can lead into unexpected behavior.
-  label: string                                                                                     // Max of 25 characteres. More than this can break input label layout render. App will not allow you to edit the label in app if you pass this threshold.
-  type: 'string'                                                                                    // Without this value, the apps cannot recognize the existence of the input
-  value: string                                                                                     // The actual value of the input
-  placeholder?: string                                                                              // Customize the placeholder text for your Text input.
-  lockedLabel?: boolean                                                                             // Locks input label to not be changed.
-  lockedData?: boolean                                                                              // Locks input data, to not be modified, and just displayed.
+  id_input: ID
+  label: string
+  type: 'string'
+  value: string
+  placeholder?: string
+  lockedLabel?: boolean
+  lockedData?: boolean
 }
 
 // ============================
 export type BooleanInputData = {
-  id_input: ID                                                                                      // Do not share same id betweens Inputs of the same Widget. this can lead into unexpected behavior.
-  label: string                                                                                     // Max of 25 characteres. More than this can break input label layout render. App will not allow you to edit the label in app if you pass this threshold.
-  type: 'boolean'                                                                                   // Without this value, the apps cannot recognize the existence of the input
-  value: boolean                                                                                    // The actual value of the input
-  notApplicable?: boolean                                                                           // Shows "N/A" option on boolean inputs when not undefined. Use this when just true or false is not enough.
-  lockedLabel?: boolean                                                                             // Locks input label to not be changed.
-  lockedData?: boolean                                                                              // Locks input data, to not be modified, and just displayed.
+  id_input: ID
+  label: string
+  type: 'boolean'
+  value: boolean
+  notApplicable?: boolean
+  lockedLabel?: boolean
+  lockedData?: boolean
 }
 
 // ============================
 export type  GPSInputData = {
-  id_input: ID                                                                                      // Do not share same id betweens Inputs of the same Widget. this can lead into unexpected behavior.
-  label: string                                                                                     // Max of 25 characteres. More than this can break input label layout render. App will not allow you to edit the label in app if you pass this threshold.
-  type: 'gps'                                                                                       // Without this value, the apps cannot recognize the existence of the input
-  value: GPS_DTO                                                                                    // The actual value of the input
-  lockedLabel?: boolean                                                                             // Locks input label to not be changed.
-  lockedData?: boolean                                                                              // Locks input data, to not be modified, and just displayed.
+  id_input: ID
+  label: string
+  type: 'gps'
+  value: GPS_DTO
+  lockedLabel?: boolean
+  lockedData?: boolean
 }
 export type GPS_DTO = {
   coordinates?: CoordinateDTO

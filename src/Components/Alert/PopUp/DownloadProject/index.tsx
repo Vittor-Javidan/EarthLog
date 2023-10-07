@@ -22,6 +22,7 @@ export const DownloadProjects = memo((props: {
   const controller = useMemo(() => new AbortController(), []);
   const [allProjects     , setAllProjects        ] = useState<ProjectDTO[] | null>(null);
   const [selectedProjects, setAllSelectedProjects] = useState<Record<string, boolean>>({});
+  const [hideAcceptButton, setHideConfirmButton  ] = useState<boolean>(false);
   const [error           , setError              ] = useState<string | null>(null);
   const [loading         , setLoading            ] = useState<Loading>('Loaded');
 
@@ -41,6 +42,11 @@ export const DownloadProjects = memo((props: {
   ;
   const showLoadingDisplay =
     loading     === 'Loading'
+  ;
+  const showConfirmButtons =
+    showProjectsDownloadedDisplay             &&
+    Object.keys(selectedProjects).length > 0  &&
+    !hideAcceptButton
   ;
 
   const onCancel = useCallback(() => {
@@ -66,9 +72,7 @@ export const DownloadProjects = memo((props: {
   const onSelectProject = useCallback((project_id: string, selected: boolean) => {
     setAllSelectedProjects(prev => {
       const newRecord = { ...prev };
-      selected === true
-      ? newRecord[project_id] = selected
-      : delete newRecord[project_id];
+      selected === true ? newRecord[project_id] = selected : delete newRecord[project_id];
       return newRecord;
     });
   }, []);
@@ -79,13 +83,19 @@ export const DownloadProjects = memo((props: {
       return;
     }
 
+    setLoading('Loading');
+    setHideConfirmButton(true);
+
     const allSelectedProjectsKeys = Object.keys(selectedProjects);
     const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
 
-      if (allSelectedProjects[i].projectSettings.rules.allowMultipleDownloads) {
+      const { rules } = allSelectedProjects[i].projectSettings;
+
+      if (rules.allowMultipleDownloads) {
         ProjectService.changeAllIDs(allSelectedProjects[i]);
+        delete rules.allowMultipleDownloads;
       }
 
       await ProjectService.createProject(
@@ -93,7 +103,6 @@ export const DownloadProjects = memo((props: {
         () => CacheService.addToAllProjects(allSelectedProjects[i].projectSettings),
         (errorMessage) => alert(errorMessage),
       );
-      // ======================================
     }
 
     await AlertService.runAcceptCallback();
@@ -120,7 +129,7 @@ export const DownloadProjects = memo((props: {
         showDisplay={showLoadingDisplay}
       />
       <FooterButtons
-        showConfirmButton={showProjectsDownloadedDisplay && Object.keys(selectedProjects).length > 0}
+        showConfirmButton={showConfirmButtons}
         onCancel={() => onCancel()}
         onConfirm={async () => await onConfirm()}
       />

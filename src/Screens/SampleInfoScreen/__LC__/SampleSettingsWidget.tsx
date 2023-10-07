@@ -21,9 +21,10 @@ export default function SampleSettingsWidget(props: {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.widgetThemes['light'], []);
-  const R      = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.widgetThemes['light'], []);
+  const R               = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
@@ -57,8 +58,18 @@ export default function SampleSettingsWidget(props: {
     }
   }
 
-  function save(sampleSettings: SampleSettings, type: 'name update' | 'gps update') {
-    ProjectService.updateSample(
+  async function save(sampleSettings: SampleSettings, type: 'name update' | 'gps update') {
+
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    await ProjectService.updateSample(
       id_project,
       sampleSettings,
       () => {

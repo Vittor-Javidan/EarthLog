@@ -183,7 +183,7 @@ export default class CacheService {
    * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
    */
   static addToAllSamples(sampleSettings: SampleSettings): void {
-    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
+    this.allSamples = [...this.allSamples, UtilService.deepCopy(sampleSettings)];
   }
 
   /**

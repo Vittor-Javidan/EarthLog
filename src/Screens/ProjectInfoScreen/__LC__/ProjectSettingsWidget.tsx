@@ -87,6 +87,11 @@ export default function ProjectSettingsWidget(props: {
   }
 
   function save(projectSettings: ProjectSettings) {
+
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+    }
+
     ProjectService.updateProject(
       projectSettings,
       () => {

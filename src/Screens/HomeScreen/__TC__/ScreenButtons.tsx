@@ -22,7 +22,7 @@ export default function ScreenButtons(props: {
 
   const downloadProjects = useCallback(async () => {
     await AlertService.handleAlert(true, {
-      type: 'download project',
+      type: 'download projects',
     }, () => props.onProjectCreation());
   }, [props.onProjectCreation]);
 

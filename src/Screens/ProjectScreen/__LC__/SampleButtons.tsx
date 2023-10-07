@@ -29,7 +29,7 @@ export default function SampleButtons() {
 
   return (
     <FlatList
-      data={CacheService.allSamples}
+      data={CacheService.allSamples.slice().reverse()}
       maxToRenderPerBatch={5}
       initialNumToRender={5}
       keyExtractor={(item) => item.id_sample}

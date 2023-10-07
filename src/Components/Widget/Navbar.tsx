@@ -4,6 +4,8 @@ import { View } from 'react-native';
 import { SaveFeedback } from './SaveFeedback';
 import { WidgetThemeDTO } from '@Types/ProjectTypes';
 
+// TODO: Import the iconbuttons to this file.
+
 export const Navbar = memo((props: {
   saved: boolean
   iconButtons: JSX.Element

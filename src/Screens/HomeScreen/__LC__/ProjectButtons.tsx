@@ -10,6 +10,8 @@ import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
+import { ProjectStatus } from '@Types/ProjectTypes';
 
 export default function ProjectButtons() {
 
@@ -22,6 +24,7 @@ export default function ProjectButtons() {
       <ProjectButton
         key={settings.id_project}
         title={settings.name}
+        status = {settings.status}
         onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
         theme={theme}
       />
@@ -68,10 +71,13 @@ export default function ProjectButtons() {
 
 function ProjectButton(props: {
   title: string
+  status?: ProjectStatus
   theme: {
     font_Button: string;
     background: string;
     background_Button: string;
+    confirm: string;
+    warning: string
   }
   onPress: () => void
 }) {
@@ -94,12 +100,27 @@ function ProjectButton(props: {
       onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
+        gap: 5,
         backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
       }}
     >
+      {props.status !== undefined && (
+        <View
+          style={{
+            height: 15,
+          }}
+        >
+          <Icon
+            iconName={props.status === 'uploaded' ? 'cloud' : 'cloud-upload' }
+            color={props.status === 'uploaded' ? props.theme.confirm : props.theme.warning}
+          />
+        </View>
+      )}
       <Text h3
         style={{
           color: props.theme.font_Button,

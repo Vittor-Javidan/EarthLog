@@ -237,7 +237,7 @@ export default class DatabaseService {
     // ADD TO ALL SAMPLES INDEX
     await this.updateIndexFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`,
-      [id_sample, ...allSamplesIDs]
+      [...allSamplesIDs, id_sample]
     );
 
     // CREATE MAIN FOLDER

@@ -101,7 +101,7 @@ export default class ProjectService {
 
 
   // ===============================================================================================
-  // PROJECT MODIFICATION
+  // OTHER PROJECT METHODS
   // ===============================================================================================
 
   /**
@@ -151,7 +151,10 @@ export default class ProjectService {
   // BASIC DATABASE METHODS
   // ===============================================================================================
 
-  static async buildProject(project_id: string): Promise<ProjectDTO> {
+  /**
+   * Use this to retrive a ProjectDTO from database
+   */
+  static async buildProjectFromDatabase(project_id: string): Promise<ProjectDTO> {
 
     // INITAL PROJECT STRUCTURE
     const projectDTO: ProjectDTO = {
