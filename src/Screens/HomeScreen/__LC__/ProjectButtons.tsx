@@ -94,6 +94,14 @@ function ProjectButton(props: {
     HapticsService.vibrate('success');
   }
 
+  const iconColor = (
+    props.status === 'uploaded' || props.status === 'first upload'
+  ) ? props.theme.confirm : props.theme.warning;
+
+  const iconName = (
+    props.status === 'uploaded' || props.status === 'first upload'
+  ) ? 'cloud' : 'cloud-upload';
+
   return (
     <Pressable
       onPressIn={() => onPressIn()}
@@ -116,8 +124,8 @@ function ProjectButton(props: {
           }}
         >
           <Icon
-            iconName={props.status === 'uploaded' ? 'cloud' : 'cloud-upload' }
-            color={props.status === 'uploaded' ? props.theme.confirm : props.theme.warning}
+            iconName={iconName}
+            color={iconColor}
           />
         </View>
       )}

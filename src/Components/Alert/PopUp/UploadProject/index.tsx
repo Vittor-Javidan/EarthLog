@@ -56,14 +56,24 @@ export const UploadProjects = memo((props: {
       url: credential.rootURL,
     });
 
+    // UPLOAD STATUS ===========================
+    if (!projectDTO.projectSettings.status) {
+      projectDTO.projectSettings.status = 'first upload';
+    }
+
     // UPLOAD REQUEST ======================================
     const appAPI = new AppAPI(credential);
     await appAPI.uploadProject(controller.signal, projectDTO,
       async () => {
-        projectDTO.projectSettings.rules.deleteAfterUpload
-          ? await deleteProject(projectDTO)
-          : await updateProjectStatus(projectDTO)
-        ;
+        if (!projectDTO.projectSettings.rules.deleteAfterUpload) {
+          projectDTO.projectSettings.status = 'uploaded';
+          await ProjectService.updateProject(projectDTO.projectSettings,
+            () => CacheService.updateCache_ProjectSettings(projectDTO.projectSettings),
+            (errorMessage) => alert(errorMessage),
+          );
+        } else {
+          await deleteProject(projectDTO);
+        }
         await AlertService.runAcceptCallback();
         props.closeModal();
       },
@@ -86,14 +96,6 @@ export const UploadProjects = memo((props: {
         navigate('HOME SCOPE');
       },
       (errorMessage) => alert(errorMessage)
-    );
-  }, []);
-
-  const updateProjectStatus = useCallback(async (projectDTO: ProjectDTO) => {
-    projectDTO.projectSettings.status = 'uploaded';
-    await ProjectService.updateProject(projectDTO.projectSettings,
-      () => CacheService.updateCache_ProjectSettings(projectDTO.projectSettings),
-      (errorMessage) => alert(errorMessage),
     );
   }, []);
 

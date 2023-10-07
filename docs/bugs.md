@@ -1,0 +1,1 @@
+- Not being able to hide create Sample buttons from ProjectSettings rules.

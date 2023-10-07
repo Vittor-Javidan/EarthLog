@@ -1,5 +1,3 @@
-- add the project rule "deleteAfterUpload"
-
 - add popUp translations
 
 - remove any opacity usage on button pressing

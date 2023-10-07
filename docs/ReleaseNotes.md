@@ -1,5 +1,6 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.3.10 Project Rules
+# 0.1.3.11 Project Status
 
-- "deleteAfterUpload" implemented.
+- now the app changes the project status automatically to "uploaded" if the status comes as "first upload" or "modified".
+- Now server are able to send a message to app when status is not 2XX.

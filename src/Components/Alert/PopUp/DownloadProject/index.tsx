@@ -93,10 +93,19 @@ export const DownloadProjects = memo((props: {
 
       const { rules } = allSelectedProjects[i].projectSettings;
 
+      // Project Settings Treatment ================================
       if (rules.allowMultipleDownloads) {
         ProjectService.changeAllIDs(allSelectedProjects[i]);
         delete rules.allowMultipleDownloads;
       }
+
+      if (
+        allSelectedProjects[i].projectSettings.status === 'first upload' ||
+        allSelectedProjects[i].projectSettings.status === 'modified'
+      ) {
+        allSelectedProjects[i].projectSettings.status = 'uploaded';
+      }
+      // ===========================================================
 
       await ProjectService.createProject(
         allSelectedProjects[i],

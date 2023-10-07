@@ -170,11 +170,13 @@ export default class AppAPI {
       // POST PROJECT ======================================================
       const response = await this.postProject(authBody.accessToken, signal, projectDTO);
       if (!response.ok) {
+        const serverMessage = response.headers.get('serverMessage');
         onError(
           'It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.' +
           '\nMethod: POST' +
           '\nEndpoint: /project' +
-          `\nStatus: ${response.status}`
+          `\nStatus: ${response.status}` +
+          `${serverMessage !== null ? `\nServer Message: ${serverMessage}` : ''}`
         );
         return;
       }

@@ -42,7 +42,7 @@ export type ProjectSettings = {
   }[]
 }
 
-export type ProjectStatus = 'uploaded' | 'modified'
+export type ProjectStatus = 'uploaded' | 'modified' | 'first upload'
 
 export type SampleSettings = {
   id_sample: ID
