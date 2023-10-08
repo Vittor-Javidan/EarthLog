@@ -92,16 +92,18 @@ export type ConfigDTO = {
   appTheme: ThemeNames_APP
 }
 
-type modalPopUp = (
-  'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy' |
-  'download projects' | 'upload projects'
-)
-
 export type AlertModalConfig = {
-  type: modalPopUp
-  id_project?: string
-  id_sample?: string
-  question?: string
+  type: 'exit app' | 'project creation' | 'download projects'
+} | {
+  type: 'sample creation' | 'upload projects'
+  id_project: string
+} | {
+  type: 'template widget copy'
+  id_project: string
+  id_sample: string
+} | {
+  type: 'warning'
+  question: string
 }
 
 export type RegexRules = {

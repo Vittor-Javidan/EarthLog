@@ -49,11 +49,6 @@ export const DownloadProjects = memo((props: {
     !hideAcceptButton
   ;
 
-  const onCancel = useCallback(() => {
-    props.closeModal();
-    controller.abort();
-  }, [props.closeModal, controller]);
-
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
     setLoading('Loading');
     const appAPI = new AppAPI(credential);
@@ -90,27 +85,13 @@ export const DownloadProjects = memo((props: {
     const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
-
-      const { rules } = allSelectedProjects[i].projectSettings;
-
-      // Project Settings Treatment ================================
-      if (rules.allowMultipleDownloads) {
-        ProjectService.changeAllIDs(allSelectedProjects[i]);
-        delete rules.allowMultipleDownloads;
-      }
-
-      if (
-        allSelectedProjects[i].projectSettings.status === 'first upload' ||
-        allSelectedProjects[i].projectSettings.status === 'modified'
-      ) {
-        allSelectedProjects[i].projectSettings.status = 'uploaded';
-      }
-      // ===========================================================
-
-      await ProjectService.createProject(
-        allSelectedProjects[i],
-        () => CacheService.addToAllProjects(allSelectedProjects[i].projectSettings),
-        (errorMessage) => alert(errorMessage),
+      const processedProject = dataProcessingAfterDownload(allSelectedProjects[i]);
+      await ProjectService.createProject(processedProject,
+        () => CacheService.addToAllProjects(processedProject.projectSettings),
+        (errorMessage) => {
+          setError(errorMessage);
+          setLoading('Loaded');
+        },
       );
     }
 
@@ -118,6 +99,29 @@ export const DownloadProjects = memo((props: {
     props.closeModal();
 
   }, [props.closeModal, allProjects, selectedProjects]);
+
+  const dataProcessingAfterDownload = useCallback((projectDTO: ProjectDTO) => {
+
+    const { rules, status } = projectDTO.projectSettings;
+
+    // Project Settings Treatment ============
+    if (rules.allowMultipleDownloads) {
+      ProjectService.changeAllIDs(projectDTO);
+      delete rules.allowMultipleDownloads;
+    }
+
+    // Status project was uploaded before ===================
+    if (status === 'first upload' || status === 'modified') {
+      projectDTO.projectSettings.status = 'uploaded';
+    }
+
+    return projectDTO;
+  }, []);
+
+  const onCancel = useCallback(() => {
+    props.closeModal();
+    controller.abort();
+  }, [props.closeModal]);
 
   return (
     <LC.PopUp>

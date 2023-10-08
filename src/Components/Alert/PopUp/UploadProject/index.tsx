@@ -1,6 +1,8 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO, Loading } from '@Types/AppTypes';
+import { ProjectDTO } from '@Types/ProjectTypes';
+import { navigate } from '@Globals/NavigationControler';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import UtilService from '@Services/UtilService';
@@ -12,20 +14,13 @@ import { CredentialsDisplay } from './CredentialsDisplay';
 import { ErrorDisplay } from './ErrorDisplay';
 import { LoadingDisplay } from './LoadingDisplay';
 import { FooterButtons } from './FooterButtons';
-import { ProjectDTO } from '@Types/ProjectTypes';
-import { navigate } from '@Globals/NavigationControler';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 
 export const UploadProjects = memo((props: {
-  id_project: string | undefined
+  id_project: string
   closeModal: () => void
 }) => {
 
   const controller = useMemo(() => new AbortController(), []);
-  const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
-
   const [error   , setError  ] = useState<string | null>(null);
   const [loading , setLoading] = useState<Loading>('Loaded');
 
@@ -33,52 +28,17 @@ export const UploadProjects = memo((props: {
   const showErrorDisplay       = error !== null && loading === 'Loaded';
   const showLoadingDisplay     = loading === 'Loading';
 
-  const onCancel = useCallback(() => {
-    props.closeModal();
-    controller.abort();
-  }, [props.closeModal, controller]);
-
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
     setLoading('Loading');
-    if (props.id_project === undefined) {
-      setError(R['Project ID undefined']);
-      setLoading('Loaded');
-      return;
-    }
-    await uploadProject(credential,
-      await ProjectService.buildProjectFromDatabase(props.id_project)
-    );
-  }, []);
+    const project = await ProjectService.buildProjectFromDatabase(props.id_project);
+    await uploadProject(credential, project);
+  }, [props.id_project]);
 
   const uploadProject = useCallback(async (credential: CredentialDTO, projectDTO: ProjectDTO) => {
-
-    // UPLOAD ENTRY ==========================
-    if (!projectDTO.projectSettings.uploads) {
-      projectDTO.projectSettings.uploads = [];
-    }
-    projectDTO.projectSettings.uploads.push({
-      date: UtilService.getCurrentDateTime(),
-      url: credential.rootURL,
-    });
-
-    // UPLOAD STATUS ===========================
-    if (!projectDTO.projectSettings.status) {
-      projectDTO.projectSettings.status = 'first upload';
-    }
-
-    // UPLOAD REQUEST ======================================
-    const appAPI = new AppAPI(credential);
-    await appAPI.uploadProject(controller.signal, projectDTO,
+    const processedProject = dataProcessingBeforeUpload(credential, projectDTO);
+    await new AppAPI(credential).uploadProject(controller.signal, processedProject,
       async () => {
-        if (!projectDTO.projectSettings.rules.deleteAfterUpload) {
-          projectDTO.projectSettings.status = 'uploaded';
-          await ProjectService.updateProject(projectDTO.projectSettings,
-            () => CacheService.updateCache_ProjectSettings(projectDTO.projectSettings),
-            (errorMessage) => alert(errorMessage),
-          );
-        } else {
-          await deleteProject(projectDTO);
-        }
+        await dataProcessingAfterUpload(processedProject);
         await AlertService.runAcceptCallback();
         props.closeModal();
       },
@@ -89,20 +49,59 @@ export const UploadProjects = memo((props: {
     );
   }, []);
 
-  const deleteProject = useCallback(async (projectDTO: ProjectDTO) => {
-    const { id_project } = projectDTO.projectSettings;
-    const isLatOpenProject = CacheService.lastOpenProject.id_project === id_project;
-    await ProjectService.deleteProject(
-      id_project,
-      async () => {
-        if (isLatOpenProject) {
-          await CacheService.deleteLastOpenProject();
-        }
-        navigate('HOME SCOPE');
-      },
-      (errorMessage) => alert(errorMessage)
-    );
+  const dataProcessingBeforeUpload = useCallback((credential: CredentialDTO, projectDTO: ProjectDTO) => {
+
+    // Upload Date/Time entry ================
+    projectDTO.projectSettings.uploads ??= [];
+    projectDTO.projectSettings.uploads.push({
+      date: UtilService.getCurrentDateTime(),
+      url: credential.rootURL,
+    });
+
+    // First upload status ===================
+    if (!projectDTO.projectSettings.status) {
+      projectDTO.projectSettings.status = 'first upload';
+    }
+
+    return projectDTO;
   }, []);
+
+  const dataProcessingAfterUpload = useCallback(async (projectDTO: ProjectDTO) => {
+
+    const { projectSettings } = projectDTO;
+    const { rules, id_project } = projectSettings;
+
+    if (rules.deleteAfterUpload === true) {
+      await ProjectService.deleteProject(id_project,
+        async () => {
+          if (CacheService.lastOpenProject.id_project === id_project) {
+            await CacheService.deleteLastOpenProject();
+          }
+          navigate('HOME SCOPE');
+        },
+        (errorMessage) => {
+          setError(errorMessage);
+          setLoading('Loaded');
+        }
+      );
+      return;
+    }
+
+    projectSettings.status = 'uploaded';
+    await ProjectService.updateProject(projectSettings,
+      () => CacheService.updateCache_ProjectSettings(projectSettings),
+      (errorMessage) => {
+        setError(errorMessage);
+        setLoading('Loaded');
+      },
+    );
+
+  }, []);
+
+  const onCancel = useCallback(() => {
+    props.closeModal();
+    controller.abort();
+  }, [props.closeModal]);
 
   return (
     <LC.PopUp>
