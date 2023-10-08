@@ -1,6 +1,6 @@
-import uuid from 'react-native-uuid';
+import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 
 export default class ProjectService {
@@ -9,14 +9,10 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
-  static generateUuidV4(): string {
-    return uuid.v4() as string;
-  }
-
   static getDefaultProjectTemplate(): ProjectDTO {
     return {
       projectSettings: {
-        id_project: this.generateUuidV4(),
+        id_project: UtilService.generateUuidV4(),
         name: '',
         gps: {},
         sampleAlias: {
@@ -30,6 +26,7 @@ export default class ProjectService {
           showCreateWidgetButton_Project: true,
           showCreateWidgetButton_Template: true,
           showSampleCreationButton: true,
+          addGPSToNewSamples: true,
         },
       },
       projectWidgets: [],
@@ -38,12 +35,19 @@ export default class ProjectService {
     };
   }
 
-  static getDefaultSampleSettings(): SampleSettings {
+  /**
+   * @param rules When undefined, every rule will be enabled by default.
+   */
+  static getDefaultSampleSettings(options: {
+    name?: string
+    rules?: SampleRules,
+    gps?: GPS_DTO
+  }): SampleSettings {
     return {
-      id_sample: this.generateUuidV4(),
-      name: '',
-      gps: {},
-      rules: {
+      id_sample: UtilService.generateUuidV4(),
+      name: options.name ?? '',
+      gps: options.gps,
+      rules: options.rules ?? {
         allowGPSChange: true,
         allowSampleNameChange: true,
         showCreateWidgetButton: true,
@@ -54,7 +58,7 @@ export default class ProjectService {
 
   static getWidgetData() : WidgetData {
     return {
-      id_widget: this.generateUuidV4(),
+      id_widget: UtilService.generateUuidV4(),
       widgetName: '',
       inputs: [],
       rules: {
@@ -65,7 +69,7 @@ export default class ProjectService {
         showDeleteButton_Widget: true,
         showDeleteButton_Inputs: true,
         showMoveButton_Inputs: true,
-        unlockAddToNewSamples: true,
+        template_unlockAddAutomatically: true,
       },
     };
   }
@@ -73,20 +77,20 @@ export default class ProjectService {
   static getInputData(inputType: InputTypes): InputData {
     switch (inputType) {
       case 'boolean': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'boolean',
         value: false,
         notApplicable: true,
       };
       case 'string': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'string',
         value: '',
       };
       case 'gps': return {
-        id_input: this.generateUuidV4(),
+        id_input: UtilService.generateUuidV4(),
         label: '',
         type: 'gps',
         value: {},
@@ -105,8 +109,80 @@ export default class ProjectService {
 
 
   // ===============================================================================================
+  // OTHER PROJECT METHODS
+  // ===============================================================================================
+
+  /**
+   * Changes the ID of all elements inside a projectDTO.
+   * All IDs are changed by reference. No need to return a value;
+   */
+  static changeAllIDs(projectDTO: ProjectDTO): void {
+
+    projectDTO.projectSettings.id_project = UtilService.generateUuidV4();
+    changeAllWidgetsIds(projectDTO.projectWidgets);
+    changeAllWidgetsIds(projectDTO.template);
+    changeAllSamplesIds(projectDTO.samples);
+
+    function changeAllSamplesIds(sampleDTO: SampleDTO[]): void {
+      for (let i = 0; i < sampleDTO.length; i++) {
+        sampleDTO[i].sampleSettings.id_sample = UtilService.generateUuidV4();
+        changeAllWidgetsIds(sampleDTO[i].sampleWidgets);
+      }
+    }
+
+    function changeAllWidgetsIds(widgetDataArray: WidgetData[]): void {
+      for (let i = 0; i < widgetDataArray.length; i++) {
+        widgetDataArray[i].id_widget = UtilService.generateUuidV4();
+        changeAllInputsIds(widgetDataArray[i].inputs);
+      }
+    }
+
+    function changeAllInputsIds(inputDataArray: InputData[]): void {
+      for (let i = 0; i < inputDataArray.length; i++) {
+        inputDataArray[i].id_input = UtilService.generateUuidV4();
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  // ===============================================================================================
   // BASIC DATABASE METHODS
   // ===============================================================================================
+
+  /**
+   * Use this to retrive a ProjectDTO from database
+   */
+  static async buildProjectFromDatabase(project_id: string): Promise<ProjectDTO> {
+
+    // INITAL PROJECT STRUCTURE
+    const projectDTO: ProjectDTO = {
+      projectSettings: await DatabaseService.readProject(project_id),
+      projectWidgets:  await DatabaseService.getAllWidgets_Project(project_id),
+      template:        await DatabaseService.getAllWidgets_Template(project_id),
+      samples:         [],
+    };
+
+    // GET ALL SAMPLES
+    const allSampleSettings = await DatabaseService.getAllSamples(project_id);
+    for (let i = 0; i < allSampleSettings.length; i++) {
+      projectDTO.samples.push({
+        sampleSettings: allSampleSettings[i],
+        sampleWidgets: await DatabaseService.getAllWidgets_Sample(project_id, allSampleSettings[i].id_sample),
+      });
+    }
+
+    return projectDTO;
+  }
 
   static async createProject(
     projectDTO: ProjectDTO,
@@ -162,7 +238,10 @@ export default class ProjectService {
 
     } catch (error) {
       DatabaseService.deleteProject(projectSettings.id_project);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -175,7 +254,10 @@ export default class ProjectService {
       await DatabaseService.updateProject(projectSettings);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -188,7 +270,10 @@ export default class ProjectService {
       await DatabaseService.deleteProject(id_project);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -209,7 +294,7 @@ export default class ProjectService {
       const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
       for (let i = 0; i < templateWidgets.length; i++) {
         if (templateWidgets[i].addToNewSamples === true) {
-          templateWidgets[i].id_widget = this.generateUuidV4();
+          templateWidgets[i].id_widget = UtilService.generateUuidV4();
           await DatabaseService.createWidget_Sample(id_project, id_sample, templateWidgets[i]);
         }
       }
@@ -218,7 +303,10 @@ export default class ProjectService {
 
     } catch (error) {
       await DatabaseService.deleteSample(id_project, id_sample);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -232,7 +320,10 @@ export default class ProjectService {
       await DatabaseService.updateSample(id_project, sampleSettings);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -246,7 +337,10 @@ export default class ProjectService {
       await DatabaseService.deleteSample(id_project, id_sample);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -264,7 +358,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -279,7 +376,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Project(id_project, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -294,7 +394,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Project(id_project, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -312,7 +415,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -327,7 +433,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Template(id_project, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -342,7 +451,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Template(id_project, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -361,7 +473,10 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -377,7 +492,10 @@ export default class ProjectService {
       await DatabaseService.updateWidget_Sample(id_project, id_sample, widgetData);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 
@@ -393,7 +511,10 @@ export default class ProjectService {
       await DatabaseService.deleteWidget_Sample(id_project, id_sample, id_widget);
       onSuccess();
     } catch (error) {
-      onError(JSON.stringify(error));
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
     }
   }
 }

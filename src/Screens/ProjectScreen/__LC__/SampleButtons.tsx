@@ -29,7 +29,7 @@ export default function SampleButtons() {
 
   return (
     <FlatList
-      data={CacheService.allSamples}
+      data={CacheService.allSamples.slice().reverse()}
       maxToRenderPerBatch={5}
       initialNumToRender={5}
       keyExtractor={(item) => item.id_sample}
@@ -65,7 +65,6 @@ const SampleButton = memo((props: {
   return (
     <Button.TextWithIcon
       title={props.title}
-      iconSide="Right"
       iconName="clipboard"
       onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
       theme={{

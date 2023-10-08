@@ -24,45 +24,7 @@ export const DataDisplay = memo((props: {
     setLoading('Loaded');
   }, []);
 
-  return loading === 'Loaded' ? (
-    <InputsArray
-      editInputs={props.editInputs}
-      inputs={props.inputs}
-      referenceGPSData={props.referenceGPSData}
-      onSave={(inputData, status) => props.onSave(inputData, status)}
-      onInputDelete={(id_input) => props.onInputDelete(id_input)}
-      onInputMoveUp={(id_input) => props.onInputMoveUp(id_input)}
-      onInputMoveDow={(id_input) => props.onInputMoveDow(id_input)}
-      rules={props.rules}
-      theme={props.theme}
-    />
-  ) : (
-    <View
-      style={{
-        paddingVertical: 20,
-      }}
-    >
-      <ActivityIndicator
-        size="large"
-        color={props.theme.font}
-      />
-    </View>
-  );
-});
-
-const InputsArray = memo((props: {
-  inputs: InputData[]
-  editInputs: boolean
-  referenceGPSData: GPS_DTO | undefined
-  rules: WidgetRules
-  theme: WidgetThemeDTO
-  onSave: (inputData: InputData | null, status: InputStatus ) => void
-  onInputDelete: (id_input: ID) => void
-  onInputMoveUp: (id_input: ID) => void
-  onInputMoveDow: (id_input: ID) => void
-}) => {
-
-  return props.inputs.map((inputData, index) => {
+  const AllInputs = props.inputs.map((inputData, index) => {
 
     const isFirst = index === 0;
     const isLast = index === props.inputs.length - 1;
@@ -84,4 +46,19 @@ const InputsArray = memo((props: {
       />
     );
   });
+
+  return loading === 'Loaded' ? (<>
+    {AllInputs}
+  </>) : (
+    <View
+      style={{
+        paddingVertical: 20,
+      }}
+    >
+      <ActivityIndicator
+        size="large"
+        color={props.theme.font}
+      />
+    </View>
+  );
 });

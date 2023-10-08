@@ -88,19 +88,16 @@ export const GPSInput = memo((props: {
   }, [props.onSave]);
 
   const startGPS = useCallback(async () => {
-    await AlertService.handleAlert(noGPSData === false,
-      {
-        question: R['This will overwrite current gps data. Confirm to proceed.'],
-        type: 'warning',
-      },
-      async () => {
-        await gpsWatcher.watchPositionAsync(
-          (gpsData) => setInputData(prev => ({ ...prev, value: gpsData})),
-          (accuracy) => setAccuracy(accuracy)
-        );
-        setFeatures(prev => ({ ...prev, gpsON: true }));
-      }
-    );
+    await AlertService.handleAlert(noGPSData === false, {
+      type: 'warning',
+      question: R['This will overwrite current gps data. Confirm to proceed.'],
+    }, async () => {
+      await gpsWatcher.watchPositionAsync(
+        (gpsData) => setInputData(prev => ({ ...prev, value: gpsData})),
+        (accuracy) => setAccuracy(accuracy)
+      );
+      setFeatures(prev => ({ ...prev, gpsON: true }));
+    });
   }, [noGPSData]);
 
   const stopGPS = useCallback(() => {
@@ -111,45 +108,39 @@ export const GPSInput = memo((props: {
   }, [props.onSave]);
 
   const toogleCoordinate = useCallback(async (checked: boolean) => {
-    await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined,
-      {
-        question: R['This will delete current saved coordinate. Confirm to proceed.'],
-        type: 'warning',
-      },
-      () => {
-        gpsWatcher.enableCoordinates(checked);
-        setFeatures(prev => ({ ...prev, enableCoordinate: checked }));
-        if (!checked) {
-          props.onSave(null, 'modifying');
-          setInputData(prev => {
-            if (prev.value.coordinates !== undefined) { delete prev.value.coordinates !== undefined; }
-            return {...prev };
-          });
-          setSaveSignal(true);
-        }
+    await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined, {
+      type: 'warning',
+      question: R['This will delete current saved coordinate. Confirm to proceed.'],
+    }, () => {
+      gpsWatcher.enableCoordinates(checked);
+      setFeatures(prev => ({ ...prev, enableCoordinate: checked }));
+      if (!checked) {
+        props.onSave(null, 'modifying');
+        setInputData(prev => {
+          if (prev.value.coordinates !== undefined) { delete prev.value.coordinates !== undefined; }
+          return {...prev };
+        });
+        setSaveSignal(true);
       }
-    );
+    });
   }, [props.onSave, inputData.value.coordinates]);
 
   const toogleAltitude = useCallback(async (checked: boolean) => {
-    await AlertService.handleAlert(checked === false && inputData.value.altitude !== undefined,
-      {
-        question: R['This will delete current saved altitude. Confirm to proceed.'],
-        type: 'warning',
-      },
-      () => {
-        gpsWatcher.enableAltitude(checked);
-        setFeatures(prev => ({ ...prev, enableAltitude: checked }));
-        if (!checked) {
-          props.onSave(null, 'modifying');
-          setInputData(prev => {
-            if (prev.value.altitude !== undefined) { delete prev.value.altitude !== undefined; }
-            return {...prev };
-          });
-          setSaveSignal(true);
-        }
+    await AlertService.handleAlert(checked === false && inputData.value.altitude !== undefined, {
+      question: R['This will delete current saved altitude. Confirm to proceed.'],
+      type: 'warning',
+    }, () => {
+      gpsWatcher.enableAltitude(checked);
+      setFeatures(prev => ({ ...prev, enableAltitude: checked }));
+      if (!checked) {
+        props.onSave(null, 'modifying');
+        setInputData(prev => {
+          if (prev.value.altitude !== undefined) { delete prev.value.altitude !== undefined; }
+          return {...prev };
+        });
+        setSaveSignal(true);
       }
-    );
+    });
   }, [props.onSave, inputData.value.altitude]);
 
   return (<>

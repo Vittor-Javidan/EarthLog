@@ -2,8 +2,7 @@ import React, { useMemo, useState, memo, useCallback, useTransition } from 'reac
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
-import { IconName } from '@Icon/index';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetDisplay, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
@@ -13,31 +12,32 @@ import ConfigService from '@Services/ConfigService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
-import { NavbarIconButton } from './NavbarIconButtons';
 import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
-
-type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
+import { useLocalSearchParams } from 'expo-router';
+import CacheService from '@Services/CacheService';
 
 export const Widget = memo((props: {
   widgetData: WidgetData
   widgetScope: WidgetScope
   referenceGPSData: GPS_DTO | undefined
-  onDelete: () => void
+  onDeleteWidget: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const id_project = useLocalSearchParams().id_project as string;
+  const config          = useMemo(() => ConfigService.config, []);
+  const R               = useMemo(() => translations.widget.Root[config.language], []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [_, startTransitions] = useTransition();
 
-  const [widgetData , setWidgetData ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
-  const [tempLabel  , setTempLabel  ] = useState<string>(widgetData.widgetName);
-  const [editLabel  , setEditLabel  ] = useState<boolean>(false);
-  const [editInputs , setEditInputs ] = useState<boolean>(false);
-  const [saved      , setSaved      ] = useState<boolean>(true);
-  const [display    , setDisplay    ] = useState<WidgetDisplay>('data display');
+  const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
+  const [tempLabel      , setTempLabel      ] = useState<string>(widgetData.widgetName);
+  const [editLabel      , setEditLabel      ] = useState<boolean>(false);
+  const [editInputs     , setEditInputs     ] = useState<boolean>(false);
+  const [saved          , setSaved          ] = useState<boolean>(true);
+  const [display        , setDisplay        ] = useState<WidgetDisplay>('data display');
 
   const defaultTheme = useMemo(() => ThemeService.widgetThemes['light'], []);
   const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
@@ -85,38 +85,50 @@ export const Widget = memo((props: {
     setEditInputs(false);
   }, [selectDisplay]);
 
-  const save = useCallback((widgetData: WidgetData) => {
+  const save = useCallback(async (widgetData: WidgetData) => {
 
-    if (props.widgetScope.type === 'project') {
-      ProjectService.updateWidget_Project(
-        props.widgetScope.id_project,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
+    // TODO: extract this save function to outside this component. This will become a autosaveHook in the futures.
+
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
       );
-      return;
     }
 
-    if (props.widgetScope.type === 'template') {
-      ProjectService.updateWidget_Template(
-        props.widgetScope.id_project,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
-      );
-      return;
+    switch (props.widgetScope.type) {
+
+      case 'project': {
+        await ProjectService.updateWidget_Project(
+          props.widgetScope.id_project,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'template': {
+        await ProjectService.updateWidget_Template(
+          props.widgetScope.id_project,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'sample': {
+        await ProjectService.updateWidget_Sample(
+          props.widgetScope.id_project,
+          props.widgetScope.id_sample,
+          widgetData,
+          () => setSaved(true),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
     }
 
-    if (props.widgetScope.type === 'sample') {
-      ProjectService.updateWidget_Sample(
-        props.widgetScope.id_project,
-        props.widgetScope.id_sample,
-        widgetData,
-        () => setSaved(true),
-        (error) => alert(error)
-      );
-      return;
-    }
   }, [props.widgetScope]);
 
   const onEditLabel = useCallback(() => {
@@ -145,6 +157,7 @@ export const Widget = memo((props: {
   }, [togleNewInputDisplay, save]);
 
   const onConfirmInput = useCallback((inputData: InputData | null, status: InputStatus) => {
+
     if (status === 'modifying') {
       setSaved(false);
       return;
@@ -173,38 +186,30 @@ export const Widget = memo((props: {
   }, [save]);
 
   const deleteWidget = useCallback(() => {
-    AlertService.handleAlert(
-      true,
-      {
-        question: R['Confirm to delete this widget.'],
-        type: 'warning',
-      },
-      () => props.onDelete()
-    );
-  }, [props.onDelete]);
+    AlertService.handleAlert(true, {
+      question: R['Confirm to delete this widget.'],
+      type: 'warning',
+    },() => props.onDeleteWidget());
+  }, [props.onDeleteWidget]);
 
   const onDelete = useCallback((id_input: ID) => {
-    AlertService.handleAlert(
-      true,
-      {
-        question: R['Confirm to delete this field.'],
-        type: 'warning',
-      },
-      () => {
-        setSaved(false);
-        setWidgetData(prev => {
-          const newData = { ...prev };
-          for (let i = 0; i < newData.inputs.length; i++) {
-            if (newData.inputs[i].id_input === id_input) {
-              newData.inputs.splice(i, 1);
-              break;
-            }
+    AlertService.handleAlert(true, {
+      type: 'warning',
+      question: R['Confirm to delete this field.'],
+    }, () => {
+      setSaved(false);
+      setWidgetData(prev => {
+        const newData = { ...prev };
+        for (let i = 0; i < newData.inputs.length; i++) {
+          if (newData.inputs[i].id_input === id_input) {
+            newData.inputs.splice(i, 1);
+            break;
           }
-          save(newData);
-          return newData;
-        });
-      }
-    );
+        }
+        save(newData);
+        return newData;
+      });
+    });
   }, [save]);
 
   const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
@@ -261,19 +266,15 @@ export const Widget = memo((props: {
     >
       <Navbar
         saved={saved}
+        isTemplate={props.widgetScope.type === 'template'}
+        display={display}
+        editInputs={editInputs}
+        onPress_DataDisplayButton={() => togleDataDisplay()}
+        onPress_EditButton={() => togleEditDisplay()}
+        onPress_ThemeButton={() => togleThemeDisplay()}
+        onPress_NewInputButton={() => togleNewInputDisplay()}
+        rules={widgetData.rules}
         theme={widgetTheme}
-        iconButtons={
-          <IconButtons
-            display={display}
-            editInputs={editInputs}
-            onPress_DataDisplayButton={() => togleDataDisplay()}
-            onPress_EditButton={() => togleEditDisplay()}
-            onPress_ThemeButton={() => togleThemeDisplay()}
-            onPress_NewInputButton={() => togleNewInputDisplay()}
-            rules={widgetData.rules}
-            theme={widgetTheme}
-          />
-        }
       />
       <View
         style={{
@@ -323,8 +324,8 @@ export const Widget = memo((props: {
           )}
         </View>
         <Footer
-          showDeleteWidgetButton={editInputs}
-          showCheckbox={props.widgetScope.type === 'template'}
+          editInputs={editInputs}
+          isTemplate={props.widgetScope.type === 'template'}
           addToNewSamples={widgetData.addToNewSamples ?? false}
           onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}
           onDeleteWidget={() => deleteWidget()}
@@ -334,77 +335,4 @@ export const Widget = memo((props: {
       </View>
     </View>
   );
-});
-
-type Rules_IconButtons = {
-  showAddInputButton?: boolean
-  showOptionsButton?: boolean
-  showThemeButton?: boolean
-}
-
-const IconButtons = memo((props: {
-  editInputs: boolean
-  display: WidgetDisplay
-  rules: Rules_IconButtons
-  theme: WidgetThemeDTO
-  onPress_DataDisplayButton: () => void
-  onPress_EditButton: () => void
-  onPress_NewInputButton: () => void
-  onPress_ThemeButton: () => void
-}) => {
-
-  const buttonsData: {
-    iconName: IconName
-    selected: boolean
-    onPress: () => void
-  }[] = [{
-    iconName: 'pencil-sharp',
-    selected: props.display === 'data display' && !props.editInputs,
-    onPress: () => props.onPress_DataDisplayButton(),
-  }];
-
-  if (props.rules.showOptionsButton) {
-    buttonsData.push({
-      iconName: 'options-outline',
-      selected: props.display === 'data display' && props.editInputs,
-      onPress: () => props.onPress_EditButton(),
-    });
-  }
-
-  if (props.rules.showThemeButton) {
-    buttonsData.push({
-      iconName: 'color-palette',
-      selected: props.display === 'theme display',
-      onPress: () => props.onPress_ThemeButton(),
-    });
-  }
-
-  if (props.rules.showAddInputButton) {
-    buttonsData.push({
-      iconName: 'add-sharp',
-      selected: props.display === 'new input display',
-      onPress: () => props.onPress_NewInputButton(),
-    });
-  }
-
-  const Buttons = buttonsData.map((data, index) => {
-    const isLastIndex = index === buttonsData.length - 1;
-    return (
-      <NavbarIconButton
-        key={index}
-        iconName={data.iconName}
-        position={isLastIndex ? 'right' : 'other'}
-        selected={data.selected}
-        onPress={() => data.onPress()}
-        theme={{
-          font: props.theme.font,
-          background: props.theme.background,
-        }}
-      />
-    );
-  });
-
-  return (<>
-    {Buttons}
-  </>);
 });

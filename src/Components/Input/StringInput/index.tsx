@@ -16,8 +16,9 @@ export const StringInput = memo((props: {
   value: string
   placeholder: string
   theme: InputTheme
-  multiline: boolean
-  autoFocus: boolean
+  multiline?: boolean
+  autoFocus?: boolean
+  secureTextEntry?: boolean
   onTextChange: (text: string) => void
 }) => {
 
@@ -74,11 +75,12 @@ export const StringInput = memo((props: {
         textAlign="left"
         textAlignVertical="top"
         multiline={props.multiline}
+        secureTextEntry={props.secureTextEntry}
         onChangeText={(text) => props.onTextChange(text)}
         style={{
           width: '100%',
           paddingVertical: 15,
-          paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
+          paddingBottom: (props.multiline || Platform.OS === 'ios') ? 10 : 0,
           backgroundColor: props.theme.background,
           color: props.theme.font,
           fontStyle: props.value === '' ? 'italic' : 'normal',

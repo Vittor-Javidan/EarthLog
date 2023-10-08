@@ -67,6 +67,7 @@ export type AppThemeDTO = {
     }
     modalPopUp: {
       font: string
+      font_button: string
       font_placeHolder: string
       background: string
       background_active: string
@@ -91,11 +92,18 @@ export type ConfigDTO = {
   appTheme: ThemeNames_APP
 }
 
-export type AlertModalConfig = {
-  type: 'warning' | 'exit app' | 'project creation' | 'sample creation' | 'template widget copy'
-  id_project?: string
-  id_sample?: string
-  question?: string
+export type ModalConfig = {
+  type: 'exit app' | 'project creation' | 'download projects'
+} | {
+  type: 'sample creation' | 'upload projects'
+  id_project: string
+} | {
+  type: 'template widget copy'
+  id_project: string
+  id_sample: string
+} | {
+  type: 'warning'
+  question: string
 }
 
 export type RegexRules = {
@@ -103,4 +111,12 @@ export type RegexRules = {
   'noSpecialLetter': RegExp
   'id':              RegExp
   'hexColor':        RegExp
+}
+
+export type CredentialDTO = {
+  credential_id: string
+  name: string
+  user: string
+  password: string
+  rootURL: string
 }

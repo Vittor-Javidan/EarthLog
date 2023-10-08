@@ -31,11 +31,9 @@ export default function HomeScope() {
   }, []);
 
   async function exitMessage() {
-    await AlertService.handleAlert(
-      true,
-      { type: 'exit app' },
-      () => BackHandler.exitApp()
-    );
+    await AlertService.handleAlert(true, {
+      type: 'exit app',
+    }, () => BackHandler.exitApp());
   }
 
   return (
@@ -76,7 +74,6 @@ function Drawer() {
     <Button.TextWithIcon
       title={R['Settings']}
       iconName="settings"
-      iconSide="Right"
       theme={{
         font: theme.font,
         background: theme.background,
@@ -91,5 +88,6 @@ function Drawer() {
 async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   await CacheService.loadLastOpenProject();
+  await CacheService.loadAllCredentials();
   whenLoaded();
 }

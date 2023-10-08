@@ -36,17 +36,11 @@ export default function ScreenButtons(props: {
   }
 
   async function onTemplateWidgetCopy() {
-    await AlertService.handleAlert(true,
-      {
-        question: 'Select a widget to copy',
-        type: 'template widget copy',
-        id_project: id_project,
-        id_sample: id_sample,
-      },
-      () => {
-        props.onCreateWidget();
-      }
-    );
+    await AlertService.handleAlert(true, {
+      type: 'template widget copy',
+      id_project: id_project,
+      id_sample: id_sample,
+    }, () => props.onCreateWidget());
   }
 
   return (

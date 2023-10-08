@@ -9,40 +9,27 @@ import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
+import { LC } from '../__LC__';
 
 export const ExitApp = memo((props: {
-  onFinish: () => void
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.exitApp[config.language], []);
 
   useEffect(() => {
     HapticsService.vibrate('warning');
   }, []);
 
   const onAccept = useCallback(async () => {
-    props.onFinish();
+    props.closeModal();
     await AlertService.runAcceptCallback();
-    HapticsService.vibrate('warning');
-  }, [props.onFinish]);
-
-  const onRefuse = useCallback(() => {
-    props.onFinish();
-    HapticsService.vibrate('success');
-  }, [props.onFinish]);
+  }, [props.closeModal]);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           justifyContent: 'center',
@@ -84,7 +71,7 @@ export const ExitApp = memo((props: {
         />
         <Button.Icon
           iconName="close"
-          onPress={async () => onRefuse()}
+          onPress={() => props.closeModal()}
           theme={{
             font: theme.font,
             font_Pressed: theme.wrong,
@@ -100,6 +87,6 @@ export const ExitApp = memo((props: {
           }}
         />
       </View>
-    </View>
+    </LC.PopUp>
   );
 });

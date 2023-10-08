@@ -14,6 +14,7 @@ import AlertService from '@Services/AlertService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
+import CredentialService from '@Services/CredentialService';
 
 export default function SettingsScreen(): JSX.Element {
 
@@ -31,7 +32,6 @@ export default function SettingsScreen(): JSX.Element {
         <Button.TextWithIcon
           title={R['Language']}
           iconName="language"
-          iconSide="Right"
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
           theme={{
             font: theme.font_Button,
@@ -41,10 +41,20 @@ export default function SettingsScreen(): JSX.Element {
           }}
         />
         <Button.TextWithIcon
-          title={'Whipe Database'}
+          title={R['Credentials']}
+          iconName="card-outline"
+          onPress={() => navigate('CREDENTIAL SCOPE')}
+          theme={{
+            font: theme.font_Button,
+            font_Pressed: theme.font,
+            background: theme.background_Button,
+            background_Pressed: theme.background,
+          }}
+        />
+        <Button.TextWithIcon
+          title={'Whipe All Data'}
           iconName="trash-outline"
-          iconSide="Right"
-          onPress={async () => await whipeDataBase()}
+          onPress={async () => await whipeAllData()}
           theme={{
             font: theme.background,
             background: theme.wrong,
@@ -57,7 +67,7 @@ export default function SettingsScreen(): JSX.Element {
   );
 }
 
-async function whipeDataBase() {
+async function whipeAllData() {
   AlertService.handleAlert(true,
     {
       question: 'Want to whipe database?',
@@ -65,7 +75,8 @@ async function whipeDataBase() {
     },
     async () => {
       HapticsService.vibrate('success');
-      await DatabaseService.deleteDatabase();
+      await CredentialService.deleteCredentialsFolder();
+      await DatabaseService.deleteDatabaseFolder();
       await CacheService.deleteLastOpenProject();
       CacheService.lastOpenProject = {
         id_project: '',

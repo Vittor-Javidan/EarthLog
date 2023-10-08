@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -21,13 +21,17 @@ export default function ScreenButtons(props: {
 
   async function createSample() {
     AlertService.handleAlert(true, {
-      question: '',
       type: 'sample creation',
       id_project: id_project,
-    }, () => {
-      props.onSampleCreation();
-    });
+    }, () => props.onSampleCreation());
   }
+
+  const uploadProject = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'upload projects',
+      id_project: id_project,
+    }, () => {});
+  }, []);
 
   return (
     <Layout.ScreenButtons
@@ -38,6 +42,18 @@ export default function ScreenButtons(props: {
           showPlusSign={false}
           buttonDiameter={60}
           onPress={() => navigate('HOME SCOPE')}
+          theme={{
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
+          }}
+        />
+        <Button.RoundedIcon
+          iconName="cloud-upload"
+          showPlusSign={false}
+          buttonDiameter={60}
+          onPress={async () => await uploadProject()}
           theme={{
             font: theme.font,
             font_Pressed: theme.backgroud,

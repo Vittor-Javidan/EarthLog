@@ -11,14 +11,15 @@ import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
+import { LC } from '../__LC__';
 
 export const CreateProject = memo((props: {
-  onFinish: () => void
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.createProject[config.language], []);
   const [name, setName] = useState<string>('');
 
   const onAccept = useCallback(async () => {
@@ -30,7 +31,7 @@ export const CreateProject = memo((props: {
         async () => {
           CacheService.addToAllProjects(newProject.projectSettings);
           await AlertService.runAcceptCallback();
-          props.onFinish();
+          props.closeModal();
         },
         async (errorMesage) => {
           alert(errorMesage);
@@ -38,18 +39,10 @@ export const CreateProject = memo((props: {
         }
       );
     }
-  }, [props.onFinish, name]);
+  }, [props.closeModal, name]);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           paddingHorizontal: 5,
@@ -78,7 +71,7 @@ export const CreateProject = memo((props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onFinish()}
+          onPress={() => props.closeModal()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.wrong,
@@ -111,6 +104,6 @@ export const CreateProject = memo((props: {
           }}
         />
       </View>
-    </View>
+    </LC.PopUp>
   );
 });

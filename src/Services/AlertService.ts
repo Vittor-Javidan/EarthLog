@@ -1,9 +1,9 @@
-import { AlertModalConfig } from '@Types/AppTypes';
+import { ModalConfig } from '@Types/AppTypes';
 
 export default class AlertService {
 
   private static showModalSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
-  private static alertModalConfigSetter: React.Dispatch<React.SetStateAction<AlertModalConfig>> | null = null;
+  private static alertModalConfigSetter: React.Dispatch<React.SetStateAction<ModalConfig>> | null = null;
   private static onAcceptCallback: (() => void) | (() => Promise<void>) | null = null;
 
   private static setShowModal(boolean: boolean) {
@@ -12,7 +12,7 @@ export default class AlertService {
     }
   }
 
-  private static setConfig(question: AlertModalConfig) {
+  private static setConfig(question: ModalConfig) {
     if (this.alertModalConfigSetter !== null) {
       this.alertModalConfigSetter(question);
     }
@@ -25,12 +25,12 @@ export default class AlertService {
   }
 
   static registterAlertModalConfigSetter(
-    setter: React.Dispatch<React.SetStateAction<AlertModalConfig>>
+    setter: React.Dispatch<React.SetStateAction<ModalConfig>>
   ) {
     this.alertModalConfigSetter = setter;
   }
 
-  static async handleAlert(trigger: boolean, question: AlertModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
+  static async handleAlert(trigger: boolean, question: ModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
 
     if (!trigger) {
       await onAcceptCallback();

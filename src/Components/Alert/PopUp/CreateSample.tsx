@@ -11,51 +11,49 @@ import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
+import { LC } from '../__LC__';
 
 export const CreateSample = memo((props: {
-  id_project: string | undefined
-  onFinish: () => void
+  id_project: string
+  closeModal: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.createSample[config.language], []);
   const [name, setName] = useState<string>('');
 
   const onAccept = useCallback(async () => {
-    if (name !== '' && props.id_project !== undefined) {
-      const { id_project } = props;
-      const sampleSettings = ProjectService.getDefaultSampleSettings();
-      sampleSettings.name = name;
-      await ProjectService.createSample(
-        id_project,
-        sampleSettings,
-        async () => {
-          CacheService.addToAllSamples(sampleSettings);
-          await AlertService.runAcceptCallback();
-          props.onFinish();
-        },
-        async (errorMesage) => {
-          alert(errorMesage);
-          HapticsService.vibrate('warning');
-        }
-      );
+
+    if (name === '') {
+      return;
     }
-    if (props.id_project === undefined) {
-      alert(R['No project ID found']);
-    }
-  }, [props.id_project, props.onFinish, name, R]);
+
+    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    const newSampleSettings = ProjectService.getDefaultSampleSettings({
+      name: name,
+      gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
+      rules: projectSettings.sampleRules,
+    });
+
+    await ProjectService.createSample(
+      props.id_project,
+      newSampleSettings,
+      async () => {
+        CacheService.addToAllSamples(newSampleSettings);
+        await AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      async (errorMesage) => {
+        alert(errorMesage);
+        HapticsService.vibrate('warning');
+      }
+    );
+
+  }, [props.id_project, props.closeModal, name, R]);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        backgroundColor: theme.background,
-        borderRadius: 10,
-        paddingVertical: 10,
-        gap: 10,
-      }}
-    >
+    <LC.PopUp>
       <View
         style={{
           paddingHorizontal: 5,
@@ -84,7 +82,7 @@ export const CreateSample = memo((props: {
       >
         <Button.Icon
           iconName="close"
-          onPress={() => props.onFinish()}
+          onPress={() => props.closeModal()}
           theme={{
             font: theme.wrong,
             font_Pressed: theme.wrong,
@@ -100,7 +98,7 @@ export const CreateSample = memo((props: {
           }}
         />
         <Button.Icon
-          iconName={name !== '' ? 'checkmark-done-sharp' : 'lock-closed-sharp'}
+          iconName={name === '' ? 'lock-closed-sharp' : 'checkmark-done-sharp'}
           onPress={async () => await onAccept()}
           theme={{
             font: theme.font,
@@ -117,6 +115,6 @@ export const CreateSample = memo((props: {
           }}
         />
       </View>
-    </View>
+    </LC.PopUp>
   );
 });

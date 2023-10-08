@@ -114,6 +114,7 @@ async function fetchSamples(
     await CacheService.loadAllSamplesSettings(id_project);
     await CacheService.loadAllWidgets_Project(id_project);
     await CacheService.loadAllWidgets_Template(id_project);
+    await CacheService.loadAllCredentials();
   }
   whenLoaded();
 }

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { ProjectStatus } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
@@ -10,6 +11,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
+import { Icon } from '@Icon/index';
 
 export default function ProjectButtons() {
 
@@ -17,16 +19,15 @@ export default function ProjectButtons() {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
 
-  const allProjectButtons = CacheService.allProjects.map((settings) => {
-    return (
-      <ProjectButton
-        key={settings.id_project}
-        title={settings.name}
-        onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
-        theme={theme}
-      />
-    );
-  });
+  const allProjectButtons = CacheService.allProjects.map((settings) => (
+    <ProjectButton
+      key={settings.id_project}
+      title={settings.name}
+      status = {settings.status}
+      onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
+      theme={theme}
+    />
+  ));
 
   return (
     <View
@@ -68,10 +69,13 @@ export default function ProjectButtons() {
 
 function ProjectButton(props: {
   title: string
+  status?: ProjectStatus
   theme: {
     font_Button: string;
     background: string;
     background_Button: string;
+    confirm: string;
+    warning: string
   }
   onPress: () => void
 }) {
@@ -88,18 +92,41 @@ function ProjectButton(props: {
     HapticsService.vibrate('success');
   }
 
+  const iconColor = (
+    props.status === 'uploaded' || props.status === 'first upload'
+  ) ? props.theme.confirm : props.theme.warning;
+
+  const iconName = (
+    props.status === 'uploaded' || props.status === 'first upload'
+  ) ? 'cloud' : 'cloud-upload';
+
   return (
     <Pressable
       onPressIn={() => onPressIn()}
       onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
+        flexDirection: 'row',
+        alignItems: 'flex-end',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
+        gap: 5,
         backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
       }}
     >
+      {props.status !== undefined && (
+        <View
+          style={{
+            height: 20,
+          }}
+        >
+          <Icon
+            iconName={iconName}
+            color={iconColor}
+          />
+        </View>
+      )}
       <Text h3
         style={{
           color: props.theme.font_Button,

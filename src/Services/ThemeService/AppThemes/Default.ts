@@ -59,6 +59,7 @@ export const DEFAULT: AppThemeDTO = {
     },
     modalPopUp: {
       font: '#222',
+      font_button: '#FFF',
       font_placeHolder: '#999',
       background: '#FFF',
       background_Button: '#666',

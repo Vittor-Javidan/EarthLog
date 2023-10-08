@@ -21,6 +21,15 @@ export const NewInputDisplay = memo((props: {
     props.onCreate(ProjectService.getInputData(inputType));
   }, [props.onCreate]);
 
+  const AllButtons = InputTypesArray.map(type => (
+    <Button
+      key={type}
+      title={R[type]}
+      onPress={() => onCreate(type)}
+      theme={props.theme}
+    />
+  ));
+
   return (
     <View>
       <Text h3
@@ -42,31 +51,10 @@ export const NewInputDisplay = memo((props: {
           paddingHorizontal: 10,
         }}
       >
-        <AllButtons
-          theme={props.theme}
-          onCreate={(inputType) => onCreate(inputType)}
-        />
+        {AllButtons}
       </View>
     </View>
   );
-});
-
-const AllButtons = memo((props: {
-  theme: WidgetThemeDTO
-  onCreate: (inputType: InputTypes) => void
-}) => {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
-
-  return InputTypesArray.map(type => (
-    <Button
-      key={type}
-      title={R[type]}
-      onPress={() => props.onCreate(type)}
-      theme={props.theme}
-    />
-  ));
 });
 
 const Button = memo((props: {
@@ -93,7 +81,6 @@ const Button = memo((props: {
 			onPressOut={() => setPressed(false)}
 			onPress={() => onPress()}
 			style={{
-        opacity: pressed ? 0.9 : 1,
 				paddingHorizontal: 10,
         paddingVertical: 2,
 				backgroundColor: pressed ? props.theme.confirm : props.theme.font,

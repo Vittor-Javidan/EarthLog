@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
 
 import { Layout } from '@Layout/index';
+import CredentialService from '@Services/CredentialService';
 
 export default function Home() {
 
@@ -19,7 +20,8 @@ export default function Home() {
 
 async function initApp(onFinish: () => void) {
   await ConfigService.loadConfig();
-  await DatabaseService.createDatabase();
+  await DatabaseService.createDatabaseFolder();
+  await CredentialService.createCredentialsFolder();
   await Location.requestForegroundPermissionsAsync();
   onFinish();
 }
