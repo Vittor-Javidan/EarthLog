@@ -9,11 +9,15 @@ import ThemeService from '@Services/ThemeService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
+import { translations } from '@Translations/index';
 
 export const CredentialsDisplay = memo((props: {
   showDisplay: boolean
   onCredentialChoose: (credential: CredentialDTO) => void
 }) => {
+
+  const config     = useMemo(() => ConfigService.config, []);
+  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
 
   const AllCredentialButtons = CacheService.allCredentials.map(credential => (
     <CredentialButton
@@ -29,7 +33,7 @@ export const CredentialsDisplay = memo((props: {
         textAlign: 'center',
       }}
     >
-      {'Upload this project to?'}
+      {R['Upload this project to?']}
     </Text>
     <View
       style={{

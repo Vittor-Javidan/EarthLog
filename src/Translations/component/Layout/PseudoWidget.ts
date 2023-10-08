@@ -5,7 +5,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Saving...': string
 }>
 
-export const R_PseudoWidget: TranslationDTO = {
+export const R_Layout_PseudoWidget: TranslationDTO = {
   'en-US': {
     'Saved': 'Saved',
     'Saving...': 'Saving...',

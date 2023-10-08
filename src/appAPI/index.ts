@@ -1,5 +1,7 @@
 import { ProjectDTO } from '@Types/ProjectTypes';
 import { CredentialDTO } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
 
 export default class AppAPI {
 
@@ -72,22 +74,24 @@ export default class AppAPI {
       // AUTHENTICATION ===========================
       const authResponse = await this.auth(signal);
       if (!authResponse.ok) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'The server did not recognize your credentials. Failed to authenticate.' +
-          '\nMethod: POST' +
-          '\nEndpoint: /auth' +
-          `\nStatus: ${authResponse.status}.`
+          R['The server did not recognize your credentials. Failed to authenticate.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
+          R['\nStatus: '] + authResponse.status
         );
         return;
       }
 
       const authBody = await authResponse.json();
       if (!authBody.accessToken) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'Credentials accepted, but no AccessToken was found. Contact the developer of this server.' +
-          '\nMethod: POST' +
-          '\nEndpoint: /auth' +
-          `\nStatus: ${authResponse.status}` +
+          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
+          R['\nStatus: '] + authResponse.status +
           `\n{ ..., "accessToken: ${authBody.accessToken}" }`
         );
         return;
@@ -96,22 +100,24 @@ export default class AppAPI {
       // GET PROJECTS ======================================================
       const response = await this.getProjects(authBody.accessToken, signal);
       if (!response.ok) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'It was not possible to download projects. The endpoint request failed. Contact the developer of this server.' +
-          '\nMethod: GET' +
-          '\nEndpoint: /project' +
-          `\nStatus: ${response.status}`
+          R['It was not possible to download projects. The endpoint request failed. Contact the developer of this server.'] +
+          R['\nMethod: GET'] +
+          R['\nEndpoint: /project'] +
+          R['\nStatus: '] + authResponse.status
         );
         return;
       }
 
       const body = await response.json();
       if (!body.projects || body.projects.length <= 0) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'Projects download request was successful, but no projects were found.' +
-          '\nMethod: GET' +
-          '\nEndpoint: /project' +
-          `\nStatus: ${body.status}` +
+          R['Projects download request was successful, but no projects were found.'] +
+          R['\nMethod: GET'] +
+          R['\nEndpoint: /project'] +
+          R['\nStatus: '] + authResponse.status +
           `\n{ ..., "projects: ${response.status}" }`
         );
         return;
@@ -122,8 +128,9 @@ export default class AppAPI {
     } catch (error) {
 
       if (error instanceof TypeError) {
+        const R = translations.appAPI[ConfigService.config.language];
         switch (error.message) {
-          case 'Network request failed': onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }
         return;
       }
@@ -146,10 +153,11 @@ export default class AppAPI {
       // AUTHENTICATION ===========================
       const authResponse = await this.auth(signal);
       if (!authResponse.ok) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'The server did not recognize your credentials. Failed to authenticate.' +
-          '\nMethod: POST' +
-          '\nEndpoint: /auth' +
+          R['The server did not recognize your credentials. Failed to authenticate.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
           `\nStatus: ${authResponse.status}.`
         );
         return;
@@ -157,11 +165,12 @@ export default class AppAPI {
 
       const authBody = await authResponse.json();
       if (!authBody.accessToken) {
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'Credentials accepted, but no AccessToken was found. Contact the developer of this server.' +
-          '\nMethod: POST' +
-          '\nEndpoint: /auth' +
-          `\nStatus: ${authResponse.status}` +
+          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
+          R['\nStatus: '] + authResponse.status +
           `\n{ ..., "accessToken: ${authBody.accessToken}" }`
         );
         return;
@@ -171,11 +180,12 @@ export default class AppAPI {
       const response = await this.postProject(authBody.accessToken, signal, projectDTO);
       if (!response.ok) {
         const serverMessage = response.headers.get('serverMessage');
+        const R = translations.appAPI[ConfigService.config.language];
         onError(
-          'It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.' +
-          '\nMethod: POST' +
-          '\nEndpoint: /project' +
-          `\nStatus: ${response.status}` +
+          R['It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /project'] +
+          R['\nStatus: '] + authResponse.status +
           `${serverMessage !== null ? `\nServer Message: ${serverMessage}` : ''}`
         );
         return;
@@ -186,8 +196,9 @@ export default class AppAPI {
     } catch (error) {
 
       if (error instanceof TypeError) {
+        const R = translations.appAPI[ConfigService.config.language];
         switch (error.message) {
-          case 'Network request failed': onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }
         return;
       }

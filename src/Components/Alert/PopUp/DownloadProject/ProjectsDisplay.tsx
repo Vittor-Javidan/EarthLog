@@ -9,6 +9,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Icon } from '@Icon/index';
+import { translations } from '@Translations/index';
 
 export const ProjectsDisplay = memo((props: {
   showDisplay: boolean
@@ -16,6 +17,8 @@ export const ProjectsDisplay = memo((props: {
   onSelect: (project_id: string, selected: boolean) => void
 }) => {
 
+  const config        = useMemo(() => ConfigService.config, []);
+  const R             = useMemo(() => translations.component.alert.downloadProjecs[config.language], []);
   const allProject    = useMemo(() => CacheService.allProjects, []);
   const allProjectsID = useMemo(() => allProject.map(settings => settings.id_project), []);
 
@@ -48,7 +51,7 @@ export const ProjectsDisplay = memo((props: {
               paddingBottom: 9,
             }}
           >
-            {'Projects available:'}
+            {R['Projects available:']}
           </Text>
           {NewProjectButtons}
         </View>

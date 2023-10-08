@@ -14,6 +14,8 @@ import { LoadingDisplay } from './LoadingDisplay';
 import { FooterButtons } from './FooterButtons';
 import { ProjectDTO } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const UploadProjects = memo((props: {
   id_project: string | undefined
@@ -21,6 +23,9 @@ export const UploadProjects = memo((props: {
 }) => {
 
   const controller = useMemo(() => new AbortController(), []);
+  const config     = useMemo(() => ConfigService.config, []);
+  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
+
   const [error   , setError  ] = useState<string | null>(null);
   const [loading , setLoading] = useState<Loading>('Loaded');
 
@@ -36,7 +41,7 @@ export const UploadProjects = memo((props: {
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
     setLoading('Loading');
     if (props.id_project === undefined) {
-      setError('Project ID undefined');
+      setError(R['Project ID undefined']);
       setLoading('Loaded');
       return;
     }

@@ -17,7 +17,7 @@ export const ExitApp = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.exitApp[config.language], []);
 
   useEffect(() => {
     HapticsService.vibrate('warning');

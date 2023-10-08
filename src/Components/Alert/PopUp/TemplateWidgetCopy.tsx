@@ -23,7 +23,7 @@ export const TemplateWidgetCopy = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
     if (props.id_project !== undefined && props.id_sample !== undefined) {

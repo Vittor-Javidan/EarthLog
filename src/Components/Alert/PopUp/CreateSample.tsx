@@ -20,7 +20,7 @@ export const CreateSample = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert[config.language], []);
+  const R      = useMemo(() => translations.component.alert.createSample[config.language], []);
   const [name, setName] = useState<string>('');
 
   const onAccept = useCallback(async () => {

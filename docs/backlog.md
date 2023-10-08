@@ -1,5 +1,3 @@
-- add popUp translations
-
 - remove any opacity usage on button pressing
 
 - move credential button to home drawer.
