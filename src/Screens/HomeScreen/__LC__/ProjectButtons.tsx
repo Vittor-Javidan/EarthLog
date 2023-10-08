@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { ProjectStatus } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
@@ -11,7 +12,6 @@ import ThemeService from '@Services/ThemeService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { Icon } from '@Icon/index';
-import { ProjectStatus } from '@Types/ProjectTypes';
 
 export default function ProjectButtons() {
 
@@ -19,17 +19,15 @@ export default function ProjectButtons() {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
 
-  const allProjectButtons = CacheService.allProjects.map((settings) => {
-    return (
-      <ProjectButton
-        key={settings.id_project}
-        title={settings.name}
-        status = {settings.status}
-        onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
-        theme={theme}
-      />
-    );
-  });
+  const allProjectButtons = CacheService.allProjects.map((settings) => (
+    <ProjectButton
+      key={settings.id_project}
+      title={settings.name}
+      status = {settings.status}
+      onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
+      theme={theme}
+    />
+  ));
 
   return (
     <View
@@ -109,7 +107,7 @@ function ProjectButton(props: {
       onPress={() => onPress()}
       style={{
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 20,
@@ -120,7 +118,7 @@ function ProjectButton(props: {
       {props.status !== undefined && (
         <View
           style={{
-            height: 15,
+            height: 20,
           }}
         >
           <Icon

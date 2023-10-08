@@ -26,16 +26,8 @@ export type ProjectSettings = {
   }
   gps?: GPS_DTO
   status?: ProjectStatus
-  rules: {
-    allowMultipleDownloads?: boolean
-    allowProjectNameChange?: boolean
-    allowSampleAliasChange?: boolean
-    allowGPSChange?: boolean
-    showCreateWidgetButton_Project?: boolean
-    showCreateWidgetButton_Template?: boolean
-    showSampleCreationButton?: boolean
-    deleteAfterUpload?: boolean
-  }
+  rules: ProjectRules
+  sampleRules?: SampleRules
   uploads?: {
     date: string
     url: string
@@ -67,20 +59,6 @@ export type WidgetData = {
   rules: WidgetRules
   addToNewSamples?: boolean
   widgetTheme?: WidgetThemeDTO
-}
-
-export type WidgetRules = {
-  allowWidgetNameChange?: boolean
-  showAddInputButton?: boolean
-  showOptionsButton?: boolean
-  showThemeButton?: boolean
-  showDeleteButton_Widget?: boolean
-  showDeleteButton_Inputs?: boolean
-  showMoveButton_Inputs?: boolean
-  template_ShowDeleteButton_Widget?: boolean
-  template_showOptionsButton?: boolean
-  template_unlockAddAutomatically?: boolean
-  template_AllowCopies?: boolean
 }
 
 export type WidgetScope = {
@@ -173,4 +151,41 @@ export type GPSFeaturesDTO = {
   gpsON: boolean
   enableCoordinate: boolean
   enableAltitude: boolean
+}
+
+// =================================================================================================
+// RULES
+// =================================================================================================
+
+export type ProjectRules = {
+  allowMultipleDownloads?: boolean
+  allowProjectNameChange?: boolean
+  allowSampleAliasChange?: boolean
+  allowGPSChange?: boolean
+  showCreateWidgetButton_Project?: boolean
+  showCreateWidgetButton_Template?: boolean
+  showSampleCreationButton?: boolean
+  addGPSToNewSamples?: boolean
+  deleteAfterUpload?: boolean
+}
+
+export type SampleRules = {
+  allowSampleNameChange?: boolean
+  allowGPSChange?: boolean
+  showCreateWidgetButton?: boolean
+  showCopyWidgetFromTemplateButton?: boolean
+}
+
+export type WidgetRules = {
+  allowWidgetNameChange?: boolean
+  showAddInputButton?: boolean
+  showOptionsButton?: boolean
+  showThemeButton?: boolean
+  showDeleteButton_Widget?: boolean
+  showDeleteButton_Inputs?: boolean
+  showMoveButton_Inputs?: boolean
+  template_ShowDeleteButton_Widget?: boolean
+  template_showOptionsButton?: boolean
+  template_unlockAddAutomatically?: boolean
+  template_AllowCopies?: boolean
 }

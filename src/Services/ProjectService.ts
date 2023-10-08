@@ -1,6 +1,6 @@
 import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 
 export default class ProjectService {
@@ -26,6 +26,7 @@ export default class ProjectService {
           showCreateWidgetButton_Project: true,
           showCreateWidgetButton_Template: true,
           showSampleCreationButton: true,
+          addGPSToNewSamples: true,
         },
       },
       projectWidgets: [],
@@ -34,12 +35,19 @@ export default class ProjectService {
     };
   }
 
-  static getDefaultSampleSettings(): SampleSettings {
+  /**
+   * @param rules When undefined, every rule will be enabled by default.
+   */
+  static getDefaultSampleSettings(options: {
+    name?: string
+    rules?: SampleRules,
+    gps?: GPS_DTO
+  }): SampleSettings {
     return {
       id_sample: UtilService.generateUuidV4(),
-      name: '',
-      gps: {},
-      rules: {
+      name: options.name ?? '',
+      gps: options.gps,
+      rules: options.rules ?? {
         allowGPSChange: true,
         allowSampleNameChange: true,
         showCreateWidgetButton: true,

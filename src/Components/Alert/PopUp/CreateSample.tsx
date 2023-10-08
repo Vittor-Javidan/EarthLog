@@ -25,14 +25,20 @@ export const CreateSample = memo((props: {
 
   const onAccept = useCallback(async () => {
     if (name !== '' && props.id_project !== undefined) {
+
       const { id_project } = props;
-      const sampleSettings = ProjectService.getDefaultSampleSettings();
-      sampleSettings.name = name;
+      const projectSettings = CacheService.getProjectFromCache(id_project);
+      const newSampleSettings = ProjectService.getDefaultSampleSettings({
+        name: name,
+        gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
+        rules: projectSettings.sampleRules,
+      });
+
       await ProjectService.createSample(
         id_project,
-        sampleSettings,
+        newSampleSettings,
         async () => {
-          CacheService.addToAllSamples(sampleSettings);
+          CacheService.addToAllSamples(newSampleSettings);
           await AlertService.runAcceptCallback();
           props.closeModal();
         },
