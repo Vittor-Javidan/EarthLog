@@ -16,8 +16,8 @@ import { Button } from '@Button/index';
 import { LC } from '../__LC__';
 
 export const TemplateWidgetCopy = memo((props: {
-  id_project: string | undefined
-  id_sample: string | undefined
+  id_project: string
+  id_sample: string
   closeModal: () => void
 }) => {
 
@@ -26,27 +26,23 @@ export const TemplateWidgetCopy = memo((props: {
   const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
-    if (props.id_project !== undefined && props.id_sample !== undefined) {
-      const { id_project, id_sample } = props;
-      const newWidgetData = UtilService.deepCopy(widgetData);
-      newWidgetData.id_widget = UtilService.generateUuidV4();
-      await ProjectService.createWidget_Sample(
-        id_project,
-        id_sample,
-        newWidgetData,
-        async () => {
-          CacheService.addToAllWidgets_Sample(newWidgetData);
-          await AlertService.runAcceptCallback();
-          props.closeModal();
-        },
-        (errorMesage) => {
-          alert(errorMesage);
-          HapticsService.vibrate('warning');
-        }
-      );
-    } else {
-      alert(R['No project/sample ID found']);
-    }
+    const { id_project, id_sample } = props;
+    const newWidgetData = UtilService.deepCopy(widgetData);
+    newWidgetData.id_widget = UtilService.generateUuidV4();
+    await ProjectService.createWidget_Sample(
+      id_project,
+      id_sample,
+      newWidgetData,
+      async () => {
+        CacheService.addToAllWidgets_Sample(newWidgetData);
+        await AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      (errorMesage) => {
+        alert(errorMesage);
+        HapticsService.vibrate('warning');
+      }
+    );
   }, [props, R]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {

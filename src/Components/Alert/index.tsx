@@ -2,7 +2,7 @@ import React, { useState, memo } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { AlertModalConfig } from '@Types/AppTypes';
+import { ModalConfig } from '@Types/AppTypes';
 import AlertService from '@Services/AlertService';
 
 import { Selector } from './Selector';
@@ -12,7 +12,7 @@ const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 export const AlertLayer = memo(() => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalConfig, setModalConfig] = useState<AlertModalConfig>({
+  const [modalConfig, setModalConfig] = useState<ModalConfig>({
     question: '',
     type: 'warning',
   });

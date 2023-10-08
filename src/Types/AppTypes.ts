@@ -92,7 +92,7 @@ export type ConfigDTO = {
   appTheme: ThemeNames_APP
 }
 
-export type AlertModalConfig = {
+export type ModalConfig = {
   type: 'exit app' | 'project creation' | 'download projects'
 } | {
   type: 'sample creation' | 'upload projects'

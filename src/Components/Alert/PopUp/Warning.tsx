@@ -11,7 +11,7 @@ import { Text } from '@Text/index';
 import { LC } from '../__LC__';
 
 export const Warning = memo((props: {
-  question: string | undefined
+  question: string
   closeModal: () => void
 }) => {
 
@@ -41,7 +41,7 @@ export const Warning = memo((props: {
             paddingHorizontal: 10,
           }}
         >
-          {props.question ?? ''}
+          {props.question}
         </Text>
       </View>
       <Button.ConfirmSwipe

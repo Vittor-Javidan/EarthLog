@@ -14,7 +14,7 @@ import { Input } from '@Input/index';
 import { LC } from '../__LC__';
 
 export const CreateSample = memo((props: {
-  id_project: string | undefined
+  id_project: string
   closeModal: () => void
 }) => {
 
@@ -24,33 +24,32 @@ export const CreateSample = memo((props: {
   const [name, setName] = useState<string>('');
 
   const onAccept = useCallback(async () => {
-    if (name !== '' && props.id_project !== undefined) {
 
-      const { id_project } = props;
-      const projectSettings = CacheService.getProjectFromCache(id_project);
-      const newSampleSettings = ProjectService.getDefaultSampleSettings({
-        name: name,
-        gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
-        rules: projectSettings.sampleRules,
-      });
+    if (name === '') {
+      return;
+    }
 
-      await ProjectService.createSample(
-        id_project,
-        newSampleSettings,
-        async () => {
-          CacheService.addToAllSamples(newSampleSettings);
-          await AlertService.runAcceptCallback();
-          props.closeModal();
-        },
-        async (errorMesage) => {
-          alert(errorMesage);
-          HapticsService.vibrate('warning');
-        }
-      );
-    }
-    if (props.id_project === undefined) {
-      alert(R['No project ID found']);
-    }
+    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    const newSampleSettings = ProjectService.getDefaultSampleSettings({
+      name: name,
+      gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
+      rules: projectSettings.sampleRules,
+    });
+
+    await ProjectService.createSample(
+      props.id_project,
+      newSampleSettings,
+      async () => {
+        CacheService.addToAllSamples(newSampleSettings);
+        await AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      async (errorMesage) => {
+        alert(errorMesage);
+        HapticsService.vibrate('warning');
+      }
+    );
+
   }, [props.id_project, props.closeModal, name, R]);
 
   return (
@@ -99,7 +98,7 @@ export const CreateSample = memo((props: {
           }}
         />
         <Button.Icon
-          iconName={name !== '' ? 'checkmark-done-sharp' : 'lock-closed-sharp'}
+          iconName={name === '' ? 'lock-closed-sharp' : 'checkmark-done-sharp'}
           onPress={async () => await onAccept()}
           theme={{
             font: theme.font,

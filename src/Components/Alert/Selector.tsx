@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { AlertModalConfig } from '@Types/AppTypes';
+import { ModalConfig } from '@Types/AppTypes';
 
 import { Warning } from './PopUp/Warning';
 import { ExitApp } from './PopUp/ExitApp';
@@ -11,7 +11,7 @@ import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
 
 export const Selector = memo((props: {
-  config: AlertModalConfig
+  config: ModalConfig
   closeModal: () => void
 }) => {
 
