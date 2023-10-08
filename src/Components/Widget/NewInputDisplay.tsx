@@ -81,7 +81,6 @@ const Button = memo((props: {
 			onPressOut={() => setPressed(false)}
 			onPress={() => onPress()}
 			style={{
-        opacity: pressed ? 0.9 : 1,
 				paddingHorizontal: 10,
         paddingVertical: 2,
 				backgroundColor: pressed ? props.theme.confirm : props.theme.font,

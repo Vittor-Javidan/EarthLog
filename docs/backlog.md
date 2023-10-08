@@ -1,7 +1,3 @@
-- remove any opacity usage on button pressing
-
-- move credential button to home drawer.
-
 - change the WidgetTheme "modified" prop to "warning"
 
 - add a screen to select app theme, and another to select default widget theme. Create a scope with a carousel to merge both screen toguether.
