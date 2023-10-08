@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetTheme } from '@Types/ProjectTypes';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
@@ -12,7 +12,7 @@ import ConfigService from '@Services/ConfigService';
 import { Text } from '@Text/index';
 
 export const ThemeDisplay = memo((props: {
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onThemeSelected: (themeName: ThemeNames_Widgets) => void
 }) => {
 
@@ -55,7 +55,7 @@ const ThemeButtons = memo((props: {
 
   const themes = useMemo(() => ThemeService.widgetThemes, []);
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const R      = useMemo(() => translations.themes.widgetThemes[config.language], []);
 
   const AllThemeButtons = ThemeService.themeNamesArray.Widget.map(themeName => (
     <ThemeButton

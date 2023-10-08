@@ -1,17 +1,16 @@
 import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 
-import { GPSAccuracyDTO, GPSFeaturesDTO } from '@Types/ProjectTypes';
+import { GPSAccuracyDTO, GPSFeaturesDTO, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
-import { GPSInputTheme } from './ThemeType';
 
 export const RealTimeAccuracy = memo((props: {
   accuracy: GPSAccuracyDTO
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -54,7 +53,7 @@ export const RealTimeAccuracy = memo((props: {
 const AccuracyInfo = memo((props: {
   title: string
   precision: number
-  theme: GPSInputTheme
+  theme: WidgetTheme
 }) => {
   return (
     <View

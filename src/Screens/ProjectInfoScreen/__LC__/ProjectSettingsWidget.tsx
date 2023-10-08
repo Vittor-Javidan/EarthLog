@@ -26,7 +26,7 @@ export default function ProjectSettingsWidget(props: {
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  const pseudoWidgetTheme = ThemeService.widgetThemes['light'];
+  const pseudoWidgetTheme = ThemeService.widgetThemes[config.widgetTheme];
 
   function onSaveName(inputData: StringInputData | null, status: InputStatus) {
     if (status === 'modifying') {

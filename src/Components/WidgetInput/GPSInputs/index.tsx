@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules } from '@Types/ProjectTypes';
+import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
@@ -16,7 +16,6 @@ import { CheckboxOptions } from './CheckboxOptions';
 import { DataDisplay } from './DataDisplay';
 import { LoadingFeedback } from './LoadingFeedback';
 import { RealTimeAccuracy } from './RealTimeAccuracy';
-import { GPSInputTheme } from './ThemeType';
 
 export const GPSInput = memo((props: {
   inputData: GPSInputData
@@ -25,7 +24,7 @@ export const GPSInput = memo((props: {
   isLastInput: boolean
   referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onSave: (inputData: GPSInputData | null, status: InputStatus ) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
@@ -215,7 +214,7 @@ export const GPSInput = memo((props: {
 const IconButtons = memo((props: {
   locked: boolean | undefined
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onPress_EditButton: () => void
   onPress_PlayButton: () => void
   onPress_StopButton: () => void

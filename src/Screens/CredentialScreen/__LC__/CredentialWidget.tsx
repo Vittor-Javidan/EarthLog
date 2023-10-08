@@ -21,7 +21,7 @@ export const CredentialWidget = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.widgetThemes['light'], []);
+  const theme  = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
   const R      = useMemo(() => translations.screen.credentialScreen[config.language], []);
 
   const [credential       , setCredential       ] = useState<CredentialDTO>(UtilService.deepCopy(props.credential));

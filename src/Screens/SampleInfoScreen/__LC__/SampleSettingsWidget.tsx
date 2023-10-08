@@ -22,7 +22,7 @@ export default function SampleSettingsWidget(props: {
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.widgetThemes['light'], []);
+  const theme           = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
   const R               = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 

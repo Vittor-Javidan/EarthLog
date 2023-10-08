@@ -25,6 +25,10 @@ import { R_StringInput } from './widgetInput/StringInput';
 import { R_Alert_UploadProject } from './component/Alert/UploadProject';
 import { R_Alert_DownloadProjects } from './component/Alert/DownloadProject';
 import { R_AppAPI } from './appAPI';
+import { R_ThemeScope } from './scope/ThemeScope';
+import { R_WidgetThemePreview } from './Screen/WidgetThemePreview';
+import { R_AppThemes } from './Themes/AppThemes';
+import { R_WidgetThemes } from './Themes/WidgetThemes';
 
 export const translations = {
   appAPI:                     R_AppAPI,
@@ -41,6 +45,7 @@ export const translations = {
     projectScope:             R_ProjectScope,
     settingsScope:            R_SettingsScope,
     credentialScope:          R_CredentialScope,
+    themeScope:               R_ThemeScope,
   },
   screen: {
     homeScreen:               R_HomeScreen,
@@ -49,6 +54,7 @@ export const translations = {
     sampleInfoScreen:         R_SampleInfoScreen,
     settingsScreen:           R_SettingsScreen,
     credentialScreen:         R_CredentialScreen,
+    widgetThemePreview:       R_WidgetThemePreview,
   },
   component: {
     alert: {
@@ -71,5 +77,9 @@ export const translations = {
     booleanInput:             R_BooleanInput,
     stringInput:              R_StringInput,
     gpsInput:                 R_GPSInput,
+  },
+  themes: {
+    appThemes:                R_AppThemes,
+    widgetThemes:             R_WidgetThemes,
   },
 };

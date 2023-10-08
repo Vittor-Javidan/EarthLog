@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
@@ -17,15 +17,15 @@ export default function SampleButtons() {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [loadFinished , setLoadFinished ] = useState(false);
 
-  function onEndReached() {
+  const onEndReached = useCallback(() => {
     setLoadFinished(true);
     setIsDataLoading(false);
-  }
+  }, []);
 
-  function onScroll() {
+  const onScroll = useCallback(() => {
     if (loadFinished) { return; }
     setIsDataLoading(true);
-  }
+  }, [loadFinished]);
 
   return (
     <FlatList
@@ -69,9 +69,9 @@ const SampleButton = memo((props: {
       onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
       theme={{
         font: theme.font_Button,
-        font_Pressed: theme.font,
+        font_Pressed: theme.font_active,
         background: theme.background_Button,
-        background_Pressed: theme.background,
+        background_Pressed: theme.background_active,
       }}
     />
   );

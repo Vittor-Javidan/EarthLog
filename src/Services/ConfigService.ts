@@ -8,7 +8,8 @@ export default class ConfigService {
   static LOCAL_STORAGE_KEY: string = 'config';
   static config: ConfigDTO = {
     language: LanguageService.getDeviceLanguage(),
-    appTheme: 'dark',
+    appTheme: 'Dark',
+    widgetTheme: 'Light',
   };
 
   static async loadConfig(): Promise<void> {
@@ -25,9 +26,13 @@ export default class ConfigService {
 
   /** Garantees migration when local storage config data is outdated */
   private static verifyConfigDTOIntegrity(dto: ConfigDTO): ConfigDTO {
+
+    const { App, Widget } = ThemeService.themeNamesArray;
+
     const verifiedConfigDTO: ConfigDTO = {
-      language: dto.language ?? LanguageService.getDeviceLanguage(),
-      appTheme: ThemeService.themeNamesArray.App.includes(dto.appTheme) ? dto.appTheme : 'dark',
+      language:    dto.language ?? LanguageService.getDeviceLanguage(),
+      appTheme:    App.includes(dto.appTheme)       ? dto.appTheme    : 'Dark',
+      widgetTheme: Widget.includes(dto.widgetTheme) ? dto.widgetTheme : 'Light',
     };
     return verifiedConfigDTO;
   }

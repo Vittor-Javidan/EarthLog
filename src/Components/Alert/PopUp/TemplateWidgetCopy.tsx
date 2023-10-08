@@ -54,7 +54,6 @@ export const TemplateWidgetCopy = memo((props: {
         <TemplateWidgetButton
           key={widgetData.id_widget}
           title={widgetData.widgetName}
-          theme={theme}
           onPress={() => onWidgetCopyToSample(widgetData)}
         />
       );
@@ -123,14 +122,11 @@ export const TemplateWidgetCopy = memo((props: {
 
 const TemplateWidgetButton = memo((props: {
   title: string
-  theme: {
-    font: string;
-    background: string;
-    background_Button: string;
-  }
   onPress: () => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   function onPressIn() {
@@ -153,12 +149,12 @@ const TemplateWidgetButton = memo((props: {
           paddingHorizontal: 10,
           paddingVertical: 5,
           borderRadius: 10,
-          backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
+          backgroundColor: pressed ? theme.background_active : theme.background_Button,
         }}
       >
         <Text h3
           style={{
-            color: props.theme.background,
+            color: pressed ? theme.font_active : theme.font_button,
             textAlign: 'center',
           }}
         >

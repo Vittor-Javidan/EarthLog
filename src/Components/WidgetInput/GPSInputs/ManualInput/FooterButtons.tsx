@@ -1,13 +1,13 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 
+import { WidgetTheme } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
-import { GPSInputTheme } from '../ThemeType';
 
 export const FooterButtons = memo((props: {
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onCancel: () => void
   onSave: () => void
 }) => {
@@ -34,7 +34,7 @@ export const FooterButtons = memo((props: {
 
 const FooterButton = memo((props: {
   iconName: 'close' | 'save'
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onPress: () => void
 }) => {
 

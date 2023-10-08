@@ -4,7 +4,8 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
-      "@appAPI/*":            [ "appAPI/*"                 ],   
+      "@appAPI/*":            [ "appAPI/*"                 ],
+      "@Themes/*":            [ "Themes/*"                 ],
       "@Types/*":             [ "Types/*"                  ],
       "@Globals/*":           [ "Globals/*"                ],
       "@Translations/*":      [ "Translations/*"           ],

@@ -36,9 +36,9 @@ export default function LanguageButtons(props: {
         iconName="language"
         theme={{
           font:               isSelected ? theme.background : theme.font_Button,
-          font_Pressed:       isSelected ? theme.confirm    : theme.font,
+          font_Pressed:       isSelected ? theme.confirm    : theme.font_active,
           background:         isSelected ? theme.confirm    : theme.background_Button,
-          background_Pressed: isSelected ? theme.background : theme.background,
+          background_Pressed: isSelected ? theme.background : theme.background_active,
         }}
         onPress={async () => await onSelectLanguage()}
       />

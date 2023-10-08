@@ -23,9 +23,8 @@ export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [loading              , setLoading               ] = useState<Loading>('Loading');
   const [gpsReferenceRefresher, setGPSReferenceRefresher ] = useState<boolean>(false);
@@ -48,7 +47,7 @@ export default function SampleScope() {
 
         onBackPress={() => navigate('PROJECT SCOPE', id_project)}
 
-        buttonData={[          {
+        buttonData={[{
           title: 'Data',
         }, {
           title: '',

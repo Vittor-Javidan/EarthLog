@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetDisplay, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetDisplay, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { NavbarIconButton } from './NavbarIconButtons';
 import { SaveFeedback } from './SaveFeedback';
 import { IconName } from '@Icon/index';
@@ -12,7 +12,7 @@ export const Navbar = memo((props: {
   isTemplate: boolean
   display: WidgetDisplay
   rules: WidgetRules
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onPress_DataDisplayButton: () => void
   onPress_EditButton: () => void
   onPress_NewInputButton: () => void

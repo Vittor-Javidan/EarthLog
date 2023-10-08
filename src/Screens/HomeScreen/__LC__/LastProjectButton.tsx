@@ -47,14 +47,15 @@ export default function LastProjectButton() {
           justifyContent: 'space-between',
           paddingTop: 4,
           borderRadius: 10,
-          backgroundColor: pressed ? theme.background : theme.background_Button,
+          backgroundColor: pressed ? theme.background_active : theme.background_Button,
           paddingHorizontal: 10,
+          elevation: 3,
         }}
       >
         <Text h2
           numberOfLine={1}
           style={{
-            color: theme.font_Button,
+            color: pressed ? theme.font_active : theme.font_Button,
             fontWeight: '900',
           }}
         >
@@ -62,7 +63,7 @@ export default function LastProjectButton() {
         </Text>
         <Text p
           style={{
-            color: theme.font_Button,
+            color: pressed ? theme.font_active : theme.font_Button,
             alignSelf: 'flex-end',
             paddingBottom: 4,
             paddingHorizontal: 4,

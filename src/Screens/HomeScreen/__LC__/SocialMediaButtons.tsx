@@ -10,10 +10,6 @@ import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 
 export function SocialMediaButtons() {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-
   return (
     <View
       style={{
@@ -29,32 +25,22 @@ export function SocialMediaButtons() {
           gap: 10,
         }}
       >
-        <YoutubeTutorialButton
-          theme={theme}
-        />
-        <RoadMapButton
-          theme={theme}
-        />
+        <YoutubeTutorialButton />
+        <RoadMapButton />
       </View>
       <View
         style={{ flex: 1 }}
       >
-        <LinkedinCommunityButton
-          theme={theme}
-        />
+        <LinkedinCommunityButton />
       </View>
     </View>
   );
 }
 
-function YoutubeTutorialButton(props: {
-  theme: {
-    font: string
-    background: string
-  }
-}) {
+function YoutubeTutorialButton() {
 
   const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
   const YOUTUBE_COLOR = 'red';
 
@@ -81,18 +67,19 @@ function YoutubeTutorialButton(props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : YOUTUBE_COLOR,
+        backgroundColor: pressed ? theme.background_active : YOUTUBE_COLOR,
         paddingLeft: 5,
         paddingRight: 10,
+        elevation: 3,
       }}
     >
       <Icon
-        color={pressed ? YOUTUBE_COLOR : props.theme.font}
+        color={pressed ? YOUTUBE_COLOR : theme.font}
         iconName="logo-youtube"
       />
       <Text h3
         style={{
-          color: pressed ? YOUTUBE_COLOR : props.theme.font,
+          color: pressed ? YOUTUBE_COLOR : theme.font,
           fontWeight: '900',
         }}
       >
@@ -102,14 +89,10 @@ function YoutubeTutorialButton(props: {
   );
 }
 
-function RoadMapButton(props: {
-  theme: {
-    font: string
-    background: string
-  }
-}) {
+function RoadMapButton() {
 
   const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
   const ROADMAP_COLOR = 'orange';
 
@@ -136,13 +119,14 @@ function RoadMapButton(props: {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : ROADMAP_COLOR,
+        backgroundColor: pressed ? theme.background_active : ROADMAP_COLOR,
         paddingHorizontal: 10,
+        elevation: 3,
       }}
     >
       <Text h3
         style={{
-          color: pressed ? ROADMAP_COLOR : props.theme.font,
+          color: pressed ? ROADMAP_COLOR : theme.font,
           fontWeight: '900',
         }}
       >
@@ -152,14 +136,10 @@ function RoadMapButton(props: {
   );
 }
 
-function LinkedinCommunityButton(props: {
-  theme: {
-    font: string
-    background: string
-  }
-}) {
+function LinkedinCommunityButton() {
 
   const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
   const LINKEDIN_COLOR = '#0e76a8';
 
@@ -184,9 +164,10 @@ function LinkedinCommunityButton(props: {
         flex: 1,
         justifyContent: 'space-between',
         borderRadius: 10,
-        backgroundColor: pressed ? props.theme.background : LINKEDIN_COLOR,
+        backgroundColor: pressed ? theme.background_active : LINKEDIN_COLOR,
         paddingLeft: 10,
         paddingRight: 5,
+        elevation: 3,
       }}
     >
       <View
@@ -197,7 +178,7 @@ function LinkedinCommunityButton(props: {
         }}
       >
         <Icon
-          color={pressed ? LINKEDIN_COLOR : props.theme.font}
+          color={pressed ? LINKEDIN_COLOR : theme.font}
           iconName="logo-linkedin"
         />
       </View>
@@ -210,7 +191,7 @@ function LinkedinCommunityButton(props: {
       >
         <Text h1
           style={{
-            color: pressed ? LINKEDIN_COLOR : props.theme.font,
+            color: pressed ? LINKEDIN_COLOR : theme.font,
             fontWeight: '900',
           }}
         >

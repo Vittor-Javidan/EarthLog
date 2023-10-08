@@ -35,9 +35,20 @@ export default function SettingsScreen(): JSX.Element {
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
           theme={{
             font: theme.font_Button,
-            font_Pressed: theme.font,
+            font_Pressed: theme.font_active,
             background: theme.background_Button,
-            background_Pressed: theme.background,
+            background_Pressed: theme.background_active,
+          }}
+        />
+        <Button.TextWithIcon
+          title={R['Themes']}
+          iconName="color-palette"
+          onPress={() => navigate('THEME SCOPE')}
+          theme={{
+            font: theme.font_Button,
+            font_Pressed: theme.font_active,
+            background: theme.background_Button,
+            background_Pressed: theme.background_active,
           }}
         />
         <Button.TextWithIcon
@@ -46,9 +57,9 @@ export default function SettingsScreen(): JSX.Element {
           onPress={() => navigate('CREDENTIAL SCOPE')}
           theme={{
             font: theme.font_Button,
-            font_Pressed: theme.font,
+            font_Pressed: theme.font_active,
             background: theme.background_Button,
-            background_Pressed: theme.background,
+            background_Pressed: theme.background_active,
           }}
         />
         <Button.TextWithIcon
@@ -59,7 +70,7 @@ export default function SettingsScreen(): JSX.Element {
             font: theme.background,
             background: theme.wrong,
             font_Pressed: theme.wrong,
-            background_Pressed: theme.background,
+            background_Pressed: theme.background_active,
           }}
         />
       </View>

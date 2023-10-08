@@ -1,8 +1,5 @@
-import ThemeService from '@Services/ThemeService';
 import { LanguageTag } from '@Types/AppTypes';
 import { InputTypes } from '@Types/ProjectTypes';
-
-type widgetThemNames = (typeof ThemeService.themeNamesArray.Widget)[number];
 
 type TranslationDTO = Record<LanguageTag, {
   'Confirm to delete this widget.': string,
@@ -12,7 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Saving...': string
   'Select a theme:': string
   'Add a new field:': string
-} & Record<widgetThemNames, string> & Record<InputTypes, string>>
+} & Record<InputTypes, string>>
 
 export const R_Widget: TranslationDTO = {
   'en-US': {
@@ -23,10 +20,6 @@ export const R_Widget: TranslationDTO = {
     'Saving...': 'Saving...',
     'Select a theme:': 'Select a theme:',
     'Add a new field:': 'Add a new field:',
-
-    // WIDGET THEMES
-    'dark': 'Dark',
-    'light': 'Light',
 
     // INPUT TYPES
     'boolean': 'True/False',
@@ -41,10 +34,6 @@ export const R_Widget: TranslationDTO = {
     'Saving...': 'Salvando...',
     'Select a theme:': 'Selecione um tema:',
     'Add a new field:': 'Adicione um novo campo',
-
-    // WIDGET THEMES
-    'dark': 'Escuro',
-    'light': 'Claro',
 
     // INPUT TYPES
     'boolean': 'Verdadeiro/Falso',

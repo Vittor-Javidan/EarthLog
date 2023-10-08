@@ -1,17 +1,16 @@
 import React, { useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
+import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@Types/ProjectTypes';
 import AlertService from '@Services/AlertService';
 
 import { ManualInputButton } from './ManualInputButton';
 import { InputsDisplay } from './InputsDisplay';
-import { GPSInputTheme } from '../ThemeType';
 
 export const ManualInput = memo((props: {
   noGPSData: boolean
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onConfirm: (gpsData: GPS_DTO) => void
 }) => {
 

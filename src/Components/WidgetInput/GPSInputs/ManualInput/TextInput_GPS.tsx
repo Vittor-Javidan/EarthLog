@@ -1,15 +1,16 @@
 import React, { useState, memo, useCallback } from 'react';
 import { View, TextInput, Platform } from 'react-native';
 
+import { WidgetTheme } from '@Types/ProjectTypes';
+
 import { Text } from '@Text/index';
-import { GPSInputTheme } from '../ThemeType';
 
 export const TextInput_GPS = memo((props: {
   title: string
   value: string
   value_placeholder: string
   type: 'latitude' | 'longitude' | 'meters'
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onChangeText: (value: string) => void
 }) => {
 

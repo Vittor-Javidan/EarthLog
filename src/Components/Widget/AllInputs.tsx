@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { Loading } from '@Types/AppTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
@@ -11,7 +11,7 @@ export const DataDisplay = memo((props: {
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
   rules: WidgetRules
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: (id_input: ID) => void
   onInputMoveUp: (id_input: ID) => void

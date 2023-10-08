@@ -1,16 +1,16 @@
 import React, { useMemo, useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
+import { WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import HapticsService from '@Services/HapticsService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
-import { GPSInputTheme } from '../ThemeType';
 
 export const ManualInputButton = memo((props: {
-  theme: GPSInputTheme
+  theme: WidgetTheme
 	onPress: () => void
 }) => {
 

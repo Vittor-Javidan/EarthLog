@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 
-import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetTheme } from '@Types/ProjectTypes';
 import FontService from '@Services/FontService';
 import HapticsService from '@Services/HapticsService';
 
@@ -10,7 +10,7 @@ import { Text } from '@Text/index';
 export const LabelButton = memo((props: {
   label: string
   editLabel: boolean
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   noInputs: boolean
   onPress: () => void
   onConfirm: () => void

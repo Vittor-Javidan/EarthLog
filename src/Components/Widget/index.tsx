@@ -2,7 +2,7 @@ import React, { useMemo, useState, memo, useCallback, useTransition } from 'reac
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetDisplay, WidgetScope, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
@@ -39,14 +39,14 @@ export const Widget = memo((props: {
   const [saved          , setSaved          ] = useState<boolean>(true);
   const [display        , setDisplay        ] = useState<WidgetDisplay>('data display');
 
-  const defaultTheme = useMemo(() => ThemeService.widgetThemes['light'], []);
-  const widgetTheme  = useMemo<WidgetThemeDTO>(() => ({
+  const defaultTheme = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const widgetTheme  = useMemo<WidgetTheme>(() => ({
     font:             widgetData.widgetTheme?.font             ?? defaultTheme.font,
     font_placeholder: widgetData.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
     background:       widgetData.widgetTheme?.background       ?? defaultTheme.background,
     wrong:            widgetData.widgetTheme?.wrong            ?? defaultTheme.wrong,
     confirm:          widgetData.widgetTheme?.confirm          ?? defaultTheme.confirm,
-    modified:         widgetData.widgetTheme?.modified         ?? defaultTheme.modified,
+    warning:          widgetData.widgetTheme?.warning          ?? defaultTheme.warning,
     disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
@@ -215,7 +215,10 @@ export const Widget = memo((props: {
   const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
     setSaved(false);
     setWidgetData(prev => {
-      const newData: WidgetData = { ...prev, widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName])};
+      const newData: WidgetData = {
+        ...prev,
+        widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName]),
+      };
       save(newData);
       return newData;
     });
@@ -262,6 +265,7 @@ export const Widget = memo((props: {
       style={{
         backgroundColor: widgetTheme.background,
         borderRadius: 10,
+        elevation: 3,
       }}
     >
       <Navbar

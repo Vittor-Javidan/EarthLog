@@ -3,12 +3,12 @@ export type Loading = 'Loaded' | 'Loading';
 export const languageTags   = ['en-US', 'pt-BR'] as const;
 export type LanguageTag = (typeof languageTags)[number];
 
-export const ThemeNamesArray_APP     = ['dark'] as const;
-export const ThemeNamesArray_Widgets = ['light', 'dark'] as const;
+export const ThemeNamesArray_APP     = ['Light', 'Dark'] as const;
+export const ThemeNamesArray_Widgets = ['Light', 'Dark'] as const;
 export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
 export type ThemeNames_Widgets = (typeof ThemeNamesArray_Widgets)[number];
 
-export type AppThemeDTO = {
+export type AppTheme = {
   layout: {
     root: {
       background: string
@@ -68,6 +68,7 @@ export type AppThemeDTO = {
     modalPopUp: {
       font: string
       font_button: string
+      font_active: string
       font_placeHolder: string
       background: string
       background_active: string
@@ -79,8 +80,10 @@ export type AppThemeDTO = {
   component: {
     font: string
     font_Button: string
+    font_active: string
     background: string
     background_Button: string
+    background_active: string
     confirm: string
     wrong: string
     warning: string
@@ -90,6 +93,7 @@ export type AppThemeDTO = {
 export type ConfigDTO = {
   language: LanguageTag
   appTheme: ThemeNames_APP
+  widgetTheme: ThemeNames_Widgets
 }
 
 export type ModalConfig = {

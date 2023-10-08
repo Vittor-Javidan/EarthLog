@@ -1,15 +1,14 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPSInputData } from '@Types/ProjectTypes';
+import { GPSFeaturesDTO, GPSInputData, WidgetTheme } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
-import { GPSInputTheme } from './ThemeType';
 
 export const DataDisplay = memo((props: {
   inputData: GPSInputData
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
 }) => {
 
   const showStaticDisplay =
@@ -61,7 +60,7 @@ const DataInfo = memo((props: {
   title: string
   value: number
   precision: number
-  theme: GPSInputTheme
+  theme: WidgetTheme
 }) => {
   return (
     <View

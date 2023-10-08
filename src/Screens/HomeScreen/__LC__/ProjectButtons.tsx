@@ -25,7 +25,6 @@ export default function ProjectButtons() {
       title={settings.name}
       status = {settings.status}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
-      theme={theme}
     />
   ));
 
@@ -36,6 +35,7 @@ export default function ProjectButtons() {
         backgroundColor: theme.background,
         paddingBottom: 5,
         borderRadius: 10,
+        elevation: 3,
       }}
     >
       <Text h1
@@ -70,15 +70,11 @@ export default function ProjectButtons() {
 function ProjectButton(props: {
   title: string
   status?: ProjectStatus
-  theme: {
-    font_Button: string;
-    background: string;
-    background_Button: string;
-    confirm: string;
-    warning: string
-  }
   onPress: () => void
 }) {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -94,7 +90,7 @@ function ProjectButton(props: {
 
   const iconColor = (
     props.status === 'uploaded' || props.status === 'first upload'
-  ) ? props.theme.confirm : props.theme.warning;
+  ) ? theme.confirm : theme.warning;
 
   const iconName = (
     props.status === 'uploaded' || props.status === 'first upload'
@@ -112,7 +108,7 @@ function ProjectButton(props: {
         paddingHorizontal: 10,
         borderRadius: 20,
         gap: 5,
-        backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
+        backgroundColor: pressed ? theme.background_active : theme.background_Button,
       }}
     >
       {props.status !== undefined && (
@@ -129,7 +125,7 @@ function ProjectButton(props: {
       )}
       <Text h3
         style={{
-          color: props.theme.font_Button,
+          color: pressed ? theme.font_active : theme.font_Button,
         }}
       >
         {props.title}

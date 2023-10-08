@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, InputData, InputStatus, WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, InputStatus, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
@@ -13,7 +13,7 @@ export const InputSelector = memo((props: {
   isLastInput: boolean
   referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
-  widgetTheme: WidgetThemeDTO
+  widgetTheme: WidgetTheme
   onSave: (inputData: InputData | null, status: InputStatus ) => void
   onInputDelete: () => void
   onInputMoveUp: () => void

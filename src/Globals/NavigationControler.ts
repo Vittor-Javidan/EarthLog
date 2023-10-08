@@ -11,6 +11,7 @@ type ScreenName = (
   'SETTINGS SCOPE'                                    |
     'LANGUAGE SELECTION SCOPE'                        |
     'CREDENTIAL SCOPE'                                |
+    'THEME SCOPE'                                     |
   'HOME SCOPE'                                        |
     'PROJECT SCOPE'                                   |
       'SAMPLE SCOPE'
@@ -50,6 +51,11 @@ export function navigate(
 
     case 'CREDENTIAL SCOPE': {
       navController.push(AppRoutes.SS_CREDENTIALS_SCOPE);
+      break;
+    }
+
+    case 'THEME SCOPE': {
+      navController.push(AppRoutes.SS_THEME_SCOPE);
       break;
     }
 
