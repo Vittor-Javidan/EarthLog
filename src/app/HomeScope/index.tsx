@@ -74,7 +74,6 @@ function Drawer() {
     <Button.TextWithIcon
       title={R['Settings']}
       iconName="settings"
-      iconSide="Right"
       theme={{
         font: theme.font,
         background: theme.background,

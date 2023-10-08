@@ -32,7 +32,6 @@ export default function SettingsScreen(): JSX.Element {
         <Button.TextWithIcon
           title={R['Language']}
           iconName="language"
-          iconSide="Right"
           onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
           theme={{
             font: theme.font_Button,
@@ -44,7 +43,6 @@ export default function SettingsScreen(): JSX.Element {
         <Button.TextWithIcon
           title={R['Credentials']}
           iconName="card-outline"
-          iconSide="Right"
           onPress={() => navigate('CREDENTIAL SCOPE')}
           theme={{
             font: theme.font_Button,
@@ -56,7 +54,6 @@ export default function SettingsScreen(): JSX.Element {
         <Button.TextWithIcon
           title={'Whipe All Data'}
           iconName="trash-outline"
-          iconSide="Right"
           onPress={async () => await whipeAllData()}
           theme={{
             font: theme.background,

@@ -34,7 +34,6 @@ export default function LanguageButtons(props: {
         key={languageTag}
         title={R[languageTag]}
         iconName="language"
-        iconSide="Right"
         theme={{
           font:               isSelected ? theme.background : theme.font_Button,
           font_Pressed:       isSelected ? theme.confirm    : theme.font,

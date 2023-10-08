@@ -1,8 +1,7 @@
 import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
+import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, LayoutChangeEvent } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { APP_VERSION } from '@Globals/Version';
 import ConfigService from '@Services/ConfigService';
@@ -13,9 +12,7 @@ import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { AlertLayer } from '@Alert/index';
 
-const { height: HEIGHT } = Dimensions.get('window');
 const NAVBAR_HEIGH = 60;
-const NAVIGATION_TREE_HEIGHT = 20;
 
 export const Root = memo((props: {
   title: string
@@ -25,8 +22,6 @@ export const Root = memo((props: {
   navigationTree: JSX.Element
 }) => {
 
-  const [showDrawer, setShowDrawer] = useState<boolean>(false);
-
   return (<>
     <StatusBarLayer />
     <AlertLayer />
@@ -34,16 +29,10 @@ export const Root = memo((props: {
       title={props.title}
       subtitle={props.subtitle}
       navigationTree={props.navigationTree}
-      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+      drawerChildren={props.drawerChildren}
     >
       {props.children}
     </AppLayer>
-    <DrawerLayer
-      show={showDrawer}
-      onPress_Background={() => setShowDrawer(false)}
-    >
-      {props.drawerChildren}
-    </DrawerLayer>
   </>);
 });
 
@@ -51,22 +40,30 @@ const AppLayer = memo((props: {
   title: string
   subtitle: string
   navigationTree: JSX.Element
+  drawerChildren: JSX.Element
   children: ReactNode
-  onMenuButtonPress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    setDimensions({ width, height });
+  }, []);
 
   return (<>
     <Navbar
       title={props.title}
       subtitle={props.subtitle}
-      onMenuButtonPress={() => props.onMenuButtonPress()}
+      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
       style={{ height: NAVBAR_HEIGH }}
     />
     {props.navigationTree}
     <View
+      onLayout={(event) => onLayout(event)}
       style={{
         flex: 1,
         backgroundColor: theme.background,
@@ -74,6 +71,13 @@ const AppLayer = memo((props: {
     >
       {props.children}
     </View>
+    <DrawerLayer
+      show={showDrawer}
+      dimensions={dimensions}
+      onPress_Background={() => setShowDrawer(false)}
+    >
+      {props.drawerChildren}
+    </DrawerLayer>
   </>);
 });
 
@@ -193,15 +197,17 @@ const MenuButton = memo((props: {
 
 const DrawerLayer = memo((props: {
   show: boolean
+  dimensions: { width: number; height: number }
   children: ReactNode
   onPress_Background: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
-  const SAFE_AREA_HEIGHT = HEIGHT - useSafeAreaInsets().top - useSafeAreaInsets().bottom;
 
-  return (
+  const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
+
+  return showDrawer ? (
     <DrawerAnimation show={props.show}>
       <ScrollView
         contentContainerStyle={{
@@ -211,8 +217,8 @@ const DrawerLayer = memo((props: {
         style={{
           position: 'absolute',
           borderColor: theme.border,
-          height: (SAFE_AREA_HEIGHT - NAVBAR_HEIGH - NAVIGATION_TREE_HEIGHT),
-          width: '100%',
+          height: props.dimensions.height,
+          width: props.dimensions.width,
           bottom: 0,
           left: 0,
           borderRightWidth: 2,
@@ -241,7 +247,7 @@ const DrawerLayer = memo((props: {
         </Pressable>
       </ScrollView>
     </DrawerAnimation>
-  );
+  ) : <></>;
 });
 
 const DrawerAnimation = memo((props: {

@@ -65,7 +65,6 @@ const SampleButton = memo((props: {
   return (
     <Button.TextWithIcon
       title={props.title}
-      iconSide="Right"
       iconName="clipboard"
       onPress={() => navigate('SAMPLE SCOPE', props.id_project, props.id_sample)}
       theme={{
