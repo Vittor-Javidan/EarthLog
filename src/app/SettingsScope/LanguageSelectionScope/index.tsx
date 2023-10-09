@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 
 import { LanguageTag } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
@@ -7,12 +7,13 @@ import { useBackPress } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
-import LanguagesSelectionScreen from '@Screens/LanguageSelectionScreen';
+import { LanguagesSelectionScreen } from '@Screens/LanguageSelectionScreen';
 
-export default function LanguageSelectionScope(): JSX.Element {
+export default function LanguageSelectionScope() {
 
-  const [language, setLanguage] = useState<LanguageTag>(ConfigService.config.language);
-  const R = useMemo(() => translations.scope.languageSelectionScope[language], [language]);
+  const config = useMemo(() => ConfigService.config, []);
+  const [language, setLanguage] = useState<LanguageTag>(config.language);
+  const R = translations.scope.languageSelectionScope[language];
 
   useBackPress(() => navigate('SETTINGS SCOPE'), []);
 
@@ -30,7 +31,7 @@ export default function LanguageSelectionScope(): JSX.Element {
   );
 }
 
-function NavigationTree() {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -52,4 +53,4 @@ function NavigationTree() {
       ]}
     />
   );
-}
+});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { LanguageTag } from '@Types/AppTypes';
@@ -7,10 +7,9 @@ import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export default function LanguagesSelectionScreen(props: {
+export const LanguagesSelectionScreen = memo((props: {
   onLanguageChange: (languageTag: LanguageTag) => void
-}): JSX.Element {
-
+}) => {
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
@@ -19,9 +18,9 @@ export default function LanguagesSelectionScreen(props: {
         style={{ gap: 1 }}
       >
         <LC.LanguageButtons
-          onLangaugeSelected={(languageTag) => props.onLanguageChange(languageTag)}
+          onLanguageChange={(languageTag) => props.onLanguageChange(languageTag)}
         />
       </View>
     </Layout.Screen>
   );
-}
+});
