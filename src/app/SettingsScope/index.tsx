@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
@@ -27,7 +27,7 @@ export default function SettingsScope(): JSX.Element {
   );
 }
 
-function NavigationTree() {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -44,4 +44,4 @@ function NavigationTree() {
       ]}
     />
   );
-}
+});

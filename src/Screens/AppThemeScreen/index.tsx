@@ -10,7 +10,7 @@ import { TC } from './__TC__';
 
 export const AppThemeScreen = memo((props: {
   themeScopeState: Loading
-  onAppThemeSelect: () => void
+  onAppThemeChange: () => void
 }) => {
 
   return (
@@ -30,7 +30,7 @@ export const AppThemeScreen = memo((props: {
             }}
           >
             <LC.ThemeButtons
-              onAppThemeSelect={() => props.onAppThemeSelect()}
+              onAppThemeChange={() => props.onAppThemeChange()}
             />
           </ScrollView>
         </Animation>

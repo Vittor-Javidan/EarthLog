@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSInputData, InputAlertMessage, InputStatus, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
 import ConfigService from '@Services/ConfigService';
 import GPSService, { GPSWatcherService } from '@Services/GPSService';
-
 
 import { LC } from '../__LC__';
 import { ManualInput } from './ManualInput';
@@ -25,7 +23,7 @@ export const GPSInput = memo((props: {
   referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
   theme: WidgetTheme
-  onSave: (inputData: GPSInputData | null, status: InputStatus ) => void
+  onSave: (inputData: GPSInputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
@@ -36,7 +34,6 @@ export const GPSInput = memo((props: {
   const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.inputData.value)), []);
 
   const [inputData    , setInputData    ] = useState<GPSInputData>(UtilService.deepCopy(props.inputData));
-  const [saveSignal   , setSaveSignal   ] = useState<boolean>(false);
   const [alertMessages, setAlertMessages] = useState<InputAlertMessage>({});
   const [accuracy     , setAccuracy     ] = useState<GPSAccuracyDTO>({
     coordinate: null,
@@ -52,61 +49,43 @@ export const GPSInput = memo((props: {
   const noGPSData = Object.keys(inputData.value).length <= 0;
 
   useEffect(() => {
-    return () => { gpsWatcher.stopWatcher();};
+    return () => { gpsWatcher.stopWatcher(); };
   }, []);
-
-  useTimeout(async () => {
-    if (saveSignal) {
-      props.onSave(UtilService.deepCopy(inputData), 'ready to save');
-      setSaveSignal(false);
-    }
-  }, [inputData, saveSignal], 200);
 
   useEffect(() => {
     GPSService.checkReferenceCoordinateDifference(props.referenceGPSData, inputData.value,
-      () => setAlertMessages(prev => {
-        if (prev.gpsDistanceAlertMessage !== undefined) { delete prev.gpsDistanceAlertMessage; }
-        return { ...prev };
-      }),
+      () => {
+        if (alertMessages.gpsDistanceAlertMessage) {
+          setAlertMessages(prev => {
+            delete prev.gpsDistanceAlertMessage;
+            return { ...prev };
+          });
+        }
+      },
       (distance) => setAlertMessages({
         gpsDistanceAlertMessage: R['* Reference distance: '] + `${distance}m`,
       })
     );
-  }, [props.referenceGPSData, inputData.value]);
+  }, [props.referenceGPSData, inputData]);
 
-  const onLabelChange = useCallback((newLabel: string) => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, label: newLabel}));
-    setSaveSignal(true);
-  }, [props.onSave, inputData]);
-
-  const onManualInput = useCallback((gpsData: GPS_DTO) => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, value: gpsData}));
-    setSaveSignal(true);
+  const asyncSave = useCallback(async (inputData: GPSInputData) => {
+    props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
 
-  const startGPS = useCallback(async () => {
-    await AlertService.handleAlert(noGPSData === false, {
-      type: 'warning',
-      question: R['This will overwrite current gps data. Confirm to proceed.'],
-    }, async () => {
-      await gpsWatcher.watchPositionAsync(
-        (gpsData) => setInputData(prev => ({ ...prev, value: gpsData})),
-        (accuracy) => setAccuracy(accuracy)
-      );
-      setFeatures(prev => ({ ...prev, gpsON: true }));
-    });
-  }, [noGPSData]);
+  const onLabelChange = useCallback((newLabel: string, inputData: GPSInputData) => {
+    const newData: GPSInputData = { ...inputData, label: newLabel};
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave]);
 
-  const stopGPS = useCallback(() => {
-    props.onSave(null, 'modifying');
-    gpsWatcher.stopWatcher();
-    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
-    setSaveSignal(true);
-  }, [props.onSave]);
+  const onManualInput = useCallback((gpsData: GPS_DTO, inputData: GPSInputData) => {
+    const newData: GPSInputData = { ...inputData, value: gpsData};
+    gpsWatcher.setGpsData(gpsData);
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave]);
 
-  const toogleCoordinate = useCallback(async (checked: boolean) => {
+  const toogleCoordinate = useCallback(async (checked: boolean, inputData: GPSInputData) => {
     await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined, {
       type: 'warning',
       question: R['This will delete current saved coordinate. Confirm to proceed.'],
@@ -114,17 +93,15 @@ export const GPSInput = memo((props: {
       gpsWatcher.enableCoordinates(checked);
       setFeatures(prev => ({ ...prev, enableCoordinate: checked }));
       if (!checked) {
-        props.onSave(null, 'modifying');
-        setInputData(prev => {
-          if (prev.value.coordinates !== undefined) { delete prev.value.coordinates !== undefined; }
-          return {...prev };
-        });
-        setSaveSignal(true);
+        const newData: GPSInputData = { ...inputData };
+        delete newData.value.coordinates;
+        asyncSave(newData);
+        setInputData(newData);
       }
     });
-  }, [props.onSave, inputData.value.coordinates]);
+  }, [asyncSave]);
 
-  const toogleAltitude = useCallback(async (checked: boolean) => {
+  const toogleAltitude = useCallback(async (checked: boolean, inputData: GPSInputData) => {
     await AlertService.handleAlert(checked === false && inputData.value.altitude !== undefined, {
       question: R['This will delete current saved altitude. Confirm to proceed.'],
       type: 'warning',
@@ -132,15 +109,35 @@ export const GPSInput = memo((props: {
       gpsWatcher.enableAltitude(checked);
       setFeatures(prev => ({ ...prev, enableAltitude: checked }));
       if (!checked) {
-        props.onSave(null, 'modifying');
-        setInputData(prev => {
-          if (prev.value.altitude !== undefined) { delete prev.value.altitude !== undefined; }
-          return {...prev };
-        });
-        setSaveSignal(true);
+        const newData: GPSInputData = { ...inputData };
+        delete newData.value.altitude;
+        asyncSave(newData);
+        setInputData(newData);
       }
     });
-  }, [props.onSave, inputData.value.altitude]);
+  }, [asyncSave]);
+
+  const startGPS = useCallback(async (noGPSData: boolean, inputData: GPSInputData) => {
+    await AlertService.handleAlert(noGPSData === false, {
+      type: 'warning',
+      question: R['This will overwrite current gps data. Confirm to proceed.'],
+    }, async () => {
+      setFeatures(prev => ({ ...prev, gpsON: true }));
+      await gpsWatcher.watchPositionAsync(
+        (gpsData) => {
+          const newData: GPSInputData = { ...inputData, value: gpsData};
+          asyncSave(newData);
+          setInputData(newData);
+        },
+        (accuracy) => setAccuracy(accuracy)
+      );
+    });
+  }, [asyncSave]);
+
+  const stopGPS = useCallback(() => {
+    gpsWatcher.stopWatcher();
+    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
+  }, []);
 
   return (<>
     <LC.Root
@@ -150,7 +147,7 @@ export const GPSInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label)}
+      onLabelChange={(label) => onLabelChange(label, inputData)}
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
@@ -163,7 +160,7 @@ export const GPSInput = memo((props: {
           locked={inputData.lockedData}
           theme={props.theme}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
-          onPress_PlayButton={async () => await startGPS()}
+          onPress_PlayButton={async () => await startGPS(noGPSData, inputData)}
           onPress_StopButton={() => stopGPS()}
         />
       }
@@ -180,8 +177,8 @@ export const GPSInput = memo((props: {
         />
         <CheckboxOptions
           features={features}
-          onToogle_Coordinate={async (checked) => await toogleCoordinate(checked)}
-          onToogle_Altitude={async (checked) => await toogleAltitude(checked)}
+          onToogle_Coordinate={async (checked) => await toogleCoordinate(checked, inputData)}
+          onToogle_Altitude={async (checked) => await toogleAltitude(checked, inputData)}
           theme={props.theme}
         />
         <DataDisplay
@@ -202,7 +199,7 @@ export const GPSInput = memo((props: {
           <ManualInput
             noGPSData={noGPSData === false}
             features={features}
-            onConfirm={(newGPSData) => onManualInput(newGPSData)}
+            onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
             theme={props.theme}
           />
         )}

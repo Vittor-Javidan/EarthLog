@@ -6,15 +6,16 @@ import { InputAlertMessage, WidgetTheme } from '@Types/ProjectTypes';
 import { Text } from '@Text/index';
 
 export const AlertMessages = memo((props: {
-  alertMessages: InputAlertMessage | undefined
+  alertMessages: InputAlertMessage
   theme: WidgetTheme
 }) => {
 
-  if (props.alertMessages === undefined || Object.keys(props.alertMessages).length <= 0) {
+  if (Object.keys(props.alertMessages).length <= 0) {
     return <></>;
   }
 
-  const Messages = Object.values(props.alertMessages).map(alertMessage => (
+
+  const Messages = Object.values(props.alertMessages).map((alertMessage) => (
     <Text p
       key={alertMessage}
       style={{

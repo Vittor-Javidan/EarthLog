@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
@@ -7,7 +7,7 @@ import ThemeService from '@Services/ThemeService';
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
 
-export default function ScreenButtons() {
+export const ScreenButtons = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
@@ -30,4 +30,4 @@ export default function ScreenButtons() {
       }
     />
   );
-}
+});

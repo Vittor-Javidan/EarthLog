@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, InputData, InputStatus, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
@@ -14,7 +14,7 @@ export const InputSelector = memo((props: {
   referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
   widgetTheme: WidgetTheme
-  onSave: (inputData: InputData | null, status: InputStatus ) => void
+  onSave: (inputData: InputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
@@ -26,7 +26,7 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(data, status) => props.onSave(data, status)}
+        onSave={(inputData) => props.onSave(inputData)}
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}
@@ -41,7 +41,7 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(data, status) => props.onSave(data, status)}
+        onSave={(inputData) => props.onSave(inputData)}
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}
@@ -56,7 +56,7 @@ export const InputSelector = memo((props: {
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
         referenceGPSData={props.referenceGPSData}
-        onSave={(data, status) => props.onSave(data, status)}
+        onSave={(inputData) => props.onSave(inputData)}
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}
         onInputMoveDow={() => props.onInputMoveDow()}

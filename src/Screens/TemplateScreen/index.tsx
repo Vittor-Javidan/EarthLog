@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Loading } from '@Types/AppTypes';
 
@@ -6,16 +6,16 @@ import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export function TemplateScreen(props: {
+export const TemplateScreen = memo((props: {
   projectScopeState: Loading
-}) {
+}) => {
 
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons
-        onWidgetCreation={() => refresher(prev => !prev)}
+        onWidgetCreation={() => refresh(prev => !prev)}
       />}
     >
       {props.projectScopeState === 'Loading' ? (
@@ -28,9 +28,9 @@ export function TemplateScreen(props: {
             gap: 10,
           }}
         >
-          <LC.TemplateWidgets />
+          <LC.F_TemplateWidgets />
         </Layout.ScrollView>
       )}
     </Layout.Screen>
   );
-}
+});

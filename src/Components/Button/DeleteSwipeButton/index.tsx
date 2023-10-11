@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo } from 'react';
+import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View, Dimensions, Pressable } from 'react-native';
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
@@ -51,9 +51,9 @@ export const DeleteSwipeButton = memo((props: {
     backgroundColor: translateX.value < THRESHOLD ? props.theme.wrong : props.theme.background,
   }));
 
-  function vibrate() {
+  const vibrate = useCallback(() => {
     HapticsService.vibrate('warning');
-  }
+  }, []);
 
   const panGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { x: number }>({
     onStart: (_, context) => {
@@ -165,20 +165,19 @@ const CancelButton = memo((props: {
 	onPress: () => void
 }) => {
 
-  const config           = useMemo(() => ConfigService.config, []);
-  const R                = useMemo(() => translations.component.button[config.language], []);
-
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.component.button[config.language], []);
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
     HapticsService.vibrate('success');
-  }
+  }, [props.onPress]);
 
 	return (
 		<Pressable

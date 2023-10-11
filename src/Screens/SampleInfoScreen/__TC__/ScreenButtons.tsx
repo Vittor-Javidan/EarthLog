@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -10,7 +10,7 @@ import ThemeService from '@Services/ThemeService';
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
 
-export default function ScreenButtons() {
+export const ScreenButtons = memo(() => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
@@ -19,7 +19,7 @@ export default function ScreenButtons() {
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-  async function deleteSample() {
+  const deleteSample = useCallback(async () => {
     await ProjectService.deleteSample(
       id_project,
       id_sample,
@@ -29,7 +29,7 @@ export default function ScreenButtons() {
       },
       (errorMessage) => alert(errorMessage)
     );
-  }
+  }, [id_project, id_sample]);
 
   return (
     <Layout.ScreenButtons
@@ -65,4 +65,4 @@ export default function ScreenButtons() {
       }
     />
   );
-}
+});

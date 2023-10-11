@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, memo, useEffect, useMemo, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -8,17 +8,17 @@ import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export function CredentialSelectionScreen(props: {
+export const CredentialSelectionScreen = memo((props: {
   credentialScopeState: Loading
-}): JSX.Element {
+}) => {
 
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onCredentialCreation={() => refresher(prev => !prev)}
+          onCredentialCreation={() => refresh(prev => !prev)}
         />
       }
     >
@@ -33,13 +33,13 @@ export function CredentialSelectionScreen(props: {
               gap: 10,
             }}
           >
-            <LC.AllCredentials />
+            <LC.F_AllCredentials />
           </Layout.ScrollView>
         </Animation>
       )}
     </Layout.Screen>
   );
-}
+});
 
 function Animation(props: { children: ReactNode}) {
 

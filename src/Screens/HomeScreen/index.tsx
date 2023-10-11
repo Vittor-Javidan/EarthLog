@@ -1,4 +1,4 @@
-import React, { useMemo, ReactNode, useEffect, useState } from 'react';
+import React, { useMemo, ReactNode, useEffect, useState, memo } from 'react';
 import { Dimensions, View } from 'react-native';
 import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
@@ -8,9 +8,9 @@ import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
 
-export default function HomeScreen(props: {
+export const HomeScreen = memo((props: {
   homeScopeState: Loading
-}) {
+}) => {
 
   const [_, refresher] = useState<boolean>(false);
 
@@ -37,13 +37,13 @@ export default function HomeScreen(props: {
           >
             <LC.SocialMediaButtons />
             <LC.LastProjectButton />
-            <LC.ProjectButtons />
+            <LC.F_ProjectButtons />
           </View>
         </Animation>
       </>)}
     </Layout.Screen>
   );
-}
+});
 
 function Animation(props: { children: ReactNode}) {
 

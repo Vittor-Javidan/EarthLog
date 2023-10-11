@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 import { BackHandler } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
@@ -13,7 +13,7 @@ import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import HomeScreen from '@Screens/HomeScreen';
+import { HomeScreen } from '@Screens/HomeScreen';
 
 export default function HomeScope() {
 
@@ -30,11 +30,11 @@ export default function HomeScope() {
     HapticsService.vibrate('warning');
   }, []);
 
-  async function exitMessage() {
+  const exitMessage = useCallback(async () => {
     await AlertService.handleAlert(true, {
       type: 'exit app',
     }, () => BackHandler.exitApp());
-  }
+  }, []);
 
   return (
     <Layout.Root
@@ -50,7 +50,7 @@ export default function HomeScope() {
   );
 }
 
-function NavigationTree() {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -62,9 +62,9 @@ function NavigationTree() {
       ]}
     />
   );
-}
+});
 
-function Drawer() {
+const Drawer = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
@@ -83,7 +83,7 @@ function Drawer() {
       onPress={() => navigate('SETTINGS SCOPE')}
     />
   </>);
-}
+});
 
 async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();

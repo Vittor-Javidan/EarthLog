@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
@@ -7,9 +7,9 @@ import ThemeService from '@Services/ThemeService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onProjectCreation: () => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
@@ -56,4 +56,4 @@ export default function ScreenButtons(props: {
       </>}
     />
   );
-}
+});

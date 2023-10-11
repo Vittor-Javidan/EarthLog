@@ -10,10 +10,9 @@ import CacheService from '@Services/CacheService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function SampleButtons() {
+export function F_SampleButtons() {
 
   const id_project = useLocalSearchParams().id_project as string;
-
   const [isDataLoading, setIsDataLoading] = useState(false);
   const [loadFinished , setLoadFinished ] = useState(false);
 

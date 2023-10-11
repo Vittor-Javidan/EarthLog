@@ -8,7 +8,7 @@ import ThemeService from '@Services/ThemeService';
 import { translations } from '@Translations/index';
 
 export const ThemeButtons = memo((props: {
-  onAppThemeSelect: () => void
+  onAppThemeChange: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, [ConfigService.config.appTheme]);
@@ -19,9 +19,9 @@ export const ThemeButtons = memo((props: {
       ConfigService.config.appTheme = theme;
       await ConfigService.saveConfig();
       setSelectedTheme(theme);
-      props.onAppThemeSelect();
+      props.onAppThemeChange();
     }
-  }, [props.onAppThemeSelect, selectedTheme]);
+  }, [props.onAppThemeChange, selectedTheme]);
 
   const AllButtons = ThemeNamesArray_APP.map(theme => (
     <ThemButton

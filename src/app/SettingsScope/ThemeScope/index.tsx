@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
@@ -48,7 +48,7 @@ export default function ThemeScope(): JSX.Element {
           <AppThemeScreen
             key="1"
             themeScopeState={loading}
-            onAppThemeSelect={() => refresh(prev => !prev)}
+            onAppThemeChange={() => refresh(prev => !prev)}
           />,
           <WidgetThemeScreen
             key="2"
@@ -66,7 +66,7 @@ export default function ThemeScope(): JSX.Element {
   );
 }
 
-function NavigationTree() {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -88,4 +88,4 @@ function NavigationTree() {
       ]}
     />
   );
-}
+});

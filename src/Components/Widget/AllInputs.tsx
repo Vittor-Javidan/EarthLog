@@ -1,8 +1,8 @@
 import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { GPS_DTO, ID, InputData, InputStatus, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { Loading } from '@Types/AppTypes';
+import { GPS_DTO, ID, InputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 
@@ -12,7 +12,7 @@ export const DataDisplay = memo((props: {
   referenceGPSData: GPS_DTO | undefined
   rules: WidgetRules
   theme: WidgetTheme
-  onSave: (inputData: InputData | null, status: InputStatus ) => void
+  onSave: (inputData: InputData) => void
   onInputDelete: (id_input: ID) => void
   onInputMoveUp: (id_input: ID) => void
   onInputMoveDow: (id_input: ID) => void
@@ -37,7 +37,7 @@ export const DataDisplay = memo((props: {
         isFirstInput={isFirst}
         isLastInput={isLast}
         referenceGPSData={props.referenceGPSData}
-        onSave={(inputData, status) => props.onSave(inputData, status)}
+        onSave={(inputData) => props.onSave(inputData)}
         onInputDelete={() => props.onInputDelete(inputData.id_input)}
         onInputMoveUp={() => props.onInputMoveUp(inputData.id_input)}
         onInputMoveDow={() => props.onInputMoveDow(inputData.id_input)}

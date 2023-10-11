@@ -90,7 +90,6 @@ export type WidgetTheme = {
 // =================================================================================================
 
 export type InputData = StringInputData | BooleanInputData | GPSInputData
-export type InputStatus = 'modifying' | 'ready to save'
 export type InputAlertMessage = {
   gpsDistanceAlertMessage?: string
 }

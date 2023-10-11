@@ -1,5 +1,5 @@
-import TemplateWidgets from './TemplateWidgets';
+import { F_TemplateWidgets } from './TemplateWidgets';
 
 export const LC = {
-  TemplateWidgets: TemplateWidgets,
+  F_TemplateWidgets: F_TemplateWidgets,
 };

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -10,7 +10,7 @@ import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 
-export default function LastProjectButton() {
+export const LastProjectButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -21,15 +21,15 @@ export default function LastProjectButton() {
   const lastProjectSettings = CacheService.lastOpenProject;
   const lastProjectOpenExist = lastProjectSettings.id_project !== '';
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     navigate('PROJECT SCOPE', lastProjectSettings.id_project);
     HapticsService.vibrate('success');
-  }
+  }, [lastProjectSettings.id_project]);
 
   return lastProjectOpenExist ? (
     <View
@@ -74,4 +74,4 @@ export default function LastProjectButton() {
       </Pressable>
     </View>
   ) : <></>;
-}
+});

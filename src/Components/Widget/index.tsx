@@ -2,13 +2,15 @@ import React, { useMemo, useState, memo, useCallback, useTransition } from 'reac
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, InputStatus, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
+import CacheService from '@Services/CacheService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -16,8 +18,6 @@ import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
-import { useLocalSearchParams } from 'expo-router';
-import CacheService from '@Services/CacheService';
 
 export const Widget = memo((props: {
   widgetData: WidgetData
@@ -26,10 +26,8 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.widget.Root[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [_, startTransitions] = useTransition();
 
   const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
@@ -50,10 +48,9 @@ export const Widget = memo((props: {
     disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
-  const onLabelChange = useCallback((label: string) => {
-    setTempLabel(label);
-    setSaved(false);
-  }, []);
+  useAutoSave(() => {
+    setSaved(true);
+  }, [widgetData, props.widgetScope, saved]);
 
   const selectDisplay = useCallback((newDisplay: WidgetDisplay) => {
     startTransitions(() => {
@@ -85,112 +82,81 @@ export const Widget = memo((props: {
     setEditInputs(false);
   }, [selectDisplay]);
 
-  const save = useCallback(async (widgetData: WidgetData) => {
-
-    // TODO: extract this save function to outside this component. This will become a autosaveHook in the futures.
-
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    switch (props.widgetScope.type) {
-
-      case 'project': {
-        await ProjectService.updateWidget_Project(
-          props.widgetScope.id_project,
-          widgetData,
-          () => setSaved(true),
-          (erroMessage) => alert(erroMessage)
-        ); break;
-      }
-
-      case 'template': {
-        await ProjectService.updateWidget_Template(
-          props.widgetScope.id_project,
-          widgetData,
-          () => setSaved(true),
-          (erroMessage) => alert(erroMessage)
-        ); break;
-      }
-
-      case 'sample': {
-        await ProjectService.updateWidget_Sample(
-          props.widgetScope.id_project,
-          props.widgetScope.id_sample,
-          widgetData,
-          () => setSaved(true),
-          (erroMessage) => alert(erroMessage)
-        ); break;
-      }
-    }
-
-  }, [props.widgetScope]);
-
   const onEditLabel = useCallback(() => {
     if (widgetData.rules.allowWidgetNameChange) {
       setEditLabel(true);
     }
   }, []);
 
+  const onLabelChange = useCallback((label: string) => {
+    setSaved(false);
+    setTempLabel(label);
+  }, []);
+
   const onConfirmLabel = useCallback(() => {
     setEditLabel(false);
-    setWidgetData(prev => {
-      const newData = { ...prev, widgetName: tempLabel};
-      save(newData);
-      return newData;
-    });
-  }, [tempLabel, save]);
+    setWidgetData(prev => ({ ...prev, widgetName: tempLabel }));
+    setSaved(false);
+  }, [tempLabel]);
+
+  const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
+    setSaved(false);
+    setWidgetData(prev => ({
+      ...prev,
+      widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName]),
+    }));
+  }, []);
 
   const onCreateInput = useCallback((inputData: InputData) => {
     setSaved(false);
-    setWidgetData(prev => {
-      const newData: WidgetData = { ...prev, inputs: [...prev.inputs, inputData]};
-      save(newData);
-      return newData;
-    });
+    setWidgetData(prev => ({
+      ...prev,
+      inputs: [...prev.inputs, inputData],
+    }));
     togleNewInputDisplay();
-  }, [togleNewInputDisplay, save]);
+  }, [togleNewInputDisplay]);
 
-  const onConfirmInput = useCallback((inputData: InputData | null, status: InputStatus) => {
-
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (status === 'ready to save' && inputData !== null) {
-      setWidgetData(prev => {
-        for (let i = 0; i < prev.inputs.length; i++) {
-          if ( prev.inputs[i].id_input === inputData.id_input) {
-            prev.inputs[i] = inputData;
-          }
-        }
-        const newData = { ...prev };
-        save(newData);
-        return newData;
-      });
-    }
-  }, [save]);
-
-  const onAddToNewSamplesChange = useCallback((boolean: boolean) => {
+  const updateInput = useCallback((inputData: InputData) => {
     setSaved(false);
     setWidgetData(prev => {
-      const newData: WidgetData = { ...prev, addToNewSamples: boolean};
-      save(newData);
-      return newData;
+      for (let i = 0; i < prev.inputs.length; i++) {
+        if ( prev.inputs[i].id_input === inputData.id_input) {
+          prev.inputs[i] = inputData;
+        }
+      }
+      return { ...prev };
     });
-  }, [save]);
+  }, []);
 
-  const deleteWidget = useCallback(() => {
-    AlertService.handleAlert(true, {
-      question: R['Confirm to delete this widget.'],
-      type: 'warning',
-    },() => props.onDeleteWidget());
-  }, [props.onDeleteWidget]);
+  const onMoveUp = useCallback((id_input: ID) => {
+    setSaved(false);
+    setWidgetData(prev => {
+      for (let i = 0; i < prev.inputs.length; i++) {
+        if (prev.inputs[i].id_input === id_input) {
+          const tempInput    = prev.inputs[i - 1];
+          prev.inputs[i - 1] = prev.inputs[i];
+          prev.inputs[i]     = tempInput;
+          break;
+        }
+      }
+      return { ...prev };
+    });
+  }, []);
+
+  const onMoveDown = useCallback((id_input: ID) => {
+    setSaved(false);
+    setWidgetData(prev => {
+      for (let i = 0; i < prev.inputs.length; i++) {
+        if (prev.inputs[i].id_input === id_input) {
+          const tempInput    = prev.inputs[i + 1];
+          prev.inputs[i + 1] = prev.inputs[i];
+          prev.inputs[i]     = tempInput;
+          break;
+        }
+      }
+      return { ...prev };
+    });
+  }, []);
 
   const onDelete = useCallback((id_input: ID) => {
     AlertService.handleAlert(true, {
@@ -199,66 +165,28 @@ export const Widget = memo((props: {
     }, () => {
       setSaved(false);
       setWidgetData(prev => {
-        const newData = { ...prev };
-        for (let i = 0; i < newData.inputs.length; i++) {
-          if (newData.inputs[i].id_input === id_input) {
-            newData.inputs.splice(i, 1);
+        for (let i = 0; i < prev.inputs.length; i++) {
+          if (prev.inputs[i].id_input === id_input) {
+            prev.inputs.splice(i, 1);
             break;
           }
         }
-        save(newData);
-        return newData;
+        return { ...prev };
       });
     });
-  }, [save]);
+  }, []);
 
-  const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
-    setSaved(false);
-    setWidgetData(prev => {
-      const newData: WidgetData = {
-        ...prev,
-        widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName]),
-      };
-      save(newData);
-      return newData;
-    });
-  }, [save]);
+  const deleteWidget = useCallback(() => {
+    AlertService.handleAlert(true, {
+      question: R['Confirm to delete this widget.'],
+      type: 'warning',
+    },() => props.onDeleteWidget());
+  }, [props.onDeleteWidget]);
 
-  const onMoveUp = useCallback((id_input: ID) => {
+  const onAddToNewSamplesChange = useCallback((boolean: boolean) => {
     setSaved(false);
-    setWidgetData(prev => {
-      const newData = { ...prev };
-      for (let i = 0; i < newData.inputs.length; i++) {
-        if (newData.inputs[i].id_input === id_input) {
-          if (i === 0) { break; }
-          const tempInput = newData.inputs[i - 1];
-          newData.inputs[i - 1] = newData.inputs[i];
-          newData.inputs[i] = tempInput;
-          break;
-        }
-      }
-      save(newData);
-      return newData;
-    });
-  }, [save]);
-
-  const onMoveDown = useCallback((id_input: ID) => {
-    setSaved(false);
-    setWidgetData(prev => {
-      const newData = { ...prev };
-      for (let i = 0; i < newData.inputs.length; i++) {
-        if (newData.inputs[i].id_input === id_input) {
-          if (i === newData.inputs.length - 1) { break; }
-          const tempInput = newData.inputs[i + 1];
-          newData.inputs[i + 1] = newData.inputs[i];
-          newData.inputs[i] = tempInput;
-          break;
-        }
-      }
-      save(newData);
-      return newData;
-    });
-  }, [save]);
+    setWidgetData(prev => ({ ...prev, addToNewSamples: boolean }));
+  }, []);
 
   return (
     <View
@@ -306,7 +234,7 @@ export const Widget = memo((props: {
               inputs={widgetData.inputs}
               editInputs={editInputs}
               referenceGPSData={props.referenceGPSData}
-              onSave={(inputData, status) => onConfirmInput(inputData, status)}
+              onSave={(inputData) => updateInput(inputData)}
               onInputDelete={(id_input) => onDelete(id_input)}
               onInputMoveUp={(id_input) => onMoveUp(id_input)}
               onInputMoveDow={(id_input) => onMoveDown(id_input)}
@@ -340,3 +268,57 @@ export const Widget = memo((props: {
     </View>
   );
 });
+
+function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
+
+  const [widgetData, widgetScope, saved] = deps;
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(widgetScope.id_project), []);
+
+  useTimeout(async () => {
+
+    if (saved) {
+      return;
+    }
+
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    switch (widgetScope.type) {
+
+      case 'project': {
+        await ProjectService.updateWidget_Project(
+          widgetScope.id_project,
+          widgetData,
+          () => onSave(),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'template': {
+        await ProjectService.updateWidget_Template(
+          widgetScope.id_project,
+          widgetData,
+          () => onSave(),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+
+      case 'sample': {
+        await ProjectService.updateWidget_Sample(
+          widgetScope.id_project,
+          widgetScope.id_sample,
+          widgetData,
+          () => onSave(),
+          (erroMessage) => alert(erroMessage)
+        ); break;
+      }
+    }
+
+  }, [widgetData, widgetScope], 200);
+}

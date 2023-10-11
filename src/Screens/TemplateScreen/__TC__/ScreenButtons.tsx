@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import ConfigService from '@Services/ConfigService';
@@ -9,16 +9,16 @@ import ThemeService from '@Services/ThemeService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onWidgetCreation: () => void
-}) {
+}) => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
-  async function onCreateWidget() {
+  const onCreateWidget = useCallback(async () => {
     const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Template(
       id_project,
@@ -29,7 +29,7 @@ export default function ScreenButtons(props: {
       },
       (errorMessage) => alert(errorMessage)
     );
-  }
+  }, [props.onWidgetCreation, id_project]);
 
   return (
     <Layout.ScreenButtons
@@ -51,4 +51,4 @@ export default function ScreenButtons(props: {
       </>}
     />
   );
-}
+});

@@ -1,28 +1,38 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO } from '@Types/AppTypes';
+import { StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ThemeService from '@Services/ThemeService';
 import CredentialService from '@Services/CredentialService';
 import UtilService from '@Services/UtilService';
 import ConfigService from '@Services/ConfigService';
+import AlertService from '@Services/AlertService';
 
-import { Input } from '@Input/index';
 import { Layout } from '@Layout/index';
+import { WidgetInput } from '@WidgetInput/index';
 import { WidgetLabelButton } from './WidgetLabelButton';
 import { WidgetDeleteButton } from './WidgetDeleteButton';
 import { WidgetSensitiveDataButton } from './WidgetSensitiveDataButton';
-import AlertService from '@Services/AlertService';
 
 export const CredentialWidget = memo((props: {
   credential: CredentialDTO
   onCredentialDelete: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R      = useMemo(() => translations.screen.credentialScreen[config.language], []);
+  const config      = useMemo(() => ConfigService.config, []);
+  const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R           = useMemo(() => translations.screen.credentialScreen[config.language], []);
+  const unusedProps = useMemo(() => ({
+    editWidget:     false,
+    isFirstInput:   false,
+    isLastInput:    false,
+    onInputDelete:  () => {},
+    onInputMoveDow: () => {},
+    onInputMoveUp:  () => {},
+    widgetRules:    {},
+  }), []);
 
   const [credential       , setCredential       ] = useState<CredentialDTO>(UtilService.deepCopy(props.credential));
   const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
@@ -38,19 +48,19 @@ export const CredentialWidget = memo((props: {
     setSaved(false);
   }, []);
 
-  const onUserChange = useCallback((newUSer: string) => {
-    setCredential(prev => ({ ...prev, user: newUSer}));
+  const onSaveUser = useCallback((inputData: StringInputData) => {
     setSaved(false);
+    setCredential(prev => ({ ...prev, user: inputData.value }));
   }, []);
 
-  const onPasswordChange = useCallback((newPassword: string) => {
-    setCredential(prev => ({ ...prev, password: newPassword}));
+  const onSavePassword = useCallback((inputData: StringInputData) => {
     setSaved(false);
+    setCredential(prev => ({ ...prev, password: inputData.value }));
   }, []);
 
-  const onURLChange = useCallback((newURL: string) => {
-    setCredential(prev => ({ ...prev, rootURL: newURL}));
+  const onSaveURL = useCallback((inputData: StringInputData) => {
     setSaved(false);
+    setCredential(prev => ({ ...prev, rootURL: inputData.value }));
   }, []);
 
   const onDeleteCredential = useCallback(async () => {
@@ -92,52 +102,70 @@ export const CredentialWidget = memo((props: {
         onConfirm={() => setEditLabel(false)}
         onLabelChange={(newLabel) => onLabelChange(newLabel)}
       />
-      <Input.String
-        label={R['User']}
-        value={credential.user}
-        onTextChange={(newName) => onUserChange(newName)}
-        placeholder={R['Write here your username...']}
-        secureTextEntry={!showSensitiveInfo}
-        theme={{
-          background: theme.background,
-          font: theme.font,
-          font_placeholder: theme.font_placeholder,
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: R['User'],
+          value: credential.user,
+          type: 'string',
+          placeholder: R['Write here your username...'],
+          lockedLabel: true,
+          lockedData: false,
         }}
+        onSave={(inputData) => onSaveUser(inputData)}
+        multiline={false}
+        secureTextEntry={!showSensitiveInfo}
+        theme={theme}
+        {...unusedProps}
       />
-      <Input.String
-        label={R['Password']}
-        value={credential.password}
-        onTextChange={(newPassword) => onPasswordChange(newPassword)}
-        placeholder={R['Write here your password...']}
-        secureTextEntry={!showSensitiveInfo}
-        theme={{
-          background: theme.background,
-          font: theme.font,
-          font_placeholder: theme.font_placeholder,
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: R['Password'],
+          value: credential.password,
+          type: 'string',
+          placeholder: R['Write here your password...'],
+          lockedLabel: true,
+          lockedData: false,
         }}
+        onSave={(inputData) => onSavePassword(inputData)}
+        multiline={false}
+        secureTextEntry={!showSensitiveInfo}
+        theme={theme}
+        {...unusedProps}
       />
-      <Input.String
-        label={R['URL']}
-        value={credential.rootURL}
-        onTextChange={(newURL) => onURLChange(newURL)}
-        placeholder={R['Write here the server root URL...']}
-        secureTextEntry={!showSensitiveInfo}
-        theme={{
-          background: theme.background,
-          font: theme.font,
-          font_placeholder: theme.font_placeholder,
+      <WidgetInput.String
+        inputData={{
+          id_input: '',
+          label: R['URL'],
+          value: credential.rootURL,
+          type: 'string',
+          placeholder: R['Write here the server root URL...'],
+          lockedLabel: true,
+          lockedData: false,
         }}
+        onSave={(inputData) => onSaveURL(inputData)}
+        multiline={false}
+        secureTextEntry={!showSensitiveInfo}
+        theme={theme}
+        {...unusedProps}
       />
     </Layout.PseudoWidget>
   );
 });
 
 function useAutoSave(onSave: () => void, deps: [CredentialDTO, boolean]) {
+
   const [credential, saved] = deps;
+
   useTimeout(async () => {
-    if (saved === false) {
-      await CredentialService.updateCredential(credential);
-      onSave();
+
+    if (saved) {
+      return;
     }
-  }, [credential, saved], 200);
+
+    await CredentialService.updateCredential(credential);
+    onSave();
+
+  }, [credential], 200);
 }

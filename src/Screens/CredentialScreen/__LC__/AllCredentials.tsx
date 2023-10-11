@@ -6,7 +6,7 @@ import CredentialService from '@Services/CredentialService';
 import { CredentialWidget } from './CredentialWidget';
 import CacheService from '@Services/CacheService';
 
-export function AllCredentials() {
+export function F_AllCredentials() {
 
   const [_, refresher] = useState<boolean>(false);
 

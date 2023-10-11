@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { ProjectStatus } from '@Types/ProjectTypes';
@@ -9,11 +9,11 @@ import CacheService from '@Services/CacheService';
 import HapticsService from '@Services/HapticsService';
 import ThemeService from '@Services/ThemeService';
 
+import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 
-export default function ProjectButtons() {
+export function F_ProjectButtons() {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -67,26 +67,16 @@ export default function ProjectButtons() {
   );
 }
 
-function ProjectButton(props: {
+const ProjectButton = memo((props: {
   title: string
   status?: ProjectStatus
   onPress: () => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
   const [pressed, setPressed] = useState<boolean>(false);
-
-  function onPressIn() {
-    setPressed(true);
-    HapticsService.vibrate('success');
-  }
-
-  function onPress() {
-    props.onPress();
-    HapticsService.vibrate('success');
-  }
 
   const iconColor = (
     props.status === 'uploaded' || props.status === 'first upload'
@@ -95,6 +85,16 @@ function ProjectButton(props: {
   const iconName = (
     props.status === 'uploaded' || props.status === 'first upload'
   ) ? 'cloud' : 'cloud-upload';
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
   return (
     <Pressable
@@ -132,4 +132,4 @@ function ProjectButton(props: {
       </Text>
     </Pressable>
   );
-}
+});

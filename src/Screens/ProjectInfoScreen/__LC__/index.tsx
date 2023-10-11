@@ -1,7 +1,7 @@
-import ProjectSettingsWidget from './ProjectSettingsWidget';
-import ProjectWidgets from './ProjectWidgets';
+import { ProjectSettingsWidget } from './ProjectSettingsWidget';
+import { F_ProjectWidgets } from './ProjectWidgets';
 
 export const LC = {
   ProjectSettingsWidget: ProjectSettingsWidget,
-  ProjectWidgets: ProjectWidgets,
+  F_ProjectWidgets: F_ProjectWidgets,
 };

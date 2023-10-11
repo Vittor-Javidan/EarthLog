@@ -1,21 +1,16 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
+import { WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
 
-type ButtonTheme = {
-  font: string
-  background: string
-  confirm: string
-}
-
 export const NotApplicableButton = memo((props: {
   notApplicable: boolean | undefined
-  theme: ButtonTheme
+  theme: WidgetTheme
   onNotApplicableChange: (checked: boolean) => void
 }) => {
 

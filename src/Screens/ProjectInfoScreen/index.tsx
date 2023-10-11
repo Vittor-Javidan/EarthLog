@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Loading } from '@Types/AppTypes';
 
@@ -6,19 +6,19 @@ import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export function ProjectInfoScreen(props: {
+export const ProjectInfoScreen = memo((props: {
   projectScopeState: Loading
   onProjectNameUpdate: (newName: string) => void
   onSampleAliasChange: (newAliasName: string) => void
-}) {
+}) => {
 
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onWidgetCreation={() => refresher(prev => !prev)}
+          onWidgetCreation={() => refresh(prev => !prev)}
         />
       }
     >
@@ -34,11 +34,11 @@ export function ProjectInfoScreen(props: {
         >
           <LC.ProjectSettingsWidget
             onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
-            onSampleAliasChange={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
+            onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
           />
-          <LC.ProjectWidgets />
+          <LC.F_ProjectWidgets />
         </Layout.ScrollView>
       )}
     </Layout.Screen>
   );
-}
+});

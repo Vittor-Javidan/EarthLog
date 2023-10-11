@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -11,9 +11,9 @@ import AlertService from '@Services/AlertService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onCreateWidget: () => void
-}) {
+}) => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
@@ -21,7 +21,7 @@ export default function ScreenButtons(props: {
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  async function onCreateWidget_Sample() {
+  const onCreateWidget_Sample = useCallback(async () => {
     const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Sample(
       id_project,
@@ -33,15 +33,15 @@ export default function ScreenButtons(props: {
       },
       (errorMessage) => alert(errorMessage)
     );
-  }
+  }, [props.onCreateWidget, id_project, id_sample]);
 
-  async function onTemplateWidgetCopy() {
+  const onTemplateWidgetCopy = useCallback(async () => {
     await AlertService.handleAlert(true, {
       type: 'template widget copy',
       id_project: id_project,
       id_sample: id_sample,
     }, () => props.onCreateWidget());
-  }
+  }, [props.onCreateWidget, id_project, id_sample]);
 
   return (
     <Layout.ScreenButtons
@@ -89,4 +89,4 @@ export default function ScreenButtons(props: {
       </>}
     />
   );
-}
+});

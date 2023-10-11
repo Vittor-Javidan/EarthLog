@@ -129,15 +129,15 @@ const TemplateWidgetButton = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
     HapticsService.vibrate('success');
-  }
+  }, [props.onPress]);
 
   return (
     <View>

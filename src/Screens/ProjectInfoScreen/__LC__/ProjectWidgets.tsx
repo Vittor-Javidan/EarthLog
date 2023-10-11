@@ -6,10 +6,10 @@ import CacheService from '@Services/CacheService';
 
 import { Widget } from '@Widget/index';
 
-export default function ProjectWidgets() {
+export function F_ProjectWidgets() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(true);
 
   const onDeleteWidget_Project = useCallback(async (id_widget: string) => {
     await ProjectService.deleteWidget_Project(
@@ -17,7 +17,7 @@ export default function ProjectWidgets() {
       id_widget,
       async () => {
         await CacheService.loadAllWidgets_Project(id_project);
-        refresher(prev => !prev);
+        refresh(prev => !prev);
       },
       (errorMessage) => alert(errorMessage)
     );

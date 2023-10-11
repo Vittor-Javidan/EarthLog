@@ -117,10 +117,10 @@ const LabelButton = memo((props: {
   confirmLabel: () => void
 }) => {
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
     HapticsService.vibrate('warning');
-  }
+  }, [props.onPress]);
 
   return (
     <View

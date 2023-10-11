@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View, Linking } from 'react-native';
 
 import { translations } from '@Translations/index';
@@ -9,7 +9,7 @@ import HapticsService from '@Services/HapticsService';
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 
-export function SocialMediaButtons() {
+export const SocialMediaButtons = memo(() => {
   return (
     <View
       style={{
@@ -35,9 +35,9 @@ export function SocialMediaButtons() {
       </View>
     </View>
   );
-}
+});
 
-function YoutubeTutorialButton() {
+const YoutubeTutorialButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -87,9 +87,9 @@ function YoutubeTutorialButton() {
       </Text>
     </Pressable>
   );
-}
+});
 
-function RoadMapButton() {
+const RoadMapButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -134,9 +134,9 @@ function RoadMapButton() {
       </Text>
     </Pressable>
   );
-}
+});
 
-function LinkedinCommunityButton() {
+const LinkedinCommunityButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -200,4 +200,4 @@ function LinkedinCommunityButton() {
       </View>
     </Pressable>
   );
-}
+});
