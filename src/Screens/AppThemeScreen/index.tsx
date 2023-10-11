@@ -1,10 +1,10 @@
-import React, { ReactNode, memo, useEffect, useMemo } from 'react';
-import { Dimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import React, { memo } from 'react';
+import { ScrollView } from 'react-native';
 
-import { Layout } from '@Layout/index';
 import { Loading } from '@Types/AppTypes';
+
+import { Animation } from '@Animation/index';
+import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
 
@@ -20,7 +20,10 @@ export const AppThemeScreen = memo((props: {
       {props.themeScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Animation>
+        <Animation.SlideFromLeft
+          delay={300}
+          duration={200}
+        >
           <ScrollView
             contentContainerStyle={{
               paddingTop: 55,
@@ -33,36 +36,8 @@ export const AppThemeScreen = memo((props: {
               onAppThemeChange={() => props.onAppThemeChange()}
             />
           </ScrollView>
-        </Animation>
+        </Animation.SlideFromLeft>
       )}
     </Layout.Screen>
   );
 });
-
-function Animation(props: { children: ReactNode}) {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-  const leftOffset = useSharedValue(0);
-
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withDelay(300, withTiming(width, {
-        duration: 200,
-      }));
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, []);
-
-  return (
-    <Animated.View
-      style={[
-        { left: -width },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
-      ]}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}

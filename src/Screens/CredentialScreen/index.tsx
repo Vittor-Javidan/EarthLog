@@ -1,9 +1,8 @@
-import React, { ReactNode, memo, useEffect, useMemo, useState } from 'react';
-import { Dimensions } from 'react-native';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import React, { memo, useState } from 'react';
 
 import { Loading } from '@Types/AppTypes';
 
+import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
@@ -25,7 +24,10 @@ export const CredentialSelectionScreen = memo((props: {
       {props.credentialScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Animation>
+        <Animation.SlideFromLeft
+          delay={300}
+          duration={200}
+        >
           <Layout.ScrollView
             contentContainerStyle={{
               paddingTop: 10,
@@ -35,36 +37,8 @@ export const CredentialSelectionScreen = memo((props: {
           >
             <LC.F_AllCredentials />
           </Layout.ScrollView>
-        </Animation>
+        </Animation.SlideFromLeft>
       )}
     </Layout.Screen>
   );
 });
-
-function Animation(props: { children: ReactNode}) {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-  const leftOffset = useSharedValue(0);
-
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withDelay(300, withTiming(width, {
-        duration: 200,
-      }));
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, []);
-
-  return (
-    <Animated.View
-      style={[
-        { left: -width },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
-      ]}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}

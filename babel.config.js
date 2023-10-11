@@ -27,6 +27,7 @@ module.exports = function (api) {
           '@Text':              './src/Components/Text',
           '@Button':            './src/Components/Button',
           '@Input':             './src/Components/Input',
+          '@Animation':         './src/Components/Animation',
           '@Layout':            './src/Components/Layout',
           '@Alert':             './src/Components/Alert',
           '@Widget':            './src/Components/Widget',

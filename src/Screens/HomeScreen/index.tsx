@@ -1,9 +1,9 @@
-import React, { useMemo, ReactNode, useEffect, useState, memo } from 'react';
-import { Dimensions, View } from 'react-native';
-import Animated, { withDelay, useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import React, { useState, memo } from 'react';
+import { View } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
 
+import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
@@ -25,7 +25,10 @@ export const HomeScreen = memo((props: {
       {props.homeScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (<>
-        <Animation>
+        <Animation.SlideFromLeft
+          delay={300}
+          duration={200}
+        >
           <View
             style={{
               flex: 1,
@@ -39,39 +42,8 @@ export const HomeScreen = memo((props: {
             <LC.LastProjectButton />
             <LC.F_ProjectButtons />
           </View>
-        </Animation>
+        </Animation.SlideFromLeft>
       </>)}
     </Layout.Screen>
   );
 });
-
-function Animation(props: { children: ReactNode}) {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-  const leftOffset = useSharedValue(0);
-
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withDelay(300, withTiming(width, {
-        duration: 200,
-      }));
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, []);
-
-  return (
-    <Animated.View
-      style={[
-        {
-          flex: 1,
-          left: -width,
-        },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
-      ]}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}

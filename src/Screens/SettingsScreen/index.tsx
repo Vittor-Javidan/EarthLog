@@ -15,6 +15,7 @@ import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import CredentialService from '@Services/CredentialService';
+import { Animation } from '@Animation/index';
 
 export default function SettingsScreen(): JSX.Element {
 
@@ -26,54 +27,59 @@ export default function SettingsScreen(): JSX.Element {
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
-      <View
-        style={{ gap: 1 }}
+      <Animation.SlideFromLeft
+        delay={300}
+        duration={200}
       >
-        <Button.TextWithIcon
-          title={R['Language']}
-          iconName="language"
-          onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.font_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-        />
-        <Button.TextWithIcon
-          title={R['Themes']}
-          iconName="color-palette"
-          onPress={() => navigate('THEME SCOPE')}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.font_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-        />
-        <Button.TextWithIcon
-          title={R['Credentials']}
-          iconName="card-outline"
-          onPress={() => navigate('CREDENTIAL SCOPE')}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.font_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-        />
-        <Button.TextWithIcon
-          title={'Whipe All Data'}
-          iconName="trash-outline"
-          onPress={async () => await whipeAllData()}
-          theme={{
-            font: theme.background,
-            background: theme.wrong,
-            font_Pressed: theme.wrong,
-            background_Pressed: theme.background_active,
-          }}
-        />
-      </View>
+        <View
+          style={{ gap: 1 }}
+        >
+          <Button.TextWithIcon
+            title={R['Language']}
+            iconName="language"
+            onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
+            theme={{
+              font: theme.font_Button,
+              font_Pressed: theme.font_active,
+              background: theme.background_Button,
+              background_Pressed: theme.background_active,
+            }}
+          />
+          <Button.TextWithIcon
+            title={R['Themes']}
+            iconName="color-palette"
+            onPress={() => navigate('THEME SCOPE')}
+            theme={{
+              font: theme.font_Button,
+              font_Pressed: theme.font_active,
+              background: theme.background_Button,
+              background_Pressed: theme.background_active,
+            }}
+          />
+          <Button.TextWithIcon
+            title={R['Credentials']}
+            iconName="card-outline"
+            onPress={() => navigate('CREDENTIAL SCOPE')}
+            theme={{
+              font: theme.font_Button,
+              font_Pressed: theme.font_active,
+              background: theme.background_Button,
+              background_Pressed: theme.background_active,
+            }}
+          />
+          <Button.TextWithIcon
+            title={'Whipe All Data'}
+            iconName="trash-outline"
+            onPress={async () => await whipeAllData()}
+            theme={{
+              font: theme.background,
+              background: theme.wrong,
+              font_Pressed: theme.wrong,
+              background_Pressed: theme.background_active,
+            }}
+          />
+        </View>
+      </Animation.SlideFromLeft>
     </Layout.Screen>
   );
 }

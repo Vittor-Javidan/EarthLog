@@ -16,6 +16,7 @@
       "@Text/*":              [ "Components/Text/*"        ],
       "@Button/*":            [ "Components/Button/*"      ],
       "@Input/*":             [ "Components/Input/*"       ],
+      "@Animation/*":         [ "Components/Animation/*"   ],
       "@Layout/*":            [ "Components/Layout/*"      ],
       "@Alert/*":             [ "Components/Alert/*"       ],
       "@Widget/*":            [ "Components/Widget/*"      ],
