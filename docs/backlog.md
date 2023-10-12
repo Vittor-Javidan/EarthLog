@@ -1,0 +1,3 @@
+- Implement the the sync design defined "ProjectSyncDesign.excalidraw" file.
+- Implement a checker for project integrity after project confirmation.
+- Build a feedback screen for upload
