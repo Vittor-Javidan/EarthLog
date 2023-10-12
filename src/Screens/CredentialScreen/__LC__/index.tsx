@@ -1,5 +1,5 @@
-import { AllCredentials } from './AllCredentials';
+import { F_AllCredentials } from './AllCredentials';
 
 export const LC = {
-  AllCredentials: AllCredentials,
+  F_AllCredentials: F_AllCredentials,
 };

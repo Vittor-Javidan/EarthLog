@@ -16,6 +16,7 @@ module.exports = function (api) {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
           '@appAPI':            './src/appAPI',
+          '@Themes':            './src/Themes',
           '@Types':             './src/Types',
           '@Globals':           './src/Globals',
           '@Translations':      './src/Translations',
@@ -26,6 +27,7 @@ module.exports = function (api) {
           '@Text':              './src/Components/Text',
           '@Button':            './src/Components/Button',
           '@Input':             './src/Components/Input',
+          '@Animation':         './src/Components/Animation',
           '@Layout':            './src/Components/Layout',
           '@Alert':             './src/Components/Alert',
           '@Widget':            './src/Components/Widget',

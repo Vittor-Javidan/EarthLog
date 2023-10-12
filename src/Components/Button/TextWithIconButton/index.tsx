@@ -49,7 +49,7 @@ export const TextWithIcon = memo((props: {
 				backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
 			}, props.style]}
 		>
-      <Text h1
+      <Text h2
 				style={{
           color: pressed ? props.theme.font_Pressed : props.theme.font,
 				}}
@@ -58,7 +58,7 @@ export const TextWithIcon = memo((props: {
 			</Text>
       <View
         style={{
-          height: 55,
+          height: 45,
           paddingVertical: 5,
         }}
       >

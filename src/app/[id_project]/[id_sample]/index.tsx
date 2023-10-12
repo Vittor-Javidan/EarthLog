@@ -2,34 +2,27 @@ import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
+import { GPS_DTO } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 import { Layout } from '@Layout/index';
-import { SampleDataScreens as _SampleDataScreens } from '@Screens/SampleScreen';
-import { SampleInfoScreen as _SampleSettingsScreen } from '@Screens/SampleInfoScreen';
-
-type MemoProps1 = { sampleScopeState: Loading; }
-type MemoProps2 = {
-  sampleScopeState: Loading,
-  onSampleNameUpdate: (newName: string) => void,
-  onGPSReferenceUpdate: () => void
-}
-
-const SampleDataScreens     = memo((props: MemoProps1) => <_SampleDataScreens {...props} />   );
-const SampleSettingsScreen  = memo((props: MemoProps2) => <_SampleSettingsScreen {...props} />);
+import { SampleDataScreens } from '@Screens/SampleScreen';
+import { SampleInfoScreen } from '@Screens/SampleInfoScreen';
 
 export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const [loading              , setLoading               ] = useState<Loading>('Loading');
-  const [gpsReferenceRefresher, setGPSReferenceRefresher ] = useState<boolean>(false);
-  const [updatedName          , setUpdatedName           ] = useState<string | null>(null);
+  const [loading     , setLoading      ] = useState<Loading>('Loading');
+  const [updatedName , setUpdatedName  ] = useState<string | null>(null);
+  const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(
+    sampleSettings.gps !== undefined ? UtilService.deepCopy(sampleSettings.gps) : undefined
+  );
 
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
 
@@ -48,7 +41,7 @@ export default function SampleScope() {
 
         onBackPress={() => navigate('PROJECT SCOPE', id_project)}
 
-        buttonData={[          {
+        buttonData={[{
           title: 'Data',
         }, {
           title: '',
@@ -57,14 +50,15 @@ export default function SampleScope() {
 
         screens={[
           <SampleDataScreens
-            key={'refresher:' + gpsReferenceRefresher}
+            key="1"
             sampleScopeState={loading}
+            referenceGPS={referenceGPS}
           />,
-          <SampleSettingsScreen
+          <SampleInfoScreen
             key="2"
             sampleScopeState={loading}
             onSampleNameUpdate={(newName) => setUpdatedName(newName)}
-            onGPSReferenceUpdate={() => setGPSReferenceRefresher(prev => !prev)}
+            onGPSReferenceUpdate={(gpsData) => setReferenceGPS(gpsData)}
           />,
         ]}
       />

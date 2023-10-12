@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
-import { GPSInputData, InputStatus, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
+import { GPSInputData, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
@@ -13,99 +13,66 @@ import UtilService from '@Services/UtilService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
+import { useTimeout } from '@Hooks/index';
 
-export default function ProjectSettingsWidget(props: {
+export const ProjectSettingsWidget = memo((props: {
   onProjectNameUpdate: (newName: string) => void
-  onSampleAliasChange: (newSampleAlias: string) => void
-}) {
+  onSampleAliasChange_Plural: (newSampleAlias: string) => void
+}) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.screen.projectInfoScreen[config.language], []);
+  const id_project  = useLocalSearchParams().id_project as string;
+  const config      = useMemo(() => ConfigService.config, []);
+  const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R           = useMemo(() => translations.screen.projectInfoScreen[config.language], []);
+  const unusedProps = useMemo(() => ({
+    editWidget:     false,
+    isFirstInput:   false,
+    isLastInput:    false,
+    onInputDelete:  () => {},
+    onInputMoveDow: () => {},
+    onInputMoveUp:  () => {},
+    widgetRules:    {},
+  }), []);
 
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  const pseudoWidgetTheme = ThemeService.widgetThemes['light'];
+  useAutoSave(() => {
+    setSaved(true);
+  }, [projectSettings, saved]);
 
-  function onSaveName(inputData: StringInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (inputData !== null && status === 'ready to save') {
-      setProjectSettings(prev => {
-        const newData: ProjectSettings = { ...prev, name: inputData.value };
-        props.onProjectNameUpdate(inputData.value);
-        save(newData);
-        return newData;
-      });
-    }
-  }
+  const onSaveName = useCallback((inputData: StringInputData) => {
+    setSaved(false);
+    setProjectSettings(prev => ({ ...prev, name: inputData.value }));
+    props.onProjectNameUpdate(inputData.value);
+  }, [props.onProjectNameUpdate]);
 
-  function onSaveAlias_Singular(inputData: StringInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (inputData !== null && status === 'ready to save') {
-      setProjectSettings(prev => {
-        const newData: ProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, singular: inputData.value }};
-        save(newData);
-        return newData;
-      });
-    }
-  }
+  const onSaveAlias_Plural = useCallback((inputData: StringInputData) => {
+    setSaved(false);
+    setProjectSettings(prev => ({...prev, sampleAlias: {
+      ...prev.sampleAlias,
+      plural: inputData.value,
+    }}));
+    props.onSampleAliasChange_Plural(inputData.value);
+  }, [props.onSampleAliasChange_Plural]);
 
-  function onSaveAlias_Plural(inputData: StringInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (inputData !== null && status === 'ready to save') {
-      setProjectSettings(prev => {
-        const newData: ProjectSettings = { ...prev, sampleAlias: { ...prev.sampleAlias, plural: inputData.value }};
-        props.onSampleAliasChange(inputData.value);
-        save(newData);
-        return newData;
-      });
-    }
-  }
+  const onSaveAlias_Singular = useCallback((inputData: StringInputData) => {
+    setSaved(false);
+    setProjectSettings(prev => ({...prev, sampleAlias: {
+      ...prev.sampleAlias,
+      singular: inputData.value,
+    }}));
+  }, []);
 
-  function onSaveGPS(inputData: GPSInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (inputData !== null && status === 'ready to save') {
-      setProjectSettings(prev => {
-        const newData: ProjectSettings = { ...prev, gps: inputData.value };
-        save(newData);
-        return newData;
-      });
-    }
-  }
-
-  function save(projectSettings: ProjectSettings) {
-
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-    }
-
-    ProjectService.updateProject(
-      projectSettings,
-      () => {
-        CacheService.updateCache_ProjectSettings(projectSettings);
-        setSaved(true);
-      },
-      (erroMessage) => alert(erroMessage)
-    );
-  }
+  const onSaveGPS = useCallback((inputData: GPSInputData) => {
+    setSaved(false);
+    setProjectSettings(prev => ({ ...prev, gps: inputData.value }));
+  }, []);
 
   return (
     <Layout.PseudoWidget
       saved={saved}
-      theme={pseudoWidgetTheme}
+      theme={theme}
     >
       <View
         style={{
@@ -115,7 +82,7 @@ export default function ProjectSettingsWidget(props: {
         <Text h2
           style={{
             textAlign: 'center',
-            color: pseudoWidgetTheme.font,
+            color: theme.font,
             paddingHorizontal: 5,
           }}
         >
@@ -131,16 +98,10 @@ export default function ProjectSettingsWidget(props: {
             lockedLabel: true,
             lockedData: true,
           }}
-          multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
           onSave={() => {}}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={pseudoWidgetTheme}
+          multiline={false}
+          theme={theme}
+          {...unusedProps}
         />
         <WidgetInput.String
           inputData={{
@@ -152,16 +113,10 @@ export default function ProjectSettingsWidget(props: {
             lockedLabel: true,
             lockedData: !projectSettings.rules.allowProjectNameChange,
           }}
-          onSave={(inputData, status) => onSaveName(inputData, status)}
+          onSave={(inputData) => onSaveName(inputData)}
           multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={pseudoWidgetTheme}
+          theme={theme}
+          {...unusedProps}
         />
         {projectSettings.gps !== undefined && (
           <WidgetInput.GPS
@@ -173,16 +128,10 @@ export default function ProjectSettingsWidget(props: {
               lockedLabel: true,
               lockedData: !projectSettings.rules.allowGPSChange,
             }}
-            onSave={(inputData, status) => onSaveGPS(inputData, status)}
+            onSave={(inputData) => onSaveGPS(inputData)}
             referenceGPSData={undefined}
-            editWidget={false}
-            isFirstInput={false}
-            isLastInput={false}
-            onInputDelete={() => {}}
-            onInputMoveDow={() => {}}
-            onInputMoveUp={() => {}}
-            widgetRules={{}}
-            theme={pseudoWidgetTheme}
+            theme={theme}
+            {...unusedProps}
           />
         )}
       </View>
@@ -195,7 +144,7 @@ export default function ProjectSettingsWidget(props: {
         <Text h2
           style={{
             textAlign: 'center',
-            color: pseudoWidgetTheme.font,
+            color: theme.font,
             paddingHorizontal: 5,
             paddingTop: 10,
           }}
@@ -212,16 +161,10 @@ export default function ProjectSettingsWidget(props: {
             lockedLabel: true,
             lockedData: !projectSettings.rules.allowSampleAliasChange,
           }}
-          onSave={(inputData, status) => onSaveAlias_Singular(inputData, status)}
+          onSave={(inputData) => onSaveAlias_Singular(inputData)}
           multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={pseudoWidgetTheme}
+          theme={theme}
+          {...unusedProps}
         />
         <WidgetInput.String
           inputData={{
@@ -233,18 +176,40 @@ export default function ProjectSettingsWidget(props: {
             lockedLabel: true,
             lockedData: !projectSettings.rules.allowSampleAliasChange,
           }}
-          onSave={(inputData, status) => onSaveAlias_Plural(inputData, status)}
+          onSave={(inputData) => onSaveAlias_Plural(inputData)}
           multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={pseudoWidgetTheme}
+          theme={theme}
+          {...unusedProps}
         />
       </View>
     </Layout.PseudoWidget>
   );
+});
+
+function useAutoSave(onSave: () => void, deps: [ProjectSettings, boolean]) {
+
+  const [projectSettings, saved] = deps;
+
+  useTimeout(async () => {
+
+    if (saved) {
+      return;
+    }
+
+    // Project status update ===================
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+    }
+
+    // Project update =================
+    await ProjectService.updateProject(
+      projectSettings,
+      () => {
+        CacheService.updateCache_ProjectSettings(projectSettings);
+        onSave();
+      },
+      (erroMessage) => alert(erroMessage)
+    );
+
+  }, [projectSettings], 200);
 }

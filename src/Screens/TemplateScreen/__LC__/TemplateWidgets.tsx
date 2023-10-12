@@ -1,4 +1,4 @@
-import React, { useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
@@ -6,10 +6,10 @@ import CacheService from '@Services/CacheService';
 
 import { Widget } from '@Widget/index';
 
-export default function TemplateWidgets() {
+export function F_TemplateWidgets() {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(false);
 
   const onDeleteWidget_Template = useCallback(async (id_widget: string) => {
     await ProjectService.deleteWidget_Template(
@@ -17,13 +17,13 @@ export default function TemplateWidgets() {
       id_widget,
       async () => {
         await CacheService.loadAllWidgets_Template(id_project);
-        refresher(prev => !prev);
+        refresh(prev => !prev);
       },
       (errorMessage) => alert(errorMessage)
     );
   }, [id_project]);
 
-  const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Template.map(widgetData => (
+  const AllWidgets = CacheService.allWidgets_Template.map(widgetData => (
     <Widget
       key={widgetData.id_widget}
       widgetScope={{
@@ -36,5 +36,5 @@ export default function TemplateWidgets() {
     />
   ));
 
-  return (<>{allWidgetsComponents}</>);
+  return (<>{AllWidgets}</>);
 }

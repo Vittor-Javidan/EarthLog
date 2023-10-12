@@ -10,6 +10,8 @@ type ScreenName = (
   'RESTART APP'                                       |
   'SETTINGS SCOPE'                                    |
     'LANGUAGE SELECTION SCOPE'                        |
+    'TIME AND DATE SCOPE'                             |
+    'THEME SCOPE'                                     |
     'CREDENTIAL SCOPE'                                |
   'HOME SCOPE'                                        |
     'PROJECT SCOPE'                                   |
@@ -45,6 +47,16 @@ export function navigate(
 
     case 'LANGUAGE SELECTION SCOPE': {
       navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE);
+      break;
+    }
+
+    case 'TIME AND DATE SCOPE': {
+      navController.push(AppRoutes.SS_TIME_AND_DATE_SCOPE);
+      break;
+    }
+
+    case 'THEME SCOPE': {
+      navController.push(AppRoutes.SS_THEME_SCOPE);
       break;
     }
 

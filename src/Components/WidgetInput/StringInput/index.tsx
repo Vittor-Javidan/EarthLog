@@ -1,21 +1,12 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 import { TextInput, Platform, View } from 'react-native';
 
-import { InputStatus, StringInputData, WidgetRules } from '@Types/ProjectTypes';
+import { StringInputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 
 import { LC } from '../__LC__';
-
-type InputTheme = {
-  font: string
-  font_placeholder: string
-  background: string
-  confirm: string
-  wrong: string
-}
 
 export const StringInput = memo((props: {
   inputData: StringInputData
@@ -23,9 +14,10 @@ export const StringInput = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   widgetRules: WidgetRules
-  theme: InputTheme
+  theme: WidgetTheme
   multiline: boolean
-  onSave: (inputData: StringInputData | null, status: InputStatus ) => void
+  secureTextEntry?: boolean
+  onSave: (inputData: StringInputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
@@ -43,45 +35,41 @@ export const StringInput = memo((props: {
   const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
-  const [saveSignal , setSaveSignal ] = useState<boolean>(false);
 
-  useTimeout(async () => {
-    if (saveSignal) {
-      props.onSave(UtilService.deepCopy(inputData), 'ready to save');
-      setSaveSignal(false);
-    }
-  }, [inputData, saveSignal], 200);
-
-  const onTextDelete = useCallback(() => {
-    if (inputData.value !== '') {
-      props.onSave(null, 'modifying');
-      setDeletedText(inputData.value);
-      setInputData(prev => ({ ...prev, value: ''}));
-      setShowUndo(true);
-      setSaveSignal(true);
-    }
-  }, [props.onSave, inputData.value]);
-
-  const undoDelete = useCallback(() => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, value: deletedText}));
-    setShowUndo(false);
-    setSaveSignal(true);
-  }, [props.onSave, deletedText]);
-
-  const onTextChange = useCallback((text: string) => {
-    if (inputData.lockedData !== true) {
-      props.onSave(null, 'modifying');
-      setInputData(prev => ({ ...prev, value: text }));
-      setSaveSignal(true);
-    }
-  }, [props.onSave, inputData.lockedData]);
-
-  const onLabelChange = useCallback((newLabel: string) => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, label: newLabel}));
-    setSaveSignal(true);
+  const asyncSave = useCallback(async (inputData: StringInputData) => {
+    props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
+
+  const onLabelChange = useCallback((newLabel: string, inputData: StringInputData) => {
+    const newData: StringInputData = { ...inputData, label: newLabel};
+    asyncSave(newData);
+    setInputData(prev => ({ ...prev, label: newLabel}));
+  }, [asyncSave]);
+
+  const onTextChange = useCallback((text: string, inputData: StringInputData) => {
+    if (inputData.lockedData !== true) {
+      const newData: StringInputData = { ...inputData, value: text };
+      asyncSave(newData);
+      setInputData(newData);
+    }
+  }, [asyncSave]);
+
+  const onTextDelete = useCallback((inputData: StringInputData) => {
+    if (inputData.value !== '') {
+      const newData: StringInputData = { ...inputData, value: '' };
+      asyncSave(newData);
+      setDeletedText(inputData.value);
+      setInputData(newData);
+      setShowUndo(true);
+    }
+  }, [asyncSave]);
+
+  const undoDelete = useCallback((deletedText: string, inputData: StringInputData) => {
+    const newData: StringInputData = { ...inputData, value: deletedText };
+    asyncSave(newData);
+    setInputData(newData);
+    setShowUndo(false);
+  }, [asyncSave]);
 
   return (
     <LC.Root
@@ -91,7 +79,7 @@ export const StringInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label)}
+      onLabelChange={(label) => onLabelChange(label, inputData)}
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
@@ -103,8 +91,8 @@ export const StringInput = memo((props: {
           showUndo={showUndo}
           locked={inputData.lockedData}
           theme={props.theme}
-          onPress_UndoButton={() => undoDelete()}
-          onPress_BackspaceButton={() => onTextDelete()}
+          onPress_UndoButton={() => undoDelete(deletedText, inputData)}
+          onPress_BackspaceButton={() => onTextDelete(inputData)}
         />
       }
     >
@@ -120,7 +108,8 @@ export const StringInput = memo((props: {
           textAlign="left"
           textAlignVertical="top"
           multiline={props.multiline}
-          onChangeText={(text) => onTextChange(text)}
+          secureTextEntry={props.secureTextEntry}
+          onChangeText={(text) => onTextChange(text, inputData)}
           style={{
             width: '100%',
             paddingVertical: 15,
@@ -135,13 +124,13 @@ export const StringInput = memo((props: {
   );
 });
 
-function IconButtons (props: {
+const IconButtons = memo((props: {
   locked: boolean | undefined
   showUndo: boolean
-  theme: InputTheme
+  theme: WidgetTheme
   onPress_UndoButton: () => void
   onPress_BackspaceButton: () => void
-}) {
+}) => {
   return (<>
     {props.locked && (
       <LC.NavbarIconButton
@@ -174,5 +163,4 @@ function IconButtons (props: {
       />
     </>)}
   </>);
-}
-
+});

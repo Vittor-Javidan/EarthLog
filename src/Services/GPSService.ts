@@ -69,14 +69,14 @@ export class GPSWatcherService {
 
   enableCoordinates(boolean: boolean) {
     this.watchCoordinate = boolean;
-    if (this.watchCoordinate === false && this.gpsData.coordinates !== undefined) {
+    if (this.gpsData.coordinates !== undefined) {
       delete this.gpsData.coordinates;
     }
   }
 
   enableAltitude(boolean: boolean) {
     this.watchAltitude = boolean;
-    if (this.watchAltitude === false && this.gpsData.altitude !== undefined) {
+    if (this.gpsData.altitude !== undefined) {
       delete this.gpsData.altitude;
     }
   }

@@ -1,18 +1,17 @@
 import React, { useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO } from '@Types/ProjectTypes';
+import { GPSFeaturesDTO, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import HapticsService from '@Services/HapticsService';
 
 import { Text } from '@Text/index';
 import { Button } from '@Button/index';
-import { GPSInputTheme } from './ThemeType';
 
 export const CheckboxOptions = memo((props: {
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onToogle_Coordinate: (checked: boolean) => void
   onToogle_Altitude: (checked: boolean) => void
 }) => {
@@ -50,7 +49,7 @@ export const CheckboxOptions = memo((props: {
 const Option = memo((props: {
   title: string
   value: boolean
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onChange: (checked: boolean) => void
 }) => {
 

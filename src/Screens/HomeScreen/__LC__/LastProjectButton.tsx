@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -8,33 +8,43 @@ import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
 
+import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 
-export default function LastProjectButton() {
+export const LastProjectButton = memo(() => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R               = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const projectSettings = useMemo(() => CacheService.lastOpenProject, []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 
-  const lastProjectSettings = CacheService.lastOpenProject;
-  const lastProjectOpenExist = lastProjectSettings.id_project !== '';
+  const lastProjectOpenExist = projectSettings.id_project !== '';
+  const lastUploadDate = projectSettings.uploads?.[projectSettings.uploads.length - 1].date ?? undefined;
 
-  function onPressIn() {
+  const iconColor = (
+    projectSettings.status === 'uploaded' || projectSettings.status === 'first upload'
+  ) ? theme.confirm : theme.warning;
+
+  const iconName = (
+    projectSettings.status === 'uploaded' || projectSettings.status === 'first upload'
+  ) ? 'cloud' : 'cloud-upload';
+
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
-    navigate('PROJECT SCOPE', lastProjectSettings.id_project);
+  const onPress = useCallback(() => {
+    navigate('PROJECT SCOPE', projectSettings.id_project);
     HapticsService.vibrate('success');
-  }
+  }, [projectSettings.id_project]);
 
   return lastProjectOpenExist ? (
     <View
       style={{
-        minHeight: 55,
+        minHeight: 45,
         width: '100%',
       }}
     >
@@ -45,32 +55,69 @@ export default function LastProjectButton() {
         style={{
           flex: 1,
           justifyContent: 'space-between',
-          paddingTop: 4,
           borderRadius: 10,
-          backgroundColor: pressed ? theme.background : theme.background_Button,
+          backgroundColor: pressed ? theme.background_active : theme.background_Button,
           paddingHorizontal: 10,
+          elevation: 3,
         }}
       >
         <Text h2
           numberOfLine={1}
           style={{
-            color: theme.font_Button,
+            color: pressed ? theme.font_active : theme.font_Button,
             fontWeight: '900',
           }}
         >
-          {lastProjectSettings.name}
+          {projectSettings.name}
         </Text>
-        <Text p
+        <View
           style={{
-            color: theme.font_Button,
-            alignSelf: 'flex-end',
-            paddingBottom: 4,
-            paddingHorizontal: 4,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          {R['Recently Open']}
-        </Text>
+          {projectSettings.status !== undefined && lastUploadDate && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 5,
+              }}
+            >
+              <View
+                style={{ height: 10 }}
+              >
+                <Icon
+                  iconName={iconName}
+                  color={iconColor}
+                />
+              </View>
+              <Text p
+                style={{
+                  color: pressed ? theme.font_active : theme.font_Button,
+                  fontSize: 10,
+                  fontStyle: 'italic',
+                }}
+              >
+                {projectSettings.status === 'modified' ? R['New data'] : lastUploadDate}
+              </Text>
+            </View>
+          )}
+          <Text
+            style={{
+              color: pressed ? theme.font_active : theme.font_Button,
+              alignSelf: 'flex-end',
+              paddingBottom: 4,
+              paddingHorizontal: 4,
+              fontSize: 10,
+              fontStyle: 'italic',
+            }}
+          >
+            {R['Recently Open']}
+          </Text>
+        </View>
       </Pressable>
     </View>
   ) : <></>;
-}
+});

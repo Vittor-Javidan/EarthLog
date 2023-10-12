@@ -26,7 +26,21 @@ export const TemplateWidgetCopy = memo((props: {
   const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
+
     const { id_project, id_sample } = props;
+
+    // Project status update =================================================
+    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget Copy ========================================
     const newWidgetData = UtilService.deepCopy(widgetData);
     newWidgetData.id_widget = UtilService.generateUuidV4();
     await ProjectService.createWidget_Sample(
@@ -43,6 +57,7 @@ export const TemplateWidgetCopy = memo((props: {
         HapticsService.vibrate('warning');
       }
     );
+
   }, [props, R]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
@@ -54,7 +69,6 @@ export const TemplateWidgetCopy = memo((props: {
         <TemplateWidgetButton
           key={widgetData.id_widget}
           title={widgetData.widgetName}
-          theme={theme}
           onPress={() => onWidgetCopyToSample(widgetData)}
         />
       );
@@ -123,25 +137,22 @@ export const TemplateWidgetCopy = memo((props: {
 
 const TemplateWidgetButton = memo((props: {
   title: string
-  theme: {
-    font: string;
-    background: string;
-    background_Button: string;
-  }
   onPress: () => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
+  const onPressIn = useCallback(() => {
     setPressed(true);
     HapticsService.vibrate('success');
-  }
+  }, []);
 
-  function onPress() {
+  const onPress = useCallback(() => {
     props.onPress();
     HapticsService.vibrate('success');
-  }
+  }, [props.onPress]);
 
   return (
     <View>
@@ -153,12 +164,12 @@ const TemplateWidgetButton = memo((props: {
           paddingHorizontal: 10,
           paddingVertical: 5,
           borderRadius: 10,
-          backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
+          backgroundColor: pressed ? theme.background_active : theme.background_Button,
         }}
       >
         <Text h3
           style={{
-            color: props.theme.background,
+            color: pressed ? theme.font_active : theme.font_button,
             textAlign: 'center',
           }}
         >

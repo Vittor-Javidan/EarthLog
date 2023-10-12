@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -10,21 +10,21 @@ import CacheService from '@Services/CacheService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onSampleCreation: () => void
-}) {
+}) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const id_project      = useLocalSearchParams().id_project as string;
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
-  async function createSample() {
-    AlertService.handleAlert(true, {
+  const createSample = useCallback(async () => {
+    await AlertService.handleAlert(true, {
       type: 'sample creation',
       id_project: id_project,
     }, () => props.onSampleCreation());
-  }
+  }, [props.onSampleCreation, id_project]);
 
   const uploadProject = useCallback(async () => {
     await AlertService.handleAlert(true, {
@@ -78,4 +78,4 @@ export default function ScreenButtons(props: {
       </>}
     />
   );
-}
+});

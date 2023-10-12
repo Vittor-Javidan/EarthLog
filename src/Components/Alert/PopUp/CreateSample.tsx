@@ -30,6 +30,18 @@ export const CreateSample = memo((props: {
     }
 
     const projectSettings = CacheService.getProjectFromCache(props.id_project);
+
+    // Project status update ===================
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Sample Creation ================================================
     const newSampleSettings = ProjectService.getDefaultSampleSettings({
       name: name,
       gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,

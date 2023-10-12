@@ -1,5 +1,5 @@
-import SampleWidgets from './SampleWidgets';
+import { F_SampleWidgets } from './SampleWidgets';
 
 export const LC = {
-  SampleWidgets: SampleWidgets,
+  F_SampleWidgets: F_SampleWidgets,
 };

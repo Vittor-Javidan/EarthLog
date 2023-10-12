@@ -110,6 +110,7 @@ const CarouselButtonsRoot = memo((props: {
         borderWidth: 2,
         top: 10,
         gap: 2,
+        elevation: 3,
       }}
     >
       {props.children}

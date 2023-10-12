@@ -29,6 +29,7 @@ export type ProjectSettings = {
   rules: ProjectRules
   sampleRules?: SampleRules
   uploads?: {
+    dateUTM: string
     date: string
     url: string
   }[]
@@ -58,7 +59,7 @@ export type WidgetData = {
   inputs: InputData[]
   rules: WidgetRules
   addToNewSamples?: boolean
-  widgetTheme?: WidgetThemeDTO
+  widgetTheme?: WidgetTheme
 }
 
 export type WidgetScope = {
@@ -75,13 +76,13 @@ export type WidgetScope = {
 
 export type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
 
-export type WidgetThemeDTO = {
+export type WidgetTheme = {
   font: string
   font_placeholder: string
   background: string
   confirm: string
   wrong: string
-  modified: string
+  warning: string
   disabled: string
 }
 
@@ -90,7 +91,6 @@ export type WidgetThemeDTO = {
 // =================================================================================================
 
 export type InputData = StringInputData | BooleanInputData | GPSInputData
-export type InputStatus = 'modifying' | 'ready to save'
 export type InputAlertMessage = {
   gpsDistanceAlertMessage?: string
 }

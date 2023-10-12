@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 
 import { languageTags, LanguageTag } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
@@ -7,43 +7,53 @@ import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 
-export default function LanguageButtons(props: {
-  onLangaugeSelected: (languageTag: LanguageTag) => void
-}): JSX.Element {
+export const LanguageButtons = memo((props: {
+  onLanguageChange: (languageTag: LanguageTag) => void
+}) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+
+  const onSelectLanguage = useCallback(async (languageTag: LanguageTag) => {
+    if (config.language !== languageTag) {
+      ConfigService.config.language = languageTag;
+      await ConfigService.saveConfig();
+      props.onLanguageChange(languageTag);
+    }
+  }, [props.onLanguageChange]);
+
+  const AllButtons = languageTags.map((languageTag) => (
+    <LanguageButton
+      key={languageTag}
+      languageTag={languageTag}
+      isSelected={config.language === languageTag}
+      onPress={async () => await onSelectLanguage(languageTag)}
+    />
+  ));
+
+  return <>{AllButtons}</>;
+});
+
+const LanguageButton = memo((props: {
+  languageTag: LanguageTag
+  isSelected: boolean
+  onPress: () => void
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.LanguageSelectionScreen, []);
 
-  async function saveSelectedLanguage(languageTag: LanguageTag) {
-    ConfigService.config.language = languageTag;
-    await ConfigService.saveConfig();
-  }
-
-  const LanguageButtonsArray = languageTags.map((languageTag) => {
-
-    const isSelected = config.language === languageTag;
-
-    async function onSelectLanguage() {
-      props.onLangaugeSelected(languageTag);
-      await saveSelectedLanguage(languageTag);
-    }
-
-    return (
-      <Button.TextWithIcon
-        key={languageTag}
-        title={R[languageTag]}
-        iconName="language"
-        theme={{
-          font:               isSelected ? theme.background : theme.font_Button,
-          font_Pressed:       isSelected ? theme.confirm    : theme.font,
-          background:         isSelected ? theme.confirm    : theme.background_Button,
-          background_Pressed: isSelected ? theme.background : theme.background,
-        }}
-        onPress={async () => await onSelectLanguage()}
-      />
-    );
-  });
-
-  return <>{LanguageButtonsArray}</>;
-}
+  return (
+    <Button.TextWithIcon
+      title={R[props.languageTag]}
+      iconName="language"
+      theme={{
+        font:               props.isSelected ? theme.background : theme.font_Button,
+        font_Pressed:       props.isSelected ? theme.confirm    : theme.font_active,
+        background:         props.isSelected ? theme.confirm    : theme.background_Button,
+        background_Pressed: props.isSelected ? theme.background : theme.background_active,
+      }}
+      onPress={() => props.onPress()}
+    />
+  );
+});

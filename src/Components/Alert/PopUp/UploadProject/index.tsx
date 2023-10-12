@@ -3,9 +3,10 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { CredentialDTO, Loading } from '@Types/AppTypes';
 import { ProjectDTO } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
+import ConfigService from '@Services/ConfigService';
+import DateTimeService from '@Services/DateTimeService';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
-import UtilService from '@Services/UtilService';
 import CacheService from '@Services/CacheService';
 import AppAPI from '@appAPI/index';
 
@@ -20,6 +21,7 @@ export const UploadProjects = memo((props: {
   closeModal: () => void
 }) => {
 
+  const config     = useMemo(() => ConfigService.config, []);
   const controller = useMemo(() => new AbortController(), []);
   const [error   , setError  ] = useState<string | null>(null);
   const [loading , setLoading] = useState<Loading>('Loaded');
@@ -54,8 +56,9 @@ export const UploadProjects = memo((props: {
     // Upload Date/Time entry ================
     projectDTO.projectSettings.uploads ??= [];
     projectDTO.projectSettings.uploads.push({
-      date: UtilService.getCurrentDateTime(),
-      url: credential.rootURL,
+      dateUTM: DateTimeService.getCurrentDateTimeUTC(),
+      date:    DateTimeService.getCurrentDateTime(config),
+      url:     credential.rootURL,
     });
 
     // First upload status ===================
@@ -71,6 +74,7 @@ export const UploadProjects = memo((props: {
     const { projectSettings } = projectDTO;
     const { rules, id_project } = projectSettings;
 
+    // Project deletion rule ==============
     if (rules.deleteAfterUpload === true) {
       await ProjectService.deleteProject(id_project,
         async () => {
@@ -87,6 +91,7 @@ export const UploadProjects = memo((props: {
       return;
     }
 
+    // Project status update ==========
     projectSettings.status = 'uploaded';
     await ProjectService.updateProject(projectSettings,
       () => CacheService.updateCache_ProjectSettings(projectSettings),

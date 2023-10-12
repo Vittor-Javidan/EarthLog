@@ -1,9 +1,9 @@
-import LastProjectButton from './LastProjectButton';
-import ProjectButtons from './ProjectButtons';
 import { SocialMediaButtons } from './SocialMediaButtons';
+import { LastProjectButton } from './LastProjectButton';
+import { F_ProjectButtons } from './ProjectButtons';
 
 export const LC = {
-  LastProjectButton: LastProjectButton,
-  ProjectButtons: ProjectButtons,
   SocialMediaButtons: SocialMediaButtons,
+  LastProjectButton: LastProjectButton,
+  F_ProjectButtons: F_ProjectButtons,
 };

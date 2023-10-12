@@ -1,28 +1,25 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { InputAlertMessage } from '@Types/ProjectTypes';
+import { InputAlertMessage, WidgetTheme } from '@Types/ProjectTypes';
 
 import { Text } from '@Text/index';
 
-type AlertTheme = {
-  modified: string
-}
-
 export const AlertMessages = memo((props: {
-  alertMessages: InputAlertMessage | undefined
-  theme: AlertTheme
+  alertMessages: InputAlertMessage
+  theme: WidgetTheme
 }) => {
 
-  if (props.alertMessages === undefined || Object.keys(props.alertMessages).length <= 0) {
+  if (Object.keys(props.alertMessages).length <= 0) {
     return <></>;
   }
 
-  const Messages = Object.values(props.alertMessages).map(alertMessage => (
+
+  const Messages = Object.values(props.alertMessages).map((alertMessage) => (
     <Text p
       key={alertMessage}
       style={{
-        color: props.theme.modified,
+        color: props.theme.warning,
       }}
     >
       {alertMessage}

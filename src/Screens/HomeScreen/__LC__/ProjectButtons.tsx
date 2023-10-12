@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { ProjectStatus } from '@Types/ProjectTypes';
@@ -9,11 +9,11 @@ import CacheService from '@Services/CacheService';
 import HapticsService from '@Services/HapticsService';
 import ThemeService from '@Services/ThemeService';
 
+import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
-import { Icon } from '@Icon/index';
 
-export default function ProjectButtons() {
+export function F_ProjectButtons() {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
@@ -24,8 +24,9 @@ export default function ProjectButtons() {
       key={settings.id_project}
       title={settings.name}
       status = {settings.status}
+      lastUploadDate={settings.uploads?.[settings.uploads.length - 1].date ?? undefined}
+      project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
-      theme={theme}
     />
   ));
 
@@ -36,6 +37,7 @@ export default function ProjectButtons() {
         backgroundColor: theme.background,
         paddingBottom: 5,
         borderRadius: 10,
+        elevation: 3,
       }}
     >
       <Text h1
@@ -52,10 +54,6 @@ export default function ProjectButtons() {
       </Text>
       <Layout.ScrollView
         contentContainerStyle={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexWrap: 'wrap',
           gap: 5,
           paddingBottom: 0,
           paddingHorizontal: 5,
@@ -67,38 +65,37 @@ export default function ProjectButtons() {
   );
 }
 
-function ProjectButton(props: {
+const ProjectButton = memo((props: {
   title: string
-  status?: ProjectStatus
-  theme: {
-    font_Button: string;
-    background: string;
-    background_Button: string;
-    confirm: string;
-    warning: string
-  }
+  status: ProjectStatus | undefined
+  lastUploadDate: string | undefined
+  project_id: string
   onPress: () => void
-}) {
+}) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 
-  function onPressIn() {
-    setPressed(true);
-    HapticsService.vibrate('success');
-  }
-
-  function onPress() {
-    props.onPress();
-    HapticsService.vibrate('success');
-  }
-
   const iconColor = (
     props.status === 'uploaded' || props.status === 'first upload'
-  ) ? props.theme.confirm : props.theme.warning;
+  ) ? theme.confirm : theme.warning;
 
   const iconName = (
     props.status === 'uploaded' || props.status === 'first upload'
   ) ? 'cloud' : 'cloud-upload';
+
+  const onPressIn = useCallback(() => {
+    setPressed(true);
+    HapticsService.vibrate('success');
+  }, []);
+
+  const onPress = useCallback(() => {
+    props.onPress();
+    HapticsService.vibrate('success');
+  }, [props.onPress]);
 
   return (
     <Pressable
@@ -106,34 +103,64 @@ function ProjectButton(props: {
       onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
-        flexDirection: 'row',
-        alignItems: 'flex-end',
         paddingVertical: 5,
         paddingHorizontal: 10,
-        borderRadius: 20,
+        borderRadius: 10,
         gap: 5,
-        backgroundColor: pressed ? props.theme.background : props.theme.background_Button,
+        backgroundColor: pressed ? theme.background_active : theme.background_Button,
       }}
     >
-      {props.status !== undefined && (
-        <View
-          style={{
-            height: 20,
-          }}
-        >
-          <Icon
-            iconName={iconName}
-            color={iconColor}
-          />
-        </View>
-      )}
       <Text h3
         style={{
-          color: props.theme.font_Button,
+          color: pressed ? theme.font_active : theme.font_Button,
         }}
       >
         {props.title}
       </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text p
+            style={{
+              color: pressed ? theme.font_active : theme.font_Button,
+              fontSize: 10,
+              fontStyle: 'italic',
+            }}
+          >
+            {props.project_id}
+          </Text>
+          {props.status !== undefined && props.lastUploadDate && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 5,
+              }}
+            >
+              <View
+                style={{ height: 10 }}
+              >
+                <Icon
+                  iconName={iconName}
+                  color={iconColor}
+                />
+              </View>
+              <Text p
+                style={{
+                  color: pressed ? theme.font_active : theme.font_Button,
+                  fontSize: 10,
+                  fontStyle: 'italic',
+                }}
+              >
+                {props.status === 'modified' ? R['New data'] : props.lastUploadDate}
+              </Text>
+            </View>
+          )}
+        </View>
     </Pressable>
   );
-}
+});

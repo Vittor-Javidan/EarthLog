@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
@@ -9,9 +9,9 @@ import { Layout } from '@Layout/index';
 import CredentialService from '@Services/CredentialService';
 import CacheService from '@Services/CacheService';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onCredentialCreation: () => void
-}) {
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
@@ -53,4 +53,4 @@ export default function ScreenButtons(props: {
       </>}
     />
   );
-}
+});

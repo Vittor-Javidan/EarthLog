@@ -5,7 +5,7 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { TextInput_GPS } from './TextInput_GPS';
-import { GPSInputTheme } from '../ThemeType';
+import { WidgetTheme } from '@Types/ProjectTypes';
 
 type TempCoordinates = {
   latitude: string
@@ -15,7 +15,7 @@ type TempCoordinates = {
 
 export const CoordinatesInputs = memo((props: {
   tempCoordinate: TempCoordinates
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onLatitudeChange: (newLat: string) => void
   onLongitudeChange: (newLong: string) => void
   onAccuracyChange_Coord: (newAcc: string) => void

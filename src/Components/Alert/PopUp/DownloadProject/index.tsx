@@ -104,13 +104,13 @@ export const DownloadProjects = memo((props: {
 
     const { rules, status } = projectDTO.projectSettings;
 
-    // Project Settings Treatment ============
+    // Project Settings Treatment =====
     if (rules.allowMultipleDownloads) {
       ProjectService.changeAllIDs(projectDTO);
       delete rules.allowMultipleDownloads;
     }
 
-    // Status project was uploaded before ===================
+    // If project was uploaded before =======================
     if (status === 'first upload' || status === 'modified') {
       projectDTO.projectSettings.status = 'uploaded';
     }

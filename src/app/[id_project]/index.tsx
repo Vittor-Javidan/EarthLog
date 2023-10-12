@@ -8,23 +8,9 @@ import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
-import { ProjectScreen as _ProjectScreen } from '@Screens/ProjectScreen';
-import { TemplateScreen as _TemplateScreen } from '@Screens/TemplateScreen';
-import { ProjectInfoScreen as _ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
-
-const ProjectScreen = memo((props: {
-  projectScopeState: Loading
-}) => <_ProjectScreen {...props} />    );
-
-const TemplateScreen    = memo((props: {
-  projectScopeState: Loading
-}) => <_TemplateScreen {...props} />   );
-
-const ProjectInfoScreen = memo((props: {
-  projectScopeState: Loading
-  onProjectNameUpdate: (newName: string) => void
-  onSampleAliasChange: (newSampleAlias: string) => void
-}) => <_ProjectInfoScreen {...props} />);
+import { ProjectScreen } from '@Screens/ProjectScreen';
+import { TemplateScreen } from '@Screens/TemplateScreen';
+import { ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
 
 export default function ProjectScope() {
 

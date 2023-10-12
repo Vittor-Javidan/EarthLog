@@ -5,7 +5,7 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { TextInput_GPS } from './TextInput_GPS';
-import { GPSInputTheme } from '../ThemeType';
+import { WidgetTheme } from '@Types/ProjectTypes';
 
 type TempAltitude = {
   value: string
@@ -14,7 +14,7 @@ type TempAltitude = {
 
 export const AltitudeInputs = memo((props: {
   tempAltitude: TempAltitude
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onAltitudeChange: (newAlt: string) => void
   onAccuracyChange_Alt: (newAcc: string) => void
 }) => {

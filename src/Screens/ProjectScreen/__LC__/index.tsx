@@ -1,5 +1,5 @@
-import SampleButtons from './SampleButtons';
+import { F_SampleButtons } from './SampleButtons';
 
 export const LC = {
-  SampleButtons: SampleButtons,
+  F_SampleButtons: F_SampleButtons,
 };

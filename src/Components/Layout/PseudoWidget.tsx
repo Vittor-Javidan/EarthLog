@@ -5,13 +5,7 @@ import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
 import { translations } from '@Translations/index';
-
-type WidgetTheme = {
-  font: string
-  background: string
-  confirm: string
-  modified: string
-}
+import { WidgetTheme } from '@Types/ProjectTypes';
 
 export const PseudoWidget = memo((props: {
   saved: boolean
@@ -24,6 +18,7 @@ export const PseudoWidget = memo((props: {
       style={{
         backgroundColor: props.theme.background,
         borderRadius: 10,
+        elevation: 3,
       }}
     >
       <View
@@ -84,7 +79,7 @@ const SaveFeedback = memo((props: {
         style={{
           height: 12,
           width: 12,
-          backgroundColor: props.saved ? props.theme.confirm : props.theme.modified,
+          backgroundColor: props.saved ? props.theme.confirm : props.theme.warning,
           borderRadius: 6,
         }}
       />

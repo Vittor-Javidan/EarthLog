@@ -1,6 +1,6 @@
-import { AppThemeDTO } from '@Types/AppTypes';
+import { AppTheme } from '@Types/AppTypes';
 
-export const DEFAULT: AppThemeDTO = {
+export const DARK: AppTheme = {
   layout: {
     root: {
       background: '#000',
@@ -60,6 +60,7 @@ export const DEFAULT: AppThemeDTO = {
     modalPopUp: {
       font: '#222',
       font_button: '#FFF',
+      font_active: '#666',
       font_placeHolder: '#999',
       background: '#FFF',
       background_Button: '#666',
@@ -71,7 +72,9 @@ export const DEFAULT: AppThemeDTO = {
   component: {
     font: '#DDD',
     font_Button: '#DDD',
+    font_active: '#666',
     background: '#333',
+    background_active: '#222',
     background_Button: '#666',
     confirm: '#5F5',
     wrong: '#F55',

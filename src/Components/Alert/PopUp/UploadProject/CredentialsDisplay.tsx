@@ -86,7 +86,7 @@ const CredentialButton = memo((props: {
 		>
       <Text p
 				style={{
-          color: theme.font_button,
+          color: pressed ? theme.background_Button : theme.font_button,
 				}}
 			>
 				{props.credential.name}
@@ -100,7 +100,7 @@ const CredentialButton = memo((props: {
       >
         <Icon
           iconName="card"
-          color={theme.font_button}
+          color={pressed ? theme.background_Button : theme.font_button}
         />
       </View>
 		</Pressable>

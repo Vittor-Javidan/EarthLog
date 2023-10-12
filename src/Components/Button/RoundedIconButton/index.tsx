@@ -50,6 +50,7 @@ export const RoundedIconButton = memo((props: {
         paddingHorizontal: 10,
         paddingVertical: 10,
         borderWidth: 3,
+        elevation: 3,
       }}
     >
       {props.showPlusSign && (

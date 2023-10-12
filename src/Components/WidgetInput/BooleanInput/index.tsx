@@ -1,9 +1,8 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
-import { BooleanInputData, InputStatus, WidgetRules } from '@Types/ProjectTypes';
+import { BooleanInputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 import HapticsService from '@Services/HapticsService';
@@ -12,22 +11,14 @@ import { Text } from '@Text/index';
 import { LC } from '../__LC__';
 import { NotApplicableButton } from './NotApplicableButton';
 
-type InputTheme = {
-  font: string
-  background: string
-  confirm: string
-  wrong: string
-  disabled: string
-}
-
 export const BooleanInput = memo((props: {
   inputData: BooleanInputData
   editWidget: boolean
   isFirstInput: boolean
   isLastInput: boolean
   widgetRules: WidgetRules
-  theme: InputTheme
-  onSave: (inputData: BooleanInputData | null, status: InputStatus ) => void
+  theme: WidgetTheme
+  onSave: (inputData: BooleanInputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
   onInputMoveDow: () => void
@@ -36,8 +27,7 @@ export const BooleanInput = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.booleanInput[config.language], []);
 
-  const [inputData  , setInputData  ] = useState<BooleanInputData>(UtilService.deepCopy(props.inputData));
-  const [saveSignal , setSaveSignal ] = useState<boolean>(false);
+  const [inputData , setInputData] = useState<BooleanInputData>(UtilService.deepCopy(props.inputData));
 
   const notApplicableUndefined = inputData.notApplicable === undefined;
   const notApplicableFalse     = inputData.notApplicable === false;
@@ -53,40 +43,36 @@ export const BooleanInput = memo((props: {
       : props.theme.wrong
   ;
 
-  useTimeout(async () => {
-    if (saveSignal) {
-      props.onSave(UtilService.deepCopy(inputData), 'ready to save');
-      setSaveSignal(false);
-    }
-  }, [inputData, saveSignal], 200);
-
-  const onLabelChange = useCallback((newLabel: string) => {
-    props.onSave(null, 'modifying');
-    setInputData(prev => ({ ...prev, label: newLabel}));
-    setSaveSignal(true);
+  const asyncSave = useCallback(async (inputData: BooleanInputData) => {
+    props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
 
-  const onSwitchChange = useCallback((boolean: boolean) => {
+  const onLabelChange = useCallback((newLabel: string, inputData: BooleanInputData) => {
+    const newData : BooleanInputData = { ...inputData, label: newLabel};
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave]);
+
+  const onNotApplicableChange = useCallback((boolean: boolean, inputData: BooleanInputData) => {
+    if (inputData.lockedData !== true) {
+      HapticsService.vibrate('success');
+      const newData: BooleanInputData = { ...inputData, notApplicable: boolean };
+      asyncSave(newData);
+      setInputData(newData);
+    }
+  }, [asyncSave]);
+
+  const onSwitchChange = useCallback((boolean: boolean, inputData: BooleanInputData) => {
     if (
       inputData.lockedData !== true &&
       (notApplicableUndefined || notApplicableFalse)
     ) {
       HapticsService.vibrate('success');
-      props.onSave(null, 'modifying');
+      const newData: BooleanInputData = { ...inputData, value: boolean };
+      asyncSave(newData);
       setInputData(prev => ({ ...prev, value: boolean }));
-      setSaveSignal(true);
-      return;
     }
-  }, [props.onSave, inputData.lockedData, notApplicableUndefined, notApplicableFalse]);
-
-  const onNotApplicableChange = useCallback((boolean: boolean) => {
-    if (inputData.lockedData !== true) {
-      HapticsService.vibrate('success');
-      props.onSave(null, 'modifying');
-      setInputData(prev => ({ ...prev, notApplicable: boolean }));
-      setSaveSignal(true);
-    }
-  }, [props.onSave, inputData.lockedData]);
+  }, [asyncSave, notApplicableUndefined, notApplicableFalse]);
 
   return (
     <LC.Root
@@ -96,7 +82,7 @@ export const BooleanInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label)}
+      onLabelChange={(label) => onLabelChange(label, inputData)}
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
@@ -136,7 +122,7 @@ export const BooleanInput = memo((props: {
         >
           <NotApplicableButton
             notApplicable={inputData.notApplicable}
-            onNotApplicableChange={(boolean) => onNotApplicableChange(boolean)}
+            onNotApplicableChange={(boolean) => onNotApplicableChange(boolean, inputData)}
             theme={props.theme}
           />
           <Switch
@@ -144,7 +130,7 @@ export const BooleanInput = memo((props: {
             trackColor={{ false: props.theme.font, true: props.theme.font }}
             ios_backgroundColor={props.theme.font}
             value={inputData.value}
-            onValueChange={(boolean) => onSwitchChange(boolean)}
+            onValueChange={(boolean) => onSwitchChange(boolean, inputData)}
             thumbColor={thumbColor}
           />
         </View>
@@ -155,9 +141,8 @@ export const BooleanInput = memo((props: {
 
 const IconButtons = memo((props: {
   locked: boolean | undefined
-  theme: InputTheme
+  theme: WidgetTheme
 }) => {
-
   return (<>
     {props.locked && (
       <LC.NavbarIconButton

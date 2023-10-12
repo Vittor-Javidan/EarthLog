@@ -1,7 +1,7 @@
 import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO } from '@Types/ProjectTypes';
+import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
@@ -9,7 +9,6 @@ import { Text } from '@Text/index';
 import { AltitudeInputs } from './AltitudeInputs';
 import { CoordinatesInputs } from './CoordinatesInputs';
 import { FooterButtons } from './FooterButtons';
-import { GPSInputTheme } from '../ThemeType';
 
 type TempCoordinates = {
   latitude: string
@@ -23,7 +22,7 @@ type TempAltitude = {
 
 export const InputsDisplay = memo((props: {
   features: GPSFeaturesDTO
-  theme: GPSInputTheme
+  theme: WidgetTheme
   onSave: (gpsData: GPS_DTO) => void
   onCancel: () => void
   onError: () => void

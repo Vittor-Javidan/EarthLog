@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetRules, WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import HapticsService from '@Services/HapticsService';
 import ConfigService from '@Services/ConfigService';
@@ -16,7 +16,7 @@ export const Footer = memo((props: {
   isTemplate: boolean
   editInputs: boolean
   rules: WidgetRules
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onChangeCheckbox: (checked: boolean) => void
   onDeleteWidget: () => void
 }) => {
@@ -51,7 +51,7 @@ export const Footer = memo((props: {
 const DeleteWidgetButton = memo((props: {
   isTemplate: boolean
   rules: WidgetRules
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onDeleteWidget: () => void
 }) => {
 
@@ -84,7 +84,7 @@ const DeleteWidgetButton = memo((props: {
 const AddToNewSampleButton = memo((props: {
   addToNewSamples: boolean
   rules: WidgetRules
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
   onChangeCheckbox: (checked: boolean) => void
 }) => {
 

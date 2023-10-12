@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -10,9 +10,9 @@ import ProjectService from '@Services/ProjectService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
-export default function ScreenButtons(props: {
+export const ScreenButtons = memo((props: {
   onWidgetCreation: () => void
-}) {
+}) => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
@@ -20,7 +20,20 @@ export default function ScreenButtons(props: {
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-  async function createWidget_Project() {
+  const createWidget_Project = useCallback(async () => {
+
+    // Project status update ===========================================
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Project(
       id_project,
@@ -31,9 +44,10 @@ export default function ScreenButtons(props: {
       },
       (errorMessage) => alert(errorMessage)
     );
-  }
 
-  async function deleteProject() {
+  }, [props.onWidgetCreation, id_project]);
+
+  const deleteProject = useCallback(async () => {
     const isLatOpenProject = CacheService.lastOpenProject.id_project === id_project;
     await ProjectService.deleteProject(
       id_project,
@@ -45,7 +59,7 @@ export default function ScreenButtons(props: {
       },
       (errorMessage) => alert(errorMessage)
     );
-  }
+  }, [id_project]);
 
   return (
     <Layout.ScreenButtons
@@ -96,4 +110,4 @@ export default function ScreenButtons(props: {
       }
     />
   );
-}
+});

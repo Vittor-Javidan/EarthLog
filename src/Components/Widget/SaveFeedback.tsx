@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetThemeDTO } from '@Types/ProjectTypes';
+import { WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
@@ -9,7 +9,7 @@ import { Text } from '@Text/index';
 
 export const SaveFeedback = memo((props: {
   saved: boolean
-  theme: WidgetThemeDTO
+  theme: WidgetTheme
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -28,7 +28,7 @@ export const SaveFeedback = memo((props: {
         style={{
           height: 12,
           width: 12,
-          backgroundColor: props.saved ? props.theme.confirm : props.theme.modified,
+          backgroundColor: props.saved ? props.theme.confirm : props.theme.warning,
           borderRadius: 6,
         }}
       />

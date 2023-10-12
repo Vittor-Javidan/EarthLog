@@ -1,31 +1,33 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
-import { Dimensions } from 'react-native';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import React, { memo, useState } from 'react';
 
 import { Loading } from '@Types/AppTypes';
 
+import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export function CredentialSelectionScreen(props: {
+export const CredentialSelectionScreen = memo((props: {
   credentialScopeState: Loading
-}): JSX.Element {
+}) => {
 
-  const [_, refresher] = useState<boolean>(false);
+  const [_, refresh] = useState<boolean>(false);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onCredentialCreation={() => refresher(prev => !prev)}
+          onCredentialCreation={() => refresh(prev => !prev)}
         />
       }
     >
       {props.credentialScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Animation>
+        <Animation.SlideFromLeft
+          delay={300}
+          duration={200}
+        >
           <Layout.ScrollView
             contentContainerStyle={{
               paddingTop: 10,
@@ -33,38 +35,10 @@ export function CredentialSelectionScreen(props: {
               gap: 10,
             }}
           >
-            <LC.AllCredentials />
+            <LC.F_AllCredentials />
           </Layout.ScrollView>
-        </Animation>
+        </Animation.SlideFromLeft>
       )}
     </Layout.Screen>
   );
-}
-
-function Animation(props: { children: ReactNode}) {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-  const leftOffset = useSharedValue(0);
-
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withDelay(300, withTiming(width, {
-        duration: 200,
-      }));
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, []);
-
-  return (
-    <Animated.View
-      style={[
-        { left: -width },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
-      ]}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}
+});

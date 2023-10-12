@@ -69,6 +69,9 @@ export default class ProjectService {
         showDeleteButton_Widget: true,
         showDeleteButton_Inputs: true,
         showMoveButton_Inputs: true,
+        template_showOptionsButton: true,
+        template_AllowCopies: true,
+        template_ShowDeleteButton_Widget: true,
         template_unlockAddAutomatically: true,
       },
     };

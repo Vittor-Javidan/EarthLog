@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
-import { GPSInputData, InputStatus, SampleSettings, StringInputData } from '@Types/ProjectTypes';
+import { GPSInputData, GPS_DTO, SampleSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
@@ -14,75 +15,43 @@ import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
 
-export default function SampleSettingsWidget(props: {
+export const SampleSettingsWidget = memo((props: {
   onSampleNameUpdate: (newName: string) => void
-  onGPSReferenceUpdate: () => void
-}) {
+  onGPSReferenceUpdate: (gpsData: GPS_DTO) => void
+}) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const id_sample  = useLocalSearchParams().id_sample as string;
+  const id_sample       = useLocalSearchParams().id_sample as string;
   const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.widgetThemes['light'], []);
+  const theme           = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
   const R               = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const unusedProps     = useMemo(() => ({
+    editWidget:     false,
+    isFirstInput:   false,
+    isLastInput:    false,
+    onInputDelete:  () => {},
+    onInputMoveDow: () => {},
+    onInputMoveUp:  () => {},
+    widgetRules:    {},
+  }), []);
 
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  function onSaveName(inputData: StringInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (inputData !== null && status === 'ready to save') {
-      setSampleSettings(prev => {
-        const newData: SampleSettings = { ...prev, name: inputData.value };
-        save(newData, 'name update');
-        return newData;
-      });
-    }
-  }
+  useAutosave(() => {
+    setSaved(true);
+  }, [sampleSettings, saved]);
 
-  function onSaveGPS(gpsData: GPSInputData | null, status: InputStatus) {
-    if (status === 'modifying') {
-      setSaved(false);
-      return;
-    }
-    if (gpsData !== null && status === 'ready to save') {
-      setSampleSettings(prev => {
-        const newData: SampleSettings = { ...prev, gps: gpsData.value };
-        save(newData, 'gps update');
-        return newData;
-      });
-      props.onGPSReferenceUpdate();
-    }
-  }
+  const onSaveName = useCallback((inputData: StringInputData) => {
+    setSaved(true);
+    setSampleSettings(prev => ({ ...prev, name: inputData.value }));
+    props.onSampleNameUpdate(inputData.value);
+  }, [props.onSampleNameUpdate]);
 
-  async function save(sampleSettings: SampleSettings, type: 'name update' | 'gps update') {
-
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    await ProjectService.updateSample(
-      id_project,
-      sampleSettings,
-      () => {
-        CacheService.updateCache_SampleSettings(sampleSettings);
-        setSaved(true);
-        switch (type) {
-          case 'name update': props.onSampleNameUpdate(sampleSettings.name); break;
-          case 'gps update': props.onGPSReferenceUpdate(); break;
-        }
-      },
-      (erroMessage) => alert(erroMessage)
-    );
-  }
+  const onSaveGPS = useCallback((gpsData: GPSInputData) => {
+    setSaved(false);
+    setSampleSettings(prev => ({ ...prev, gps: gpsData.value }));
+    props.onGPSReferenceUpdate(UtilService.deepCopy(gpsData.value));
+  }, [props.onGPSReferenceUpdate]);
 
   return (
     <Layout.PseudoWidget
@@ -113,16 +82,10 @@ export default function SampleSettingsWidget(props: {
             lockedLabel: true,
             lockedData: true,
           }}
-          multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
           onSave={() => {}}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
+          multiline={false}
           theme={theme}
+          {...unusedProps}
         />
         <WidgetInput.String
           inputData={{
@@ -134,16 +97,10 @@ export default function SampleSettingsWidget(props: {
             lockedLabel: true,
             lockedData: !sampleSettings.rules.allowSampleNameChange,
           }}
-          onSave={(inputData, status) => onSaveName(inputData, status)}
+          onSave={(inputData) => onSaveName(inputData)}
           multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
           theme={theme}
+          {...unusedProps}
         />
         {sampleSettings.gps !== undefined && (
           <WidgetInput.GPS
@@ -155,19 +112,49 @@ export default function SampleSettingsWidget(props: {
               lockedLabel: true,
               lockedData: !sampleSettings.rules.allowGPSChange,
             }}
-            onSave={(inputData, status) => onSaveGPS(inputData, status)}
+            onSave={(inputData) => onSaveGPS(inputData)}
             referenceGPSData={undefined}
-            editWidget={false}
-            isFirstInput={false}
-            isLastInput={false}
-            onInputDelete={() => {}}
-            onInputMoveDow={() => {}}
-            onInputMoveUp={() => {}}
-            widgetRules={{}}
             theme={theme}
+            {...unusedProps}
           />
         )}
       </View>
     </Layout.PseudoWidget>
   );
+});
+
+function useAutosave(onSave: () => void, deps: [SampleSettings, boolean]) {
+
+  const [sampleSettings, saved] = deps;
+  const id_project      = useLocalSearchParams().id_project as string;
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+
+  useTimeout(async () => {
+
+    if (saved) {
+      return;
+    }
+
+    // Project status update ===================
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Sample update =================
+    await ProjectService.updateSample(
+      id_project,
+      sampleSettings,
+      () => {
+        CacheService.updateCache_SampleSettings(sampleSettings);
+        onSave();
+      },
+      (erroMessage) => alert(erroMessage)
+    );
+
+  }, [sampleSettings], 200);
 }
