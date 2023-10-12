@@ -2,19 +2,22 @@ import { LanguageTag } from '@Types/AppTypes';
 
 export type TranslationDTO = Record<LanguageTag, {
   'Language': string
-  'Credentials': string
+  'Date and time': string
   'Themes': string
+  'Credentials': string
 }>
 
 export const R_SettingsScreen: TranslationDTO = {
   'en-US': {
     'Language': 'Language',
-    'Credentials': 'Credentials',
+    'Date and time': 'Date and time',
     'Themes': 'Themes',
+    'Credentials': 'Credentials',
   },
   'pt-BR': {
     'Language': 'Idioma',
-    'Credentials': 'Credenciais',
+    'Date and time': 'Data e hora',
     'Themes': 'Temas',
+    'Credentials': 'Credenciais',
   },
 };

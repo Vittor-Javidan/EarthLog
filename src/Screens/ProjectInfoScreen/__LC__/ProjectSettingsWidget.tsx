@@ -196,10 +196,12 @@ function useAutoSave(onSave: () => void, deps: [ProjectSettings, boolean]) {
       return;
     }
 
+    // Project status update ===================
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
     }
 
+    // Project update =================
     await ProjectService.updateProject(
       projectSettings,
       () => {

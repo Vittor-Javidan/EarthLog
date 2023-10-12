@@ -1,9 +1,9 @@
-import { translations } from '@Translations/index';
+import { CredentialDTO } from '@Types/AppTypes';
 import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
 import ConfigService from './ConfigService';
-import { CredentialDTO } from '@Types/AppTypes';
 import CredentialService from './CredentialService';
 
 export default class CacheService {

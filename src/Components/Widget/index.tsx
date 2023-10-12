@@ -280,6 +280,7 @@ function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean
       return;
     }
 
+    // Project status update ===================
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
       await ProjectService.updateProject(
@@ -289,6 +290,7 @@ function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean
       );
     }
 
+    // Widget update ==========
     switch (widgetScope.type) {
 
       case 'project': {

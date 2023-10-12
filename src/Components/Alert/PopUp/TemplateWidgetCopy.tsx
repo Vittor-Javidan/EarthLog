@@ -26,7 +26,21 @@ export const TemplateWidgetCopy = memo((props: {
   const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
+
     const { id_project, id_sample } = props;
+
+    // Project status update =================================================
+    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget Copy ========================================
     const newWidgetData = UtilService.deepCopy(widgetData);
     newWidgetData.id_widget = UtilService.generateUuidV4();
     await ProjectService.createWidget_Sample(
@@ -43,6 +57,7 @@ export const TemplateWidgetCopy = memo((props: {
         HapticsService.vibrate('warning');
       }
     );
+
   }, [props, R]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {

@@ -29,6 +29,7 @@ export type ProjectSettings = {
   rules: ProjectRules
   sampleRules?: SampleRules
   uploads?: {
+    dateUTM: string
     date: string
     url: string
   }[]

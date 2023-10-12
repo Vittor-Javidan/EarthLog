@@ -4,19 +4,17 @@ import { Loading } from '@Types/AppTypes';
 
 import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
-import { LC } from './__LC__';
 import { TC } from './__TC__';
+import { LC } from './__LC__';
 
-export const AppThemeScreen = memo((props: {
-  themeScopeState: Loading
-  onAppThemeChange: () => void
+export const DateFormatScreen = memo((props: {
+  timeAndDateScopeState: Loading
 }) => {
-
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
-      {props.themeScopeState === 'Loading' ? (
+      {props.timeAndDateScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Animation.SlideFromLeft
@@ -30,9 +28,7 @@ export const AppThemeScreen = memo((props: {
               gap: 1,
             }}
           >
-            <LC.ThemeButtons
-              onAppThemeChange={() => props.onAppThemeChange()}
-            />
+            <LC.DateFormatButtons />
           </Layout.ScrollView>
         </Animation.SlideFromLeft>
       )}

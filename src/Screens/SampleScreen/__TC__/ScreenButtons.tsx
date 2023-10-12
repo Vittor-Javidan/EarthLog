@@ -22,6 +22,19 @@ export const ScreenButtons = memo((props: {
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const onCreateWidget_Sample = useCallback(async () => {
+
+    // Project status update ============================================
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Sample(
       id_project,
@@ -33,6 +46,7 @@ export const ScreenButtons = memo((props: {
       },
       (errorMessage) => alert(errorMessage)
     );
+
   }, [props.onCreateWidget, id_project, id_sample]);
 
   const onTemplateWidgetCopy = useCallback(async () => {

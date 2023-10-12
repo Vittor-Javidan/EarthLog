@@ -21,6 +21,19 @@ export const ScreenButtons = memo((props: {
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   const createWidget_Project = useCallback(async () => {
+
+    // Project status update ===========================================
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(
+        projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
     await ProjectService.createWidget_Project(
       id_project,
@@ -31,6 +44,7 @@ export const ScreenButtons = memo((props: {
       },
       (errorMessage) => alert(errorMessage)
     );
+
   }, [props.onWidgetCreation, id_project]);
 
   const deleteProject = useCallback(async () => {

@@ -13,9 +13,9 @@
 + Server API communication
 - Word/PDF/CSV/GPX export
 - TextWidget Speech to text
+- Subscription Implementation
 - Photo Input
 - Photo Upload API
-- Subscription Implementation
 - Migration Service
 
 # Apple/Play Store publishing

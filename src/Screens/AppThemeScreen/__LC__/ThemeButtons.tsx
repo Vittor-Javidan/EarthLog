@@ -42,8 +42,8 @@ const ThemButton = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.themes.appThemes[config.language], []);
-  const theme = ThemeService.appThemes[config.appTheme].component;
 
   return (
     <Button.TextWithIcon

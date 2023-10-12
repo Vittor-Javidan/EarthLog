@@ -24,6 +24,8 @@ export function F_ProjectButtons() {
       key={settings.id_project}
       title={settings.name}
       status = {settings.status}
+      lastUploadDate={settings.uploads?.[settings.uploads.length - 1].date ?? undefined}
+      project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
     />
   ));
@@ -52,10 +54,6 @@ export function F_ProjectButtons() {
       </Text>
       <Layout.ScrollView
         contentContainerStyle={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexWrap: 'wrap',
           gap: 5,
           paddingBottom: 0,
           paddingHorizontal: 5,
@@ -69,12 +67,15 @@ export function F_ProjectButtons() {
 
 const ProjectButton = memo((props: {
   title: string
-  status?: ProjectStatus
+  status: ProjectStatus | undefined
+  lastUploadDate: string | undefined
+  project_id: string
   onPress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 
@@ -102,27 +103,13 @@ const ProjectButton = memo((props: {
       onPressOut={() => setPressed(false)}
       onPress={() => onPress()}
       style={{
-        flexDirection: 'row',
-        alignItems: 'flex-end',
         paddingVertical: 5,
         paddingHorizontal: 10,
-        borderRadius: 20,
+        borderRadius: 10,
         gap: 5,
         backgroundColor: pressed ? theme.background_active : theme.background_Button,
       }}
     >
-      {props.status !== undefined && (
-        <View
-          style={{
-            height: 20,
-          }}
-        >
-          <Icon
-            iconName={iconName}
-            color={iconColor}
-          />
-        </View>
-      )}
       <Text h3
         style={{
           color: pressed ? theme.font_active : theme.font_Button,
@@ -130,6 +117,50 @@ const ProjectButton = memo((props: {
       >
         {props.title}
       </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Text p
+            style={{
+              color: pressed ? theme.font_active : theme.font_Button,
+              fontSize: 10,
+              fontStyle: 'italic',
+            }}
+          >
+            {props.project_id}
+          </Text>
+          {props.status !== undefined && props.lastUploadDate && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 5,
+              }}
+            >
+              <View
+                style={{ height: 10 }}
+              >
+                <Icon
+                  iconName={iconName}
+                  color={iconColor}
+                />
+              </View>
+              <Text p
+                style={{
+                  color: pressed ? theme.font_active : theme.font_Button,
+                  fontSize: 10,
+                  fontStyle: 'italic',
+                }}
+              >
+                {props.status === 'modified' ? R['New data'] : props.lastUploadDate}
+              </Text>
+            </View>
+          )}
+        </View>
     </Pressable>
   );
 });

@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { ScrollView } from 'react-native';
 import { Loading, ThemeNames_Widgets } from '@Types/AppTypes';
 
 import { Layout } from '@Layout/index';
@@ -17,18 +16,17 @@ export const WidgetThemeScreen = memo((props: {
       {props.themeScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <ScrollView
+        <Layout.ScrollView
           contentContainerStyle={{
             paddingTop: 55,
-            paddingBottom: 150,
-            paddingHorizontal: 1,
+            paddingLeft: 1,
             gap: 1,
           }}
         >
           <LC.ThemeButtons
             onWidgetThemeSelect={(themeName) => props.onWidgetThemeSelect(themeName)}
           />
-        </ScrollView>
+        </Layout.ScrollView>
       )}
     </Layout.Screen>
   );

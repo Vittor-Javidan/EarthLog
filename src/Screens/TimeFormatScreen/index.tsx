@@ -1,34 +1,31 @@
 import React, { memo } from 'react';
-import { Loading, ThemeNames_Widgets } from '@Types/AppTypes';
+
+import { Loading } from '@Types/AppTypes';
 
 import { Layout } from '@Layout/index';
+import { TC } from './__TC__';
 import { LC } from './__LC__';
 
-export const WidgetThemePreviewScreen = memo((props: {
-  widgetThemeName: ThemeNames_Widgets
-  themeScopeState: Loading
+export const TimeFormatScreen = memo((props: {
+  timeAndDateScopeState: Loading
 }) => {
-
   return (
     <Layout.Screen
-      screenButtons={<></>}
+      screenButtons={<TC.ScreenButtons />}
     >
-      {props.themeScopeState === 'Loading' ? (
+      {props.timeAndDateScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.ScrollView
           contentContainerStyle={{
-            paddingHorizontal: 5,
             paddingTop: 55,
+            paddingLeft: 1,
             gap: 1,
           }}
         >
-          <LC.WidgetPreview
-            themeName={props.widgetThemeName}
-          />
+          <LC.TimeFormatButtons />
         </Layout.ScrollView>
       )}
     </Layout.Screen>
   );
 });
-

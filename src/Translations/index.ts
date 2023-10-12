@@ -29,6 +29,9 @@ import { R_ThemeScope } from './scope/ThemeScope';
 import { R_WidgetThemePreview } from './Screen/WidgetThemePreview';
 import { R_AppThemes } from './Themes/AppThemes';
 import { R_WidgetThemes } from './Themes/WidgetThemes';
+import { R_DateAndTimeScope } from './scope/DateAndTimeScope';
+import { R_DateFormatScreen } from './Screen/DateFormatScreen';
+import { R_TimeFormatScreen } from './Screen/TimeFormatScreen';
 
 export const translations = {
   appAPI:                     R_AppAPI,
@@ -46,6 +49,7 @@ export const translations = {
     settingsScope:            R_SettingsScope,
     credentialScope:          R_CredentialScope,
     themeScope:               R_ThemeScope,
+    dateAndTime:              R_DateAndTimeScope,
   },
   screen: {
     homeScreen:               R_HomeScreen,
@@ -55,6 +59,8 @@ export const translations = {
     settingsScreen:           R_SettingsScreen,
     credentialScreen:         R_CredentialScreen,
     widgetThemePreview:       R_WidgetThemePreview,
+    dateFormatScreen:         R_DateFormatScreen,
+    timeFormatScreen:         R_TimeFormatScreen,
   },
   component: {
     alert: {

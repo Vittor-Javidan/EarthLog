@@ -3,6 +3,17 @@ export type Loading = 'Loaded' | 'Loading';
 export const languageTags   = ['en-US', 'pt-BR'] as const;
 export type LanguageTag = (typeof languageTags)[number];
 
+export const DateFormatsArray = [
+  'yyyy / mm / dd', 'yyyy / dd / mm', 'mm / yyyy / dd',
+  'dd / yyyy / mm', 'mm / dd / yyyy', 'dd / mm / yyyy',
+] as const;
+export const TimeFormatsArray = [
+  'HH : MM : SS', 'HH : SS : MM', 'MM : HH : SS', 'SS : HH : MM',
+  'MM : SS : HH', 'SS : MM : HH', 'HH : MM', 'MM : HH',
+] as const;
+export type DateFormat = (typeof DateFormatsArray)[number];
+export type TimeFormat = (typeof TimeFormatsArray)[number];
+
 export const ThemeNamesArray_APP     = ['Light', 'Dark'] as const;
 export const ThemeNamesArray_Widgets = ['Light', 'Dark'] as const;
 export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
@@ -94,6 +105,8 @@ export type ConfigDTO = {
   language: LanguageTag
   appTheme: ThemeNames_APP
   widgetTheme: ThemeNames_Widgets
+  dateFormat: DateFormat
+  timeFormat: TimeFormat
 }
 
 export type ModalConfig = {

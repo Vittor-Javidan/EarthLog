@@ -6,6 +6,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Tutorials': string
   'ROADMAP': string
   'Community': string
+  'New data': string
 }>
 
 export const R_HomeScreen: TranslationDTO = {
@@ -15,6 +16,7 @@ export const R_HomeScreen: TranslationDTO = {
     'Tutorials': 'Tutorials',
     'ROADMAP': 'ROADMAP',
     'Community': 'Community',
+    'New data': 'New data',
   },
   'pt-BR': {
 		'Recently Open': 'Aberto Recentemente',
@@ -22,5 +24,6 @@ export const R_HomeScreen: TranslationDTO = {
     'Tutorials': 'Tutoriais',
     'ROADMAP': 'ROADMAP',
     'Community': 'Comunidade',
+    'New data': 'Novos dados',
   },
 };

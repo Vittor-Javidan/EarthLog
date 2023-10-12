@@ -60,7 +60,7 @@ export const DARK: AppTheme = {
     modalPopUp: {
       font: '#222',
       font_button: '#FFF',
-      font_active: '#222',
+      font_active: '#666',
       font_placeHolder: '#999',
       background: '#FFF',
       background_Button: '#666',
