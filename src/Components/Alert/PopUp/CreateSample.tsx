@@ -7,7 +7,6 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -23,6 +22,8 @@ export const CreateSample = memo((props: {
   const R      = useMemo(() => translations.component.alert.createSample[config.language], []);
   const [name, setName] = useState<string>('');
 
+
+
   const onAccept = useCallback(async () => {
 
     if (name === '') {
@@ -34,8 +35,7 @@ export const CreateSample = memo((props: {
     // Project status update ===================
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
+      await ProjectService.updateProject(projectSettings,
         () => CacheService.updateCache_ProjectSettings(projectSettings),
         (erroMessage) => alert(erroMessage)
       );
@@ -48,21 +48,17 @@ export const CreateSample = memo((props: {
       rules: projectSettings.sampleRules,
     });
 
-    await ProjectService.createSample(
-      props.id_project,
-      newSampleSettings,
-      async () => {
-        CacheService.addToAllSamples(newSampleSettings);
-        await AlertService.runAcceptCallback();
-        props.closeModal();
-      },
-      async (errorMesage) => {
-        alert(errorMesage);
-        HapticsService.vibrate('warning');
-      }
+    await ProjectService.createSample(props.id_project, newSampleSettings,
+      () => CacheService.addToAllSamples(newSampleSettings),
+      (errorMesage) => alert(errorMesage),
     );
 
-  }, [props.id_project, props.closeModal, name, R]);
+    await AlertService.runAcceptCallback();
+    props.closeModal();
+
+  }, [props.id_project, props.closeModal, name]);
+
+
 
   return (
     <LC.PopUp>

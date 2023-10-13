@@ -7,9 +7,9 @@ import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
-import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import ProjectService from '@Services/ProjectService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
@@ -37,7 +37,7 @@ export const SampleSettingsWidget = memo((props: {
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutosave(() => {
+  useAutosave_sample(() => {
     setSaved(true);
   }, [sampleSettings, saved]);
 
@@ -123,11 +123,15 @@ export const SampleSettingsWidget = memo((props: {
   );
 });
 
-function useAutosave(onSave: () => void, deps: [SampleSettings, boolean]) {
+/**
+ * sampleSettings data processing before saving.
+ * Each time a new data comes before a 200ms interval, it discards the old data to save the updated
+ * version.
+ */
+function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean]) {
 
   const [sampleSettings, saved] = deps;
   const id_project      = useLocalSearchParams().id_project as string;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   useTimeout(async () => {
 
@@ -135,26 +139,55 @@ function useAutosave(onSave: () => void, deps: [SampleSettings, boolean]) {
       return;
     }
 
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status !== 'new') {
+
+      const cachedSampleSettings = CacheService.getSampleFromCache(sampleSettings.id_sample);
+
+      // Project status update ===================
+      if (projectSettings.status === 'uploaded') {
+        projectSettings.status = 'modified';
+        await ProjectService.updateProject(projectSettings,
+          () => CacheService.updateCache_ProjectSettings(projectSettings),
+          (erroMessage) => alert(erroMessage)
+        );
+      }
+
+      if (sampleSettings.status !== 'new') {
+
+        /**=========================================================
+         * Fix sample status desync caused by elements
+         * saving/creation/deletion
+         */
+        if (sampleSettings.status !== cachedSampleSettings.status) {
+          sampleSettings.status = cachedSampleSettings.status;
+        }
+
+        /** ===================================================
+         * Fix widget sample deletion entry desync
+         * caused by sample widgets deletion
+         */
+        if (
+          cachedSampleSettings.deleted_Widgets !== undefined &&
+          cachedSampleSettings.deleted_Widgets.length !== sampleSettings.deleted_Widgets?.length
+        ) {
+          sampleSettings.deleted_Widgets = cachedSampleSettings.deleted_Widgets;
+        }
+
+        // Sample status update ===================
+        if (sampleSettings.status === 'uploaded') {
+          sampleSettings.status = 'modified';
+        }
+      }
     }
 
-    // Sample update =================
-    await ProjectService.updateSample(
-      id_project,
-      sampleSettings,
-      () => {
-        CacheService.updateCache_SampleSettings(sampleSettings);
-        onSave();
-      },
+    // Sample update ============================================
+    await ProjectService.updateSample(id_project, sampleSettings,
+      () => CacheService.updateCache_SampleSettings(sampleSettings),
       (erroMessage) => alert(erroMessage)
     );
+
+    onSave();
 
   }, [sampleSettings], 200);
 }

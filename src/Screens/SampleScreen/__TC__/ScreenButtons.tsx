@@ -21,33 +21,7 @@ export const ScreenButtons = memo((props: {
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const onCreateWidget_Sample = useCallback(async () => {
 
-    // Project status update ============================================
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget creation ==============================
-    const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget_Sample(
-      id_project,
-      id_sample,
-      newWidget,
-      () => {
-        CacheService.addToAllWidgets_Sample(newWidget);
-        props.onCreateWidget();
-      },
-      (errorMessage) => alert(errorMessage)
-    );
-
-  }, [props.onCreateWidget, id_project, id_sample]);
 
   const onTemplateWidgetCopy = useCallback(async () => {
     await AlertService.handleAlert(true, {
@@ -56,6 +30,42 @@ export const ScreenButtons = memo((props: {
       id_sample: id_sample,
     }, () => props.onCreateWidget());
   }, [props.onCreateWidget, id_project, id_sample]);
+
+
+
+  const onCreateWidget_Sample = useCallback(async () => {
+
+    // Project status update ============================================
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status === 'uploaded') {
+      projectSettings.status = 'modified';
+      await ProjectService.updateProject(projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Sample status update ===================
+    if (sampleSettings.status === 'uploaded') {
+      sampleSettings.status = 'modified';
+      await ProjectService.updateSample(id_project, sampleSettings,
+        () => CacheService.updateCache_SampleSettings(sampleSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Widget creation ==============================
+    const newWidget = ProjectService.getWidgetData();
+    await ProjectService.createWidget_Sample(id_project,id_sample, newWidget,
+      () => CacheService.addToAllWidgets_Sample(newWidget),
+      (errorMessage) => alert(errorMessage)
+    );
+
+    props.onCreateWidget();
+
+  }, [props.onCreateWidget, id_project, id_sample]);
+
+
 
   return (
     <Layout.ScreenButtons

@@ -25,40 +25,46 @@ export const TemplateWidgetCopy = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
+
+
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
 
     const { id_project, id_sample } = props;
 
-    // Project status update =================================================
-    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    // Project status update ============================================
+    const projectSettings = CacheService.getProjectFromCache(id_project);
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
+      await ProjectService.updateProject(projectSettings,
         () => CacheService.updateCache_ProjectSettings(projectSettings),
         (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Sample status update ==========================================
+    const sampleSettings = CacheService.getSampleFromCache(id_sample);
+    if (sampleSettings.status === 'uploaded') {
+      sampleSettings.status = 'modified';
+      await ProjectService.updateSample(id_project, sampleSettings,
+        () => CacheService.updateCache_SampleSettings(sampleSettings),
+        (erroMessage) => alert(erroMessage),
       );
     }
 
     // Widget Copy ========================================
     const newWidgetData = UtilService.deepCopy(widgetData);
     newWidgetData.id_widget = UtilService.generateUuidV4();
-    await ProjectService.createWidget_Sample(
-      id_project,
-      id_sample,
-      newWidgetData,
-      async () => {
-        CacheService.addToAllWidgets_Sample(newWidgetData);
-        await AlertService.runAcceptCallback();
-        props.closeModal();
-      },
-      (errorMesage) => {
-        alert(errorMesage);
-        HapticsService.vibrate('warning');
-      }
+    await ProjectService.createWidget_Sample(id_project, id_sample, newWidgetData,
+      () => CacheService.addToAllWidgets_Sample(newWidgetData),
+      (errorMesage) => alert(errorMesage),
     );
 
-  }, [props, R]);
+    await AlertService.runAcceptCallback();
+    props.closeModal();
+
+  }, [props]);
+
+
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
     if (

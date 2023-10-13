@@ -11,17 +11,40 @@ export function F_TemplateWidgets() {
   const id_project = useLocalSearchParams().id_project as string;
   const [_, refresh] = useState<boolean>(false);
 
+
+
   const onDeleteWidget_Template = useCallback(async (id_widget: string) => {
-    await ProjectService.deleteWidget_Template(
-      id_project,
-      id_widget,
-      async () => {
-        await CacheService.loadAllWidgets_Template(id_project);
-        refresh(prev => !prev);
-      },
+
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status !== 'new') {
+
+      // Template widget deletion entry =============
+      projectSettings.deleted_TemplateWidgets ??= [];
+      projectSettings.deleted_TemplateWidgets.push(id_widget);
+
+      // Project status update ===================
+      if (projectSettings.status === 'uploaded') {
+        projectSettings.status = 'modified';
+      }
+
+      // Project settings update ========================
+      await ProjectService.updateProject(projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Template widget deletion =====================================
+    await ProjectService.deleteWidget_Template(id_project, id_widget,
+      () => CacheService.removeFromAllWidgets_Template(id_widget),
       (errorMessage) => alert(errorMessage)
     );
+
+    refresh(prev => !prev);
+
   }, [id_project]);
+
+
 
   const AllWidgets = CacheService.allWidgets_Template.map(widgetData => (
     <Widget

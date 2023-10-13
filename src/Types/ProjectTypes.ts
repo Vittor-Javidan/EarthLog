@@ -36,6 +36,9 @@ export type ProjectSettings = {
   rules: ProjectRules
   sampleRules?: SampleRules
   uploads?: UploadEntry[]
+  deleted_ProjectWidgets?: IDsArray
+  deleted_TemplateWidgets?: IDsArray
+  deleted_Samples?: IDsArray
 }
 
 export type SampleSettings = {
@@ -49,6 +52,7 @@ export type SampleSettings = {
     showCreateWidgetButton?: boolean
     showCopyWidgetFromTemplateButton?: boolean
   }
+  deleted_Widgets?: IDsArray
 }
 
 // =================================================================================================

@@ -20,14 +20,15 @@ export const ScreenButtons = memo((props: {
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
+
+
   const createWidget_Project = useCallback(async () => {
 
-    // Project status update ===========================================
+    // Project status update ============================================
     const projectSettings = CacheService.getProjectFromCache(id_project);
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
+      await ProjectService.updateProject(projectSettings,
         () => CacheService.updateCache_ProjectSettings(projectSettings),
         (erroMessage) => alert(erroMessage)
       );
@@ -35,31 +36,33 @@ export const ScreenButtons = memo((props: {
 
     // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget_Project(
-      id_project,
-      newWidget,
-      () => {
-        CacheService.addToAllWidgets_Project(newWidget);
-        props.onWidgetCreation();
-      },
+    await ProjectService.createWidget_Project(id_project, newWidget,
+      () => CacheService.addToAllWidgets_Project(newWidget),
       (errorMessage) => alert(errorMessage)
     );
+
+    props.onWidgetCreation();
 
   }, [props.onWidgetCreation, id_project]);
 
+
+
   const deleteProject = useCallback(async () => {
-    const isLatOpenProject = CacheService.lastOpenProject.id_project === id_project;
-    await ProjectService.deleteProject(
-      id_project,
-      async () => {
-        if (isLatOpenProject) {
-          await CacheService.deleteLastOpenProject();
-        }
-        navigate('HOME SCOPE');
-      },
+
+    // Delete last open project ===============
+    await CacheService.deleteLastOpenProject();
+
+    // Project Deletion =========================
+    await ProjectService.deleteProject(id_project,
+      () => CacheService.removeFromProjects(id_project),
       (errorMessage) => alert(errorMessage)
     );
+
+    navigate('HOME SCOPE');
+
   }, [id_project]);
+
+
 
   return (
     <Layout.ScreenButtons

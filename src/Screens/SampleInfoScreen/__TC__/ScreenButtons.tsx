@@ -19,17 +19,40 @@ export const ScreenButtons = memo(() => {
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-  const deleteSample = useCallback(async () => {
-    await ProjectService.deleteSample(
-      id_project,
-      id_sample,
-      async () => {
-        await CacheService.loadAllSamplesSettings(id_project);
-        navigate('PROJECT SCOPE', id_project);
-      },
+
+
+  const onDelete_Sample = useCallback(async () => {
+
+    const projectSettings = CacheService.getProjectFromCache(id_project);
+    if (projectSettings.status !== 'new') {
+
+      // Project widget deletion entry ======
+      projectSettings.deleted_Samples ??= [];
+      projectSettings.deleted_Samples.push(id_sample);
+
+      // Project status update ===================
+      if (projectSettings.status === 'uploaded') {
+        projectSettings.status = 'modified';
+      }
+
+      // Project settings update ========================
+      await ProjectService.updateProject(projectSettings,
+        () => CacheService.updateCache_ProjectSettings(projectSettings),
+        (erroMessage) => alert(erroMessage)
+      );
+    }
+
+    // Sample deletion =====================================
+    await ProjectService.deleteSample(id_project, id_sample,
+      () => CacheService.removeFromSamples(id_sample),
       (errorMessage) => alert(errorMessage)
     );
+
+    navigate('PROJECT SCOPE', id_project);
+
   }, [id_project, id_sample]);
+
+
 
   return (
     <Layout.ScreenButtons
@@ -52,7 +75,7 @@ export const ScreenButtons = memo(() => {
       showSwipe={show_DeleteSwap}
       SwipeButton={
         <Button.ConfirmSwipe
-          onSwipe={async () => await deleteSample()}
+          onSwipe={async () => await onDelete_Sample()}
           onCancel={() => setShow_DeleteSwap(false)}
           buttonRadius={30}
           theme={{

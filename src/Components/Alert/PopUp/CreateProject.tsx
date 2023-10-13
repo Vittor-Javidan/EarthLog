@@ -7,7 +7,6 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import HapticsService from '@Services/HapticsService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -22,24 +21,28 @@ export const CreateProject = memo((props: {
   const R      = useMemo(() => translations.component.alert.createProject[config.language], []);
   const [name, setName] = useState<string>('');
 
+
+
   const onAccept = useCallback(async () => {
-    if (name !== '') {
-      const newProject = ProjectService.getDefaultProjectTemplate();
-      newProject.projectSettings.name = name;
-      await ProjectService.createProject(
-        newProject,
-        async () => {
-          CacheService.addToAllProjects(newProject.projectSettings);
-          await AlertService.runAcceptCallback();
-          props.closeModal();
-        },
-        async (errorMesage) => {
-          alert(errorMesage);
-          HapticsService.vibrate('warning');
-        }
-      );
+
+    if (name === '') {
+      return;
     }
+
+    // Project creation ==========================================
+    const newProject = ProjectService.getDefaultProjectTemplate();
+    newProject.projectSettings.name = name;
+    await ProjectService.createProject(newProject,
+      () => CacheService.addToAllProjects(newProject.projectSettings),
+      (errorMesage) => alert(errorMesage),
+    );
+
+    await AlertService.runAcceptCallback();
+    props.closeModal();
+
   }, [props.closeModal, name]);
+
+
 
   return (
     <LC.PopUp>

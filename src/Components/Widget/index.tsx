@@ -6,11 +6,11 @@ import { GPS_DTO, ID, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetT
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
-import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
+import ProjectService from '@Services/ProjectService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -26,8 +26,8 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.widget.Root[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
   const [_, startTransitions] = useTransition();
 
   const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
@@ -48,7 +48,7 @@ export const Widget = memo((props: {
     disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
-  useAutoSave(() => {
+  useAutoSave_widget(() => {
     setSaved(true);
   }, [widgetData, props.widgetScope, saved]);
 
@@ -269,7 +269,12 @@ export const Widget = memo((props: {
   );
 });
 
-function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
+/**
+ * widget data processing before saving.
+ * Each time a new data comes before a 200ms interval, it discards the old data to save the updated
+ * version.
+ */
+function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
 
   const [widgetData, widgetScope, saved] = deps;
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(widgetScope.id_project), []);
@@ -283,44 +288,64 @@ function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean
     // Project status update ===================
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
+      await ProjectService.updateProject(projectSettings,
         () => CacheService.updateCache_ProjectSettings(projectSettings),
         (erroMessage) => alert(erroMessage)
       );
     }
 
-    // Widget update ==========
+    // Widget status update ===============
+    if (widgetData.status === 'uploaded') {
+      widgetData.status = 'modified';
+    }
+
     switch (widgetScope.type) {
 
       case 'project': {
-        await ProjectService.updateWidget_Project(
-          widgetScope.id_project,
-          widgetData,
-          () => onSave(),
+
+        // Project widget update =================
+        await ProjectService.updateWidget_Project(widgetScope.id_project, widgetData,
+          () => CacheService.updateCache_ProjectWidget(widgetData),
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+        break;
       }
 
       case 'template': {
-        await ProjectService.updateWidget_Template(
-          widgetScope.id_project,
-          widgetData,
-          () => onSave(),
+
+        // Template widget update =================
+        await ProjectService.updateWidget_Template(widgetScope.id_project, widgetData,
+          () => CacheService.updateCache_TemplateWidget(widgetData),
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+        break;
       }
 
       case 'sample': {
-        await ProjectService.updateWidget_Sample(
-          widgetScope.id_project,
-          widgetScope.id_sample,
-          widgetData,
-          () => onSave(),
+
+        const { id_project, id_sample } = widgetScope;
+        const sampleSetting = CacheService.getSampleFromCache(id_sample);
+
+        // Sample status update ==================
+        if (sampleSetting.status === 'uploaded') {
+          sampleSetting.status = 'modified';
+          await ProjectService.updateSample(id_project, sampleSetting,
+            () => CacheService.updateCache_SampleSettings(sampleSetting),
+            (erroMessage) => alert(erroMessage)
+          );
+        }
+
+        // Sample widget update =================
+        await ProjectService.updateWidget_Sample(id_project, id_sample, widgetData,
+          () => CacheService.updateCache_SampleWidget(widgetData),
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+
+        break;
       }
     }
+
+    onSave();
 
   }, [widgetData, widgetScope], 200);
 }

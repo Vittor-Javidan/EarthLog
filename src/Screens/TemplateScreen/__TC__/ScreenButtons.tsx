@@ -18,14 +18,15 @@ export const ScreenButtons = memo((props: {
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
+
+
   const onCreateWidget = useCallback(async () => {
 
     // Project status update ============================================
     const projectSettings = CacheService.getProjectFromCache(id_project);
     if (projectSettings.status === 'uploaded') {
       projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
+      await ProjectService.updateProject(projectSettings,
         () => CacheService.updateCache_ProjectSettings(projectSettings),
         (erroMessage) => alert(erroMessage)
       );
@@ -33,17 +34,16 @@ export const ScreenButtons = memo((props: {
 
     // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget_Template(
-      id_project,
-      newWidget,
-      () => {
-        CacheService.addToAllWidgets_Template(newWidget);
-        props.onWidgetCreation();
-      },
+    await ProjectService.createWidget_Template(id_project, newWidget,
+      () => CacheService.addToAllWidgets_Template(newWidget),
       (errorMessage) => alert(errorMessage)
     );
 
+    props.onWidgetCreation();
+
   }, [props.onWidgetCreation, id_project]);
+
+
 
   return (
     <Layout.ScreenButtons
