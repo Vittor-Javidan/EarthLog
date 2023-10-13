@@ -95,6 +95,7 @@ async function whipeAllData() {
       await CacheService.deleteLastOpenProject();
       CacheService.lastOpenProject = {
         id_project: '',
+        status: 'new',
         name: '',
         rules: {},
         sampleAlias: {

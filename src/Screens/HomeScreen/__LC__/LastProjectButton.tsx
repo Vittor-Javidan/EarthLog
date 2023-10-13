@@ -8,8 +8,8 @@ import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
 
-import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
+import { UploadStatus } from './UploadStatus';
 
 export const LastProjectButton = memo(() => {
 
@@ -21,15 +21,7 @@ export const LastProjectButton = memo(() => {
   const [pressed, setPressed] = useState<boolean>(false);
 
   const lastProjectOpenExist = projectSettings.id_project !== '';
-  const lastUploadDate = projectSettings.uploads?.[projectSettings.uploads.length - 1].date ?? undefined;
-
-  const iconColor = (
-    projectSettings.status === 'uploaded' || projectSettings.status === 'first upload'
-  ) ? theme.confirm : theme.warning;
-
-  const iconName = (
-    projectSettings.status === 'uploaded' || projectSettings.status === 'first upload'
-  ) ? 'cloud' : 'cloud-upload';
+  const showStatus = projectSettings.status !== 'new';
 
   const onPressIn = useCallback(() => {
     setPressed(true);
@@ -44,7 +36,7 @@ export const LastProjectButton = memo(() => {
   return lastProjectOpenExist ? (
     <View
       style={{
-        minHeight: 45,
+        minHeight: 55,
         width: '100%',
       }}
     >
@@ -57,6 +49,7 @@ export const LastProjectButton = memo(() => {
           justifyContent: 'space-between',
           borderRadius: 10,
           backgroundColor: pressed ? theme.background_active : theme.background_Button,
+          paddingVertical: 5,
           paddingHorizontal: 10,
           elevation: 3,
         }}
@@ -73,37 +66,16 @@ export const LastProjectButton = memo(() => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: showStatus ? 'space-between' : 'flex-end',
             alignItems: 'center',
           }}
         >
-          {projectSettings.status !== undefined && lastUploadDate && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 5,
-              }}
-            >
-              <View
-                style={{ height: 10 }}
-              >
-                <Icon
-                  iconName={iconName}
-                  color={iconColor}
-                />
-              </View>
-              <Text p
-                style={{
-                  color: pressed ? theme.font_active : theme.font_Button,
-                  fontSize: 10,
-                  fontStyle: 'italic',
-                }}
-              >
-                {projectSettings.status === 'modified' ? R['New data'] : lastUploadDate}
-              </Text>
-            </View>
-          )}
+          <UploadStatus
+            showStatus={showStatus}
+            uploadStatus={projectSettings.status}
+            uploads={projectSettings.uploads}
+            pressed={pressed}
+          />
           <Text
             style={{
               color: pressed ? theme.font_active : theme.font_Button,

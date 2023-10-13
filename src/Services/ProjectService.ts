@@ -13,6 +13,7 @@ export default class ProjectService {
     return {
       projectSettings: {
         id_project: UtilService.generateUuidV4(),
+        status: 'new',
         name: '',
         gps: {},
         sampleAlias: {
@@ -45,6 +46,7 @@ export default class ProjectService {
   }): SampleSettings {
     return {
       id_sample: UtilService.generateUuidV4(),
+      status: 'new',
       name: options.name ?? '',
       gps: options.gps,
       rules: options.rules ?? {
@@ -59,6 +61,7 @@ export default class ProjectService {
   static getWidgetData() : WidgetData {
     return {
       id_widget: UtilService.generateUuidV4(),
+      status: 'new',
       widgetName: '',
       inputs: [],
       rules: {

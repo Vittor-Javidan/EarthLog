@@ -30,11 +30,22 @@ export const UploadProjects = memo((props: {
   const showErrorDisplay       = error !== null && loading === 'Loaded';
   const showLoadingDisplay     = loading === 'Loading';
 
+
+
+  const onCancel = useCallback(() => {
+    props.closeModal();
+    controller.abort();
+  }, [props.closeModal]);
+
+
+
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
     setLoading('Loading');
     const project = await ProjectService.buildProjectFromDatabase(props.id_project);
     await uploadProject(credential, project);
   }, [props.id_project]);
+
+
 
   const uploadProject = useCallback(async (credential: CredentialDTO, projectDTO: ProjectDTO) => {
     const processedProject = dataProcessingBeforeUpload(credential, projectDTO);
@@ -51,6 +62,8 @@ export const UploadProjects = memo((props: {
     );
   }, []);
 
+
+
   const dataProcessingBeforeUpload = useCallback((credential: CredentialDTO, projectDTO: ProjectDTO) => {
 
     // Upload Date/Time entry ================
@@ -61,18 +74,15 @@ export const UploadProjects = memo((props: {
       url:     credential.rootURL,
     });
 
-    // First upload status ===================
-    if (!projectDTO.projectSettings.status) {
-      projectDTO.projectSettings.status = 'first upload';
-    }
-
     return projectDTO;
+
   }, []);
+
+
 
   const dataProcessingAfterUpload = useCallback(async (projectDTO: ProjectDTO) => {
 
-    const { projectSettings } = projectDTO;
-    const { rules, id_project } = projectSettings;
+    const { rules, id_project } = projectDTO.projectSettings;
 
     // Project deletion rule ==============
     if (rules.deleteAfterUpload === true) {
@@ -91,22 +101,64 @@ export const UploadProjects = memo((props: {
       return;
     }
 
-    // Project status update ==========
-    projectSettings.status = 'uploaded';
-    await ProjectService.updateProject(projectSettings,
-      () => CacheService.updateCache_ProjectSettings(projectSettings),
-      (errorMessage) => {
-        setError(errorMessage);
-        setLoading('Loaded');
-      },
+    // Project status update ======================
+    projectDTO.projectSettings.status = 'uploaded';
+    await ProjectService.updateProject(projectDTO.projectSettings,
+      () => CacheService.updateCache_ProjectSettings(projectDTO.projectSettings),
+      (errorMessage) => setError(errorMessage),
     );
+
+    // Widgets_project updated status ==========================
+    for (let i = 0; i < projectDTO.projectWidgets.length; i++) {
+      if (projectDTO.projectWidgets[i].status !== 'uploaded') {
+        projectDTO.projectWidgets[i].status = 'uploaded';
+        await ProjectService.updateWidget_Project(id_project, projectDTO.projectWidgets[i],
+          () => CacheService.updateCache_ProjectWidget(projectDTO.projectWidgets[i]),
+          (errorMessage) => setError(errorMessage),
+        );
+      }
+    }
+
+    // Widgets_template updated status ===================
+    for (let i = 0; i < projectDTO.template.length; i++) {
+      if (projectDTO.template[i].status !== 'uploaded') {
+        projectDTO.template[i].status = 'uploaded';
+        await ProjectService.updateWidget_Template(id_project, projectDTO.template[i],
+          () => CacheService.updateCache_TemplateWidget(projectDTO.template[i]),
+          (errorMessage) => setError(errorMessage)
+        );
+      }
+    }
+
+    // Samples update status ============================
+    for (let i = 0; i < projectDTO.samples.length; i++) {
+      if (projectDTO.samples[i].sampleSettings.status !== 'uploaded') {
+        projectDTO.samples[i].sampleSettings.status = 'uploaded';
+        await ProjectService.updateSample(id_project, projectDTO.samples[i].sampleSettings,
+          () => CacheService.updateCache_SampleSettings(projectDTO.samples[i].sampleSettings),
+          (errorMessage) => setError(errorMessage)
+        );
+
+        // Widgets_sample update status ======================================
+        for (let j = 0; j < projectDTO.samples[i].sampleWidgets.length; j++) {
+          if (projectDTO.samples[i].sampleWidgets[j].status !== 'uploaded') {
+            projectDTO.samples[i].sampleWidgets[j].status = 'uploaded';
+            const id_sample = projectDTO.samples[i].sampleSettings.id_sample;
+            const widgetData = projectDTO.samples[i].sampleWidgets[j];
+            await ProjectService.updateWidget_Sample(id_project, id_sample, widgetData,
+              () => {/* No need to update cache on this scope*/},
+              (errorMessage) => setError(errorMessage)
+            );
+          }
+        }
+      }
+    }
+
+    setLoading('Loaded');
 
   }, []);
 
-  const onCancel = useCallback(() => {
-    props.closeModal();
-    controller.abort();
-  }, [props.closeModal]);
+
 
   return (
     <LC.PopUp>

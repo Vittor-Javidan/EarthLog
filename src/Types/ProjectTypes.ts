@@ -5,6 +5,13 @@
 export type IDsArray = ID[]
 export type ID = string
 
+export type Status = 'uploaded' | 'modified' | 'new'
+export type UploadEntry = {
+  dateUTM: string
+  date: string
+  url: string
+}
+
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
@@ -19,26 +26,21 @@ export type SampleDTO = {
 
 export type ProjectSettings = {
   id_project: ID
+  status: Status
   name: string
   sampleAlias: {
     singular: string
     plural: string
   }
   gps?: GPS_DTO
-  status?: ProjectStatus
   rules: ProjectRules
   sampleRules?: SampleRules
-  uploads?: {
-    dateUTM: string
-    date: string
-    url: string
-  }[]
+  uploads?: UploadEntry[]
 }
-
-export type ProjectStatus = 'uploaded' | 'modified' | 'first upload'
 
 export type SampleSettings = {
   id_sample: ID
+  status: Status
   name: string
   gps?: GPS_DTO
   rules: {
@@ -55,6 +57,7 @@ export type SampleSettings = {
 
 export type WidgetData = {
   id_widget: ID
+  status: Status
   widgetName: string
   inputs: InputData[]
   rules: WidgetRules

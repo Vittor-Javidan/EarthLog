@@ -11,6 +11,7 @@ export default class CacheService {
   static allCredentials: CredentialDTO[] = [];
   static lastOpenProject: ProjectSettings = {
     id_project: '',
+    status: 'new',
     name: '',
     rules: {},
     sampleAlias: {
@@ -68,6 +69,7 @@ export default class CacheService {
     await DatabaseService.deleteLastOpenProject();
     this.lastOpenProject = {
       id_project: '',
+      status: 'new',
       name: '',
       rules: {},
       sampleAlias: {
