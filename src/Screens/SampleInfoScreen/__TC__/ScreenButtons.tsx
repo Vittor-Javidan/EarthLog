@@ -9,6 +9,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
+import SyncService from '@Services/SyncService';
 
 export const ScreenButtons = memo(() => {
 
@@ -19,40 +20,16 @@ export const ScreenButtons = memo(() => {
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-
-
   const onDelete_Sample = useCallback(async () => {
-
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status !== 'new') {
-
-      // Project widget deletion entry ======
-      projectSettings.deleted_Samples ??= [];
-      projectSettings.deleted_Samples.push(id_sample);
-
-      // Project status update ===================
-      if (projectSettings.status === 'uploaded') {
-        projectSettings.status = 'modified';
-      }
-
-      // Project settings update ========================
-      await ProjectService.updateProject(projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Sample deletion =====================================
     await ProjectService.deleteSample(id_project, id_sample,
-      () => CacheService.removeFromSamples(id_sample),
+      () => {
+        CacheService.removeFromSamples(id_sample);
+        SyncService.syncData_Samples(id_project, id_sample, 'deletion');
+        navigate('PROJECT SCOPE', id_project);
+      },
       (errorMessage) => alert(errorMessage)
     );
-
-    navigate('PROJECT SCOPE', id_project);
-
   }, [id_project, id_sample]);
-
-
 
   return (
     <Layout.ScreenButtons

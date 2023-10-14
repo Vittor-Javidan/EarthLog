@@ -14,6 +14,7 @@ import HapticsService from '@Services/HapticsService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { HomeScreen } from '@Screens/HomeScreen';
+import SyncService from '@Services/SyncService';
 
 export default function HomeScope() {
 
@@ -89,5 +90,6 @@ async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   await CacheService.loadLastOpenProject();
   await CacheService.loadAllCredentials();
+  await SyncService.loadAllSyncData();
   whenLoaded();
 }

@@ -18,6 +18,7 @@ import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
+import SyncService from '@Services/SyncService';
 
 export const Widget = memo((props: {
   widgetData: WidgetData
@@ -277,7 +278,6 @@ export const Widget = memo((props: {
 function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
 
   const [widgetData, widgetScope, saved] = deps;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(widgetScope.id_project), []);
 
   useTimeout(async () => {
 
@@ -285,67 +285,59 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
       return;
     }
 
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget status update ===============
-    if (widgetData.status === 'uploaded') {
-      widgetData.status = 'modified';
-    }
-
     switch (widgetScope.type) {
 
       case 'project': {
 
-        // Project widget update =================
-        await ProjectService.updateWidget_Project(widgetScope.id_project, widgetData,
-          () => CacheService.updateCache_ProjectWidget(widgetData),
+        const { id_project } = widgetScope;
+        const { id_widget } = widgetData;
+
+        await ProjectService.updateWidget_Project(id_project, widgetData,
+          async () => {
+            CacheService.updateCache_ProjectWidget(widgetData);
+            await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
         );
+
         break;
       }
 
       case 'template': {
 
-        // Template widget update =================
+        const { id_project } = widgetScope;
+        const { id_widget } = widgetData;
+
         await ProjectService.updateWidget_Template(widgetScope.id_project, widgetData,
-          () => CacheService.updateCache_TemplateWidget(widgetData),
+          async () => {
+            CacheService.updateCache_TemplateWidget(widgetData);
+            await SyncService.syncData_TemplateWidgets(id_project, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
         );
+
         break;
       }
 
       case 'sample': {
 
         const { id_project, id_sample } = widgetScope;
-        const sampleSetting = CacheService.getSampleFromCache(id_sample);
+        const { id_widget } = widgetData;
 
-        // Sample status update ==================
-        if (sampleSetting.status === 'uploaded') {
-          sampleSetting.status = 'modified';
-          await ProjectService.updateSample(id_project, sampleSetting,
-            () => CacheService.updateCache_SampleSettings(sampleSetting),
-            (erroMessage) => alert(erroMessage)
-          );
-        }
-
-        // Sample widget update =================
         await ProjectService.updateWidget_Sample(id_project, id_sample, widgetData,
-          () => CacheService.updateCache_SampleWidget(widgetData),
+          async () => {
+            CacheService.updateCache_SampleWidget(widgetData);
+            await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
         );
 
         break;
       }
     }
-
-    onSave();
 
   }, [widgetData, widgetScope], 200);
 }

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO, Loading } from '@Types/AppTypes';
-import { ProjectDTO } from '@Types/ProjectTypes';
+import { DownloadedProjectDTO } from '@Types/ProjectTypes';
 import AppAPI from '@appAPI/index';
 
 import ProjectService from '@Services/ProjectService';
@@ -14,13 +14,14 @@ import { ErrorDisplay } from './ErrorDisplay';
 import { ProjectsDisplay } from './ProjectsDisplay';
 import { LoadingDisplay } from './LoadingDisplay';
 import { FooterButtons } from './FooterButtons';
+import SyncService from '@Services/SyncService';
 
 export const DownloadProjects = memo((props: {
   closeModal: () => void
 }) => {
 
   const controller = useMemo(() => new AbortController(), []);
-  const [allProjects     , setAllProjects        ] = useState<ProjectDTO[] | null>(null);
+  const [allProjects     , setAllProjects        ] = useState<DownloadedProjectDTO[] | null>(null);
   const [selectedProjects, setAllSelectedProjects] = useState<Record<string, boolean>>({});
   const [hideAcceptButton, setHideConfirmButton  ] = useState<boolean>(false);
   const [error           , setError              ] = useState<string | null>(null);
@@ -49,14 +50,10 @@ export const DownloadProjects = memo((props: {
     !hideAcceptButton
   ;
 
-
-
   const onCancel = useCallback(() => {
     props.closeModal();
     controller.abort();
   }, [props.closeModal]);
-
-
 
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
     setLoading('Loading');
@@ -73,8 +70,6 @@ export const DownloadProjects = memo((props: {
     );
   }, []);
 
-
-
   const onSelectProject = useCallback((project_id: string, selected: boolean) => {
     setAllSelectedProjects(prev => {
       const newRecord = { ...prev };
@@ -82,8 +77,6 @@ export const DownloadProjects = memo((props: {
       return newRecord;
     });
   }, []);
-
-
 
   const onConfirm = useCallback(async () => {
 
@@ -100,7 +93,10 @@ export const DownloadProjects = memo((props: {
     for (let i = 0; i < allSelectedProjects.length; i++) {
       const processedProject = dataProcessingAfterConfirm(allSelectedProjects[i]);
       await ProjectService.createProject(processedProject,
-        () => CacheService.addToAllProjects(processedProject.projectSettings),
+        () => {
+          CacheService.addToAllProjects(processedProject.projectSettings);
+          SyncService.addToSyncData(processedProject.syncData);
+        },
         (errorMessage) => {
           setError(errorMessage);
           setLoading('Loaded');
@@ -113,49 +109,23 @@ export const DownloadProjects = memo((props: {
 
   }, [props.closeModal, allProjects, selectedProjects]);
 
-
-
-  const dataProcessingAfterConfirm = useCallback((projectDTO: ProjectDTO) => {
+  const dataProcessingAfterConfirm = useCallback((projectDTO: DownloadedProjectDTO) => {
 
     const { rules } = projectDTO.projectSettings;
 
-    // Project Settings Treatment =====
     if (rules.allowMultipleDownloads) {
       ProjectService.changeAllIDs(projectDTO);
       projectDTO.projectSettings.status = 'new';
       delete rules.allowMultipleDownloads;
     }
 
-    // Set project status =================================
     if (projectDTO.projectSettings.status !== 'uploaded') {
       projectDTO.projectSettings.status = 'new';
     }
 
-    // Widgets_project status same as project ==================
-    for (let i = 0; i < projectDTO.projectWidgets.length; i++) {
-      projectDTO.projectWidgets[i].status = projectDTO.projectSettings.status;
-    }
-
-    // Widgets_template status same as project ===========
-    for (let i = 0; i < projectDTO.template.length; i++) {
-      projectDTO.template[i].status = projectDTO.projectSettings.status;
-    }
-
-    // Samples status same as project ===================
-    for (let i = 0; i < projectDTO.samples.length; i++) {
-      projectDTO.samples[i].sampleSettings.status = projectDTO.projectSettings.status;
-
-      //Widgets_sample status me as project ================================
-      for (let j = 0; j < projectDTO.samples[i].sampleWidgets.length; j++) {
-        projectDTO.samples[i].sampleWidgets[j].status = projectDTO.projectSettings.status;
-      }
-    }
-
-    return projectDTO;
+    return SyncService.createSyncDataAfterDownload(projectDTO);
 
   }, []);
-
-
 
   return (
     <LC.PopUp>

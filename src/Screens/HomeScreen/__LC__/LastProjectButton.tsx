@@ -7,6 +7,7 @@ import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
+import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { UploadStatus } from './UploadStatus';
@@ -17,11 +18,12 @@ export const LastProjectButton = memo(() => {
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R               = useMemo(() => translations.screen.homeScreen[config.language], []);
   const projectSettings = useMemo(() => CacheService.lastOpenProject, []);
+  const projectSyncData = useMemo(() => SyncService.getSyncData(projectSettings.id_project), []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 
   const lastProjectOpenExist = projectSettings.id_project !== '';
-  const showStatus = projectSettings.status !== 'new';
+  const showStatus = projectSyncData.project !== 'new';
 
   const onPressIn = useCallback(() => {
     setPressed(true);
@@ -72,7 +74,7 @@ export const LastProjectButton = memo(() => {
         >
           <UploadStatus
             showStatus={showStatus}
-            uploadStatus={projectSettings.status}
+            uploadStatus={projectSyncData.project}
             uploads={projectSettings.uploads}
             pressed={pressed}
           />

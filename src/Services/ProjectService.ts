@@ -1,6 +1,6 @@
 import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO, DownloadedProjectDTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 
 export default class ProjectService {
@@ -9,12 +9,15 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
-  static getDefaultProjectTemplate(): ProjectDTO {
+  static getDefaultProjectTemplate(options: {
+    name?: string
+  }): ProjectDTO {
+    const id_project = UtilService.generateUuidV4();
     return {
       projectSettings: {
-        id_project: UtilService.generateUuidV4(),
+        id_project: id_project,
         status: 'new',
-        name: '',
+        name: options.name ?? '',
         gps: {},
         sampleAlias: {
           singular: '',
@@ -33,6 +36,14 @@ export default class ProjectService {
       projectWidgets: [],
       template: [],
       samples: [],
+      syncData: {
+        id_project: id_project,
+        project: 'new',
+        widgets_Project: {},
+        widgets_Template: {},
+        samples: {},
+        widgets_Samples: {},
+      },
     };
   }
 
@@ -46,7 +57,6 @@ export default class ProjectService {
   }): SampleSettings {
     return {
       id_sample: UtilService.generateUuidV4(),
-      status: 'new',
       name: options.name ?? '',
       gps: options.gps,
       rules: options.rules ?? {
@@ -61,7 +71,6 @@ export default class ProjectService {
   static getWidgetData() : WidgetData {
     return {
       id_widget: UtilService.generateUuidV4(),
-      status: 'new',
       widgetName: '',
       inputs: [],
       rules: {
@@ -122,7 +131,7 @@ export default class ProjectService {
    * Changes the ID of all elements inside a projectDTO.
    * All IDs are changed by reference. No need to return a value;
    */
-  static changeAllIDs(projectDTO: ProjectDTO): void {
+  static changeAllIDs(projectDTO: DownloadedProjectDTO): void {
 
     projectDTO.projectSettings.id_project = UtilService.generateUuidV4();
     changeAllWidgetsIds(projectDTO.projectWidgets);
@@ -168,24 +177,28 @@ export default class ProjectService {
   /**
    * Use this to retrive a ProjectDTO from database
    */
-  static async buildProjectFromDatabase(project_id: string): Promise<ProjectDTO> {
+  static async buildProjectFromDatabase(id_project: string): Promise<ProjectDTO> {
 
     // INITAL PROJECT STRUCTURE
     const projectDTO: ProjectDTO = {
-      projectSettings: await DatabaseService.readProject(project_id),
-      projectWidgets:  await DatabaseService.getAllWidgets_Project(project_id),
-      template:        await DatabaseService.getAllWidgets_Template(project_id),
+      projectSettings: await DatabaseService.readProject(id_project),
+      projectWidgets:  await DatabaseService.getAllWidgets_Project(id_project),
+      template:        await DatabaseService.getAllWidgets_Template(id_project),
       samples:         [],
+      syncData:        await DatabaseService.readSyncFile(id_project),
     };
 
     // GET ALL SAMPLES
-    const allSampleSettings = await DatabaseService.getAllSamples(project_id);
+    const allSampleSettings = await DatabaseService.getAllSamples(id_project);
     for (let i = 0; i < allSampleSettings.length; i++) {
       projectDTO.samples.push({
         sampleSettings: allSampleSettings[i],
-        sampleWidgets: await DatabaseService.getAllWidgets_Sample(project_id, allSampleSettings[i].id_sample),
+        sampleWidgets: await DatabaseService.getAllWidgets_Sample(id_project, allSampleSettings[i].id_sample),
       });
     }
+
+    // SYNC PROJECT SETTINGS STATUS WITH PROJECT SYNC FILE
+    projectDTO.projectSettings.status = projectDTO.syncData.project;
 
     return projectDTO;
   }
@@ -225,20 +238,20 @@ export default class ProjectService {
       // SAMPLES
       for (let i = 0; i < samples.length; i++) {
 
-        const {
-          sampleSettings,
-          sampleWidgets,
-        } = samples[i];
+        const { sampleSettings, sampleWidgets } = samples[i];
+        const { id_sample } = sampleSettings;
 
         // SAMPLE FOLDER
         await DatabaseService.createSample(id_project, sampleSettings);
 
         // SAMPLE WIDGETS
         for (let j = 0; j < sampleWidgets.length; j++) {
-          const { id_sample } = sampleSettings;
           await DatabaseService.createWidget_Sample(id_project, id_sample, sampleWidgets[j]);
         }
       }
+
+      // PROJECT SYNC FILE
+      await DatabaseService.createSyncFile(id_project, projectDTO.syncData);
 
       onSuccess();
 

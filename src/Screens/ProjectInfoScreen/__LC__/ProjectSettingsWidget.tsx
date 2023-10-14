@@ -9,6 +9,7 @@ import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
@@ -201,64 +202,14 @@ function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean
       return;
     }
 
-    if (projectSettings.status !== 'new') {
-
-      const cachedProjectSettings = CacheService.getProjectFromCache(projectSettings.id_project);
-
-      /** ==========================================================
-       * Fix project status desync caused by
-       * elements saving/creation/deletion
-       */
-      if (projectSettings.status !== cachedProjectSettings.status) {
-        projectSettings.status = cachedProjectSettings.status;
-      }
-
-      /**============================================================
-       * Fix project widgets deletion entry desync
-       * caused by sample widgets deletion
-       */
-      if (
-        cachedProjectSettings.deleted_ProjectWidgets !== undefined &&
-        cachedProjectSettings.deleted_ProjectWidgets.length !== projectSettings.deleted_ProjectWidgets?.length
-      ) {
-        projectSettings.deleted_ProjectWidgets = cachedProjectSettings.deleted_ProjectWidgets;
-      }
-
-      /**=============================================================
-       * Fix template widgets deletion entry desync
-       * caused by sample widgets deletion
-       */
-      if (
-        cachedProjectSettings.deleted_TemplateWidgets !== undefined &&
-        cachedProjectSettings.deleted_TemplateWidgets.length !== projectSettings.deleted_TemplateWidgets?.length
-      ) {
-        projectSettings.deleted_TemplateWidgets = cachedProjectSettings.deleted_TemplateWidgets;
-      }
-
-      /**=====================================================
-       * Fix samples deletion entry desync
-       * caused by sample widgets deletion
-       */
-      if (
-        cachedProjectSettings.deleted_Samples !== undefined &&
-        cachedProjectSettings.deleted_Samples.length !== projectSettings.deleted_Samples?.length
-      ) {
-        projectSettings.deleted_Samples = cachedProjectSettings.deleted_Samples;
-      }
-
-      // Project status update ===================
-      if (projectSettings.status === 'uploaded') {
-        projectSettings.status = 'modified';
-      }
-    }
-
-    // Project update =================================
     await ProjectService.updateProject(projectSettings,
-      () => CacheService.updateCache_ProjectSettings(projectSettings),
+      async () => {
+        CacheService.updateCache_ProjectSettings(projectSettings);
+        await SyncService.syncData_Project(projectSettings.id_project);
+        onSave();
+      },
       (erroMessage) => alert(erroMessage)
     );
-
-    onSave();
 
   }, [projectSettings], 200);
 }

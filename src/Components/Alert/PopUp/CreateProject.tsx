@@ -7,6 +7,7 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -21,28 +22,24 @@ export const CreateProject = memo((props: {
   const R      = useMemo(() => translations.component.alert.createProject[config.language], []);
   const [name, setName] = useState<string>('');
 
-
-
   const onAccept = useCallback(async () => {
 
     if (name === '') {
       return;
     }
 
-    // Project creation ==========================================
-    const newProject = ProjectService.getDefaultProjectTemplate();
-    newProject.projectSettings.name = name;
+    const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
     await ProjectService.createProject(newProject,
-      () => CacheService.addToAllProjects(newProject.projectSettings),
+      async () => {
+        CacheService.addToAllProjects(newProject.projectSettings);
+        SyncService.addToSyncData(newProject.syncData);
+        await AlertService.runAcceptCallback();
+        props.closeModal();
+      },
       (errorMesage) => alert(errorMesage),
     );
 
-    await AlertService.runAcceptCallback();
-    props.closeModal();
-
   }, [props.closeModal, name]);
-
-
 
   return (
     <LC.PopUp>

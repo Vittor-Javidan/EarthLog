@@ -12,11 +12,29 @@ export type UploadEntry = {
   url: string
 }
 
+export type SyncData = {
+  id_project:       ID
+  project:          Status
+  widgets_Project:  Record<string, Status | 'deleted'>
+  widgets_Template: Record<string, Status | 'deleted'>
+  samples:          Record<string, Status | 'deleted'>
+  widgets_Samples:  Record<string, Record<string, Status | 'deleted'>>
+}
+
+export type DownloadedProjectDTO = {
+  projectSettings: ProjectSettings
+  projectWidgets: WidgetData[]
+  template: WidgetData[]
+  samples: SampleDTO[]
+  syncData?: SyncData
+}
+
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
   template: WidgetData[]
   samples: SampleDTO[]
+  syncData: SyncData
 }
 
 export type SampleDTO = {
@@ -36,14 +54,10 @@ export type ProjectSettings = {
   rules: ProjectRules
   sampleRules?: SampleRules
   uploads?: UploadEntry[]
-  deleted_ProjectWidgets?: IDsArray
-  deleted_TemplateWidgets?: IDsArray
-  deleted_Samples?: IDsArray
 }
 
 export type SampleSettings = {
   id_sample: ID
-  status: Status
   name: string
   gps?: GPS_DTO
   rules: {
@@ -52,7 +66,6 @@ export type SampleSettings = {
     showCreateWidgetButton?: boolean
     showCopyWidgetFromTemplateButton?: boolean
   }
-  deleted_Widgets?: IDsArray
 }
 
 // =================================================================================================
@@ -61,7 +74,6 @@ export type SampleSettings = {
 
 export type WidgetData = {
   id_widget: ID
-  status: Status
   widgetName: string
   inputs: InputData[]
   rules: WidgetRules

@@ -8,6 +8,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
+import SyncService from '@Services/SyncService';
 
 export const ScreenButtons = memo((props: {
   onWidgetCreation: () => void
@@ -18,32 +19,21 @@ export const ScreenButtons = memo((props: {
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
-
-
   const onCreateWidget = useCallback(async () => {
 
-    // Project status update ============================================
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
+    const { id_widget } = newWidget;
+
     await ProjectService.createWidget_Template(id_project, newWidget,
-      () => CacheService.addToAllWidgets_Template(newWidget),
+      async () => {
+        CacheService.addToAllWidgets_Template(newWidget);
+        SyncService.syncData_TemplateWidgets(id_project, id_widget, 'creation');
+        props.onWidgetCreation();
+      },
       (errorMessage) => alert(errorMessage)
     );
 
-    props.onWidgetCreation();
-
   }, [props.onWidgetCreation, id_project]);
-
-
 
   return (
     <Layout.ScreenButtons

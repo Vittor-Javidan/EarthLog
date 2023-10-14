@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { ProjectDTO, ProjectSettings } from '@Types/ProjectTypes';
+import { DownloadedProjectDTO, ProjectSettings } from '@Types/ProjectTypes';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
 import HapticsService from '@Services/HapticsService';
@@ -13,7 +13,7 @@ import { translations } from '@Translations/index';
 
 export const ProjectsDisplay = memo((props: {
   showDisplay: boolean
-  downloadedProjects: ProjectDTO[]
+  downloadedProjects: DownloadedProjectDTO[]
   onSelect: (project_id: string, selected: boolean) => void
 }) => {
 

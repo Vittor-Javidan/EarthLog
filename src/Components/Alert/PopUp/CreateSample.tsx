@@ -7,6 +7,7 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Input } from '@Input/index';
@@ -22,8 +23,6 @@ export const CreateSample = memo((props: {
   const R      = useMemo(() => translations.component.alert.createSample[config.language], []);
   const [name, setName] = useState<string>('');
 
-
-
   const onAccept = useCallback(async () => {
 
     if (name === '') {
@@ -31,34 +30,23 @@ export const CreateSample = memo((props: {
     }
 
     const projectSettings = CacheService.getProjectFromCache(props.id_project);
-
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Sample Creation ================================================
     const newSampleSettings = ProjectService.getDefaultSampleSettings({
       name: name,
       gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
       rules: projectSettings.sampleRules,
     });
 
-    await ProjectService.createSample(props.id_project, newSampleSettings,
-      () => CacheService.addToAllSamples(newSampleSettings),
+    await ProjectService.createSample(projectSettings.id_project, newSampleSettings,
+      async () => {
+        CacheService.addToAllSamples(newSampleSettings);
+        await SyncService.syncData_Samples(projectSettings.id_project, newSampleSettings.id_sample, 'creation');
+        await AlertService.runAcceptCallback();
+        props.closeModal();
+      },
       (errorMesage) => alert(errorMesage),
     );
 
-    await AlertService.runAcceptCallback();
-    props.closeModal();
-
   }, [props.id_project, props.closeModal, name]);
-
-
 
   return (
     <LC.PopUp>

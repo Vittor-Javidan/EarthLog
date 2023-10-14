@@ -1,5 +1,3 @@
-- Update project types on example server
-
 - validate on IOS
 - Implement a checker for project integrity after project confirmation.
 - Build a feedback screen for upload

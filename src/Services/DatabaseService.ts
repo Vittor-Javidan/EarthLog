@@ -1,4 +1,4 @@
-import { ID, IDsArray, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
@@ -595,4 +595,64 @@ export default class DatabaseService {
     }
     await FileSystemService.writeFile(`${folderPath}/index.json`, JSON.stringify(IDsArray, null, 4));
   }
+
+
+
+
+
+
+
+
+
+  // ===============================================================================================
+  // SYNC FILES
+  // ===============================================================================================
+
+  static async getAllSyncData(): Promise<SyncData[]> {
+
+    // GET ALL PROJECTS IDs
+    const allProjectsIDs = await this.readIndexFile(
+      `${this.DATA_BASE_DIRECTORY}`
+    );
+
+    // GET PROJECT SYNC STATUS FOR EACH ID
+    const allSyncStatus: SyncData[] = [];
+    for (let i = 0; i < allProjectsIDs.length; i++) {
+      allSyncStatus.push(
+        await this.readSyncFile(allProjectsIDs[i])
+      );
+    }
+
+    return allSyncStatus;
+  }
+
+  static async createSyncFile(
+    id_project: string,
+    syncData: SyncData
+  ): Promise<void> {
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`,
+      JSON.stringify(syncData, null, 4)
+    );
+  }
+
+  static async readSyncFile(
+    id_project: string
+  ): Promise<SyncData> {
+    const fileData = await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`
+    );
+    return JSON.parse(fileData as string) as SyncData;
+  }
+
+
+  static async updateSyncFile(
+    syncStatus: SyncData
+  ): Promise<void> {
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${syncStatus.id_project}/syncStatus.json`,
+      JSON.stringify(syncStatus, null, 4)
+    );
+  }
+
 }

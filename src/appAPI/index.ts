@@ -1,4 +1,4 @@
-import { ProjectDTO } from '@Types/ProjectTypes';
+import { DownloadedProjectDTO, ProjectDTO } from '@Types/ProjectTypes';
 import { CredentialDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
@@ -66,7 +66,7 @@ export default class AppAPI {
 
   async downloadProjects(
     signal: AbortSignal,
-    onSuccess: (projects: ProjectDTO[]) => void,
+    onSuccess: (projects: DownloadedProjectDTO[]) => void,
     onError: (error: string) => void,
   ): Promise<void> {
     try {

@@ -1,7 +1,7 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.5.2 Project elements status update
+# 0.1.5.3 New sync system design
 
-- Added methods on cache service to avoid unecessary loading of all elements again when a deletion ocurs.
-- Updating/Creating/Deleting any elements now causes status to update (parents data included)
-- Fix a desync on status caused by elements copying sample and project settings from the cache, causing multiple sources of data modifications. Now everytime a settingsWidget autosave, it checks if the cache have its status desync.
+- Added database service methods for sync files.
+- Now all sync logic is manage by a single block of data called syncData. This file contais the status of any element inside the project.
+- New type DownloadedProjectDTO was create, to allow some properties diference between client and servers.

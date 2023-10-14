@@ -215,7 +215,7 @@ export default class CacheService {
   static removeFromProjects(id_project: ID): void {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
-        this.allProjects.splice(i, 2);
+        this.allProjects.splice(i, 1);
       }
     }
   }
@@ -226,7 +226,7 @@ export default class CacheService {
   static removeFromSamples(id_sample: ID): void {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
-        this.allSamples.splice(i, 2);
+        this.allSamples.splice(i, 1);
       }
     }
   }
@@ -237,7 +237,7 @@ export default class CacheService {
   static removeFromAllWidgets_Project(id_widget: ID): void {
     for (let i = 0; i < this.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === id_widget) {
-        this.allWidgets_Project.splice(i, 2);
+        this.allWidgets_Project.splice(i, 1);
       }
     }
   }
@@ -248,7 +248,7 @@ export default class CacheService {
   static removeFromAllWidgets_Template(id_widget: ID): void {
     for (let i = 0; i < this.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === id_widget) {
-        this.allWidgets_Template.splice(i, 2);
+        this.allWidgets_Template.splice(i, 1);
       }
     }
   }
@@ -259,7 +259,7 @@ export default class CacheService {
   static removeFromAllWidgets_Sample(id_widget: ID): void {
     for (let i = 0; i < this.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === id_widget) {
-        this.allWidgets_Sample.splice(i, 2);
+        this.allWidgets_Sample.splice(i, 1);
       }
     }
   }

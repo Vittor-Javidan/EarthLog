@@ -14,6 +14,7 @@ import ProjectService from '@Services/ProjectService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
+import SyncService from '@Services/SyncService';
 
 export const SampleSettingsWidget = memo((props: {
   onSampleNameUpdate: (newName: string) => void
@@ -42,7 +43,7 @@ export const SampleSettingsWidget = memo((props: {
   }, [sampleSettings, saved]);
 
   const onSaveName = useCallback((inputData: StringInputData) => {
-    setSaved(true);
+    setSaved(false);
     setSampleSettings(prev => ({ ...prev, name: inputData.value }));
     props.onSampleNameUpdate(inputData.value);
   }, [props.onSampleNameUpdate]);
@@ -131,7 +132,7 @@ export const SampleSettingsWidget = memo((props: {
 function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean]) {
 
   const [sampleSettings, saved] = deps;
-  const id_project      = useLocalSearchParams().id_project as string;
+  const id_project = useLocalSearchParams().id_project as string;
 
   useTimeout(async () => {
 
@@ -139,55 +140,14 @@ function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean])
       return;
     }
 
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status !== 'new') {
-
-      const cachedSampleSettings = CacheService.getSampleFromCache(sampleSettings.id_sample);
-
-      // Project status update ===================
-      if (projectSettings.status === 'uploaded') {
-        projectSettings.status = 'modified';
-        await ProjectService.updateProject(projectSettings,
-          () => CacheService.updateCache_ProjectSettings(projectSettings),
-          (erroMessage) => alert(erroMessage)
-        );
-      }
-
-      if (sampleSettings.status !== 'new') {
-
-        /**=========================================================
-         * Fix sample status desync caused by elements
-         * saving/creation/deletion
-         */
-        if (sampleSettings.status !== cachedSampleSettings.status) {
-          sampleSettings.status = cachedSampleSettings.status;
-        }
-
-        /** ===================================================
-         * Fix widget sample deletion entry desync
-         * caused by sample widgets deletion
-         */
-        if (
-          cachedSampleSettings.deleted_Widgets !== undefined &&
-          cachedSampleSettings.deleted_Widgets.length !== sampleSettings.deleted_Widgets?.length
-        ) {
-          sampleSettings.deleted_Widgets = cachedSampleSettings.deleted_Widgets;
-        }
-
-        // Sample status update ===================
-        if (sampleSettings.status === 'uploaded') {
-          sampleSettings.status = 'modified';
-        }
-      }
-    }
-
-    // Sample update ============================================
     await ProjectService.updateSample(id_project, sampleSettings,
-      () => CacheService.updateCache_SampleSettings(sampleSettings),
+      async () => {
+        CacheService.updateCache_SampleSettings(sampleSettings);
+        await SyncService.syncData_Samples(id_project, sampleSettings.id_sample, 'updating');
+        onSave();
+      },
       (erroMessage) => alert(erroMessage)
     );
-
-    onSave();
 
   }, [sampleSettings], 200);
 }
