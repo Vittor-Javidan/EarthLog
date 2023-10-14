@@ -7,10 +7,10 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import AlertService from '@Services/AlertService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import SyncService from '@Services/SyncService';
 
 export const ScreenButtons = memo((props: {
   onCreateWidget: () => void

@@ -10,11 +10,11 @@ import UtilService from '@Services/UtilService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import SyncService from '@Services/SyncService';
 
 export const SampleSettingsWidget = memo((props: {
   onSampleNameUpdate: (newName: string) => void

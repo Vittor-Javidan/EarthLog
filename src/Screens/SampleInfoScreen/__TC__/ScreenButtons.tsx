@@ -6,10 +6,10 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import SyncService from '@Services/SyncService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
-import SyncService from '@Services/SyncService';
 
 export const ScreenButtons = memo(() => {
 

@@ -87,11 +87,23 @@ export default class SyncService {
   ) {
     for (let i = 0; i < this.syncData.length; i++) {
       if (this.syncData[i].id_project === id_project) {
+
         this.defineStatus_Project(this.syncData[i]);
         this.defineStatus(id_sample, operation, this.syncData[i].samples);
+
         if (operation === 'deletion') {
           delete this.syncData[i].widgets_Samples[id_sample];
         }
+
+        if (operation === 'creation') {
+          const allSampleWidgets = await DatabaseService.getAllWidgets_Sample(id_project, id_sample);
+          this.syncData[i].widgets_Samples[id_sample] = {};
+          for (let j = 0; j < allSampleWidgets.length; j++) {
+            const { id_widget } = allSampleWidgets[j];
+            this.syncData[i].widgets_Samples[id_sample][id_widget] = 'new';
+          }
+        }
+
         await DatabaseService.updateSyncFile(this.syncData[i]);
         return;
       }

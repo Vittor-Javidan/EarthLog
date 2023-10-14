@@ -11,6 +11,7 @@ import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -18,7 +19,6 @@ import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
-import SyncService from '@Services/SyncService';
 
 export const Widget = memo((props: {
   widgetData: WidgetData

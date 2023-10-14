@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { GPSInputData, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
@@ -14,7 +15,6 @@ import SyncService from '@Services/SyncService';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import { useTimeout } from '@Hooks/index';
 
 export const ProjectSettingsWidget = memo((props: {
   onProjectNameUpdate: (newName: string) => void

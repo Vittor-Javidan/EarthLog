@@ -3,10 +3,10 @@ import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 import { GPS_DTO } from '@Types/ProjectTypes';
-import SyncService from '@Services/SyncService';
 
 /**
  * @Warning This component uses parent rerender to update its components. Do no use memo hook.

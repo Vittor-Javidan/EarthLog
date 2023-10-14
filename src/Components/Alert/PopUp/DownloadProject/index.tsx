@@ -7,6 +7,7 @@ import AppAPI from '@appAPI/index';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
+import SyncService from '@Services/SyncService';
 
 import { LC } from '@Alert/__LC__';
 import { CredentialsDisplay } from './CredentialsDisplay';
@@ -14,7 +15,6 @@ import { ErrorDisplay } from './ErrorDisplay';
 import { ProjectsDisplay } from './ProjectsDisplay';
 import { LoadingDisplay } from './LoadingDisplay';
 import { FooterButtons } from './FooterButtons';
-import SyncService from '@Services/SyncService';
 
 export const DownloadProjects = memo((props: {
   closeModal: () => void
@@ -91,6 +91,9 @@ export const DownloadProjects = memo((props: {
     const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
+
+      // TODO: Check data integrity here before data processing. If invalid, continue to next loop.
+
       const processedProject = dataProcessingAfterConfirm(allSelectedProjects[i]);
       await ProjectService.createProject(processedProject,
         () => {
