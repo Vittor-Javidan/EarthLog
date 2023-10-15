@@ -41,7 +41,6 @@ export const CreateProject = memo((props: {
 
     const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
     await ProjectService.createProject(newProject,
-      (feedbackMessages) => setFeedbacks(prev => ([ ...prev, feedbackMessages])),
       async () => {
         setFeedbacks(prev => ([ ...prev, RS['Done!']]));
         CacheService.addToAllProjects(newProject.projectSettings);
@@ -53,6 +52,7 @@ export const CreateProject = memo((props: {
         setFeedbacks(prev => ([ ...prev, RS['Error!']]));
         alert(errorMesage);
       },
+      (feedbackMessages) => setFeedbacks(prev => ([ ...prev, feedbackMessages])),
     );
 
   }, [props.closeModal, name]);

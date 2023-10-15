@@ -2,6 +2,7 @@ import React, { memo, useMemo } from 'react';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { View } from 'react-native';
@@ -11,8 +12,9 @@ export const ErrorDisplay = memo((props: {
   error: string | null
 }) => {
 
-  const config     = useMemo(() => ConfigService.config, []);
-  const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const RS     = useMemo(() => translations.component.alert.shared[config.language], []);
 
   return props.showDisplay ? (
     <View
@@ -24,6 +26,7 @@ export const ErrorDisplay = memo((props: {
       <Text h3
         style={{
           alignSelf: 'center',
+          color: theme.font,
         }}
       >
         {RS['Error']}
@@ -31,6 +34,7 @@ export const ErrorDisplay = memo((props: {
       <Text p
         style={{
           alignSelf: 'center',
+          color: theme.font,
         }}
       >
         {props.error ?? ''}

@@ -104,7 +104,6 @@ export const DownloadProjects = memo((props: {
       );
 
       await ProjectService.createProject(processedProject,
-        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
         () => {
           CacheService.addToAllProjects(processedProject.projectSettings);
           SyncService.addToSyncData(processedProject.syncData);
@@ -114,6 +113,7 @@ export const DownloadProjects = memo((props: {
           setError(errorMessage);
           setFeedbacks(prev => [ ...prev, RS['Error!']]);
         },
+        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
       );
     }
 

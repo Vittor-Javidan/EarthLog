@@ -128,9 +128,9 @@ export default class ProjectService {
 
   static async createProject(
     projectDTO: ProjectDTO,
-    feedback: (message: string) => void,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
+    feedback: (message: string) => void,
   ): Promise<void> {
 
     const {
