@@ -5,11 +5,36 @@
 export type IDsArray = ID[]
 export type ID = string
 
+export type Status = 'uploaded' | 'modified' | 'new'
+export type UploadEntry = {
+  dateUTM: string
+  date: string
+  url: string
+}
+
+export type SyncData = {
+  id_project:       ID
+  project:          Status
+  widgets_Project:  Record<string, Status | 'deleted'>
+  widgets_Template: Record<string, Status | 'deleted'>
+  samples:          Record<string, Status | 'deleted'>
+  widgets_Samples:  Record<string, Record<string, Status | 'deleted'>>
+}
+
+export type DownloadedProjectDTO = {
+  projectSettings: ProjectSettings
+  projectWidgets: WidgetData[]
+  template: WidgetData[]
+  samples: SampleDTO[]
+  syncData?: SyncData
+}
+
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
   template: WidgetData[]
   samples: SampleDTO[]
+  syncData: SyncData
 }
 
 export type SampleDTO = {
@@ -19,23 +44,17 @@ export type SampleDTO = {
 
 export type ProjectSettings = {
   id_project: ID
+  status: Status
   name: string
   sampleAlias: {
     singular: string
     plural: string
   }
   gps?: GPS_DTO
-  status?: ProjectStatus
   rules: ProjectRules
   sampleRules?: SampleRules
-  uploads?: {
-    dateUTM: string
-    date: string
-    url: string
-  }[]
+  uploads?: UploadEntry[]
 }
-
-export type ProjectStatus = 'uploaded' | 'modified' | 'first upload'
 
 export type SampleSettings = {
   id_sample: ID

@@ -16,8 +16,9 @@ export const CredentialsDisplay = memo((props: {
   onCredentialChoose: (credential: CredentialDTO) => void
 }) => {
 
-  const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R      = useMemo(() => translations.component.alert.uploadProject[config.language], []);
 
   const AllCredentialButtons = CacheService.allCredentials.map(credential => (
     <CredentialButton
@@ -31,6 +32,7 @@ export const CredentialsDisplay = memo((props: {
     <Text h3
       style={{
         textAlign: 'center',
+        color: theme.font,
       }}
     >
       {R['Upload this project to?']}

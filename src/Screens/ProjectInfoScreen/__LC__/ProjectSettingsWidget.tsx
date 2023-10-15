@@ -4,16 +4,17 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { GPSInputData, ProjectSettings, StringInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
+import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
+import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import { useTimeout } from '@Hooks/index';
 
 export const ProjectSettingsWidget = memo((props: {
   onProjectNameUpdate: (newName: string) => void
@@ -37,7 +38,7 @@ export const ProjectSettingsWidget = memo((props: {
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutoSave(() => {
+  useAutoSave_project(() => {
     setSaved(true);
   }, [projectSettings, saved]);
 
@@ -186,7 +187,12 @@ export const ProjectSettingsWidget = memo((props: {
   );
 });
 
-function useAutoSave(onSave: () => void, deps: [ProjectSettings, boolean]) {
+/**
+ * projectSettings data processing before saving.
+ * Each time a new data comes before a 200ms interval, it discards the old data to save the updated
+ * version.
+ */
+function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean]) {
 
   const [projectSettings, saved] = deps;
 
@@ -196,16 +202,10 @@ function useAutoSave(onSave: () => void, deps: [ProjectSettings, boolean]) {
       return;
     }
 
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-    }
-
-    // Project update =================
-    await ProjectService.updateProject(
-      projectSettings,
-      () => {
+    await ProjectService.updateProject(projectSettings,
+      async () => {
         CacheService.updateCache_ProjectSettings(projectSettings);
+        await SyncService.syncData_Project(projectSettings.id_project);
         onSave();
       },
       (erroMessage) => alert(erroMessage)

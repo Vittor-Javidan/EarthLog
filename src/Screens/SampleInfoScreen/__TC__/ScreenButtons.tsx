@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import SyncService from '@Services/SyncService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
@@ -19,12 +20,11 @@ export const ScreenButtons = memo(() => {
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
-  const deleteSample = useCallback(async () => {
-    await ProjectService.deleteSample(
-      id_project,
-      id_sample,
-      async () => {
-        await CacheService.loadAllSamplesSettings(id_project);
+  const onDelete_Sample = useCallback(async () => {
+    await ProjectService.deleteSample(id_project, id_sample,
+      () => {
+        CacheService.removeFromSamples(id_sample);
+        SyncService.syncData_Samples(id_project, id_sample, 'deletion');
         navigate('PROJECT SCOPE', id_project);
       },
       (errorMessage) => alert(errorMessage)
@@ -52,7 +52,7 @@ export const ScreenButtons = memo(() => {
       showSwipe={show_DeleteSwap}
       SwipeButton={
         <Button.ConfirmSwipe
-          onSwipe={async () => await deleteSample()}
+          onSwipe={async () => await onDelete_Sample()}
           onCancel={() => setShow_DeleteSwap(false)}
           buttonRadius={30}
           theme={{

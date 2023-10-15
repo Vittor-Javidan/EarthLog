@@ -7,6 +7,7 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import AlertService from '@Services/AlertService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -21,40 +22,28 @@ export const ScreenButtons = memo((props: {
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
-  const onCreateWidget_Sample = useCallback(async () => {
-
-    // Project status update ============================================
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget creation ==============================
-    const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget_Sample(
-      id_project,
-      id_sample,
-      newWidget,
-      () => {
-        CacheService.addToAllWidgets_Sample(newWidget);
-        props.onCreateWidget();
-      },
-      (errorMessage) => alert(errorMessage)
-    );
-
-  }, [props.onCreateWidget, id_project, id_sample]);
-
   const onTemplateWidgetCopy = useCallback(async () => {
     await AlertService.handleAlert(true, {
       type: 'template widget copy',
       id_project: id_project,
       id_sample: id_sample,
     }, () => props.onCreateWidget());
+  }, [props.onCreateWidget, id_project, id_sample]);
+
+  const onCreateWidget_Sample = useCallback(async () => {
+
+    const newWidget = ProjectService.getWidgetData();
+    const { id_widget } = newWidget;
+
+    await ProjectService.createWidget_Sample(id_project,id_sample, newWidget,
+      async () => {
+        CacheService.addToAllWidgets_Sample(newWidget);
+        await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'creation');
+        props.onCreateWidget();
+      },
+      (errorMessage) => alert(errorMessage)
+    );
+
   }, [props.onCreateWidget, id_project, id_sample]);
 
   return (

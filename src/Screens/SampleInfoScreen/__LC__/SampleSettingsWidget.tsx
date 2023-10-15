@@ -7,9 +7,10 @@ import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import UtilService from '@Services/UtilService';
-import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
@@ -37,12 +38,12 @@ export const SampleSettingsWidget = memo((props: {
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutosave(() => {
+  useAutosave_sample(() => {
     setSaved(true);
   }, [sampleSettings, saved]);
 
   const onSaveName = useCallback((inputData: StringInputData) => {
-    setSaved(true);
+    setSaved(false);
     setSampleSettings(prev => ({ ...prev, name: inputData.value }));
     props.onSampleNameUpdate(inputData.value);
   }, [props.onSampleNameUpdate]);
@@ -123,11 +124,15 @@ export const SampleSettingsWidget = memo((props: {
   );
 });
 
-function useAutosave(onSave: () => void, deps: [SampleSettings, boolean]) {
+/**
+ * sampleSettings data processing before saving.
+ * Each time a new data comes before a 200ms interval, it discards the old data to save the updated
+ * version.
+ */
+function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean]) {
 
   const [sampleSettings, saved] = deps;
-  const id_project      = useLocalSearchParams().id_project as string;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const id_project = useLocalSearchParams().id_project as string;
 
   useTimeout(async () => {
 
@@ -135,22 +140,10 @@ function useAutosave(onSave: () => void, deps: [SampleSettings, boolean]) {
       return;
     }
 
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Sample update =================
-    await ProjectService.updateSample(
-      id_project,
-      sampleSettings,
-      () => {
+    await ProjectService.updateSample(id_project, sampleSettings,
+      async () => {
         CacheService.updateCache_SampleSettings(sampleSettings);
+        await SyncService.syncData_Samples(id_project, sampleSettings.id_sample, 'updating');
         onSave();
       },
       (erroMessage) => alert(erroMessage)

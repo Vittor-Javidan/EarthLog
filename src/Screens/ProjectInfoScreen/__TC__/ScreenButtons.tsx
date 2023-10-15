@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
 import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -21,40 +22,23 @@ export const ScreenButtons = memo((props: {
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
   const createWidget_Project = useCallback(async () => {
-
-    // Project status update ===========================================
-    const projectSettings = CacheService.getProjectFromCache(id_project);
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget creation ==============================
     const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget_Project(
-      id_project,
-      newWidget,
-      () => {
+    await ProjectService.createWidget_Project(id_project, newWidget,
+      async () => {
         CacheService.addToAllWidgets_Project(newWidget);
+        await SyncService.syncData_ProjectWidgets(id_project, newWidget.id_widget, 'creation');
         props.onWidgetCreation();
       },
       (errorMessage) => alert(errorMessage)
     );
-
   }, [props.onWidgetCreation, id_project]);
 
   const deleteProject = useCallback(async () => {
-    const isLatOpenProject = CacheService.lastOpenProject.id_project === id_project;
-    await ProjectService.deleteProject(
-      id_project,
-      async () => {
-        if (isLatOpenProject) {
-          await CacheService.deleteLastOpenProject();
-        }
+    await CacheService.deleteLastOpenProject();
+    await ProjectService.deleteProject(id_project,
+      () => {
+        CacheService.removeFromProjects(id_project);
+        SyncService.removeFromSyncData(id_project);
         navigate('HOME SCOPE');
       },
       (errorMessage) => alert(errorMessage)

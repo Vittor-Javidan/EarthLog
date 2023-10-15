@@ -1,7 +1,9 @@
 import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
+import { translations } from '@Translations/index';
+import ConfigService from './ConfigService';
 
 export default class ProjectService {
 
@@ -9,11 +11,15 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
-  static getDefaultProjectTemplate(): ProjectDTO {
+  static getDefaultProjectTemplate(options: {
+    name?: string
+  }): ProjectDTO {
+    const id_project = UtilService.generateUuidV4();
     return {
       projectSettings: {
-        id_project: UtilService.generateUuidV4(),
-        name: '',
+        id_project: id_project,
+        status: 'new',
+        name: options.name ?? '',
         gps: {},
         sampleAlias: {
           singular: '',
@@ -32,12 +38,17 @@ export default class ProjectService {
       projectWidgets: [],
       template: [],
       samples: [],
+      syncData: {
+        id_project: id_project,
+        project: 'new',
+        widgets_Project: {},
+        widgets_Template: {},
+        samples: {},
+        widgets_Samples: {},
+      },
     };
   }
 
-  /**
-   * @param rules When undefined, every rule will be enabled by default.
-   */
   static getDefaultSampleSettings(options: {
     name?: string
     rules?: SampleRules,
@@ -112,85 +123,14 @@ export default class ProjectService {
 
 
   // ===============================================================================================
-  // OTHER PROJECT METHODS
-  // ===============================================================================================
-
-  /**
-   * Changes the ID of all elements inside a projectDTO.
-   * All IDs are changed by reference. No need to return a value;
-   */
-  static changeAllIDs(projectDTO: ProjectDTO): void {
-
-    projectDTO.projectSettings.id_project = UtilService.generateUuidV4();
-    changeAllWidgetsIds(projectDTO.projectWidgets);
-    changeAllWidgetsIds(projectDTO.template);
-    changeAllSamplesIds(projectDTO.samples);
-
-    function changeAllSamplesIds(sampleDTO: SampleDTO[]): void {
-      for (let i = 0; i < sampleDTO.length; i++) {
-        sampleDTO[i].sampleSettings.id_sample = UtilService.generateUuidV4();
-        changeAllWidgetsIds(sampleDTO[i].sampleWidgets);
-      }
-    }
-
-    function changeAllWidgetsIds(widgetDataArray: WidgetData[]): void {
-      for (let i = 0; i < widgetDataArray.length; i++) {
-        widgetDataArray[i].id_widget = UtilService.generateUuidV4();
-        changeAllInputsIds(widgetDataArray[i].inputs);
-      }
-    }
-
-    function changeAllInputsIds(inputDataArray: InputData[]): void {
-      for (let i = 0; i < inputDataArray.length; i++) {
-        inputDataArray[i].id_input = UtilService.generateUuidV4();
-      }
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
   // BASIC DATABASE METHODS
   // ===============================================================================================
-
-  /**
-   * Use this to retrive a ProjectDTO from database
-   */
-  static async buildProjectFromDatabase(project_id: string): Promise<ProjectDTO> {
-
-    // INITAL PROJECT STRUCTURE
-    const projectDTO: ProjectDTO = {
-      projectSettings: await DatabaseService.readProject(project_id),
-      projectWidgets:  await DatabaseService.getAllWidgets_Project(project_id),
-      template:        await DatabaseService.getAllWidgets_Template(project_id),
-      samples:         [],
-    };
-
-    // GET ALL SAMPLES
-    const allSampleSettings = await DatabaseService.getAllSamples(project_id);
-    for (let i = 0; i < allSampleSettings.length; i++) {
-      projectDTO.samples.push({
-        sampleSettings: allSampleSettings[i],
-        sampleWidgets: await DatabaseService.getAllWidgets_Sample(project_id, allSampleSettings[i].id_sample),
-      });
-    }
-
-    return projectDTO;
-  }
 
   static async createProject(
     projectDTO: ProjectDTO,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
+    feedback: (message: string) => void,
   ): Promise<void> {
 
     const {
@@ -206,36 +146,44 @@ export default class ProjectService {
 
     try {
 
+      const R = translations.service.projectService[ConfigService.config.language];
+
       // PROJECT FOLDER
+      feedback(R['Creating project folder']);
       await DatabaseService.createProject(projectSettings);
 
       // PROJECT WIDGETS
+      feedback(R['Saving project widgets']);
       for (let i = 0; i < projectWidgets.length; i++) {
         await DatabaseService.createWidget_Project(id_project, projectWidgets[i]);
       }
 
       // SAMPLE TEMPLATE WIDGETS
+      feedback(R['Saving template widgets']);
       for (let i = 0; i < template.length; i++) {
         await DatabaseService.createWidget_Template(id_project, template[i]);
       }
 
       // SAMPLES
       for (let i = 0; i < samples.length; i++) {
+        feedback(R['Saving samples of ID:'] + ` ${samples[i].sampleSettings.id_sample}`);
 
-        const {
-          sampleSettings,
-          sampleWidgets,
-        } = samples[i];
+        const { sampleSettings, sampleWidgets } = samples[i];
+        const { id_sample } = sampleSettings;
 
         // SAMPLE FOLDER
         await DatabaseService.createSample(id_project, sampleSettings);
 
         // SAMPLE WIDGETS
         for (let j = 0; j < sampleWidgets.length; j++) {
-          const { id_sample } = sampleSettings;
+          feedback(R['Saving sample widget of ID:'] + ` ${sampleWidgets[j].id_widget}`);
           await DatabaseService.createWidget_Sample(id_project, id_sample, sampleWidgets[j]);
         }
       }
+
+      // PROJECT SYNC FILE
+      feedback(R['Saving project sync file']);
+      await DatabaseService.createSyncFile(id_project, projectDTO.syncData);
 
       onSuccess();
 

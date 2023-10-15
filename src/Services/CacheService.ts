@@ -1,5 +1,5 @@
 import { CredentialDTO } from '@Types/AppTypes';
-import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { ID, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
@@ -11,6 +11,7 @@ export default class CacheService {
   static allCredentials: CredentialDTO[] = [];
   static lastOpenProject: ProjectSettings = {
     id_project: '',
+    status: 'new',
     name: '',
     rules: {},
     sampleAlias: {
@@ -68,6 +69,7 @@ export default class CacheService {
     await DatabaseService.deleteLastOpenProject();
     this.lastOpenProject = {
       id_project: '',
+      status: 'new',
       name: '',
       rules: {},
       sampleAlias: {
@@ -205,5 +207,60 @@ export default class CacheService {
    */
   static addToAllWidgets_Sample(widgetData: WidgetData): void {
     this.allWidgets_Sample = [...this.allWidgets_Sample, UtilService.deepCopy(widgetData)];
+  }
+
+  /**
+   * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
+   */
+  static removeFromProjects(id_project: ID): void {
+    for (let i = 0; i < this.allProjects.length; i++) {
+      if (this.allProjects[i].id_project === id_project) {
+        this.allProjects.splice(i, 1);
+      }
+    }
+  }
+
+  /**
+   * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
+   */
+  static removeFromSamples(id_sample: ID): void {
+    for (let i = 0; i < this.allSamples.length; i++) {
+      if (this.allSamples[i].id_sample === id_sample) {
+        this.allSamples.splice(i, 1);
+      }
+    }
+  }
+
+  /**
+   * Remove widget directly from the cache, to avoid unnecessary loading of all widgets again.
+   */
+  static removeFromAllWidgets_Project(id_widget: ID): void {
+    for (let i = 0; i < this.allWidgets_Project.length; i++) {
+      if (this.allWidgets_Project[i].id_widget === id_widget) {
+        this.allWidgets_Project.splice(i, 1);
+      }
+    }
+  }
+
+  /**
+   * Remove widget directly from the cache, to avoid unnecessary loading of all widgets again.
+   */
+  static removeFromAllWidgets_Template(id_widget: ID): void {
+    for (let i = 0; i < this.allWidgets_Template.length; i++) {
+      if (this.allWidgets_Template[i].id_widget === id_widget) {
+        this.allWidgets_Template.splice(i, 1);
+      }
+    }
+  }
+
+  /**
+   * Remove widget directly from the cache, to avoid unnecessary loading of all widgets again.
+   */
+  static removeFromAllWidgets_Sample(id_widget: ID): void {
+    for (let i = 0; i < this.allWidgets_Sample.length; i++) {
+      if (this.allWidgets_Sample[i].id_widget === id_widget) {
+        this.allWidgets_Sample.splice(i, 1);
+      }
+    }
   }
 }

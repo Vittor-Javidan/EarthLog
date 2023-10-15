@@ -6,11 +6,12 @@ import { GPS_DTO, ID, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetT
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
-import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
+import ProjectService from '@Services/ProjectService';
+import SyncService from '@Services/SyncService';
 
 import { Navbar } from './Navbar';
 import { LabelButton } from './LabelButton';
@@ -26,8 +27,8 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.widget.Root[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
   const [_, startTransitions] = useTransition();
 
   const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
@@ -48,7 +49,7 @@ export const Widget = memo((props: {
     disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
-  useAutoSave(() => {
+  useAutoSave_widget(() => {
     setSaved(true);
   }, [widgetData, props.widgetScope, saved]);
 
@@ -269,10 +270,14 @@ export const Widget = memo((props: {
   );
 });
 
-function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
+/**
+ * widget data processing before saving.
+ * Each time a new data comes before a 200ms interval, it discards the old data to save the updated
+ * version.
+ */
+function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
 
   const [widgetData, widgetScope, saved] = deps;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(widgetScope.id_project), []);
 
   useTimeout(async () => {
 
@@ -280,45 +285,57 @@ function useAutoSave(onSave: () => void, deps: [WidgetData, WidgetScope, boolean
       return;
     }
 
-    // Project status update ===================
-    if (projectSettings.status === 'uploaded') {
-      projectSettings.status = 'modified';
-      await ProjectService.updateProject(
-        projectSettings,
-        () => CacheService.updateCache_ProjectSettings(projectSettings),
-        (erroMessage) => alert(erroMessage)
-      );
-    }
-
-    // Widget update ==========
     switch (widgetScope.type) {
 
       case 'project': {
-        await ProjectService.updateWidget_Project(
-          widgetScope.id_project,
-          widgetData,
-          () => onSave(),
+
+        const { id_project } = widgetScope;
+        const { id_widget } = widgetData;
+
+        await ProjectService.updateWidget_Project(id_project, widgetData,
+          async () => {
+            CacheService.updateCache_ProjectWidget(widgetData);
+            await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+
+        break;
       }
 
       case 'template': {
-        await ProjectService.updateWidget_Template(
-          widgetScope.id_project,
-          widgetData,
-          () => onSave(),
+
+        const { id_project } = widgetScope;
+        const { id_widget } = widgetData;
+
+        await ProjectService.updateWidget_Template(widgetScope.id_project, widgetData,
+          async () => {
+            CacheService.updateCache_TemplateWidget(widgetData);
+            await SyncService.syncData_TemplateWidgets(id_project, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+
+        break;
       }
 
       case 'sample': {
-        await ProjectService.updateWidget_Sample(
-          widgetScope.id_project,
-          widgetScope.id_sample,
-          widgetData,
-          () => onSave(),
+
+        const { id_project, id_sample } = widgetScope;
+        const { id_widget } = widgetData;
+
+        await ProjectService.updateWidget_Sample(id_project, id_sample, widgetData,
+          async () => {
+            CacheService.updateCache_SampleWidget(widgetData);
+            await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'updating');
+            onSave();
+          },
           (erroMessage) => alert(erroMessage)
-        ); break;
+        );
+
+        break;
       }
     }
 

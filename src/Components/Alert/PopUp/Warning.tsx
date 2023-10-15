@@ -39,6 +39,7 @@ export const Warning = memo((props: {
           style={{
             textAlign: 'center',
             paddingHorizontal: 10,
+            color: theme.font,
           }}
         >
           {props.question}

@@ -10,6 +10,7 @@ import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -89,5 +90,6 @@ async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   await CacheService.loadLastOpenProject();
   await CacheService.loadAllCredentials();
+  await SyncService.loadAllSyncData();
   whenLoaded();
 }

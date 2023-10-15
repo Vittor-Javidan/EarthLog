@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 
@@ -12,18 +13,17 @@ export function F_ProjectWidgets() {
   const [_, refresh] = useState<boolean>(true);
 
   const onDeleteWidget_Project = useCallback(async (id_widget: string) => {
-    await ProjectService.deleteWidget_Project(
-      id_project,
-      id_widget,
+    await ProjectService.deleteWidget_Project(id_project, id_widget,
       async () => {
-        await CacheService.loadAllWidgets_Project(id_project);
+        CacheService.removeFromAllWidgets_Project(id_widget);
+        await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'deletion');
         refresh(prev => !prev);
       },
       (errorMessage) => alert(errorMessage)
     );
   }, [id_project]);
 
-  const allWidgetsComponents: JSX.Element[] = CacheService.allWidgets_Project.map(widgetData => (
+  const AllWidgets = CacheService.allWidgets_Project.map(widgetData => (
     <Widget
       key={widgetData.id_widget}
       widgetScope={{
@@ -36,5 +36,5 @@ export function F_ProjectWidgets() {
     />
   ));
 
-  return (<>{allWidgetsComponents}</>);
+  return (<>{AllWidgets}</>);
 }

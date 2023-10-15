@@ -2,33 +2,43 @@ import React, { memo, useMemo } from 'react';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
+import { View } from 'react-native';
 
 export const ErrorDisplay = memo((props: {
   showDisplay: boolean
   error: string | null
 }) => {
 
-  const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const RS     = useMemo(() => translations.component.alert.shared[config.language], []);
 
-  return props.showDisplay ? (<>
-    <Text h3
+  return props.showDisplay ? (
+    <View
       style={{
         paddingHorizontal: 10,
-        alignSelf: 'center',
+        gap: 10,
       }}
     >
-      {R['Error']}
-    </Text>
-    <Text p
-      style={{
-        paddingHorizontal: 10,
-        alignSelf: 'center',
-      }}
-    >
-      {props.error ?? ''}
-    </Text>
-  </>) : <></>;
+      <Text h3
+        style={{
+          alignSelf: 'center',
+          color: theme.font,
+        }}
+      >
+        {RS['Error']}
+      </Text>
+      <Text p
+        style={{
+          alignSelf: 'center',
+          color: theme.font,
+        }}
+      >
+        {props.error ?? ''}
+      </Text>
+    </View>
+  ) : <></>;
 });

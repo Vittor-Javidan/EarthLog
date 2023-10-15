@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 
@@ -12,11 +13,10 @@ export function F_TemplateWidgets() {
   const [_, refresh] = useState<boolean>(false);
 
   const onDeleteWidget_Template = useCallback(async (id_widget: string) => {
-    await ProjectService.deleteWidget_Template(
-      id_project,
-      id_widget,
+    await ProjectService.deleteWidget_Template(id_project, id_widget,
       async () => {
-        await CacheService.loadAllWidgets_Template(id_project);
+        CacheService.removeFromAllWidgets_Template(id_widget);
+        await SyncService.syncData_TemplateWidgets(id_project, id_widget, 'deletion');
         refresh(prev => !prev);
       },
       (errorMessage) => alert(errorMessage)

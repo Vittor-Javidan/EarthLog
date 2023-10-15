@@ -1,5 +1,4 @@
-import { ConfigDTO, DateFormat, LanguageTag, TimeFormat } from '@Types/AppTypes';
-
+import { DateFormat, LanguageTag, TimeFormat } from '@Types/AppTypes';
 export default class DateTimeService {
 
   static DateFormatByTag(languageTag: LanguageTag): DateFormat {
@@ -29,7 +28,10 @@ export default class DateTimeService {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} (UTC)`;
   }
 
-  static getCurrentDateTime(config: ConfigDTO): string {
+  static getCurrentDateTime(options: {
+    dateFormat: DateFormat,
+    timeFormat: TimeFormat,
+  }): string {
     const now     = new Date();
     const year    = now.getFullYear();
     const month   = String(now.getMonth() + 1).padStart(2, '0');
@@ -38,8 +40,8 @@ export default class DateTimeService {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     return this.formatDateAndTime({
-      dateFormat: config.dateFormat,
-      timeFormat: config.timeFormat,
+      dateFormat: options.dateFormat,
+      timeFormat: options.timeFormat,
       year:       year,
       month:      month,
       day:        day,

@@ -1,17 +1,18 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { ProjectStatus } from '@Types/ProjectTypes';
+import { Status, UploadEntry } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import HapticsService from '@Services/HapticsService';
 import ThemeService from '@Services/ThemeService';
+import SyncService from '@Services/SyncService';
 
-import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
+import { UploadStatus } from './UploadStatus';
 
 export function F_ProjectButtons() {
 
@@ -23,8 +24,8 @@ export function F_ProjectButtons() {
     <ProjectButton
       key={settings.id_project}
       title={settings.name}
-      status = {settings.status}
-      lastUploadDate={settings.uploads?.[settings.uploads.length - 1].date ?? undefined}
+      status={SyncService.getSyncData(settings.id_project).project}
+      uploads={settings.uploads}
       project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
     />
@@ -67,25 +68,17 @@ export function F_ProjectButtons() {
 
 const ProjectButton = memo((props: {
   title: string
-  status: ProjectStatus | undefined
-  lastUploadDate: string | undefined
+  status: Status
+  uploads: UploadEntry[] | undefined
   project_id: string
   onPress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
-
   const [pressed, setPressed] = useState<boolean>(false);
 
-  const iconColor = (
-    props.status === 'uploaded' || props.status === 'first upload'
-  ) ? theme.confirm : theme.warning;
-
-  const iconName = (
-    props.status === 'uploaded' || props.status === 'first upload'
-  ) ? 'cloud' : 'cloud-upload';
+  const showStatus = props.status !== 'new';
 
   const onPressIn = useCallback(() => {
     setPressed(true);
@@ -133,33 +126,12 @@ const ProjectButton = memo((props: {
           >
             {props.project_id}
           </Text>
-          {props.status !== undefined && props.lastUploadDate && (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 5,
-              }}
-            >
-              <View
-                style={{ height: 10 }}
-              >
-                <Icon
-                  iconName={iconName}
-                  color={iconColor}
-                />
-              </View>
-              <Text p
-                style={{
-                  color: pressed ? theme.font_active : theme.font_Button,
-                  fontSize: 10,
-                  fontStyle: 'italic',
-                }}
-              >
-                {props.status === 'modified' ? R['New data'] : props.lastUploadDate}
-              </Text>
-            </View>
-          )}
+          <UploadStatus
+            showStatus={showStatus}
+            uploadStatus={props.status}
+            uploads={props.uploads}
+            pressed={pressed}
+          />
         </View>
     </Pressable>
   );

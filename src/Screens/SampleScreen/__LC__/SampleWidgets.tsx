@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 import { GPS_DTO } from '@Types/ProjectTypes';
@@ -19,17 +20,13 @@ export function F_SampleWidgets(props: {
   const [_, refresh] = useState<boolean>(true);
 
   const onDeleteWidget_Sample = useCallback(async (id_widget: string) => {
-    await ProjectService.deleteWidget_Sample(
-      id_project,
-      id_sample,
-      id_widget,
+    await ProjectService.deleteWidget_Sample(id_project, id_sample, id_widget,
       async () => {
-        await CacheService.loadAllWidgets_Sample(id_project, id_sample);
+        CacheService.removeFromAllWidgets_Sample(id_widget);
+        await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'deletion');
         refresh(prev => !prev);
       },
-      (errorMessage) => {
-        alert(errorMessage);
-      }
+      (errorMessage) => alert(errorMessage),
     );
   }, [id_project, id_sample]);
 
