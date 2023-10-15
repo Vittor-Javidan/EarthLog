@@ -1,2 +1,1 @@
-- Implement a checker for project integrity after project confirmation.
-- Build a feedback screen for upload
+- add translation files for feedback messages

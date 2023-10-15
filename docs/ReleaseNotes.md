@@ -1,5 +1,13 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.5.5 syncData bug fix
+# 0.1.5.6 Download/Upload feedback display
 
-- fixed a bug where new samples was not adding new entries on widget_sample from the widgets inside the the new sample.
+- Implemented a feedback display for DownloadProject, UploadProject and CreateProject popUps
+- now appAPI is called APIServices
+- the service appAPI is now called FetchAPIService
+- "changeAllIDs" method moved from Project Service to Data Process Service.
+- "createSyncDataAfterDownload" moved from Sync Service to Data Process Service.
+- "createSyncDataAfterDownload" renamed to "attachSyncData".
+- removed the need for a configDTO on "getCurrentDateTime" on Date and Time Service.
+- "buildProjectFromDatabase" moved from Project Service to Data Process Service
+- Many popUps had their FootButtons abstracted into its own file

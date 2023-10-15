@@ -10,6 +10,7 @@ import { R_Layout_PseudoWidget } from './component/Layout/PseudoWidget';
 import { R_Alert_CreateProject } from './component/Alert/CreateProject';
 import { R_Alert_CreateSample } from './component/Alert/CreateSample';
 import { R_Alert_ExitApp } from './component/Alert/ExitApp';
+import { R_Alert_Shared } from './component/Alert/__Shared__';
 import { R_Alert_TemplateWidgetCopy } from './component/Alert/TemplateWidgetCopy';
 import { R_NavController } from './global/navController';
 import { R_CredentialScope } from './scope/CredentialSope';
@@ -24,7 +25,7 @@ import { R_GPSInput } from './widgetInput/GPSInput';
 import { R_StringInput } from './widgetInput/StringInput';
 import { R_Alert_UploadProject } from './component/Alert/UploadProject';
 import { R_Alert_DownloadProjects } from './component/Alert/DownloadProject';
-import { R_AppAPI } from './appAPI';
+import { R_FetchAPIService } from './APIService/FetchAPIService';
 import { R_ThemeScope } from './scope/ThemeScope';
 import { R_WidgetThemePreview } from './Screen/WidgetThemePreview';
 import { R_AppThemes } from './Themes/AppThemes';
@@ -32,12 +33,18 @@ import { R_WidgetThemes } from './Themes/WidgetThemes';
 import { R_DateAndTimeScope } from './scope/DateAndTimeScope';
 import { R_DateFormatScreen } from './Screen/DateFormatScreen';
 import { R_TimeFormatScreen } from './Screen/TimeFormatScreen';
+import { R_DataProcessService } from './APIService/DataProcessService';
+import { R_ProjectService } from './service/ProjectService';
 
 export const translations = {
-  appAPI:                     R_AppAPI,
+  APIServices: {
+    fetchAPIService:          R_FetchAPIService,
+    dataProcessService:       R_DataProcessService,
+  },
   service: {
     cacheService:             R_CacheService,
-    DatabaseService:          R_DatabaseService,
+    databaseService:          R_DatabaseService,
+    projectService:           R_ProjectService,
   },
   global: {
     navigationController:     R_NavController,
@@ -64,6 +71,7 @@ export const translations = {
   },
   component: {
     alert: {
+      shared:                 R_Alert_Shared,
       templateWidgetCopy:     R_Alert_TemplateWidgetCopy,
       exitApp:                R_Alert_ExitApp,
       createSample:           R_Alert_CreateSample,

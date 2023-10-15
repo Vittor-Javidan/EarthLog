@@ -4,6 +4,7 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { Text } from '@Text/index';
+import { View } from 'react-native';
 
 export const ErrorDisplay = memo((props: {
   showDisplay: boolean
@@ -11,24 +12,29 @@ export const ErrorDisplay = memo((props: {
 }) => {
 
   const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
+  const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
 
-  return props.showDisplay ? (<>
-    <Text h3
+  return props.showDisplay ? (
+    <View
       style={{
         paddingHorizontal: 10,
-        alignSelf: 'center',
+        gap: 10,
       }}
     >
-      {R['Error']}
-    </Text>
-    <Text p
-      style={{
-        paddingHorizontal: 10,
-        alignSelf: 'center',
-      }}
-    >
-      {props.error ?? ''}
-    </Text>
-  </>) : <></>;
+      <Text h3
+        style={{
+          alignSelf: 'center',
+        }}
+      >
+        {RS['Error']}
+      </Text>
+      <Text p
+        style={{
+          alignSelf: 'center',
+        }}
+      >
+        {props.error ?? ''}
+      </Text>
+    </View>
+  ) : <></>;
 });

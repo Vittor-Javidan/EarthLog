@@ -9,9 +9,9 @@ import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import SyncService from '@Services/SyncService';
 
-import { Button } from '@Button/index';
 import { Input } from '@Input/index';
-import { LC } from '../__LC__';
+import { LC } from '@Alert/__LC__';
+import { FooterButtons } from './FooterButtons';
 
 export const CreateSample = memo((props: {
   id_project: string
@@ -69,48 +69,11 @@ export const CreateSample = memo((props: {
           autoFocus
         />
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 10,
-          gap: 10,
-        }}
-      >
-        <Button.Icon
-          iconName="close"
-          onPress={() => props.closeModal()}
-          theme={{
-            font: theme.wrong,
-            font_Pressed: theme.wrong,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-          style={{
-            height: 40,
-            flex: 1,
-            justifyContent: 'center',
-            paddingVertical: 0,
-            borderRadius: 10,
-          }}
-        />
-        <Button.Icon
-          iconName={name === '' ? 'lock-closed-sharp' : 'checkmark-done-sharp'}
-          onPress={async () => await onAccept()}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.confirm,
-            background: theme.confirm,
-            background_Pressed: theme.background_active,
-          }}
-          style={{
-            height: 40,
-            flex: 1,
-            justifyContent: 'center',
-            paddingVertical: 5,
-            borderRadius: 10,
-          }}
-        />
-      </View>
+      <FooterButtons
+        isNameEmpty={name === ''}
+        onCancel={() => props.closeModal()}
+        onConfirm={async () => await onAccept()}
+      />
     </LC.PopUp>
   );
 });

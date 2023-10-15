@@ -1,19 +1,20 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { CredentialDTO, Loading } from '@Types/AppTypes';
+import { CredentialDTO } from '@Types/AppTypes';
 import { DownloadedProjectDTO } from '@Types/ProjectTypes';
-import AppAPI from '@appAPI/index';
-
+import { translations } from '@Translations/index';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 import SyncService from '@Services/SyncService';
+import ConfigService from '@Services/ConfigService';
+import DataProcessService from '@APIServices/DataProcessService';
+import FetchAPIService from '@APIServices/FetchAPIService';
 
 import { LC } from '@Alert/__LC__';
 import { CredentialsDisplay } from './CredentialsDisplay';
 import { ErrorDisplay } from './ErrorDisplay';
 import { ProjectsDisplay } from './ProjectsDisplay';
-import { LoadingDisplay } from './LoadingDisplay';
 import { FooterButtons } from './FooterButtons';
 
 export const DownloadProjects = memo((props: {
@@ -21,34 +22,22 @@ export const DownloadProjects = memo((props: {
 }) => {
 
   const controller = useMemo(() => new AbortController(), []);
-  const [allProjects     , setAllProjects        ] = useState<DownloadedProjectDTO[] | null>(null);
-  const [selectedProjects, setAllSelectedProjects] = useState<Record<string, boolean>>({});
-  const [hideAcceptButton, setHideConfirmButton  ] = useState<boolean>(false);
-  const [error           , setError              ] = useState<string | null>(null);
-  const [loading         , setLoading            ] = useState<Loading>('Loaded');
+  const config     = useMemo(() => ConfigService.config, []);
+  const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
+  const R          = useMemo(() => translations.component.alert.downloadProjecs[config.language], []);
 
-  const showCredendialDisplay =
-    loading     === 'Loaded'  &&
-    allProjects === null      &&
-    error       === null
-  ;
-  const showProjectsDownloadedDisplay =
-    loading     === 'Loaded'  &&
-    allProjects !== null      &&
-    error       === null
-  ;
-  const showErrorDisplay =
-    loading     === 'Loaded'  &&
-    error       !== null
-  ;
-  const showLoadingDisplay =
-    loading     === 'Loading'
-  ;
-  const showConfirmButtons =
-    showProjectsDownloadedDisplay             &&
-    Object.keys(selectedProjects).length > 0  &&
-    !hideAcceptButton
-  ;
+  const [allProjects      , setAllProjects         ] = useState<DownloadedProjectDTO[] | null>(null);
+  const [selectedProjects , setAllSelectedProjects ] = useState<Record<string, boolean>>({});
+  const [error            , setError               ] = useState<string | null>(null);
+  const [feedbacks        , setFeedbacks           ] = useState<string[]>([]);
+  const [show             , setShow                ] = useState({
+    credentialDisplay: true,
+    loadingDisplay:    false,
+    projectsDisplay:   false,
+    confirmButton:     false,
+  });
+
+  const showErrorDisplay = error !== null;
 
   const onCancel = useCallback(() => {
     props.closeModal();
@@ -56,16 +45,29 @@ export const DownloadProjects = memo((props: {
   }, [props.closeModal]);
 
   const onCredentialChoose = useCallback(async (credential: CredentialDTO) => {
-    setLoading('Loading');
-    const appAPI = new AppAPI(credential);
-    await appAPI.downloadProjects(controller.signal,
+
+    setFeedbacks([]);
+    setShow(prev => ({ ...prev,
+      credentialDisplay: false,
+      loadingDisplay:    true,
+    }));
+
+    const fetchAPI = new FetchAPIService(credential);
+    await fetchAPI.downloadProjects(controller.signal,
+      (feedbackMessage) => setFeedbacks(prev => ([...prev, feedbackMessage])),
       (projects) => {
         setAllProjects(projects);
-        setLoading('Loaded');
+        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+        setTimeout(() => {
+          setShow(prev => ({ ...prev,
+            projectsDisplay: true,
+            loadingDisplay: false,
+          }));
+        }, 200);
       },
       (errorMessage) => {
         setError(errorMessage);
-        setLoading('Loaded');
+        setFeedbacks(prev => [ ...prev, RS['Error!']]);
       },
     );
   }, []);
@@ -74,6 +76,7 @@ export const DownloadProjects = memo((props: {
     setAllSelectedProjects(prev => {
       const newRecord = { ...prev };
       selected === true ? newRecord[project_id] = selected : delete newRecord[project_id];
+      setShow(prev => ({ ...prev, confirmButton: Object.keys(newRecord).length > 0 }));
       return newRecord;
     });
   }, []);
@@ -84,25 +87,32 @@ export const DownloadProjects = memo((props: {
       return;
     }
 
-    setLoading('Loading');
-    setHideConfirmButton(true);
+    setFeedbacks([R['Starting processing']]);
+    setShow(prev => ({ ...prev,
+      loadingDisplay: true,
+      confirmButton: false,
+      projectsDisplay: false,
+    }));
 
     const allSelectedProjectsKeys = Object.keys(selectedProjects);
     const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
 
-      // TODO: Check data integrity here before data processing. If invalid, continue to next loop.
+      const processedProject = DataProcessService.processDownloadedProject(allSelectedProjects[i],
+        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
+      );
 
-      const processedProject = dataProcessingAfterConfirm(allSelectedProjects[i]);
       await ProjectService.createProject(processedProject,
+        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
         () => {
           CacheService.addToAllProjects(processedProject.projectSettings);
           SyncService.addToSyncData(processedProject.syncData);
+          setFeedbacks(prev => [ ...prev, RS['Done!']]);
         },
         (errorMessage) => {
           setError(errorMessage);
-          setLoading('Loaded');
+          setFeedbacks(prev => [ ...prev, RS['Error!']]);
         },
       );
     }
@@ -112,44 +122,29 @@ export const DownloadProjects = memo((props: {
 
   }, [props.closeModal, allProjects, selectedProjects]);
 
-  const dataProcessingAfterConfirm = useCallback((projectDTO: DownloadedProjectDTO) => {
-
-    const { rules } = projectDTO.projectSettings;
-
-    if (rules.allowMultipleDownloads) {
-      ProjectService.changeAllIDs(projectDTO);
-      projectDTO.projectSettings.status = 'new';
-      delete rules.allowMultipleDownloads;
-    }
-
-    if (projectDTO.projectSettings.status !== 'uploaded') {
-      projectDTO.projectSettings.status = 'new';
-    }
-
-    return SyncService.createSyncDataAfterDownload(projectDTO);
-
-  }, []);
-
   return (
     <LC.PopUp>
       <CredentialsDisplay
-        showDisplay={showCredendialDisplay}
+        showDisplay={show.credentialDisplay}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
       <ErrorDisplay
         showDisplay={showErrorDisplay}
         error={error}
       />
-      <ProjectsDisplay
-        downloadedProjects={allProjects ?? []}
-        showDisplay={showProjectsDownloadedDisplay}
-        onSelect={(project_id, selected) => onSelectProject(project_id, selected)}
-      />
-      <LoadingDisplay
-        showDisplay={showLoadingDisplay}
+      {allProjects !== null && (
+        <ProjectsDisplay
+          downloadedProjects={allProjects}
+          showDisplay={show.projectsDisplay}
+          onSelect={(project_id, selected) => onSelectProject(project_id, selected)}
+        />
+      )}
+      <LC.Feedback
+        showDisplay={show.loadingDisplay}
+        feedbackMessage={feedbacks}
       />
       <FooterButtons
-        showConfirmButton={showConfirmButtons}
+        showConfirmButton={show.confirmButton}
         onCancel={() => onCancel()}
         onConfirm={async () => await onConfirm()}
       />

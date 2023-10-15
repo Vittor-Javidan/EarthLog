@@ -1,7 +1,9 @@
 import UtilService from './UtilService';
 
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleDTO, SampleRules, GPS_DTO, DownloadedProjectDTO } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
+import { translations } from '@Translations/index';
+import ConfigService from './ConfigService';
 
 export default class ProjectService {
 
@@ -47,9 +49,6 @@ export default class ProjectService {
     };
   }
 
-  /**
-   * @param rules When undefined, every rule will be enabled by default.
-   */
   static getDefaultSampleSettings(options: {
     name?: string
     rules?: SampleRules,
@@ -124,87 +123,12 @@ export default class ProjectService {
 
 
   // ===============================================================================================
-  // OTHER PROJECT METHODS
-  // ===============================================================================================
-
-  /**
-   * Changes the ID of all elements inside a projectDTO.
-   * All IDs are changed by reference. No need to return a value;
-   */
-  static changeAllIDs(projectDTO: DownloadedProjectDTO): void {
-
-    projectDTO.projectSettings.id_project = UtilService.generateUuidV4();
-    changeAllWidgetsIds(projectDTO.projectWidgets);
-    changeAllWidgetsIds(projectDTO.template);
-    changeAllSamplesIds(projectDTO.samples);
-
-    function changeAllSamplesIds(sampleDTO: SampleDTO[]): void {
-      for (let i = 0; i < sampleDTO.length; i++) {
-        sampleDTO[i].sampleSettings.id_sample = UtilService.generateUuidV4();
-        changeAllWidgetsIds(sampleDTO[i].sampleWidgets);
-      }
-    }
-
-    function changeAllWidgetsIds(widgetDataArray: WidgetData[]): void {
-      for (let i = 0; i < widgetDataArray.length; i++) {
-        widgetDataArray[i].id_widget = UtilService.generateUuidV4();
-        changeAllInputsIds(widgetDataArray[i].inputs);
-      }
-    }
-
-    function changeAllInputsIds(inputDataArray: InputData[]): void {
-      for (let i = 0; i < inputDataArray.length; i++) {
-        inputDataArray[i].id_input = UtilService.generateUuidV4();
-      }
-    }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  // ===============================================================================================
   // BASIC DATABASE METHODS
   // ===============================================================================================
 
-  /**
-   * Use this to retrive a ProjectDTO from database
-   */
-  static async buildProjectFromDatabase(id_project: string): Promise<ProjectDTO> {
-
-    // INITAL PROJECT STRUCTURE
-    const projectDTO: ProjectDTO = {
-      projectSettings: await DatabaseService.readProject(id_project),
-      projectWidgets:  await DatabaseService.getAllWidgets_Project(id_project),
-      template:        await DatabaseService.getAllWidgets_Template(id_project),
-      samples:         [],
-      syncData:        await DatabaseService.readSyncFile(id_project),
-    };
-
-    // GET ALL SAMPLES
-    const allSampleSettings = await DatabaseService.getAllSamples(id_project);
-    for (let i = 0; i < allSampleSettings.length; i++) {
-      projectDTO.samples.push({
-        sampleSettings: allSampleSettings[i],
-        sampleWidgets: await DatabaseService.getAllWidgets_Sample(id_project, allSampleSettings[i].id_sample),
-      });
-    }
-
-    // SYNC PROJECT SETTINGS STATUS WITH PROJECT SYNC FILE
-    projectDTO.projectSettings.status = projectDTO.syncData.project;
-
-    return projectDTO;
-  }
-
   static async createProject(
     projectDTO: ProjectDTO,
+    feedback: (message: string) => void,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
   ): Promise<void> {
@@ -222,21 +146,27 @@ export default class ProjectService {
 
     try {
 
+      const R = translations.service.projectService[ConfigService.config.language];
+
       // PROJECT FOLDER
+      feedback(R['Creating project folder']);
       await DatabaseService.createProject(projectSettings);
 
       // PROJECT WIDGETS
+      feedback(R['Saving project widgets']);
       for (let i = 0; i < projectWidgets.length; i++) {
         await DatabaseService.createWidget_Project(id_project, projectWidgets[i]);
       }
 
       // SAMPLE TEMPLATE WIDGETS
+      feedback(R['Saving template widgets']);
       for (let i = 0; i < template.length; i++) {
         await DatabaseService.createWidget_Template(id_project, template[i]);
       }
 
       // SAMPLES
       for (let i = 0; i < samples.length; i++) {
+        feedback(R['Saving samples of ID:'] + ` ${samples[i].sampleSettings.id_sample}`);
 
         const { sampleSettings, sampleWidgets } = samples[i];
         const { id_sample } = sampleSettings;
@@ -246,11 +176,13 @@ export default class ProjectService {
 
         // SAMPLE WIDGETS
         for (let j = 0; j < sampleWidgets.length; j++) {
+          feedback(R['Saving sample widget of ID:'] + ` ${sampleWidgets[j].id_widget}`);
           await DatabaseService.createWidget_Sample(id_project, id_sample, sampleWidgets[j]);
         }
       }
 
       // PROJECT SYNC FILE
+      feedback(R['Saving project sync file']);
       await DatabaseService.createSyncFile(id_project, projectDTO.syncData);
 
       onSuccess();

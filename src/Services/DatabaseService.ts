@@ -106,7 +106,7 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE PROJECT ID
     if (allProjectsIDs.includes(id_project)) {
-      const R = translations.service.DatabaseService[ConfigService.config.language];
+      const R = translations.service.databaseService[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 projects with same ID']);
     }
 
@@ -230,7 +230,7 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE SAMPLE ID
     if (allSamplesIDs.includes(id_sample)) {
-      const R = translations.service.DatabaseService[ConfigService.config.language];
+      const R = translations.service.databaseService[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 samples with same ID']);
     }
 
@@ -403,7 +403,7 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE WIDGET ID
     if (allWidgetsIDs.includes(id_widget)) {
-      const R = translations.service.DatabaseService[ConfigService.config.language];
+      const R = translations.service.databaseService[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 widgets with same ID']);
     }
 
@@ -580,7 +580,7 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      const R = translations.service.DatabaseService[ConfigService.config.language];
+      const R = translations.service.databaseService[ConfigService.config.language];
       throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     return JSON.parse(indexDataString) as IDsArray;
@@ -590,7 +590,7 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      const R = translations.service.DatabaseService[ConfigService.config.language];
+      const R = translations.service.databaseService[ConfigService.config.language];
       throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     await FileSystemService.writeFile(`${folderPath}/index.json`, JSON.stringify(IDsArray, null, 4));

@@ -1,4 +1,4 @@
-import { ProjectDTO, SyncData, Status, DownloadedProjectDTO } from '@Types/ProjectTypes';
+import { SyncData, Status } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 
 type SyncOperation = 'creation' | 'updating' | 'deletion';
@@ -238,51 +238,5 @@ export default class SyncService {
         case 'deleted':   delete recordList[id_element];       break;
       }
     }
-  }
-
-  /**
-   * Creates and attach the project and sample syncStatus dto based on current projectSettings status.
-   */
-  static createSyncDataAfterDownload(projectDTO: DownloadedProjectDTO): ProjectDTO {
-
-    const projectStatus = projectDTO.projectSettings.status;
-    const newSyncStatus_Project: SyncData = {
-      id_project: projectDTO.projectSettings.id_project,
-      project: projectDTO.projectSettings.status,
-      widgets_Project: {},
-      widgets_Template: {},
-      samples: {},
-      widgets_Samples: {},
-    };
-
-
-    for (let i = 0; i < projectDTO.projectWidgets.length; i++) {
-      const id_widget = projectDTO.projectWidgets[i].id_widget;
-      newSyncStatus_Project.widgets_Project[id_widget] = projectStatus;
-    }
-
-    for (let i = 0; i < projectDTO.template.length; i++) {
-      const id_widget = projectDTO.template[i].id_widget;
-      newSyncStatus_Project.widgets_Template[id_widget] = projectStatus;
-    }
-
-    for (let i = 0; i < projectDTO.samples.length; i++) {
-      const id_sample = projectDTO.samples[i].sampleSettings.id_sample;
-      newSyncStatus_Project.samples[id_sample] = projectStatus;
-
-      for (let j = 0; j < projectDTO.samples[i].sampleWidgets.length; j++) {
-        const id_widget = projectDTO.samples[i].sampleWidgets[j].id_widget;
-        newSyncStatus_Project.widgets_Samples[id_sample] ??= {};
-        newSyncStatus_Project.widgets_Samples[id_sample][id_widget] = projectStatus;
-      }
-    }
-
-    // TYPE CONVERSION
-    const newProjectDTO: ProjectDTO = {
-      ...projectDTO,
-      syncData: newSyncStatus_Project,
-    };
-
-    return newProjectDTO;
   }
 }
