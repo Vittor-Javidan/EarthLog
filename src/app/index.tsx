@@ -25,8 +25,5 @@ async function initApp(onFinish: () => void) {
   await DatabaseService.createDatabaseFolder();
   await ConfigService.loadConfig();
   Location.requestForegroundPermissionsAsync();
-
-  console.log(await FileExportService.getAllExportedFileNames());
-
   onFinish();
 }
