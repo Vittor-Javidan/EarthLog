@@ -4,9 +4,10 @@ import * as Location from 'expo-location';
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import DatabaseService from '@Services/DatabaseService';
+import CredentialService from '@Services/CredentialService';
+import FileExportService from '@Services/FileExportService';
 
 import { Layout } from '@Layout/index';
-import CredentialService from '@Services/CredentialService';
 
 export default function Home() {
 
@@ -19,9 +20,13 @@ export default function Home() {
 }
 
 async function initApp(onFinish: () => void) {
-  await ConfigService.loadConfig();
-  await DatabaseService.createDatabaseFolder();
+  await FileExportService.createExportedFilesFolder();
   await CredentialService.createCredentialsFolder();
-  await Location.requestForegroundPermissionsAsync();
+  await DatabaseService.createDatabaseFolder();
+  await ConfigService.loadConfig();
+  Location.requestForegroundPermissionsAsync();
+
+  console.log(await FileExportService.getAllExportedFileNames());
+
   onFinish();
 }

@@ -33,7 +33,7 @@ export const FooterButtons = memo((props: {
           background_Pressed: theme.background_active,
         }}
         style={{
-          flex: 0.5,
+          flex: 1,
           height: 40,
           justifyContent: 'center',
           paddingVertical: 0,

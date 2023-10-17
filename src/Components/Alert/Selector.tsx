@@ -9,6 +9,7 @@ import { CreateSample } from './PopUp/CreateSample';
 import { TemplateWidgetCopy } from './PopUp/TemplateWidgetCopy';
 import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
+import { ExportProject } from './PopUp/ExportProject';
 
 export const Selector = memo((props: {
   config: ModalConfig
@@ -52,6 +53,12 @@ export const Selector = memo((props: {
     );
     case 'upload projects': return (
       <UploadProjects
+        id_project={props.config.id_project}
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'export project': return (
+      <ExportProject
         id_project={props.config.id_project}
         closeModal={() => props.closeModal()}
       />

@@ -112,7 +112,7 @@ export type ConfigDTO = {
 export type ModalConfig = {
   type: 'exit app' | 'project creation' | 'download projects'
 } | {
-  type: 'sample creation' | 'upload projects'
+  type: 'sample creation' | 'upload projects' | 'export project'
   id_project: string
 } | {
   type: 'template widget copy'

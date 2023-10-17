@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
@@ -6,11 +6,14 @@ import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
+import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
+import AlertService from '@Services/AlertService';
 
 export default function ProjectScope() {
 
@@ -34,13 +37,12 @@ export default function ProjectScope() {
     <Layout.Root
       title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer />}
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
 
         onBackPress={() => navigate('HOME SCOPE')}
-
         buttonData={[{
           title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
         }, {
@@ -89,6 +91,35 @@ const NavigationTree = memo(() => {
       ]}
     />
   );
+});
+
+const Drawer = memo(() => {
+
+  const id_project = useLocalSearchParams().id_project as string;
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
+  const R      = useMemo(() => translations.scope.projectScope[config.language], []);
+
+  const onExport = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'export project',
+      id_project: id_project,
+    }, () => {});
+  }, []);
+
+  return (<>
+    <Button.TextWithIcon
+      title={R['Export project']}
+      iconName="document-text-outline"
+      theme={{
+        font: theme.font,
+        background: theme.background,
+        font_Pressed: theme.font_active,
+        background_Pressed: theme.background_active,
+      }}
+      onPress={async () => await onExport()}
+    />
+  </>);
 });
 
 async function fetchSamples(

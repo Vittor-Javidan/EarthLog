@@ -121,7 +121,13 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}`
     );
 
-    // CREATE MAIN FOLDER CONTENTS
+    // CREATE PROJECT SETTINGS FILE ==
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`,
+      JSON.stringify(projectSettings, null, 4),
+    );
+
+    // CREATE PROJECT WIDGETS FOLDER =======
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`
     );
@@ -129,6 +135,8 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets/index.json`,
       JSON.stringify([], null, 4)
     );
+
+    // CREATE TEMPLATE WIDGETS FOLDER ======
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`
     );
@@ -136,6 +144,8 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template/index.json`,
       JSON.stringify([], null, 4)
     );
+
+    // CREATE SAMPLES FOLDER ===============
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`
     );
@@ -143,9 +153,19 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`,
       JSON.stringify([], null, 4)
     );
-    await FileSystemService.writeFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`,
-      JSON.stringify(projectSettings, null, 4),
+
+    // CREATE MEDIA FOLDER =================
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/images`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/videos`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/audios`
     );
   }
 
