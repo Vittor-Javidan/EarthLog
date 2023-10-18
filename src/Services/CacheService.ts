@@ -46,6 +46,9 @@ export default class CacheService {
     this.lastOpenProject = await DatabaseService.readProject(id_project);
   }
 
+  /**
+   * @WARNING Depends on all projects already being loaded
+   */
   static async loadLastOpenProject(): Promise<void> {
 
     const lastProjectID = await DatabaseService.getLastOpenProject();
