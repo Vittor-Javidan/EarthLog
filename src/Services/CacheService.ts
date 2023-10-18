@@ -65,7 +65,7 @@ export default class CacheService {
     this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
     this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(lastProjectID);
     this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(lastProjectID);
-    this.allSamples = await DatabaseService.getAllSamples(lastProjectID);
+    this.allSamples = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
   }
 
   static async deleteLastOpenProject(): Promise<void> {
@@ -158,11 +158,11 @@ export default class CacheService {
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
-    this.allProjects = await DatabaseService.getAllProjects();
+    this.allProjects = (await DatabaseService.getAllProjects()).reverse();
   }
 
   static async loadAllSamplesSettings(id_project: string): Promise<void> {
-    this.allSamples = await DatabaseService.getAllSamples(id_project);
+    this.allSamples = (await DatabaseService.getAllSamples(id_project)).reverse();
   }
 
   static async loadAllWidgets_Project(id_project: string): Promise<void> {
@@ -188,7 +188,7 @@ export default class CacheService {
    * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
    */
   static addToAllSamples(sampleSettings: SampleSettings): void {
-    this.allSamples = [...this.allSamples, UtilService.deepCopy(sampleSettings)];
+    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
   }
 
   /**

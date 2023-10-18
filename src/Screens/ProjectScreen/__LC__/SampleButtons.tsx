@@ -29,7 +29,7 @@ export function F_SampleButtons() {
     setIsDataLoading(true);
   }, [loadFinished]);
 
-  const renderItem = ({ item }: { item: SampleSettings }) => (
+  const renderItem = useCallback(({ item }: { item: SampleSettings }) => (
     <Button.TextWithIcon
       title={item.name}
       iconName="clipboard"
@@ -41,17 +41,18 @@ export function F_SampleButtons() {
         background_Pressed: theme.background_active,
       }}
     />
-  );
+  ), []);
 
   return (
     <VirtualizedList<SampleSettings>
-      data={CacheService.allSamples.slice().reverse()}
+      data={CacheService.allSamples}
       maxToRenderPerBatch={5}
       renderItem={(item) => renderItem(item)}
       keyExtractor={(item) => item.id_sample}
       getItemCount={() => CacheService.allSamples.length}
       getItem={(data, index) => data[index]}
       ListFooterComponent={isDataLoading ? <Layout.Loading /> : null}
+      fadingEdgeLength={150}
       onEndReachedThreshold={0.1}
       onEndReached={() => onEndReached()}
       onMomentumScrollBegin={() => onScroll()}

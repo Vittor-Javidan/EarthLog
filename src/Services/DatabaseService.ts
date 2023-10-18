@@ -111,9 +111,10 @@ export default class DatabaseService {
     }
 
     // ADD TO ALL PROJECTS INDEX
+    allProjectsIDs.push(id_project);
     await this.updateIndexFile(
       `${this.DATA_BASE_DIRECTORY}`,
-      [id_project, ...allProjectsIDs]
+      allProjectsIDs,
     );
 
     // CREATE MAIN FOLDER
@@ -255,9 +256,10 @@ export default class DatabaseService {
     }
 
     // ADD TO ALL SAMPLES INDEX
+    allSamplesIDs.push(id_sample);
     await this.updateIndexFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`,
-      [...allSamplesIDs, id_sample]
+      allSamplesIDs
     );
 
     // CREATE MAIN FOLDER
@@ -428,9 +430,10 @@ export default class DatabaseService {
     }
 
     // ADD TO PROJECT WIDGETS INDEX
+    allWidgetsIDs.push(id_widget);
     await this.updateIndexFile(
       `${allWidgetsFolderPath}`,
-      [...allWidgetsIDs, id_widget]
+      allWidgetsIDs,
     );
 
     // CREATE MAIN FOLDER
