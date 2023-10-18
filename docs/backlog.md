@@ -1,6 +1,4 @@
-- Implement docx lib to create docx files.
-- Implement folder creation/deletion methods for generated documents like csv, docx, pdf etc.
-- Create a DOCX export module. This module will build, generate, save the file inside the generated documents folder, and finally show the share option for user to send the file anywhere.
-- Create a button to export project on project scope
-- When the project export button is clicked, a modal asking for the export format shold pop.
+- Rename redudant names on translations files.
+- remove Typescript explict return type for scope components
+
 - create a screen to display and share already generated files

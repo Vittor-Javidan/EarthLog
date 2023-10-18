@@ -1,5 +1,7 @@
 // Before any commit, use the command line: tsc --noEmit
 
-# 0.1.6.1 Upload Fix
+# 0.1.6.2 Export Project Screen
 
-- Fix date and time not updating to the last entry locally after a successfull upload
+- Now Export Project buttons on Project Scope makes you navigate to Export Project Scope.
+- Added a file name input for exported projects
+- added missing translations

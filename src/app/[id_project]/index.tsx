@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
@@ -13,7 +13,6 @@ import { Layout } from '@Layout/index';
 import { ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
-import AlertService from '@Services/AlertService';
 
 export default function ProjectScope() {
 
@@ -100,24 +99,17 @@ const Drawer = memo(() => {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.scope.projectScope[config.language], []);
 
-  const onExport = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'export project',
-      id_project: id_project,
-    }, () => {});
-  }, []);
-
   return (<>
     <Button.TextWithIcon
       title={R['Export project']}
-      iconName="document-text-outline"
+      iconName="arrow-redo"
       theme={{
         font: theme.font,
         background: theme.background,
         font_Pressed: theme.font_active,
         background_Pressed: theme.background_active,
       }}
-      onPress={async () => await onExport()}
+      onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
     />
   </>);
 });

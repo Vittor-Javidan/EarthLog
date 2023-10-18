@@ -3,6 +3,8 @@ import { Document, Packer } from 'docx';
 import FileExportService from '@Services/FileExportService';
 import DataProcessService from '@APIServices/DataProcessService';
 import { document_Project } from './ProjectDocument';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
 
 export default class DOCX_Module {
 
@@ -11,20 +13,22 @@ export default class DOCX_Module {
     await FileExportService.saveAndShare(`${filename}.docx`, fileData);
   }
 
-  static async buildAndShare_Project(id_project: string, feedback: (message: string) => void) {
+  static async buildAndShare_Project(id_project: string, fileName: string, feedback: (message: string) => void) {
+
+    const RS = translations.FileExportModules.share[ConfigService.config.language];
 
     const projectDTO = await DataProcessService.buildProjectFromDatabase(id_project,
       (feedbackMessage) => feedback(feedbackMessage)
     );
 
-    feedback('Mounting document');
+    feedback(RS['Mounting document']);
     const document = new Document({
       sections: [{
         children: [ ...document_Project(projectDTO) ],
       }],
     });
 
-    feedback('Sharing document');
-    await this.saveAndShare('HelloWorld', document);
+    feedback(RS['Sharing document']);
+    await this.saveAndShare(fileName, document);
   }
 }

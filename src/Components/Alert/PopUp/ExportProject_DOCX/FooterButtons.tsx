@@ -7,7 +7,9 @@ import ThemeService from '@Services/ThemeService';
 import { Button } from '@Button/index';
 
 export const FooterButtons = memo((props: {
+  isNameEmpty: boolean
   onCancel: () => void
+  onConfirm: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -17,8 +19,6 @@ export const FooterButtons = memo((props: {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'center',
-        width: '100%',
         paddingHorizontal: 10,
         gap: 10,
       }}
@@ -27,16 +27,33 @@ export const FooterButtons = memo((props: {
         iconName="close"
         onPress={() => props.onCancel()}
         theme={{
-          font: theme.font,
+          font: theme.wrong,
           font_Pressed: theme.wrong,
-          background: theme.wrong,
+          background: theme.background_Button,
           background_Pressed: theme.background_active,
         }}
         style={{
-          flex: 1,
           height: 40,
+          flex: 1,
           justifyContent: 'center',
           paddingVertical: 0,
+          borderRadius: 10,
+        }}
+      />
+      <Button.Icon
+        iconName={props.isNameEmpty ? 'lock-closed-sharp' : 'checkmark-done-sharp'}
+        onPress={() => props.onConfirm()}
+        theme={{
+          font: theme.font,
+          font_Pressed: theme.confirm,
+          background: theme.confirm,
+          background_Pressed: theme.background_active,
+        }}
+        style={{
+          height: 40,
+          flex: 1,
+          justifyContent: 'center',
+          paddingVertical: 5,
           borderRadius: 10,
         }}
       />

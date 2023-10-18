@@ -35,8 +35,15 @@ import { R_DateFormatScreen } from './Screen/DateFormatScreen';
 import { R_TimeFormatScreen } from './Screen/TimeFormatScreen';
 import { R_DataProcessService } from './APIService/DataProcessService';
 import { R_ProjectService } from './service/ProjectService';
+import { R_ExportProjectScope } from './scope/exportProjectScope';
+import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
+import { R_Alert_ExportProject_DOCX } from './component/Alert/ExportProject_DOCX';
+import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
 
 export const translations = {
+  FileExportModules: {
+    share:                    R_FileExportModules_Shared,
+  },
   APIServices: {
     fetchAPIService:          R_FetchAPIService,
     dataProcessService:       R_DataProcessService,
@@ -57,6 +64,7 @@ export const translations = {
     credentialScope:          R_CredentialScope,
     themeScope:               R_ThemeScope,
     dateAndTime:              R_DateAndTimeScope,
+    exportProject:            R_ExportProjectScope,
   },
   screen: {
     homeScreen:               R_HomeScreen,
@@ -68,6 +76,7 @@ export const translations = {
     widgetThemePreview:       R_WidgetThemePreview,
     dateFormatScreen:         R_DateFormatScreen,
     timeFormatScreen:         R_TimeFormatScreen,
+    exportProject:            R_Screen_ExportProject,
   },
   component: {
     alert: {
@@ -78,6 +87,7 @@ export const translations = {
       createProject:          R_Alert_CreateProject,
       uploadProject:          R_Alert_UploadProject,
       downloadProjecs:        R_Alert_DownloadProjects,
+      exportProeject_DOCX:    R_Alert_ExportProject_DOCX,
     },
     button:                   R_Button,
     layout: {

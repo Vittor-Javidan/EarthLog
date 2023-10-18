@@ -15,7 +15,8 @@ type ScreenName = (
     'CREDENTIAL SCOPE'                                |
   'HOME SCOPE'                                        |
     'PROJECT SCOPE'                                   |
-      'SAMPLE SCOPE'
+      'SAMPLE SCOPE'                                  |
+      'EXPORT PROJECT SCOPE'
 )
 
 export function navigate(
@@ -78,6 +79,17 @@ export function navigate(
       }
 
       navController.push(AppRoutes.PROJECT_SCOPE(id_project));
+      break;
+    }
+
+    case 'EXPORT PROJECT SCOPE': {
+
+      if (id_project === undefined) {
+        alert(R['Project ID undefined']);
+        break;
+      }
+
+      navController.push(AppRoutes.PS_EXPORT_PORJECT_SCOPE(id_project));
       break;
     }
 

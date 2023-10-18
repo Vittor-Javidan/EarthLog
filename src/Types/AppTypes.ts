@@ -128,6 +128,7 @@ export type RegexRules = {
   'noSpecialLetter': RegExp
   'id':              RegExp
   'hexColor':        RegExp
+  'fileName':        RegExp
 }
 
 export type CredentialDTO = {

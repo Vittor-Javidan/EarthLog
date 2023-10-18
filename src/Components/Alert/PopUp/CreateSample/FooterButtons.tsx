@@ -58,5 +58,5 @@ export const FooterButtons = memo((props: {
         }}
       />
     </View>
-  )
+  );
 });
