@@ -9,7 +9,7 @@ import ConfigService from '@Services/ConfigService';
 import { Layout } from '@Layout/index';
 import { SettingsScreen } from '@Screens/SettingsScreen';
 
-export default function SettingsScope(): JSX.Element {
+export default function SettingsScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.settings[config.language], []);

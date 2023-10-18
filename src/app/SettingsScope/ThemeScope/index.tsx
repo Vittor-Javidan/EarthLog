@@ -11,7 +11,7 @@ import { AppThemeScreen } from '@Screens/AppThemeScreen';
 import { WidgetThemeScreen } from '@Screens/WidgetThemeScreen';
 import { WidgetThemePreviewScreen } from '@Screens/WidgetThemePreviewScreen';
 
-export default function ThemeScope(): JSX.Element {
+export default function ThemeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.theme[config.language], []);
