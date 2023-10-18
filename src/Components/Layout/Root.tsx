@@ -213,6 +213,7 @@ const DrawerLayer = memo((props: {
         contentContainerStyle={{
           flex: 1,
           backgroundColor: theme.background,
+          gap: 1,
         }}
         style={{
           position: 'absolute',

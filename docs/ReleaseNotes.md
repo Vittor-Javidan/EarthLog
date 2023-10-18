@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.6.8 Last Open Project Bug fix
+# 0.1.6.9 Credential Scope moved
 
-- fixed a bug where last open project was not being loaded on first boot. Problem cause because it need the project Settings to be loaded first.
+- Credential Scope moved to a scope bigger than Settings Scope.
+- Added a gap to drawer Scrollview
+- Now credential screen can be accessed by Home Scope menu button.

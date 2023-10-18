@@ -1,1 +1,0 @@
-- move credential scope to home scope, and add a credentials buttons on its drawer

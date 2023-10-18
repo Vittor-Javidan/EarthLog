@@ -57,17 +57,6 @@ export const SettingsButtons = memo(() => {
         }}
       />
       <Button.TextWithIcon
-        title={R['Credentials']}
-        iconName="card-outline"
-        onPress={() => navigate('CREDENTIAL SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
         title={'Whipe All Data'}
         iconName="trash-outline"
         onPress={async () => await whipeAllData()}
