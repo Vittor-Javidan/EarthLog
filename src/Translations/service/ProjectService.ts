@@ -9,7 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Saving project sync file': string
 }>
 
-export const R_ProjectService: TranslationDTO = {
+export const R_Service_Project: TranslationDTO = {
   'en-US': {
     'Creating project folder': 'Creating project folder',
     'Saving project widgets': 'Saving project widgets',

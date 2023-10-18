@@ -19,7 +19,7 @@ export default function ProjectScope() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.scope.projectScope[config.language], []);
+  const R               = useMemo(() => translations.scope.project[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [loading                 , setLoading                  ] = useState<Loading>('Loading');
@@ -97,7 +97,7 @@ const Drawer = memo(() => {
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R      = useMemo(() => translations.scope.projectScope[config.language], []);
+  const R      = useMemo(() => translations.scope.project[config.language], []);
 
   return (<>
     <Button.TextWithIcon

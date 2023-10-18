@@ -17,7 +17,7 @@ export const SettingsButtons = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.settingsScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.settings[config.language], []);
 
   return (
     <View

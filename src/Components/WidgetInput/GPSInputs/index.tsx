@@ -30,7 +30,7 @@ export const GPSInput = memo((props: {
 }) => {
 
   const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.widgetInput.gpsInput[config.language], []);
+  const R          = useMemo(() => translations.widgetInput.gps[config.language], []);
   const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.inputData.value)), []);
 
   const [inputData    , setInputData    ] = useState<GPSInputData>(UtilService.deepCopy(props.inputData));

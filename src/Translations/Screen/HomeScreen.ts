@@ -9,7 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'New data': string
 }>
 
-export const R_HomeScreen: TranslationDTO = {
+export const R_Screen_Home: TranslationDTO = {
   'en-US': {
     'Recently Open': 'Recently Open',
     'Projects': 'Projects',

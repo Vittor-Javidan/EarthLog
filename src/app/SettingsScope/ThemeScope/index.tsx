@@ -14,7 +14,7 @@ import { WidgetThemePreviewScreen } from '@Screens/WidgetThemePreviewScreen';
 export default function ThemeScope(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.themeScope[config.language], []);
+  const R      = useMemo(() => translations.scope.theme[config.language], []);
 
   const [loading            , setLoading    ] = useState<Loading>('Loading');
   const [rootRefresher      , refresh       ] = useState<boolean>(true);

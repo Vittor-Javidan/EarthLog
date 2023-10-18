@@ -12,7 +12,7 @@ import { SettingsScreen } from '@Screens/SettingsScreen';
 export default function SettingsScope(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.settingsScope[config.language], []);
+  const R      = useMemo(() => translations.scope.settings[config.language], []);
   const [loading, setLoading] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('HOME SCOPE'), []);

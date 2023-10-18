@@ -9,7 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Write your sample alias here': string
 }>
 
-export const R_ProjectInfoScreen: TranslationDTO = {
+export const R_Screen_ProjectInfo: TranslationDTO = {
   'en-US': {
     'Project info': 'Project info',
     'ID': 'ID',

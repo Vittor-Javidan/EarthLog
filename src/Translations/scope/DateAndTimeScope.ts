@@ -6,7 +6,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Time': string
 }>
 
-export const R_DateAndTimeScope: TranslationDTO = {
+export const R_Scope_DateAndTime: TranslationDTO = {
   'en-US': {
     'Date and time': 'Date and time',
     'Date': 'Date',

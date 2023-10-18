@@ -5,7 +5,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Sample ID undefined': string
 }>
 
-export const R_NavController: TranslationDTO = {
+export const R_Global_NavController: TranslationDTO = {
 	'en-US': {
     'Project ID undefined': 'Project ID undefined',
     'Sample ID undefined': 'Sample ID undefined',

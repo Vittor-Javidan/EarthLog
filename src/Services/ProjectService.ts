@@ -146,7 +146,7 @@ export default class ProjectService {
 
     try {
 
-      const R = translations.service.projectService[ConfigService.config.language];
+      const R = translations.service.project[ConfigService.config.language];
 
       // PROJECT FOLDER
       feedback(R['Creating project folder']);

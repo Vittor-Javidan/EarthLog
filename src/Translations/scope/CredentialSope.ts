@@ -4,7 +4,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Credentials': string
 }>
 
-export const R_CredentialScope: TranslationDTO = {
+export const R_Scope_Credential: TranslationDTO = {
   'en-US': {
     'Credentials': 'Credentials',
   },

@@ -7,7 +7,7 @@ export type TranslationDTO = Record<LanguageTag, {
   'Credentials': string
 }>
 
-export const R_SettingsScreen: TranslationDTO = {
+export const R_Screen_Settings: TranslationDTO = {
   'en-US': {
     'Language': 'Language',
     'Date and time': 'Date and time',

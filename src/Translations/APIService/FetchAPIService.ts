@@ -19,7 +19,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Sending to server:': string
 }>
 
-export const R_FetchAPIService: TranslationDTO = {
+export const R_Service_FetchAPI: TranslationDTO = {
   'en-US': {
     'The server did not recognize your credentials. Failed to authenticate.': 'The server did not recognize your credentials. Failed to authenticate.',
     '\nMethod: POST': '\nMethod: POST',

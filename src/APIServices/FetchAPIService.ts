@@ -72,7 +72,7 @@ export default class FetchAPIService {
   ): Promise<void> {
     try {
 
-      const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+      const R = translations.APIServices.fetchAPI[ConfigService.config.language];
 
       // AUTHENTICATION ===========================
       feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
@@ -131,7 +131,7 @@ export default class FetchAPIService {
     } catch (error) {
 
       if (error instanceof TypeError) {
-        const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         switch (error.message) {
           case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }
@@ -154,7 +154,7 @@ export default class FetchAPIService {
   ) {
     try {
 
-      const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+      const R = translations.APIServices.fetchAPI[ConfigService.config.language];
 
       // AUTHENTICATION ===========================
       feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
@@ -172,7 +172,7 @@ export default class FetchAPIService {
       const authBody = await authResponse.json();
       feedback(R['Authenticated']);
       if (!authBody.accessToken) {
-        const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         onError(
           R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
           R['\nMethod: POST'] +
@@ -188,7 +188,7 @@ export default class FetchAPIService {
       const response = await this.postProject(authBody.accessToken, signal, projectDTO);
       if (!response.ok) {
         const serverMessage = response.headers.get('serverMessage');
-        const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         onError(
           R['It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.'] +
           R['\nMethod: POST'] +
@@ -204,7 +204,7 @@ export default class FetchAPIService {
     } catch (error) {
 
       if (error instanceof TypeError) {
-        const R = translations.APIServices.fetchAPIService[ConfigService.config.language];
+        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         switch (error.message) {
           case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }

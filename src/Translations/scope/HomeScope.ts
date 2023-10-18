@@ -6,7 +6,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Settings': string
 }>
 
-export const R_HomeScope: TranslationDTO = {
+export const R_Scope_Home: TranslationDTO = {
   'en-US': {
     'Home screen': 'Main Screen',
 		'Want to exit?': 'Want to exit?',

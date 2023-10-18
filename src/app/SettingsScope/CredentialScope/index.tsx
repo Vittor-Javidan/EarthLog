@@ -13,7 +13,7 @@ import CacheService from '@Services/CacheService';
 export default function LanguageSelectionScope(): JSX.Element {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.credentialScope[config.language], []);
+  const R      = useMemo(() => translations.scope.credential[config.language], []);
 
   const [loading, setLoading] = useState<Loading>('Loading');
 

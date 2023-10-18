@@ -23,7 +23,7 @@ export const CredentialWidget = memo((props: {
 
   const config      = useMemo(() => ConfigService.config, []);
   const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R           = useMemo(() => translations.screen.credentialScreen[config.language], []);
+  const R           = useMemo(() => translations.screen.credential[config.language], []);
   const unusedProps = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,

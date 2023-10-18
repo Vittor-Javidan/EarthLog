@@ -13,7 +13,7 @@ export default function LanguageSelectionScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const [language, setLanguage] = useState<LanguageTag>(config.language);
-  const R = translations.scope.languageSelectionScope[language];
+  const R = translations.scope.languageSelection[language];
 
   useBackPress(() => navigate('SETTINGS SCOPE'), []);
 

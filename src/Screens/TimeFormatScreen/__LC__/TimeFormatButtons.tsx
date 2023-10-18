@@ -40,7 +40,7 @@ const TimeFormatButton = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.timeFormatScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.timeFormat[config.language], []);
 
   return (
     <Button.TextWithIcon

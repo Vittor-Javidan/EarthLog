@@ -8,7 +8,7 @@ type TranslationDTO = Record<LanguageTag, {
   'ERROR: Sample Widget does not exist on cache': string
 }>
 
-export const R_CacheService: TranslationDTO = {
+export const R_Service_Cache: TranslationDTO = {
   'en-US': {
     'ERROR: Project does not exist on cache': 'ERROR: Project does not exist on cache',
     'ERROR: Sample does not exist on cache': 'ERROR: Sample does not exist on cache',

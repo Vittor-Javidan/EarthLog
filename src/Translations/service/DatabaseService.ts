@@ -7,7 +7,7 @@ type TranslationDTO = Record<LanguageTag, {
   'ERROR: index.json file do not exist. Path: ': string
 }>
 
-export const R_DatabaseService: TranslationDTO = {
+export const R_Service_Database: TranslationDTO = {
   'en-US': {
     'ERROR: Not possible to create 2 projects with same ID': 'ERROR: Not possible to create 2 projects with same ID',
     'ERROR: Not possible to create 2 samples with same ID': 'ERROR: Not possible to create 2 samples with same ID',

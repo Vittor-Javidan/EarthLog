@@ -55,7 +55,7 @@ const ThemeButtons = memo((props: {
 
   const themes = useMemo(() => ThemeService.widgetThemes, []);
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.themes.widgetThemes[config.language], []);
+  const R      = useMemo(() => translations.themes.widget[config.language], []);
 
   const AllThemeButtons = ThemeService.themeNamesArray.Widget.map(themeName => (
     <ThemeButton

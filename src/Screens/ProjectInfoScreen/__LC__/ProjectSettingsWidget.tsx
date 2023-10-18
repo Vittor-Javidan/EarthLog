@@ -24,7 +24,7 @@ export const ProjectSettingsWidget = memo((props: {
   const id_project  = useLocalSearchParams().id_project as string;
   const config      = useMemo(() => ConfigService.config, []);
   const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R           = useMemo(() => translations.screen.projectInfoScreen[config.language], []);
+  const R           = useMemo(() => translations.screen.projectInfo[config.language], []);
   const unusedProps = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,

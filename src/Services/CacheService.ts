@@ -85,7 +85,7 @@ export default class CacheService {
         return this.allProjects[i];
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
@@ -95,7 +95,7 @@ export default class CacheService {
         return this.allSamples[i];
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
@@ -106,7 +106,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
@@ -117,7 +117,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
@@ -128,7 +128,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project Widget does not exist on cache']);
   }
 
@@ -139,7 +139,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Template Widget does not exist on cache']);
   }
 
@@ -150,7 +150,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample Widget does not exist on cache']);
   }
 

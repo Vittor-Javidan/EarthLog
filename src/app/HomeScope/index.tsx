@@ -19,7 +19,7 @@ import { HomeScreen } from '@Screens/HomeScreen';
 export default function HomeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+  const R      = useMemo(() => translations.scope.home[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const Drawer = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+  const R      = useMemo(() => translations.scope.home[config.language], []);
 
   return (<>
     <Button.TextWithIcon

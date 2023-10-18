@@ -13,7 +13,7 @@ export default class DataProcessService {
     feedback: (message: string) => void
   ) {
 
-    const R = translations.APIServices.dataProcessService[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[ConfigService.config.language];
 
     feedback(R['Processing project:'] + ` ${projectDTO.projectSettings.name}`);
     const { rules } = projectDTO.projectSettings;
@@ -116,7 +116,7 @@ export default class DataProcessService {
     feedback: (message: string) => void
   ) {
 
-    const R = translations.APIServices.dataProcessService[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[ConfigService.config.language];
 
     // Upload Date/Time entry ================
     feedback(R['Attaching upload date and time']);
@@ -135,7 +135,7 @@ export default class DataProcessService {
     feedback: (message: string) => void
   ): Promise<ProjectDTO> {
 
-    const R = translations.APIServices.dataProcessService[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[ConfigService.config.language];
 
     // GET PROJECT SETTINGS
     feedback(R['Loading project settings']);

@@ -42,7 +42,7 @@ const ThemButton = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.themes.widgetThemes[config.language], []);
+  const R      = useMemo(() => translations.themes.widget[config.language], []);
   const theme = ThemeService.appThemes[config.appTheme].component;
 
   return (

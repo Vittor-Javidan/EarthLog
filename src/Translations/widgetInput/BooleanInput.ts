@@ -6,7 +6,7 @@ type TranslationDTO = Record<LanguageTag, {
   'N/A:': string
 }>
 
-export const R_BooleanInput: TranslationDTO = {
+export const R_Input_Boolean: TranslationDTO = {
   'en-US': {
     'true': 'TRUE',
     'false': 'FALSE',

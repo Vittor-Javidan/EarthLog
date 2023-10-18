@@ -2,7 +2,7 @@ import { LanguageTag, TimeFormat } from '@Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, Record<TimeFormat, string>>
 
-export const R_TimeFormatScreen: TranslationDTO = {
+export const R_Screen_TimeFormat: TranslationDTO = {
   'en-US': {
     'HH : MM : SS': 'Hours : Minutes : Seconds',
     'HH : SS : MM': 'Hours : Seconds : Minutes',

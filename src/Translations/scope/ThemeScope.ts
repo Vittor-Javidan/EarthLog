@@ -7,7 +7,7 @@ export type TranslationDTO = Record<LanguageTag, {
   'Preview': string
 }>
 
-export const R_ThemeScope: TranslationDTO = {
+export const R_Scope_Theme: TranslationDTO = {
   'en-US': {
     'Themes': 'Themes',
     'App': 'App',
