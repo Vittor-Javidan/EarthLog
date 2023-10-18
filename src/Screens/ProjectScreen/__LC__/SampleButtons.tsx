@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { VirtualizedList } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
@@ -9,6 +9,7 @@ import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
+import { SampleSettings } from '@Types/ProjectTypes';
 
 export function F_SampleButtons() {
 
@@ -28,29 +29,32 @@ export function F_SampleButtons() {
     setIsDataLoading(true);
   }, [loadFinished]);
 
+  const renderItem = ({ item }: { item: SampleSettings }) => (
+    <Button.TextWithIcon
+      title={item.name}
+      iconName="clipboard"
+      onPress={() => navigate('SAMPLE SCOPE', id_project, item.id_sample)}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+  );
+
   return (
-    <FlatList
+    <VirtualizedList<SampleSettings>
       data={CacheService.allSamples.slice().reverse()}
       maxToRenderPerBatch={5}
-      initialNumToRender={5}
+      renderItem={(item) => renderItem(item)}
       keyExtractor={(item) => item.id_sample}
-      refreshing={isDataLoading}
+      getItemCount={() => CacheService.allSamples.length}
+      getItem={(data, index) => data[index]}
       ListFooterComponent={isDataLoading ? <Layout.Loading /> : null}
+      onEndReachedThreshold={0.1}
       onEndReached={() => onEndReached()}
-      onScroll={() => onScroll()}
-      renderItem={({item}) => (
-        <Button.TextWithIcon
-          title={item.name}
-          iconName="clipboard"
-          onPress={() => navigate('SAMPLE SCOPE', id_project, item.id_sample)}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.font_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-        />
-      )}
+      onMomentumScrollBegin={() => onScroll()}
       contentContainerStyle={{
         paddingTop: 55,
         paddingBottom: 150,

@@ -119,10 +119,13 @@ async function fetchSamples(
   whenLoaded: () => void
 ) {
   if (id_project !== CacheService.lastOpenProject.id_project) {
-    await CacheService.saveLastOpenProject(id_project);
-    await CacheService.loadAllSamplesSettings(id_project);
-    await CacheService.loadAllWidgets_Project(id_project);
-    await CacheService.loadAllWidgets_Template(id_project);
+    const promises = [
+      CacheService.saveLastOpenProject(id_project),
+      CacheService.loadAllSamplesSettings(id_project),
+      CacheService.loadAllWidgets_Project(id_project),
+      CacheService.loadAllWidgets_Template(id_project),
+    ];
+    await Promise.all(promises);
   }
   whenLoaded();
 }

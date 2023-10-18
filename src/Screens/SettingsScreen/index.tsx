@@ -20,7 +20,7 @@ export const SettingsScreen = memo((props: {
         <Layout.Loading />
       ) : (
         <Animation.SlideFromLeft
-          delay={300}
+          delay={200}
           duration={200}
         >
           <Layout.ScrollView>

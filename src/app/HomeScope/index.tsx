@@ -87,9 +87,12 @@ const Drawer = memo(() => {
 });
 
 async function fetchProject(whenLoaded: () => void) {
-  await CacheService.loadAllProjectsSettings();
-  await CacheService.loadLastOpenProject();
-  await CacheService.loadAllCredentials();
-  await SyncService.loadAllSyncData();
+  const promises = [
+    CacheService.loadAllProjectsSettings(),
+    CacheService.loadLastOpenProject(),
+    CacheService.loadAllCredentials(),
+    SyncService.loadAllSyncData(),
+  ];
+  await Promise.all(promises);
   whenLoaded();
 }
