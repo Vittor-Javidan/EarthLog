@@ -8,9 +8,9 @@ import ConfigService from '@Services/ConfigService';
 
 export default class DOCX_Module {
 
-  private static async saveAndShare(filename: string, document: Document ) {
+  private static async shareFile(filename: string, document: Document ) {
     const fileData = await Packer.toBase64String(document);
-    await FileExportService.saveAndShare(`${filename}.docx`, fileData);
+    await FileExportService.shareFile(`${filename}.docx`, fileData);
   }
 
   static async buildAndShare_Project(id_project: string, fileName: string, feedback: (message: string) => void) {
@@ -29,6 +29,6 @@ export default class DOCX_Module {
     });
 
     feedback(RS['Sharing document']);
-    await this.saveAndShare(fileName, document);
+    await this.shareFile(fileName, document);
   }
 }

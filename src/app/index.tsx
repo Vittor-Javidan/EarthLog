@@ -20,7 +20,7 @@ export default function Home() {
 }
 
 async function initApp(onFinish: () => void) {
-  await FileExportService.createExportedFilesFolder();
+  await FileExportService.createTempFilesFolder();
   await CredentialService.createCredentialsFolder();
   await DatabaseService.createDatabaseFolder();
   await ConfigService.loadConfig();
