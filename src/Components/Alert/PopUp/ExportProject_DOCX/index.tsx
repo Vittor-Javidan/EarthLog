@@ -24,6 +24,7 @@ export const ExportProject_DOCX = memo((props: {
   const [show     , setShow     ] = useState({
     showInput: true,
     feedbackDisplay: false,
+    showFooterButtons: true,
   });
 
   const onFileNameChange = useCallback((newName: string) => {
@@ -42,6 +43,7 @@ export const ExportProject_DOCX = memo((props: {
     setShow(prev => ({ ...prev,
       feedbackDisplay: true,
       showInput: false,
+      showFooterButtons: false,
     }));
 
     await DOCX_Module.buildAndShare_Project(props.id_project, fileName,
@@ -76,6 +78,7 @@ export const ExportProject_DOCX = memo((props: {
       />
       <FooterButtons
         isNameEmpty={fileName === ''}
+        showButtons={show.showFooterButtons}
         onCancel={() => props.closeModal()}
         onConfirm={async () => await onExport()}
       />

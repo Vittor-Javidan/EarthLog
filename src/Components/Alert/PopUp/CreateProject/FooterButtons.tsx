@@ -8,6 +8,7 @@ import { Button } from '@Button/index';
 
 export const FooterButtons = memo((props: {
   isNameEmpty: boolean
+  showButtons: boolean
   onCancel: () => void
   onConfirm: () => void
 }) => {
@@ -15,7 +16,7 @@ export const FooterButtons = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
-  return (
+  return props.showButtons ? (
     <View
       style={{
         flexDirection: 'row',
@@ -58,5 +59,5 @@ export const FooterButtons = memo((props: {
         }}
       />
     </View>
-  );
+  ) : <></>;
 });

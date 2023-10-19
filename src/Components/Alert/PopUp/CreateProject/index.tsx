@@ -26,6 +26,7 @@ export const CreateProject = memo((props: {
   const [show     , setShow     ] = useState({
     input: true,
     feedbackDisplay: false,
+    showFooterButtons: true,
   });
 
   const onAccept = useCallback(async () => {
@@ -37,6 +38,7 @@ export const CreateProject = memo((props: {
     setShow(prev => ({ ...prev,
       feedbackDisplay: true,
       input: false,
+      showFooterButtons: false,
     }));
 
     const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
@@ -86,6 +88,7 @@ export const CreateProject = memo((props: {
       />
       <FooterButtons
         isNameEmpty={name === ''}
+        showButtons={show.showFooterButtons}
         onCancel={() => props.closeModal()}
         onConfirm={async () => await onAccept()}
       />
