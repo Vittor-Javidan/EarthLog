@@ -56,7 +56,7 @@ export default class FileSystemService {
    * @param directory directory of the file, with file name included.
    * @param data stringfied data to be saved on the file.
    */
-  static async writeFile(directory: string, data: string): Promise<void> {
-    await ExpoFileSystem.writeAsStringAsync(directory, data, {encoding: 'utf8'});
+  static async writeFile(directory: string, data: string, encoding?: 'utf8' | 'base64'): Promise<void> {
+    await ExpoFileSystem.writeAsStringAsync(directory, data, { encoding: encoding ?? 'utf8' });
   }
 }

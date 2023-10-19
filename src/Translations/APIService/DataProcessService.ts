@@ -15,7 +15,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Loading project sync data': string
 }>
 
-export const R_DataProcessService: TranslationDTO = {
+export const R_Service_DataProcess: TranslationDTO = {
   'en-US': {
     'Processing project:': 'Processing project:',
     'Changing all IDs': 'Changing all IDs',

@@ -1,6 +1,3 @@
-// Before any commit, use the command line: tsc --noEmit
+// Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.5.7 Alert popUps refactor
-
-- Added font color for text without color defined.
-- feedbacks callback are now the last callback in the function definition.
+# 0.1.6.12 CSV Export Module implementation

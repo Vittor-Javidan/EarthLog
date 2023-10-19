@@ -29,7 +29,7 @@ export const InputsDisplay = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.gpsInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.gps[config.language], []);
 
   const [errorMessage,  setErrorMessage ] = useState<string>('');
   const [coordinates,   setCoordinates  ] = useState<TempCoordinates>({

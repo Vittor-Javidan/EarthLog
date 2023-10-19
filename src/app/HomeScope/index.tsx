@@ -19,7 +19,7 @@ import { HomeScreen } from '@Screens/HomeScreen';
 export default function HomeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+  const R      = useMemo(() => translations.scope.home[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useEffect(() => {
@@ -69,16 +69,27 @@ const Drawer = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R      = useMemo(() => translations.scope.homeScope[config.language], []);
+  const R      = useMemo(() => translations.scope.home[config.language], []);
 
   return (<>
+    <Button.TextWithIcon
+      title={R['Credentials']}
+      iconName="card-outline"
+      onPress={() => navigate('CREDENTIAL SCOPE')}
+      theme={{
+        font: theme.font,
+        font_Pressed: theme.font_active,
+        background: theme.background,
+        background_Pressed: theme.background_active,
+      }}
+    />
     <Button.TextWithIcon
       title={R['Settings']}
       iconName="settings"
       theme={{
         font: theme.font,
-        background: theme.background,
         font_Pressed: theme.font_active,
+        background: theme.background,
         background_Pressed: theme.background_active,
       }}
       onPress={() => navigate('SETTINGS SCOPE')}
@@ -88,8 +99,11 @@ const Drawer = memo(() => {
 
 async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
-  await CacheService.loadLastOpenProject();
-  await CacheService.loadAllCredentials();
-  await SyncService.loadAllSyncData();
+  const promises = [
+    CacheService.loadLastOpenProject(),
+    CacheService.loadAllCredentials(),
+    SyncService.loadAllSyncData(),
+  ];
+  await Promise.all(promises);
   whenLoaded();
 }

@@ -24,7 +24,7 @@ export const SampleSettingsWidget = memo((props: {
   const id_sample       = useLocalSearchParams().id_sample as string;
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R               = useMemo(() => translations.screen.sampleInfoScreen[config.language], []);
+  const R               = useMemo(() => translations.screen.sampleInfo[config.language], []);
   const unusedProps     = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,

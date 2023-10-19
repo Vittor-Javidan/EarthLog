@@ -20,7 +20,7 @@ export const AltitudeInputs = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.gpsInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.gps[config.language], []);
 
   return (
     <View

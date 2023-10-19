@@ -21,7 +21,7 @@ type TranslationDTO = Record<LanguageTag, {
   '* Reference distance: ': string
 }>
 
-export const R_GPSInput: TranslationDTO = {
+export const R_Input_GPS: TranslationDTO = {
   'en-US': {
     'Coordinates': 'Coordinate',
     'Latitude': 'Latitude',

@@ -17,7 +17,7 @@ export const SettingsButtons = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.settingsScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.settings[config.language], []);
 
   return (
     <View
@@ -49,17 +49,6 @@ export const SettingsButtons = memo(() => {
         title={R['Themes']}
         iconName="color-palette"
         onPress={() => navigate('THEME SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
-        title={R['Credentials']}
-        iconName="card-outline"
-        onPress={() => navigate('CREDENTIAL SCOPE')}
         theme={{
           font: theme.font_Button,
           font_Pressed: theme.font_active,

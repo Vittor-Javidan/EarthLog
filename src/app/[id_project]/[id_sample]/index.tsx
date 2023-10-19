@@ -96,7 +96,10 @@ async function fetchWidgets(
   id_sample: string,
   whenLoaded: () => void
 ) {
-  await CacheService.loadAllWidgets_Sample(id_project, id_sample);
-  await CacheService.loadAllWidgets_Template(id_project);
+  const promises = [
+    CacheService.loadAllWidgets_Sample(id_project, id_sample),
+    CacheService.loadAllWidgets_Template(id_project),
+  ];
+  await Promise.all(promises);
   whenLoaded();
 }

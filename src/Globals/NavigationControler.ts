@@ -15,7 +15,8 @@ type ScreenName = (
     'CREDENTIAL SCOPE'                                |
   'HOME SCOPE'                                        |
     'PROJECT SCOPE'                                   |
-      'SAMPLE SCOPE'
+      'SAMPLE SCOPE'                                  |
+      'EXPORT PROJECT SCOPE'
 )
 
 export function navigate(
@@ -30,45 +31,14 @@ export function navigate(
 
   switch (screen) {
 
-    case 'TEST SCOPE': {
-      navController.push(AppRoutes.TEST_SCOPE);
-      break;
-    }
-
-    case 'RESTART APP': {
-      navController.push(AppRoutes.RESTART_APP);
-      break;
-    }
-
-    case 'SETTINGS SCOPE': {
-      navController.push(AppRoutes.SETTINGS_SCOPE);
-      break;
-    }
-
-    case 'LANGUAGE SELECTION SCOPE': {
-      navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE);
-      break;
-    }
-
-    case 'TIME AND DATE SCOPE': {
-      navController.push(AppRoutes.SS_TIME_AND_DATE_SCOPE);
-      break;
-    }
-
-    case 'THEME SCOPE': {
-      navController.push(AppRoutes.SS_THEME_SCOPE);
-      break;
-    }
-
-    case 'CREDENTIAL SCOPE': {
-      navController.push(AppRoutes.SS_CREDENTIALS_SCOPE);
-      break;
-    }
-
-    case 'HOME SCOPE': {
-      navController.push(AppRoutes.HOME_SCOPE);
-      break;
-    }
+    case 'TEST SCOPE':               navController.push(AppRoutes.TEST_SCOPE);                  break;
+    case 'RESTART APP':              navController.push(AppRoutes.RESTART_APP);                 break;
+    case 'SETTINGS SCOPE':           navController.push(AppRoutes.SETTINGS_SCOPE);              break;
+    case 'LANGUAGE SELECTION SCOPE': navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE); break;
+    case 'TIME AND DATE SCOPE':      navController.push(AppRoutes.SS_TIME_AND_DATE_SCOPE);      break;
+    case 'THEME SCOPE':              navController.push(AppRoutes.SS_THEME_SCOPE);              break;
+    case 'CREDENTIAL SCOPE':         navController.push(AppRoutes.CREDENTIALS_SCOPE);           break;
+    case 'HOME SCOPE':               navController.push(AppRoutes.HOME_SCOPE);                  break;
 
     case 'PROJECT SCOPE': {
 
@@ -78,6 +48,17 @@ export function navigate(
       }
 
       navController.push(AppRoutes.PROJECT_SCOPE(id_project));
+      break;
+    }
+
+    case 'EXPORT PROJECT SCOPE': {
+
+      if (id_project === undefined) {
+        alert(R['Project ID undefined']);
+        break;
+      }
+
+      navController.push(AppRoutes.PS_EXPORT_PORJECT_SCOPE(id_project));
       break;
     }
 

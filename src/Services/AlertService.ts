@@ -30,7 +30,7 @@ export default class AlertService {
     this.alertModalConfigSetter = setter;
   }
 
-  static async handleAlert(trigger: boolean, question: ModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
+  static async handleAlert(trigger: boolean, config: ModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
 
     if (!trigger) {
       await onAcceptCallback();
@@ -38,7 +38,7 @@ export default class AlertService {
     }
 
     this.onAcceptCallback = onAcceptCallback;
-    this.setConfig(question);
+    this.setConfig(config);
     this.setShowModal(true);
   }
 

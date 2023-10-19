@@ -6,7 +6,9 @@ import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
+import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen } from '@Screens/TemplateScreen';
@@ -17,7 +19,7 @@ export default function ProjectScope() {
   const id_project = useLocalSearchParams().id_project as string;
 
   const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.scope.projectScope[config.language], []);
+  const R               = useMemo(() => translations.scope.project[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [loading                 , setLoading                  ] = useState<Loading>('Loading');
@@ -34,13 +36,12 @@ export default function ProjectScope() {
     <Layout.Root
       title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
-      drawerChildren={<></>}
+      drawerChildren={<Drawer />}
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
 
         onBackPress={() => navigate('HOME SCOPE')}
-
         buttonData={[{
           title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
         }, {
@@ -91,15 +92,40 @@ const NavigationTree = memo(() => {
   );
 });
 
+const Drawer = memo(() => {
+
+  const id_project = useLocalSearchParams().id_project as string;
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
+  const R      = useMemo(() => translations.scope.project[config.language], []);
+
+  return (<>
+    <Button.TextWithIcon
+      title={R['Export project']}
+      iconName="arrow-redo"
+      theme={{
+        font: theme.font,
+        background: theme.background,
+        font_Pressed: theme.font_active,
+        background_Pressed: theme.background_active,
+      }}
+      onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
+    />
+  </>);
+});
+
 async function fetchSamples(
   id_project: string,
   whenLoaded: () => void
 ) {
   if (id_project !== CacheService.lastOpenProject.id_project) {
-    await CacheService.saveLastOpenProject(id_project);
-    await CacheService.loadAllSamplesSettings(id_project);
-    await CacheService.loadAllWidgets_Project(id_project);
-    await CacheService.loadAllWidgets_Template(id_project);
+    const promises = [
+      CacheService.saveLastOpenProject(id_project),
+      CacheService.loadAllSamplesSettings(id_project),
+      CacheService.loadAllWidgets_Project(id_project),
+      CacheService.loadAllWidgets_Template(id_project),
+    ];
+    await Promise.all(promises);
   }
   whenLoaded();
 }

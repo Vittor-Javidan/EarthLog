@@ -7,7 +7,7 @@ export type TranslationDTO = Record<LanguageTag, {
   'Write the sample name here...': string
 }>
 
-export const R_SampleInfoScreen: TranslationDTO = {
+export const R_Screen_SampleInfo: TranslationDTO = {
   'en-US': {
     'Sample info': 'Sample info',
     'ID': 'ID',

@@ -16,7 +16,7 @@ export const LanguagesSelectionScreen = memo((props: {
       screenButtons={<TC.ScreenButtons />}
     >
       <Animation.SlideFromLeft
-        delay={300}
+        delay={200}
         duration={200}
       >
         <View

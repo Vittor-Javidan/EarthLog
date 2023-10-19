@@ -18,7 +18,7 @@ export function F_ProjectButtons() {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.home[config.language], []);
 
   const allProjectButtons = CacheService.allProjects.map((settings) => (
     <ProjectButton

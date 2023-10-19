@@ -10,7 +10,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Confirm to delete this credential.': string
 }>
 
-export const R_CredentialScreen: TranslationDTO = {
+export const R_Screen_Credential: TranslationDTO = {
   'en-US': {
     'User': 'User',
     'Write here your username...': 'Write here your username...',

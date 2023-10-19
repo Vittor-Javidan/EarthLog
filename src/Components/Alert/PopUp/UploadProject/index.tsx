@@ -81,6 +81,7 @@ export const UploadProjects = memo((props: {
       setFeedbacks(prev => [ ...prev, R['Deleting project']]);
       await ProjectService.deleteProject(id_project,
         async () => {
+          setFeedbacks(prev => [ ...prev, 'Updating cache']);
           if (CacheService.lastOpenProject.id_project === id_project) {
             await CacheService.deleteLastOpenProject();
           }
@@ -95,10 +96,22 @@ export const UploadProjects = memo((props: {
       return;
     }
 
+    // SYNC FILE UPDATE
     if (!rules.deleteAfterUpload) {
       setFeedbacks(prev => [ ...prev, R['Updating sync data file']]);
       SyncService.updateSyncDataAfterUpload(id_project);
     }
+
+    // PROJECT SETTINGS UPDATE
+    setFeedbacks(prev => [ ...prev, 'Updating project locally']);
+    await ProjectService.updateProject(projectDTO.projectSettings,
+      () => {},
+      (errorMessage) => {
+        setError(errorMessage);
+        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+        setShow(prev => ({ ...prev, errorDisplay: true }));
+      }
+    );
 
   }, []);
 

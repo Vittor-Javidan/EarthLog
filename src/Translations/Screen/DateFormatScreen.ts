@@ -2,7 +2,7 @@ import { DateFormat, LanguageTag } from '@Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, Record<DateFormat, string>>
 
-export const R_DateFormatScreen: TranslationDTO = {
+export const R_Screen_DateFormat: TranslationDTO = {
   'en-US': {
     'yyyy / mm / dd': 'Year / Month / Day',
     'yyyy / dd / mm': 'Year / Day / Month',

@@ -4,7 +4,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Settings': string
 }>
 
-export const R_SettingsScope: TranslationDTO = {
+export const R_Scope_Settings: TranslationDTO = {
   'en-US': {
     'Settings': 'Settings',
   },

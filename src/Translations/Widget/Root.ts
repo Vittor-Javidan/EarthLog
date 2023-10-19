@@ -11,7 +11,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Add a new field:': string
 } & Record<InputTypes, string>>
 
-export const R_Widget: TranslationDTO = {
+export const R_Widget_Root: TranslationDTO = {
   'en-US': {
     'Confirm to delete this widget.': 'Confirm to delete this widget.',
     'Confirm to delete this field.': 'Confirm to delete this field.',

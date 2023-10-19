@@ -40,7 +40,7 @@ const DateFormatButton = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.dateFormatScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.dateFormat[config.language], []);
 
   return (
     <Button.TextWithIcon

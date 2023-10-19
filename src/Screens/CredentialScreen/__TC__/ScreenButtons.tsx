@@ -30,7 +30,7 @@ export const ScreenButtons = memo((props: {
           iconName="arrow-back"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => navigate('SETTINGS SCOPE')}
+          onPress={() => navigate('HOME SCOPE')}
           theme={{
             font: theme.font,
             font_Pressed: theme.backgroud,

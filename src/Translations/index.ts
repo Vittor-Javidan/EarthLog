@@ -1,10 +1,10 @@
-import { R_CredentialScreen } from './Screen/CredentialScreen';
-import { R_HomeScreen } from './Screen/HomeScreen';
-import { R_LanguageSelectionScreen } from './Screen/LanguageSelectionScreen';
-import { R_ProjectInfoScreen } from './Screen/ProjectInfoScreen';
-import { R_SampleInfoScreen } from './Screen/SampleInfoScreen';
-import { R_SettingsScreen } from './Screen/SettingsScreen';
-import { R_Widget } from './Widget/Root';
+import { R_Screen_Credential } from './Screen/CredentialScreen';
+import { R_Screen_Home } from './Screen/HomeScreen';
+import { R_Screen_LanguageSelection } from './Screen/LanguageSelectionScreen';
+import { R_Screen_ProjectInfo } from './Screen/ProjectInfoScreen';
+import { R_Screen_SampleInfo } from './Screen/SampleInfoScreen';
+import { R_Screen_Settings } from './Screen/SettingsScreen';
+import { R_Widget_Root } from './Widget/Root';
 import { R_Button } from './component/Button';
 import { R_Layout_PseudoWidget } from './component/Layout/PseudoWidget';
 import { R_Alert_CreateProject } from './component/Alert/CreateProject';
@@ -12,62 +12,72 @@ import { R_Alert_CreateSample } from './component/Alert/CreateSample';
 import { R_Alert_ExitApp } from './component/Alert/ExitApp';
 import { R_Alert_Shared } from './component/Alert/__Shared__';
 import { R_Alert_TemplateWidgetCopy } from './component/Alert/TemplateWidgetCopy';
-import { R_NavController } from './global/navController';
-import { R_CredentialScope } from './scope/CredentialSope';
-import { R_HomeScope } from './scope/HomeScope';
-import { R_LanguageScopeScope } from './scope/LanguageSelectionScope';
-import { R_ProjectScope } from './scope/ProjectScope';
-import { R_SettingsScope } from './scope/SettingsScope';
-import { R_CacheService } from './service/CacheService';
-import { R_DatabaseService } from './service/DatabaseService';
-import { R_BooleanInput } from './widgetInput/BooleanInput';
-import { R_GPSInput } from './widgetInput/GPSInput';
-import { R_StringInput } from './widgetInput/StringInput';
+import { R_Global_NavController } from './global/navController';
+import { R_Scope_Credential } from './scope/CredentialSope';
+import { R_Scope_Home } from './scope/HomeScope';
+import { R_Scope_Language } from './scope/LanguageSelectionScope';
+import { R_Scope_Project } from './scope/ProjectScope';
+import { R_Scope_Settings } from './scope/SettingsScope';
+import { R_Service_Cache } from './service/CacheService';
+import { R_Service_Database } from './service/DatabaseService';
+import { R_Input_Boolean } from './widgetInput/BooleanInput';
+import { R_Input_GPS } from './widgetInput/GPSInput';
+import { R_Input_String } from './widgetInput/StringInput';
 import { R_Alert_UploadProject } from './component/Alert/UploadProject';
 import { R_Alert_DownloadProjects } from './component/Alert/DownloadProject';
-import { R_FetchAPIService } from './APIService/FetchAPIService';
-import { R_ThemeScope } from './scope/ThemeScope';
-import { R_WidgetThemePreview } from './Screen/WidgetThemePreview';
-import { R_AppThemes } from './Themes/AppThemes';
-import { R_WidgetThemes } from './Themes/WidgetThemes';
-import { R_DateAndTimeScope } from './scope/DateAndTimeScope';
-import { R_DateFormatScreen } from './Screen/DateFormatScreen';
-import { R_TimeFormatScreen } from './Screen/TimeFormatScreen';
-import { R_DataProcessService } from './APIService/DataProcessService';
-import { R_ProjectService } from './service/ProjectService';
+import { R_Service_FetchAPI } from './APIService/FetchAPIService';
+import { R_Scope_Theme } from './scope/ThemeScope';
+import { R_Screen_WidgetThemePreview } from './Screen/WidgetThemePreview';
+import { R_Themes_App } from './Themes/AppThemes';
+import { R_Themes_Widget } from './Themes/WidgetThemes';
+import { R_Scope_DateAndTime } from './scope/DateAndTimeScope';
+import { R_Screen_DateFormat } from './Screen/DateFormatScreen';
+import { R_Screen_TimeFormat } from './Screen/TimeFormatScreen';
+import { R_Service_DataProcess } from './APIService/DataProcessService';
+import { R_Service_Project } from './service/ProjectService';
+import { R_Scope_ExportProject } from './scope/exportProjectScope';
+import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
+import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
+import { R_FileExportModules_CSV } from './FileExportModules/CSV';
 
 export const translations = {
+  FileExportModules: {
+    share:                    R_FileExportModules_Shared,
+    csv:                      R_FileExportModules_CSV,
+  },
   APIServices: {
-    fetchAPIService:          R_FetchAPIService,
-    dataProcessService:       R_DataProcessService,
+    fetchAPI:                 R_Service_FetchAPI,
+    dataProcess:              R_Service_DataProcess,
   },
   service: {
-    cacheService:             R_CacheService,
-    databaseService:          R_DatabaseService,
-    projectService:           R_ProjectService,
+    cache:                    R_Service_Cache,
+    database:                 R_Service_Database,
+    project:                  R_Service_Project,
   },
   global: {
-    navigationController:     R_NavController,
+    navigationController:     R_Global_NavController,
   },
   scope: {
-    homeScope:                R_HomeScope,
-    languageSelectionScope:   R_LanguageScopeScope,
-    projectScope:             R_ProjectScope,
-    settingsScope:            R_SettingsScope,
-    credentialScope:          R_CredentialScope,
-    themeScope:               R_ThemeScope,
-    dateAndTime:              R_DateAndTimeScope,
+    home:                     R_Scope_Home,
+    languageSelection:        R_Scope_Language,
+    project:                  R_Scope_Project,
+    settings:                 R_Scope_Settings,
+    credential:               R_Scope_Credential,
+    theme:                    R_Scope_Theme,
+    dateAndTime:              R_Scope_DateAndTime,
+    exportProject:            R_Scope_ExportProject,
   },
   screen: {
-    homeScreen:               R_HomeScreen,
-    LanguageSelectionScreen:  R_LanguageSelectionScreen,
-    projectInfoScreen:        R_ProjectInfoScreen,
-    sampleInfoScreen:         R_SampleInfoScreen,
-    settingsScreen:           R_SettingsScreen,
-    credentialScreen:         R_CredentialScreen,
-    widgetThemePreview:       R_WidgetThemePreview,
-    dateFormatScreen:         R_DateFormatScreen,
-    timeFormatScreen:         R_TimeFormatScreen,
+    home:                     R_Screen_Home,
+    LanguageSelection:        R_Screen_LanguageSelection,
+    projectInfo:              R_Screen_ProjectInfo,
+    sampleInfo:               R_Screen_SampleInfo,
+    settings:                 R_Screen_Settings,
+    credential:               R_Screen_Credential,
+    widgetThemePreview:       R_Screen_WidgetThemePreview,
+    dateFormat:               R_Screen_DateFormat,
+    timeFormat:               R_Screen_TimeFormat,
+    exportProject:            R_Screen_ExportProject,
   },
   component: {
     alert: {
@@ -85,15 +95,15 @@ export const translations = {
     },
   },
   widget: {
-    Root:                     R_Widget,
+    Root:                     R_Widget_Root,
   },
   widgetInput: {
-    booleanInput:             R_BooleanInput,
-    stringInput:              R_StringInput,
-    gpsInput:                 R_GPSInput,
+    boolean:                  R_Input_Boolean,
+    string:                   R_Input_String,
+    gps:                      R_Input_GPS,
   },
   themes: {
-    appThemes:                R_AppThemes,
-    widgetThemes:             R_WidgetThemes,
+    app:                      R_Themes_App,
+    widget:                   R_Themes_Widget,
   },
 };

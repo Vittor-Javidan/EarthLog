@@ -11,24 +11,33 @@
 + GPS Widget
 + Design 2.0
 + Server API communication
-- Word/PDF/CSV/GPX export
++ Download / Upload progress feedback
++ Word file export
++ CSV file export
+- Options Input
+- Select Input
 - TextWidget Speech to text
-- Subscription Implementation
 - Photo Input
 - Photo Upload API
-- Migration Service
+- Photo files export
+- Youtube button redirecting to ENG or PT-BR channel
+- Community button redirecting to linkedin community
+- server to fetch next features on roadmap progress
+- server to fetch Tutorial Youtube Channels
+- Subscription Implementation
 
 # Apple/Play Store publishing
 
 # Post-Realease Stage
 - Date/Time Input
-- Options Input
-- Select Input
 - GPS Poligon Input
 - Audio Widget
 - Audio Upload API
 - Video Input
 - Video Upload API
 - Map visualization
+- GPX export
 - Compass Input
+- PDF export
 - GPS Tracking
+- High Contrast theme

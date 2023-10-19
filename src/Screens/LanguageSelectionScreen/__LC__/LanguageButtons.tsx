@@ -41,7 +41,7 @@ const LanguageButton = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.LanguageSelectionScreen, []);
+  const R      = useMemo(() => translations.screen.LanguageSelection, []);
 
   return (
     <Button.TextWithIcon

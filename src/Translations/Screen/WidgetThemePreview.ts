@@ -8,7 +8,7 @@ type TranslationDTO = Record<LanguageTag, {
   'GPS': string
 }>
 
-export const R_WidgetThemePreview: TranslationDTO = {
+export const R_Screen_WidgetThemePreview: TranslationDTO = {
   'en-US': {
     'Widget preview': 'Widget Preview',
     'Text': 'Text',

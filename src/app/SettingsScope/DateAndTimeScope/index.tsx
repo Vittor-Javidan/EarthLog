@@ -9,7 +9,7 @@ import { Layout } from '@Layout/index';
 import { DateFormatScreen } from '@Screens/DateFormatScreen';
 import { TimeFormatScreen } from '@Screens/TimeFormatScreen';
 
-export default function DateAndTimeScope(): JSX.Element {
+export default function DateAndTimeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.dateAndTime[config.language], []);

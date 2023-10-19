@@ -9,12 +9,13 @@ import { CreateSample } from './PopUp/CreateSample';
 import { TemplateWidgetCopy } from './PopUp/TemplateWidgetCopy';
 import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
+import { ExportProject_DOCX } from './PopUp/ExportProject_DOCX';
+import { ExportProject_CSV } from './PopUp/ExportProject_CSV';
 
 export const Selector = memo((props: {
   config: ModalConfig
   closeModal: () => void
 }) => {
-
   switch (props.config.type) {
     case 'warning': return (
       <Warning
@@ -52,6 +53,18 @@ export const Selector = memo((props: {
     );
     case 'upload projects': return (
       <UploadProjects
+        id_project={props.config.id_project}
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'export project (DOCX)': return (
+      <ExportProject_DOCX
+        id_project={props.config.id_project}
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'export project (CSV)': return (
+      <ExportProject_CSV
         id_project={props.config.id_project}
         closeModal={() => props.closeModal()}
       />

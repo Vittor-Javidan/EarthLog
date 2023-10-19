@@ -1,12 +1,11 @@
-import React, { useMemo, useState, memo, useCallback } from 'react';
-import { View, ScrollView, Pressable } from 'react-native';
+import React, { useMemo, memo, useCallback } from 'react';
+import { View, ScrollView } from 'react-native';
 
 import { translations } from '@Translations/index';
 import { WidgetData } from '@Types/ProjectTypes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
-import HapticsService from '@Services/HapticsService';
 import ProjectService from '@Services/ProjectService';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
@@ -49,7 +48,7 @@ export const TemplateWidgetCopy = memo((props: {
       widgetData.widgetName                 !== ''
     ) {
       return (
-        <TemplateWidgetButton
+        <LC.FlexButton
           key={widgetData.id_widget}
           title={widgetData.widgetName}
           onPress={() => onWidgetCopyToSample(widgetData)}
@@ -92,50 +91,5 @@ export const TemplateWidgetCopy = memo((props: {
        onCancel={() => props.closeModal()}
       />
     </LC.PopUp>
-  );
-});
-
-const TemplateWidgetButton = memo((props: {
-  title: string
-  onPress: () => void
-}) => {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const [pressed, setPressed] = useState<boolean>(false);
-
-  const onPressIn = useCallback(() => {
-    setPressed(true);
-    HapticsService.vibrate('success');
-  }, []);
-
-  const onPress = useCallback(() => {
-    props.onPress();
-    HapticsService.vibrate('success');
-  }, [props.onPress]);
-
-  return (
-    <View>
-      <Pressable
-        onPressIn={() => onPressIn()}
-        onPressOut={() => setPressed(false)}
-        onPress={() => onPress()}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 5,
-          borderRadius: 10,
-          backgroundColor: pressed ? theme.background_active : theme.background_Button,
-        }}
-      >
-        <Text h3
-          style={{
-            color: pressed ? theme.font_active : theme.font_button,
-            textAlign: 'center',
-          }}
-        >
-          {props.title}
-        </Text>
-      </Pressable>
-    </View>
   );
 });

@@ -15,7 +15,7 @@ export const NotApplicableButton = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.booleanInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.boolean[config.language], []);
 
   return (<>
     {props.notApplicable !== undefined && (

@@ -106,14 +106,15 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE PROJECT ID
     if (allProjectsIDs.includes(id_project)) {
-      const R = translations.service.databaseService[ConfigService.config.language];
+      const R = translations.service.database[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 projects with same ID']);
     }
 
     // ADD TO ALL PROJECTS INDEX
+    allProjectsIDs.push(id_project);
     await this.updateIndexFile(
       `${this.DATA_BASE_DIRECTORY}`,
-      [id_project, ...allProjectsIDs]
+      allProjectsIDs,
     );
 
     // CREATE MAIN FOLDER
@@ -121,7 +122,13 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}`
     );
 
-    // CREATE MAIN FOLDER CONTENTS
+    // CREATE PROJECT SETTINGS FILE ==
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`,
+      JSON.stringify(projectSettings, null, 4),
+    );
+
+    // CREATE PROJECT WIDGETS FOLDER =======
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`
     );
@@ -129,6 +136,8 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets/index.json`,
       JSON.stringify([], null, 4)
     );
+
+    // CREATE TEMPLATE WIDGETS FOLDER ======
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`
     );
@@ -136,6 +145,8 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template/index.json`,
       JSON.stringify([], null, 4)
     );
+
+    // CREATE SAMPLES FOLDER ===============
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`
     );
@@ -143,9 +154,19 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`,
       JSON.stringify([], null, 4)
     );
-    await FileSystemService.writeFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`,
-      JSON.stringify(projectSettings, null, 4),
+
+    // CREATE MEDIA FOLDER =================
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/images`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/videos`
+    );
+    await FileSystemService.createDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/audios`
     );
   }
 
@@ -230,14 +251,15 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE SAMPLE ID
     if (allSamplesIDs.includes(id_sample)) {
-      const R = translations.service.databaseService[ConfigService.config.language];
+      const R = translations.service.database[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 samples with same ID']);
     }
 
     // ADD TO ALL SAMPLES INDEX
+    allSamplesIDs.push(id_sample);
     await this.updateIndexFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples`,
-      [...allSamplesIDs, id_sample]
+      allSamplesIDs
     );
 
     // CREATE MAIN FOLDER
@@ -403,14 +425,15 @@ export default class DatabaseService {
 
     // CHECK FOR DUPLICATE WIDGET ID
     if (allWidgetsIDs.includes(id_widget)) {
-      const R = translations.service.databaseService[ConfigService.config.language];
+      const R = translations.service.database[ConfigService.config.language];
       throw Error(R['ERROR: Not possible to create 2 widgets with same ID']);
     }
 
     // ADD TO PROJECT WIDGETS INDEX
+    allWidgetsIDs.push(id_widget);
     await this.updateIndexFile(
       `${allWidgetsFolderPath}`,
-      [...allWidgetsIDs, id_widget]
+      allWidgetsIDs,
     );
 
     // CREATE MAIN FOLDER
@@ -580,7 +603,7 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      const R = translations.service.databaseService[ConfigService.config.language];
+      const R = translations.service.database[ConfigService.config.language];
       throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     return JSON.parse(indexDataString) as IDsArray;
@@ -590,7 +613,7 @@ export default class DatabaseService {
     const indexFilePath = `${folderPath}/index.json`;
     const indexDataString = await FileSystemService.readFile(indexFilePath);
     if (indexDataString === null) {
-      const R = translations.service.databaseService[ConfigService.config.language];
+      const R = translations.service.database[ConfigService.config.language];
       throw Error(R['ERROR: index.json file do not exist. Path: '] + folderPath);
     }
     await FileSystemService.writeFile(`${folderPath}/index.json`, JSON.stringify(IDsArray, null, 4));

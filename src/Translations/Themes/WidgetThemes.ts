@@ -2,7 +2,7 @@ import { LanguageTag, ThemeNames_Widgets } from '@Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, Record<ThemeNames_Widgets, string>>
 
-export const R_WidgetThemes: TranslationDTO = {
+export const R_Themes_Widget: TranslationDTO = {
   'en-US': {
     'Dark': 'Dark',
     'Light': 'Light',

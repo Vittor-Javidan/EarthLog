@@ -30,7 +30,7 @@ export const StringInput = memo((props: {
   */
 
   const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.stringInput[config.language], []);
+  const R      = useMemo(() => translations.widgetInput.string[config.language], []);
 
   const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');

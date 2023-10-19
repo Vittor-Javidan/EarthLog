@@ -46,6 +46,9 @@ export default class CacheService {
     this.lastOpenProject = await DatabaseService.readProject(id_project);
   }
 
+  /**
+   * @WARNING Depends on all projects already being loaded
+   */
   static async loadLastOpenProject(): Promise<void> {
 
     const lastProjectID = await DatabaseService.getLastOpenProject();
@@ -62,7 +65,7 @@ export default class CacheService {
     this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
     this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(lastProjectID);
     this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(lastProjectID);
-    this.allSamples = await DatabaseService.getAllSamples(lastProjectID);
+    this.allSamples = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
   }
 
   static async deleteLastOpenProject(): Promise<void> {
@@ -85,7 +88,7 @@ export default class CacheService {
         return this.allProjects[i];
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
@@ -95,7 +98,7 @@ export default class CacheService {
         return this.allSamples[i];
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
@@ -106,7 +109,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
@@ -117,7 +120,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
@@ -128,7 +131,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Project Widget does not exist on cache']);
   }
 
@@ -139,7 +142,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Template Widget does not exist on cache']);
   }
 
@@ -150,16 +153,16 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cacheService[ConfigService.config.language];
+    const R = translations.service.cache[ConfigService.config.language];
     throw Error(R['ERROR: Sample Widget does not exist on cache']);
   }
 
   static async loadAllProjectsSettings(): Promise<void> {
-    this.allProjects = await DatabaseService.getAllProjects();
+    this.allProjects = (await DatabaseService.getAllProjects()).reverse();
   }
 
   static async loadAllSamplesSettings(id_project: string): Promise<void> {
-    this.allSamples = await DatabaseService.getAllSamples(id_project);
+    this.allSamples = (await DatabaseService.getAllSamples(id_project)).reverse();
   }
 
   static async loadAllWidgets_Project(id_project: string): Promise<void> {
@@ -185,7 +188,7 @@ export default class CacheService {
    * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
    */
   static addToAllSamples(sampleSettings: SampleSettings): void {
-    this.allSamples = [...this.allSamples, UtilService.deepCopy(sampleSettings)];
+    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
   }
 
   /**

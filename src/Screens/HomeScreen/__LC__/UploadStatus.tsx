@@ -18,7 +18,7 @@ export const UploadStatus = memo((props: {
 
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R              = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const R              = useMemo(() => translations.screen.home[config.language], []);
   const lastUploadDate = useMemo(() => props.uploads?.[props.uploads.length - 1].date ?? undefined, []);
 
   const iconName   = props.uploadStatus === 'uploaded' ? 'cloud' : 'cloud-upload';

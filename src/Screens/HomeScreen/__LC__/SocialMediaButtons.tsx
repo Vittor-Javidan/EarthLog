@@ -41,7 +41,7 @@ const YoutubeTutorialButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.home[config.language], []);
   const YOUTUBE_COLOR = 'red';
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -93,7 +93,7 @@ const RoadMapButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.home[config.language], []);
   const ROADMAP_COLOR = 'orange';
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -140,7 +140,7 @@ const LinkedinCommunityButton = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.homeScreen[config.language], []);
+  const R      = useMemo(() => translations.screen.home[config.language], []);
   const LINKEDIN_COLOR = '#0e76a8';
 
   const [pressed, setPressed] = useState<boolean>(false);
