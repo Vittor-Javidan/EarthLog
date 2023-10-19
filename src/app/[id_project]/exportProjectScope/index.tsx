@@ -9,12 +9,14 @@ import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
 import { ExportProjectScreen } from '@Screens/ExportProject';
+import CacheService from '@Services/CacheService';
 
 export default function exportProjectScope() {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.exportProject[config.language], []);
+  const id_project      = useLocalSearchParams().id_project as string;
+  const config          = useMemo(() => ConfigService.config, []);
+  const R               = useMemo(() => translations.scope.exportProject[config.language], []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
   const [loading, setLoading] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('PROJECT SCOPE', id_project), []);
@@ -25,7 +27,7 @@ export default function exportProjectScope() {
   return (
     <Layout.Root
       title={R['Export project']}
-      subtitle=""
+      subtitle={projectSettings.name}
       drawerChildren={<></>}
       navigationTree={ <NavigationTree/> }
     >

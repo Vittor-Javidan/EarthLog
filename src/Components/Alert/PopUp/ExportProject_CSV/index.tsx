@@ -1,7 +1,6 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
 
 import { translations } from '@Translations/index';
-import DOCX_Module from '@FileExportModules/DOCX';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import AlertService from '@Services/AlertService';
@@ -10,8 +9,9 @@ import { Input } from '@Input/index';
 import { LC } from '@Alert/__LC__';
 import { FooterButtons } from './FooterButtons';
 import UtilService from '@Services/UtilService';
+import CSV_Module from '@FileExportModules/CSV';
 
-export const ExportProject_DOCX = memo((props: {
+export const ExportProject_CSV = memo((props: {
   id_project: string
   closeModal: () => void
 }) => {
@@ -44,7 +44,7 @@ export const ExportProject_DOCX = memo((props: {
       showInput: false,
     }));
 
-    await DOCX_Module.buildAndShare_Project(props.id_project, fileName,
+    await CSV_Module.buildAndShare_Project_AllCoordinates(props.id_project, fileName,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage]))
     );
 

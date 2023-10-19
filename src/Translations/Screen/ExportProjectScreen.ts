@@ -1,14 +1,17 @@
 import { LanguageTag } from '@Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, {
-  'Docx': string
+  'DOCX': string
+  'CSV': string
 }>
 
 export const R_Screen_ExportProject: TranslationDTO = {
   'en-US': {
-    'Docx': 'Docx',
+    'DOCX': 'DOCX',
+    'CSV': 'CSV',
   },
   'pt-BR': {
-    'Docx': 'Docx',
+    'DOCX': 'DOCX',
+    'CSV': 'CSV',
   },
 };

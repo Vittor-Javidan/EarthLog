@@ -6,9 +6,9 @@ export default class FileExportService {
 
   private static READY_FILES_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/ExportedFiles`;
 
-  static async shareFile(filename: string, data: string): Promise<void> {
+  static async shareFile(filename: string, data: string, encoding: 'base64' | 'utf8'): Promise<void> {
     const filePath = `${this.READY_FILES_DIRECTORY}/${filename}`;
-    await FileSystemService.writeFile(filePath, data, 'base64');
+    await FileSystemService.writeFile(filePath, data, encoding);
     await Sharing.shareAsync(filePath);
     await FileSystemService.delete(filePath);
   }

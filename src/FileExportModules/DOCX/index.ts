@@ -8,11 +8,6 @@ import ConfigService from '@Services/ConfigService';
 
 export default class DOCX_Module {
 
-  private static async shareFile(filename: string, document: Document ) {
-    const fileData = await Packer.toBase64String(document);
-    await FileExportService.shareFile(`${filename}.docx`, fileData);
-  }
-
   static async buildAndShare_Project(id_project: string, fileName: string, feedback: (message: string) => void) {
 
     const RS = translations.FileExportModules.share[ConfigService.config.language];
@@ -29,6 +24,7 @@ export default class DOCX_Module {
     });
 
     feedback(RS['Sharing document']);
-    await this.shareFile(fileName, document);
+    const fileData = await Packer.toBase64String(document);
+    await FileExportService.shareFile(`${fileName}.docx`, fileData, 'base64');
   }
 }

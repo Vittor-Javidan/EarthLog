@@ -19,7 +19,14 @@ export const AvailableExportFormatButtons = memo(() => {
 
   const onDocxSelected = useCallback(async () => {
     await AlertService.handleAlert(true, {
-      type: 'export project',
+      type: 'export project (DOCX)',
+      id_project: id_project,
+    }, () => navigate('PROJECT SCOPE', id_project));
+  }, []);
+
+  const onCSVSelected = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'export project (CSV)',
       id_project: id_project,
     }, () => navigate('PROJECT SCOPE', id_project));
   }, []);
@@ -29,9 +36,20 @@ export const AvailableExportFormatButtons = memo(() => {
       style={{ gap: 1 }}
     >
       <Button.TextWithIcon
-        title={R['Docx']}
+        title={R['DOCX']}
         iconName="document-text"
         onPress={async () => await onDocxSelected()}
+        theme={{
+          font: theme.font_Button,
+          font_Pressed: theme.font_active,
+          background: theme.background_Button,
+          background_Pressed: theme.background_active,
+        }}
+      />
+      <Button.TextWithIcon
+        title={R['CSV']}
+        iconName="document-text"
+        onPress={async () => await onCSVSelected()}
         theme={{
           font: theme.font_Button,
           font_Pressed: theme.font_active,
