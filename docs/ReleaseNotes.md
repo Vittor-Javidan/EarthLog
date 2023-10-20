@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.7 Widtgets performance improvement
+# 0.1.7.8 Input bug fix
 
-- Now all widgets uses virtualized lists
+- Fix a bug where changing input label, resets it completely

@@ -7,4 +7,4 @@
   D: fix, refactor or current feature new commmit version
 */
 
-export const APP_VERSION: string = 'pre-alpha 0.1.7.7';
+export const APP_VERSION: string = 'pre-alpha 0.1.7.8';

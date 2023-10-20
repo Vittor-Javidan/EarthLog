@@ -95,7 +95,7 @@ const InputLabel = memo((props: {
     if (newLabel.length <= 25) {
       props.onLabelChange(newLabel);
     }
-  }, []);
+  }, [props.onLabelChange]);
 
   const onFocus = useCallback(() => {
     setFocused(true);
