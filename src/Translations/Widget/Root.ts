@@ -24,6 +24,7 @@ export const R_Widget_Root: TranslationDTO = {
     // INPUT TYPES
     'boolean': 'True/False',
     'string': 'Text',
+    'options': 'Options',
     'gps': 'GPS',
   },
   'pt-BR': {
@@ -38,6 +39,7 @@ export const R_Widget_Root: TranslationDTO = {
     // INPUT TYPES
     'boolean': 'Verdadeiro/Falso',
     'string': 'Texto',
+    'options': 'Opções',
     'gps': 'GPS',
   },
 };

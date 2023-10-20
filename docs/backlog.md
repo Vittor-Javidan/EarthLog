@@ -1,0 +1,3 @@
+- validate on IOS the necessity of Plataform.OS values on labelButtons
+- add a rule to block project export
+- transform the http:// or https:// url to lower case on server calls

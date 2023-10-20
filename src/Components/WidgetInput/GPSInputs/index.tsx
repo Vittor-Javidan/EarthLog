@@ -68,6 +68,11 @@ export const GPSInput = memo((props: {
     );
   }, [props.referenceGPSData, inputData]);
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: GPSInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);

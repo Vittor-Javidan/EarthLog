@@ -36,6 +36,11 @@ export const StringInput = memo((props: {
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: StringInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
@@ -43,7 +48,7 @@ export const StringInput = memo((props: {
   const onLabelChange = useCallback((newLabel: string, inputData: StringInputData) => {
     const newData: StringInputData = { ...inputData, label: newLabel};
     asyncSave(newData);
-    setInputData(prev => ({ ...prev, label: newLabel}));
+    setInputData(newData);
   }, [asyncSave]);
 
   const onTextChange = useCallback((text: string, inputData: StringInputData) => {
@@ -58,8 +63,8 @@ export const StringInput = memo((props: {
     if (inputData.value !== '') {
       const newData: StringInputData = { ...inputData, value: '' };
       asyncSave(newData);
-      setDeletedText(inputData.value);
       setInputData(newData);
+      setDeletedText(inputData.value);
       setShowUndo(true);
     }
   }, [asyncSave]);

@@ -5,6 +5,7 @@ import { GPS_DTO, InputData, WidgetRules, WidgetTheme } from '@Types/ProjectType
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';
+import { OptionsInput } from './OptionsInput';
 
 export const InputSelector = memo((props: {
   inputData: InputData
@@ -37,6 +38,20 @@ export const InputSelector = memo((props: {
     );
     case 'boolean': return (
       <BooleanInput
+        inputData={props.inputData}
+        editWidget={props.editWidget}
+        isFirstInput={props.isFirstInput}
+        isLastInput={props.isLastInput}
+        onSave={(inputData) => props.onSave(inputData)}
+        onInputDelete={() => props.onInputDelete()}
+        onInputMoveUp={() => props.onInputMoveUp()}
+        onInputMoveDow={() => props.onInputMoveDow()}
+        widgetRules={props.widgetRules}
+        theme={props.widgetTheme}
+      />
+    );
+    case 'options': return (
+      <OptionsInput
         inputData={props.inputData}
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}

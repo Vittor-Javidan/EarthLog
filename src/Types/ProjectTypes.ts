@@ -109,12 +109,12 @@ export type WidgetTheme = {
 // Input TYPES
 // =================================================================================================
 
-export type InputData = StringInputData | BooleanInputData | GPSInputData
+export type InputData = StringInputData | BooleanInputData | GPSInputData | OptionsInputData
 export type InputAlertMessage = {
   gpsDistanceAlertMessage?: string
 }
 
-export const InputTypesArray = ['boolean', 'string', 'gps'] as const;
+export const InputTypesArray = ['boolean', 'string', 'gps', 'options'] as const;
 export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
@@ -137,6 +137,24 @@ export type BooleanInputData = {
   notApplicable?: boolean
   lockedLabel?: boolean
   lockedData?: boolean
+}
+
+// ============================
+export type OptionsInputData = {
+  id_input: ID
+  label: string
+  type: 'options'
+  value: OptionData[]
+  showAddOptionButton?: boolean
+  allowOptionLabelChange?: boolean
+  allowOptionDeletion?: boolean
+  lockedLabel?: boolean
+  lockedData?: boolean
+}
+export type OptionData = {
+  id: ID
+  optionLabel: string
+  checked: boolean
 }
 
 // ============================

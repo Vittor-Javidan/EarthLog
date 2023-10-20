@@ -59,7 +59,18 @@ export default class DataProcessService {
 
     function changeAllInputsIds(inputDataArray: InputData[]): void {
       for (let i = 0; i < inputDataArray.length; i++) {
-        inputDataArray[i].id_input = UtilService.generateUuidV4();
+        const inputArray = inputDataArray[i];
+
+        // Change Input ID
+        inputArray.id_input = UtilService.generateUuidV4();
+
+        // Change Options IDs
+        if (inputArray.type === 'options') {
+          const options = inputArray.value;
+          for (let j = 0; j < options.length; j++) {
+            options[j].id = UtilService.generateUuidV4();
+          }
+        }
       }
     }
   }
