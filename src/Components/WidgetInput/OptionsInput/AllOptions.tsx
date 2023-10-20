@@ -15,7 +15,7 @@ export const AllOptions = memo((props: {
 }) => {
   const AllOptionButtons = props.options.map((option, index) => (
     <OptionButton
-      key={option.id}
+      key={option.id + index}
       label={option.optionLabel}
       checked={option.checked}
       editMode={props.editMode}

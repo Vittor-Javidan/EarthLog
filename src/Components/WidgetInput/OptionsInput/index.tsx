@@ -33,55 +33,45 @@ export const OptionsInput = memo((props: {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
 
-  const onLabelChange = useCallback((newLabel: string) => {
-    setInputData((prevInputData) => {
-      const newData = { ...prevInputData, label: newLabel };
-      asyncSave(newData);
-      return newData;
-    });
+  const onLabelChange = useCallback((newLabel: string, inputData: OptionsInputData) => {
+    const newData = { ...inputData, label: newLabel };
+    asyncSave(newData);
+    setInputData(newData);
   }, [asyncSave]);
 
-  const addOption = useCallback(() => {
-    setInputData((prevInputData) => {
-      const newData = { ...prevInputData, value: [ ...prevInputData.value, {
-        id: UtilService.generateUuidV4(),
-        optionLabel: '',
-        checked: false,
-      }]};
-      asyncSave(newData);
-      return newData;
-    });
+  const addOption = useCallback((inputData: OptionsInputData) => {
+    const newData = { ...inputData, value: [ ...inputData.value, {
+      id: UtilService.generateUuidV4(),
+      optionLabel: '',
+      checked: false,
+    }]};
+    asyncSave(newData);
+    setInputData(newData);
   }, [asyncSave]);
 
-  const onOptionLabelChange = useCallback((newLabel: string, index: number) => {
-    setInputData((prevInputData) => {
-      const newData = { ...prevInputData };
-      newData.value[index].optionLabel = newLabel;
-      asyncSave(newData);
-      return newData;
-    });
-  }, [asyncSave]);
+  const onOptionLabelChange = useCallback((newLabel: string, index: number, inputData: OptionsInputData) => {
+    const newData = { ...inputData };
+    newData.value[index].optionLabel = newLabel;
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
 
-  const onOptionCheckChange = useCallback((checked: boolean, index: number) => {
-    setInputData((prevInputData) => {
-      const newData = { ...prevInputData };
-      newData.value[index].checked = checked;
-      asyncSave(newData);
-      return newData;
-    });
-  }, [asyncSave]);
+  const onOptionCheckChange = useCallback((checked: boolean, index: number, inputData: OptionsInputData) => {
+    const newData: OptionsInputData = { ...inputData };
+    newData.value[index].checked = checked;
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
 
   const onOptionDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
       question: R['Confirm to delete this option'],
       type: 'warning',
     }, () => {
-      setInputData((prevInputData) => {
-        const newData = { ...prevInputData };
-        newData.value.splice(index, 1);
-        asyncSave(newData);
-        return newData;
-      });
+      const newData = { ...inputData };
+      newData.value.splice(index, 1);
+      asyncSave(newData);
+      setInputData(newData);
     });
   }, [asyncSave]);
 
@@ -93,7 +83,7 @@ export const OptionsInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label)}
+      onLabelChange={(label) => onLabelChange(label, inputData)}
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
       onInputMoveDow={() => props.onInputMoveDow()}
@@ -121,14 +111,14 @@ export const OptionsInput = memo((props: {
           options={inputData.value}
           editMode={editMode}
           allowOptionLabelChange={inputData.allowOptionLabelChange}
-          onOptionLabelChange={(newLabel, index) => onOptionLabelChange(newLabel, index)}
-          onCheckedChange={(checked, index) => onOptionCheckChange(checked, index)}
+          onOptionLabelChange={(newLabel, index) => onOptionLabelChange(newLabel, index, inputData)}
+          onCheckedChange={(checked, index) => onOptionCheckChange(checked, index, inputData)}
           onOptionDelete={(index) => onOptionDelete(index)}
           theme={props.theme}
         />
         <AddOptionButton
           showAddOptionButton={inputData.showAddOptionButton}
-          onAddOption={() => addOption()}
+          onAddOption={() => addOption(inputData)}
           theme={props.theme}
         />
       </View>

@@ -24,12 +24,12 @@ export const OptionButton = memo((props: {
   const onOptionLabelChange = useCallback((newLabel: string) => {
     props.onOptionLabelChange(newLabel);
     setLabel(newLabel);
-  }, [label]);
+  }, [props.onOptionLabelChange, label]);
 
   const onCheckChange = useCallback((checked: boolean) => {
     props.onCheckedChange(checked);
     HapticsService.vibrate('success');
-  }, []);
+  }, [props.onCheckedChange]);
 
   return (
     <View
