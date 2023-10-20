@@ -160,8 +160,20 @@ function useAutoSave(onSave: () => void, deps: [CredentialDTO, boolean]) {
       return;
     }
 
+    credential.rootURL = convertProtocolToLowerCase(credential.rootURL);
     await CredentialService.updateCredential(credential);
+
     onSave();
 
   }, [credential], 200);
+}
+
+function convertProtocolToLowerCase(url: string): string {
+  const urlParts = url.split('://');
+  if (urlParts.length === 2) {
+    const protocol = urlParts[0].toLowerCase();
+    const restOfUrl = urlParts[1];
+    return `${protocol}://${restOfUrl}`;
+  }
+  return url;
 }
