@@ -57,7 +57,7 @@ export const Carousel = memo((props: {
         title={data.title}
         iconName={data.iconName}
         selected={selectedScreen === screenNumber}
-        onPress={() => setSelectedScreen(screenNumber)}
+        onPress={() => onChangeScreen(screenNumber)}
         type={isFirst ? 'left' : isLast ? 'right' : 'middle'}
       />
     );
@@ -129,8 +129,8 @@ const CarouselAnimation = memo((props: {
   useEffect(() => {
     const animationFrameId = requestAnimationFrame(() => {
       leftOffset.value = withSpring(props.offset, {
-        stiffness: 170,
-        damping: 25,
+        stiffness: 500,
+        damping: 30,
       });
     });
     return () => { cancelAnimationFrame(animationFrameId); };
