@@ -199,6 +199,7 @@ export type ProjectRules = {
   allowProjectNameChange?: boolean
   allowSampleAliasChange?: boolean
   allowGPSChange?: boolean
+  allowProjectExport?: boolean
   showCreateWidgetButton_Project?: boolean
   showCreateWidgetButton_Template?: boolean
   showSampleCreationButton?: boolean

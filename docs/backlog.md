@@ -1,2 +1,1 @@
 - validate on IOS the necessity of Plataform.OS values on labelButtons
-- add a rule to block project export

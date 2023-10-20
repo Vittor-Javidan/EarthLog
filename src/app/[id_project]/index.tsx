@@ -13,6 +13,7 @@ import { Layout } from '@Layout/index';
 import { ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
+import { ProjectSettings } from '@Types/ProjectTypes';
 
 export default function ProjectScope() {
 
@@ -36,7 +37,7 @@ export default function ProjectScope() {
     <Layout.Root
       title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
-      drawerChildren={<Drawer />}
+      drawerChildren={<Drawer projectSettings={projectSettings}/>}
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
@@ -92,25 +93,29 @@ const NavigationTree = memo(() => {
   );
 });
 
-const Drawer = memo(() => {
+const Drawer = memo((props: {
+  projectSettings: ProjectSettings
+}) => {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R      = useMemo(() => translations.scope.project[config.language], []);
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
+  const R               = useMemo(() => translations.scope.project[config.language], []);
 
   return (<>
-    <Button.TextWithIcon
-      title={R['Export project']}
-      iconName="arrow-redo"
-      theme={{
-        font: theme.font,
-        background: theme.background,
-        font_Pressed: theme.font_active,
-        background_Pressed: theme.background_active,
-      }}
-      onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
-    />
+    {props.projectSettings.rules.allowProjectExport && (
+      <Button.TextWithIcon
+        title={R['Export project']}
+        iconName="arrow-redo"
+        theme={{
+          font: theme.font,
+          background: theme.background,
+          font_Pressed: theme.font_active,
+          background_Pressed: theme.background_active,
+        }}
+        onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
+      />
+    )}
   </>);
 });
 

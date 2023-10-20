@@ -29,6 +29,7 @@ export default class ProjectService {
           allowGPSChange: true,
           allowProjectNameChange: true,
           allowSampleAliasChange: true,
+          allowProjectExport: true,
           showCreateWidgetButton_Project: true,
           showCreateWidgetButton_Template: true,
           showSampleCreationButton: true,
