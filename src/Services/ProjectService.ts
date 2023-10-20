@@ -103,6 +103,14 @@ export default class ProjectService {
         type: 'string',
         value: '',
       };
+      case 'options': return {
+        id_input: UtilService.generateUuidV4(),
+        label: '',
+        type: 'options',
+        value: [],
+        showAddOptionButton: true,
+        allowOptionLabelChange: true,
+      };
       case 'gps': return {
         id_input: UtilService.generateUuidV4(),
         label: '',

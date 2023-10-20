@@ -1,6 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.6.13 footer buttons hides on confirm on some popUps
+# 0.1.7.0 Main Option Input structure implemented
 
-- To avoid weird behavior or nothing hapening, now footer buttons are hidden on situations of project
-creation and exporting.
+- Still missing:
+  - Option icon buttons
+  - Option delete
+  - rules implementation

@@ -1,0 +1,7 @@
+- move the asyncSave of each widget to inside the setter
+- on all label buttons, replace all of then with just the text input
+- remove the unused prop 'noInput' from widget label button.
+- check if all widget inputs are really using newData variables to set values
+- add a rule to block project export
+- add delete option on OptionInput design
+- make widget label save in real time instead when lose focus
