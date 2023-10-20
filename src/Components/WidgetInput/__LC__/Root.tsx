@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, memo, useCallback } from 'react';
-import { TextInput, View, Platform } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { WidgetRules } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
@@ -106,7 +106,7 @@ const InputLabel = memo((props: {
     <View
       style={{
         position: 'absolute',
-        top: Platform.OS === 'ios' ? 4 : 2,
+        top: 2,
         paddingLeft: 15,
         zIndex: 1,
       }}

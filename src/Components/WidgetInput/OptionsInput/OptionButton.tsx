@@ -18,7 +18,7 @@ export const OptionButton = memo((props: {
   onOptionDelete: () => void
 }) => {
 
-  const [label          , setLabel          ] = useState<string>(props.label);
+  const [label, setLabel] = useState<string>(props.label);
 
   const onOptionLabelChange = useCallback((newLabel: string) => {
     props.onOptionLabelChange(newLabel);

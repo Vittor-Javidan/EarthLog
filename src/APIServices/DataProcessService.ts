@@ -1,9 +1,10 @@
 import { CredentialDTO, DateFormat, TimeFormat } from '@Types/AppTypes';
 import { DownloadedProjectDTO, InputData, ProjectDTO, SampleDTO, SyncData, WidgetData } from '@Types/ProjectTypes';
+
+import { translations } from '@Translations/index';
 import DateTimeService from '@Services/DateTimeService';
 import UtilService from '@Services/UtilService';
 import DatabaseService from '@Services/DatabaseService';
-import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 export default class DataProcessService {

@@ -26,10 +26,7 @@ export const TemplateWidgetCopy = memo((props: {
   const R      = useMemo(() => translations.component.alert.templateWidgetCopy[config.language], []);
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
-
-    const newWidgetData = UtilService.deepCopy(widgetData);
-    newWidgetData.id_widget = UtilService.generateUuidV4();
-
+    const newWidgetData = ProjectService.changeAllIds(UtilService.deepCopy(widgetData));
     await ProjectService.createWidget_Sample(props.id_project, props.id_sample, newWidgetData,
       async () => {
         CacheService.addToAllWidgets_Sample(newWidgetData);
@@ -39,7 +36,6 @@ export const TemplateWidgetCopy = memo((props: {
       },
       (errorMesage) => alert(errorMesage),
     );
-
   }, [props]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {
