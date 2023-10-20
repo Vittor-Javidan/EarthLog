@@ -1,12 +1,15 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { OptionsInputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
 import UtilService from '@Services/UtilService';
+import AlertService from '@Services/AlertService';
 
 import { LC } from '../__LC__';
-import { Button } from '@Button/index';
 import { AllOptions } from './AllOptions';
+import { AddOptionButton } from './AddOptionButton';
+import ConfigService from '@Services/ConfigService';
+import { translations } from '@Translations/index';
 
 export const OptionsInput = memo((props: {
   inputData: OptionsInputData
@@ -21,7 +24,10 @@ export const OptionsInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.options[config.language], []);
   const [inputData, setInputData] = useState<OptionsInputData>(UtilService.deepCopy(props.inputData));
+  const [editMode , setEditMode ] = useState<boolean>(false);
 
   const asyncSave = useCallback(async (inputData: OptionsInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
@@ -38,7 +44,8 @@ export const OptionsInput = memo((props: {
   const addOption = useCallback(() => {
     setInputData((prevInputData) => {
       const newData = { ...prevInputData, value: [ ...prevInputData.value, {
-        optionLabel: 'Option ' + (prevInputData.value.length + 1),
+        id: UtilService.generateUuidV4(),
+        optionLabel: '',
         checked: false,
       }]};
       asyncSave(newData);
@@ -64,6 +71,20 @@ export const OptionsInput = memo((props: {
     });
   }, [asyncSave]);
 
+  const onOptionDelete = useCallback((index: number) => {
+    AlertService.handleAlert(true, {
+      question: R['Confirm to delete this option'],
+      type: 'warning',
+    }, () => {
+      setInputData((prevInputData) => {
+        const newData = { ...prevInputData };
+        newData.value.splice(index, 1);
+        asyncSave(newData);
+        return newData;
+      });
+    });
+  }, [asyncSave]);
+
   return (
     <LC.Root
 
@@ -81,7 +102,10 @@ export const OptionsInput = memo((props: {
 
       iconButtons={
         <IconButtons
+          editMode={editMode}
           locked={inputData.lockedData}
+          allowOptionDeletion={inputData.allowOptionDeletion}
+          onPress_EditButton={() => setEditMode(prev => !prev)}
           theme={props.theme}
         />
       }
@@ -95,28 +119,17 @@ export const OptionsInput = memo((props: {
       >
         <AllOptions
           options={inputData.value}
+          editMode={editMode}
+          allowOptionLabelChange={inputData.allowOptionLabelChange}
           onOptionLabelChange={(newLabel, index) => onOptionLabelChange(newLabel, index)}
           onCheckedChange={(checked, index) => onOptionCheckChange(checked, index)}
+          onOptionDelete={(index) => onOptionDelete(index)}
           theme={props.theme}
         />
-        <Button.Icon
-          iconName="add"
-          onPress={() => addOption()}
-          theme={{
-            font: props.theme.background,
-            font_Pressed: props.theme.font,
-            background: props.theme.font,
-            background_Pressed: props.theme.background,
-          }}
-          style={{
-            alignSelf: 'center',
-            marginTop: 5,
-            height: 25,
-            width: '50%',
-            paddingHorizontal: 0,
-            paddingVertical: 0,
-            borderRadius: 6,
-          }}
+        <AddOptionButton
+          showAddOptionButton={inputData.showAddOptionButton}
+          onAddOption={() => addOption()}
+          theme={props.theme}
         />
       </View>
     </LC.Root>
@@ -124,8 +137,11 @@ export const OptionsInput = memo((props: {
 });
 
 const IconButtons = memo((props: {
+  editMode: boolean
   locked: boolean | undefined
+  allowOptionDeletion: boolean | undefined
   theme: WidgetTheme
+  onPress_EditButton: () => void
 }) => {
   return (<>
     {props.locked && (
@@ -138,5 +154,13 @@ const IconButtons = memo((props: {
         }}
       />
     )}
+    {(!props.locked && props.allowOptionDeletion === true) && (<>
+      <LC.NavbarIconButton
+        iconName={'options-outline'}
+        onPress={() => props.onPress_EditButton()}
+        selected={props.editMode}
+        theme={props.theme}
+      />
+    </>)}
   </>);
 });

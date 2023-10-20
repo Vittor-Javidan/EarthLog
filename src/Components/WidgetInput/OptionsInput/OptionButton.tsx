@@ -10,9 +10,12 @@ import { Button } from '@Button/index';
 export const OptionButton = memo((props: {
   label: string
   checked: boolean
+  editMode: boolean
+  allowOptionLabelChange: boolean | undefined
   theme: WidgetTheme
   onCheckedChange: (checked: boolean) => void
   onOptionLabelChange: (newLabel: string) => void
+  onOptionDelete: () => void
 }) => {
 
   const [label          , setLabel          ] = useState<string>(props.label);
@@ -37,13 +40,34 @@ export const OptionButton = memo((props: {
         gap: 5,
       }}
     >
-      <Button.Checkbox
-        value={props.checked}
-        onChange={(checked) => onCheckChange(checked)}
-        theme={props.theme}
-      />
+      {props.editMode ? (
+        <Button.Icon
+          iconName="trash-outline"
+          onPress={() => props.onOptionDelete()}
+          theme={{
+            font: props.theme.wrong,
+            font_Pressed: props.theme.background,
+            background: props.theme.background,
+            background_Pressed: props.theme.wrong,
+          }}
+          style={{
+            height: 25,
+            width: 25,
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+            borderRadius: 6,
+          }}
+        />
+      ) : (
+        <Button.Checkbox
+          value={props.checked}
+          onChange={(checked) => onCheckChange(checked)}
+          theme={props.theme}
+        />
+      )}
       <OptionLabel
         label={label}
+        allowOptionLabelChange={props.allowOptionLabelChange}
         onPress={() => setEditOptionLabel(true)}
         onConfirm={() => setEditOptionLabel(false)}
         onLabelChange={(newLabel) => onOptionLabelChange(newLabel)}
@@ -57,6 +81,7 @@ export const OptionButton = memo((props: {
 export const OptionLabel = memo((props: {
   label: string
   editLabel: boolean
+  allowOptionLabelChange: boolean | undefined
   theme: WidgetTheme
   onPress: () => void
   onConfirm: () => void
@@ -85,6 +110,7 @@ export const OptionLabel = memo((props: {
       }}
     >
       <TextInput
+        editable={props.allowOptionLabelChange ?? false}
         style={{
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : props.theme.background,
@@ -93,7 +119,7 @@ export const OptionLabel = memo((props: {
           paddingVertical: 0,
           paddingHorizontal: 5,
         }}
-        placeholder=" -------"
+        placeholder="-------"
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}

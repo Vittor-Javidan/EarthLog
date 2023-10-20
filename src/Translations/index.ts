@@ -39,6 +39,7 @@ import { R_Scope_ExportProject } from './scope/exportProjectScope';
 import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
 import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
 import { R_FileExportModules_CSV } from './FileExportModules/CSV';
+import { R_Input_Options } from './widgetInput/OptionsInput';
 
 export const translations = {
   FileExportModules: {
@@ -100,6 +101,7 @@ export const translations = {
   widgetInput: {
     boolean:                  R_Input_Boolean,
     string:                   R_Input_String,
+    options:                  R_Input_Options,
     gps:                      R_Input_GPS,
   },
   themes: {

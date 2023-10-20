@@ -110,6 +110,7 @@ export default class ProjectService {
         value: [],
         showAddOptionButton: true,
         allowOptionLabelChange: true,
+        allowOptionDeletion: true,
       };
       case 'gps': return {
         id_input: UtilService.generateUuidV4(),

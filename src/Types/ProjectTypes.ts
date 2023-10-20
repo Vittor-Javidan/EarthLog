@@ -147,10 +147,12 @@ export type OptionsInputData = {
   value: OptionData[]
   showAddOptionButton?: boolean
   allowOptionLabelChange?: boolean
+  allowOptionDeletion?: boolean
   lockedLabel?: boolean
   lockedData?: boolean
 }
 export type OptionData = {
+  id: ID
   optionLabel: string
   checked: boolean
 }
