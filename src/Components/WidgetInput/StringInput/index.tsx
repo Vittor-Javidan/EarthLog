@@ -36,6 +36,11 @@ export const StringInput = memo((props: {
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: StringInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);

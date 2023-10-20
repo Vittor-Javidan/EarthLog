@@ -24,6 +24,11 @@ export const BoylerPlateInput = memo((props: {
 
   const [inputData, setInputData] = useState<InputData>(UtilService.deepCopy(props.inputData));
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: InputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);

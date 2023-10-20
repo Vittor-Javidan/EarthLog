@@ -29,6 +29,11 @@ export const OptionsInput = memo((props: {
   const [inputData, setInputData] = useState<OptionsInputData>(UtilService.deepCopy(props.inputData));
   const [editMode , setEditMode ] = useState<boolean>(false);
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: OptionsInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);

@@ -43,6 +43,11 @@ export const BooleanInput = memo((props: {
       : props.theme.wrong
   ;
 
+  /**
+   * @WARNING
+   * Never call this function from inside a state setter.
+   * It can cause `Cannot update a component while rendering a different component` react error.
+   */
   const asyncSave = useCallback(async (inputData: BooleanInputData) => {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
