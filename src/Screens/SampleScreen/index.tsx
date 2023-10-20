@@ -28,17 +28,17 @@ export const SampleDataScreens = memo((props: {
           delay={200}
           duration={200}
         >
-          <Layout.ScrollView
+          {/* <Layout.ScrollView
             contentContainerStyle={{
               paddingHorizontal: 5,
               paddingTop: 55,
               gap: 10,
             }}
           >
-            <LC.F_SampleWidgets
-              referenceGPS={props.referenceGPS}
-            />
-          </Layout.ScrollView>
+          </Layout.ScrollView> */}
+          <LC.F_SampleWidgets
+            referenceGPS={props.referenceGPS}
+          />
         </Animation.SlideFromLeft>
       )}
     </Layout.Screen>

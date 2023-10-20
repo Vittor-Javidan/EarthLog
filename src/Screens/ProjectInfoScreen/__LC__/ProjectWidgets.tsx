@@ -6,8 +6,14 @@ import CacheService from '@Services/CacheService';
 import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
+import { Layout } from '@Layout/index';
+import { ProjectSettingsWidget } from './ProjectSettingsWidget';
+import { View } from 'react-native';
 
-export function F_ProjectWidgets() {
+export function F_ProjectWidgets(props: {
+  onProjectNameUpdate: (newName: string) => void
+  onSampleAliasChange_Plural: (newSampleAlias: string) => void
+}) {
 
   const id_project = useLocalSearchParams().id_project as string;
   const [_, refresh] = useState<boolean>(true);
@@ -23,18 +29,41 @@ export function F_ProjectWidgets() {
     );
   }, [id_project]);
 
-  const AllWidgets = CacheService.allWidgets_Project.map(widgetData => (
-    <Widget
-      key={widgetData.id_widget}
-      widgetScope={{
-        type: 'project',
-        id_project: id_project,
+  return (
+    <Layout.VirtualizeList
+      array={CacheService.allWidgets_Project}
+      keyExtractor={(item) => item.id_widget}
+      maxToRenderPerBatch={5}
+      style={{
+        paddingTop: 55,
+        paddingBottom: 150,
+        paddingHorizontal: 5,
+        gap: 10,
       }}
-      widgetData={widgetData}
-      referenceGPSData={undefined}
-      onDeleteWidget={async () => await onDeleteWidget_Project(widgetData.id_widget)}
-    />
-  ));
 
-  return (<>{AllWidgets}</>);
+      header={
+        <View>
+          <ProjectSettingsWidget
+            onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
+            onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange_Plural(newSampleAlias)}
+          />
+        </View>
+      }
+
+      renderItem={({ item }) => (
+
+        <Widget
+          key={item.id_widget}
+          widgetScope={{
+            type: 'project',
+            id_project: id_project,
+          }}
+          widgetData={item}
+          referenceGPSData={undefined}
+          onDeleteWidget={async () => await onDeleteWidget_Project(item.id_widget)}
+        />
+
+      )}
+    />
+  );
 }

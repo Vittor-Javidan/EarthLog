@@ -25,19 +25,10 @@ export const ProjectInfoScreen = memo((props: {
       {props.projectScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView
-          contentContainerStyle={{
-            paddingTop: 55,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <LC.ProjectSettingsWidget
-            onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
-            onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
-          />
-          <LC.F_ProjectWidgets />
-        </Layout.ScrollView>
+        <LC.F_ProjectWidgets
+          onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
+          onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange(newSampleAlias)}
+        />
       )}
     </Layout.Screen>
   );

@@ -5,6 +5,8 @@ import { Loading } from './Loading';
 export function VirtualizeList<T>(props: {
   array: T[]
   renderItem: ListRenderItem<T>
+  maxToRenderPerBatch: number
+  header?: JSX.Element
   style?: StyleProp<ViewStyle>
   keyExtractor: (item: T, index: number) => string
 }) {
@@ -25,11 +27,12 @@ export function VirtualizeList<T>(props: {
   return (
     <VirtualizedList<T>
       data={props.array}
-      maxToRenderPerBatch={5}
+      maxToRenderPerBatch={props.maxToRenderPerBatch}
       renderItem={(item) => props.renderItem(item)}
       keyExtractor={(item, index) => props.keyExtractor(item, index)}
       getItemCount={() => props.array.length}
       getItem={(data, index) => data[index]}
+      ListHeaderComponent={props.header}
       ListFooterComponent={isDataLoading ? <Loading /> : null}
       onEndReachedThreshold={0.1}
       onEndReached={() => onEndReached()}

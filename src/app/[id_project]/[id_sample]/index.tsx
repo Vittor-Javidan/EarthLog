@@ -38,9 +38,8 @@ export default function SampleScope() {
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
-
+        isLoading={loading === 'Loaded'}
         onBackPress={() => navigate('PROJECT SCOPE', id_project)}
-
         buttonData={[{
           title: 'Data',
         }, {

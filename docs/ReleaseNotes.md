@@ -1,6 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.6 React Native update
+# 0.1.7.7 Widtgets performance improvement
 
-- React Native changed to version 0.72.6
-- fix caroulsel buttons not using the hook useTransition on press events
+- Now all widgets uses virtualized lists

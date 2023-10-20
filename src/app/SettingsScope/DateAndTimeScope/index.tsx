@@ -27,9 +27,8 @@ export default function DateAndTimeScope() {
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
-
+        isLoading={loading === 'Loaded'}
         onBackPress={(() => navigate('SETTINGS SCOPE'))}
-
         buttonData={[{
           title: '',
           iconName: 'calendar',

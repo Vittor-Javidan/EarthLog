@@ -20,7 +20,7 @@ export default function HomeScope() {
       navigationTree={ <NavigationTree /> }
     >
       <Layout.Carousel
-
+        isLoading={true}
         onBackPress={() => {}}
 
         buttonData={[{

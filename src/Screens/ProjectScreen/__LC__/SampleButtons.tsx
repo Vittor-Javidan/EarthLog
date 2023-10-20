@@ -19,6 +19,7 @@ export function F_SampleButtons() {
     <Layout.VirtualizeList
       array={CacheService.allSamples}
       keyExtractor={(item) => item.id_sample}
+      maxToRenderPerBatch={5}
       renderItem={({ item }) => (
 
         <Button.TextWithIcon

@@ -41,14 +41,14 @@ export default function ProjectScope() {
       navigationTree={<NavigationTree />}
     >
       <Layout.Carousel
-
+        isLoading={loading === 'Loaded'}
         onBackPress={() => navigate('HOME SCOPE')}
         buttonData={[{
           title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
-        }, {
+        },{
           title: 'Template',
           iconName: 'copy-sharp',
-        }, {
+        },{
           title: '',
           iconName: 'information-circle-sharp',
         }]}

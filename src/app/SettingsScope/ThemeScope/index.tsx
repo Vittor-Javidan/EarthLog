@@ -33,9 +33,8 @@ export default function ThemeScope() {
       key={'Refresher:' + rootRefresher}
     >
       <Layout.Carousel
-
+        isLoading={loading === 'Loaded'}
         onBackPress={(() => navigate('SETTINGS SCOPE'))}
-
         buttonData={[{
           title: R['App'],
         }, {

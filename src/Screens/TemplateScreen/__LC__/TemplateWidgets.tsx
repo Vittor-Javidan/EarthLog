@@ -6,6 +6,7 @@ import CacheService from '@Services/CacheService';
 import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
+import { Layout } from '@Layout/index';
 
 export function F_TemplateWidgets() {
 
@@ -23,18 +24,32 @@ export function F_TemplateWidgets() {
     );
   }, [id_project]);
 
-  const AllWidgets = CacheService.allWidgets_Template.map(widgetData => (
-    <Widget
-      key={widgetData.id_widget}
-      widgetScope={{
-        type: 'template',
-        id_project: id_project,
+  return (
+    <Layout.VirtualizeList
+      array={CacheService.allWidgets_Template}
+      keyExtractor={(item) => item.id_widget}
+      maxToRenderPerBatch={5}
+      style={{
+        paddingTop: 55,
+        paddingBottom: 150,
+        paddingHorizontal: 5,
+        gap: 10,
       }}
-      widgetData={widgetData}
-      referenceGPSData={undefined}
-      onDeleteWidget={async () => await onDeleteWidget_Template(widgetData.id_widget)}
-    />
-  ));
 
-  return (<>{AllWidgets}</>);
+      renderItem={({ item }) => (
+
+        <Widget
+          key={item.id_widget}
+          widgetScope={{
+            type: 'template',
+            id_project: id_project,
+          }}
+          widgetData={item}
+          referenceGPSData={undefined}
+          onDeleteWidget={async () => await onDeleteWidget_Template(item.id_widget)}
+        />
+
+      )}
+    />
+  );
 }

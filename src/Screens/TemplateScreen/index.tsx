@@ -21,15 +21,7 @@ export const TemplateScreen = memo((props: {
       {props.projectScopeState === 'Loading' ? (
         <Layout.Loading />
       ) : (
-        <Layout.ScrollView
-          contentContainerStyle={{
-            paddingTop: 55,
-            padding: 5,
-            gap: 10,
-          }}
-        >
-          <LC.F_TemplateWidgets />
-        </Layout.ScrollView>
+        <LC.F_TemplateWidgets />
       )}
     </Layout.Screen>
   );
