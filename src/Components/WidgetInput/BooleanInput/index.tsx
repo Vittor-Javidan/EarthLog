@@ -75,7 +75,7 @@ export const BooleanInput = memo((props: {
       HapticsService.vibrate('success');
       const newData: BooleanInputData = { ...inputData, value: boolean };
       asyncSave(newData);
-      setInputData(prev => ({ ...prev, value: boolean }));
+      setInputData(newData);
     }
   }, [asyncSave, notApplicableUndefined, notApplicableFalse]);
 

@@ -14,7 +14,7 @@ import ProjectService from '@Services/ProjectService';
 import SyncService from '@Services/SyncService';
 
 import { Navbar } from './Navbar';
-import { LabelButton } from './LabelButton';
+import { WidgetLabel } from './WidgetLabel';
 import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
 import { Footer } from './Footer';
@@ -32,8 +32,6 @@ export const Widget = memo((props: {
   const [_, startTransitions] = useTransition();
 
   const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
-  const [tempLabel      , setTempLabel      ] = useState<string>(widgetData.widgetName);
-  const [editLabel      , setEditLabel      ] = useState<boolean>(false);
   const [editInputs     , setEditInputs     ] = useState<boolean>(false);
   const [saved          , setSaved          ] = useState<boolean>(true);
   const [display        , setDisplay        ] = useState<WidgetDisplay>('data display');
@@ -83,22 +81,10 @@ export const Widget = memo((props: {
     setEditInputs(false);
   }, [selectDisplay]);
 
-  const onEditLabel = useCallback(() => {
-    if (widgetData.rules.allowWidgetNameChange) {
-      setEditLabel(true);
-    }
-  }, []);
-
   const onLabelChange = useCallback((label: string) => {
     setSaved(false);
-    setTempLabel(label);
+    setWidgetData(prev => ({ ...prev, widgetName: label }));
   }, []);
-
-  const onConfirmLabel = useCallback(() => {
-    setEditLabel(false);
-    setWidgetData(prev => ({ ...prev, widgetName: tempLabel }));
-    setSaved(false);
-  }, [tempLabel]);
 
   const onThemeChange = useCallback((themeName: ThemeNames_Widgets) => {
     setSaved(false);
@@ -221,12 +207,9 @@ export const Widget = memo((props: {
             gap: 5,
           }}
         >
-          <LabelButton
-            label={tempLabel}
-            editLabel={editLabel}
-            noInputs={widgetData.inputs.length <= 0}
-            onPress={() => onEditLabel()}
-            onConfirm={() => onConfirmLabel()}
+          <WidgetLabel
+            label={widgetData.widgetName}
+            allowWidgetNameChange={widgetData.rules.allowWidgetNameChange}
             onLabelChange={(label) => onLabelChange(label)}
             theme={widgetTheme}
           />

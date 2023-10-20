@@ -1,5 +1,3 @@
-- on all label buttons, replace all of then with just the text input
-- remove the unused prop 'noInput' from widget label button.
-- check if all widget inputs are really using newData variables to set values
+- validate on IOS the necessity of Plataform.OS values on labelButtons
 - add a rule to block project export
-- make widget label save in real time instead when lose focus
+- transform the http:// or https:// url to lower case on server calls

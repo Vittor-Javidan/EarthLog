@@ -12,7 +12,7 @@ import AlertService from '@Services/AlertService';
 
 import { Layout } from '@Layout/index';
 import { WidgetInput } from '@WidgetInput/index';
-import { WidgetLabelButton } from './WidgetLabelButton';
+import { WidgetLabel } from './WidgetLabel';
 import { WidgetDeleteButton } from './WidgetDeleteButton';
 import { WidgetSensitiveDataButton } from './WidgetSensitiveDataButton';
 
@@ -37,7 +37,6 @@ export const CredentialWidget = memo((props: {
   const [credential       , setCredential       ] = useState<CredentialDTO>(UtilService.deepCopy(props.credential));
   const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
   const [saved            , setSaved            ] = useState<boolean>(true);
-  const [editLabel        , setEditLabel        ] = useState<boolean>(false);
 
   useAutoSave(() => {
     setSaved(true);
@@ -94,12 +93,9 @@ export const CredentialWidget = memo((props: {
         />
       </>}
     >
-      <WidgetLabelButton
+      <WidgetLabel
         label={credential.name}
-        editLabel={editLabel}
         theme={theme}
-        onPress={() => setEditLabel(true)}
-        onConfirm={() => setEditLabel(false)}
         onLabelChange={(newLabel) => onLabelChange(newLabel)}
       />
       <WidgetInput.String

@@ -1,10 +1,9 @@
 import React, { ReactNode, useState, memo, useCallback } from 'react';
-import { Pressable, TextInput, View, Platform } from 'react-native';
+import { TextInput, View, Platform } from 'react-native';
 
 import { WidgetRules } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
 
-import { Text } from '@Text/index';
 import { NavbarIconButton } from './NavbarIconButtons';
 
 type InputTheme = {
@@ -29,27 +28,6 @@ export const InputRoot = memo((props: {
   onInputMoveUp: () => void
   onInputMoveDow: () => void
 }) => {
-
-  const [label    , setLabel    ] = useState<string>(props.label);
-  const [editLabel, setEditLabel] = useState<boolean>(false);
-
-  const onLabelChange = useCallback((newLabel: string) => {
-    if (newLabel.length <= 25) {
-      setLabel(newLabel);
-    }
-  }, []);
-
-  const confirmLabel = useCallback(() => {
-    setEditLabel(false);
-    props.onLabelChange(label);
-  }, [label, props.onLabelChange]);
-
-  const onEditLabel = useCallback(() => {
-    if (!props.lockedLabel) {
-      setEditLabel(true);
-    }
-  }, []);
-
   return (
     <View
       style={{
@@ -57,13 +35,10 @@ export const InputRoot = memo((props: {
         paddingTop: 15,
       }}
     >
-      <LabelButton
-        label={label}
-        locked={props.lockedLabel}
-        editLabel={editLabel}
-        onPress={() => onEditLabel()}
-        confirmLabel={() => confirmLabel()}
-        onLabelChange={(label) => onLabelChange(label)}
+      <InputLabel
+        label={props.label}
+        editable={!props.lockedLabel}
+        onLabelChange={(label) => props.onLabelChange(label)}
         theme={props.theme}
       />
       <View
@@ -107,20 +82,25 @@ export const InputRoot = memo((props: {
   );
 });
 
-const LabelButton = memo((props: {
+const InputLabel = memo((props: {
   label: string
-  locked: boolean | undefined
-  editLabel: boolean
+  editable: boolean
   theme: InputTheme
-  onPress: () => void
   onLabelChange: (label: string) => void
-  confirmLabel: () => void
 }) => {
 
-  const onPress = useCallback(() => {
-    props.onPress();
-    HapticsService.vibrate('warning');
-  }, [props.onPress]);
+  const [focused, setFocused] = useState<boolean>(false);
+
+  const onLabelChange = useCallback((newLabel: string) => {
+    if (newLabel.length <= 25) {
+      props.onLabelChange(newLabel);
+    }
+  }, []);
+
+  const onFocus = useCallback(() => {
+    setFocused(true);
+    HapticsService.vibrate('success');
+  }, []);
 
   return (
     <View
@@ -131,40 +111,26 @@ const LabelButton = memo((props: {
         zIndex: 1,
       }}
     >
-      {props.editLabel ? (
-        <TextInput
-          style={{
-            backgroundColor: props.theme.font,
-            paddingHorizontal: 5,
-            color: props.theme.background,
-            fontSize: 18,
-            borderRadius: 5,
-            paddingVertical: 0,
-            minWidth: 50,
-            height: 25,
-          }}
-          value={props.label}
-          onChangeText={(text) => props.onLabelChange(text)}
-          onSubmitEditing={() => props.confirmLabel()}
-          onBlur={() => props.confirmLabel()}
-          autoFocus
-        />
-      ) : (
-        <Pressable
-          onPress={() => onPress()}
-        >
-          <Text
-            style={{
-              backgroundColor: props.theme.background,
-              color: props.theme.font,
-              fontSize: 18,
-              paddingHorizontal: 5,
-            }}
-          >
-            {props.label === '' ? '-------' : props.label}
-          </Text>
-        </Pressable>
-      )}
+      <TextInput
+        style={{
+          color: focused ? props.theme.background : props.theme.font,
+          backgroundColor: focused ? props.theme.font : props.theme.background,
+          fontSize: 18,
+          borderRadius: 5,
+          paddingVertical: 0,
+          paddingHorizontal: 5,
+          textAlign: 'center',
+          height: 25,
+        }}
+        value={props.label}
+        placeholder="-------"
+        placeholderTextColor={focused ? props.theme.background : props.theme.font}
+        onChangeText={(text) => onLabelChange(text)}
+        onSubmitEditing={() => setFocused(false)}
+        onBlur={() => setFocused(false)}
+        onFocus={() => onFocus()}
+        editable={props.editable}
+      />
     </View>
   );
 });

@@ -19,7 +19,6 @@ export const OptionButton = memo((props: {
 }) => {
 
   const [label          , setLabel          ] = useState<string>(props.label);
-  const [editOptionLabel, setEditOptionLabel] = useState<boolean>(false);
 
   const onOptionLabelChange = useCallback((newLabel: string) => {
     props.onOptionLabelChange(newLabel);
@@ -68,11 +67,8 @@ export const OptionButton = memo((props: {
       <OptionLabel
         label={label}
         allowOptionLabelChange={props.allowOptionLabelChange}
-        onPress={() => setEditOptionLabel(true)}
-        onConfirm={() => setEditOptionLabel(false)}
         onLabelChange={(newLabel) => onOptionLabelChange(newLabel)}
         theme={props.theme}
-        editLabel={editOptionLabel}
       />
     </View>
   );
@@ -80,26 +76,17 @@ export const OptionButton = memo((props: {
 
 export const OptionLabel = memo((props: {
   label: string
-  editLabel: boolean
   allowOptionLabelChange: boolean | undefined
   theme: WidgetTheme
-  onPress: () => void
-  onConfirm: () => void
   onLabelChange: (label: string) => void
 }) => {
 
   const [focused, setFocused] = useState<boolean>(false);
 
-  const onConfirm = useCallback(() => {
-    setFocused(false);
-    props.onConfirm();
-  }, [props.onConfirm]);
-
   const onFocus = useCallback(() => {
     setFocused(true);
-    HapticsService.vibrate('warning');
+    HapticsService.vibrate('success');
   }, []);
-
 
   return (
     <View
@@ -120,11 +107,11 @@ export const OptionLabel = memo((props: {
           paddingHorizontal: 5,
         }}
         placeholder="-------"
-        placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
+        placeholderTextColor={focused ? props.theme.background : props.theme.font}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}
+        onBlur={() => setFocused(false)}
         onFocus={() => onFocus()}
-        onBlur={() => onConfirm()}
         multiline
       />
     </View>

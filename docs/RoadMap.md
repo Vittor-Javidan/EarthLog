@@ -14,7 +14,7 @@
 + Download / Upload progress feedback
 + Word file export
 + CSV file export
-- Options Input
++ Options Input
 - Select Input
 - TextWidget Speech to text
 - Photo Input
