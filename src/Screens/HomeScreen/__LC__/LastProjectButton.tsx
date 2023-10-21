@@ -20,7 +20,7 @@ export const LastProjectButton = memo(() => {
   const projectSettings = useMemo(() => CacheService.lastOpenProject, []);
   const projectSyncData = useMemo(() => SyncService.getSyncData(projectSettings.id_project), []);
 
-  const [pressed, setPressed] = useState<boolean>(false);
+  const [pressed, setPressed]             = useState<boolean>(false);
 
   const lastProjectOpenExist = projectSettings.id_project !== '';
   const showStatus = projectSyncData.project !== 'new';
@@ -36,24 +36,24 @@ export const LastProjectButton = memo(() => {
   }, [projectSettings.id_project]);
 
   return lastProjectOpenExist ? (
-    <View
+    <Pressable
+      onPressIn={() => onPressIn()}
+      onPressOut={() => setPressed(false)}
+      onPress={() => onPress()}
       style={{
-        minHeight: 55,
-        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        backgroundColor: pressed ? theme.background_active : theme.background_Button,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        elevation: 3,
       }}
     >
-      <Pressable
-        onPressIn={() => onPressIn()}
-        onPressOut={() => setPressed(false)}
-        onPress={() => onPress()}
+      <View
         style={{
-          flex: 1,
-          justifyContent: 'space-between',
-          borderRadius: 10,
-          backgroundColor: pressed ? theme.background_active : theme.background_Button,
-          paddingVertical: 5,
-          paddingHorizontal: 10,
-          elevation: 3,
+          width: '100%',
+          gap: 5,
         }}
       >
         <Text h2
@@ -69,7 +69,6 @@ export const LastProjectButton = memo(() => {
           style={{
             flexDirection: 'row',
             justifyContent: showStatus ? 'space-between' : 'flex-end',
-            alignItems: 'center',
           }}
         >
           <UploadStatus
@@ -91,7 +90,7 @@ export const LastProjectButton = memo(() => {
             {R['Recently Open']}
           </Text>
         </View>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   ) : <></>;
 });

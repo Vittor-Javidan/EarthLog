@@ -1,6 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.12 Bug prevention
+# 0.1.7.13 UI fix
 
-- Removed undeline decoration for carousel buttons. Due the possible fatar error described on this issue: https://github.com/facebook/react-native/issues/17530
-- This bugged already happenend once in development, and it blocks permanently access to app after occurs once, no matter how many times the app is restarted.
+- Now last project button and project buttons adapts when button has no width enough to display information.

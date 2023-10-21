@@ -113,6 +113,7 @@ const ProjectButton = memo((props: {
         <View
           style={{
             flexDirection: 'row',
+            flexWrap: 'wrap',
             justifyContent: 'space-between',
             alignItems: 'center',
           }}

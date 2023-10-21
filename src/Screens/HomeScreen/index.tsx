@@ -33,7 +33,7 @@ export const HomeScreen = memo((props: {
             style={{
               flex: 1,
               paddingTop: 10,
-              padding: 5,
+              paddingHorizontal: 5,
               gap: 10,
               paddingBottom: 80,
             }}
