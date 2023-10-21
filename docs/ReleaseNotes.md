@@ -1,7 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.8.0 Selection input implementation
+# 0.1.8.1 Options/Selection input lockedData rule
 
-- Input implemented
-- New Bullet button created
-- DOCX export added for selection input
+- Implemented for both inputs.
+- some unecessary inputData on useCallbacks hook was removed.

@@ -59,14 +59,16 @@ export const SelectionInput = memo((props: {
     newData.value.options[index].optionLabel = newLabel;
     asyncSave(newData);
     setInputData(newData);
-  }, [asyncSave, inputData]);
+  }, [asyncSave]);
 
   const onOptionSelect = useCallback((id: string, inputData: SelectionInputData) => {
-    const newData: SelectionInputData = { ...inputData };
-    newData.value.id_selected = id;
-    asyncSave(newData);
-    setInputData(newData);
-  }, [asyncSave, inputData]);
+    if (inputData.lockedData !== true) {
+      const newData: SelectionInputData = { ...inputData };
+      newData.value.id_selected = id;
+      asyncSave(newData);
+      setInputData(newData);
+    }
+  }, [asyncSave]);
 
   const onOptionDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {

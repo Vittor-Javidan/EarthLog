@@ -59,14 +59,16 @@ export const OptionsInput = memo((props: {
     newData.value[index].optionLabel = newLabel;
     asyncSave(newData);
     setInputData(newData);
-  }, [asyncSave, inputData]);
+  }, [asyncSave]);
 
   const onOptionCheckChange = useCallback((checked: boolean, index: number, inputData: OptionsInputData) => {
-    const newData: OptionsInputData = { ...inputData };
-    newData.value[index].checked = checked;
-    asyncSave(newData);
-    setInputData(newData);
-  }, [asyncSave, inputData]);
+    if (inputData.lockedData !== true) {
+      const newData: OptionsInputData = { ...inputData };
+      newData.value[index].checked = checked;
+      asyncSave(newData);
+      setInputData(newData);
+    }
+  }, [asyncSave]);
 
   const onOptionDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
