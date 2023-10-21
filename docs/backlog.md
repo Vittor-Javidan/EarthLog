@@ -1,1 +1,3 @@
-- Add a option to disable sucess vibration clicks
+- make the last project button height be rendered dinamically
+- fix project status on project button overflowing in some devices.
+- add options input to doxc document generation

@@ -54,7 +54,6 @@ export const CarouselButton = memo((props: {
         <Text p
           style={{
             color: props.selected ? theme.font_active : theme.font,
-            textDecorationLine: props.selected ? 'underline' : 'none',
             fontWeight: '900',
           }}
         >
