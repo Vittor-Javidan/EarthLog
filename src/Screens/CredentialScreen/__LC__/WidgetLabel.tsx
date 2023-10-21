@@ -37,6 +37,8 @@ export const WidgetLabel = memo((props: {
           paddingHorizontal: 5,
           minWidth: 50,
         }}
+        placeholder="-------"
+        placeholderTextColor={focused ? props.theme.background : props.theme.font}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}
         onBlur={() => setFocused(false)}
