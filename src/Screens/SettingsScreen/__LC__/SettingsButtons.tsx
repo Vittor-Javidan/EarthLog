@@ -57,6 +57,17 @@ export const SettingsButtons = memo(() => {
         }}
       />
       <Button.TextWithIcon
+        title={'Vibrations'}
+        iconName="alert-circle"
+        onPress={() => navigate('VIBRATION OPTIONS SCOPE')}
+        theme={{
+          font: theme.font_Button,
+          font_Pressed: theme.font_active,
+          background: theme.background_Button,
+          background_Pressed: theme.background_active,
+        }}
+      />
+      <Button.TextWithIcon
         title={'Whipe All Data'}
         iconName="trash-outline"
         onPress={async () => await whipeAllData()}

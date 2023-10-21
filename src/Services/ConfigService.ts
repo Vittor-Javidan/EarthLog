@@ -14,6 +14,7 @@ export default class ConfigService {
     timeFormat:   DateTimeService.TimeFormatByTag(this.deviceLangauge),
     appTheme:     'Dark',
     widgetTheme:  'Light',
+    onlyWarningVibrations: false,
   };
 
   static async loadConfig(): Promise<void> {
@@ -35,11 +36,12 @@ export default class ConfigService {
     const deviceLanguage = LanguageService.getDeviceLanguage();
 
     const verifiedConfigDTO: ConfigDTO = {
-      language:    dto.language ?? deviceLanguage,
-      dateFormat:  dto.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
-      timeFormat:  dto.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
-      appTheme:    App.includes(dto.appTheme) ? dto.appTheme : 'Dark',
-      widgetTheme: Widget.includes(dto.widgetTheme) ? dto.widgetTheme : 'Light',
+      appTheme:              App.includes(dto.appTheme) ? dto.appTheme : 'Dark',
+      widgetTheme:           Widget.includes(dto.widgetTheme) ? dto.widgetTheme : 'Light',
+      language:              dto.language ?? deviceLanguage,
+      dateFormat:            dto.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
+      timeFormat:            dto.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
+      onlyWarningVibrations: dto.onlyWarningVibrations ?? false,
     };
     return verifiedConfigDTO;
   }

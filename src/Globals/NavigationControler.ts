@@ -12,7 +12,8 @@ type ScreenName = (
     'LANGUAGE SELECTION SCOPE'                        |
     'TIME AND DATE SCOPE'                             |
     'THEME SCOPE'                                     |
-    'CREDENTIAL SCOPE'                                |
+    'VIBRATION OPTIONS SCOPE'                         |
+  'CREDENTIAL SCOPE'                                  |
   'HOME SCOPE'                                        |
     'PROJECT SCOPE'                                   |
       'SAMPLE SCOPE'                                  |
@@ -37,6 +38,7 @@ export function navigate(
     case 'LANGUAGE SELECTION SCOPE': navController.push(AppRoutes.SS_LANGUAGE_SELECTION_SCOPE); break;
     case 'TIME AND DATE SCOPE':      navController.push(AppRoutes.SS_TIME_AND_DATE_SCOPE);      break;
     case 'THEME SCOPE':              navController.push(AppRoutes.SS_THEME_SCOPE);              break;
+    case 'VIBRATION OPTIONS SCOPE':  navController.push(AppRoutes.SS_VIBRATIONS_OPTIONS_SCOPE); break;
     case 'CREDENTIAL SCOPE':         navController.push(AppRoutes.CREDENTIALS_SCOPE);           break;
     case 'HOME SCOPE':               navController.push(AppRoutes.HOME_SCOPE);                  break;
 

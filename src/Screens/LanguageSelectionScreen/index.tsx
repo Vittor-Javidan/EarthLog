@@ -3,10 +3,10 @@ import { View } from 'react-native';
 
 import { LanguageTag } from '@Types/AppTypes';
 
+import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
-import { Animation } from '@Animation/index';
 
 export const LanguagesSelectionScreen = memo((props: {
   onLanguageChange: (languageTag: LanguageTag) => void

@@ -9,6 +9,7 @@ export default class AppRoutes {
   static SS_LANGUAGE_SELECTION_SCOPE  = `${this.SETTINGS_SCOPE}/LanguageSelectionScope`;
   static SS_TIME_AND_DATE_SCOPE       = `${this.SETTINGS_SCOPE}/DateAndTimeScope`;
   static SS_THEME_SCOPE               = `${this.SETTINGS_SCOPE}/ThemeScope`;
+  static SS_VIBRATIONS_OPTIONS_SCOPE  = `${this.SETTINGS_SCOPE}/VibrationsOptionsScope`;
 
   static PROJECT_SCOPE           = (id_project: string) => `/${id_project}`;
   static PS_EXPORT_PORJECT_SCOPE = (id_project: string) => `${this.PROJECT_SCOPE(id_project)}/exportProjectScope`;

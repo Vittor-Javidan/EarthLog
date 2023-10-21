@@ -1,1 +1,1 @@
-- validate on IOS the necessity of Plataform.OS values on labelButtons
+- Add a option to disable sucess vibration clicks

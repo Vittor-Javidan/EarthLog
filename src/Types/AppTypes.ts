@@ -107,6 +107,7 @@ export type ConfigDTO = {
   widgetTheme: ThemeNames_Widgets
   dateFormat: DateFormat
   timeFormat: TimeFormat
+  onlyWarningVibrations: boolean
 }
 
 export type ModalConfig = {
