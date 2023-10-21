@@ -1,6 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.14 DOCX Export: Options Input and translations 
+# 0.1.7.15 Selection input implementation
 
-- Added Options Input to docx export format.
-- Added translations for docx export.
+- Input implemented
+- New Bullet button created
+- DOCX export added for selection input

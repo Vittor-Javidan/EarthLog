@@ -1,3 +1,4 @@
+import { Bullet } from './BulletButton';
 import { Checkbox } from './CheckboxButton';
 import { DeleteSwipeButton } from './DeleteSwipeButton';
 import { IconButton } from './IconButton';
@@ -9,5 +10,6 @@ export const Button = {
   RoundedIcon:  RoundedIconButton,
   TextWithIcon: TextWithIcon,
   Checkbox:     Checkbox,
+  Bullet:       Bullet,
   ConfirmSwipe: DeleteSwipeButton,
 };

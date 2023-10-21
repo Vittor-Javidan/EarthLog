@@ -113,6 +113,18 @@ export default class ProjectService {
         allowOptionLabelChange: true,
         allowOptionDeletion: true,
       };
+      case 'selection': return {
+        id_input: UtilService.generateUuidV4(),
+        label: '',
+        type: 'selection',
+        value: {
+          options: [],
+          id_selected: '',
+        },
+        showAddOptionButton: true,
+        allowOptionLabelChange: true,
+        allowOptionDeletion: true,
+      };
       case 'gps': return {
         id_input: UtilService.generateUuidV4(),
         label: '',
