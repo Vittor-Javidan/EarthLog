@@ -1,1 +1,0 @@
-- check if the rule 'lockedData' was implemented to Selection and Options inputs

@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
+import { GPS_DTO } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
-import { GPS_DTO } from '@Types/ProjectTypes';
 import { Layout } from '@Layout/index';
 
 /**

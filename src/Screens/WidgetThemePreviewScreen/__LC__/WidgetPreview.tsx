@@ -1,13 +1,13 @@
 import React, { memo, useMemo } from 'react';
+import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import ThemeService from '@Services/ThemeService';
+import ConfigService from '@Services/ConfigService';
 
 import { Layout } from '@Layout/index';
-import { View } from 'react-native';
 import { Text } from '@Text/index';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 import { WidgetInput } from '@WidgetInput/index';
 
 export const WidgetPreview = memo((props: {

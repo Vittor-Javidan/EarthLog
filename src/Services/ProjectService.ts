@@ -1,9 +1,8 @@
-import UtilService from './UtilService';
-
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
-import DatabaseService from './DatabaseService';
 import { translations } from '@Translations/index';
+import DatabaseService from './DatabaseService';
 import ConfigService from './ConfigService';
+import UtilService from './UtilService';
 
 export default class ProjectService {
 

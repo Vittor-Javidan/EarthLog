@@ -1,11 +1,11 @@
 import { HeadingLevel, Paragraph, TextRun } from 'docx';
 
 import { ProjectDTO } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { document_inputData } from '../InputsDocument';
 import { document_Widget } from '../widgetDocument';
-import { translations } from '@Translations/index';
 
 export function document_AllSamples(projectDTO: ProjectDTO) {
 
@@ -26,7 +26,7 @@ export function document_AllSamples(projectDTO: ProjectDTO) {
             color: '#000000',
             font: 'Calibri',
             size: `${14}pt`,
-            children: [ `2.${i + 1} ` + samples[i].sampleSettings.name ],
+            children: [ `2.${i + 1} `, samples[i].sampleSettings.name ],
           }),
         ],
       })

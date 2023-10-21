@@ -47,7 +47,11 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ R['Latitude:'], ' ', String(inputData.value.coordinates.lat), ' ', `(${String(inputData.value.coordinates.accuracy)}m)` ],
+            children: [
+              R['Latitude:'], ' ',
+              String(inputData.value.coordinates.lat), ' ',
+              `(${String(inputData.value.coordinates.accuracy)}m)`,
+            ],
           }),
         ],
       })
@@ -59,7 +63,11 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ R['Longitude:'], ' ', String(inputData.value.coordinates.long), ' ', `(${String(inputData.value.coordinates.accuracy)}m)` ],
+            children: [
+              R['Longitude:'], ' ',
+              String(inputData.value.coordinates.long), ' ',
+              `(${String(inputData.value.coordinates.accuracy)}m)`,
+            ],
           }),
         ],
       })
@@ -74,7 +82,11 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ R['Altitude:'], ' ', String(inputData.value.altitude.value), ' ', `(${String(inputData.value.altitude.accuracy)}m)` ],
+            children: [
+              R['Altitude:'], ' ',
+              String(inputData.value.altitude.value), ' ',
+              `(${String(inputData.value.altitude.accuracy)}m)`,
+            ],
           }),
         ],
       })

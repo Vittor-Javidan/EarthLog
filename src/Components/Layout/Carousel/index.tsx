@@ -2,11 +2,12 @@ import React, { ReactNode, useMemo, useEffect, memo, useState, useTransition, us
 import { View, Dimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
+import { useBackPress } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
+
 import { IconName } from '@Icon/index';
 import { CarouselButton } from './CarouselButton';
-import { useBackPress } from '@Hooks/index';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -48,8 +49,8 @@ export const Carousel = memo((props: {
 
   const OverlayButtons = props.buttonData.map((data, index) => {
 
-    const isFirst = index === 0;
-    const isLast = index === props.screens.length - 1;
+    const isFirst      = index === 0;
+    const isLast       = index === props.screens.length - 1;
     const screenNumber = index + 1;
 
     return (

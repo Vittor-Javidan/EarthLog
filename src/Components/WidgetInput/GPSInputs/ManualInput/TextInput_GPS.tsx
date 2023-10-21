@@ -27,7 +27,7 @@ export const TextInput_GPS = memo((props: {
     switch (props.type) {
       case 'latitude':  regex = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/; break;
       case 'longitude': regex = /^[-+]?(180(\.0+)?|((1[0-7]\d)|([0-9]?\d))(\.\d+)?)$/; break;
-      case 'meters': regex = /^[+]?\d+(\.\d{1,2})?$/; break;
+      case 'meters':    regex = /^[+]?\d+(\.\d{1,2})?$/; break;
     }
 
     const isValid = regex.test(text) || text === '';

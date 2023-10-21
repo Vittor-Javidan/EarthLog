@@ -2,14 +2,14 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { OptionsInputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
+import ConfigService from '@Services/ConfigService';
 
 import { LC } from '../__LC__';
 import { AllOptions } from './AllOptions';
 import { AddOptionButton } from './AddOptionButton';
-import ConfigService from '@Services/ConfigService';
-import { translations } from '@Translations/index';
 
 export const OptionsInput = memo((props: {
   inputData: OptionsInputData

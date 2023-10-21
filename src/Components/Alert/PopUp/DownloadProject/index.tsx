@@ -95,7 +95,9 @@ export const DownloadProjects = memo((props: {
     }));
 
     const allSelectedProjectsKeys = Object.keys(selectedProjects);
-    const allSelectedProjects = allProjects.filter(projects => allSelectedProjectsKeys.includes(projects.projectSettings.id_project));
+    const allSelectedProjects = allProjects.filter(projects =>
+      allSelectedProjectsKeys.includes(projects.projectSettings.id_project)
+    );
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
 

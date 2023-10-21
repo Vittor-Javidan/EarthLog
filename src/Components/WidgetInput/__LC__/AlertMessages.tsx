@@ -14,7 +14,6 @@ export const AlertMessages = memo((props: {
     return <></>;
   }
 
-
   const Messages = Object.values(props.alertMessages).map((alertMessage) => (
     <Text p
       key={alertMessage}

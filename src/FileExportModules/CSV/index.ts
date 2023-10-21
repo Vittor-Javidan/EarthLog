@@ -1,8 +1,8 @@
 import { GPS_DTO } from '@Types/ProjectTypes';
-import FileExportService from '@Services/FileExportService';
-import DataProcessService from '@APIServices/DataProcessService';
-import ConfigService from '@Services/ConfigService';
 import { translations } from '@Translations/index';
+import FileExportService from '@Services/FileExportService';
+import ConfigService from '@Services/ConfigService';
+import DataProcessService from '@APIServices/DataProcessService';
 
 export default class CSV_Module {
 
@@ -123,9 +123,3 @@ export default class CSV_Module {
     return text;
   }
 }
-
-// Empty fields: "my text", ,
-// Number fiels: 2.00000
-// Text: Just use the string conversor
-
-// TODO: Use this during Project CSV export for all data

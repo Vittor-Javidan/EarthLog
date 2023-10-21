@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { ThemeNamesArray_APP, ThemeNames_APP } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
+import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
-import ThemeService from '@Services/ThemeService';
-import { translations } from '@Translations/index';
 
 export const ThemeButtons = memo((props: {
   onAppThemeChange: () => void

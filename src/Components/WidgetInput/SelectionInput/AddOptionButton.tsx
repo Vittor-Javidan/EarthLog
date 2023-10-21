@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 
-import { Button } from '@Button/index';
 import { WidgetTheme } from '@Types/ProjectTypes';
+
+import { Button } from '@Button/index';
 
 export const AddSelectionOptionButton = memo((props: {
   showAddOptionButton: boolean | undefined

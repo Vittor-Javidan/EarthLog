@@ -2,6 +2,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
 import { DownloadedProjectDTO, ProjectSettings } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
 import HapticsService from '@Services/HapticsService';
@@ -9,7 +10,6 @@ import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
 import { Icon } from '@Icon/index';
-import { translations } from '@Translations/index';
 
 export const ProjectsDisplay = memo((props: {
   showDisplay: boolean

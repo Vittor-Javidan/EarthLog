@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
+import { translations } from '@Translations/index';
 import { TimeFormat, TimeFormatsArray } from '@Types/AppTypes';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
-import { translations } from '@Translations/index';
 
 export const TimeFormatButtons = memo(() => {
 
