@@ -1,6 +1,6 @@
 {
   "name": "earthlog",
-  "version": "0.1.7.15",
+  "version": "0.1.8.0",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
