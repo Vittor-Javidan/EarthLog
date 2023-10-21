@@ -1,12 +1,16 @@
-import { ProjectDTO } from '@Types/ProjectTypes';
 import { HeadingLevel, Paragraph, TextRun } from 'docx';
+
+import { ProjectDTO } from '@Types/ProjectTypes';
+import ConfigService from '@Services/ConfigService';
 
 import { document_inputData } from '../InputsDocument';
 import { document_Widget } from '../widgetDocument';
+import { translations } from '@Translations/index';
 
 export function document_AllSamples(projectDTO: ProjectDTO) {
 
   const { samples } = projectDTO;
+  const R = translations.FileExportModules.docx[ConfigService.config.language];
   const document: Paragraph[] = [];
 
   // SAMPLE INFO
@@ -35,7 +39,7 @@ export function document_AllSamples(projectDTO: ProjectDTO) {
         ...document_inputData({
           id_input: '',
           type: 'gps',
-          label: 'Sample coordinate',
+          label: R['Reference coordinate'],
           value: sampleGPSReference,
         })
       );

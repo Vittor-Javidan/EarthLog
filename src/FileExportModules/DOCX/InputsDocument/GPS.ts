@@ -1,8 +1,12 @@
 import { Paragraph, TextRun } from 'docx';
+
 import { GPSInputData } from '@Types/ProjectTypes';
+import { translations } from '@Translations/index';
+import ConfigService from '@Services/ConfigService';
 
 export function InputDocument_GPS(inputData: GPSInputData) {
 
+  const R = translations.FileExportModules.docx[ConfigService.config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -28,7 +32,7 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#FF0000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ 'Empty' ],
+            children: [ R['Empty'] ],
           }),
         ],
       })
@@ -43,7 +47,7 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ 'Latitude:  ', String(inputData.value.coordinates.lat), `(${String(inputData.value.coordinates.accuracy)}m)` ],
+            children: [ R['Latitude:'], ' ', String(inputData.value.coordinates.lat), ' ', `(${String(inputData.value.coordinates.accuracy)}m)` ],
           }),
         ],
       })
@@ -55,7 +59,7 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ 'Longitude: ', String(inputData.value.coordinates.long), `(${String(inputData.value.coordinates.accuracy)}m)` ],
+            children: [ R['Longitude:'], ' ', String(inputData.value.coordinates.long), ' ', `(${String(inputData.value.coordinates.accuracy)}m)` ],
           }),
         ],
       })
@@ -70,7 +74,7 @@ export function InputDocument_GPS(inputData: GPSInputData) {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ 'Altitude:  ', String(inputData.value.altitude.value), `(${String(inputData.value.altitude.accuracy)}m)` ],
+            children: [ R['Altitude:'], ' ', String(inputData.value.altitude.value), ' ', `(${String(inputData.value.altitude.accuracy)}m)` ],
           }),
         ],
       })

@@ -1,5 +1,7 @@
-import { WidgetData } from '@Types/ProjectTypes';
 import { Paragraph, TextRun } from 'docx';
+
+import { WidgetData } from '@Types/ProjectTypes';
+
 import { document_inputData } from '../InputsDocument';
 
 export function document_Widget(widgetData: WidgetData) {

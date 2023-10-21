@@ -1,6 +1,7 @@
 import { Paragraph } from 'docx';
 
 import { ProjectDTO } from '@Types/ProjectTypes';
+
 import { document_Widget } from '../widgetDocument';
 
 export function document_ProjectWidgets(projectDTO: ProjectDTO) {

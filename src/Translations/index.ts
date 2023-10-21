@@ -40,11 +40,13 @@ import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
 import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
 import { R_FileExportModules_CSV } from './FileExportModules/CSV';
 import { R_Input_Options } from './widgetInput/OptionsInput';
+import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
 
 export const translations = {
   FileExportModules: {
     share:                    R_FileExportModules_Shared,
     csv:                      R_FileExportModules_CSV,
+    docx:                     R_FileExportModules_DOCX,
   },
   APIServices: {
     fetchAPI:                 R_Service_FetchAPI,

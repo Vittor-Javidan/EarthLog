@@ -1,10 +1,11 @@
 import { Document, Packer } from 'docx';
 
-import FileExportService from '@Services/FileExportService';
-import DataProcessService from '@APIServices/DataProcessService';
-import { document_Project } from './ProjectDocument';
 import { translations } from '@Translations/index';
+import FileExportService from '@Services/FileExportService';
 import ConfigService from '@Services/ConfigService';
+import DataProcessService from '@APIServices/DataProcessService';
+
+import { document_Project } from './ProjectDocument';
 
 export default class DOCX_Module {
 

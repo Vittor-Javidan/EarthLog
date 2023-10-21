@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.13 UI fix
+# 0.1.7.14 DOCX Export: Options Input and translations 
 
-- Now last project button and project buttons adapts when button has no width enough to display information.
+- Added Options Input to docx export format.
+- Added translations for docx export.
