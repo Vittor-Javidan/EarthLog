@@ -15,7 +15,7 @@
 + Word file export
 + CSV file export
 + Options Input
-- Select Input
++ Select Input
 - TextWidget Speech to text
 - Photo Input
 - Photo Upload API

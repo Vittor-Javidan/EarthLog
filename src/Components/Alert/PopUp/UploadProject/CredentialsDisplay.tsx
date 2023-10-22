@@ -2,6 +2,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { CredentialDTO } from '@Types/AppTypes';
+import { translations } from '@Translations/index';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
 import HapticsService from '@Services/HapticsService';
@@ -9,7 +10,6 @@ import ThemeService from '@Services/ThemeService';
 
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
-import { translations } from '@Translations/index';
 
 export const CredentialsDisplay = memo((props: {
   showDisplay: boolean

@@ -15,9 +15,9 @@ type ScreenName = (
     'VIBRATION OPTIONS SCOPE'                         |
   'CREDENTIAL SCOPE'                                  |
   'HOME SCOPE'                                        |
-    'PROJECT SCOPE'                                   |
-      'SAMPLE SCOPE'                                  |
-      'EXPORT PROJECT SCOPE'
+  'PROJECT SCOPE'                                     |
+    'SAMPLE SCOPE'                                    |
+    'EXPORT PROJECT SCOPE'
 )
 
 export function navigate(

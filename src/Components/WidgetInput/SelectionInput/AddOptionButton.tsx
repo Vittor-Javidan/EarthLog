@@ -4,7 +4,7 @@ import { WidgetTheme } from '@Types/ProjectTypes';
 
 import { Button } from '@Button/index';
 
-export const AddOptionButton = memo((props: {
+export const AddSelectionOptionButton = memo((props: {
   showAddOptionButton: boolean | undefined
   theme: WidgetTheme
   onAddOption: () => void

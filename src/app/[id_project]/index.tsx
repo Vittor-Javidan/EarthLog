@@ -98,9 +98,9 @@ const Drawer = memo((props: {
 }) => {
 
   const id_project = useLocalSearchParams().id_project as string;
-  const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R               = useMemo(() => translations.scope.project[config.language], []);
+  const config     = useMemo(() => ConfigService.config, []);
+  const theme      = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
+  const R          = useMemo(() => translations.scope.project[config.language], []);
 
   return (<>
     {props.projectSettings.rules.allowProjectExport && (

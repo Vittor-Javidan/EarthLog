@@ -1,11 +1,11 @@
 import React, { memo, useMemo } from 'react';
+import { View } from 'react-native';
 
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 
 import { Text } from '@Text/index';
-import { View } from 'react-native';
 
 export const ErrorDisplay = memo((props: {
   showDisplay: boolean

@@ -1,6 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.7.14 DOCX Export: Options Input and translations 
+# 0.1.8.2 Import refactor
 
-- Added Options Input to docx export format.
-- Added translations for docx export.
+- Many import reorganized.

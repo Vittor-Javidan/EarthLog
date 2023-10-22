@@ -31,7 +31,9 @@ export function InputDocument_Boolean(inputData: BooleanInputData) {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [inputData.notApplicable === true ? R['Not applicable'] : String(inputData.value) ],
+          children: [
+            inputData.notApplicable === true ? R['Not applicable'] : String(inputData.value),
+          ],
         }),
       ],
     })

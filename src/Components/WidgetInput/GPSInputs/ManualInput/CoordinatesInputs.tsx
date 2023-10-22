@@ -1,11 +1,11 @@
 import React, { useMemo, memo } from 'react';
 import { View, Platform } from 'react-native';
 
+import { WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 
 import { TextInput_GPS } from './TextInput_GPS';
-import { WidgetTheme } from '@Types/ProjectTypes';
 
 type TempCoordinates = {
   latitude: string

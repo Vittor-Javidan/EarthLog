@@ -109,12 +109,12 @@ export type WidgetTheme = {
 // Input TYPES
 // =================================================================================================
 
-export type InputData = StringInputData | BooleanInputData | GPSInputData | OptionsInputData
+export type InputData = StringInputData | BooleanInputData | GPSInputData | OptionsInputData | SelectionInputData
 export type InputAlertMessage = {
   gpsDistanceAlertMessage?: string
 }
 
-export const InputTypesArray = ['boolean', 'string', 'gps', 'options'] as const;
+export const InputTypesArray = ['boolean', 'string', 'gps', 'options', 'selection'] as const;
 export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
@@ -155,6 +155,23 @@ export type OptionData = {
   id: ID
   optionLabel: string
   checked: boolean
+}
+
+// ============================
+export type SelectionInputData = {
+  id_input: ID
+  label: string
+  type: 'selection'
+  value: SelectionOptionData
+  showAddOptionButton?: boolean
+  allowOptionLabelChange?: boolean
+  allowOptionDeletion?: boolean
+  lockedLabel?: boolean
+  lockedData?: boolean
+}
+export type SelectionOptionData = {
+  options: { id: string, optionLabel: string }[]
+  id_selected: string
 }
 
 // ============================

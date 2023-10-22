@@ -1,9 +1,8 @@
-import UtilService from './UtilService';
-
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
-import DatabaseService from './DatabaseService';
 import { translations } from '@Translations/index';
+import DatabaseService from './DatabaseService';
 import ConfigService from './ConfigService';
+import UtilService from './UtilService';
 
 export default class ProjectService {
 
@@ -109,6 +108,18 @@ export default class ProjectService {
         label: '',
         type: 'options',
         value: [],
+        showAddOptionButton: true,
+        allowOptionLabelChange: true,
+        allowOptionDeletion: true,
+      };
+      case 'selection': return {
+        id_input: UtilService.generateUuidV4(),
+        label: '',
+        type: 'selection',
+        value: {
+          options: [],
+          id_selected: '',
+        },
         showAddOptionButton: true,
         allowOptionLabelChange: true,
         allowOptionDeletion: true,

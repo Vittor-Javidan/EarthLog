@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
@@ -8,7 +9,6 @@ import SyncService from '@Services/SyncService';
 import { Widget } from '@Widget/index';
 import { Layout } from '@Layout/index';
 import { ProjectSettingsWidget } from './ProjectSettingsWidget';
-import { View } from 'react-native';
 
 export function F_ProjectWidgets(props: {
   onProjectNameUpdate: (newName: string) => void

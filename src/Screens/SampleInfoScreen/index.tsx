@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 
+import { GPS_DTO } from '@Types/ProjectTypes';
+
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
-import { GPS_DTO } from '@Types/ProjectTypes';
 
 export const SampleInfoScreen = memo((props: {
   sampleScopeState: 'Loaded' | 'Loading'
