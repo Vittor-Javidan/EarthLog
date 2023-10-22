@@ -16,14 +16,13 @@
 + CSV file export
 + Options Input
 + Select Input
-- TextWidget Speech to text
+- CameraComponent
 - Photo Input
 - Photo Upload API
 - Photo files export
-- Youtube button redirecting to ENG or PT-BR channel
+- Youtube button redirecting to a page with many YoutTube creators
+- Roadmap button redirecting to a page with the app roadmap
 - Community button redirecting to linkedin community
-- server to fetch next features on roadmap progress
-- server to fetch Tutorial Youtube Channels
 - Subscription Implementation
 
 # Apple/Play Store publishing

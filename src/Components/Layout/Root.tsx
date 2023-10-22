@@ -71,13 +71,13 @@ const AppLayer = memo((props: {
     >
       {props.children}
     </View>
-    <DrawerLayer
+    <Drawer
       show={showDrawer}
       dimensions={dimensions}
       onPress_Background={() => setShowDrawer(false)}
     >
       {props.drawerChildren}
-    </DrawerLayer>
+    </Drawer>
   </>);
 });
 
@@ -195,7 +195,7 @@ const MenuButton = memo((props: {
   );
 });
 
-const DrawerLayer = memo((props: {
+const Drawer = memo((props: {
   show: boolean
   dimensions: { width: number; height: number }
   children: ReactNode
