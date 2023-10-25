@@ -18,9 +18,9 @@ export const CameraLayer = memo(() => {
 
   const config    = useMemo(() => ConfigService.config, []);
   const theme     = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const [permission, requestPermission ] = Camera.useCameraPermissions();
-  const [showCamera, setShowCamera     ] = useState<boolean>(false);
-  const [_         , setCameraConfig   ] = useState<CameraLayerConfig>({
+  const [permission  , requestPermission] = Camera.useCameraPermissions();
+  const [showCamera  , setShowCamera    ] = useState<boolean>(false);
+  const [cameraConfig, setCameraConfig  ] = useState<CameraLayerConfig>({
     id_project: '',
     mode: 'photo',
   });
@@ -31,7 +31,7 @@ export const CameraLayer = memo(() => {
   return showCamera ? (
     <ReactNative_Modal
       onRequestClose={() => setShowCamera(false)}
-      animationType="slide"
+      animationType="fade"
       style={{
         width: WIDTH,
         height: HEIGHT,
@@ -56,6 +56,7 @@ export const CameraLayer = memo(() => {
         ) : (<>
           {permission.granted ? (
             <AppCamera
+              id_project={cameraConfig.id_project}
               onBackPress={() => setShowCamera(false)}
             />
           ) : (

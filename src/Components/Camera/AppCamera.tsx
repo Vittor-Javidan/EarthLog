@@ -1,12 +1,13 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
 import { Camera, CameraCapturedPicture } from 'expo-camera';
-import * as Sharing from 'expo-sharing';
 
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
+import CameraService from '@Services/CameraService';
 
 export const AppCamera = memo((props: {
+  id_project: string
   onBackPress: () => void
 }) => {
 
@@ -30,11 +31,13 @@ export const AppCamera = memo((props: {
     }
   }, [cameraRef, show.loadingPreview]);
 
-  const onConfirm = useCallback(async () => {
+  const onConfirm = useCallback(() => {
     if (photo?.uri) {
-      await Sharing.shareAsync(photo?.uri);
+      CameraService.savePicture(props.id_project, photo.uri);
+      setShow(prev => ({ ...prev, loadingPreview: false }));
+      setPhoto(null);
     }
-  }, [photo]);
+  }, [props.id_project, photo]);
 
   const onCancel = useCallback(() => {
     setPhoto(null);
@@ -77,14 +80,14 @@ export const AppCamera = memo((props: {
             position: 'absolute',
             bottom: 10,
             flexDirection: 'row',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             paddingHorizontal: 10,
             gap: 10,
             width: '100%',
           }}
         >
           <Button.RoundedIcon
-            iconName="arrow-down"
+            iconName="close"
             onPress={() => props.onBackPress()}
             theme={{
               font: '#DDD',

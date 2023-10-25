@@ -166,7 +166,7 @@ export default class DatabaseService {
       `${this.DATA_BASE_DIRECTORY}/${id_project}/media`
     );
     await FileSystemService.createDirectory(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/images`
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures`
     );
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/media/videos`
@@ -674,4 +674,45 @@ export default class DatabaseService {
     );
   }
 
+
+
+
+
+
+
+
+
+  // ===============================================================================================
+  // PICTURE FILES
+  // ===============================================================================================
+
+  static async getAllPicturesIDs(
+    id_project: string
+  ): Promise<string[]> {
+    const idsArray = await FileSystemService.readDirectory(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures`
+    );
+    return idsArray ?? [];
+  }
+
+  static async savePicture(
+    id_project: string,
+    id_picture: string,
+    picture: string
+  ) {
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
+      picture, 'base64'
+    );
+  }
+
+  static async getPicture(
+    id_project: string,
+    id_picture: string,
+  ): Promise<string | null> {
+    return await FileSystemService.readFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
+      'base64',
+    );
+  }
 }

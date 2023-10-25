@@ -43,10 +43,10 @@ export default class FileSystemService {
    * Reads a file. Return a string if exists, null otherwise.
    * @param directory directory of the file, with file name included.
    */
-  static async readFile(directory: string): Promise<string | null> {
+  static async readFile(directory: string, encoding?: 'utf8' | 'base64'): Promise<string | null> {
     const directoryExists = (await ExpoFileSystem.getInfoAsync(directory)).exists;
     if (directoryExists) {
-      return await ExpoFileSystem.readAsStringAsync(directory, {encoding: 'utf8'});
+      return await ExpoFileSystem.readAsStringAsync(directory, { encoding: encoding ?? 'utf8' });
     }
     return null;
   }

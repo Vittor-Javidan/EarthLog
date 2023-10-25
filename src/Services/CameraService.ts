@@ -1,10 +1,13 @@
 import { CameraLayerConfig } from '@Types/AppTypes';
+import FileSystemService from './FileSystemService';
+import UtilService from './UtilService';
+import DatabaseService from './DatabaseService';
 
 export default class CameraService {
 
   private static showCameraSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static cameraConfigSetter: React.Dispatch<React.SetStateAction<CameraLayerConfig>> | null = null;
-  private static onPictureTake: ((id_photo: string) => void) | ((id_photo: string) => Promise<void>) | null = null;
+  private static onPictureTake: ((id_photo: string) => void) | null = null;
 
   private static setShowCamera(boolean: boolean) {
     if (this.showCameraSetter !== null) {
@@ -18,15 +21,11 @@ export default class CameraService {
     }
   }
 
-  static registerShowSetter(
-    setter: React.Dispatch<React.SetStateAction<boolean>>
-  ) {
+  static registerShowSetter(setter: React.Dispatch<React.SetStateAction<boolean>>) {
     this.showCameraSetter = setter;
   }
 
-  static registerConfigSetter(
-    setter: React.Dispatch<React.SetStateAction<CameraLayerConfig>>
-  ) {
+  static registerConfigSetter(setter: React.Dispatch<React.SetStateAction<CameraLayerConfig>>) {
     this.cameraConfigSetter = setter;
   }
 
@@ -36,9 +35,16 @@ export default class CameraService {
     this.setShowCamera(true);
   }
 
-  static async sendPictureId(id_photo: string) {
-    if (this.onPictureTake !== null) {
-      await this.onPictureTake(id_photo);
+  /**
+   * This async method is not meant to be used with await. The user is to not block the UI for the
+   * next picture while the old is being saved.
+   */
+  static async savePicture(id_project: string, photoUri: string): Promise<void> {
+    const data = await FileSystemService.readFile(photoUri, 'base64');
+    if (data !== null && this.onPictureTake !== null) {
+      const id_picture = UtilService.generateUuidV4();
+      await DatabaseService.savePicture(id_project, id_picture, data);
+      this.onPictureTake(id_picture);
     }
   }
 }

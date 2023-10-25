@@ -28,6 +28,7 @@
 # Apple/Play Store publishing
 
 # Post-Realease Stage
+- App horizontal layout (To allow horizontal pictures)
 - Date/Time Input
 - GPS Poligon Input
 - Audio Widget
@@ -40,4 +41,3 @@
 - PDF export
 - GPS Tracking
 - High Contrast theme
-- App horizontal layout

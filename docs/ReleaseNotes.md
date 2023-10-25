@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.3 Picture on screen touch
+# 0.1.9.4 Picture database saving
 
-- Now camera pictures are taken shen screen is thouched and released
+- Now pictures are saved inside project pictures folder.
