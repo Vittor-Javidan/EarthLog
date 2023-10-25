@@ -31,6 +31,7 @@ module.exports = function (api) {
           '@Animation':         './src/Components/Animation',
           '@Layout':            './src/Components/Layout',
           '@Alert':             './src/Components/Alert',
+          '@Camera':            './src/Components/Camera',
           '@Widget':            './src/Components/Widget',
           '@WidgetInput':       './src/Components/WidgetInput',
         },

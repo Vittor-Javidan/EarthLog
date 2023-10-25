@@ -128,6 +128,12 @@ export default class DatabaseService {
       JSON.stringify(projectSettings, null, 4),
     );
 
+    // CREATE SYNC FILE ==============
+    await FileSystemService.writeFile(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`,
+      JSON.stringify({}, null, 4)
+    );
+
     // CREATE PROJECT WIDGETS FOLDER =======
     await FileSystemService.createDirectory(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`
@@ -649,16 +655,6 @@ export default class DatabaseService {
     return allSyncStatus;
   }
 
-  static async createSyncFile(
-    id_project: string,
-    syncData: SyncData
-  ): Promise<void> {
-    await FileSystemService.writeFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`,
-      JSON.stringify(syncData, null, 4)
-    );
-  }
-
   static async readSyncFile(
     id_project: string
   ): Promise<SyncData> {
@@ -670,11 +666,11 @@ export default class DatabaseService {
 
 
   static async updateSyncFile(
-    syncStatus: SyncData
+    syncData: SyncData
   ): Promise<void> {
     await FileSystemService.writeFile(
-      `${this.DATA_BASE_DIRECTORY}/${syncStatus.id_project}/syncStatus.json`,
-      JSON.stringify(syncStatus, null, 4)
+      `${this.DATA_BASE_DIRECTORY}/${syncData.id_project}/syncStatus.json`,
+      JSON.stringify(syncData, null, 4)
     );
   }
 

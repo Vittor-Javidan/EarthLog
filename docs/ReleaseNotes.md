@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.8.2 Import refactor
+# 0.1.9.0 Camera Layer Implementation
 
-- Many import reorganized.
+- Now sync files are created during project folder creation.
+- Added a Camera Layer, Camera Service, and basic access to camera.

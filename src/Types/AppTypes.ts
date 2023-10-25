@@ -124,6 +124,11 @@ export type ModalConfig = {
   question: string
 }
 
+export type CameraLayerConfig = {
+  id_project: string
+  mode: 'photo'
+}
+
 export type RegexRules = {
   'noSpaces':        RegExp
   'noSpecialLetter': RegExp

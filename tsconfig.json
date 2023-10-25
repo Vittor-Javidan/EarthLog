@@ -20,6 +20,7 @@
       "@Animation/*":         [ "Components/Animation/*"   ],
       "@Layout/*":            [ "Components/Layout/*"      ],
       "@Alert/*":             [ "Components/Alert/*"       ],
+      "@Camera/*":            [ "Components/Camera/*"      ],
       "@Widget/*":            [ "Components/Widget/*"      ],
       "@WidgetInput/*":       [ "Components/WidgetInput/*" ],
     }

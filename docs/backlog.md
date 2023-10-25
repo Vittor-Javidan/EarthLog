@@ -1,0 +1,3 @@
+- fix the typos on AlertService
+- Inside AlertService, on setConfig, rename the argument from 'question' to 'config'
+- rename buttons theme props, to use 'active' instead 'pressed'

@@ -6,6 +6,7 @@ import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
+import CameraService from '@Services/CameraService';
 
 export const ScreenButtons = memo((props: {
   onProjectCreation: () => void
@@ -26,9 +27,30 @@ export const ScreenButtons = memo((props: {
     }, () => props.onProjectCreation());
   }, [props.onProjectCreation]);
 
+  const showCamera = useCallback(async () => {
+    await CameraService.handleCamera({
+      id_project: '',
+      mode: 'photo',
+    }, (id_photo) => {
+      console.log(id_photo);
+    });
+  }, []);
+
   return (
     <Layout.ScreenButtons
       buttons={<>
+        <Button.RoundedIcon
+          iconName="camera"
+          showPlusSign={false}
+          buttonDiameter={60}
+          onPress={async () => await showCamera()}
+          theme={{
+            font: theme.font,
+            font_Pressed: theme.backgroud,
+            background: theme.backgroud,
+            background_Pressed: theme.background_active,
+          }}
+        />
         <Button.RoundedIcon
           iconName="cloud-download-outline"
           showPlusSign={false}

@@ -225,9 +225,9 @@ export default class ProjectService {
         }
       }
 
-      // PROJECT SYNC FILE
+      // UPDATE PROJECT SYNC FILE
       feedback(R['Saving project sync file']);
-      await DatabaseService.createSyncFile(id_project, projectDTO.syncData);
+      await DatabaseService.updateSyncFile(projectDTO.syncData);
 
       onSuccess();
 

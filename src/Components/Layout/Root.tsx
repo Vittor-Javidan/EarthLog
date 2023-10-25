@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable, LayoutChangeEvent } from 'react-native';
+import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 
@@ -11,6 +11,7 @@ import HapticsService from '@Services/HapticsService';
 import { Icon } from '@Icon/index';
 import { Text } from '@Text/index';
 import { AlertLayer } from '@Alert/index';
+import { CameraLayer } from '@Camera/index';
 
 const NAVBAR_HEIGH = 60;
 
@@ -21,10 +22,10 @@ export const Root = memo((props: {
   drawerChildren: JSX.Element
   navigationTree: JSX.Element
 }) => {
-
   return (<>
     <StatusBarLayer />
     <AlertLayer />
+    <CameraLayer />
     <AppLayer
       title={props.title}
       subtitle={props.subtitle}
@@ -46,13 +47,8 @@ const AppLayer = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [showDrawer, setShowDrawer] = useState<boolean>(false);
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    const { width, height } = event.nativeEvent.layout;
-    setDimensions({ width, height });
-  }, []);
+  const [drawerDimensions, setDrawerDimensions] = useState({ width: 0, height: 0, x: 0, y: 0 });
+  const [showDrawer      , setShowDrawer      ] = useState<boolean>(false);
 
   return (<>
     <Navbar
@@ -63,7 +59,7 @@ const AppLayer = memo((props: {
     />
     {props.navigationTree}
     <View
-      onLayout={(event) => onLayout(event)}
+      onLayout={(event) => setDrawerDimensions(event.nativeEvent.layout)}
       style={{
         flex: 1,
         backgroundColor: theme.background,
@@ -73,7 +69,7 @@ const AppLayer = memo((props: {
     </View>
     <Drawer
       show={showDrawer}
-      dimensions={dimensions}
+      dimensions={drawerDimensions}
       onPress_Background={() => setShowDrawer(false)}
     >
       {props.drawerChildren}

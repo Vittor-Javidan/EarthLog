@@ -1,6 +1,6 @@
 {
   "name": "earthlog",
-  "version": "0.1.8.2",
+  "version": "0.1.9.0",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -36,7 +36,8 @@
     "react-native-svg": "13.9.0",
     "react-native-uuid": "^2.0.1",
     "react-native-web": "~0.19.6",
-    "expo-sharing": "~11.5.0"
+    "expo-sharing": "~11.5.0",
+    "expo-camera": "~13.4.4"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
