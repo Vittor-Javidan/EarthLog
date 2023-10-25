@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.1 Refactor and UI changes
+# 0.1.9.2 Virtualized List removed
 
-- Loading component from <Layout /> changed back to scale 1
-- Buttons from photo preview component abstracted
-- Loading feedback from photo preview component abstracted
+- Now all lists are rendered using ScrollViews, due the reson of nested List being interesting to be used foward. They are more simple to use and performance impact is not considerable anyway.

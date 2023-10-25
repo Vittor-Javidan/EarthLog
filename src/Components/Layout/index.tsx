@@ -6,7 +6,6 @@ import { Loading } from './Loading';
 import { Screen } from './Screen';
 import { ScreenButtons } from './ScreenButtons';
 import { PseudoWidget } from './PseudoWidget';
-import { VirtualizeList } from './VirtualizeList';
 
 export const Layout = {
   Root: Root,
@@ -17,5 +16,4 @@ export const Layout = {
   ScreenButtons: ScreenButtons,
   Loading: Loading,
   PseudoWidget: PseudoWidget,
-  VirtualizeList: VirtualizeList,
 };

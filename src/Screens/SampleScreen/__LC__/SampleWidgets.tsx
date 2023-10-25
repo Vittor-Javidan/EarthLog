@@ -31,32 +31,30 @@ export function F_SampleWidgets(props: {
     );
   }, [id_project, id_sample]);
 
+  const AllWidgets = CacheService.allWidgets_Sample.map(widgetData => (
+    <Widget
+      key={widgetData.id_widget}
+      widgetScope={{
+        type: 'sample',
+        id_project: id_project,
+        id_sample: id_sample,
+      }}
+      widgetData={widgetData}
+      referenceGPSData={props.referenceGPS}
+      onDeleteWidget={async () => await onDeleteWidget_Sample(widgetData.id_widget)}
+    />
+  ));
+
   return (
-    <Layout.VirtualizeList
-      array={CacheService.allWidgets_Sample}
-      keyExtractor={(item) => item.id_widget}
-      maxToRenderPerBatch={5}
-      renderItem={({ item }) => (
-
-        <Widget
-          key={item.id_widget}
-          widgetScope={{
-            type: 'sample',
-            id_project: id_project,
-            id_sample: id_sample,
-          }}
-          widgetData={item}
-          referenceGPSData={props.referenceGPS}
-          onDeleteWidget={async () => await onDeleteWidget_Sample(item.id_widget)}
-        />
-
-      )}
-      style={{
+    <Layout.ScrollView
+      contentContainerStyle={{
         paddingTop: 55,
         paddingBottom: 150,
         paddingHorizontal: 5,
         gap: 10,
       }}
-    />
+    >
+      {AllWidgets}
+    </Layout.ScrollView>
   );
 }

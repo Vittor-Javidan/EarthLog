@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import ProjectService from '@Services/ProjectService';
@@ -29,41 +28,33 @@ export function F_ProjectWidgets(props: {
     );
   }, [id_project]);
 
+  const AllWidgets = CacheService.allWidgets_Project.map(widgetData => (
+    <Widget
+      key={widgetData.id_widget}
+      widgetScope={{
+        type: 'project',
+        id_project: id_project,
+      }}
+      widgetData={widgetData}
+      referenceGPSData={undefined}
+      onDeleteWidget={async () => await onDeleteWidget_Project(widgetData.id_widget)}
+    />
+  ));
+
   return (
-    <Layout.VirtualizeList
-      array={CacheService.allWidgets_Project}
-      keyExtractor={(item) => item.id_widget}
-      maxToRenderPerBatch={5}
-      style={{
+    <Layout.ScrollView
+      contentContainerStyle={{
         paddingTop: 55,
         paddingBottom: 150,
         paddingHorizontal: 5,
         gap: 10,
       }}
-
-      header={
-        <View>
-          <ProjectSettingsWidget
-            onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
-            onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange_Plural(newSampleAlias)}
-          />
-        </View>
-      }
-
-      renderItem={({ item }) => (
-
-        <Widget
-          key={item.id_widget}
-          widgetScope={{
-            type: 'project',
-            id_project: id_project,
-          }}
-          widgetData={item}
-          referenceGPSData={undefined}
-          onDeleteWidget={async () => await onDeleteWidget_Project(item.id_widget)}
-        />
-
-      )}
-    />
+    >
+      <ProjectSettingsWidget
+        onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
+        onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange_Plural(newSampleAlias)}
+      />
+      {AllWidgets}
+    </Layout.ScrollView>
   );
 }

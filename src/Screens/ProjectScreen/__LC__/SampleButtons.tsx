@@ -15,31 +15,30 @@ export function F_SampleButtons() {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
+  const AllButtons = CacheService.allSamples.map(sampleSettings => (
+    <Button.TextWithIcon
+      key={sampleSettings.id_sample}
+      title={sampleSettings.name}
+      iconName="clipboard"
+      onPress={() => navigate('SAMPLE SCOPE', id_project, sampleSettings.id_sample)}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+  ));
+
   return (
-    <Layout.VirtualizeList
-      array={CacheService.allSamples}
-      keyExtractor={(item) => item.id_sample}
-      maxToRenderPerBatch={5}
-      renderItem={({ item }) => (
-
-        <Button.TextWithIcon
-          title={item.name}
-          iconName="clipboard"
-          onPress={() => navigate('SAMPLE SCOPE', id_project, item.id_sample)}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.font_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
-        />
-
-      )}
-      style={{
+    <Layout.ScrollView
+      contentContainerStyle={{
         paddingTop: 55,
         paddingBottom: 150,
         gap: 1,
       }}
-    />
+    >
+      {AllButtons}
+    </Layout.ScrollView>
   );
 }
