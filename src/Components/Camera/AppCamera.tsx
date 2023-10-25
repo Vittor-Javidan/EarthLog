@@ -1,18 +1,13 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle } from 'react-native';
 import { Camera, CameraCapturedPicture } from 'expo-camera';
 
 import { Button } from '@Button/index';
-import ConfigService from '@Services/ConfigService';
-import ThemeService from '@Services/ThemeService';
 import { PhotoPreview } from './PhotoPreview';
 
 export const AppCamera = memo(() => {
 
   const cameraRef = useRef<Camera>(null);
-  const config    = useMemo(() => ConfigService.config, []);
-  const theme     = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
   const [show             , setShow             ] = useState({
@@ -31,6 +26,11 @@ export const AppCamera = memo(() => {
       setPhoto(await cameraRef.current.takePictureAsync());
     }
   }, [cameraRef]);
+
+  const onCancel = useCallback(() => {
+    setPhoto(null);
+    setShow(prev => ({ ...prev, loadingPreview: false }));
+  }, []);
 
   return (
     <View
@@ -54,29 +54,34 @@ export const AppCamera = memo(() => {
         <PhotoPreview
           photo={photo}
           dimensions={previewDimensions}
+          onCancel={() => onCancel()}
+          onConfirm={() => {}}
         />
       ) : (<>
-        <Button.Icon
-          iconName="camera"
-          onPress={async () => await takePicture()}
-          theme={{
-            font: theme.font_Button,
-            font_Pressed: theme.background_active,
-            background: theme.background_Button,
-            background_Pressed: theme.background_active,
-          }}
+        <View
           style={{
             position: 'absolute',
-            alignSelf: 'center',
-            height: 70,
-            width: 70,
-            borderRadius: 35,
-            paddingHorizontal: 5,
-            paddingVertical: 5,
             bottom: 10,
-            opacity: 0.3,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingHorizontal: 10,
+            gap: 10,
+            width: '100%',
           }}
-        />
+        >
+          <Button.RoundedIcon
+            iconName="camera"
+            onPress={async () => await takePicture()}
+            theme={{
+              font: '#DDD',
+              font_Pressed: '#666',
+              background: '#666',
+              background_Pressed: '#222',
+            }}
+            buttonDiameter={70}
+            showPlusSign={false}
+          />
+        </View>
       </>)}
     </View>
   );

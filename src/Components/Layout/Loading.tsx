@@ -20,7 +20,6 @@ export const Loading = memo(() => {
       <ActivityIndicator
         size="large"
         color={theme.font}
-        style={{ transform: [{ scale: 3 }] }}
       />
     </View>
   );
