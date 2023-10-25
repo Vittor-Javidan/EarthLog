@@ -55,7 +55,9 @@ export const CameraLayer = memo(() => {
           </View>
         ) : (<>
           {permission.granted ? (
-            <AppCamera />
+            <AppCamera
+              onBackPress={() => setShowCamera(false)}
+            />
           ) : (
             <View
               style={{

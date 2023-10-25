@@ -16,7 +16,7 @@
 + CSV file export
 + Options Input
 + Select Input
-- CameraComponent
++ CameraComponent
 - Photo Input
 - Photo Upload API
 - Photo files export
@@ -40,3 +40,4 @@
 - PDF export
 - GPS Tracking
 - High Contrast theme
+- App horizontal layout

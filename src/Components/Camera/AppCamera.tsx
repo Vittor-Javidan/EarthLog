@@ -1,11 +1,14 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { View, LayoutRectangle } from 'react-native';
+import { View, LayoutRectangle, Pressable } from 'react-native';
 import { Camera, CameraCapturedPicture } from 'expo-camera';
+import * as Sharing from 'expo-sharing';
 
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
 
-export const AppCamera = memo(() => {
+export const AppCamera = memo((props: {
+  onBackPress: () => void
+}) => {
 
   const cameraRef = useRef<Camera>(null);
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
@@ -21,11 +24,17 @@ export const AppCamera = memo(() => {
   }, [show.loadingPreview]);
 
   const takePicture = useCallback(async () => {
-    if (cameraRef.current !== null) {
+    if (cameraRef.current !== null && show.loadingPreview === false) {
       setShow(prev => ({ ...prev, loadingPreview: true}));
       setPhoto(await cameraRef.current.takePictureAsync());
     }
-  }, [cameraRef]);
+  }, [cameraRef, show.loadingPreview]);
+
+  const onConfirm = useCallback(async () => {
+    if (photo?.uri) {
+      await Sharing.shareAsync(photo?.uri);
+    }
+  }, [photo]);
 
   const onCancel = useCallback(() => {
     setPhoto(null);
@@ -49,13 +58,18 @@ export const AppCamera = memo(() => {
           height: '100%',
           overflow: 'hidden',
         }}
-      />
+      >
+        <Pressable
+          onPress={async () => await takePicture()}
+          style={{ flex: 1 }}
+        />
+      </Camera>
       {show.loadingPreview ? (
         <PhotoPreview
           photo={photo}
           dimensions={previewDimensions}
           onCancel={() => onCancel()}
-          onConfirm={() => {}}
+          onConfirm={async () =>  await onConfirm()}
         />
       ) : (<>
         <View
@@ -63,15 +77,15 @@ export const AppCamera = memo(() => {
             position: 'absolute',
             bottom: 10,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             paddingHorizontal: 10,
             gap: 10,
             width: '100%',
           }}
         >
           <Button.RoundedIcon
-            iconName="camera"
-            onPress={async () => await takePicture()}
+            iconName="arrow-down"
+            onPress={() => props.onBackPress()}
             theme={{
               font: '#DDD',
               font_Pressed: '#666',
