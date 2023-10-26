@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.5 App API new endpoint
+# 0.1.9.6 Camera Front-Back change option
 
-- Now uploads calls /project or /project/[id_project] endpoints depending if the project status is "new" or not
+- Added a button to change wich camera is being used

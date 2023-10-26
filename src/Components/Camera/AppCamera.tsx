@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
-import { Camera, CameraCapturedPicture } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
 
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
@@ -13,6 +13,7 @@ export const AppCamera = memo((props: {
 
   const cameraRef = useRef<Camera>(null);
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
+  const [cameraType       , setCameraType       ] = useState<CameraType>(CameraType.back);
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
   const [show             , setShow             ] = useState({
     loadingPreview: false,
@@ -44,6 +45,10 @@ export const AppCamera = memo((props: {
     setShow(prev => ({ ...prev, loadingPreview: false }));
   }, []);
 
+  const changeCameraType = useCallback((cameraType: CameraType) => {
+    setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front);
+  }, []);
+
   return (
     <View
       style={{
@@ -55,6 +60,7 @@ export const AppCamera = memo((props: {
     >
       <Camera
         ref={cameraRef}
+        type={cameraType}
         ratio="16:9"
         style={{
           aspectRatio: 9 / 16,
@@ -89,6 +95,18 @@ export const AppCamera = memo((props: {
           <Button.RoundedIcon
             iconName="close"
             onPress={() => props.onBackPress()}
+            theme={{
+              font: '#DDD',
+              font_Pressed: '#666',
+              background: '#666',
+              background_Pressed: '#222',
+            }}
+            buttonDiameter={70}
+            showPlusSign={false}
+          />
+          <Button.RoundedIcon
+            iconName="camera-reverse"
+            onPress={() => changeCameraType(cameraType)}
             theme={{
               font: '#DDD',
               font_Pressed: '#666',
