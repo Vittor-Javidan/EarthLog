@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.6 Camera Front-Back change option
+# 0.1.9.7 Flash button
 
-- Added a button to change wich camera is being used
+- Added a flash button to the camera.

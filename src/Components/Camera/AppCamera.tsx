@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
-import { Camera, CameraCapturedPicture, CameraType } from 'expo-camera';
+import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
@@ -14,6 +14,7 @@ export const AppCamera = memo((props: {
   const cameraRef = useRef<Camera>(null);
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
   const [cameraType       , setCameraType       ] = useState<CameraType>(CameraType.back);
+  const [flashMode        , setFlashMode        ] = useState<FlashMode>(FlashMode.off);
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
   const [show             , setShow             ] = useState({
     loadingPreview: false,
@@ -49,6 +50,10 @@ export const AppCamera = memo((props: {
     setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front);
   }, []);
 
+  const changeFlashMode = useCallback((flashMode: FlashMode) => {
+    setFlashMode(flashMode === FlashMode.off ? FlashMode.on : FlashMode.off);
+  }, []);
+
   return (
     <View
       style={{
@@ -61,6 +66,7 @@ export const AppCamera = memo((props: {
       <Camera
         ref={cameraRef}
         type={cameraType}
+        flashMode={flashMode}
         ratio="16:9"
         style={{
           aspectRatio: 9 / 16,
@@ -95,6 +101,18 @@ export const AppCamera = memo((props: {
           <Button.RoundedIcon
             iconName="close"
             onPress={() => props.onBackPress()}
+            theme={{
+              font: '#DDD',
+              font_Pressed: '#666',
+              background: '#666',
+              background_Pressed: '#222',
+            }}
+            buttonDiameter={70}
+            showPlusSign={false}
+          />
+          <Button.RoundedIcon
+            iconName={flashMode === FlashMode.on ? 'flash-off' : 'flash'}
+            onPress={() => changeFlashMode(flashMode)}
             theme={{
               font: '#DDD',
               font_Pressed: '#666',
