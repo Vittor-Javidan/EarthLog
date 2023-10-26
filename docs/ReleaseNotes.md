@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.7 Flash button
+# 0.1.9.8 Camera buttons style changed
 
-- Added a flash button to the camera.
+- Now they are icon button with transparent background

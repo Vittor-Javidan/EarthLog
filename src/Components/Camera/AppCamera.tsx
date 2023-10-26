@@ -84,21 +84,21 @@ export const AppCamera = memo((props: {
           photo={photo}
           dimensions={previewDimensions}
           onCancel={() => onCancel()}
-          onConfirm={async () =>  await onConfirm()}
+          onConfirm={() =>  onConfirm()}
         />
       ) : (<>
         <View
           style={{
             position: 'absolute',
-            bottom: 10,
+            top: 20,
+            right: 10,
             flexDirection: 'row',
             justifyContent: 'center',
-            paddingHorizontal: 10,
             gap: 10,
-            width: '100%',
+            opacity: 0.5,
           }}
         >
-          <Button.RoundedIcon
+          <Button.Icon
             iconName="close"
             onPress={() => props.onBackPress()}
             theme={{
@@ -107,10 +107,27 @@ export const AppCamera = memo((props: {
               background: '#666',
               background_Pressed: '#222',
             }}
-            buttonDiameter={70}
-            showPlusSign={false}
+            style={{
+              backgroundColor: undefined,
+              height: 50,
+              width: 50,
+              paddingHorizontal: 0,
+              paddingVertical: 0,
+            }}
           />
-          <Button.RoundedIcon
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            width: '100%',
+            gap: 10,
+            opacity: 0.5,
+          }}
+        >
+          <Button.Icon
             iconName={flashMode === FlashMode.on ? 'flash-off' : 'flash'}
             onPress={() => changeFlashMode(flashMode)}
             theme={{
@@ -119,10 +136,15 @@ export const AppCamera = memo((props: {
               background: '#666',
               background_Pressed: '#222',
             }}
-            buttonDiameter={70}
-            showPlusSign={false}
+            style={{
+              backgroundColor: undefined,
+              height: 50,
+              width: 50,
+              paddingHorizontal: 0,
+              paddingVertical: 0,
+            }}
           />
-          <Button.RoundedIcon
+          <Button.Icon
             iconName="camera-reverse"
             onPress={() => changeCameraType(cameraType)}
             theme={{
@@ -131,8 +153,13 @@ export const AppCamera = memo((props: {
               background: '#666',
               background_Pressed: '#222',
             }}
-            buttonDiameter={70}
-            showPlusSign={false}
+            style={{
+              backgroundColor: undefined,
+              height: 50,
+              width: 50,
+              paddingHorizontal: 0,
+              paddingVertical: 0,
+            }}
           />
         </View>
       </>)}
