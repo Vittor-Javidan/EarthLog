@@ -16,7 +16,7 @@ export default class FetchAPIService {
   }
 
   // ===============================================================================================
-  // App Endpoints
+  // App Endpoints Calls
   // ===============================================================================================
 
   private async auth(
@@ -46,7 +46,7 @@ export default class FetchAPIService {
     });
   }
 
-  private async postProject(accessToken: string, signal: AbortSignal, project: ProjectDTO) {
+  private async createProject(accessToken: string, signal: AbortSignal, project: ProjectDTO) {
     return fetch(this.credential.rootURL + this.endpoints.PROJECT, {
       signal: signal,
       method: 'POST',
@@ -55,7 +55,21 @@ export default class FetchAPIService {
         'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
-        projects: [ project ],
+        project: project,
+      }),
+    });
+  }
+
+  private async updateProject(accessToken: string, signal: AbortSignal, project: ProjectDTO) {
+    return fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${project.projectSettings.id_project}`, {
+      signal: signal,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        project: project,
       }),
     });
   }
@@ -185,7 +199,9 @@ export default class FetchAPIService {
 
       // POST PROJECT ======================================================
       feedback(R['Sending to server:'] + ` ${this.credential.name}`);
-      const response = await this.postProject(authBody.accessToken, signal, projectDTO);
+      const response = projectDTO.projectSettings.status === 'new'
+      ? await this.createProject(authBody.accessToken, signal, projectDTO)
+      : await this.updateProject(authBody.accessToken, signal, projectDTO);
       if (!response.ok) {
         const serverMessage = response.headers.get('serverMessage');
         const R = translations.APIServices.fetchAPI[ConfigService.config.language];
