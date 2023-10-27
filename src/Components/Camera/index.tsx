@@ -30,7 +30,7 @@ export const CameraLayer = memo(() => {
 
   return showCamera ? (
     <ReactNative_Modal
-      onRequestClose={() => setShowCamera(false)}
+      onRequestClose={() => CameraService.closeCamera()}
       animationType="fade"
       style={{
         width: WIDTH,
@@ -57,7 +57,7 @@ export const CameraLayer = memo(() => {
           {permission.granted ? (
             <AppCamera
               id_project={cameraConfig.id_project}
-              onBackPress={() => setShowCamera(false)}
+              onBackPress={() => CameraService.closeCamera()}
             />
           ) : (
             <View

@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.8 Camera buttons style changed
+# 0.1.9.9 Picture Input initial implementation
 
-- Now they are icon button with transparent background
+- the input is capable to open and close the camera, and save multiple shots at once.

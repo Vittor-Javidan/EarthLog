@@ -27,6 +27,7 @@ export const R_Widget_Root: TranslationDTO = {
     'options': 'Options',
     'selection': 'Selection',
     'gps': 'GPS',
+    'picture': 'Picture',
   },
   'pt-BR': {
     'Confirm to delete this widget.': 'Confirme para deletar este widget.',
@@ -43,5 +44,6 @@ export const R_Widget_Root: TranslationDTO = {
     'options': 'Opções',
     'selection': 'Seleção',
     'gps': 'GPS',
+    'picture': 'Foto',
   },
 };

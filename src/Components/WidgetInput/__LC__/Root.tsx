@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, memo, useCallback } from 'react';
-import { TextInput, View } from 'react-native';
+import { StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
 import { WidgetRules } from '@Types/ProjectTypes';
 import HapticsService from '@Services/HapticsService';
@@ -23,6 +23,7 @@ export const InputRoot = memo((props: {
   theme: InputTheme
   iconButtons: JSX.Element
   children: ReactNode
+  style?: StyleProp<ViewStyle>
   onLabelChange: (label: string) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
@@ -65,7 +66,7 @@ export const InputRoot = memo((props: {
         ) : ( props.iconButtons )}
       </View>
       <View
-        style={{
+        style={[{
           width: '100%',
           paddingTop: 5,
           paddingHorizontal: 10,
@@ -74,7 +75,7 @@ export const InputRoot = memo((props: {
           borderColor: props.theme.font,
           borderWidth: 2,
           borderRadius: 10,
-        }}
+        }, props.style]}
       >
         {props.children}
       </View>

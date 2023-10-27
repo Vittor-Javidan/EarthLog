@@ -109,12 +109,18 @@ export type WidgetTheme = {
 // Input TYPES
 // =================================================================================================
 
-export type InputData = StringInputData | BooleanInputData | GPSInputData | OptionsInputData | SelectionInputData
 export type InputAlertMessage = {
   gpsDistanceAlertMessage?: string
 }
-
-export const InputTypesArray = ['boolean', 'string', 'gps', 'options', 'selection'] as const;
+export type InputData = (
+  StringInputData    |
+  BooleanInputData   |
+  GPSInputData       |
+  OptionsInputData   |
+  SelectionInputData |
+  PictureInputData
+)
+export const InputTypesArray = ['boolean', 'string', 'gps', 'options', 'selection', 'picture'] as const;
 export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
@@ -172,6 +178,23 @@ export type SelectionInputData = {
 export type SelectionOptionData = {
   options: { id: string, optionLabel: string }[]
   id_selected: string
+}
+
+// ============================
+export type PictureInputData = {
+  id_input: ID
+  label: string
+  type: 'picture'
+  value: PictureData[]
+  lockedLabel?: boolean
+  lockedData?: boolean
+  picturesAmountLimit?: number
+}
+export type PictureData = {
+  id_picture: string
+  description: string
+  dateAndTimeUTC: string
+  dateAndTime: string
 }
 
 // ============================

@@ -130,6 +130,12 @@ export default class ProjectService {
         type: 'gps',
         value: {},
       };
+      case 'picture': return {
+        id_input: UtilService.generateUuidV4(),
+        label: '',
+        type: 'picture',
+        value: [],
+      };
     }
   }
 

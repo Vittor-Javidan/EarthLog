@@ -706,13 +706,10 @@ export default class DatabaseService {
     );
   }
 
-  static async getPicture(
+  static getPictureUri(
     id_project: string,
     id_picture: string,
-  ): Promise<string | null> {
-    return await FileSystemService.readFile(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
-      'base64',
-    );
+  ): string {
+    return `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
   }
 }

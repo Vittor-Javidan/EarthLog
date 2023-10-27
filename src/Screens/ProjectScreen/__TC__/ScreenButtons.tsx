@@ -9,8 +9,6 @@ import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
-import CameraService from '@Services/CameraService';
-import DatabaseService from '@Services/DatabaseService';
 
 export const ScreenButtons = memo((props: {
   onSampleCreation: () => void
@@ -35,32 +33,10 @@ export const ScreenButtons = memo((props: {
     }, () => {});
   }, []);
 
-  const showCamera = useCallback(async () => {
-    await CameraService.handleCamera({
-      id_project: id_project,
-      mode: 'photo',
-    }, async (id_photo) => {
-      console.log(id_photo);
-      console.log(await DatabaseService.getAllPicturesIDs(id_project));
-    });
-  }, []);
-
   return (
     <Layout.ScreenButtons
 
       buttons={<>
-        <Button.RoundedIcon
-          iconName="camera"
-          showPlusSign={false}
-          buttonDiameter={60}
-          onPress={async () => await showCamera()}
-          theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
-          }}
-        />
         <Button.RoundedIcon
           iconName="home"
           showPlusSign={false}

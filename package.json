@@ -1,6 +1,6 @@
 {
   "name": "earthlog",
-  "version": "0.1.9.8",
+  "version": "0.1.9.9",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -37,7 +37,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "13.9.0",
     "react-native-uuid": "^2.0.1",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "react-native-pager-view": "6.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

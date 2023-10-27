@@ -14,5 +14,6 @@ export function document_inputData(inputData: InputData): Paragraph[] {
     case 'options':   return InputDocument_Options(inputData);
     case 'selection': return InputDocument_Selection(inputData);
     case 'gps':       return InputDocument_GPS(inputData);
+    case 'picture':   return []; // TODO: Add picture document
   }
 }

@@ -7,6 +7,7 @@ import { BooleanInput } from './BooleanInput';
 import { GPSInput } from './GPSInputs';
 import { OptionsInput } from './OptionsInput';
 import { SelectionInput } from './SelectionInput';
+import { PictureInput } from './PictureInput';
 
 export const InputSelector = memo((props: {
   inputData: InputData
@@ -86,6 +87,20 @@ export const InputSelector = memo((props: {
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
         referenceGPSData={props.referenceGPSData}
+        onSave={(inputData) => props.onSave(inputData)}
+        onInputDelete={() => props.onInputDelete()}
+        onInputMoveUp={() => props.onInputMoveUp()}
+        onInputMoveDow={() => props.onInputMoveDow()}
+        widgetRules={props.widgetRules}
+        theme={props.widgetTheme}
+      />
+    );
+    case 'picture': return (
+      <PictureInput
+        inputData={props.inputData}
+        editWidget={props.editWidget}
+        isFirstInput={props.isFirstInput}
+        isLastInput={props.isLastInput}
         onSave={(inputData) => props.onSave(inputData)}
         onInputDelete={() => props.onInputDelete()}
         onInputMoveUp={() => props.onInputMoveUp()}

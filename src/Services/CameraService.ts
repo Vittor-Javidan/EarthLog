@@ -8,6 +8,7 @@ export default class CameraService {
   private static showCameraSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static cameraConfigSetter: React.Dispatch<React.SetStateAction<CameraLayerConfig>> | null = null;
   private static onPictureTake: ((id_photo: string) => void) | null = null;
+  private static onCameraClose: (() => void) | null = null;
 
   private static setShowCamera(boolean: boolean) {
     if (this.showCameraSetter !== null) {
@@ -29,10 +30,28 @@ export default class CameraService {
     this.cameraConfigSetter = setter;
   }
 
-  static async handleCamera(config: CameraLayerConfig,  onPictureTake: (id_photo: string) => void) {
-    this.onPictureTake = onPictureTake;
-    this.setConfig(config);
+  static closeCamera() {
+    this.setShowCamera(false);
+    if (this.onCameraClose !== null) {
+      this.onCameraClose();
+      this.onCameraClose = null;
+    }
+  }
+
+  static openCamera() {
     this.setShowCamera(true);
+  }
+
+  static configCamera(config: CameraLayerConfig) {
+    this.setConfig(config);
+  }
+
+  static onPictureCallback(onPictureTake: (id_picture: string) => void) {
+    this.onPictureTake = onPictureTake;
+  }
+
+  static onCameraCloseCallback(onCameraClose: () => void) {
+    this.onCameraClose = onCameraClose;
   }
 
   /**
@@ -46,5 +65,9 @@ export default class CameraService {
       await DatabaseService.savePicture(id_project, id_picture, data);
       this.onPictureTake(id_picture);
     }
+  }
+
+  static getPictureUri(id_project: string, id_picture: string) {
+    return DatabaseService.getPictureUri(id_project, id_picture);
   }
 }
