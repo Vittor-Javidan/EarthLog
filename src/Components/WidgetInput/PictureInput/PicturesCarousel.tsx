@@ -4,8 +4,8 @@ import PagerView from 'react-native-pager-view';
 
 import { PictureData } from '@Types/ProjectTypes';
 import CameraService from '@Services/CameraService';
-import { Button } from '@Button/index';
 
+import { Button } from '@Button/index';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
@@ -23,23 +23,28 @@ export const PicturesCarousel = memo((props: {
   }, [props.onPictureScroll]);
 
   const scrollRight = useCallback((currentIndex: number) => {
-    if (pageRef.current !== null && currentIndex < props.pictures.length) {
+    if (pageRef.current !== null) {
       pageRef.current.setPage(currentIndex + 1);
     }
   }, [props.pictures, pageRef.current]);
 
   const scrollLeft = useCallback((currentIndex: number) => {
-    if (pageRef.current !== null && currentIndex > 0) {
+    if (pageRef.current !== null) {
       pageRef.current.setPage(currentIndex - 1);
     }
   }, [props.pictures, pageRef.current]);
 
   const AllImages = props.pictures.map(pictureData => (
-    <PictureDisplay
+    <Image
       key={pictureData.id_picture}
-      id_project={props.id_project}
-      pictureData={pictureData}
-      dimensions={dimensions}
+      source={{ uri: CameraService.getPictureUri(props.id_project, pictureData.id_picture)}}
+      resizeMode="cover"
+      style={{
+        flex: 1,
+        alignSelf: 'center',
+        height: dimensions.width,
+        width: dimensions.width,
+      }}
     />
   ));
 
@@ -52,7 +57,6 @@ export const PicturesCarousel = memo((props: {
       }}
     >
       <PagerView
-        // pageMargin={dimensions.width}
         initialPage={pictureIndex}
         ref={pageRef}
         onPageSelected={page => onPictureScroll(page.nativeEvent.position)}
@@ -62,81 +66,78 @@ export const PicturesCarousel = memo((props: {
       >
         {AllImages}
       </PagerView>
-      {pictureIndex !== 0 && (
-        <View
-          style={{
-            position: 'absolute',
-            justifyContent: 'center',
-            left: 0,
-            height: '100%',
-          }}
-        >
-          <Button.Icon
-            iconName="chevron-back"
-            onPress={() => scrollLeft(pictureIndex)}
-            theme={{
-              font: '#DDD',
-              font_Pressed: '#666',
-              background: '#666',
-              background_Pressed: '#222',
-            }}
-            style={{
-              backgroundColor: undefined,
-              height: 50,
-              width: 50,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-            }}
-          />
-        </View>
-      )}
-      {pictureIndex !== props.pictures.length - 1 && (
-        <View
-          style={{
-            position: 'absolute',
-            justifyContent: 'center',
-            right: 0,
-            height: '100%',
-          }}
-        >
-          <Button.Icon
-            iconName="chevron-forward"
-            onPress={() => scrollRight(pictureIndex)}
-            theme={{
-              font: '#DDD',
-              font_Pressed: '#666',
-              background: '#666',
-              background_Pressed: '#222',
-            }}
-            style={{
-              backgroundColor: undefined,
-              height: 50,
-              width: 50,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-            }}
-          />
-        </View>
-      )}
+      <CarouselButtons
+        isFirstPicture={pictureIndex === 0}
+        isLastPicture={pictureIndex === props.pictures.length - 1}
+        onScrollLeft={() => scrollLeft(pictureIndex)}
+        onScrollRight={() => scrollRight(pictureIndex)}
+      />
     </View>
   ) : <></>;
 });
 
-const PictureDisplay = memo((props: {
-  id_project: string
-  pictureData: PictureData
-  dimensions: LayoutRectangle
+const CarouselButtons = memo((props: {
+  isFirstPicture: boolean
+  isLastPicture: boolean
+  onScrollLeft: () => void
+  onScrollRight: () => void
 }) => {
-  return (
-    <Image
-      source={{ uri: CameraService.getPictureUri(props.id_project, props.pictureData.id_picture)}}
-      style={{
-        flex: 1,
-        alignSelf: 'center',
-        height: props.dimensions.width,
-        width: props.dimensions.width,
-      }}
-      resizeMode="cover"
-    />
-  );
+  return (<>
+    {!props.isFirstPicture && (
+      <View
+        style={{
+          position: 'absolute',
+          justifyContent: 'center',
+          left: 0,
+          height: '100%',
+        }}
+      >
+        <Button.Icon
+          iconName="chevron-back"
+          onPress={props.onScrollLeft}
+          theme={{
+            font: '#DDD',
+            font_Pressed: '#666',
+            background: '#666',
+            background_Pressed: '#222',
+          }}
+          style={{
+            backgroundColor: undefined,
+            height: 50,
+            width: 50,
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+          }}
+        />
+      </View>
+    )}
+    {!props.isLastPicture && (
+      <View
+        style={{
+          position: 'absolute',
+          justifyContent: 'center',
+          right: 0,
+          height: '100%',
+        }}
+      >
+        <Button.Icon
+          iconName="chevron-forward"
+          onPress={props.onScrollRight}
+          theme={{
+            font: '#DDD',
+            font_Pressed: '#666',
+            background: '#666',
+            background_Pressed: '#222',
+          }}
+          style={{
+            backgroundColor: undefined,
+            height: 50,
+            width: 50,
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+          }}
+        />
+      </View>
+    )}
+  </>);
 });

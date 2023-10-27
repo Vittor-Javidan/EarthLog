@@ -30,18 +30,6 @@ export default class CameraService {
     this.cameraConfigSetter = setter;
   }
 
-  static closeCamera() {
-    this.setShowCamera(false);
-    if (this.onCameraClose !== null) {
-      this.onCameraClose();
-      this.onCameraClose = null;
-    }
-  }
-
-  static openCamera() {
-    this.setShowCamera(true);
-  }
-
   static configCamera(config: CameraLayerConfig) {
     this.setConfig(config);
   }
@@ -52,6 +40,18 @@ export default class CameraService {
 
   static onCameraCloseCallback(onCameraClose: () => void) {
     this.onCameraClose = onCameraClose;
+  }
+
+  static openCamera() {
+    this.setShowCamera(true);
+  }
+
+  static closeCamera() {
+    this.setShowCamera(false);
+    if (this.onCameraClose !== null) {
+      this.onCameraClose();
+      this.onCameraClose = null;
+    }
   }
 
   /**

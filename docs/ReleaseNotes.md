@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.9 Picture Input initial implementation
+# 0.1.9.10 Refactoring
 
-- the input is capable to open and close the camera, and save multiple shots at once.
+- Pictures carousel buttons abstracted to their own local component <CarouselButtons />
+- <PictureDisplay /> component removed.
+- Some methods of CameraService was reorganized.

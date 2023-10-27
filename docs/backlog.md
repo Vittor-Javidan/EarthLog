@@ -1,4 +1,4 @@
-- find a way to add pictures without close the camera layer
+- remove all unecessary arrow functions reconstructions
 - Block pictures to be taken on template widgets
 
 - change the gap between inputs to 15

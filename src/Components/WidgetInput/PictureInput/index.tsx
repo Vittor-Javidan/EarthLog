@@ -32,11 +32,6 @@ export const PictureInput = memo((props: {
     openCamera: false,
   });
 
-  usePictureWatcher(
-    (id_picture) => onPictureTake(id_picture),
-    () => setShow(prev => ({ ...prev, openCamera: false })),
-  [inputData, show.openCamera]);
-
   /**
    * @WARNING
    * Never call this function from inside a state setter.
@@ -46,11 +41,11 @@ export const PictureInput = memo((props: {
     props.onSave(UtilService.deepCopy(inputData));
   }, [props.onSave]);
 
-  const onLabelChange = useCallback((newLabel: string, inputData: PictureInputData) => {
+  const onLabelChange = useCallback((newLabel: string) => {
     const newData: PictureInputData = { ...inputData, label: newLabel};
     asyncSave(newData);
     setInputData(prev => ({ ...prev, label: newLabel}));
-  }, [asyncSave]);
+  }, [asyncSave, inputData]);
 
   const openCamera = useCallback(() => {
     CameraService.configCamera({
@@ -61,8 +56,7 @@ export const PictureInput = memo((props: {
   }, []);
 
   const onPictureTake = useCallback(async (id_picture: string) => {
-    const newData: PictureInputData = { ...inputData };
-    newData.value = [ ...newData.value, {
+    const newData: PictureInputData = { ...inputData, value: [ ...inputData.value, {
       id_picture: id_picture,
       description: '',
       dateAndTimeUTC: DateTimeService.getCurrentDateTimeUTC(),
@@ -70,7 +64,7 @@ export const PictureInput = memo((props: {
         dateFormat: config.dateFormat,
         timeFormat: config.timeFormat,
       }),
-    }];
+    }]};
     asyncSave(newData);
     setInputData(newData);
     if (
@@ -81,6 +75,10 @@ export const PictureInput = memo((props: {
     }
   }, [asyncSave, inputData]);
 
+  useCameraWatcher(onPictureTake, () => {
+    setShow(prev => ({ ...prev, openCamera: false }));
+  }, [inputData, show.openCamera]);
+
   return (
     <LC.Root
 
@@ -89,10 +87,10 @@ export const PictureInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={(label) => onLabelChange(label, inputData)}
-      onInputDelete={() => props.onInputDelete()}
-      onInputMoveUp={() => props.onInputMoveUp()}
-      onInputMoveDow={() => props.onInputMoveDow()}
+      onLabelChange={onLabelChange}
+      onInputDelete={props.onInputDelete}
+      onInputMoveUp={props.onInputMoveUp}
+      onInputMoveDow={props.onInputMoveDow}
       widgetRules={props.widgetRules}
       theme={props.theme}
       style={{
@@ -119,7 +117,7 @@ export const PictureInput = memo((props: {
           onPictureScroll={(index) => console.log(index)}
         />
         <OpenCameraButton
-          onPress={() => openCamera()}
+          onPress={openCamera}
           theme={props.theme}
           showButton={(
             inputData.picturesAmountLimit === undefined ||
@@ -149,7 +147,7 @@ const IconButtons = memo((props: {
   </>);
 });
 
-function usePictureWatcher(
+function useCameraWatcher(
   onPictureCallback: (id_picture: string) => void,
   onCameraClose: () => void,
   deps: [PictureInputData, boolean]

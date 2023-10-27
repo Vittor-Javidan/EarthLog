@@ -33,21 +33,13 @@ export const AppCamera = memo((props: {
     }
   }, [cameraRef, show.loadingPreview]);
 
-  // const onConfirm = useCallback(() => {
-  //   if (photo?.uri) {
-  //     CameraService.savePicture(props.id_project, photo.uri);
-  //     setShow(prev => ({ ...prev, loadingPreview: false }));
-  //     setPhoto(null);
-  //   }
-  // }, [props.id_project, photo]);
-
-  function onConfirm() {
+  const onConfirm = useCallback(() => {
     if (photo?.uri) {
       CameraService.savePicture(props.id_project, photo.uri);
       setShow(prev => ({ ...prev, loadingPreview: false }));
       setPhoto(null);
     }
-  }
+  }, [props.id_project, photo]);
 
   const onCancel = useCallback(() => {
     setPhoto(null);
