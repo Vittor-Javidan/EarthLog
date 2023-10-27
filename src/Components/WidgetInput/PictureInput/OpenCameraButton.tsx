@@ -12,11 +12,11 @@ export const OpenCameraButton = memo((props: {
   return props.showButton ? (
     <Button.Icon
       iconName="camera"
-      onPress={() => props.onPress()}
+      onPress={props.onPress}
       theme={{
-        font: props.theme.background,
-        font_Pressed: props.theme.font,
-        background: props.theme.font,
+        font:               props.theme.background,
+        font_Pressed:       props.theme.font,
+        background:         props.theme.font,
         background_Pressed: props.theme.background,
       }}
       style={{

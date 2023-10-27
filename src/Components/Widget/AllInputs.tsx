@@ -2,11 +2,12 @@ import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, ID, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 
 export const DataDisplay = memo((props: {
+  widgetScope: WidgetScope
   inputs: InputData[]
   editInputs: boolean
   referenceGPSData: GPS_DTO | undefined
@@ -32,6 +33,7 @@ export const DataDisplay = memo((props: {
     return (
       <WidgetInput.Selector
         key={inputData.id_input + index}
+        widgetScope={props.widgetScope}
         inputData={inputData}
         editWidget={props.editInputs}
         isFirstInput={isFirst}

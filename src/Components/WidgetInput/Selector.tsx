@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, InputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';
@@ -10,6 +10,7 @@ import { SelectionInput } from './SelectionInput';
 import { PictureInput } from './PictureInput';
 
 export const InputSelector = memo((props: {
+  widgetScope: WidgetScope
   inputData: InputData
   editWidget: boolean
   isFirstInput: boolean
@@ -29,10 +30,10 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
         multiline
@@ -44,10 +45,10 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />
@@ -58,10 +59,10 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />
@@ -72,10 +73,10 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />
@@ -86,25 +87,26 @@ export const InputSelector = memo((props: {
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        referenceGPSData={props.referenceGPSData}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
+        referenceGPSData={props.referenceGPSData}
       />
     );
     case 'picture': return (
       <PictureInput
+        widgetScope={props.widgetScope}
         inputData={props.inputData}
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}
         isLastInput={props.isLastInput}
-        onSave={(inputData) => props.onSave(inputData)}
-        onInputDelete={() => props.onInputDelete()}
-        onInputMoveUp={() => props.onInputMoveUp()}
-        onInputMoveDow={() => props.onInputMoveDow()}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
       />

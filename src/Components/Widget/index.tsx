@@ -215,6 +215,7 @@ export const Widget = memo((props: {
           />
           {display === 'data display' && (<>
             <DataDisplay
+              widgetScope={props.widgetScope}
               inputs={widgetData.inputs}
               editInputs={editInputs}
               referenceGPSData={props.referenceGPSData}

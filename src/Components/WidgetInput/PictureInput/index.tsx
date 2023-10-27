@@ -1,8 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
 
-import { PictureInputData, WidgetRules, WidgetTheme } from '@Types/ProjectTypes';
+import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 import UtilService from '@Services/UtilService';
 import CameraService from '@Services/CameraService';
 import DateTimeService from '@Services/DateTimeService';
@@ -13,6 +12,7 @@ import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
 
 export const PictureInput = memo((props: {
+  widgetScope: WidgetScope
   inputData: PictureInputData
   editWidget: boolean
   isFirstInput: boolean
@@ -25,8 +25,7 @@ export const PictureInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config     = useMemo(() => ConfigService.config, []);
+  const config = useMemo(() => ConfigService.config, []);
   const [inputData, setInputData] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
   const [show     , setShow     ] = useState({
     openCamera: false,
@@ -48,11 +47,13 @@ export const PictureInput = memo((props: {
   }, [asyncSave, inputData]);
 
   const openCamera = useCallback(() => {
-    CameraService.configCamera({
-      id_project: id_project,
-      mode: 'photo',
-    });
-    setShow(prev => ({ ...prev, openCamera: true}));
+    if (props.widgetScope.type !== 'template') {
+      CameraService.configCamera({
+        id_project: props.widgetScope.id_project,
+        mode: 'photo',
+      });
+      setShow(prev => ({ ...prev, openCamera: true}));
+    }
   }, []);
 
   const onPictureTake = useCallback(async (id_picture: string) => {
@@ -111,8 +112,16 @@ export const PictureInput = memo((props: {
           gap: 5,
         }}
       >
+        {props.widgetScope.type === 'template' && (
+          <LC.AlertMessages
+            alertMessages={{
+              templatePictureScope: '* Templates are not allowed to take pictures',
+            }}
+            theme={props.theme}
+          />
+        )}
         <PicturesCarousel
-          id_project={id_project}
+          id_project={props.widgetScope.id_project}
           pictures={inputData.value}
           onPictureScroll={(index) => console.log(index)}
         />
