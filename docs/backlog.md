@@ -1,5 +1,6 @@
 - Implement image deletion, in case those cases: Sample deletion, widget deletion, input deletion, individual deletion.
 - Implement Picture amount feedback into camera layer
+- Add info about media being deleted on sample/widget/input deletion warning message.
 
 # After implementation finish
 - add a popUp to normal alerts

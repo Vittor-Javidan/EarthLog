@@ -518,4 +518,11 @@ export default class ProjectService {
       );
     }
   }
+
+  /** No need to await this promise */
+  static async deleteInputMedia(id_project: string, inputData: InputData): Promise<void> {
+    if (inputData.type === 'picture') {
+      DatabaseService.deletePictures_Input(id_project, inputData);
+    }
+  }
 }
