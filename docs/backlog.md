@@ -1,10 +1,10 @@
-- Add export button for individual pictures
 - Add sync data for media
 - Implement Picture amount feedback into camera layer
 - Add info about media being deleted on sample/widget/input deletion warning message.
 - Add a image feedback for PictureInput in case image do not exist on given directory.
 
 # After implementation finish
+- create a excalidraw map of all services already created.
 - add a popUp to normal alerts
 - remove all unecessary arrow functions reconstructions
 - change the gap between inputs to 15

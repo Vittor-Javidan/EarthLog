@@ -1,6 +1,5 @@
-import * as Sharing from 'expo-sharing';
-
 import FileSystemService from '@Services/FileSystemService';
+import ShareService from './ShareService';
 
 export default class FileExportService {
 
@@ -9,7 +8,7 @@ export default class FileExportService {
   static async shareFile(filename: string, data: string, encoding: 'base64' | 'utf8'): Promise<void> {
     const filePath = `${this.READY_FILES_DIRECTORY}/${filename}`;
     await FileSystemService.writeFile(filePath, data, encoding);
-    await Sharing.shareAsync(filePath);
+    await ShareService.share(filePath);
     await FileSystemService.delete(filePath);
   }
 

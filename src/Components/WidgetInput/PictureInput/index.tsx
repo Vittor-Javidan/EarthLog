@@ -12,6 +12,7 @@ import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
 import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
+import ImageService from '@Services/ImageService';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -78,6 +79,11 @@ export const PictureInput = memo((props: {
     }
   }, [asyncSave, inputData]);
 
+  const onPictureShare = useCallback(async (index: number) => {
+    const { id_picture } = inputData.value[index];
+    await ImageService.sharePicture(props.widgetScope.id_project, id_picture);
+  }, [inputData]);
+
   const onPictureDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
       type: 'warning',
@@ -140,6 +146,7 @@ export const PictureInput = memo((props: {
           pictures={inputData.value}
           onPictureScroll={(index) => console.log(index)}
           onPictureDelete={onPictureDelete}
+          onPictureShare={onPictureShare}
         />
         <OpenCameraButton
           onPress={openCamera}

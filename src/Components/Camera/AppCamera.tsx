@@ -2,9 +2,10 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 
+import CameraService from '@Services/CameraService';
+
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
-import CameraService from '@Services/CameraService';
 
 export const AppCamera = memo((props: {
   id_project: string

@@ -3,7 +3,7 @@ import { View, Image, LayoutRectangle } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData } from '@Types/ProjectTypes';
-import CameraService from '@Services/CameraService';
+import ImageService from '@Services/ImageService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
@@ -12,6 +12,7 @@ export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
   onPictureScroll: (index: number) => void
+  onPictureShare: (index:number) => void
   onPictureDelete: (index: number) => void
 }) => {
 
@@ -39,7 +40,7 @@ export const PicturesCarousel = memo((props: {
   const AllImages = props.pictures.map(pictureData => (
     <Image
       key={pictureData.id_picture}
-      source={{ uri: CameraService.getPictureUri(props.id_project, pictureData.id_picture)}}
+      source={{ uri: ImageService.getPictureUri(props.id_project, pictureData.id_picture)}}
       resizeMode="cover"
       style={{
         flex: 1,
@@ -77,6 +78,7 @@ export const PicturesCarousel = memo((props: {
         isLastPicture={pictureIndex === props.pictures.length - 1}
         onScrollLeft={() => scrollLeft(pictureIndex)}
         onScrollRight={() => scrollRight(pictureIndex)}
+        onPictureShare={() => props.onPictureShare(pictureIndex)}
         onPictureDelete={() => props.onPictureDelete(pictureIndex)}
       />
     </View>
@@ -115,6 +117,7 @@ const CarouselButtons = memo((props: {
   isLastPicture: boolean
   onScrollLeft: () => void
   onScrollRight: () => void
+  onPictureShare: () => void
   onPictureDelete: () => void
 }) => {
   return (<>
@@ -185,10 +188,28 @@ const CarouselButtons = memo((props: {
       }}
     >
       <Button.Icon
+        iconName="share-outline"
+        onPress={props.onPictureShare}
+        theme={{
+          font: '#FFF',
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 40,
+          width: 40,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+          opacity: 0.5,
+        }}
+      />
+      <Button.Icon
         iconName="trash"
         onPress={props.onPictureDelete}
         theme={{
-          font: '#F55',
+          font: '#FFF',
           font_Pressed: '#666',
           background: '#666',
           background_Pressed: '#222',

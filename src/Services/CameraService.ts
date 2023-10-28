@@ -1,7 +1,6 @@
 import { CameraLayerConfig } from '@Types/AppTypes';
-import FileSystemService from './FileSystemService';
 import UtilService from './UtilService';
-import DatabaseService from './DatabaseService';
+import ImageService from './ImageService';
 
 export default class CameraService {
 
@@ -59,15 +58,11 @@ export default class CameraService {
    * next picture while the old is being saved.
    */
   static async savePicture(id_project: string, photoUri: string): Promise<void> {
-    const data = await FileSystemService.readFile(photoUri, 'base64');
-    if (data !== null && this.onPictureTake !== null) {
-      const id_picture = UtilService.generateUuidV4();
-      await DatabaseService.savePicture(id_project, id_picture, data);
-      this.onPictureTake(id_picture);
-    }
-  }
-
-  static getPictureUri(id_project: string, id_picture: string) {
-    return DatabaseService.getPictureUri(id_project, id_picture);
+    const id_picture = UtilService.generateUuidV4();
+    await ImageService.savePictureFromURI(id_project, id_picture, photoUri, () => {
+      if (this.onPictureTake !== null) {
+        this.onPictureTake(id_picture);
+      }
+    });
   }
 }

@@ -1,7 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.13 Picture UI and Deletion improvements
+# 0.1.9.14 Image Share, New Services
 
-- Added a index display on Picture carousel.
-- Added a delete button to picture carousel.
-- Added delete methods on Project Service.
+- Added Image and Share service.
+- Added a button to share individual images.
+- Camera Service no longer knows about Database and FileSystem services
