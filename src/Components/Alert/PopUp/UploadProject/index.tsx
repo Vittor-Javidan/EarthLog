@@ -73,10 +73,11 @@ export const UploadProjects = memo((props: {
 
   }, [props.id_project]);
 
-  const afterUploadProcessing = useCallback(async (projectDTO: ProjectDTO) => {
+  const afterUploadProcessing = useCallback(async (projectDTO_AfterUpload: ProjectDTO) => {
 
-    const { rules, id_project } = projectDTO.projectSettings;
+    const { rules, id_project } = projectDTO_AfterUpload.projectSettings;
 
+    // DELETION AFTER UPLOAD RULE
     if (rules.deleteAfterUpload === true) {
       setFeedbacks(prev => [ ...prev, R['Deleting project']]);
       await ProjectService.deleteProject(id_project,
@@ -96,16 +97,15 @@ export const UploadProjects = memo((props: {
       return;
     }
 
-    // SYNC FILE UPDATE
-    if (!rules.deleteAfterUpload) {
-      setFeedbacks(prev => [ ...prev, R['Updating sync data file']]);
-      SyncService.updateSyncDataAfterUpload(id_project);
-    }
-
     // PROJECT SETTINGS UPDATE
     setFeedbacks(prev => [ ...prev, 'Updating project locally']);
-    await ProjectService.updateProject(projectDTO.projectSettings,
-      () => {},
+    await ProjectService.updateProject(projectDTO_AfterUpload.projectSettings,
+      async () => {
+
+        // SYNC FILE UPDATE
+        setFeedbacks(prev => [ ...prev, R['Updating sync data file']]);
+        await SyncService.updateSyncDataAfterUpload(id_project);
+      },
       (errorMessage) => {
         setError(errorMessage);
         setFeedbacks(prev => [ ...prev, RS['Error!']]);
