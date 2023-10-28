@@ -154,7 +154,7 @@ export const Widget = memo((props: {
       setWidgetData(prev => {
         for (let i = 0; i < prev.inputs.length; i++) {
           if (prev.inputs[i].id_input === id_input) {
-            ProjectService.deleteInputMedia(props.widgetScope.id_project, prev.inputs[i]);
+            ProjectService.deleteMedia_Input(props.widgetScope.id_project, prev.inputs[i]);
             prev.inputs.splice(i, 1);
             break;
           }

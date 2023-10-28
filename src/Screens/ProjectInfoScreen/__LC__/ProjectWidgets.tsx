@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
+import { WidgetData } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import SyncService from '@Services/SyncService';
@@ -17,9 +18,11 @@ export function F_ProjectWidgets(props: {
   const id_project = useLocalSearchParams().id_project as string;
   const [_, refresh] = useState<boolean>(true);
 
-  const onDeleteWidget_Project = useCallback(async (id_widget: string) => {
+  const onDeleteWidget_Project = useCallback(async (widgetData: WidgetData) => {
+    const { id_widget } = widgetData;
     await ProjectService.deleteWidget_Project(id_project, id_widget,
       async () => {
+        ProjectService.deleteMedia_Widget(id_project, widgetData);
         CacheService.removeFromAllWidgets_Project(id_widget);
         await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'deletion');
         refresh(prev => !prev);
@@ -37,7 +40,7 @@ export function F_ProjectWidgets(props: {
       }}
       widgetData={widgetData}
       referenceGPSData={undefined}
-      onDeleteWidget={async () => await onDeleteWidget_Project(widgetData.id_widget)}
+      onDeleteWidget={async () => await onDeleteWidget_Project(widgetData)}
     />
   ));
 

@@ -1,4 +1,4 @@
-import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData, PictureInputData } from '@Types/ProjectTypes';
+import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData, InputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
@@ -329,13 +329,6 @@ export default class DatabaseService {
       newIDs
     );
 
-    // DELETE ALL SAMPLE PICTURES
-    const allWidgets = await this.getAllWidgets_Sample(id_project, id_sample);
-    for (let i = 0; i < allWidgets.length; i++) {
-      const widgetData = allWidgets[i];
-      this.deletePictures_Widget(id_project, widgetData);
-    }
-
     // DELETE SAMPLE FOLDER
     await FileSystemService.delete(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}`
@@ -553,11 +546,6 @@ export default class DatabaseService {
     id_project: string,
     id_widget: string,
   ): Promise<void> {
-
-    // DELETE WIDGET PICTURES
-    const widgetData = await this.readWidget_Project(id_project, id_widget);
-    this.deletePictures_Widget(id_project, widgetData);
-
     await this.deleteWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`,
       id_widget
@@ -567,11 +555,6 @@ export default class DatabaseService {
     id_project: string,
     id_widget: string,
   ): Promise<void> {
-
-    // DELETE WIDGET PICTURES
-    const widgetData = await this.readWidget_Template(id_project, id_widget);
-    this.deletePictures_Widget(id_project, widgetData);
-
     await this.deleteWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/template`,
       id_widget
@@ -582,11 +565,6 @@ export default class DatabaseService {
     id_sample: string,
     id_widget: string,
   ): Promise<void> {
-
-    // DELETE WIDGET PICTURES
-    const widgetData = await this.readWidget_Sample(id_project, id_sample, id_widget);
-    this.deletePictures_Widget(id_project, widgetData);
-
     await this.deleteWidget(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}/sampleWidgets`,
       id_widget
@@ -705,8 +683,51 @@ export default class DatabaseService {
 
 
   // ===============================================================================================
-  // PICTURE FILES
+  // MEDIA FILES
   // ===============================================================================================
+
+  /** No need to await this promise */
+  static async deleteMedia_Sample(id_project: string, sampleWidgets: WidgetData[]): Promise<void> {
+    for (let i = 0; i < sampleWidgets.length; i++) {
+      const widgetData = sampleWidgets[i];
+      this.deleteMedia_Widget(id_project, widgetData);
+    }
+  }
+
+  /** No need to await this promise */
+  static async deleteMedia_Widget(
+    id_project: string,
+    widgetData: WidgetData,
+  ) {
+    for (let i = 0; i < widgetData.inputs.length; i++) {
+      const inputData = widgetData.inputs[i];
+      this.deleteMedia_Input(id_project, inputData);
+    }
+  }
+
+  /** No need to await this promise */
+  static async deleteMedia_Input(
+    id_project: string,
+    inputData: InputData,
+  ) {
+    if (inputData.type === 'picture') {
+      for (let i = 0; i < inputData.value.length; i++) {
+        const pictureData = inputData.value[i];
+        this.deletePicture(id_project, pictureData.id_picture);
+      }
+    }
+  }
+
+  /** No need to await this promise */
+  static async deletePicture(
+    id_project: string,
+    id_picture: string,
+  ): Promise<void> {
+    await FileSystemService.delete(
+      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
+    );
+    console.log(await this.getAllPicturesIDs(id_project));
+  }
 
   static async getAllPicturesIDs(
     id_project: string
@@ -720,53 +741,12 @@ export default class DatabaseService {
   static async savePicture(
     id_project: string,
     id_picture: string,
-    picture: string
+    data: string
   ) {
     await FileSystemService.writeFile(
       `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
-      picture, 'base64'
+      data, 'base64'
     );
-  }
-
-  /**
-   * No need to await this promise.
-   */
-  static async deletePictures_Widget(
-    id_project: string,
-    widgetData: WidgetData,
-  ) {
-    for (let i = 0; i < widgetData.inputs.length; i++) {
-      const inputData = widgetData.inputs[i];
-      if (inputData.type === 'picture') {
-        this.deletePictures_Input(id_project, inputData);
-      }
-    }
-  }
-
-  /**
-   * No need to await this promise.
-   */
-  static async deletePictures_Input(
-    id_project: string,
-    inputData: PictureInputData,
-  ) {
-    for (let i = 0; i < inputData.value.length; i++) {
-      const pictureData = inputData.value[i];
-      this.deletePicture(id_project, pictureData.id_picture);
-    }
-  }
-
-  /**
-   * No need to await this promise.
-   */
-  static async deletePicture(
-    id_project: string,
-    id_picture: string,
-  ): Promise<void> {
-    await FileSystemService.delete(
-      `${this.DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`,
-    );
-    console.log(await this.getAllPicturesIDs(id_project));
   }
 
   static getPictureUri(

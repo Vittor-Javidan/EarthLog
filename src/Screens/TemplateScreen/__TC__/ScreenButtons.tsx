@@ -27,7 +27,7 @@ export const ScreenButtons = memo((props: {
     await ProjectService.createWidget_Template(id_project, newWidget,
       async () => {
         CacheService.addToAllWidgets_Template(newWidget);
-        SyncService.syncData_TemplateWidgets(id_project, id_widget, 'creation');
+        await SyncService.syncData_TemplateWidgets(id_project, id_widget, 'creation');
         props.onWidgetCreation();
       },
       (errorMessage) => alert(errorMessage)

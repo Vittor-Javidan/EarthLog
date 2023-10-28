@@ -22,9 +22,10 @@ export const ScreenButtons = memo(() => {
 
   const onDelete_Sample = useCallback(async () => {
     await ProjectService.deleteSample(id_project, id_sample,
-      () => {
+      async () => {
+        ProjectService.deleteMedia_Sample(id_project, CacheService.allWidgets_Sample);
         CacheService.removeFromSamples(id_sample);
-        SyncService.syncData_Samples(id_project, id_sample, 'deletion');
+        await SyncService.syncData_Samples(id_project, id_sample, 'deletion');
         navigate('PROJECT SCOPE', id_project);
       },
       (errorMessage) => alert(errorMessage)

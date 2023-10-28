@@ -6,11 +6,13 @@ import { PictureData } from '@Types/ProjectTypes';
 import CameraService from '@Services/CameraService';
 
 import { Button } from '@Button/index';
+import { Text } from '@Text/index';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
   onPictureScroll: (index: number) => void
+  onPictureDelete: (index: number) => void
 }) => {
 
   const pageRef = useRef<PagerView | null>(null);
@@ -66,14 +68,46 @@ export const PicturesCarousel = memo((props: {
       >
         {AllImages}
       </PagerView>
+      <IndexDisplay
+        selectedPicture={pictureIndex + 1}
+        pictureAmount={props.pictures.length}
+      />
       <CarouselButtons
         isFirstPicture={pictureIndex === 0}
         isLastPicture={pictureIndex === props.pictures.length - 1}
         onScrollLeft={() => scrollLeft(pictureIndex)}
         onScrollRight={() => scrollRight(pictureIndex)}
+        onPictureDelete={() => props.onPictureDelete(pictureIndex)}
       />
     </View>
   ) : <></>;
+});
+
+const IndexDisplay = memo((props: {
+  selectedPicture: number,
+  pictureAmount: number
+}) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        justifyContent: 'center',
+        top: 10,
+        right: 10,
+      }}
+    >
+      <Text p
+        style={{
+          color: '#FFF',
+          textShadowRadius: 5,
+          textShadowColor: '#000',
+          textShadowOffset: { width: 0, height: 0 },
+        }}
+      >
+        {props.selectedPicture.toString() + ' / ' + props.pictureAmount.toString()}
+      </Text>
+    </View>
+  );
 });
 
 const CarouselButtons = memo((props: {
@@ -81,6 +115,7 @@ const CarouselButtons = memo((props: {
   isLastPicture: boolean
   onScrollLeft: () => void
   onScrollRight: () => void
+  onPictureDelete: () => void
 }) => {
   return (<>
     {!props.isFirstPicture && (
@@ -139,5 +174,34 @@ const CarouselButtons = memo((props: {
         />
       </View>
     )}
+    <View
+      style={{
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'flex-end',
+        bottom: 10,
+        paddingRight: 5,
+        width: '100%',
+      }}
+    >
+      <Button.Icon
+        iconName="trash"
+        onPress={props.onPictureDelete}
+        theme={{
+          font: '#F55',
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 40,
+          width: 40,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+          opacity: 0.5,
+        }}
+      />
+    </View>
   </>);
 });

@@ -7,13 +7,15 @@ import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 import { Layout } from '@Layout/index';
+import { WidgetData } from '@Types/ProjectTypes';
 
 export function F_TemplateWidgets() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const [_, refresh] = useState<boolean>(false);
 
-  const onDeleteWidget_Template = useCallback(async (id_widget: string) => {
+  const onDeleteWidget_Template = useCallback(async (widgetData: WidgetData) => {
+    const { id_widget } = widgetData;
     await ProjectService.deleteWidget_Template(id_project, id_widget,
       async () => {
         CacheService.removeFromAllWidgets_Template(id_widget);
@@ -33,7 +35,7 @@ export function F_TemplateWidgets() {
       }}
       widgetData={widgetData}
       referenceGPSData={undefined}
-      onDeleteWidget={async () => await onDeleteWidget_Template(widgetData.id_widget)}
+      onDeleteWidget={async () => await onDeleteWidget_Template(widgetData)}
     />
   ));
 

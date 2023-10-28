@@ -1,6 +1,8 @@
-- Implement image deletion, in case those cases: Sample deletion, widget deletion, input deletion, individual deletion.
+- Add export button for individual pictures
+- Add sync data for media
 - Implement Picture amount feedback into camera layer
 - Add info about media being deleted on sample/widget/input deletion warning message.
+- Add a image feedback for PictureInput in case image do not exist on given directory.
 
 # After implementation finish
 - add a popUp to normal alerts

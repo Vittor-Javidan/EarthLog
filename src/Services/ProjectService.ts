@@ -520,9 +520,22 @@ export default class ProjectService {
   }
 
   /** No need to await this promise */
-  static async deleteInputMedia(id_project: string, inputData: InputData): Promise<void> {
-    if (inputData.type === 'picture') {
-      DatabaseService.deletePictures_Input(id_project, inputData);
-    }
+  static async deleteMedia_Sample(id_project: string, sampleWidgets: WidgetData[]): Promise<void> {
+    DatabaseService.deleteMedia_Sample(id_project, sampleWidgets);
+  }
+
+  /** No need to await this promise */
+  static async deleteMedia_Widget(id_project: string, widgetData: WidgetData): Promise<void> {
+    DatabaseService.deleteMedia_Widget(id_project, widgetData);
+  }
+
+  /** No need to await this promise */
+  static async deleteMedia_Input(id_project: string, inputData: InputData): Promise<void> {
+    DatabaseService.deleteMedia_Input(id_project, inputData);
+  }
+
+  /** No need to await this promise */
+  static async deletePicture(id_project: string, id_picture: string): Promise<void> {
+    DatabaseService.deletePicture(id_project, id_picture);
   }
 }

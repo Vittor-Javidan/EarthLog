@@ -10,6 +10,8 @@ import ConfigService from '@Services/ConfigService';
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
+import ProjectService from '@Services/ProjectService';
+import AlertService from '@Services/AlertService';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -56,7 +58,7 @@ export const PictureInput = memo((props: {
     }
   }, []);
 
-  const onPictureTake = useCallback(async (id_picture: string) => {
+  const onPictureTake = useCallback((id_picture: string) => {
     const newData: PictureInputData = { ...inputData, value: [ ...inputData.value, {
       id_picture: id_picture,
       description: '',
@@ -74,6 +76,19 @@ export const PictureInput = memo((props: {
     ) {
       setShow(prev => ({ ...prev, openCamera: false}));
     }
+  }, [asyncSave, inputData]);
+
+  const onPictureDelete = useCallback((index: number) => {
+    AlertService.handleAlert(true, {
+      type: 'warning',
+      question: 'Confirm to permanently delete this picture',
+    }, () => {
+      const newData: PictureInputData = { ...inputData };
+      ProjectService.deletePicture(props.widgetScope.id_project, newData.value[index].id_picture);
+      newData.value.splice(index, 1);
+      asyncSave(newData);
+      setInputData(newData);
+    });
   }, [asyncSave, inputData]);
 
   useCameraWatcher(onPictureTake, () => {
@@ -124,6 +139,7 @@ export const PictureInput = memo((props: {
           id_project={props.widgetScope.id_project}
           pictures={inputData.value}
           onPictureScroll={(index) => console.log(index)}
+          onPictureDelete={onPictureDelete}
         />
         <OpenCameraButton
           onPress={openCamera}

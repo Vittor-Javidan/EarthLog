@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.12 Picture deletion handling
+# 0.1.9.13 Picture UI and Deletion improvements
 
-- Now deleting sample, widget or input that has pictures, will lead to a asynchronous deletion of those pictures.
+- Added a index display on Picture carousel.
+- Added a delete button to picture carousel.
+- Added delete methods on Project Service.
