@@ -85,7 +85,7 @@ export const GPSInput = memo((props: {
 
   const onManualInput = useCallback((gpsData: GPS_DTO, inputData: GPSInputData) => {
     const newData: GPSInputData = { ...inputData, value: gpsData};
-    gpsWatcher.setGpsData(gpsData);
+    gpsWatcher.setGpsData(UtilService.deepCopy(gpsData));
     asyncSave(newData);
     setInputData(newData);
   }, [asyncSave]);
@@ -130,7 +130,7 @@ export const GPSInput = memo((props: {
       setFeatures(prev => ({ ...prev, gpsON: true }));
       await gpsWatcher.watchPositionAsync(
         (gpsData) => {
-          const newData: GPSInputData = { ...inputData, value: gpsData};
+          const newData: GPSInputData = { ...inputData, value: UtilService.deepCopy(gpsData)};
           asyncSave(newData);
           setInputData(newData);
         },

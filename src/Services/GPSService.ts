@@ -2,7 +2,6 @@ import { Platform } from 'react-native';
 import * as Location from 'expo-location';
 
 import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@Types/ProjectTypes';
-import UtilService from './UtilService';
 
 export default class GPSService {
 
@@ -64,7 +63,7 @@ export class GPSWatcherService {
   };
 
   constructor(gpsData: GPS_DTO) {
-    this.gpsData = UtilService.deepCopy(gpsData);
+    this.gpsData = gpsData;
   }
 
   enableCoordinates(boolean: boolean) {
@@ -82,7 +81,7 @@ export class GPSWatcherService {
   }
 
   setGpsData(gpsData: GPS_DTO) {
-    this.gpsData = UtilService.deepCopy(gpsData);
+    this.gpsData = gpsData;
   }
 
   async watchPositionAsync(
@@ -98,7 +97,7 @@ export class GPSWatcherService {
       let newDataAvailable: boolean = false;
       this.updateCoordinate(coordinates, () => { newDataAvailable = true; });
       this.updateAltitude(coordinates, () => { newDataAvailable = true; } );
-      if (newDataAvailable) { callback(UtilService.deepCopy(this.gpsData)); }
+      if (newDataAvailable) { callback(this.gpsData); }
     };
 
     await GPSService.getPermission(async () => {

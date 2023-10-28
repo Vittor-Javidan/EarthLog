@@ -1,7 +1,4 @@
 import { CameraLayerConfig } from '@Types/AppTypes';
-import UtilService from './UtilService';
-import ImageService from './ImageService';
-
 export default class CameraService {
 
   private static showCameraSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
@@ -53,16 +50,9 @@ export default class CameraService {
     }
   }
 
-  /**
-   * This async method is not meant to be used with await. The user is to not block the UI for the
-   * next picture while the old is being saved.
-   */
-  static async savePicture(id_project: string, photoUri: string): Promise<void> {
-    const id_picture = UtilService.generateUuidV4();
-    await ImageService.savePictureFromURI(id_project, id_picture, photoUri, () => {
-      if (this.onPictureTake !== null) {
-        this.onPictureTake(id_picture);
-      }
-    });
+  static triggerOnPictureTake(id_picture: string) {
+    if (this.onPictureTake !== null) {
+      this.onPictureTake(id_picture);
+    }
   }
 }
