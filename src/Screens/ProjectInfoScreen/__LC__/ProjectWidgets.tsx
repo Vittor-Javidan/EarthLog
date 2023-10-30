@@ -4,7 +4,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { WidgetData } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
-import SyncService from '@Services/SyncService';
 
 import { Widget } from '@Widget/index';
 import { Layout } from '@Layout/index';
@@ -20,15 +19,16 @@ export function F_ProjectWidgets(props: {
 
   const onDeleteWidget_Project = useCallback(async (widgetData: WidgetData) => {
     const { id_widget } = widgetData;
-    await ProjectService.deleteWidget_Project(id_project, id_widget,
-      async () => {
-        ProjectService.deleteMedia_Widget(id_project, widgetData);
-        CacheService.removeFromAllWidgets_Project(id_widget);
-        await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'deletion');
-        refresh(prev => !prev);
-      },
-      (errorMessage) => alert(errorMessage)
-    );
+    await ProjectService.deleteWidget({
+      path: 'project widgets',
+      id_project: id_project,
+      widgetData: widgetData,
+      sync: true,
+    }, async () => {
+      await ProjectService.deleteMedia_Widget(id_project, widgetData);
+      CacheService.removeFromAllWidgets_Project(id_widget);
+      refresh(prev => !prev);
+    }, (errorMessage) => alert(errorMessage));
   }, [id_project]);
 
   const AllWidgets = CacheService.allWidgets_Project.map(widgetData => (

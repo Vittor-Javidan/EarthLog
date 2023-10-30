@@ -46,11 +46,11 @@ export const ExportProject_DOCX = memo((props: {
       showFooterButtons: false,
     }));
 
-    await DOCX_Module.buildAndShare_Project(props.id_project, fileName,
+    await DOCX_Module.buildAndShare_Project(props.id_project, fileName, config,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage]))
     );
 
-    await AlertService.runAcceptCallback();
+    AlertService.runAcceptCallback();
     props.closeModal();
 
   }, [fileName]);

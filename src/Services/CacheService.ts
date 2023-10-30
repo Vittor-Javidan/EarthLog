@@ -1,41 +1,17 @@
-import { CredentialDTO } from '@Types/AppTypes';
+import { ConfigDTO } from '@Types/AppTypes';
 import { ID, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
-import ConfigService from './ConfigService';
-import CredentialService from './CredentialService';
 
 export default class CacheService {
 
-  static allCredentials: CredentialDTO[] = [];
-  static lastOpenProject: ProjectSettings = {
-    id_project: '',
-    status: 'new',
-    name: '',
-    rules: {},
-    sampleAlias: {
-      singular: '',
-      plural: '',
-    },
-  };
-  static allProjects: ProjectSettings[] = [];
-  static allWidgets_Project: WidgetData[] = [];
-  static allWidgets_Template: WidgetData[] = [];
-  static allSamples: SampleSettings[] = [];
-  static allWidgets_Sample: WidgetData[] = [];
-
-  // ===============================================================================================
-  // CREDENTIAL RELATED METHODS
-  // ===============================================================================================
-
-  static async loadAllCredentials(): Promise<void> {
-    this.allCredentials = await CredentialService.getAllCredentials();
-  }
-
-  static addToCredentials(credential: CredentialDTO) {
-    this.allCredentials = [...this.allCredentials, credential];
-  }
+  static lastOpenProject: ProjectSettings | null = null;
+  static allProjects: ProjectSettings[]          = [];
+  static allWidgets_Project: WidgetData[]        = [];
+  static allWidgets_Template: WidgetData[]       = [];
+  static allSamples: SampleSettings[]            = [];
+  static allWidgets_Sample: WidgetData[]         = [];
 
   // ===============================================================================================
   // PROJECT RELATED METHODS
@@ -62,98 +38,110 @@ export default class CacheService {
       return;
     }
 
-    this.lastOpenProject = await DatabaseService.readProject(lastProjectID);
-    this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(lastProjectID);
-    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(lastProjectID);
-    this.allSamples = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
+    this.lastOpenProject     = await DatabaseService.readProject(lastProjectID);
+    this.allWidgets_Project  = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project: lastProjectID });
+    this.allWidgets_Template = await DatabaseService.getAllWidgets({ path: 'template widgets', id_project: lastProjectID });
+    this.allSamples          = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
   }
 
   static async deleteLastOpenProject(): Promise<void> {
     await DatabaseService.deleteLastOpenProject();
-    this.lastOpenProject = {
-      id_project: '',
-      status: 'new',
-      name: '',
-      rules: {},
-      sampleAlias: {
-        singular: '',
-        plural: '',
-      },
-    };
+    this.lastOpenProject = null;
   }
 
-  static getProjectFromCache(id_project: string): ProjectSettings {
+  static getProjectFromCache(
+    id_project: string,
+    config: ConfigDTO
+  ): ProjectSettings {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         return this.allProjects[i];
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
-  static getSampleFromCache(id_sample: string): SampleSettings {
+  static getSampleFromCache(
+    id_sample: string,
+    config: ConfigDTO
+  ): SampleSettings {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         return this.allSamples[i];
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
-  static updateCache_ProjectSettings(projectSettings: ProjectSettings) {
+  static updateCache_ProjectSettings(
+    projectSettings: ProjectSettings,
+    config: ConfigDTO,
+  ) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
         this.allProjects[i] = UtilService.deepCopy(projectSettings);
         return;
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Project does not exist on cache']);
   }
 
-  static updateCache_SampleSettings(sampleSettings: SampleSettings) {
+  static updateCache_SampleSettings(
+    sampleSettings: SampleSettings,
+    config: ConfigDTO,
+  ) {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
         this.allSamples[i] = UtilService.deepCopy(sampleSettings);
         return;
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
   }
 
-  static updateCache_ProjectWidget(widgetData: WidgetData) {
+  static updateCache_ProjectWidget(
+    widgetData: WidgetData,
+    config: ConfigDTO,
+  ) {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Project[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Project Widget does not exist on cache']);
   }
 
-  static updateCache_TemplateWidget(widgetData: WidgetData) {
+  static updateCache_TemplateWidget(
+    widgetData: WidgetData,
+    config: ConfigDTO,
+  ) {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Template[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Template Widget does not exist on cache']);
   }
 
-  static updateCache_SampleWidget(widgetData: WidgetData) {
+  static updateCache_SampleWidget(
+    widgetData: WidgetData,
+    config: ConfigDTO,
+  ) {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Sample[i] = UtilService.deepCopy(widgetData);
         return;
       }
     }
-    const R = translations.service.cache[ConfigService.config.language];
+    const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Sample Widget does not exist on cache']);
   }
 
@@ -166,15 +154,25 @@ export default class CacheService {
   }
 
   static async loadAllWidgets_Project(id_project: string): Promise<void> {
-    this.allWidgets_Project = await DatabaseService.getAllWidgets_Project(id_project);
+    this.allWidgets_Project = await DatabaseService.getAllWidgets({
+      path: 'project widgets',
+      id_project: id_project,
+    });
   }
 
   static async loadAllWidgets_Template(id_project: string): Promise<void> {
-    this.allWidgets_Template = await DatabaseService.getAllWidgets_Template(id_project);
+    this.allWidgets_Template = await DatabaseService.getAllWidgets({
+      path: 'template widgets',
+      id_project: id_project,
+    });
   }
 
   static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
-    this.allWidgets_Sample = await DatabaseService.getAllWidgets_Sample(id_project, id_sample);
+    this.allWidgets_Sample = await DatabaseService.getAllWidgets({
+      path: 'sample widgets',
+      id_project: id_project,
+      id_sample: id_sample,
+    });
   }
 
   /**

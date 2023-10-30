@@ -7,7 +7,6 @@ import AlertService from '@Services/AlertService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import SyncService from '@Services/SyncService';
 
 import { Input } from '@Input/index';
 import { LC } from '@Alert/__LC__';
@@ -29,22 +28,23 @@ export const CreateSample = memo((props: {
       return;
     }
 
-    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    const projectSettings = CacheService.getProjectFromCache(props.id_project, config);
     const newSampleSettings = ProjectService.getDefaultSampleSettings({
       name: name,
       gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
       rules: projectSettings.sampleRules,
     });
 
-    await ProjectService.createSample(projectSettings.id_project, newSampleSettings,
-      async () => {
-        CacheService.addToAllSamples(newSampleSettings);
-        await SyncService.syncData_Samples(projectSettings.id_project, newSampleSettings.id_sample, 'creation');
-        await AlertService.runAcceptCallback();
-        props.closeModal();
-      },
-      (errorMesage) => alert(errorMesage),
-    );
+    await ProjectService.createSample({
+      id_project: projectSettings.id_project,
+      sampleSettings: newSampleSettings,
+      addTemplateWidgets: true,
+      sync: true,
+    }, () => {
+      CacheService.addToAllSamples(newSampleSettings);
+      AlertService.runAcceptCallback();
+      props.closeModal();
+    }, (errorMesage) => alert(errorMesage));
 
   }, [props.id_project, props.closeModal, name]);
 

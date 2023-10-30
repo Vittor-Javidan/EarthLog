@@ -4,7 +4,7 @@ export default class AlertService {
 
   private static showModalSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static alertModalConfigSetter: React.Dispatch<React.SetStateAction<ModalConfig>> | null = null;
-  private static onAcceptCallback: (() => void) | (() => Promise<void>) | null = null;
+  private static onAcceptCallback: (() => void) | null = null;
 
   private static setShowModal(boolean: boolean) {
     if (this.showModalSetter !== null) {
@@ -30,10 +30,14 @@ export default class AlertService {
     this.alertModalConfigSetter = setter;
   }
 
-  static async handleAlert(trigger: boolean, config: ModalConfig,  onAcceptCallback: (() => void) | (() => Promise<void>)) {
+  static async handleAlert(
+    trigger: boolean,
+    config: ModalConfig,
+    onAcceptCallback: () => void
+  ) {
 
     if (!trigger) {
-      await onAcceptCallback();
+      onAcceptCallback();
       return;
     }
 
@@ -42,9 +46,9 @@ export default class AlertService {
     this.setShowModal(true);
   }
 
-  static async runAcceptCallback() {
+  static runAcceptCallback() {
     if (this.onAcceptCallback !== null) {
-      await this.onAcceptCallback();
+      this.onAcceptCallback();
       this.onAcceptCallback = null;
     }
   }

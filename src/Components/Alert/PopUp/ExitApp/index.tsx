@@ -23,9 +23,9 @@ export const ExitApp = memo((props: {
     HapticsService.vibrate('warning');
   }, []);
 
-  const onAccept = useCallback(async () => {
+  const onAccept = useCallback(() => {
     props.closeModal();
-    await AlertService.runAcceptCallback();
+    AlertService.runAcceptCallback();
   }, [props.closeModal]);
 
   return (
@@ -48,7 +48,7 @@ export const ExitApp = memo((props: {
       </View>
       <FooterButtons
         onCancel={() => props.closeModal()}
-        onConfirm={async () => await onAccept()}
+        onConfirm={() => onAccept()}
       />
     </LC.PopUp>
   );

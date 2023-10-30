@@ -19,7 +19,6 @@ import { R_Scope_Language } from './scope/LanguageSelectionScope';
 import { R_Scope_Project } from './scope/ProjectScope';
 import { R_Scope_Settings } from './scope/SettingsScope';
 import { R_Service_Cache } from './service/CacheService';
-import { R_Service_Database } from './service/DatabaseService';
 import { R_Input_Boolean } from './widgetInput/BooleanInput';
 import { R_Input_GPS } from './widgetInput/GPSInput';
 import { R_Input_String } from './widgetInput/StringInput';
@@ -54,7 +53,6 @@ export const translations = {
   },
   service: {
     cache:                    R_Service_Cache,
-    database:                 R_Service_Database,
     project:                  R_Service_Project,
   },
   global: {

@@ -47,21 +47,20 @@ export const UploadProjects = memo((props: {
       credentialsDisplay: false,
     }));
 
-    const projectDTO = await DataProcessService.buildProjectFromDatabase(props.id_project,
+    const projectDTO = await DataProcessService.buildProjectFromDatabase(props.id_project, config,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ]))
     );
 
-    const processedProject = DataProcessService.attachUploadEntry(credential, projectDTO, {
-      dateFormat: config.dateFormat,
-      timeFormat: config.timeFormat,
-    }, (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])));
+    const processedProject = DataProcessService.attachUploadEntry(credential, projectDTO, config,
+      (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ]))
+    );
 
-    await new FetchAPIService(credential).uploadProject(controller.signal, processedProject,
+    await new FetchAPIService(credential).uploadProject(controller.signal, processedProject, config,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
       async () => {
         await afterUploadProcessing(processedProject);
         setFeedbacks(prev => [ ...prev, RS['Done!']]);
-        await AlertService.runAcceptCallback();
+        AlertService.runAcceptCallback();
         props.closeModal();
       },
       (errorMessage) => {
@@ -77,41 +76,42 @@ export const UploadProjects = memo((props: {
 
     const { rules, id_project } = projectDTO_AfterUpload.projectSettings;
 
-    // DELETION AFTER UPLOAD RULE
     if (rules.deleteAfterUpload === true) {
+
       setFeedbacks(prev => [ ...prev, R['Deleting project']]);
-      await ProjectService.deleteProject(id_project,
-        async () => {
-          setFeedbacks(prev => [ ...prev, 'Updating cache']);
-          if (CacheService.lastOpenProject.id_project === id_project) {
-            await CacheService.deleteLastOpenProject();
-          }
-          navigate('HOME SCOPE');
-        },
-        (errorMessage) => {
-          setError(errorMessage);
-          setFeedbacks(prev => [ ...prev, RS['Error!']]);
-          setShow(prev => ({ ...prev, errorDisplay: true }));
+      await ProjectService.deleteProject(id_project, async () => {
+
+        setFeedbacks(prev => [ ...prev, 'Updating cache']);
+        if (CacheService.lastOpenProject?.id_project === id_project) {
+          await CacheService.deleteLastOpenProject();
         }
-      );
-      return;
-    }
+        navigate('HOME SCOPE');
 
-    // PROJECT SETTINGS UPDATE
-    setFeedbacks(prev => [ ...prev, 'Updating project locally']);
-    await ProjectService.updateProject(projectDTO_AfterUpload.projectSettings,
-      async () => {
-
-        // SYNC FILE UPDATE
-        setFeedbacks(prev => [ ...prev, R['Updating sync data file']]);
-        await SyncService.updateSyncDataAfterUpload(id_project);
-      },
-      (errorMessage) => {
+      }, (errorMessage) => {
         setError(errorMessage);
         setFeedbacks(prev => [ ...prev, RS['Error!']]);
         setShow(prev => ({ ...prev, errorDisplay: true }));
-      }
-    );
+      });
+      return;
+    }
+
+    setFeedbacks(prev => [ ...prev, R['Updating project locally']]);
+    await ProjectService.updateProject({
+      projectSettings: projectDTO_AfterUpload.projectSettings,
+      sync: false,
+    }, async () => {
+
+      setFeedbacks(prev => [ ...prev, R['Updating cache']]);
+      CacheService.lastOpenProject = projectDTO_AfterUpload.projectSettings;
+
+      setFeedbacks(prev => [ ...prev, R['Updating sync data file']]);
+      await SyncService.syncData_AfterUpload(projectDTO_AfterUpload.syncData);
+
+    }, (errorMessage) => {
+      setError(errorMessage);
+      setFeedbacks(prev => [ ...prev, RS['Error!']]);
+      setShow(prev => ({ ...prev, errorDisplay: true }));
+    });
 
   }, []);
 

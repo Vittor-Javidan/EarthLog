@@ -10,7 +10,6 @@ import UtilService from '@Services/UtilService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import ProjectService from '@Services/ProjectService';
-import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
@@ -35,7 +34,7 @@ export const SampleSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample, config)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutosave_sample(() => {
@@ -131,8 +130,9 @@ export const SampleSettingsWidget = memo((props: {
  */
 function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean]) {
 
-  const [sampleSettings, saved] = deps;
+  const config     = useMemo(() => ConfigService.config, []);
   const id_project = useLocalSearchParams().id_project as string;
+  const [sampleSettings, saved] = deps;
 
   useTimeout(async () => {
 
@@ -140,14 +140,14 @@ function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean])
       return;
     }
 
-    await ProjectService.updateSample(id_project, sampleSettings,
-      async () => {
-        CacheService.updateCache_SampleSettings(sampleSettings);
-        await SyncService.syncData_Samples(id_project, sampleSettings.id_sample, 'updating');
-        onSave();
-      },
-      (erroMessage) => alert(erroMessage)
-    );
+    await ProjectService.updateSample({
+      id_project: id_project,
+      sampleSettings: sampleSettings,
+      sync: true,
+    }, () => {
+      CacheService.updateCache_SampleSettings(sampleSettings, config);
+      onSave();
+    }, (erroMessage) => alert(erroMessage));
 
   }, [sampleSettings], 200);
 }

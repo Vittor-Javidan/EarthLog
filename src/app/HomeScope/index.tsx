@@ -15,6 +15,7 @@ import SyncService from '@Services/SyncService';
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 import { HomeScreen } from '@Screens/HomeScreen';
+import CredentialService from '@Services/CredentialService';
 
 export default function HomeScope() {
 
@@ -100,8 +101,8 @@ const Drawer = memo(() => {
 async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   const promises = [
+    CredentialService.loadAllCredentials(),
     CacheService.loadLastOpenProject(),
-    CacheService.loadAllCredentials(),
     SyncService.loadAllSyncData(),
   ];
   await Promise.all(promises);

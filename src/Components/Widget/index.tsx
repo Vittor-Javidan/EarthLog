@@ -11,14 +11,13 @@ import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ProjectService from '@Services/ProjectService';
-import SyncService from '@Services/SyncService';
 
 import { Navbar } from './Navbar';
 import { WidgetLabel } from './WidgetLabel';
 import { DataDisplay } from './AllInputs';
 import { NewInputDisplay } from './NewInputDisplay';
-import { Footer } from './Footer';
 import { ThemeDisplay } from './ThemeDisplay';
+import { Footer } from './Footer';
 
 export const Widget = memo((props: {
   widgetData: WidgetData
@@ -145,24 +144,23 @@ export const Widget = memo((props: {
     });
   }, []);
 
-  const onDelete = useCallback((id_input: ID) => {
-    AlertService.handleAlert(true, {
+  const onDelete = useCallback(async (id_input: ID) => {
+    await AlertService.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to delete this field.'],
-    }, () => {
-      setSaved(false);
-      setWidgetData(prev => {
-        for (let i = 0; i < prev.inputs.length; i++) {
-          if (prev.inputs[i].id_input === id_input) {
-            ProjectService.deleteMedia_Input(props.widgetScope.id_project, prev.inputs[i]);
-            prev.inputs.splice(i, 1);
-            break;
-          }
+    }, async () => {
+      const newData: WidgetData = { ...widgetData };
+      for (let i = 0; i < newData.inputs.length; i++) {
+        if (newData.inputs[i].id_input === id_input) {
+          await ProjectService.deleteMedia_Input(props.widgetScope.id_project, newData.inputs[i]);
+          newData.inputs.splice(i, 1);
+          break;
         }
-        return { ...prev };
-      });
+      }
+      setSaved(false);
+      setWidgetData(newData);
     });
-  }, []);
+  }, [widgetData]);
 
   const deleteWidget = useCallback(() => {
     AlertService.handleAlert(true, {
@@ -221,7 +219,7 @@ export const Widget = memo((props: {
               editInputs={editInputs}
               referenceGPSData={props.referenceGPSData}
               onSave={(inputData) => updateInput(inputData)}
-              onInputDelete={(id_input) => onDelete(id_input)}
+              onInputDelete={async (id_input) => await onDelete(id_input)}
               onInputMoveUp={(id_input) => onMoveUp(id_input)}
               onInputMoveDow={(id_input) => onMoveDown(id_input)}
               rules={widgetData.rules}
@@ -262,6 +260,7 @@ export const Widget = memo((props: {
  */
 function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
 
+  const config = useMemo(() => ConfigService.config, []);
   const [widgetData, widgetScope, saved] = deps;
 
   useTimeout(async () => {
@@ -273,53 +272,42 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
     switch (widgetScope.type) {
 
       case 'project': {
-
-        const { id_project } = widgetScope;
-        const { id_widget } = widgetData;
-
-        await ProjectService.updateWidget_Project(id_project, widgetData,
-          async () => {
-            CacheService.updateCache_ProjectWidget(widgetData);
-            await SyncService.syncData_ProjectWidgets(id_project, id_widget, 'updating');
-            onSave();
-          },
-          (erroMessage) => alert(erroMessage)
-        );
-
+        await ProjectService.updateWidget({
+          path: 'project widgets',
+          id_project: widgetScope.id_project,
+          widgetData: widgetData,
+          sync: true,
+        }, () => {
+          CacheService.updateCache_ProjectWidget(widgetData, config);
+          onSave();
+        }, (erroMessage) => alert(erroMessage));
         break;
       }
 
       case 'template': {
-
-        const { id_project } = widgetScope;
-        const { id_widget } = widgetData;
-
-        await ProjectService.updateWidget_Template(widgetScope.id_project, widgetData,
-          async () => {
-            CacheService.updateCache_TemplateWidget(widgetData);
-            await SyncService.syncData_TemplateWidgets(id_project, id_widget, 'updating');
-            onSave();
-          },
-          (erroMessage) => alert(erroMessage)
-        );
-
+        await ProjectService.updateWidget({
+          path: 'template widgets',
+          id_project: widgetScope.id_project,
+          widgetData: widgetData,
+          sync: true,
+        }, () => {
+          CacheService.updateCache_TemplateWidget(widgetData, config);
+          onSave();
+        }, (erroMessage) => alert(erroMessage));
         break;
       }
 
       case 'sample': {
-
-        const { id_project, id_sample } = widgetScope;
-        const { id_widget } = widgetData;
-
-        await ProjectService.updateWidget_Sample(id_project, id_sample, widgetData,
-          async () => {
-            CacheService.updateCache_SampleWidget(widgetData);
-            await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'updating');
-            onSave();
-          },
-          (erroMessage) => alert(erroMessage)
-        );
-
+        await ProjectService.updateWidget({
+          path: 'sample widgets',
+          id_project: widgetScope.id_project,
+          id_sample: widgetScope.id_sample,
+          widgetData: widgetData,
+          sync: true,
+        }, () => {
+          CacheService.updateCache_SampleWidget(widgetData, config);
+          onSave();
+        }, (erroMessage) => alert(erroMessage));
         break;
       }
     }

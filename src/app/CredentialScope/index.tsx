@@ -5,10 +5,10 @@ import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import { useBackPress } from '@Hooks/index';
 import ConfigService from '@Services/ConfigService';
-import CacheService from '@Services/CacheService';
 
 import { Layout } from '@Layout/index';
 import { CredentialSelectionScreen } from '@Screens/CredentialScreen';
+import CredentialService from '@Services/CredentialService';
 
 export default function LanguageSelectionScope() {
 
@@ -58,6 +58,6 @@ const NavigationTree = memo(() => {
 async function fetchCredentials(
   whenLoaded: () => void
 ) {
-  await CacheService.loadAllCredentials();
+  await CredentialService.loadAllCredentials();
   whenLoaded();
 }

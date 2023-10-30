@@ -22,8 +22,8 @@ export const Warning = memo((props: {
     HapticsService.vibrate('warning');
   }, []);
 
-  const onAccept = useCallback(async () => {
-    await AlertService.runAcceptCallback();
+  const onAccept = useCallback(() => {
+    AlertService.runAcceptCallback();
     props.closeModal();
   }, [props.closeModal]);
 
@@ -47,7 +47,7 @@ export const Warning = memo((props: {
       </View>
       <Button.ConfirmSwipe
         onCancel={() => props.closeModal()}
-        onSwipe={async () => await onAccept()}
+        onSwipe={() => onAccept()}
         buttonRadius={25}
         compensateMargin={30}
         theme={{

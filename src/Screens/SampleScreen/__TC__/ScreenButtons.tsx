@@ -7,7 +7,6 @@ import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import AlertService from '@Services/AlertService';
-import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -20,7 +19,7 @@ export const ScreenButtons = memo((props: {
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample, config), []);
 
   const onTemplateWidgetCopy = useCallback(async () => {
     await AlertService.handleAlert(true, {
@@ -31,19 +30,17 @@ export const ScreenButtons = memo((props: {
   }, [props.onCreateWidget, id_project, id_sample]);
 
   const onCreateWidget_Sample = useCallback(async () => {
-
     const newWidget = ProjectService.getWidgetData();
-    const { id_widget } = newWidget;
-
-    await ProjectService.createWidget_Sample(id_project,id_sample, newWidget,
-      async () => {
-        CacheService.addToAllWidgets_Sample(newWidget);
-        await SyncService.syncData_SampleWidgets(id_project, id_sample, id_widget, 'creation');
-        props.onCreateWidget();
-      },
-      (errorMessage) => alert(errorMessage)
-    );
-
+    await ProjectService.createWidget({
+      path: 'sample widgets',
+      id_project: id_project,
+      id_sample: id_sample,
+      widgetData: newWidget,
+      sync: true,
+    }, () => {
+      CacheService.addToAllWidgets_Sample(newWidget);
+      props.onCreateWidget();
+    }, (errorMessage) => alert(errorMessage));
   }, [props.onCreateWidget, id_project, id_sample]);
 
   return (
@@ -66,7 +63,7 @@ export const ScreenButtons = memo((props: {
             iconName="copy"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={() => onTemplateWidgetCopy()}
+            onPress={async () => await onTemplateWidgetCopy()}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,
@@ -80,7 +77,7 @@ export const ScreenButtons = memo((props: {
             iconName="square"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={() => onCreateWidget_Sample()}
+            onPress={async () => await onCreateWidget_Sample()}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,

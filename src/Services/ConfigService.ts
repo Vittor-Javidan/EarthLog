@@ -7,11 +7,11 @@ import DateTimeService from './DateTimeService';
 export default class ConfigService {
 
   static LOCAL_STORAGE_KEY: string = 'config';
-  static deviceLangauge = LanguageService.getDeviceLanguage();
+  static deviceLanguage = LanguageService.getDeviceLanguage();
   static config: ConfigDTO = {
-    language:     this.deviceLangauge,
-    dateFormat:   DateTimeService.DateFormatByTag(this.deviceLangauge),
-    timeFormat:   DateTimeService.TimeFormatByTag(this.deviceLangauge),
+    language:     this.deviceLanguage,
+    dateFormat:   DateTimeService.DateFormatByTag(this.deviceLanguage),
+    timeFormat:   DateTimeService.TimeFormatByTag(this.deviceLanguage),
     appTheme:     'Dark',
     widgetTheme:  'Light',
     onlyWarningVibrations: false,
@@ -38,7 +38,7 @@ export default class ConfigService {
     const verifiedConfigDTO: ConfigDTO = {
       appTheme:              App.includes(dto.appTheme) ? dto.appTheme : 'Dark',
       widgetTheme:           Widget.includes(dto.widgetTheme) ? dto.widgetTheme : 'Light',
-      language:              dto.language ?? deviceLanguage,
+      language:              dto.language   ?? deviceLanguage,
       dateFormat:            dto.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
       timeFormat:            dto.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
       onlyWarningVibrations: dto.onlyWarningVibrations ?? false,

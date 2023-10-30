@@ -4,25 +4,26 @@ import { Pressable, View } from 'react-native';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
 import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { UploadStatus } from './UploadStatus';
+import { ProjectSettings } from '@Types/ProjectTypes';
 
-export const LastProjectButton = memo(() => {
+export const LastProjectButton = memo((props: {
+  projectSettings: ProjectSettings
+}) => {
 
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R               = useMemo(() => translations.screen.home[config.language], []);
-  const projectSettings = useMemo(() => CacheService.lastOpenProject, []);
-  const projectSyncData = useMemo(() => SyncService.getSyncData(projectSettings.id_project), []);
+  const projectSyncData = useMemo(() => SyncService.getSyncData(props.projectSettings.id_project), []);
 
   const [pressed, setPressed]             = useState<boolean>(false);
 
-  const lastProjectOpenExist = projectSettings.id_project !== '';
+  const lastProjectOpenExist = props.projectSettings.id_project !== '';
   const showStatus = projectSyncData.project !== 'new';
 
   const onPressIn = useCallback(() => {
@@ -31,9 +32,9 @@ export const LastProjectButton = memo(() => {
   }, []);
 
   const onPress = useCallback(() => {
-    navigate('PROJECT SCOPE', projectSettings.id_project);
+    navigate('PROJECT SCOPE', props.projectSettings.id_project);
     HapticsService.vibrate('success');
-  }, [projectSettings.id_project]);
+  }, [props.projectSettings.id_project]);
 
   return lastProjectOpenExist ? (
     <Pressable
@@ -63,7 +64,7 @@ export const LastProjectButton = memo(() => {
             fontWeight: '900',
           }}
         >
-          {projectSettings.name}
+          {props.projectSettings.name}
         </Text>
         <View
           style={{
@@ -74,7 +75,7 @@ export const LastProjectButton = memo(() => {
           <UploadStatus
             showStatus={showStatus}
             uploadStatus={projectSyncData.project}
-            uploads={projectSettings.uploads}
+            uploads={props.projectSettings.uploads}
             pressed={pressed}
           />
           <Text

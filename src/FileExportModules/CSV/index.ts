@@ -1,21 +1,23 @@
 import { GPS_DTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import FileExportService from '@Services/FileExportService';
+import DocumentFileExportService from '@Services/DocumentFileExportService';
 import ConfigService from '@Services/ConfigService';
 import DataProcessService from '@APIServices/DataProcessService';
+import { ConfigDTO } from '@Types/AppTypes';
 
 export default class CSV_Module {
 
   static async buildAndShare_Project_AllCoordinates(
     id_project: string,
     fileName: string,
+    config: ConfigDTO,
     feedback: (message: string) => void
   ) {
 
     const RS = translations.FileExportModules.share[ConfigService.config.language];
     const R  = translations.FileExportModules.csv[ConfigService.config.language];
 
-    const projectDTO = await DataProcessService.buildProjectFromDatabase(id_project,
+    const projectDTO = await DataProcessService.buildProjectFromDatabase(id_project, config,
       (feedbackMessage) => feedback(feedbackMessage)
     );
 
@@ -70,7 +72,7 @@ export default class CSV_Module {
     }
 
     feedback(RS['Sharing document']);
-    await FileExportService.shareFile(`${fileName}.csv`, document, 'utf8');
+    await DocumentFileExportService.shareFile(`${fileName}.csv`, document, 'utf8');
   }
 
   private static getCSVRow_GPS(gps: GPS_DTO | undefined, options: {

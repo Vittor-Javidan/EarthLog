@@ -10,7 +10,6 @@ import ThemeService from '@Services/ThemeService';
 import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
 import ProjectService from '@Services/ProjectService';
-import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
@@ -35,7 +34,7 @@ export const ProjectSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project, config)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutoSave_project(() => {
@@ -194,6 +193,7 @@ export const ProjectSettingsWidget = memo((props: {
  */
 function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean]) {
 
+  const config = useMemo(() => ConfigService.config, []);
   const [projectSettings, saved] = deps;
 
   useTimeout(async () => {
@@ -202,10 +202,12 @@ function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean
       return;
     }
 
-    await ProjectService.updateProject(projectSettings,
-      async () => {
-        CacheService.updateCache_ProjectSettings(projectSettings);
-        await SyncService.syncData_Project(projectSettings.id_project);
+    await ProjectService.updateProject({
+      projectSettings: projectSettings,
+      sync: true,
+    },
+      () => {
+        CacheService.updateCache_ProjectSettings(projectSettings, config);
         onSave();
       },
       (erroMessage) => alert(erroMessage)

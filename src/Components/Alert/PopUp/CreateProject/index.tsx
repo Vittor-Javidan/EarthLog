@@ -42,12 +42,12 @@ export const CreateProject = memo((props: {
     }));
 
     const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
-    await ProjectService.createProject(newProject,
-      async () => {
+    await ProjectService.createProject(newProject, config,
+      () => {
         setFeedbacks(prev => ([ ...prev, RS['Done!']]));
         CacheService.addToAllProjects(newProject.projectSettings);
         SyncService.addToSyncData(newProject.syncData);
-        await AlertService.runAcceptCallback();
+        AlertService.runAcceptCallback();
         props.closeModal();
       },
       (errorMesage) => {

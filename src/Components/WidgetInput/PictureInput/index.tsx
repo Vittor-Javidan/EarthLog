@@ -59,19 +59,19 @@ export const PictureInput = memo((props: {
     }
   }, []);
 
-  const onPictureTake = useCallback((id_picture: string) => {
+  const onPictureTake = useCallback(async (id_picture: string) => {
     const newData: PictureInputData = { ...inputData, value: [ ...inputData.value, {
-      id_picture: id_picture,
-      description: '',
+      id_picture:     id_picture,
+      description:    '',
       dateAndTimeUTC: DateTimeService.getCurrentDateTimeUTC(),
-      dateAndTime: DateTimeService.getCurrentDateTime({
-        dateFormat: config.dateFormat,
-        timeFormat: config.timeFormat,
+      dateAndTime:    DateTimeService.getCurrentDateTime({
+        dateFormat:   config.dateFormat,
+        timeFormat:   config.timeFormat,
       }),
     }]};
     asyncSave(newData);
     setInputData(newData);
-    if (
+    if ( // TODO: Make the camera aware about the photo limit
       newData.picturesAmountLimit !== undefined &&
       newData.picturesAmountLimit === newData.value.length
     ) {
@@ -88,10 +88,10 @@ export const PictureInput = memo((props: {
     AlertService.handleAlert(true, {
       type: 'warning',
       question: 'Confirm to permanently delete this picture',
-    }, () => {
+    }, async () => {
       const newData: PictureInputData = { ...inputData };
-      ProjectService.deletePicture(props.widgetScope.id_project, newData.value[index].id_picture);
-      newData.value.splice(index, 1);
+      const removedPicture = newData.value.splice(index, 1);
+      await ProjectService.deletePicture(props.widgetScope.id_project, removedPicture[0].id_picture);
       asyncSave(newData);
       setInputData(newData);
     });

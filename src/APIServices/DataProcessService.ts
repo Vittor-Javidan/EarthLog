@@ -1,20 +1,21 @@
-import { CredentialDTO, DateFormat, TimeFormat } from '@Types/AppTypes';
+import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
 import { DownloadedProjectDTO, InputData, ProjectDTO, SampleDTO, SyncData, WidgetData } from '@Types/ProjectTypes';
 
 import { translations } from '@Translations/index';
 import DateTimeService from '@Services/DateTimeService';
 import UtilService from '@Services/UtilService';
 import DatabaseService from '@Services/DatabaseService';
-import ConfigService from '@Services/ConfigService';
+// import ConfigService from '@Services/ConfigService';
 
 export default class DataProcessService {
 
   static processDownloadedProject(
     projectDTO: DownloadedProjectDTO,
+    config: ConfigDTO,
     feedback: (message: string) => void
   ) {
 
-    const R = translations.APIServices.dataProcess[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[config.language];
 
     feedback(R['Processing project:'] + ` ${projectDTO.projectSettings.name}`);
     const { rules } = projectDTO.projectSettings;
@@ -86,6 +87,7 @@ export default class DataProcessService {
       widgets_Template: {},
       samples: {},
       widgets_Samples: {},
+      pictures: {},
     };
 
     for (let i = 0; i < projectDTO.projectWidgets.length; i++) {
@@ -121,22 +123,22 @@ export default class DataProcessService {
   static attachUploadEntry(
     credential: CredentialDTO,
     projectDTO: ProjectDTO,
-    options: {
-      dateFormat: DateFormat,
-      timeFormat: TimeFormat,
-    },
+    config: ConfigDTO,
     feedback: (message: string) => void
   ) {
 
-    const R = translations.APIServices.dataProcess[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[config.language];
 
     // Upload Date/Time entry ================
     feedback(R['Attaching upload date and time']);
     projectDTO.projectSettings.uploads ??= [];
     projectDTO.projectSettings.uploads.push({
-      dateUTM: DateTimeService.getCurrentDateTimeUTC(),
-      date:    DateTimeService.getCurrentDateTime(options),
       url:     credential.rootURL,
+      dateUTM: DateTimeService.getCurrentDateTimeUTC(),
+      date:    DateTimeService.getCurrentDateTime({
+        dateFormat: config.dateFormat,
+        timeFormat: config.timeFormat,
+      }),
     });
 
     return projectDTO;
@@ -144,22 +146,27 @@ export default class DataProcessService {
 
   static async buildProjectFromDatabase(
     id_project: string,
+    config: ConfigDTO,
     feedback: (message: string) => void
   ): Promise<ProjectDTO> {
 
-    const R = translations.APIServices.dataProcess[ConfigService.config.language];
+    const R = translations.APIServices.dataProcess[config.language];
 
     // GET PROJECT SETTINGS
     feedback(R['Loading project settings']);
     const projectSettings = await DatabaseService.readProject(id_project);
 
-    // GET PROJECT WIDGETS
     feedback(R['Loading project widgets']);
-    const projectWidgets = await DatabaseService.getAllWidgets_Project(id_project);
+    const projectWidgets = await DatabaseService.getAllWidgets({
+      path: 'project widgets',
+      id_project: id_project,
+    });
 
-    // GET TEMPLATE WIDGETS
     feedback(R['Loading project template']);
-    const templateWidgets = await DatabaseService.getAllWidgets_Template(id_project);
+    const templateWidgets = await DatabaseService.getAllWidgets({
+      path: 'template widgets',
+      id_project: id_project,
+    });
 
     // GET ALL SAMPLES
     feedback(R['Loading all sample settings']);
@@ -167,9 +174,14 @@ export default class DataProcessService {
     const samplesSettings = await DatabaseService.getAllSamples(id_project);
     for (let i = 0; i < samplesSettings.length; i++) {
       feedback(R['Loading sample widgets of'] + ` "${samplesSettings[i].name}".` + ` ID: ${samplesSettings[i].id_sample}`);
+      const sampleWidgets = await DatabaseService.getAllWidgets({
+        path: 'sample widgets',
+        id_project: id_project,
+        id_sample: samplesSettings[i].id_sample,
+      });
       samples.push({
         sampleSettings: samplesSettings[i],
-        sampleWidgets: await DatabaseService.getAllWidgets_Sample(id_project, samplesSettings[i].id_sample),
+        sampleWidgets: sampleWidgets,
       });
     }
 

@@ -1,5 +1,4 @@
 import DatabaseService from './DatabaseService';
-import FileSystemService from './FileSystemService';
 import ShareService from './ShareService';
 
 export default class ImageService {
@@ -23,10 +22,7 @@ export default class ImageService {
     photPath: string,
     onSave: () => void
   ): Promise<void> {
-    const data = await FileSystemService.readFile(photPath, 'base64');
-    if (data !== null) {
-      await DatabaseService.savePicture(id_project, id_picture, data);
-      onSave();
-    }
+    await DatabaseService.savePictureFromUri(id_project, id_picture, photPath);
+    onSave();
   }
 }

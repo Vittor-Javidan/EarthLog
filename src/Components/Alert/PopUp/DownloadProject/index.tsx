@@ -53,7 +53,7 @@ export const DownloadProjects = memo((props: {
     }));
 
     const fetchAPI = new FetchAPIService(credential);
-    await fetchAPI.downloadProjects(controller.signal,
+    await fetchAPI.downloadProjects(controller.signal, config,
       (feedbackMessage) => setFeedbacks(prev => ([...prev, feedbackMessage])),
       (projects) => {
         setAllProjects(projects);
@@ -101,11 +101,11 @@ export const DownloadProjects = memo((props: {
 
     for (let i = 0; i < allSelectedProjects.length; i++) {
 
-      const processedProject = DataProcessService.processDownloadedProject(allSelectedProjects[i],
+      const processedProject = DataProcessService.processDownloadedProject(allSelectedProjects[i], config,
         (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
       );
 
-      await ProjectService.createProject(processedProject,
+      await ProjectService.createProject(processedProject, config,
         () => {
           CacheService.addToAllProjects(processedProject.projectSettings);
           SyncService.addToSyncData(processedProject.syncData);
@@ -119,7 +119,7 @@ export const DownloadProjects = memo((props: {
       );
     }
 
-    await AlertService.runAcceptCallback();
+    AlertService.runAcceptCallback();
     props.closeModal();
 
   }, [props.closeModal, allProjects, selectedProjects]);

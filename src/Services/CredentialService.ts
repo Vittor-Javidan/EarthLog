@@ -4,7 +4,16 @@ import UtilService from './UtilService';
 
 export default class CredentialService {
 
-  private static CREDENTIAL_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/ServersCredentials`;
+  private static CREDENTIAL_DIRECTORY    = `${FileSystemService.APP_MAIN_DIRECTORY}/ServersCredentials`;
+  static allCredentials: CredentialDTO[] = [];
+
+  // ===============================================================================================
+  // CACHE METHODS
+  // ===============================================================================================
+
+  static async loadAllCredentials(): Promise<void> {
+    this.allCredentials = await CredentialService.getAllCredentials();
+  }
 
   // ===============================================================================================
   // DATA CREATION
@@ -70,6 +79,9 @@ export default class CredentialService {
       `${this.CREDENTIAL_DIRECTORY}/index.json`,
       JSON.stringify(allCredentials),
     );
+
+    // ADD TO CACHE
+    this.allCredentials = [...this.allCredentials, newCredential];
   }
 
   static async updateCredential(credential: CredentialDTO): Promise<void> {
@@ -120,5 +132,12 @@ export default class CredentialService {
       `${this.CREDENTIAL_DIRECTORY}/index.json`,
       JSON.stringify(allCredentials),
     );
+
+    // REMOVE FROM CACHE
+    for (let i = 0; i < this.allCredentials.length; i++) {
+      if (this.allCredentials[i].credential_id === credential.credential_id) {
+        this.allCredentials.splice(i, 1);
+      }
+    }
   }
 }

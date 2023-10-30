@@ -9,7 +9,6 @@ import CacheService from '@Services/CacheService';
 import ProjectService from '@Services/ProjectService';
 import UtilService from '@Services/UtilService';
 import AlertService from '@Services/AlertService';
-import SyncService from '@Services/SyncService';
 
 import { Text } from '@Text/index';
 import { LC } from '@Alert/__LC__';
@@ -27,15 +26,17 @@ export const TemplateWidgetCopy = memo((props: {
 
   const onWidgetCopyToSample = useCallback(async (widgetData: WidgetData) => {
     const newWidgetData = ProjectService.changeAllIds(UtilService.deepCopy(widgetData));
-    await ProjectService.createWidget_Sample(props.id_project, props.id_sample, newWidgetData,
-      async () => {
-        CacheService.addToAllWidgets_Sample(newWidgetData);
-        await SyncService.syncData_SampleWidgets(props.id_project, props.id_sample, newWidgetData.id_widget, 'creation');
-        await AlertService.runAcceptCallback();
-        props.closeModal();
-      },
-      (errorMesage) => alert(errorMesage),
-    );
+    await ProjectService.createWidget({
+      path: 'sample widgets',
+      id_project: props.id_project,
+      id_sample: props.id_sample,
+      widgetData: newWidgetData,
+      sync: true,
+    }, () => {
+      CacheService.addToAllWidgets_Sample(newWidgetData);
+      AlertService.runAcceptCallback();
+      props.closeModal();
+    }, (errorMesage) => alert(errorMesage));
   }, [props]);
 
   const TemplateWidgets = CacheService.allWidgets_Template.map((widgetData) => {

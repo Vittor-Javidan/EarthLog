@@ -46,11 +46,11 @@ export const ExportProject_CSV = memo((props: {
       showFooterButtons: false,
     }));
 
-    await CSV_Module.buildAndShare_Project_AllCoordinates(props.id_project, fileName,
+    await CSV_Module.buildAndShare_Project_AllCoordinates(props.id_project, fileName, config,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage]))
     );
 
-    await AlertService.runAcceptCallback();
+    AlertService.runAcceptCallback();
     props.closeModal();
 
   }, [fileName]);

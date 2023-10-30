@@ -21,7 +21,7 @@ export default function ProjectScope() {
 
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.project[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
 
   const [loading                 , setLoading                  ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
@@ -123,7 +123,7 @@ async function fetchSamples(
   id_project: string,
   whenLoaded: () => void
 ) {
-  if (id_project !== CacheService.lastOpenProject.id_project) {
+  if (id_project !== CacheService.lastOpenProject?.id_project) {
     const promises = [
       CacheService.saveLastOpenProject(id_project),
       CacheService.loadAllSamplesSettings(id_project),

@@ -1,7 +1,6 @@
 import { DownloadedProjectDTO, ProjectDTO } from '@Types/ProjectTypes';
-import { CredentialDTO } from '@Types/AppTypes';
+import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
 
 export default class FetchAPIService {
 
@@ -80,13 +79,15 @@ export default class FetchAPIService {
 
   async downloadProjects(
     signal: AbortSignal,
+    config: ConfigDTO,
     feedback: (message: string) => void,
     onSuccess: (projects: DownloadedProjectDTO[]) => void,
     onError: (error: string) => void,
   ): Promise<void> {
-    try {
 
-      const R = translations.APIServices.fetchAPI[ConfigService.config.language];
+    const R = translations.APIServices.fetchAPI[config.language];
+
+    try {
 
       // AUTHENTICATION ===========================
       feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
@@ -145,7 +146,6 @@ export default class FetchAPIService {
     } catch (error) {
 
       if (error instanceof TypeError) {
-        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         switch (error.message) {
           case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }
@@ -162,13 +162,15 @@ export default class FetchAPIService {
   async uploadProject(
     signal: AbortSignal,
     projectDTO: ProjectDTO,
+    config: ConfigDTO,
     feedback: (message: string) => void,
     onSuccess: () => void,
     onError: (error: string) => void,
   ) {
-    try {
 
-      const R = translations.APIServices.fetchAPI[ConfigService.config.language];
+    const R = translations.APIServices.fetchAPI[config.language];
+
+    try {
 
       // AUTHENTICATION ===========================
       feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
@@ -186,7 +188,6 @@ export default class FetchAPIService {
       const authBody = await authResponse.json();
       feedback(R['Authenticated']);
       if (!authBody.accessToken) {
-        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         onError(
           R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
           R['\nMethod: POST'] +
@@ -204,7 +205,6 @@ export default class FetchAPIService {
       : await this.updateProject(authBody.accessToken, signal, projectDTO);
       if (!response.ok) {
         const serverMessage = response.headers.get('serverMessage');
-        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         onError(
           R['It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.'] +
           R['\nMethod: POST'] +
@@ -220,7 +220,6 @@ export default class FetchAPIService {
     } catch (error) {
 
       if (error instanceof TypeError) {
-        const R = translations.APIServices.fetchAPI[ConfigService.config.language];
         switch (error.message) {
           case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }

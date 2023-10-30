@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
@@ -7,12 +7,14 @@ import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
+import CacheService from '@Services/CacheService';
 
 export const HomeScreen = memo((props: {
   homeScopeState: Loading
 }) => {
 
   const [_, refresher] = useState<boolean>(false);
+  const lastOpenProjectSettings = useMemo(() => CacheService.lastOpenProject, []);
 
   return (
     <Layout.Screen
@@ -39,7 +41,11 @@ export const HomeScreen = memo((props: {
             }}
           >
             <LC.SocialMediaButtons />
-            <LC.LastProjectButton />
+            {lastOpenProjectSettings && (
+              <LC.LastProjectButton
+                projectSettings={lastOpenProjectSettings}
+              />
+            )}
             <LC.F_ProjectButtons />
           </View>
         </Animation.SlideFromLeft>
