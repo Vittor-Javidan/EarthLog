@@ -1,7 +1,7 @@
 {
   "type": "excalidraw",
   "version": 2,
-  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "source": "https://excalidraw.com",
   "elements": [
     {
       "type": "rectangle",
@@ -100,7 +100,7 @@
       "containerId": "SOwkKstfCt50IoZeTHExf",
       "originalText": "Alert Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "arrow",
@@ -226,7 +226,7 @@
       "containerId": "jNrnRBuoG2IBM3oLwr9vS",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -363,7 +363,7 @@
       "containerId": "wFoV5oWlIQAMvfzJQCMwg",
       "originalText": "Camera Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -437,7 +437,7 @@
       "containerId": "tuoM9ND3uQ3cRWqp0_D-j",
       "originalText": "Local Storage Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "rectangle",
@@ -511,7 +511,7 @@
       "containerId": "sGqGO-nQzZMMwxPjVZNWH",
       "originalText": "Language Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -585,7 +585,7 @@
       "containerId": "_WY4w5_-i_IZOFRHko0Za",
       "originalText": "Theme Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -659,7 +659,7 @@
       "containerId": "wF1gIVO0oKm-1-P8ctvFE",
       "originalText": "Date and Time Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "rectangle",
@@ -729,7 +729,7 @@
       "containerId": "oi3OezeXiQR8q7wLrcH3R",
       "originalText": "Devtools Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -799,7 +799,7 @@
       "containerId": "ZBozFZmj_j4rs0Ijof9yu",
       "originalText": "Share Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -869,7 +869,7 @@
       "containerId": "aosusWIyzJGQpu1qgwXeT",
       "originalText": "Font Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -943,7 +943,7 @@
       "containerId": "8l0s9sI0eCcTlB89EVS_U",
       "originalText": "GPS Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "arrow",
@@ -1135,7 +1135,7 @@
       "containerId": null,
       "originalText": "Global Services (Abstraction Level 0)",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "text",
@@ -1171,7 +1171,7 @@
       "containerId": null,
       "originalText": "Config Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -1245,7 +1245,7 @@
       "containerId": "FmriwjOASpTOLTWNjk5Xm",
       "originalText": "Local Storage Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "rectangle",
@@ -1319,7 +1319,7 @@
       "containerId": "hOeA0AiOOZhoCZH-_--qP",
       "originalText": "Language Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -1393,7 +1393,7 @@
       "containerId": "jM4sml3TsBMEGUmJPkAAl",
       "originalText": "Theme Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -1458,7 +1458,7 @@
       "containerId": null,
       "originalText": "used on UI as well",
       "lineHeight": 1.2,
-      "baseline": 36
+      "baseline": 33
     },
     {
       "type": "rectangle",
@@ -1532,7 +1532,7 @@
       "containerId": "9LZsPYMsnuge7DcMlCnOH",
       "originalText": "Date and Time Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "rectangle",
@@ -1622,7 +1622,7 @@
       "containerId": null,
       "originalText": "Database Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -1696,7 +1696,7 @@
       "containerId": "RaXVE2yeo3-7VAz9KA2xE",
       "originalText": "Filesystem Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -1770,7 +1770,7 @@
       "containerId": "7UUnww4dImmbz-cE6cWGn",
       "originalText": "Filesystem Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -1844,7 +1844,7 @@
       "containerId": "bU2LPpH7skA2YQu6xP1dO",
       "originalText": "Local Storage Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "arrow",
@@ -1932,7 +1932,7 @@
       "containerId": null,
       "originalText": "Credential Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2006,7 +2006,7 @@
       "containerId": "yyhTL5uUfEaALl-yPMVw1",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -2071,7 +2071,7 @@
       "containerId": null,
       "originalText": "development debug tools",
       "lineHeight": 1.2,
-      "baseline": 36
+      "baseline": 33
     },
     {
       "type": "rectangle",
@@ -2136,7 +2136,7 @@
       "containerId": null,
       "originalText": "not used on UI",
       "lineHeight": 1.2,
-      "baseline": 36
+      "baseline": 33
     },
     {
       "type": "rectangle",
@@ -2201,7 +2201,7 @@
       "containerId": null,
       "originalText": " Document File\n Export Service",
       "lineHeight": 1.2,
-      "baseline": 206
+      "baseline": 201
     },
     {
       "type": "rectangle",
@@ -2271,7 +2271,7 @@
       "containerId": "vZxQ2YLNZGL5rO3BcBcW-",
       "originalText": "Share Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -2341,7 +2341,7 @@
       "containerId": null,
       "originalText": "Cache Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2415,7 +2415,7 @@
       "containerId": "6Qd0nCG9zHv3vcb4oiDzv",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -2485,7 +2485,7 @@
       "containerId": null,
       "originalText": "Sync Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2555,7 +2555,7 @@
       "containerId": null,
       "originalText": "Project Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2629,7 +2629,7 @@
       "containerId": "h9OQQWbze5Y2PCO3FonDw",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -2703,7 +2703,7 @@
       "containerId": null,
       "originalText": "DataProcess Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2777,7 +2777,7 @@
       "containerId": "AYkuEiuwxcexVrO-A9KTi",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -2851,7 +2851,7 @@
       "containerId": "Qn_5hJJLWKQMq-wOpIPBB",
       "originalText": "Date and Time Service",
       "lineHeight": 1.25,
-      "baseline": 81
+      "baseline": 76
     },
     {
       "type": "rectangle",
@@ -2921,7 +2921,7 @@
       "containerId": null,
       "originalText": "Haptics Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -2995,7 +2995,7 @@
       "containerId": "bK2J_zrW3tWaH-4brbxdI",
       "originalText": "Filesystem Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "rectangle",
@@ -3037,8 +3037,8 @@
     },
     {
       "type": "text",
-      "version": 1460,
-      "versionNonce": 577143827,
+      "version": 1466,
+      "versionNonce": 393500503,
       "isDeleted": false,
       "id": "X2u6rKgPQb18B5IdZ8BkC",
       "fillStyle": "solid",
@@ -3058,18 +3058,18 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1698690528788,
+      "updated": 1698691139253,
       "link": null,
       "locked": false,
       "fontSize": 93.40743001302107,
       "fontFamily": 3,
-      "text": "Image Service",
+      "text": "Media Service",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Image Service",
+      "originalText": "Media Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "rectangle",
@@ -3139,7 +3139,7 @@
       "containerId": "M9U5joR-HvfWvmpxx3LAn",
       "originalText": "Share Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "arrow",
@@ -3265,7 +3265,7 @@
       "containerId": "aHSkF2s6DfjiFuBr5CfUZ",
       "originalText": "Util Service",
       "lineHeight": 1.25,
-      "baseline": 36
+      "baseline": 31
     },
     {
       "type": "text",
@@ -3301,7 +3301,7 @@
       "containerId": null,
       "originalText": "Services with no dependency on other services. They can\ncan be used without causing circular dependency safely, but they\nare not allowed to import other services than main libraries like\nreact, react-native or expo.",
       "lineHeight": 1.2,
-      "baseline": 166
+      "baseline": 163
     },
     {
       "type": "text",
@@ -3337,7 +3337,7 @@
       "containerId": null,
       "originalText": "Services Architecture Map",
       "lineHeight": 1.2,
-      "baseline": 720
+      "baseline": 686
     },
     {
       "type": "text",
@@ -3373,7 +3373,7 @@
       "containerId": null,
       "originalText": "On every scope initialization, this service\nloads from database the updated data, for UI\ndisplay.\n\nEvery data users sees is cached data. so users can\naccess that data faster.\n\nEverytime something is saved, the cache must be updated\non success callbacks, to avoid 2 sources of truth.",
       "lineHeight": 1.2,
-      "baseline": 382
+      "baseline": 379
     },
     {
       "type": "text",
@@ -3409,7 +3409,7 @@
       "containerId": null,
       "originalText": "Controls feedback vibrations. It must\nknow Config Service, to avoid excessive\ndependency injection.",
       "lineHeight": 1.2,
-      "baseline": 122
+      "baseline": 120
     },
     {
       "type": "text",
@@ -3445,7 +3445,7 @@
       "containerId": null,
       "originalText": "Holds phone initial lanugage, and\nuser preferences like date and time formats,\napp customized language, customized theme,\nand haptics custom settings.",
       "lineHeight": 1.2,
-      "baseline": 166
+      "baseline": 163
     },
     {
       "type": "text",
@@ -3481,7 +3481,7 @@
       "containerId": null,
       "originalText": "Special and Isolated database used just to store\ncredentials",
       "lineHeight": 1.2,
-      "baseline": 79
+      "baseline": 77
     },
     {
       "type": "text",
@@ -3517,7 +3517,7 @@
       "containerId": null,
       "originalText": "Abstraction Level 1",
       "lineHeight": 1.2,
-      "baseline": 149
+      "baseline": 141
     },
     {
       "type": "text",
@@ -3553,7 +3553,7 @@
       "containerId": null,
       "originalText": "Abstraction Level 2",
       "lineHeight": 1.2,
-      "baseline": 149
+      "baseline": 141
     },
     {
       "type": "text",
@@ -3589,7 +3589,7 @@
       "containerId": null,
       "originalText": "Handles files manipulation about projects,\nsync data, and media",
       "lineHeight": 1.2,
-      "baseline": 79
+      "baseline": 77
     },
     {
       "type": "text",
@@ -3625,12 +3625,12 @@
       "containerId": null,
       "originalText": "Abstraction of database that\nHolds some sync data update\nfor Download/Upload logics",
       "lineHeight": 1.2,
-      "baseline": 122
+      "baseline": 120
     },
     {
       "type": "text",
-      "version": 264,
-      "versionNonce": 845349139,
+      "version": 269,
+      "versionNonce": 1302645113,
       "isDeleted": false,
       "id": "KJAdHV-REWLGm9Sl7B02a",
       "fillStyle": "solid",
@@ -3650,18 +3650,18 @@
       "frameId": null,
       "roundness": null,
       "boundElements": [],
-      "updated": 1698690528788,
+      "updated": 1698691173455,
       "link": null,
       "locked": false,
       "fontSize": 36,
       "fontFamily": 3,
-      "text": "Abstraction of database to allow the UI to\nget/save/delete/share images",
+      "text": "Abstraction of database to allow the UI to\nget/save/delete/share Media",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Abstraction of database to allow the UI to\nget/save/delete/share images",
+      "originalText": "Abstraction of database to allow the UI to\nget/save/delete/share Media",
       "lineHeight": 1.2,
-      "baseline": 79
+      "baseline": 77
     },
     {
       "type": "text",
@@ -3697,7 +3697,7 @@
       "containerId": null,
       "originalText": "Abstraction of database to allow the UI to\nget/update/save/delete projects",
       "lineHeight": 1.2,
-      "baseline": 79
+      "baseline": 77
     },
     {
       "type": "rectangle",
@@ -3775,7 +3775,7 @@
       "containerId": null,
       "originalText": "FetchAPI Service",
       "lineHeight": 1.2,
-      "baseline": 94
+      "baseline": 89
     },
     {
       "type": "text",
@@ -3811,7 +3811,7 @@
       "containerId": null,
       "originalText": "Responsible to temporary save documents like\ndocx and csv to share right after",
       "lineHeight": 1.2,
-      "baseline": 79
+      "baseline": 77
     },
     {
       "type": "text",
@@ -3847,7 +3847,7 @@
       "containerId": null,
       "originalText": "Process data before and after downloads and\nuploads. And makes sure the data received is safe\nto be used by the App.",
       "lineHeight": 1.2,
-      "baseline": 122
+      "baseline": 120
     },
     {
       "type": "text",
@@ -3883,7 +3883,7 @@
       "containerId": null,
       "originalText": "Responsible to make request to servers,\nto authenticate, and send/receive any\ntype of data.",
       "lineHeight": 1.2,
-      "baseline": 122
+      "baseline": 120
     }
   ],
   "appState": {

@@ -7,7 +7,7 @@ import CameraService from '@Services/CameraService';
 import { Button } from '@Button/index';
 import { PhotoPreview } from './PhotoPreview';
 import UtilService from '@Services/UtilService';
-import ImageService from '@Services/ImageService';
+import MediaService from '@Services/MediaService';
 
 export const AppCamera = memo((props: {
   id_project: string
@@ -39,7 +39,7 @@ export const AppCamera = memo((props: {
   const onConfirm = useCallback(() => {
     if (photo?.uri) {
       const id_picture = UtilService.generateUuidV4();
-      ImageService.savePictureFromURI(props.id_project, id_picture, photo.uri,
+      MediaService.savePictureFromURI(props.id_project, id_picture, photo.uri,
         () => CameraService.triggerOnPictureTake(id_picture)
       );
       setShow(prev => ({ ...prev, loadingPreview: false }));

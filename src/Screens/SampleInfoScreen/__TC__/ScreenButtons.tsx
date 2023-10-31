@@ -6,6 +6,7 @@ import ConfigService from '@Services/ConfigService';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import MediaService from '@Services/MediaService';
 
 import { Layout } from '@Layout/index';
 import { Button } from '@Button/index';
@@ -26,7 +27,11 @@ export const ScreenButtons = memo(() => {
       sampleSettings: sampleSettings,
       sync: true,
     }, async () => {
-      await ProjectService.deleteMedia_Sample(id_project, CacheService.allWidgets_Sample);
+      await MediaService.deleteMedia({
+        scope: 'sample',
+        id_project: id_project,
+        widgetArray: CacheService.allWidgets_Sample,
+      });
       CacheService.removeFromSamples(id_sample);
       navigate('PROJECT SCOPE', id_project);
     }, (errorMessage) => alert(errorMessage));

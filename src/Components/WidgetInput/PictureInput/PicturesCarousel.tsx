@@ -3,7 +3,7 @@ import { View, Image, LayoutRectangle } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData } from '@Types/ProjectTypes';
-import ImageService from '@Services/ImageService';
+import MediaService from '@Services/MediaService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
@@ -40,7 +40,7 @@ export const PicturesCarousel = memo((props: {
   const AllImages = props.pictures.map(pictureData => (
     <Image
       key={pictureData.id_picture}
-      source={{ uri: ImageService.getPictureUri(props.id_project, pictureData.id_picture)}}
+      source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
       resizeMode="cover"
       style={{
         flex: 1,

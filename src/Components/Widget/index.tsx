@@ -11,6 +11,7 @@ import ThemeService from '@Services/ThemeService';
 import ConfigService from '@Services/ConfigService';
 import CacheService from '@Services/CacheService';
 import ProjectService from '@Services/ProjectService';
+import MediaService from '@Services/MediaService';
 
 import { Navbar } from './Navbar';
 import { WidgetLabel } from './WidgetLabel';
@@ -144,7 +145,7 @@ export const Widget = memo((props: {
     });
   }, []);
 
-  const onDelete = useCallback(async (id_input: ID) => {
+  const onInputDelete = useCallback(async (id_input: ID) => {
     await AlertService.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to delete this field.'],
@@ -152,8 +153,11 @@ export const Widget = memo((props: {
       const newData: WidgetData = { ...widgetData };
       for (let i = 0; i < newData.inputs.length; i++) {
         if (newData.inputs[i].id_input === id_input) {
-          await ProjectService.deleteMedia_Input(props.widgetScope.id_project, newData.inputs[i]);
-          newData.inputs.splice(i, 1);
+          await MediaService.deleteMedia({
+            scope: 'input',
+            id_project: props.widgetScope.id_project,
+            input: newData.inputs.splice(i, 1)[0],
+          });
           break;
         }
       }
@@ -162,7 +166,7 @@ export const Widget = memo((props: {
     });
   }, [widgetData]);
 
-  const deleteWidget = useCallback(() => {
+  const onWidgetDelete = useCallback(() => {
     AlertService.handleAlert(true, {
       question: R['Confirm to delete this widget.'],
       type: 'warning',
@@ -219,7 +223,7 @@ export const Widget = memo((props: {
               editInputs={editInputs}
               referenceGPSData={props.referenceGPSData}
               onSave={(inputData) => updateInput(inputData)}
-              onInputDelete={async (id_input) => await onDelete(id_input)}
+              onInputDelete={async (id_input) => await onInputDelete(id_input)}
               onInputMoveUp={(id_input) => onMoveUp(id_input)}
               onInputMoveDow={(id_input) => onMoveDown(id_input)}
               rules={widgetData.rules}
@@ -244,7 +248,7 @@ export const Widget = memo((props: {
           isTemplate={props.widgetScope.type === 'template'}
           addToNewSamples={widgetData.addToNewSamples ?? false}
           onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}
-          onDeleteWidget={() => deleteWidget()}
+          onDeleteWidget={() => onWidgetDelete()}
           rules={widgetData.rules}
           theme={widgetTheme}
         />

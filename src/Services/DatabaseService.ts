@@ -493,45 +493,72 @@ export default class DatabaseService {
   // MEDIA FILES
   // ===============================================================================================
 
-  static async deleteSampleMedia(
-    id_project: string,
-    sampleWidgets: WidgetData[]
-  ): Promise<void> {
-    for (let i = 0; i < sampleWidgets.length; i++) {
-      const widgetData = sampleWidgets[i];
-      await this.deleteWidgetMedia(id_project, widgetData);
-    }
-  }
+  static async deleteMedia(options: {
+    scope: 'sample'
+    id_project: string
+    widgetArray: WidgetData[]
+  } | {
+    scope: 'widget'
+    id_project: string
+    widget: WidgetData
+  } | {
+    scope: 'input'
+    id_project: string
+    input: InputData
+  } | {
+    scope: 'picture'
+    id_project: string
+    id_media: string
+  }): Promise<void> {
 
-  static async deleteWidgetMedia(
-    id_project: string,
-    widgetData: WidgetData,
-  ): Promise<void> {
-    for (let i = 0; i < widgetData.inputs.length; i++) {
-      const inputData = widgetData.inputs[i];
-      await this.deleteInputMedia(id_project, inputData);
-    }
-  }
+    const ids_pictures: string[] = [];
 
-  static async deleteInputMedia(
-    id_project: string,
-    inputData: InputData,
-  ): Promise<void> {
-    if (inputData.type === 'picture') {
-      for (let i = 0; i < inputData.value.length; i++) {
-        const pictureData = inputData.value[i];
-        await this.deletePicture(id_project, pictureData.id_picture);
+    switch (options.scope) {
+      case 'sample':       getMediaIDs_Sample(options.widgetArray); break;
+      case 'widget':       getMediaIDs_Widget(options.widget);      break;
+      case 'input':        getMediaIDs_Input(options.input);        break;
+      case 'picture':      ids_pictures.push(options.id_media);     break;
+    }
+
+    await deleteAndSync();
+
+    function getMediaIDs_Sample(sampleWidgets: WidgetData[]) {
+      for (let i = 0; i < sampleWidgets.length; i++) {
+        const widgetData = sampleWidgets[i];
+        getMediaIDs_Widget(widgetData);
       }
     }
-  }
 
-  static async deletePicture(
-    id_project: string,
-    id_picture: string
-  ): Promise<void> {
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
-    await FileSystemService.delete(path);
-    await this.syncPicture(id_project, id_picture, 'deletion');
+    function getMediaIDs_Widget(widgetData: WidgetData) {
+      for (let i = 0; i < widgetData.inputs.length; i++) {
+        const inputData = widgetData.inputs[i];
+        getMediaIDs_Input(inputData);
+      }
+    }
+
+    function getMediaIDs_Input(input: InputData) {
+      if (input.type === 'picture') {
+        for (let i = 0; i < input.value.length; i++) {
+          const pictureData = input.value[i];
+          ids_pictures.push(pictureData.id_picture);
+        }
+      }
+    }
+
+    async function deleteAndSync() {
+
+      const promises = [];
+      const syncData = await DatabaseService.readSyncFile(options.id_project);
+
+      for (let i = 0; i < ids_pictures.length; i++) {
+        const path = `${DATA_BASE_DIRECTORY}/${options.id_project}/media/pictures/${ids_pictures[i]}.jpg`;
+        promises.push(FileSystemService.delete(path));
+        DatabaseService.defineStatus_Media(ids_pictures[i], syncData.pictures, 'deletion');
+      }
+
+      promises.push(DatabaseService.updateSyncFile(syncData));
+      await Promise.all(promises);
+    }
   }
 
   static async getAllPicturesIDs(

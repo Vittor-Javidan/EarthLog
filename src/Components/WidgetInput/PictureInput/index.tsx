@@ -6,13 +6,12 @@ import UtilService from '@Services/UtilService';
 import CameraService from '@Services/CameraService';
 import DateTimeService from '@Services/DateTimeService';
 import ConfigService from '@Services/ConfigService';
+import AlertService from '@Services/AlertService';
+import MediaService from '@Services/MediaService';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
-import ProjectService from '@Services/ProjectService';
-import AlertService from '@Services/AlertService';
-import ImageService from '@Services/ImageService';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -81,7 +80,7 @@ export const PictureInput = memo((props: {
 
   const onPictureShare = useCallback(async (index: number) => {
     const { id_picture } = inputData.value[index];
-    await ImageService.sharePicture(props.widgetScope.id_project, id_picture);
+    await MediaService.sharePicture(props.widgetScope.id_project, id_picture);
   }, [inputData]);
 
   const onPictureDelete = useCallback((index: number) => {
@@ -90,8 +89,11 @@ export const PictureInput = memo((props: {
       question: 'Confirm to permanently delete this picture',
     }, async () => {
       const newData: PictureInputData = { ...inputData };
-      const removedPicture = newData.value.splice(index, 1);
-      await ProjectService.deletePicture(props.widgetScope.id_project, removedPicture[0].id_picture);
+      await MediaService.deleteMedia({
+        scope: 'picture',
+        id_project: props.widgetScope.id_project,
+        id_media: newData.value.splice(index, 1)[0].id_picture,
+      });
       asyncSave(newData);
       setInputData(newData);
     });

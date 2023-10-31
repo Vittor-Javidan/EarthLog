@@ -1,8 +1,8 @@
+import { ConfigDTO } from '@Types/AppTypes';
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
-import { ConfigDTO } from '@Types/AppTypes';
 
 export default class ProjectService {
 
@@ -439,21 +439,5 @@ export default class ProjectService {
         `\n${JSON.stringify(error)}`
       );
     }
-  }
-
-  static async deleteMedia_Sample(id_project: string, sampleWidgets: WidgetData[]): Promise<void> {
-    await DatabaseService.deleteSampleMedia(id_project, sampleWidgets);
-  }
-
-  static async deleteMedia_Widget(id_project: string, widgetData: WidgetData): Promise<void> {
-    await DatabaseService.deleteWidgetMedia(id_project, widgetData);
-  }
-
-  static async deleteMedia_Input(id_project: string, inputData: InputData): Promise<void> {
-    await DatabaseService.deleteInputMedia(id_project, inputData);
-  }
-
-  static async deletePicture(id_project: string, id_picture: string): Promise<void> {
-    await DatabaseService.deletePicture(id_project, id_picture);
   }
 }

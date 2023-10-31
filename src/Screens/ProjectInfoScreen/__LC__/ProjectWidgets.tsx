@@ -4,6 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { WidgetData } from '@Types/ProjectTypes';
 import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
+import MediaService from '@Services/MediaService';
 
 import { Widget } from '@Widget/index';
 import { Layout } from '@Layout/index';
@@ -25,7 +26,11 @@ export function F_ProjectWidgets(props: {
       widgetData: widgetData,
       sync: true,
     }, async () => {
-      await ProjectService.deleteMedia_Widget(id_project, widgetData);
+      await MediaService.deleteMedia({
+        scope: 'widget',
+        id_project: id_project,
+        widget: widgetData,
+      });
       CacheService.removeFromAllWidgets_Project(id_widget);
       refresh(prev => !prev);
     }, (errorMessage) => alert(errorMessage));
