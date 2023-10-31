@@ -53,10 +53,12 @@ export const PictureInput = memo((props: {
       CameraService.configCamera({
         id_project: props.widgetScope.id_project,
         mode: 'photo',
+        picturesAmount: inputData.value.length,
+        picturesLimit: inputData.picturesAmountLimit,
       });
       setShow(prev => ({ ...prev, openCamera: true}));
     }
-  }, []);
+  }, [inputData]);
 
   const onPictureTake = useCallback(async (id_picture: string) => {
     const newData: PictureInputData = { ...inputData, value: [ ...inputData.value, {

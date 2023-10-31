@@ -2,7 +2,7 @@ import { CameraLayerConfig } from '@Types/AppTypes';
 export default class CameraService {
 
   private static showCameraSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
-  private static cameraConfigSetter: React.Dispatch<React.SetStateAction<CameraLayerConfig>> | null = null;
+  private static cameraConfigSetter: React.Dispatch<React.SetStateAction<CameraLayerConfig | null>> | null = null;
   private static onPictureTake: ((id_photo: string) => void) | null = null;
   private static onCameraClose: (() => void) | null = null;
 
@@ -22,7 +22,7 @@ export default class CameraService {
     this.showCameraSetter = setter;
   }
 
-  static registerConfigSetter(setter: React.Dispatch<React.SetStateAction<CameraLayerConfig>>) {
+  static registerConfigSetter(setter: React.Dispatch<React.SetStateAction<CameraLayerConfig | null>>) {
     this.cameraConfigSetter = setter;
   }
 

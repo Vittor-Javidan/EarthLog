@@ -1,7 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.18 Delete media method refactored.
+# 0.1.9.19 Camera Layer feedback
 
-- Instead openning and closing the sync file for each deletion, now the its openned only once.
-- Deletion performance optimized.
-- Now there is only one method that handles any media deletion. For now just picture, but adapted to implement video and audio as well.
+- Now camera shows and keep count of the amount of pictures for a specific input.
+- <AppCamera /> function renamed and refactored.

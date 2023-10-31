@@ -124,9 +124,12 @@ export type ModalConfig = {
   question: string
 }
 
-export type CameraLayerConfig = {
+export type CameraLayerConfig = CameraPictureMode
+export type CameraPictureMode = {
   id_project: string
   mode: 'photo'
+  picturesAmount: number
+  picturesLimit?: number
 }
 
 export type RegexRules = {

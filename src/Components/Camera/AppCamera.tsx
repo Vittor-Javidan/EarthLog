@@ -2,15 +2,17 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 
+import { CameraPictureMode } from '@Types/AppTypes';
 import CameraService from '@Services/CameraService';
-
-import { Button } from '@Button/index';
-import { PhotoPreview } from './PhotoPreview';
 import UtilService from '@Services/UtilService';
 import MediaService from '@Services/MediaService';
 
+import { Button } from '@Button/index';
+import { Text } from '@Text/index';
+import { PhotoPreview } from './PhotoPreview';
+
 export const AppCamera = memo((props: {
-  id_project: string
+  cameraConfig: CameraPictureMode
   onBackPress: () => void
 }) => {
 
@@ -19,6 +21,8 @@ export const AppCamera = memo((props: {
   const [cameraType       , setCameraType       ] = useState<CameraType>(CameraType.back);
   const [flashMode        , setFlashMode        ] = useState<FlashMode>(FlashMode.off);
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
+  const [picturesAmount   , setPicturesAmount   ] = useState<number>(props.cameraConfig.picturesAmount);
+  const [hudColor         , setHudColor         ] = useState<'#DDD' | '#000'>('#000');
   const [show             , setShow             ] = useState({
     loadingPreview: false,
   });
@@ -29,7 +33,7 @@ export const AppCamera = memo((props: {
     }
   }, [show.loadingPreview]);
 
-  const takePicture = useCallback(async () => {
+  const onPictureTake = useCallback(async () => {
     if (cameraRef.current !== null && show.loadingPreview === false) {
       setShow(prev => ({ ...prev, loadingPreview: true}));
       setPhoto(await cameraRef.current.takePictureAsync());
@@ -39,25 +43,32 @@ export const AppCamera = memo((props: {
   const onConfirm = useCallback(() => {
     if (photo?.uri) {
       const id_picture = UtilService.generateUuidV4();
-      MediaService.savePictureFromURI(props.id_project, id_picture, photo.uri,
+      MediaService.savePictureFromURI(props.cameraConfig.id_project, id_picture, photo.uri,
         () => CameraService.triggerOnPictureTake(id_picture)
       );
+      setPicturesAmount(prev => prev + 1);
       setShow(prev => ({ ...prev, loadingPreview: false }));
       setPhoto(null);
     }
-  }, [props.id_project, photo]);
+  }, [props.cameraConfig.id_project, photo]);
 
   const onCancel = useCallback(() => {
     setPhoto(null);
     setShow(prev => ({ ...prev, loadingPreview: false }));
   }, []);
 
-  const changeCameraType = useCallback((cameraType: CameraType) => {
-    setCameraType(cameraType === CameraType.front ? CameraType.back : CameraType.front);
-  }, []);
+  const onChangeCameraType = useCallback(() => {
+    setCameraType(prev => prev === CameraType.front ? CameraType.back : CameraType.front);
+  }, [cameraType]);
 
-  const changeFlashMode = useCallback((flashMode: FlashMode) => {
-    setFlashMode(flashMode === FlashMode.off ? FlashMode.on : FlashMode.off);
+  const onChangeFlashMode = useCallback(() => {
+    setFlashMode(prev => prev === FlashMode.off ? FlashMode.on : FlashMode.off);
+  }, [flashMode]);
+
+  const onChangeHudColor = useCallback(() => {
+    setHudColor(prev => {
+      return prev === '#000' ? '#DDD' : '#000';
+    });
   }, []);
 
   return (
@@ -74,14 +85,19 @@ export const AppCamera = memo((props: {
         type={cameraType}
         flashMode={flashMode}
         ratio="16:9"
-        style={{
-          aspectRatio: 9 / 16,
-          height: '100%',
-          overflow: 'hidden',
-        }}
+        style={[
+          {
+            aspectRatio: 9 / 16,
+            height: '100%',
+            overflow: 'hidden',
+          },
+          cameraType ===  CameraType.front && {
+            transform: [{ scaleX: -1 }],
+          },
+        ]}
       >
         <Pressable
-          onPress={async () => await takePicture()}
+          onPress={async () => await onPictureTake()}
           style={{ flex: 1 }}
         />
       </Camera>
@@ -93,82 +109,141 @@ export const AppCamera = memo((props: {
           onConfirm={() =>  onConfirm()}
         />
       ) : (<>
+        <CloseButton
+          color={hudColor}
+          onPress={props.onBackPress}
+        />
         <View
           style={{
             position: 'absolute',
-            top: 20,
-            right: 10,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            gap: 10,
-            opacity: 0.5,
-          }}
-        >
-          <Button.Icon
-            iconName="close"
-            onPress={() => props.onBackPress()}
-            theme={{
-              font: '#DDD',
-              font_Pressed: '#666',
-              background: '#666',
-              background_Pressed: '#222',
-            }}
-            style={{
-              backgroundColor: undefined,
-              height: 50,
-              width: 50,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-            }}
-          />
-        </View>
-        <View
-          style={{
-            position: 'absolute',
+            alignItems: 'center',
             bottom: 20,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            width: '100%',
             gap: 10,
             opacity: 0.5,
+            width: '100%',
           }}
         >
-          <Button.Icon
-            iconName={flashMode === FlashMode.on ? 'flash-off' : 'flash'}
-            onPress={() => changeFlashMode(flashMode)}
-            theme={{
-              font: '#DDD',
-              font_Pressed: '#666',
-              background: '#666',
-              background_Pressed: '#222',
-            }}
+          <Text h3
             style={{
-              backgroundColor: undefined,
-              height: 50,
-              width: 50,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
+              color: hudColor,
             }}
-          />
-          <Button.Icon
-            iconName="camera-reverse"
-            onPress={() => changeCameraType(cameraType)}
-            theme={{
-              font: '#DDD',
-              font_Pressed: '#666',
-              background: '#666',
-              background_Pressed: '#222',
-            }}
-            style={{
-              backgroundColor: undefined,
-              height: 50,
-              width: 50,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-            }}
+          >
+            {`${picturesAmount} / ${props.cameraConfig.picturesLimit ?? '...'}`}
+          </Text>
+          <CameraFooterButtons
+            color={hudColor}
+            flashMode={flashMode}
+            flashButtonPress={onChangeFlashMode}
+            changeHudColorPress={onChangeHudColor}
+            changeCameraTypePress={onChangeCameraType}
           />
         </View>
       </>)}
+    </View>
+  );
+});
+
+const CloseButton = memo((props: {
+  color: string
+  onPress: () => void
+}) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: 20,
+        right: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 10,
+        opacity: 0.5,
+      }}
+    >
+      <Button.Icon
+        iconName="close"
+        onPress={props.onPress}
+        theme={{
+          font: props.color,
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 50,
+          width: 50,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+        }}
+      />
+    </View>
+  );
+});
+
+const CameraFooterButtons = memo((props: {
+  color: string
+  flashMode: FlashMode
+  flashButtonPress: () => void
+  changeHudColorPress: () => void
+  changeCameraTypePress: () => void
+}) => {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+      }}
+    >
+      <Button.Icon
+        iconName={props.flashMode === FlashMode.on ? 'flash-off' : 'flash'}
+        onPress={props.flashButtonPress}
+        theme={{
+          font: props.color,
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 50,
+          width: 50,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+        }}
+      />
+      <Button.Icon
+        iconName="contrast"
+        onPress={props.changeHudColorPress}
+        theme={{
+          font: props.color,
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 50,
+          width: 50,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+        }}
+      />
+      <Button.Icon
+        iconName="camera-reverse"
+        onPress={props.changeCameraTypePress}
+        theme={{
+          font: props.color,
+          font_Pressed: '#666',
+          background: '#666',
+          background_Pressed: '#222',
+        }}
+        style={{
+          backgroundColor: undefined,
+          height: 50,
+          width: 50,
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+        }}
+      />
     </View>
   );
 });
