@@ -148,7 +148,7 @@ export const Widget = memo((props: {
   const onInputDelete = useCallback(async (id_input: ID) => {
     await AlertService.handleAlert(true, {
       type: 'warning',
-      question: R['Confirm to delete this field.'],
+      question: R['This will delete any info or media related to this field. This action is permanent and cannot be undone.'],
     }, async () => {
       const newData: WidgetData = { ...widgetData };
       for (let i = 0; i < newData.inputs.length; i++) {
@@ -168,7 +168,7 @@ export const Widget = memo((props: {
 
   const onWidgetDelete = useCallback(() => {
     AlertService.handleAlert(true, {
-      question: R['Confirm to delete this widget.'],
+      question: R['This will delete any info or media related to this wiget. This action is permanent and cannot be undone.'],
       type: 'warning',
     },() => props.onDeleteWidget());
   }, [props.onDeleteWidget]);

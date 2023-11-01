@@ -2,8 +2,8 @@ import { LanguageTag } from '@Types/AppTypes';
 import { InputTypes } from '@Types/ProjectTypes';
 
 type TranslationDTO = Record<LanguageTag, {
-  'Confirm to delete this widget.': string,
-  'Confirm to delete this field.': string,
+  'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.': string,
+  'This will delete any info or media related to this field. This action is permanent and cannot be undone.': string,
   'Add automatically': string
   'Saved': string
   'Saving...': string
@@ -13,8 +13,8 @@ type TranslationDTO = Record<LanguageTag, {
 
 export const R_Widget_Root: TranslationDTO = {
   'en-US': {
-    'Confirm to delete this widget.': 'Confirm to delete this widget.',
-    'Confirm to delete this field.': 'Confirm to delete this field.',
+    'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.': 'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.',
+    'This will delete any info or media related to this field. This action is permanent and cannot be undone.': 'This will delete any info or media related to this field. This action is permanent and cannot be undone.',
     'Add automatically': 'Add automatically',
     'Saved': 'Saved',
     'Saving...': 'Saving...',
@@ -30,8 +30,8 @@ export const R_Widget_Root: TranslationDTO = {
     'picture': 'Picture',
   },
   'pt-BR': {
-    'Confirm to delete this widget.': 'Confirme para deletar este widget.',
-    'Confirm to delete this field.': 'Confirme para deletar este campo.',
+    'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.': 'Isso irá apagar qualquer informação ou mídia relacionada a esse widget. Essa ação é permanente e não pode ser desfeita.',
+    'This will delete any info or media related to this field. This action is permanent and cannot be undone.': 'Isso irá apagar qualquer informação ou mídia relacionada a esse campo. Essa ação é permanente e não pode ser desfeita.',
     'Add automatically': 'Adicionar automaticamente',
     'Saved': 'Salvo',
     'Saving...': 'Salvando...',

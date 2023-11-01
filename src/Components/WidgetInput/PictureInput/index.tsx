@@ -12,6 +12,7 @@ import MediaService from '@Services/MediaService';
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
+import { translations } from '@Translations/index';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -28,6 +29,7 @@ export const PictureInput = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [inputData, setInputData] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
   const [show     , setShow     ] = useState({
     openCamera: false,
@@ -88,7 +90,7 @@ export const PictureInput = memo((props: {
   const onPictureDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
       type: 'warning',
-      question: 'Confirm to permanently delete this picture',
+      question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
       const newData: PictureInputData = { ...inputData };
       await MediaService.deleteMedia({

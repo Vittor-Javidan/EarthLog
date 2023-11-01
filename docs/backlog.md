@@ -1,4 +1,3 @@
-- Add info about media being deleted on sample/widget/input deletion warning message.
 - Add a image feedback for PictureInput in case image do not exist on given directory.
 - implement picture description field for Picture Input.
 - implement picture upload.

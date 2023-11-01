@@ -13,7 +13,7 @@ import { R_Alert_ExitApp } from './component/Alert/ExitApp';
 import { R_Alert_Shared } from './component/Alert/__Shared__';
 import { R_Alert_TemplateWidgetCopy } from './component/Alert/TemplateWidgetCopy';
 import { R_Global_NavController } from './global/navController';
-import { R_Scope_Credential } from './scope/CredentialSope';
+import { R_Scope_Credential } from './scope/CredentialScope';
 import { R_Scope_Home } from './scope/HomeScope';
 import { R_Scope_Language } from './scope/LanguageSelectionScope';
 import { R_Scope_Project } from './scope/ProjectScope';
@@ -40,6 +40,9 @@ import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
 import { R_FileExportModules_CSV } from './FileExportModules/CSV';
 import { R_Input_Options } from './widgetInput/OptionsInput';
 import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
+import { R_Input_Picture } from './widgetInput/PictureInput';
+import { R_Screen_VibrationOptions } from './Screen/VibrationOptionsScreen';
+import { R_Scope_VibrationOptions } from './scope/VibrationsOptionsScope';
 
 export const translations = {
   FileExportModules: {
@@ -67,6 +70,7 @@ export const translations = {
     theme:                    R_Scope_Theme,
     dateAndTime:              R_Scope_DateAndTime,
     exportProject:            R_Scope_ExportProject,
+    vibrationOptions:         R_Scope_VibrationOptions,
   },
   screen: {
     home:                     R_Screen_Home,
@@ -79,6 +83,7 @@ export const translations = {
     dateFormat:               R_Screen_DateFormat,
     timeFormat:               R_Screen_TimeFormat,
     exportProject:            R_Screen_ExportProject,
+    vibrationOptions:         R_Screen_VibrationOptions,
   },
   component: {
     alert: {
@@ -102,6 +107,7 @@ export const translations = {
     boolean:                  R_Input_Boolean,
     string:                   R_Input_String,
     options:                  R_Input_Options,
+    picture:                  R_Input_Picture,
     gps:                      R_Input_GPS,
   },
   themes: {

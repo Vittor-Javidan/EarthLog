@@ -16,7 +16,9 @@ export const SettingsScreen = memo(() => {
         delay={200}
         duration={200}
       >
-        <Layout.ScrollView>
+        <Layout.ScrollView
+          contentContainerStyle={{ gap: 1 }}
+        >
           <LC.SettingsButtons />
         </Layout.ScrollView>
       </Animation.SlideFromLeft>

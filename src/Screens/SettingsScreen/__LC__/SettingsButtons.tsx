@@ -1,5 +1,4 @@
 import React, { memo, useMemo } from 'react';
-import { View } from 'react-native';
 
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
@@ -19,70 +18,76 @@ export const SettingsButtons = memo(() => {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.settings[config.language], []);
 
-  return (
-    <View
-      style={{ gap: 1 }}
-    >
-      <Button.TextWithIcon
-        title={R['Language']}
-        iconName="language"
-        onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
-        title={R['Date and time']}
-        iconName="time"
-        onPress={() => navigate('TIME AND DATE SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
-        title={R['Themes']}
-        iconName="color-palette"
-        onPress={() => navigate('THEME SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
-        title={'Vibrations'}
-        iconName="alert-circle"
-        onPress={() => navigate('VIBRATION OPTIONS SCOPE')}
-        theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
-        }}
-      />
-      <Button.TextWithIcon
-        title={'Whipe All Data'}
-        iconName="trash-outline"
-        onPress={async () => await whipeAllData()}
-        theme={{
-          font: theme.background,
-          background: theme.wrong,
-          font_Pressed: theme.wrong,
-          background_Pressed: theme.background_active,
-        }}
-      />
-    </View>
-  );
+  return (<>
+    <Button.TextWithIcon
+      title={R['Language']}
+      iconName="language"
+      onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
+      title={R['Date and time']}
+      iconName="time"
+      onPress={() => navigate('TIME AND DATE SCOPE')}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
+      title={R['Themes']}
+      iconName="color-palette"
+      onPress={() => navigate('THEME SCOPE')}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
+      title={R['Vibration']}
+      iconName="alert-circle"
+      onPress={() => navigate('VIBRATION OPTIONS SCOPE')}
+      theme={{
+        font: theme.font_Button,
+        font_Pressed: theme.font_active,
+        background: theme.background_Button,
+        background_Pressed: theme.background_active,
+      }}
+    />
+
+
+    {/* TODO: This must be removed before production release */}
+    <Button.TextWithIcon
+      title={'Whipe All Data'}
+      iconName="trash-outline"
+      onPress={async () => await whipeAllData()}
+      theme={{
+        font: theme.background,
+        background: theme.wrong,
+        font_Pressed: theme.wrong,
+        background_Pressed: theme.background_active,
+      }}
+    />
+
+
+  </>);
 });
 
 async function whipeAllData() {
+
+  /* TODO:
+    - This must be removed before production release.
+  */
+
   AlertService.handleAlert(true,
     {
       question: 'Want to whipe database?',

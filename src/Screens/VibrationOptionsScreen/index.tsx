@@ -8,11 +8,13 @@ import { Button } from '@Button/index';
 import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
+import { translations } from '@Translations/index';
 
 export const VibrationOptionsScreen = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.screen.vibrationOptions[config.language], []);
   const [onlyWarnings, setOnlyWarnings] = useState<boolean>(config.onlyWarningVibrations);
 
   const onOptionSelected = useCallback(async (enableOnlyWarnings: boolean) => {
@@ -33,7 +35,7 @@ export const VibrationOptionsScreen = memo(() => {
           style={{ gap: 1 }}
         >
           <Button.TextWithIcon
-            title={'Default'}
+            title={R['Default']}
             iconName="alert-circle"
             theme={{
               font:               onlyWarnings === false ? theme.background : theme.font_Button,
@@ -44,7 +46,7 @@ export const VibrationOptionsScreen = memo(() => {
             onPress={() => onOptionSelected(false)}
           />
           <Button.TextWithIcon
-            title={'Only warning'}
+            title={R['Only warnings']}
             iconName="alert-circle"
             theme={{
               font:               onlyWarnings === true ? theme.background : theme.font_Button,
