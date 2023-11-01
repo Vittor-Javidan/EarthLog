@@ -150,14 +150,15 @@ export const Widget = memo((props: {
       type: 'warning',
       question: R['This will delete any info or media related to this field. This action is permanent and cannot be undone.'],
     }, async () => {
+      const { id_project } = props.widgetScope;
       const newData: WidgetData = { ...widgetData };
       for (let i = 0; i < newData.inputs.length; i++) {
         if (newData.inputs[i].id_input === id_input) {
           await MediaService.deleteMedia({
             scope: 'input',
-            id_project: props.widgetScope.id_project,
+            id_project: id_project,
             input: newData.inputs.splice(i, 1)[0],
-          });
+          }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
           break;
         }
       }

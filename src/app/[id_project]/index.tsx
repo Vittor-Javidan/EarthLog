@@ -30,7 +30,7 @@ export default function ProjectScope() {
   const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   useEffect(() => {
-    fetchSamples(id_project, () => setState('Loaded'));
+    FetchData(id_project, () => setState('Loaded'));
   }, []);
 
   return (
@@ -119,7 +119,7 @@ const Drawer = memo((props: {
   </>);
 });
 
-async function fetchSamples(
+async function FetchData(
   id_project: string,
   whenLoaded: () => void
 ) {
@@ -129,6 +129,7 @@ async function fetchSamples(
       CacheService.loadAllSamplesSettings(id_project),
       CacheService.loadAllWidgets_Project(id_project),
       CacheService.loadAllWidgets_Template(id_project),
+      CacheService.loadAllPicturesNameFiles(id_project),
     ];
     await Promise.all(promises);
   }

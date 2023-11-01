@@ -23,12 +23,15 @@
 - Youtube button redirecting to a page with many YoutTube creators
 - Roadmap button redirecting to a page with the app roadmap
 - Community button redirecting to linkedin community
+- LTS versioning
 - Subscription Implementation
+- Public server with examples
 
 # Apple/Play Store publishing
 
 # Post-Realease Stage
-- App horizontal layout (To allow horizontal pictures)
+- App horizontal layout (To allow horizontal pictures and videos)
+- App tablet layout
 - Date/Time Input
 - GPS Poligon Input
 - Audio Widget

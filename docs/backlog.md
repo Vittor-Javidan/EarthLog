@@ -1,7 +1,8 @@
-- Add a image feedback for PictureInput in case image do not exist on given directory.
 - implement picture description field for Picture Input.
 - implement picture upload.
 - implement picture sync after upload.
+- implement picture download.
+- implemnet a download all pictures button on Project Scope menu.
 
 # After implementation finish
 - find a way to move the download/upload sync logic to DataProcess Service.

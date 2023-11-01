@@ -10,6 +10,7 @@ import MediaService from '@Services/MediaService';
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
 import { PhotoPreview } from './PhotoPreview';
+import CacheService from '@Services/CacheService';
 
 export const AppCamera = memo((props: {
   cameraConfig: CameraPictureMode
@@ -43,9 +44,14 @@ export const AppCamera = memo((props: {
   const onConfirm = useCallback(() => {
     if (photo?.uri) {
       const id_picture = UtilService.generateUuidV4();
-      MediaService.savePictureFromURI(props.cameraConfig.id_project, id_picture, photo.uri,
-        () => CameraService.triggerOnPictureTake(id_picture)
-      );
+      MediaService.savePictureFromURI({
+        id_project: props.cameraConfig.id_project,
+        id_picture: id_picture,
+        photoUri: photo.uri,
+      }, () => {
+        CacheService.addToPicturesFiles(id_picture);
+        CameraService.triggerOnPictureTake(id_picture);
+      });
       setPicturesAmount(prev => prev + 1);
       setShow(prev => ({ ...prev, loadingPreview: false }));
       setPhoto(null);

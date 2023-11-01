@@ -8,24 +8,28 @@ export default class MediaService {
   // MEDIA
   // ===============================================================================================
 
-  static async deleteMedia(options: {
-    scope: 'sample'
-    id_project: string
-    widgetArray: WidgetData[]
-  } | {
-    scope: 'widget'
-    id_project: string
-    widget: WidgetData
-  } | {
-    scope: 'input'
-    id_project: string
-    input: InputData
-  } | {
-    scope: 'picture'
-    id_project: string
-    id_media: string
-  }): Promise<void> {
+  static async deleteMedia(
+    options: {
+      scope: 'sample'
+      id_project: string
+      widgetArray: WidgetData[]
+    } | {
+      scope: 'widget'
+      id_project: string
+      widget: WidgetData
+    } | {
+      scope: 'input'
+      id_project: string
+      input: InputData
+    } | {
+      scope: 'picture'
+      id_project: string
+      id_media: string
+    },
+    onFinish: () => void
+  ): Promise<void> {
     await DatabaseService.deleteMedia(options);
+    onFinish();
   }
 
   // ===============================================================================================
@@ -46,12 +50,14 @@ export default class MediaService {
   }
 
   static async savePictureFromURI(
-    id_project: string,
-    id_picture: string,
-    photPath: string,
+    options: {
+      id_project: string,
+      id_picture: string,
+      photoUri: string,
+    },
     onSave: () => void
   ): Promise<void> {
-    await DatabaseService.savePictureFromUri(id_project, id_picture, photPath);
+    await DatabaseService.savePictureFromUri(options);
     onSave();
   }
 }

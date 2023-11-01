@@ -12,6 +12,7 @@ export default class CacheService {
   static allWidgets_Template: WidgetData[]       = [];
   static allSamples: SampleSettings[]            = [];
   static allWidgets_Sample: WidgetData[]         = [];
+  static allPicturesFiles: string[]              = [];
 
   // ===============================================================================================
   // PROJECT RELATED METHODS
@@ -42,6 +43,7 @@ export default class CacheService {
     this.allWidgets_Project  = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project: lastProjectID });
     this.allWidgets_Template = await DatabaseService.getAllWidgets({ path: 'template widgets', id_project: lastProjectID });
     this.allSamples          = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
+    this.allPicturesFiles    = await DatabaseService.getAllPicturesNameFiles(lastProjectID);
   }
 
   static async deleteLastOpenProject(): Promise<void> {
@@ -175,6 +177,10 @@ export default class CacheService {
     });
   }
 
+  static async loadAllPicturesNameFiles(id_project: string): Promise<void> {
+    this.allPicturesFiles = await DatabaseService.getAllPicturesNameFiles(id_project);
+  }
+
   /**
    * Adds a project direcly into the cache, to avoid the necessity of loading all projects again.
    */
@@ -208,6 +214,10 @@ export default class CacheService {
    */
   static addToAllWidgets_Sample(widgetData: WidgetData): void {
     this.allWidgets_Sample = [...this.allWidgets_Sample, UtilService.deepCopy(widgetData)];
+  }
+
+  static addToPicturesFiles(id_picture: string): void {
+    this.allPicturesFiles = [ ...this.allPicturesFiles, `${id_picture}.jpg`];
   }
 
   /**

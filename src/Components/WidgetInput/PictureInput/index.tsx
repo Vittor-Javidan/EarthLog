@@ -13,6 +13,7 @@ import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
 import { translations } from '@Translations/index';
+import CacheService from '@Services/CacheService';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -74,7 +75,7 @@ export const PictureInput = memo((props: {
     }]};
     asyncSave(newData);
     setInputData(newData);
-    if ( // TODO: Make the camera aware about the photo limit
+    if (
       newData.picturesAmountLimit !== undefined &&
       newData.picturesAmountLimit === newData.value.length
     ) {
@@ -92,12 +93,13 @@ export const PictureInput = memo((props: {
       type: 'warning',
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
+      const { id_project } = props.widgetScope;
       const newData: PictureInputData = { ...inputData };
       await MediaService.deleteMedia({
         scope: 'picture',
-        id_project: props.widgetScope.id_project,
+        id_project: id_project,
         id_media: newData.value.splice(index, 1)[0].id_picture,
-      });
+      }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
       asyncSave(newData);
       setInputData(newData);
     });
@@ -153,6 +155,8 @@ export const PictureInput = memo((props: {
           onPictureScroll={(index) => console.log(index)}
           onPictureDelete={onPictureDelete}
           onPictureShare={onPictureShare}
+          onDownloadPicture={() => {}}
+          theme={props.theme}
         />
         <OpenCameraButton
           onPress={openCamera}

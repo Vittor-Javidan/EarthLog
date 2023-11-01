@@ -2,18 +2,21 @@ import React, { memo, useCallback, useRef, useState } from 'react';
 import { View, Image, LayoutRectangle } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
-import { PictureData } from '@Types/ProjectTypes';
+import { PictureData, WidgetTheme } from '@Types/ProjectTypes';
 import MediaService from '@Services/MediaService';
 
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
+import CacheService from '@Services/CacheService';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
+  theme: WidgetTheme
   onPictureScroll: (index: number) => void
   onPictureShare: (index:number) => void
   onPictureDelete: (index: number) => void
+  onDownloadPicture: (id_picture: string) => void
 }) => {
 
   const pageRef = useRef<PagerView | null>(null);
@@ -37,19 +40,40 @@ export const PicturesCarousel = memo((props: {
     }
   }, [props.pictures, pageRef.current]);
 
-  const AllImages = props.pictures.map(pictureData => (
-    <Image
-      key={pictureData.id_picture}
-      source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
-      resizeMode="cover"
-      style={{
-        flex: 1,
-        alignSelf: 'center',
-        height: dimensions.width,
-        width: dimensions.width,
-      }}
-    />
-  ));
+  const AllImages = props.pictures.map(pictureData => {
+    return  CacheService.allPicturesFiles.includes(`${pictureData.id_picture}.jpg`) ? (
+      <Image
+        key={pictureData.id_picture}
+        source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
+        resizeMode="cover"
+        style={{
+          flex: 1,
+          alignSelf: 'center',
+          height: dimensions.width,
+          width: dimensions.width,
+        }}
+      />
+    ) : (
+      <Button.Icon
+        key={pictureData.id_picture}
+        iconName="download-outline"
+        onPress={() => props.onDownloadPicture(pictureData.id_picture)}
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 0,
+          paddingLeft: 10,
+          paddingVertical: 0,
+        }}
+        theme={{
+          font: props.theme.background,
+          font_Pressed: props.theme.font,
+          background: props.theme.font,
+          background_Pressed: props.theme.background,
+        }}
+      />
+    );
+  });
 
   return props.pictures.length > 0 ? (
     <View

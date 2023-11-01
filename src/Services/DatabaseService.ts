@@ -561,7 +561,7 @@ export default class DatabaseService {
     }
   }
 
-  static async getAllPicturesIDs(
+  static async getAllPicturesNameFiles(
     id_project: string
   ): Promise<string[]> {
     const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures`;
@@ -573,11 +573,12 @@ export default class DatabaseService {
     throw Error('Pictures folder do not exist');
   }
 
-  static async savePictureFromUri(
+  static async savePictureFromUri(options: {
     id_project: string,
     id_picture: string,
     photoUri: string
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project, id_picture, photoUri } = options;
     const data = await FileSystemService.readFile(photoUri, 'base64');
     if (data !== null) {
       const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
