@@ -1,21 +1,22 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
-import { Layout } from '@Layout/index';
+import { SampleSettings } from '@Types/ProjectTypes';
 
-export function F_SampleButtons() {
+export const SampleButtons = memo((props: {
+  samples: SampleSettings[]
+}) => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
-  const AllButtons = CacheService.allSamples.map(sampleSettings => (
+  const AllSamples = props.samples.map(sampleSettings => (
     <Button.TextWithIcon
       key={sampleSettings.id_sample}
       title={sampleSettings.name}
@@ -30,15 +31,5 @@ export function F_SampleButtons() {
     />
   ));
 
-  return (
-    <Layout.ScrollView
-      contentContainerStyle={{
-        paddingTop: 55,
-        paddingBottom: 150,
-        gap: 1,
-      }}
-    >
-      {AllButtons}
-    </Layout.ScrollView>
-  );
-}
+  return (<>{AllSamples}</>);
+});

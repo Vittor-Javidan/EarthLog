@@ -1,30 +1,18 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import ConfigService from '@Services/ConfigService';
-import AlertService from '@Services/AlertService';
 import ThemeService from '@Services/ThemeService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
 export const ScreenButtons = memo((props: {
-  onProjectCreation: () => void
+  onCreateProject: () => void
+  onDownloadProject: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-
-  const createProject = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'project creation',
-    }, () => props.onProjectCreation());
-  }, [props.onProjectCreation]);
-
-  const downloadProjects = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'download projects',
-    }, () => props.onProjectCreation());
-  }, [props.onProjectCreation]);
 
   return (
     <Layout.ScreenButtons
@@ -33,7 +21,7 @@ export const ScreenButtons = memo((props: {
           iconName="cloud-download-outline"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={async () => await downloadProjects()}
+          onPress={props.onDownloadProject}
           theme={{
             font: theme.font,
             font_Pressed: theme.backgroud,
@@ -45,7 +33,7 @@ export const ScreenButtons = memo((props: {
           iconName="folder"
           showPlusSign={true}
           buttonDiameter={60}
-          onPress={async () => await createProject()}
+          onPress={props.onCreateProject}
           theme={{
             font: theme.font,
             font_Pressed: theme.confirm,

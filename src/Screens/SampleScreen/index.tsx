@@ -1,46 +1,98 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
+import { useLocalSearchParams } from 'expo-router';
 
-import { Loading } from '@Types/AppTypes';
-import { GPS_DTO } from '@Types/ProjectTypes';
+import { GPS_DTO, WidgetData } from '@Types/ProjectTypes';
+import ProjectService from '@Services/ProjectService';
+import MediaService from '@Services/MediaService';
+import CacheService from '@Services/CacheService';
 
 import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
+import AlertService from '@Services/AlertService';
 
 export const SampleDataScreens = memo((props: {
-  sampleScopeState: Loading
   referenceGPS: GPS_DTO | undefined
 }) => {
 
-  const [_, refresh] = useState<boolean>(false);
+  const id_project = useLocalSearchParams().id_project as string;
+  const id_sample  = useLocalSearchParams().id_sample as string;
+  const [sampleWidgets, setSampleWidgets] = useState<WidgetData[]>(CacheService.allWidgets_Sample);
+
+  const onCreateWidget = useCallback(async () => {
+    const newWidget = ProjectService.getWidgetData();
+    await ProjectService.createWidget({
+      path: 'sample widgets',
+      id_project: id_project,
+      id_sample: id_sample,
+      widgetData: newWidget,
+      sync: true,
+    }, () => {
+      CacheService.addToAllWidgets_Sample(newWidget);
+      setSampleWidgets(CacheService.allWidgets_Sample);
+    }, (errorMessage) => alert(errorMessage));
+  }, [sampleWidgets]);
+
+  const onDeleteWidget = useCallback(async (index: number) => {
+    const newData: WidgetData[] = [ ...sampleWidgets ];
+    const removedWidget = newData.splice(index, 1)[0];
+    await ProjectService.deleteWidget({
+      path: 'sample widgets',
+      id_project: id_project,
+      id_sample: id_sample,
+      widgetData: removedWidget,
+      sync: true,
+    }, async () => {
+      await MediaService.deleteMedia({
+        scope: 'widget',
+        id_project: id_project,
+        widget: removedWidget,
+      });
+      CacheService.allWidgets_Sample = newData;
+      setSampleWidgets(newData);
+    },
+    (errorMessage) => alert(errorMessage));
+  }, [sampleWidgets]);
+
+  const onCopyTemplateWidget = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'template widget copy',
+      id_project: id_project,
+      id_sample: id_sample,
+    }, () => setSampleWidgets(CacheService.allWidgets_Sample));
+  }, []);
 
   return (
     <Layout.Screen
-      screenButtons={<TC.ScreenButtons
-        onCreateWidget={() => refresh(prev => !prev)}
-      />}
+      screenButtons={
+        <TC.ScreenButtons
+          onCreateWidget={onCreateWidget}
+          onCopyTemplateWidget={onCopyTemplateWidget}
+        />
+      }
     >
-      {props.sampleScopeState === 'Loading' ? (
-        <Layout.Loading />
-      ) : (
-        <Animation.SlideFromLeft
-          delay={200}
-          duration={200}
+      <Animation.SlideFromLeft
+        delay={200}
+        duration={200}
+      >
+        <Layout.ScrollView
+          contentContainerStyle={{
+            paddingTop: 55,
+            paddingBottom: 150,
+            paddingHorizontal: 5,
+            gap: 10,
+          }}
         >
-          {/* <Layout.ScrollView
-            contentContainerStyle={{
-              paddingHorizontal: 5,
-              paddingTop: 55,
-              gap: 10,
-            }}
-          >
-          </Layout.ScrollView> */}
-          <LC.F_SampleWidgets
+          <LC.SampleWidgets
+            id_project={id_project}
+            id_sample={id_sample}
             referenceGPS={props.referenceGPS}
+            sampleWidgets={sampleWidgets}
+            onDeleteWidget={onDeleteWidget}
           />
-        </Animation.SlideFromLeft>
-      )}
+        </Layout.ScrollView>
+      </Animation.SlideFromLeft>
     </Layout.Screen>
   );
 });

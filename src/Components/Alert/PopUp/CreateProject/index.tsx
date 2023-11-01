@@ -42,20 +42,16 @@ export const CreateProject = memo((props: {
     }));
 
     const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
-    await ProjectService.createProject(newProject, config,
-      () => {
-        setFeedbacks(prev => ([ ...prev, RS['Done!']]));
-        CacheService.addToAllProjects(newProject.projectSettings);
-        SyncService.addToSyncData(newProject.syncData);
-        AlertService.runAcceptCallback();
-        props.closeModal();
-      },
-      (errorMesage) => {
-        setFeedbacks(prev => ([ ...prev, RS['Error!']]));
-        alert(errorMesage);
-      },
-      (feedbackMessages) => setFeedbacks(prev => ([ ...prev, feedbackMessages])),
-    );
+    await ProjectService.createProject(newProject, config, () => {
+      setFeedbacks(prev => ([ ...prev, RS['Done!']]));
+      CacheService.addToAllProjects(newProject.projectSettings);
+      SyncService.addToSyncData(newProject.syncData);
+      AlertService.runAcceptCallback();
+      props.closeModal();
+    }, (errorMesage) => {
+      setFeedbacks(prev => ([ ...prev, RS['Error!']]));
+      alert(errorMesage);
+    }, (feedbackMessages) => setFeedbacks(prev => ([ ...prev, feedbackMessages])));
 
   }, [props.closeModal, name]);
 

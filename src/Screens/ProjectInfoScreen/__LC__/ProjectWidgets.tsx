@@ -1,68 +1,27 @@
-import React, { useCallback, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import React, { memo } from 'react';
 
 import { WidgetData } from '@Types/ProjectTypes';
-import ProjectService from '@Services/ProjectService';
-import CacheService from '@Services/CacheService';
-import MediaService from '@Services/MediaService';
 
 import { Widget } from '@Widget/index';
-import { Layout } from '@Layout/index';
-import { ProjectSettingsWidget } from './ProjectSettingsWidget';
 
-export function F_ProjectWidgets(props: {
-  onProjectNameUpdate: (newName: string) => void
-  onSampleAliasChange_Plural: (newSampleAlias: string) => void
-}) {
+export const ProjectWidgets = memo((props: {
+  id_project: string
+  projectWidgets: WidgetData[]
+  onDeleteWidget: (index: number) => void
+}) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const [_, refresh] = useState<boolean>(true);
-
-  const onDeleteWidget_Project = useCallback(async (widgetData: WidgetData) => {
-    const { id_widget } = widgetData;
-    await ProjectService.deleteWidget({
-      path: 'project widgets',
-      id_project: id_project,
-      widgetData: widgetData,
-      sync: true,
-    }, async () => {
-      await MediaService.deleteMedia({
-        scope: 'widget',
-        id_project: id_project,
-        widget: widgetData,
-      });
-      CacheService.removeFromAllWidgets_Project(id_widget);
-      refresh(prev => !prev);
-    }, (errorMessage) => alert(errorMessage));
-  }, [id_project]);
-
-  const AllWidgets = CacheService.allWidgets_Project.map(widgetData => (
+  const AllWidgets = props.projectWidgets.map((widgetData, index) => (
     <Widget
       key={widgetData.id_widget}
       widgetScope={{
         type: 'project',
-        id_project: id_project,
+        id_project: props.id_project,
       }}
       widgetData={widgetData}
       referenceGPSData={undefined}
-      onDeleteWidget={async () => await onDeleteWidget_Project(widgetData)}
+      onDeleteWidget={() => props.onDeleteWidget(index)}
     />
   ));
 
-  return (
-    <Layout.ScrollView
-      contentContainerStyle={{
-        paddingTop: 55,
-        paddingBottom: 150,
-        paddingHorizontal: 5,
-        gap: 10,
-      }}
-    >
-      <ProjectSettingsWidget
-        onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
-        onSampleAliasChange_Plural={(newSampleAlias) => props.onSampleAliasChange_Plural(newSampleAlias)}
-      />
-      {AllWidgets}
-    </Layout.ScrollView>
-  );
-}
+  return <>{AllWidgets}</>;
+});

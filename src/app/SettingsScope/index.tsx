@@ -13,11 +13,11 @@ export default function SettingsScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.settings[config.language], []);
-  const [loading, setLoading] = useState<Loading>('Loading');
+  const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('HOME SCOPE'), []);
   useEffect(() => {
-    setLoading('Loaded');
+    setState('Loaded');
   }, []);
 
   return (
@@ -27,9 +27,11 @@ export default function SettingsScope() {
       drawerChildren={<></>}
       navigationTree={ <NavigationTree/> }
     >
-      <SettingsScreen
-        settingsScopeState={loading}
-      />
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <SettingsScreen />
+      )}
     </Layout.Root>
   );
 }

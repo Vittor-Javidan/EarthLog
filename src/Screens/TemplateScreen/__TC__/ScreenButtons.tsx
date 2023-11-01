@@ -1,8 +1,7 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
 
@@ -10,26 +9,13 @@ import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
 export const ScreenButtons = memo((props: {
-  onWidgetCreation: () => void
+  onCreateWidget: () => void
 }) => {
 
   const id_project = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
-
-  const onCreateWidget = useCallback(async () => {
-    const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget({
-      path: 'template widgets',
-      id_project: id_project,
-      widgetData: newWidget,
-      sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Template(newWidget);
-      props.onWidgetCreation();
-    }, (errorMessage) => alert(errorMessage));
-  }, [props.onWidgetCreation, id_project]);
 
   return (
     <Layout.ScreenButtons
@@ -39,7 +25,7 @@ export const ScreenButtons = memo((props: {
             iconName="square"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={() => onCreateWidget()}
+            onPress={props.onCreateWidget}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,

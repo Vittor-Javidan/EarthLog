@@ -1,37 +1,23 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import AlertService from '@Services/AlertService';
 import CacheService from '@Services/CacheService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
 export const ScreenButtons = memo((props: {
-  onSampleCreation: () => void
+  onCreateSample: () => void
+  onUploadProject: () => void
 }) => {
 
   const id_project      = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
-
-  const createSample = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'sample creation',
-      id_project: id_project,
-    }, () => props.onSampleCreation());
-  }, [props.onSampleCreation, id_project]);
-
-  const uploadProject = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'upload projects',
-      id_project: id_project,
-    }, () => {});
-  }, []);
 
   return (
     <Layout.ScreenButtons
@@ -53,7 +39,7 @@ export const ScreenButtons = memo((props: {
           iconName="cloud-upload"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={async () => await uploadProject()}
+          onPress={props.onUploadProject}
           theme={{
             font: theme.font,
             font_Pressed: theme.backgroud,
@@ -66,7 +52,7 @@ export const ScreenButtons = memo((props: {
             iconName="clipboard"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={async () => await createSample()}
+            onPress={props.onCreateSample}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,

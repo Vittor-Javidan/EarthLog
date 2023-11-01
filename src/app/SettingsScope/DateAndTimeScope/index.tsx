@@ -13,10 +13,10 @@ export default function DateAndTimeScope() {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.dateAndTime[config.language], []);
-  const [loading, setLoading] = useState<Loading>('Loading');
+  const [state, setState] = useState<Loading>('Loading');
 
   useEffect(() => {
-    setLoading('Loaded');
+    setState('Loaded');
   }, []);
 
   return (
@@ -26,28 +26,29 @@ export default function DateAndTimeScope() {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <Layout.Carousel
-        isLoading={loading === 'Loaded'}
-        onBackPress={(() => navigate('SETTINGS SCOPE'))}
-        buttonData={[{
-          title: '',
-          iconName: 'calendar',
-        }, {
-          title: '',
-          iconName: 'time',
-        }]}
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.Carousel
+          onBackPress={(() => navigate('SETTINGS SCOPE'))}
+          buttonData={[{
+            title: '',
+            iconName: 'calendar',
+          }, {
+            title: '',
+            iconName: 'time',
+          }]}
 
-        screens={[
-          <DateFormatScreen
-            key="1"
-            timeAndDateScopeState={loading}
-          />,
-          <TimeFormatScreen
-            key="2"
-            timeAndDateScopeState={loading}
-          />,
-        ]}
-      />
+          screens={[
+            <DateFormatScreen
+              key="1"
+            />,
+            <TimeFormatScreen
+              key="2"
+            />,
+          ]}
+        />
+      )}
     </Layout.Root>
   );
 }

@@ -15,11 +15,11 @@ export default function LanguageSelectionScope() {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.credential[config.language], []);
 
-  const [loading, setLoading] = useState<Loading>('Loading');
+  const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('HOME SCOPE'), []);
   useEffect(() => {
-    fetchCredentials(() => setLoading('Loaded'));
+    fetchCredentials(() => setState('Loaded'));
   }, []);
 
   return (
@@ -29,9 +29,11 @@ export default function LanguageSelectionScope() {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <CredentialSelectionScreen
-        credentialScopeState={loading}
-      />
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <CredentialSelectionScreen />
+      )}
     </Layout.Root>
   );
 }

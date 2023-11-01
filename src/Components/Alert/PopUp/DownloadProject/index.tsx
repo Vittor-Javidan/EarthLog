@@ -105,18 +105,14 @@ export const DownloadProjects = memo((props: {
         (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
       );
 
-      await ProjectService.createProject(processedProject, config,
-        () => {
-          CacheService.addToAllProjects(processedProject.projectSettings);
-          SyncService.addToSyncData(processedProject.syncData);
-          setFeedbacks(prev => [ ...prev, RS['Done!']]);
-        },
-        (errorMessage) => {
-          setError(errorMessage);
-          setFeedbacks(prev => [ ...prev, RS['Error!']]);
-        },
-        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
-      );
+      await ProjectService.createProject(processedProject, config, () => {
+        CacheService.addToAllProjects(processedProject.projectSettings);
+        SyncService.addToSyncData(processedProject.syncData);
+        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+      }, (errorMessage) => {
+        setError(errorMessage);
+        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+      }, (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])));
     }
 
     AlertService.runAcceptCallback();

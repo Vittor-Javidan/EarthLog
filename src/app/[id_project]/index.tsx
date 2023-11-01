@@ -23,14 +23,14 @@ export default function ProjectScope() {
   const R               = useMemo(() => translations.scope.project[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
 
-  const [loading                 , setLoading                  ] = useState<Loading>('Loading');
+  const [state                   , setState                    ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
   const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
 
   const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   useEffect(() => {
-    fetchSamples(id_project, () => setLoading('Loaded'));
+    fetchSamples(id_project, () => setState('Loaded'));
   }, []);
 
   return (
@@ -40,36 +40,36 @@ export default function ProjectScope() {
       drawerChildren={<Drawer projectSettings={projectSettings}/>}
       navigationTree={<NavigationTree />}
     >
-      <Layout.Carousel
-        isLoading={loading === 'Loaded'}
-        onBackPress={() => navigate('HOME SCOPE')}
-        buttonData={[{
-          title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
-        },{
-          title: 'Template',
-          iconName: 'copy-sharp',
-        },{
-          title: '',
-          iconName: 'information-circle-sharp',
-        }]}
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.Carousel
+          onBackPress={() => navigate('HOME SCOPE')}
+          buttonData={[{
+            title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
+          },{
+            title: 'Template',
+            iconName: 'copy-sharp',
+          },{
+            title: '',
+            iconName: 'information-circle-sharp',
+          }]}
 
-        screens={[
-          <ProjectScreen
-            key="1"
-            projectScopeState={loading}
-          />,
-          <TemplateScreen
-            key="2"
-            projectScopeState={loading}
-          />,
-          <ProjectInfoScreen
-            key="3"
-            projectScopeState={loading}
-            onProjectNameUpdate={(newName) => setUpdatedName(newName)}
-            onSampleAliasChange={(newSampleAlias) => setUpdatedSampleAliasPlural(newSampleAlias)}
-          />,
-        ]}
-      />
+          screens={[
+            <ProjectScreen
+              key="1"
+            />,
+            <TemplateScreen
+              key="2"
+            />,
+            <ProjectInfoScreen
+              key="3"
+              onProjectNameUpdate={(newName) => setUpdatedName(newName)}
+              onSampleAliasChange_Plural={(newSampleAlias) => setUpdatedSampleAliasPlural(newSampleAlias)}
+            />,
+          ]}
+        />
+      )}
     </Layout.Root>
   );
 }

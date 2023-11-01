@@ -1,55 +1,65 @@
-import React, { useState, memo, useMemo } from 'react';
+import React, { useState, memo, useMemo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { Loading } from '@Types/AppTypes';
+import CacheService from '@Services/CacheService';
 
 import { Animation } from '@Animation/index';
 import { Layout } from '@Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
-import CacheService from '@Services/CacheService';
+import { ProjectSettings } from '@Types/ProjectTypes';
+import AlertService from '@Services/AlertService';
 
-export const HomeScreen = memo((props: {
-  homeScopeState: Loading
-}) => {
+export const HomeScreen = memo(() => {
 
-  const [_, refresher] = useState<boolean>(false);
-  const lastOpenProjectSettings = useMemo(() => CacheService.lastOpenProject, []);
+  const lastOpenProjectSettings = useMemo(() => CacheService.lastOpenProject, [CacheService.lastOpenProject]);
+  const [projects, setProject] = useState<ProjectSettings[]>(CacheService.allProjects);
+
+  const onCreateProject = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'project creation',
+    }, () => setProject(CacheService.allProjects));
+  }, []);
+
+  const onDownloadProjects = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'download projects',
+    }, () => setProject(CacheService.allProjects));
+  }, []);
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onProjectCreation={() => refresher(prev => !prev)}
+          onCreateProject={onCreateProject}
+          onDownloadProject={onDownloadProjects}
         />
       }
     >
-      {props.homeScopeState === 'Loading' ? (
-        <Layout.Loading />
-      ) : (<>
-        <Animation.SlideFromLeft
-          delay={200}
-          duration={200}
+      <Animation.SlideFromLeft
+        delay={200}
+        duration={200}
+      >
+        <View
+          style={{
+            flex: 1,
+            paddingTop: 10,
+            paddingHorizontal: 5,
+            gap: 10,
+            paddingBottom: 80,
+          }}
         >
-          <View
-            style={{
-              flex: 1,
-              paddingTop: 10,
-              paddingHorizontal: 5,
-              gap: 10,
-              paddingBottom: 80,
-            }}
-          >
-            <LC.SocialMediaButtons />
-            {lastOpenProjectSettings && (
-              <LC.LastProjectButton
-                projectSettings={lastOpenProjectSettings}
-              />
-            )}
-            <LC.F_ProjectButtons />
-          </View>
-        </Animation.SlideFromLeft>
-      </>)}
+          <LC.SocialMediaButtons />
+          {lastOpenProjectSettings && (
+            <LC.LastProjectButton
+              projectSettings={lastOpenProjectSettings}
+            />
+          )}
+          <LC.ProjectButtons
+            projects={projects}
+          />
+        </View>
+      </Animation.SlideFromLeft>
     </Layout.Screen>
   );
 });

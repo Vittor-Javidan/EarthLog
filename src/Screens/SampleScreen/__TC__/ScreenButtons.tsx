@@ -1,18 +1,17 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
-import ProjectService from '@Services/ProjectService';
 import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
-import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
 export const ScreenButtons = memo((props: {
   onCreateWidget: () => void
+  onCopyTemplateWidget: () => void
 }) => {
 
   const id_project = useLocalSearchParams().id_project as string;
@@ -20,28 +19,6 @@ export const ScreenButtons = memo((props: {
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
   const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample, config), []);
-
-  const onTemplateWidgetCopy = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'template widget copy',
-      id_project: id_project,
-      id_sample: id_sample,
-    }, () => props.onCreateWidget());
-  }, [props.onCreateWidget, id_project, id_sample]);
-
-  const onCreateWidget_Sample = useCallback(async () => {
-    const newWidget = ProjectService.getWidgetData();
-    await ProjectService.createWidget({
-      path: 'sample widgets',
-      id_project: id_project,
-      id_sample: id_sample,
-      widgetData: newWidget,
-      sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Sample(newWidget);
-      props.onCreateWidget();
-    }, (errorMessage) => alert(errorMessage));
-  }, [props.onCreateWidget, id_project, id_sample]);
 
   return (
     <Layout.ScreenButtons
@@ -63,7 +40,7 @@ export const ScreenButtons = memo((props: {
             iconName="copy"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={async () => await onTemplateWidgetCopy()}
+            onPress={props.onCopyTemplateWidget}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,
@@ -77,7 +54,7 @@ export const ScreenButtons = memo((props: {
             iconName="square"
             showPlusSign={true}
             buttonDiameter={60}
-            onPress={async () => await onCreateWidget_Sample()}
+            onPress={props.onCreateWidget}
             theme={{
               font: theme.font,
               font_Pressed: theme.confirm,

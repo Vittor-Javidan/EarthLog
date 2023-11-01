@@ -17,11 +17,11 @@ export default function exportProjectScope() {
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.exportProject[config.language], []);
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
-  const [loading, setLoading] = useState<Loading>('Loading');
+  const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('PROJECT SCOPE', id_project), []);
   useEffect(() => {
-    setLoading('Loaded');
+    setState('Loaded');
   }, []);
 
   return (
@@ -31,9 +31,11 @@ export default function exportProjectScope() {
       drawerChildren={<></>}
       navigationTree={ <NavigationTree/> }
     >
-      <ExportProjectScreen
-        projectScopeState={loading}
-      />
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <ExportProjectScreen />
+      )}
     </Layout.Root>
   );
 }

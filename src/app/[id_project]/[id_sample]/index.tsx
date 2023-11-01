@@ -20,7 +20,7 @@ export default function SampleScope() {
   const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
   const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample, config), []);
 
-  const [loading     , setLoading      ] = useState<Loading>('Loading');
+  const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
   const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(
     sampleSettings.gps !== undefined ? UtilService.deepCopy(sampleSettings.gps) : undefined
@@ -29,7 +29,7 @@ export default function SampleScope() {
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
 
   useEffect(() => {
-    fetchWidgets(id_project, id_sample, () => setLoading('Loaded'));
+    fetchWidgets(id_project, id_sample, () => setState('Loaded'));
   }, []);
 
   return (
@@ -39,30 +39,31 @@ export default function SampleScope() {
       drawerChildren={<></>}
       navigationTree={<NavigationTree />}
     >
-      <Layout.Carousel
-        isLoading={loading === 'Loaded'}
-        onBackPress={() => navigate('PROJECT SCOPE', id_project)}
-        buttonData={[{
-          title: 'Data',
-        }, {
-          title: '',
-          iconName: 'information-circle-sharp',
-        }]}
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.Carousel
+          onBackPress={() => navigate('PROJECT SCOPE', id_project)}
+          buttonData={[{
+            title: 'Data',
+          }, {
+            title: '',
+            iconName: 'information-circle-sharp',
+          }]}
 
-        screens={[
-          <SampleDataScreens
-            key="1"
-            sampleScopeState={loading}
-            referenceGPS={referenceGPS}
-          />,
-          <SampleInfoScreen
-            key="2"
-            sampleScopeState={loading}
-            onSampleNameUpdate={(newName) => setUpdatedName(newName)}
-            onGPSReferenceUpdate={(gpsData) => setReferenceGPS(gpsData)}
-          />,
-        ]}
-      />
+          screens={[
+            <SampleDataScreens
+              key="1"
+              referenceGPS={referenceGPS}
+            />,
+            <SampleInfoScreen
+              key="2"
+              onSampleNameUpdate={(newName) => setUpdatedName(newName)}
+              onGPSReferenceUpdate={(gpsData) => setReferenceGPS(gpsData)}
+            />,
+          ]}
+        />
+      )}
     </Layout.Root>
   );
 }

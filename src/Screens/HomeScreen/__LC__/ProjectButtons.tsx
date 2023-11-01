@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { Status, UploadEntry } from '@Types/ProjectTypes';
+import { ProjectSettings, Status, UploadEntry } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
-import CacheService from '@Services/CacheService';
 import HapticsService from '@Services/HapticsService';
 import ThemeService from '@Services/ThemeService';
 import SyncService from '@Services/SyncService';
@@ -14,13 +13,15 @@ import { Text } from '@Text/index';
 import { Layout } from '@Layout/index';
 import { UploadStatus } from './UploadStatus';
 
-export function F_ProjectButtons() {
+export const ProjectButtons = memo((props: {
+  projects: ProjectSettings[]
+}) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.screen.home[config.language], []);
 
-  const allProjectButtons = CacheService.allProjects.map((settings) => (
+  const AllProjects = props.projects.map((settings) => (
     <ProjectButton
       key={settings.id_project}
       title={settings.name}
@@ -60,11 +61,11 @@ export function F_ProjectButtons() {
           paddingHorizontal: 5,
         }}
       >
-        {allProjectButtons}
+        {AllProjects}
       </Layout.ScrollView>
     </View>
   );
-}
+});
 
 const ProjectButton = memo((props: {
   title: string

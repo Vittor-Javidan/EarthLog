@@ -1,25 +1,18 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import { navigate } from '@Globals/NavigationControler';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
-import CredentialService from '@Services/CredentialService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
 
 export const ScreenButtons = memo((props: {
-  onCredentialCreation: () => void
+  onCreateCredential: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-
-  const onCreateCredential = useCallback(async () => {
-    const newCredential = CredentialService.getNewCredential();
-    await CredentialService.createCredential(newCredential);
-    props.onCredentialCreation();
-  }, []);
 
   return (
     <Layout.ScreenButtons
@@ -40,7 +33,7 @@ export const ScreenButtons = memo((props: {
           iconName="card-outline"
           showPlusSign
           buttonDiameter={60}
-          onPress={async () => await onCreateCredential()}
+          onPress={props.onCreateCredential}
           theme={{
             font: theme.font,
             font_Pressed: theme.confirm,

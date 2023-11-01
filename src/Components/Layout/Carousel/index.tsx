@@ -25,7 +25,6 @@ type buttonData = {
 }
 
 export const Carousel = memo((props: {
-  isLoading: boolean
   buttonData: buttonData[]
   screens: JSX.Element[]
   onBackPress: () => void
@@ -73,7 +72,6 @@ export const Carousel = memo((props: {
       }}
     >
       <CarouselButtonsRoot
-        isLoading={props.isLoading}
         theme={theme}
       >
         {OverlayButtons}
@@ -89,7 +87,6 @@ export const Carousel = memo((props: {
 });
 
 const CarouselButtonsRoot = memo((props: {
-  isLoading: boolean
   children: ReactNode
   theme: {
     border: string
@@ -99,7 +96,7 @@ const CarouselButtonsRoot = memo((props: {
 
   const MARGIN = 10;
 
-  return props.isLoading ? (
+  return (
     <View
       style={{
         position: 'absolute',
@@ -119,7 +116,7 @@ const CarouselButtonsRoot = memo((props: {
     >
       {props.children}
     </View>
-  ) : <></>;
+  );
 });
 
 const CarouselAnimation = memo((props: {

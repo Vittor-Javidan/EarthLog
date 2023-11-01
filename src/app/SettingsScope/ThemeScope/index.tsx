@@ -16,12 +16,12 @@ export default function ThemeScope() {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.scope.theme[config.language], []);
 
-  const [loading            , setLoading    ] = useState<Loading>('Loading');
+  const [state              , setState      ] = useState<Loading>('Loading');
   const [rootRefresher      , refresh       ] = useState<boolean>(true);
   const [selectedWidgetTheme, setWidgetTheme] = useState<ThemeNames_Widgets>(config.widgetTheme);
 
   useEffect(() => {
-    setLoading('Loaded');
+    setState('Loaded');
   }, []);
 
   return (
@@ -32,35 +32,35 @@ export default function ThemeScope() {
       navigationTree={<NavigationTree />}
       key={'Refresher:' + rootRefresher}
     >
-      <Layout.Carousel
-        isLoading={loading === 'Loaded'}
-        onBackPress={(() => navigate('SETTINGS SCOPE'))}
-        buttonData={[{
-          title: R['App'],
-        }, {
-          title: R['Widget'],
-        }, {
-          title: R['Preview'],
-        }]}
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <Layout.Carousel
+          onBackPress={(() => navigate('SETTINGS SCOPE'))}
+          buttonData={[{
+            title: R['App'],
+          }, {
+            title: R['Widget'],
+          }, {
+            title: R['Preview'],
+          }]}
 
-        screens={[
-          <AppThemeScreen
-            key="1"
-            themeScopeState={loading}
-            onAppThemeChange={() => refresh(prev => !prev)}
-          />,
-          <WidgetThemeScreen
-            key="2"
-            themeScopeState={loading}
-            onWidgetThemeSelect={(themeName) => setWidgetTheme(themeName)}
-          />,
-          <WidgetThemePreviewScreen
-            key="3"
-            themeScopeState={loading}
-            widgetThemeName={selectedWidgetTheme}
-          />,
-        ]}
-      />
+          screens={[
+            <AppThemeScreen
+              key="1"
+              onAppThemeChange={() => refresh(prev => !prev)}
+            />,
+            <WidgetThemeScreen
+              key="2"
+              onWidgetThemeSelect={(themeName) => setWidgetTheme(themeName)}
+            />,
+            <WidgetThemePreviewScreen
+              key="3"
+              themeName={selectedWidgetTheme}
+            />,
+          ]}
+        />
+      )}
     </Layout.Root>
   );
 }

@@ -1,26 +1,21 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo } from 'react';
 
 import { CredentialDTO } from '@Types/AppTypes';
-import CredentialService from '@Services/CredentialService';
 
 import { CredentialWidget } from './CredentialWidget';
 
-export function F_AllCredentials() {
+export const AllCredentials = memo((props: {
+  credentials: CredentialDTO[]
+  onDeleteCredential: (index: number) => void
+}) => {
 
-  const [_, refresher] = useState<boolean>(false);
-
-  const onDeleteCredential = useCallback(async (credential: CredentialDTO) => {
-    await CredentialService.deleteCredential(credential);
-    refresher(prev => !prev);
-  }, []);
-
-  const AllCredentialCards = CredentialService.allCredentials.map(credential => (
+  const AllCredentialCards = props.credentials.map((credential, index) => (
     <CredentialWidget
       key={credential.credential_id}
       credential={credential}
-      onCredentialDelete={async () => await onDeleteCredential(credential)}
+      onCredentialDelete={() => props.onDeleteCredential(index)}
     />
   ));
 
   return (<>{AllCredentialCards}</>);
-}
+});

@@ -1,6 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.19 Camera Layer feedback
+# 0.1.9.20 Bug fix and refactoring
 
-- Now camera shows and keep count of the amount of pictures for a specific input.
-- <AppCamera /> function renamed and refactored.
+- <ProjectWidgets /> and <TemplateWidgets /> are now memoized.
+- All missing function components now uses memo. Only scope component do not use memo now.
+- fixed a bug where last open project was not being considered on first app boot.
+- Now loading state are isolated on Scopes, to garantee screen will receive always the most updated data on first render.

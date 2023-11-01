@@ -45,9 +45,11 @@ export default function HomeScope() {
       drawerChildren={ <Drawer /> }
       navigationTree={ <NavigationTree /> }
     >
-      <HomeScreen
-        homeScopeState={state}
-      />
+      {state === 'Loading' ? (
+        <Layout.Loading />
+      ) : (
+        <HomeScreen />
+      )}
     </Layout.Root>
   );
 }
@@ -101,8 +103,8 @@ const Drawer = memo(() => {
 async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   const promises = [
-    CredentialService.loadAllCredentials(),
     CacheService.loadLastOpenProject(),
+    CredentialService.loadAllCredentials(),
     SyncService.loadAllSyncData(),
   ];
   await Promise.all(promises);
