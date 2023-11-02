@@ -1,4 +1,3 @@
-- implement picture description field for Picture Input.
 - implement picture upload.
 - implement picture sync after upload.
 - implement picture download.
