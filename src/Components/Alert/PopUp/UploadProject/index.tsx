@@ -55,9 +55,31 @@ export const UploadProjects = memo((props: {
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ]))
     );
 
-    await new FetchAPIService(credential).uploadProject(controller.signal, processedProject, config,
+    const fetchApi = new FetchAPIService(credential);
+    await fetchApi.uploadProject(controller.signal, processedProject, config,
       (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
       async () => {
+
+        /* TODO:
+          Upload pictures one by one.
+          The picture upload function must have 2 callbacks. One to be called after each success upload.
+          And another to be called after process is finished or interrupted, to run the code present on
+          this scope on this present moment.
+        */
+
+        await fetchApi.uploadImages({
+          config: config,
+          signal: controller.signal,
+          id_project: props.id_project,
+          picturesIDs: Object.keys(projectDTO.syncData.pictures),
+        }, () => {
+          console.log('Image uploaded!');
+        }, (errorMessage) => {
+          setError(errorMessage);
+          setFeedbacks(prev => [ ...prev, errorMessage]);
+          setShow(prev => ({ ...prev, errorDisplay: true }));
+        },(feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])));
+
         await afterUploadProcessing(processedProject);
         setFeedbacks(prev => [ ...prev, RS['Done!']]);
         AlertService.runAcceptCallback();
@@ -77,6 +99,12 @@ export const UploadProjects = memo((props: {
     const { rules, id_project } = projectDTO_AfterUpload.projectSettings;
 
     if (rules.deleteAfterUpload === true) {
+
+      /* TODO:
+        - do not delete the project if still media to be upload.
+        - Add an alert to tell some media still need to be uploaded.
+          - When project status === 'uploaded' and some pictures stills as 'new' is a good reference.
+      */
 
       setFeedbacks(prev => [ ...prev, R['Deleting project']]);
       await ProjectService.deleteProject(id_project, async () => {

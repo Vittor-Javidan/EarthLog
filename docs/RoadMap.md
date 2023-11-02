@@ -17,9 +17,9 @@
 + Options Input
 + Select Input
 + CameraComponent
-- Photo Input
-- Photo Upload API
-- Photo files export
++ Photo Input
+~ Photo files export
+~ Photo Upload API
 - Youtube button redirecting to a page with many YoutTube creators
 - Roadmap button redirecting to a page with the app roadmap
 - Community button redirecting to linkedin community
@@ -34,7 +34,7 @@
 - App tablet layout
 - Date/Time Input
 - GPS Poligon Input
-- Audio Widget
+- Audio Input
 - Audio Upload API
 - Video Input
 - Video Upload API

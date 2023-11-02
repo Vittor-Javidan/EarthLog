@@ -12,7 +12,14 @@ import { Layout } from '@Layout/index';
 export default function Home() {
 
   useEffect(() => {
-    initApp(() => navigate('HOME SCOPE'));
+    initApp(() => {
+      alert(
+        ConfigService.config.language === 'pt-BR'
+        ? 'Até que a primeira versão LTS seja liberada, não é recomendado utilizar o aplicativo para o seu trabalho ou projeto pessoal.\n\nTalvez seja necessário desinstalar e reinstalar o aplicativo entre updates.\n\nEsse processo reseta todos dados dentro do aplicativo.'
+        : 'Until first LTS version is released, is not recommend to use the app for your job or project.\n\nYou may need to unistall and install between updates.\n\nThis process resets all your data inside the app.'
+      );
+      navigate('HOME SCOPE');
+    });
     // initApp(() => navigate('TEST SCOPE'));
   }, []);
 

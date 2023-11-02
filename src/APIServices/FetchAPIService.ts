@@ -1,6 +1,7 @@
 import { DownloadedProjectDTO, ProjectDTO } from '@Types/ProjectTypes';
 import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
+import DatabaseService from '@Services/DatabaseService';
 
 export default class FetchAPIService {
 
@@ -8,6 +9,7 @@ export default class FetchAPIService {
   endpoints = {
     AUTH: '/auth',
     PROJECT: '/project',
+    IMAGE: '/image',
   };
 
   constructor(credential: CredentialDTO) {
@@ -70,6 +72,23 @@ export default class FetchAPIService {
       body: JSON.stringify({
         project: project,
       }),
+    });
+  }
+
+  private async createImage(accessToken: string, signal: AbortSignal, id_project: string, id_picture: string, base64Data: string) {
+    const formData = new FormData();
+    formData.append('picture', base64Data);
+    formData.append('id_project', id_project);
+    formData.append('id_picture', id_picture);
+    console.log('form data finished');
+    return fetch(this.credential.rootURL + this.endpoints.IMAGE, {
+      signal: signal,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-type': 'multipart/form-data',
+      },
+      body: formData,
     });
   }
 
@@ -199,7 +218,7 @@ export default class FetchAPIService {
       }
 
       // POST PROJECT ======================================================
-      feedback(R['Sending to server:'] + ` ${this.credential.name}`);
+      feedback(R['Sending project:'] + ` ${this.credential.name}`);
       const response = projectDTO.projectSettings.status === 'new'
       ? await this.createProject(authBody.accessToken, signal, projectDTO)
       : await this.updateProject(authBody.accessToken, signal, projectDTO);
@@ -231,5 +250,95 @@ export default class FetchAPIService {
         `\n${JSON.stringify(error)}`
       );
     }
+  }
+
+  async uploadImages(
+    options: {
+      signal: AbortSignal,
+      id_project: string,
+      picturesIDs: string[],
+      config: ConfigDTO,
+    },
+    onSuccess: () => void,
+    onError: (error: string) => void,
+    feedback: (message: string) => void,
+  ) {
+
+    const R = translations.APIServices.fetchAPI[options.config.language];
+
+    try {
+
+      // AUTHENTICATION ===========================
+      feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
+      const authResponse = await this.auth(options.signal);
+      if (!authResponse.ok) {
+        onError(
+          R['The server did not recognize your credentials. Failed to authenticate.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
+          `\nStatus: ${authResponse.status}.`
+        );
+        return;
+      }
+
+      const authBody = await authResponse.json();
+      feedback(R['Authenticated']);
+      if (!authBody.accessToken) {
+        onError(
+          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
+          R['\nMethod: POST'] +
+          R['\nEndpoint: /auth'] +
+          R['\nStatus: '] + authResponse.status +
+          `\n{ ..., "accessToken: ${authBody.accessToken}" }`
+        );
+        return;
+      }
+
+      // POST ALL IMAGE ====================================================
+      for (let i = 0; i < options.picturesIDs.length; i++) {
+
+        const id_picture = options.picturesIDs[i];
+        const base64data = await DatabaseService.getPictureData({
+          id_project: options.id_project,
+          id_picture: id_picture,
+        });
+
+        if (base64data !== null) {
+
+          feedback(R['Sending image. ID:'] + ` ${id_picture}`);
+          const response = await this.createImage(authBody.accessToken, options.signal, options.id_project, id_picture, base64data);
+          if (!response.ok) {
+            const serverMessage = response.headers.get('serverMessage');
+            onError(
+              R['Was not possible to upload a image to the server'] +
+              `${serverMessage !== null ? `\nServer Message: ${serverMessage}` : ''}`
+            );
+            break;
+          }
+
+          onSuccess();
+
+        } else {
+
+          onError(R['Image not found. ID:'] + ` ${id_picture}`);
+          continue;
+        }
+      }
+
+    } catch (error) {
+
+      if (error instanceof TypeError) {
+        switch (error.message) {
+          case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+        }
+        return;
+      }
+
+      onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
+    }
+
   }
 }

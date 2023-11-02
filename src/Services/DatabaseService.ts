@@ -590,6 +590,14 @@ export default class DatabaseService {
     throw Error(`Picture not found on phones cache. PhotoURI: ${photoUri}`);
   }
 
+  static async getPictureData(options: {
+    id_project: string,
+    id_picture: string,
+  }): Promise<string | null> {
+    const pictureUri = this.getPictureUri(options.id_project, options.id_picture);
+    return await FileSystemService.readFile(pictureUri, 'base64');
+  }
+
   static async savePicture(
     id_project: string,
     id_picture: string,

@@ -53,7 +53,7 @@ const YoutubeTutorialButton = memo(() => {
 
   const onPress = useCallback(() => {
     HapticsService.vibrate('success');
-    Linking.openURL('https://www.google.com/');
+    Linking.openURL('https://www.youtube.com/channel/UCBLi8DgOv6LT9xH5c5_xqWw');
   }, []);
 
   return (
@@ -105,7 +105,8 @@ const RoadMapButton = memo(() => {
 
   const onPress = useCallback(() => {
     HapticsService.vibrate('success');
-    Linking.openURL('https://www.google.com/');
+    alert(config.language === 'pt-BR' ? 'Website ainda não construído' : 'Website not builded yet');
+    // Linking.openURL('https://www.google.com/');
   }, []);
 
   return (
@@ -152,7 +153,7 @@ const LinkedinCommunityButton = memo(() => {
 
   const onPress = useCallback(() => {
     HapticsService.vibrate('success');
-    Linking.openURL('https://www.google.com/');
+    Linking.openURL('https://www.linkedin.com/groups/9314360/');
   }, []);
 
   return (

@@ -1,5 +1,5 @@
-- implement picture upload.
 - implement picture sync after upload.
+- implement a upload missing midia button on Project Scope menu.
 - implement picture download.
 - implemnet a download all pictures button on Project Scope menu.
 
