@@ -31,7 +31,7 @@ export const PictureInput = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [inputData, setInputData] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData       , setInputData       ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
   const [show     , setShow     ] = useState({
     openCamera: false,
   });
@@ -105,6 +105,13 @@ export const PictureInput = memo((props: {
     });
   }, [asyncSave, inputData]);
 
+  const onDescriptionChange = useCallback((text: string, index: number) => {
+    const newData = { ...inputData };
+    newData.value[index].description = text;
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
+
   useCameraWatcher(onPictureTake, () => {
     setShow(prev => ({ ...prev, openCamera: false }));
   }, [inputData, show.openCamera]);
@@ -138,7 +145,7 @@ export const PictureInput = memo((props: {
       <View
         style={{
           paddingVertical: 10,
-          gap: 5,
+          gap: 10,
         }}
       >
         {props.widgetScope.type === 'template' && (
@@ -152,10 +159,10 @@ export const PictureInput = memo((props: {
         <PicturesCarousel
           id_project={props.widgetScope.id_project}
           pictures={inputData.value}
-          onPictureScroll={(index) => console.log(index)}
           onPictureDelete={onPictureDelete}
           onPictureShare={onPictureShare}
           onDownloadPicture={() => {}}
+          onDescriptionChange={onDescriptionChange}
           theme={props.theme}
         />
         <OpenCameraButton

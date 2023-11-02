@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useRef, useState } from 'react';
-import { View, Image, LayoutRectangle } from 'react-native';
+import { View, Image, LayoutRectangle, TextInput, Platform } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@Types/ProjectTypes';
@@ -8,25 +8,21 @@ import MediaService from '@Services/MediaService';
 import { Button } from '@Button/index';
 import { Text } from '@Text/index';
 import CacheService from '@Services/CacheService';
+import { Animation } from '@Animation/index';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
   theme: WidgetTheme
-  onPictureScroll: (index: number) => void
   onPictureShare: (index:number) => void
   onPictureDelete: (index: number) => void
+  onDescriptionChange: (text: string, index: number) => void
   onDownloadPicture: (id_picture: string) => void
 }) => {
 
   const pageRef = useRef<PagerView | null>(null);
   const [dimensions  , setDimensions  ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
   const [pictureIndex, setPictureIndex] = useState<number>(0);
-
-  const onPictureScroll = useCallback((pictureIndex: number) => {
-    props.onPictureScroll(pictureIndex);
-    setPictureIndex(pictureIndex);
-  }, [props.onPictureScroll]);
 
   const scrollRight = useCallback((currentIndex: number) => {
     if (pageRef.current !== null) {
@@ -41,7 +37,7 @@ export const PicturesCarousel = memo((props: {
   }, [props.pictures, pageRef.current]);
 
   const AllImages = props.pictures.map(pictureData => {
-    return  CacheService.allPicturesFiles.includes(`${pictureData.id_picture}.jpg`) ? (
+    return CacheService.allPicturesFiles.includes(`${pictureData.id_picture}.jpg`) ? (
       <Image
         key={pictureData.id_picture}
         source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
@@ -75,7 +71,7 @@ export const PicturesCarousel = memo((props: {
     );
   });
 
-  return props.pictures.length > 0 ? (
+  return props.pictures.length > 0 ? (<>
     <View
       onLayout={e => setDimensions(e.nativeEvent.layout)}
       style={{
@@ -86,7 +82,7 @@ export const PicturesCarousel = memo((props: {
       <PagerView
         initialPage={pictureIndex}
         ref={pageRef}
-        onPageSelected={page => onPictureScroll(page.nativeEvent.position)}
+        onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
         style={{
           flex: 1,
         }}
@@ -106,7 +102,29 @@ export const PicturesCarousel = memo((props: {
         onPictureDelete={() => props.onPictureDelete(pictureIndex)}
       />
     </View>
-  ) : <></>;
+    <Animation.FadeOut
+      key={props.pictures[pictureIndex].id_picture}
+      delay={30}
+      duration={200}
+    >
+      <TextInput
+        value={props.pictures[pictureIndex].description}
+        placeholder={'- - - - - - - - - -'}
+        placeholderTextColor={props.theme.font_placeholder}
+        textAlign="center"
+        textAlignVertical="top"
+        multiline={true}
+        onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+          backgroundColor: props.theme.background,
+          color: props.theme.font,
+        }}
+      />
+    </Animation.FadeOut>
+  </>) : <></>;
 });
 
 const IndexDisplay = memo((props: {

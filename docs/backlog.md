@@ -5,6 +5,9 @@
 - implemnet a download all pictures button on Project Scope menu.
 
 # After implementation finish
+- Add fade out animation for input rendering
+- Add fade out animation fro widget display rendering
+- Add fade out animation for new widgets rendering
 - find a way to move the download/upload sync logic to DataProcess Service.
 - create a database method to define all sync data into 'uploaded' or 'new'
 - rename sync methods on Sync Service
