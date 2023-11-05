@@ -20,9 +20,6 @@
 + Photo Input
 ~ Photo files export
 ~ Photo Upload API
-- Youtube button redirecting to a page with many YoutTube creators
-- Roadmap button redirecting to a page with the app roadmap
-- Community button redirecting to linkedin community
 - LTS versioning
 - Subscription Implementation
 - Public server with examples
