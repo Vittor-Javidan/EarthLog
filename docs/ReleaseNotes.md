@@ -1,8 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.24 Image upload endpoint call
+# 0.1.9.25 Refactor
 
-- Now images can be uploaded to server.
-- SyncData system not implemented yet.
-- Social media buttons now redirect users to youtube and linkedin links. Roadmap now pop up a alert to tell website was not build.
-- added translations for upload endpoint.
+- DatabaseService.savePictureFromUri : now has a onSave Callback.
+- <AppCamera />: Now adds picture amount feedback only if onSave callback is called.

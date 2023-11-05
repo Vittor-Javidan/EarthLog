@@ -57,7 +57,6 @@ export default class MediaService {
     },
     onSave: () => void
   ): Promise<void> {
-    await DatabaseService.savePictureFromUri(options);
-    onSave();
+    await DatabaseService.savePictureFromUri(options, onSave);
   }
 }

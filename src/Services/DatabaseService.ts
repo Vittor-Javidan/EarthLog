@@ -573,17 +573,21 @@ export default class DatabaseService {
     throw Error('Pictures folder do not exist');
   }
 
-  static async savePictureFromUri(options: {
-    id_project: string,
-    id_picture: string,
-    photoUri: string
-  }): Promise<void> {
+  static async savePictureFromUri(
+    options: {
+      id_project: string,
+      id_picture: string,
+      photoUri: string,
+    },
+    onSave: () => void,
+  ): Promise<void> {
     const { id_project, id_picture, photoUri } = options;
     const data = await FileSystemService.readFile(photoUri, 'base64');
     if (data !== null) {
       const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
       await FileSystemService.writeFile(path, data, 'base64');
       await this.syncPicture(id_project, id_picture, 'creation');
+      onSave();
       return;
     }
     alert(`Picture not found on phones cache. PhotoURI: ${photoUri}`);

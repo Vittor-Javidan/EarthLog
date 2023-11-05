@@ -51,8 +51,8 @@ export const AppCamera = memo((props: {
       }, () => {
         CacheService.addToPicturesFiles(id_picture);
         CameraService.triggerOnPictureTake(id_picture);
+        setPicturesAmount(prev => prev + 1);
       });
-      setPicturesAmount(prev => prev + 1);
       setShow(prev => ({ ...prev, loadingPreview: false }));
       setPhoto(null);
     }
