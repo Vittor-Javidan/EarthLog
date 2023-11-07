@@ -56,60 +56,47 @@ export const UploadProjects = memo((props: {
     );
 
     const fetchApi = new FetchAPIService(credential);
-    await fetchApi.uploadProject(controller.signal, processedProject, config,
-      (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
-      async () => {
-
-        /* TODO:
-          Upload pictures one by one.
-          The picture upload function must have 2 callbacks. One to be called after each success upload.
-          And another to be called after process is finished or interrupted, to run the code present on
-          this scope on this present moment.
-        */
-
-        await fetchApi.uploadImages({
-          config: config,
-          signal: controller.signal,
-          id_project: props.id_project,
-          picturesIDs: Object.keys(projectDTO.syncData.pictures),
-        }, () => {
-          console.log('Image uploaded!');
-        }, (errorMessage) => {
-          setError(errorMessage);
-          setFeedbacks(prev => [ ...prev, errorMessage]);
-          setShow(prev => ({ ...prev, errorDisplay: true }));
-        },(feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])));
-
+    await fetchApi.uploadProject({
+      config: config,
+      signal: controller.signal,
+      projectDTO: processedProject,
+      onImageUpload: (id_UploadedPicture) => {
+        processedProject.syncData.pictures[id_UploadedPicture] = 'uploaded';
+      },
+      onSuccess: async () => {
         await afterUploadProcessing(processedProject);
-        setFeedbacks(prev => [ ...prev, RS['Done!']]);
         AlertService.runAcceptCallback();
         props.closeModal();
+        setFeedbacks(prev => [ ...prev, RS['Done!']]);
       },
-      (errorMessage) => {
-        setError(errorMessage);
+      onProjectUploadError: (projectUploadErrorMessage) => {
         setFeedbacks(prev => [ ...prev, RS['Error!']]);
+        setError(projectUploadErrorMessage);
         setShow(prev => ({ ...prev, errorDisplay: true }));
-      }
-    );
+      },
+      onImageUploadError: async (imageUploadErrorMessage) => {
+        await afterUploadProcessing(processedProject);
+        AlertService.runAcceptCallback();
+        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+        setError(imageUploadErrorMessage);
+        setShow(prev => ({ ...prev, errorDisplay: true }));
+      },
+      feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
+    });
 
   }, [props.id_project]);
 
   const afterUploadProcessing = useCallback(async (projectDTO_AfterUpload: ProjectDTO) => {
 
     const { rules, id_project } = projectDTO_AfterUpload.projectSettings;
+    const isAllPicturesUploaded = !Object.values(projectDTO_AfterUpload.syncData.pictures).includes('new');
 
-    if (rules.deleteAfterUpload === true) {
-
-      /* TODO:
-        - do not delete the project if still media to be upload.
-        - Add an alert to tell some media still need to be uploaded.
-          - When project status === 'uploaded' and some pictures stills as 'new' is a good reference.
-      */
+    if (rules.deleteAfterUpload === true && isAllPicturesUploaded) {
 
       setFeedbacks(prev => [ ...prev, R['Deleting project']]);
       await ProjectService.deleteProject(id_project, async () => {
 
-        setFeedbacks(prev => [ ...prev, 'Updating cache']);
+        setFeedbacks(prev => [ ...prev, R['Updating cache']]);
         if (CacheService.lastOpenProject?.id_project === id_project) {
           await CacheService.deleteLastOpenProject();
         }
@@ -121,6 +108,12 @@ export const UploadProjects = memo((props: {
         setShow(prev => ({ ...prev, errorDisplay: true }));
       });
       return;
+    }
+
+    if (!isAllPicturesUploaded) {
+      /*TODO:
+        block code for when not all pictures was uplodaded
+      */
     }
 
     setFeedbacks(prev => [ ...prev, R['Updating project locally']]);

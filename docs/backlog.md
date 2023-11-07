@@ -1,9 +1,11 @@
+- verify how the app handles a image upload error.
 - implement picture sync after upload.
 - implement a upload missing midia button on Project Scope menu.
 - implement picture download.
 - implemnet a download all pictures button on Project Scope menu.
 
 # After implementation finish
+- change all UtilServices.generateUuidV4 to IDService.
 - Add fade out animation for input rendering
 - Add fade out animation fro widget display rendering
 - Add fade out animation for new widgets rendering

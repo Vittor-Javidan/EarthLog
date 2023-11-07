@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-import { DownloadedProjectDTO, ProjectSettings } from '@Types/ProjectTypes';
+import { ProjectSettings } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
@@ -13,7 +13,7 @@ import { Icon } from '@Icon/index';
 
 export const ProjectsDisplay = memo((props: {
   showDisplay: boolean
-  downloadedProjects: DownloadedProjectDTO[]
+  downloadedProjects: ProjectSettings[]
   onSelect: (project_id: string, selected: boolean) => void
 }) => {
 
@@ -23,12 +23,12 @@ export const ProjectsDisplay = memo((props: {
   const allProjectsID = useMemo(() => allProject.map(settings => settings.id_project), []);
 
   const NewProjectButtons = props.downloadedProjects.filter(projects =>
-    allProjectsID.includes(projects.projectSettings.id_project) === false
+    allProjectsID.includes(projects.id_project) === false
   ).map((projects, index) => (
     <ProjectButton
-      key={projects.projectSettings.id_project + index}
-      projectSettings={projects.projectSettings}
-      onPress={(selected) => props.onSelect(projects.projectSettings.id_project, selected)}
+      key={projects.id_project + index}
+      projectSettings={projects}
+      onPress={(selected) => props.onSelect(projects.id_project, selected)}
     />
   ));
 

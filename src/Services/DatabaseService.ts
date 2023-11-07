@@ -1,7 +1,7 @@
 import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData, InputData, Status } from '@Types/ProjectTypes';
 import FileSystemService from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
-import UtilService from './UtilService';
+import IDService from './IDService';
 
 const DATA_BASE_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/database`;
 
@@ -250,12 +250,12 @@ export default class DatabaseService {
         });
         for (let i = 0; i < templateWidgets.length; i++) {
           if (templateWidgets[i].addToNewSamples === true) {
-            const newWidgetData = UtilService.changeAllIds(templateWidgets[i]);
+            IDService.changeIDsByReference_Widget(templateWidgets[i]);
             await DatabaseService.createWidget({
               path: 'sample widgets',
               id_project: options.id_project,
               id_sample: id_sample,
-              widgetData: newWidgetData,
+              widgetData: templateWidgets[i],
               sync: options.sync,
             });
           }

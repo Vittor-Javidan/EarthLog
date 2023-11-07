@@ -1,15 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO } from '@Types/AppTypes';
-import { DownloadedProjectDTO } from '@Types/ProjectTypes';
+import { ProjectSettings } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import ProjectService from '@Services/ProjectService';
 import AlertService from '@Services/AlertService';
-import CacheService from '@Services/CacheService';
-import SyncService from '@Services/SyncService';
 import ConfigService from '@Services/ConfigService';
-import DataProcessService from '@APIServices/DataProcessService';
-import FetchAPIService from '@APIServices/FetchAPIService';
+import DownloadService from '@Services/DownloadService';
 
 import { LC } from '@Alert/__LC__';
 import { CredentialsDisplay } from './CredentialsDisplay';
@@ -26,7 +22,8 @@ export const DownloadProjects = memo((props: {
   const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
   const R          = useMemo(() => translations.component.alert.downloadProjecs[config.language], []);
 
-  const [allProjects      , setAllProjects         ] = useState<DownloadedProjectDTO[] | null>(null);
+  const [allProjects      , setAllProjects         ] = useState<ProjectSettings[] | null>(null);
+  const [downloadAPi      , setDownloadAPI         ] = useState<DownloadService | null>(null);
   const [selectedProjects , setAllSelectedProjects ] = useState<Record<string, boolean>>({});
   const [error            , setError               ] = useState<string | null>(null);
   const [feedbacks        , setFeedbacks           ] = useState<string[]>([]);
@@ -52,10 +49,11 @@ export const DownloadProjects = memo((props: {
       loadingDisplay:    true,
     }));
 
-    const fetchAPI = new FetchAPIService(credential);
-    await fetchAPI.downloadProjects(controller.signal, config,
-      (feedbackMessage) => setFeedbacks(prev => ([...prev, feedbackMessage])),
-      (projects) => {
+    const downloadAPI = new DownloadService(credential);
+    await downloadAPI.getAvailableProjects({
+      config: config,
+      signal: controller.signal,
+      onSuccess: (projects) => {
         setAllProjects(projects);
         setFeedbacks(prev => [ ...prev, RS['Done!']]);
         setTimeout(() => {
@@ -65,25 +63,29 @@ export const DownloadProjects = memo((props: {
           }));
         }, 200);
       },
-      (errorMessage) => {
+      onError: (errorMessage) => {
         setError(errorMessage);
         setFeedbacks(prev => [ ...prev, RS['Error!']]);
       },
-    );
+      feedback: (feedbackMessage) => {
+        setFeedbacks(prev => ([...prev, feedbackMessage]));
+      },
+    });
+
+    setDownloadAPI(downloadAPI);
+
   }, []);
 
   const onSelectProject = useCallback((project_id: string, selected: boolean) => {
-    setAllSelectedProjects(prev => {
-      const newRecord = { ...prev };
-      selected === true ? newRecord[project_id] = selected : delete newRecord[project_id];
-      setShow(prev => ({ ...prev, confirmButton: Object.keys(newRecord).length > 0 }));
-      return newRecord;
-    });
-  }, []);
+    const newRecord = { ...selectedProjects };
+    selected ? newRecord[project_id] = selected : delete newRecord[project_id];
+    setAllSelectedProjects(newRecord);
+    setShow(prev => ({ ...prev, confirmButton: Object.keys(newRecord).length > 0 }));
+  }, [selectedProjects]);
 
   const onConfirm = useCallback(async () => {
 
-    if (allProjects === null) {
+    if (allProjects === null || downloadAPi === null) {
       return;
     }
 
@@ -94,31 +96,23 @@ export const DownloadProjects = memo((props: {
       projectsDisplay: false,
     }));
 
-    const allSelectedProjectsKeys = Object.keys(selectedProjects);
-    const allSelectedProjects = allProjects.filter(projects =>
-      allSelectedProjectsKeys.includes(projects.projectSettings.id_project)
-    );
-
-    for (let i = 0; i < allSelectedProjects.length; i++) {
-
-      const processedProject = DataProcessService.processDownloadedProject(allSelectedProjects[i], config,
-        (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
-      );
-
-      await ProjectService.createProject(processedProject, config, () => {
-        CacheService.addToAllProjects(processedProject.projectSettings);
-        SyncService.addToSyncData(processedProject.syncData);
+    await downloadAPi.downloadProjects({
+      config: config,
+      signal: controller.signal,
+      projectIDs: Object.keys(selectedProjects),
+      onFinish: () => {
         setFeedbacks(prev => [ ...prev, RS['Done!']]);
-      }, (errorMessage) => {
+        AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      onError: (errorMessage) => {
         setError(errorMessage);
         setFeedbacks(prev => [ ...prev, RS['Error!']]);
-      }, (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])));
-    }
+      },
+      feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
+    });
 
-    AlertService.runAcceptCallback();
-    props.closeModal();
-
-  }, [props.closeModal, allProjects, selectedProjects]);
+  }, [props.closeModal, allProjects, selectedProjects, downloadAPi]);
 
   return (
     <LC.PopUp>

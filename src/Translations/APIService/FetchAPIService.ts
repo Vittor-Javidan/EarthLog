@@ -18,8 +18,8 @@ type TranslationDTO = Record<LanguageTag, {
   'Opening projects': string
   'Sending project:': string
   'Sending image. ID:': string
-  'Image not found. ID:': string
-  'Was not possible to upload a image to the server': string
+  'Error! Image not found. ID:': string
+  'Error! Was not possible to upload a image to the server': string
 }>
 
 export const R_Service_FetchAPI: TranslationDTO = {
@@ -41,8 +41,8 @@ export const R_Service_FetchAPI: TranslationDTO = {
     'Opening projects': 'Opening projects',
     'Sending project:': 'Sending to server:',
     'Sending image. ID:': 'Sending image. ID:',
-    'Image not found. ID:': 'Image not found. ID:',
-    'Was not possible to upload a image to the server': 'Was not possible to upload a image to the server',
+    'Error! Image not found. ID:': 'Error! Image not found. ID:',
+    'Error! Was not possible to upload a image to the server': 'Error! Was not possible to upload a image to the server',
   },
   'pt-BR': {
     'The server did not recognize your credentials. Failed to authenticate.': 'O servidor não reconheceu suas credenciais. Falha de autenticação.',
@@ -62,7 +62,7 @@ export const R_Service_FetchAPI: TranslationDTO = {
     'Opening projects': 'Abrindo projetos',
     'Sending project:': 'Enviando projeto',
     'Sending image. ID:': 'Enviando imagem',
-    'Image not found. ID:': 'Imagem não encontrada. ID:',
-    'Was not possible to upload a image to the server': 'Não foi possível fazer o upload da imagem para o servidor.',
+    'Error! Image not found. ID:': 'Erro! Imagem não encontrada. ID:',
+    'Error! Was not possible to upload a image to the server': 'Erro! Não foi possível fazer o upload da imagem para o servidor.',
   },
 };

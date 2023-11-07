@@ -96,53 +96,78 @@ export default class FetchAPIService {
   // Endpoints manipulation
   // ===============================================================================================
 
+  private async getAccessToken(
+    options: {
+      signal: AbortSignal
+      config: ConfigDTO
+    },
+    onError: (errorMessage: string) => void,
+    feedback: (feedbackMessage: string) => void
+  ): Promise<string | null> {
+
+    const R = translations.APIServices.fetchAPI[options.config.language];
+
+    feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
+    const authResponse = await this.auth(options.signal);
+    if (!authResponse.ok) {
+      onError(
+        R['The server did not recognize your credentials. Failed to authenticate.'] +
+        R['\nMethod: POST'] +
+        R['\nEndpoint: /auth'] +
+        R['\nStatus: '] + authResponse.status
+      );
+      return null;
+    }
+
+    feedback(R['Authenticated']);
+    const authBody = await authResponse.json();
+    if (!authBody.accessToken) {
+      onError(
+        R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
+        R['\nMethod: POST'] +
+        R['\nEndpoint: /auth'] +
+        R['\nStatus: '] + authResponse.status +
+        `\n{ ..., "accessToken: ${authBody.accessToken}" }`
+      );
+      return null;
+    }
+
+    return authBody.accessToken;
+  }
+
   async downloadProjects(
-    signal: AbortSignal,
-    config: ConfigDTO,
-    feedback: (message: string) => void,
+    options: {
+      signal: AbortSignal,
+      config: ConfigDTO,
+    },
     onSuccess: (projects: DownloadedProjectDTO[]) => void,
-    onError: (error: string) => void,
+    onError: (errorMessage: string) => void,
+    feedback: (message: string) => void,
   ): Promise<void> {
 
-    const R = translations.APIServices.fetchAPI[config.language];
+    const R = translations.APIServices.fetchAPI[options.config.language];
 
     try {
 
-      // AUTHENTICATION ===========================
-      feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
-      const authResponse = await this.auth(signal);
-      if (!authResponse.ok) {
-        onError(
-          R['The server did not recognize your credentials. Failed to authenticate.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          R['\nStatus: '] + authResponse.status
-        );
+      const accessToken = await this.getAccessToken({
+        config:options.config,
+        signal: options.signal,
+      },
+      (errorMessage) => onError(errorMessage),
+      (feedbackMessage) => feedback(feedbackMessage));
+
+      if (accessToken === null) {
         return;
       }
 
-      feedback(R['Authenticated']);
-      const authBody = await authResponse.json();
-      if (!authBody.accessToken) {
-        onError(
-          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          R['\nStatus: '] + authResponse.status +
-          `\n{ ..., "accessToken: ${authBody.accessToken}" }`
-        );
-        return;
-      }
-
-      // GET PROJECTS ======================================================
       feedback(R['Downloading projects']);
-      const response = await this.getProjects(authBody.accessToken, signal);
+      const response = await this.getProjects(accessToken, options.signal);
       if (!response.ok) {
         onError(
           R['It was not possible to download projects. The endpoint request failed. Contact the developer of this server.'] +
           R['\nMethod: GET'] +
           R['\nEndpoint: /project'] +
-          R['\nStatus: '] + authResponse.status
+          R['\nStatus: '] + response.status
         );
         return;
       }
@@ -154,7 +179,7 @@ export default class FetchAPIService {
           R['Projects download request was successful, but no projects were found.'] +
           R['\nMethod: GET'] +
           R['\nEndpoint: /project'] +
-          R['\nStatus: '] + authResponse.status +
+          R['\nStatus: '] + response.status +
           `\n{ ..., "projects: ${response.status}" }`
         );
         return;
@@ -178,150 +203,132 @@ export default class FetchAPIService {
     }
   }
 
-  async uploadProject(
+  async uploadProject(o: {
+    config: ConfigDTO,
     signal: AbortSignal,
     projectDTO: ProjectDTO,
-    config: ConfigDTO,
-    feedback: (message: string) => void,
+    onImageUpload: (id_UploadedPicture: string) => void,
     onSuccess: () => void,
-    onError: (error: string) => void,
-  ) {
+    onProjectUploadError: (error: string) => void,
+    onImageUploadError: (erroMessage: string) => void,
+    feedback: (message: string) => void,
+  }) {
 
-    const R = translations.APIServices.fetchAPI[config.language];
+    const R = translations.APIServices.fetchAPI[o.config.language];
 
     try {
 
-      // AUTHENTICATION ===========================
-      feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
-      const authResponse = await this.auth(signal);
-      if (!authResponse.ok) {
-        onError(
-          R['The server did not recognize your credentials. Failed to authenticate.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          `\nStatus: ${authResponse.status}.`
-        );
+      const accessToken = await this.getAccessToken({
+        config: o.config,
+        signal: o.signal,
+      },
+      (errorMessage) => o.onProjectUploadError(errorMessage),
+      (feedbackMessage) => o.feedback(feedbackMessage));
+
+      if (accessToken === null) {
         return;
       }
 
-      const authBody = await authResponse.json();
-      feedback(R['Authenticated']);
-      if (!authBody.accessToken) {
-        onError(
-          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          R['\nStatus: '] + authResponse.status +
-          `\n{ ..., "accessToken: ${authBody.accessToken}" }`
-        );
-        return;
-      }
-
-      // POST PROJECT ======================================================
-      feedback(R['Sending project:'] + ` ${this.credential.name}`);
-      const response = projectDTO.projectSettings.status === 'new'
-      ? await this.createProject(authBody.accessToken, signal, projectDTO)
-      : await this.updateProject(authBody.accessToken, signal, projectDTO);
+      o.feedback(R['Sending project:'] + ` ${this.credential.name}`);
+      const response = o.projectDTO.projectSettings.status === 'new'
+      ? await this.createProject(accessToken, o.signal, o.projectDTO)
+      : await this.updateProject(accessToken, o.signal, o.projectDTO);
       if (!response.ok) {
         const serverMessage = response.headers.get('serverMessage');
-        onError(
+        o.onProjectUploadError(
           R['It was not possible to upload this project. The endpoint request failed. Contact the developer of this server.'] +
           R['\nMethod: POST'] +
           R['\nEndpoint: /project'] +
-          R['\nStatus: '] + authResponse.status +
+          R['\nStatus: '] + response.status +
           `${serverMessage !== null ? `\nServer Message: ${serverMessage}` : ''}`
         );
         return;
       }
 
-      onSuccess();
+      await this.uploadImages({
+        config: o.config,
+        signal: o.signal,
+        id_project: o.projectDTO.projectSettings.id_project,
+        picturesIDs: Object.keys(o.projectDTO.syncData.pictures),
+      },
+      (id_UploadedPicture) => o.onImageUpload(id_UploadedPicture),
+      (errorMessage) => o.onImageUploadError(errorMessage),
+      (feedbackMessage) => o.feedback(feedbackMessage));
 
     } catch (error) {
 
       if (error instanceof TypeError) {
         switch (error.message) {
-          case 'Network request failed': onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+          case 'Network request failed': o.onProjectUploadError(R['Network request failed. Did your phone or server lose internet connection?']); break;
         }
         return;
       }
 
-      onError(
+      o.onProjectUploadError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
+  /**
+   * Stops uploading when a error occurs.
+   */
   async uploadImages(
     options: {
+      config: ConfigDTO,
       signal: AbortSignal,
       id_project: string,
       picturesIDs: string[],
-      config: ConfigDTO,
+      accessToken?: string,
     },
-    onSuccess: () => void,
+    onUpload: (id_UploadedPicture: string) => void,
     onError: (error: string) => void,
     feedback: (message: string) => void,
   ) {
 
+    const { config, signal, id_project, picturesIDs } = options;
     const R = translations.APIServices.fetchAPI[options.config.language];
 
     try {
 
-      // AUTHENTICATION ===========================
-      feedback(R['Connecting to server:'] + ` ${this.credential.name}`);
-      const authResponse = await this.auth(options.signal);
-      if (!authResponse.ok) {
-        onError(
-          R['The server did not recognize your credentials. Failed to authenticate.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          `\nStatus: ${authResponse.status}.`
-        );
+      const accessToken = options.accessToken ?? await this.getAccessToken({
+        config: config,
+        signal: signal,
+      },
+      (errorMessage) => onError(errorMessage),
+      (feedbackMessage) => feedback(feedbackMessage));
+
+      if (accessToken === null) {
         return;
       }
 
-      const authBody = await authResponse.json();
-      feedback(R['Authenticated']);
-      if (!authBody.accessToken) {
-        onError(
-          R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
-          R['\nMethod: POST'] +
-          R['\nEndpoint: /auth'] +
-          R['\nStatus: '] + authResponse.status +
-          `\n{ ..., "accessToken: ${authBody.accessToken}" }`
-        );
-        return;
-      }
+      for (let i = 0; i < picturesIDs.length; i++) {
 
-      // POST ALL IMAGE ====================================================
-      for (let i = 0; i < options.picturesIDs.length; i++) {
-
-        const id_picture = options.picturesIDs[i];
+        const id_picture = picturesIDs[i];
         const base64data = await DatabaseService.getPictureData({
-          id_project: options.id_project,
+          id_project: id_project,
           id_picture: id_picture,
         });
 
         if (base64data !== null) {
 
           feedback(R['Sending image. ID:'] + ` ${id_picture}`);
-          const response = await this.createImage(authBody.accessToken, options.signal, options.id_project, id_picture, base64data);
+          const response = await this.createImage(accessToken, signal, id_project, id_picture, base64data);
           if (!response.ok) {
             const serverMessage = response.headers.get('serverMessage');
             onError(
-              R['Was not possible to upload a image to the server'] +
+              R['Error! Was not possible to upload a image to the server'] +
               `${serverMessage !== null ? `\nServer Message: ${serverMessage}` : ''}`
             );
             break;
           }
 
-          onSuccess();
+          onUpload(id_picture);
 
         } else {
-
-          onError(R['Image not found. ID:'] + ` ${id_picture}`);
-          continue;
+          onError(R['Error! Image not found. ID:'] + ` ${id_picture}`);
+          break;
         }
       }
 
