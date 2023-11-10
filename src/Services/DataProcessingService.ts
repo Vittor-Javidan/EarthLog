@@ -1,13 +1,14 @@
-import { ConfigDTO } from '@Types/AppTypes';
-import { DownloadedProjectDTO, ProjectDTO, SyncData } from '@Types/ProjectTypes';
+import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
+import { DownloadedProjectDTO, ProjectDTO, Status, SyncData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import IDService from './IDService';
+import DateTimeService from './DateTimeService';
 
 export default class DataProcessingService {
 
-  static processDownloadedProject(o: {
-    projectDTO: DownloadedProjectDTO,
+  static processProject_AfterDownload(o: {
     config: ConfigDTO,
+    projectDTO: DownloadedProjectDTO,
     feedback: (message: string) => void
   }): ProjectDTO {
 
@@ -23,6 +24,23 @@ export default class DataProcessingService {
       ...o.projectDTO,
       syncData: syncData,
     };
+  }
+
+  static processProject_BeforeUpload(o: {
+    config: ConfigDTO
+    credential: CredentialDTO
+    projectDTO: ProjectDTO
+    feedback: (message: string) => void
+  }): void {
+    this.job_AddUploadEntry(o);
+  }
+
+  static processProject_AfterUpload(o: {
+    config: ConfigDTO
+    projectDTO: ProjectDTO
+    feedback: (message: string) => void
+  }) {
+    this.job_DefineProjectAsUploaded(o);
   }
 
   private static job_ChangeAllIDs(o: {
@@ -91,5 +109,62 @@ export default class DataProcessingService {
     }
 
     return newSyncStatus_Project;
+  }
+
+  private static job_AddUploadEntry(o: {
+    credential: CredentialDTO
+    projectDTO: ProjectDTO
+    config: ConfigDTO
+    feedback: (message: string) => void
+  }): void {
+
+    const R = translations.APIServices.dataProcess[o.config.language];
+
+    // Upload Date/Time entry ================
+    o.feedback(R['Attaching upload date and time']);
+    o.projectDTO.projectSettings.uploads ??= [];
+    o.projectDTO.projectSettings.uploads.push({
+      url:     o.credential.rootURL,
+      dateUTM: DateTimeService.getCurrentDateTimeUTC(),
+      date:    DateTimeService.getCurrentDateTime({
+        dateFormat: o.config.dateFormat,
+        timeFormat: o.config.timeFormat,
+      }),
+    });
+  }
+
+  private static job_DefineProjectAsUploaded(o:{
+    config: ConfigDTO,
+    projectDTO: ProjectDTO
+    feedback: (message: string) => void
+  }) {
+
+    o.projectDTO.syncData.project = 'uploaded';
+
+    for (const id_widget in o.projectDTO.syncData.widgets_Project) {
+      defineStatus(id_widget, o.projectDTO.syncData.widgets_Project);
+    }
+    for (const id_widget in o.projectDTO.syncData.widgets_Template) {
+      defineStatus(id_widget, o.projectDTO.syncData.widgets_Template);
+    }
+    for (const id_sample in o.projectDTO.syncData.samples) {
+      defineStatus(id_sample, o.projectDTO.syncData.samples);
+    }
+    for (const id_sample in o.projectDTO.syncData.widgets_Samples) {
+      for (const id_widget in o.projectDTO.syncData.widgets_Samples[id_sample]) {
+        defineStatus(id_widget, o.projectDTO.syncData.widgets_Samples[id_sample]);
+      }
+    }
+
+    function defineStatus(
+      id_element: string,
+      recordList: Record<string, Status | 'deleted'>
+    ) {
+      switch (recordList[id_element]) {
+        case 'modified':  recordList[id_element] = 'uploaded'; break;
+        case 'new':       recordList[id_element] = 'uploaded'; break;
+        case 'deleted':   delete recordList[id_element];       break;
+      }
+    }
   }
 }

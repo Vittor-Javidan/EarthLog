@@ -1,5 +1,4 @@
-import { translations } from '@Translations/index';
-import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
+import { CredentialDTO } from '@Types/AppTypes';
 import { DownloadedProjectDTO, ProjectDTO, ProjectSettings, SyncData } from '@Types/ProjectTypes';
 
 export default class RESTService {
@@ -16,11 +15,8 @@ export default class RESTService {
   }
 
   async auth(o: {
-    config: ConfigDTO
     signal: AbortSignal
   }): Promise<string> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
 
     const response = await fetch(this.credential.rootURL + this.endpoints.AUTH, {
       signal: o.signal,
@@ -36,20 +32,20 @@ export default class RESTService {
 
     if (!response.ok) {
       throw Error(
-        R['The server did not recognize your credentials. Failed to authenticate.'] +
-        R['\nMethod: POST'] +
-        R['\nEndpoint: /auth'] +
-        R['\nStatus: '] + response.status
+        'The server did not recognize your credentials. Failed to authenticate.' +
+        '\nMethod: POST' +
+        '\nEndpoint: /auth' +
+        '\nStatus: ' + response.status
       );
     }
 
     const body = await response.json();
     if (!body.accessToken) {
       throw Error(
-        R['Credentials accepted, but no AccessToken was found. Contact the developer of this server.'] +
-        R['\nMethod: POST'] +
-        R['\nEndpoint: /auth'] +
-        R['\nStatus: '] + response.status +
+        'Credentials accepted, but no accessToken was found.' +
+        '\nMethod: POST' +
+        '\nEndpoint: /auth' +
+        '\nStatus: ' + response.status +
         `\n{ ..., "accessToken: ${body.accessToken}" }`
       );
     }
@@ -58,12 +54,9 @@ export default class RESTService {
   }
 
   async getAllProjects(o: {
-    config: ConfigDTO
     accessToken: string
     signal: AbortSignal
   }): Promise<ProjectSettings[]> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
 
     const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT, {
       signal: o.signal,
@@ -75,10 +68,10 @@ export default class RESTService {
 
     if (!response.ok) {
       throw Error(
-        'It was not possible to fetch available projects. The endpoint request failed. Contact the developer of this server.' +
-        R['\nMethod: GET'] +
-        R['\nEndpoint: /project'] +
-        R['\nStatus: '] + response.status
+        'It was not possible to fetch available projects.' +
+        '\nMethod: GET' +
+        '\nEndpoint: /project' +
+        '\nStatus: ' + response.status
       );
     }
 
@@ -86,9 +79,9 @@ export default class RESTService {
     if (!body.projects) {
       throw Error(
         'Fetch was successful, but available projects are undefined.' +
-        R['\nMethod: GET'] +
-        R['\nEndpoint: /project'] +
-        R['\nStatus: '] + response.status +
+        '\nMethod: GET' +
+        '\nEndpoint: /project' +
+        '\nStatus: ' + response.status +
         `\n{ ..., "projects: ${body.projects}" }`
       );
     }
@@ -97,13 +90,10 @@ export default class RESTService {
   }
 
   async getProject(o: {
-    config: ConfigDTO,
     accessToken: string
     signal: AbortSignal
     id_project: string
   }): Promise<DownloadedProjectDTO> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
 
     const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${o.id_project}`, {
       signal: o.signal,
@@ -115,21 +105,21 @@ export default class RESTService {
 
     if (!response.ok) {
       throw Error(
-        R['It was not possible to download projects. The endpoint request failed. Contact the developer of this server.'] +
-        R['\nMethod: GET'] +
-        R['\nEndpoint: /project'] + `/${o.id_project}` +
-        R['\nStatus: '] + response.status
+        'It was not possible to download the projects.' +
+        '\nMethod: GET' +
+        '\nEndpoint: /project' + `/${o.id_project}` +
+        '\nStatus: ' + response.status
       );
     }
 
     const body = await response.json();
     if (!body.project) {
       throw Error(
-        'Download was successful, but projects is undefined.' +
-        R['\nMethod: GET'] +
-        R['\nEndpoint: /project'] + `/${o.id_project}` +
-        R['\nStatus: '] + response.status +
-        `\n{ ..., "projects: ${body.project}" }`
+        'Download was successful, but the project is undefined.' +
+        '\nMethod: GET' +
+        '\nEndpoint: /project' + `/${o.id_project}` +
+        '\nStatus: ' + response.status +
+        `\n{ ..., "project: ${body.project}" }`
       );
     }
 
@@ -139,9 +129,10 @@ export default class RESTService {
   async postProject(o: {
     accessToken: string
     signal: AbortSignal
-    project: ProjectDTO
-  }): Promise<Response> {
-    return fetch(this.credential.rootURL + this.endpoints.PROJECT, {
+    projectDTO: ProjectDTO
+  }): Promise<void> {
+
+    const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT, {
       signal: o.signal,
       method: 'POST',
       headers: {
@@ -149,17 +140,28 @@ export default class RESTService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        project: o.project,
+        project: o.projectDTO,
       }),
     });
+
+    if (!response.ok) {
+      throw Error(
+        'It was not possible to upload this project.' +
+        '\nMethod: POST' +
+        '\nEndpoint: /project' +
+        '\nStatus: ' + response.status
+      );
+    }
   }
 
   async updateProject(o: {
     accessToken: string
     signal: AbortSignal
-    project: ProjectDTO
-  }): Promise<Response> {
-    return fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${o.project.projectSettings.id_project}`, {
+    projectDTO: ProjectDTO
+  }): Promise<void> {
+
+    const { id_project } = o.projectDTO.projectSettings;
+    const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${id_project}`, {
       signal: o.signal,
       method: 'POST',
       headers: {
@@ -167,9 +169,18 @@ export default class RESTService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        project: o.project,
+        project: o.projectDTO,
       }),
     });
+
+    if (!response.ok) {
+      throw Error(
+        'It was not possible to upload this project.' +
+        '\nMethod: POST' +
+        '\nEndpoint: /project' + `/${id_project}` +
+        '\nStatus: ' + response.status
+      );
+    }
   }
 
   async getPicture(o: {
@@ -189,7 +200,7 @@ export default class RESTService {
 
     if (!response.ok) {
       throw Error(
-        'It was not possible to download projects. The endpoint request failed. Contact the developer of this server.' +
+        'It was not possible to download the picture.' +
         '\nMethod: GET' +
         '\nEndpoint: /image' + `/${o.id_project}/${o.id_picture}` +
         '\nStatus: ' + response.status
@@ -217,14 +228,14 @@ export default class RESTService {
     id_picture: string
     base64Data: string
     syncData: SyncData
-  }): Promise<Response> {
+  }): Promise<void> {
+
     const formData = new FormData();
-    formData.append('id_project', o.id_project);
     formData.append('id_picture', o.id_picture);
     formData.append('picture', o.base64Data);
     formData.append('syncData', JSON.stringify(o.syncData));
-    console.log('form data finished');
-    return fetch(this.credential.rootURL + this.endpoints.IMAGE, {
+
+    const response = await fetch(this.credential.rootURL + this.endpoints.IMAGE + `/${o.id_project}`, {
       signal: o.signal,
       method: 'POST',
       headers: {
@@ -233,5 +244,14 @@ export default class RESTService {
       },
       body: formData,
     });
+
+    if (!response.ok) {
+      throw Error(
+        'It was not possible to upload a the picture of ID ' + o.id_picture +
+        '\nMethod: POST' +
+        '\nEndpoint: /image' +
+        '\nStatus: ' + response.status
+      );
+    }
   }
 }

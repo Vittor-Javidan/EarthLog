@@ -1,5 +1,4 @@
-- verify how the app handles a image upload error.
-- implement picture sync after upload.
+- implement upload status for missing media.
 - implement a upload missing midia button on Project Scope menu.
 - implement picture download.
 - implemnet a download all pictures button on Project Scope menu.
@@ -20,3 +19,4 @@
 - Inside AlertService, on setConfig, rename the argument from 'question' to 'config'
 - rename buttons theme props, to use 'active' instead 'pressed'
 - remove ID and IDsArray types
+- change all services functions to use a single object argument.

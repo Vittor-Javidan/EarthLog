@@ -39,6 +39,8 @@ export const ExportProject_CSV = memo((props: {
       return;
     }
 
+    const { id_project } = props;
+
     setFeedbacks([ RS['Inicializing project export'] ]);
     setShow(prev => ({ ...prev,
       feedbackDisplay: true,
@@ -46,9 +48,9 @@ export const ExportProject_CSV = memo((props: {
       showFooterButtons: false,
     }));
 
-    await CSV_Module.buildAndShare_Project_AllCoordinates(props.id_project, fileName, config,
-      (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage]))
-    );
+    await CSV_Module.buildAndShare_Project_AllCoordinates({ config, id_project, fileName,
+      feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
+    });
 
     AlertService.runAcceptCallback();
     props.closeModal();

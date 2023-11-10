@@ -31,6 +31,15 @@ export default class SyncService {
     }
   }
 
+  static async updateSyncData(syncData: SyncData) {
+    await DatabaseService.updateSyncFile(syncData);
+    for (let i = 0; i < SyncService.syncData.length; i++) {
+      if (SyncService.syncData[i].id_project === syncData.id_project) {
+        SyncService.syncData[i] = syncData;
+      }
+    }
+  }
+
 
 
 
@@ -49,37 +58,22 @@ export default class SyncService {
    * removes all 'deleted' status, and replace all 'modified' and 'new' status to 'uploaded'.
    * It saves the files after the process.
    */
-  static async syncData_AfterUpload(syncData: SyncData) {
+  static syncData_AfterUpload(syncData: SyncData) {
 
-    definedEverythingAsUploaded();
-    updateCachedSyncData();
-    await DatabaseService.updateSyncFile(syncData);
+    syncData.project = 'uploaded';
 
-    function definedEverythingAsUploaded() {
-
-      syncData.project = 'uploaded';
-
-      for (const id_widget in syncData.widgets_Project) {
-        defineStatus(id_widget, syncData.widgets_Project);
-      }
-      for (const id_widget in syncData.widgets_Template) {
-        defineStatus(id_widget, syncData.widgets_Template);
-      }
-      for (const id_sample in syncData.samples) {
-        defineStatus(id_sample, syncData.samples);
-      }
-      for (const id_sample in syncData.widgets_Samples) {
-        for (const id_widget in syncData.widgets_Samples[id_sample]) {
-          defineStatus(id_widget, syncData.widgets_Samples[id_sample]);
-        }
-      }
+    for (const id_widget in syncData.widgets_Project) {
+      defineStatus(id_widget, syncData.widgets_Project);
     }
-
-    function updateCachedSyncData() {
-      for (let i = 0; i < SyncService.syncData.length; i++) {
-        if (SyncService.syncData[i].id_project === syncData.id_project) {
-          SyncService.syncData[i] = syncData;
-        }
+    for (const id_widget in syncData.widgets_Template) {
+      defineStatus(id_widget, syncData.widgets_Template);
+    }
+    for (const id_sample in syncData.samples) {
+      defineStatus(id_sample, syncData.samples);
+    }
+    for (const id_sample in syncData.widgets_Samples) {
+      for (const id_widget in syncData.widgets_Samples[id_sample]) {
+        defineStatus(id_widget, syncData.widgets_Samples[id_sample]);
       }
     }
 

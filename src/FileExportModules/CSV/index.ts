@@ -1,27 +1,22 @@
 import { GPS_DTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import DocumentFileExportService from '@Services/DocumentFileExportService';
-import ConfigService from '@Services/ConfigService';
-import DataProcessService from '@APIServices/DataProcessService';
 import { ConfigDTO } from '@Types/AppTypes';
+import DocumentFileExportService from '@Services/DocumentFileExportService';
+import ProjectService from '@Services/ProjectService';
 
 export default class CSV_Module {
 
-  static async buildAndShare_Project_AllCoordinates(
+  static async buildAndShare_Project_AllCoordinates(o: {
     id_project: string,
     fileName: string,
     config: ConfigDTO,
     feedback: (message: string) => void
-  ) {
+  }) {
 
-    const RS = translations.FileExportModules.share[ConfigService.config.language];
-    const R  = translations.FileExportModules.csv[ConfigService.config.language];
+    const R  = translations.FileExportModules.csv[o.config.language];
+    const projectDTO = await ProjectService.buildProjectDTO(o);
 
-    const projectDTO = await DataProcessService.buildProjectFromDatabase(id_project, config,
-      (feedbackMessage) => feedback(feedbackMessage)
-    );
-
-    feedback(RS['Mounting document']);
+    o.feedback('Mounting document');
     let document =
       this.stringToCSVText(R['Source'])                    + ',' +
       this.stringToCSVText(R['Widget name'])               + ',' +
@@ -71,8 +66,8 @@ export default class CSV_Module {
       }
     }
 
-    feedback(RS['Sharing document']);
-    await DocumentFileExportService.shareFile(`${fileName}.csv`, document, 'utf8');
+    o.feedback('Sharing document');
+    await DocumentFileExportService.shareFile(`${o.fileName}.csv`, document, 'utf8');
   }
 
   private static getCSVRow_GPS(gps: GPS_DTO | undefined, options: {

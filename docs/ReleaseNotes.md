@@ -1,7 +1,10 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.9.26 Download PopuUp and Services Refactor
+# 1.9.27 Upload PopuUp and Services Refactor.
 
-- REST Service created, to handle server calls and create errors specific to the calls
-- Download Service created, to handle logics behind data downloading.
-- Data Processing Service create, to focus on any type of data processing.
+- Services architecture map updated.
+- APIServices folder deleted
+- fetchAPIService deleted.
+- DataProcessService deleted
+- Upload Service created, to handle logics behind data uploading.
+- Now image upload updates syncData for each uploaded media.

@@ -1,5 +1,5 @@
 import { ConfigDTO } from '@Types/AppTypes';
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO } from '@Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
@@ -439,5 +439,79 @@ export default class ProjectService {
         `\n${JSON.stringify(error)}`
       );
     }
+  }
+
+
+
+
+
+
+
+
+
+
+
+  // ===============================================================================================
+  // ADVANCED DATABASE METHODS
+  // ===============================================================================================
+
+  static async buildProjectDTO(o: {
+    id_project: string
+    config: ConfigDTO
+    feedback: (message: string) => void
+  }): Promise<ProjectDTO> {
+
+    const R = translations.APIServices.dataProcess[o.config.language];
+
+    // GET PROJECT SETTINGS
+    o.feedback(R['Loading project settings']);
+    const projectSettings = await DatabaseService.readProject(o.id_project);
+
+    o.feedback(R['Loading project widgets']);
+    const projectWidgets = await DatabaseService.getAllWidgets({
+      path: 'project widgets',
+      id_project: o.id_project,
+    });
+
+    o.feedback(R['Loading project template']);
+    const templateWidgets = await DatabaseService.getAllWidgets({
+      path: 'template widgets',
+      id_project: o.id_project,
+    });
+
+    // GET ALL SAMPLES
+    o.feedback(R['Loading all sample settings']);
+    const samples: SampleDTO[] = [];
+    const samplesSettings = await DatabaseService.getAllSamples(o.id_project);
+    for (let i = 0; i < samplesSettings.length; i++) {
+      o.feedback(R['Loading sample widgets of'] + ` "${samplesSettings[i].name}".` + ` ID: ${samplesSettings[i].id_sample}`);
+      const sampleWidgets = await DatabaseService.getAllWidgets({
+        path: 'sample widgets',
+        id_project: o.id_project,
+        id_sample: samplesSettings[i].id_sample,
+      });
+      samples.push({
+        sampleSettings: samplesSettings[i],
+        sampleWidgets: sampleWidgets,
+      });
+    }
+
+    // GET SYNC DATA
+    o.feedback(R['Loading project sync data']);
+    const syncData = await DatabaseService.readSyncFile(o.id_project);
+
+    // SYNC PROJECT SETTINGS STATUS WITH PROJECT SYNC FILE
+    projectSettings.status = syncData.project;
+
+    // ASSEMBLY PROJECT
+    const projectDTO: ProjectDTO = {
+      projectSettings: projectSettings,
+      projectWidgets:  projectWidgets,
+      template:        templateWidgets,
+      samples:         samples,
+      syncData:        syncData,
+    };
+
+    return projectDTO;
   }
 }

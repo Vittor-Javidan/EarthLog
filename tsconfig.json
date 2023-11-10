@@ -4,7 +4,6 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
-      "@APIServices/*":       [ "APIServices/*"            ],
       "@FileExportModules/*": [ "FileExportModules/*"      ],
       "@Themes/*":            [ "Themes/*"                 ],
       "@Types/*":             [ "Types/*"                  ],

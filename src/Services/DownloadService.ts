@@ -95,7 +95,7 @@ export default class DownloadService {
         });
 
         o.feedback(R2['Processing project:'] + ` ${downloadedProject.projectSettings.name}`);
-        const processedProject = DataProcessingService.processDownloadedProject({
+        const processedProject = DataProcessingService.processProject_AfterDownload({
           ...o,
           projectDTO: downloadedProject,
         });

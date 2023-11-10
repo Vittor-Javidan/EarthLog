@@ -1,10 +1,11 @@
+import { version } from '../../package.json';
+
 /*
-  A.B.C.D
+  A.B.C
 
   A: app breaking changes version
-  B: app subversion
-  C: feature version
-  D: fix, refactor or current feature new commmit version
+  B: feature version
+  C: fix, refactor or new implementation
 */
 
-export const APP_VERSION: string = 'pre-alpha 0.1.9.26';
+export const APP_VERSION: string = version;

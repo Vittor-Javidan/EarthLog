@@ -39,6 +39,8 @@ export const ExportProject_DOCX = memo((props: {
       return;
     }
 
+    const { id_project } = props;
+
     setFeedbacks([ RS['Inicializing project export'] ]);
     setShow(prev => ({ ...prev,
       feedbackDisplay: true,
@@ -46,9 +48,9 @@ export const ExportProject_DOCX = memo((props: {
       showFooterButtons: false,
     }));
 
-    await DOCX_Module.buildAndShare_Project(props.id_project, fileName, config,
-      (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage]))
-    );
+    await DOCX_Module.buildAndShare_Project({ config, id_project, fileName,
+      feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
+    });
 
     AlertService.runAcceptCallback();
     props.closeModal();

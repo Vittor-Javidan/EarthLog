@@ -45,6 +45,13 @@ export default class MediaService {
     return DatabaseService.getPictureUri(id_project, id_picture);
   }
 
+  static async getPictureData(o: {
+    id_project: string
+    id_picture: string
+  }): Promise<string | null> {
+    return DatabaseService.getPictureData(o);
+  }
+
   static async savePicture(id_project: string, id_picture: string, data: string): Promise<void> {
     await DatabaseService.savePicture(id_project, id_picture, data);
   }
