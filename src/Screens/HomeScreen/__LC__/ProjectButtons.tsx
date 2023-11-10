@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { ProjectSettings, Status, UploadEntry } from '@Types/ProjectTypes';
+import { ProjectSettings, SyncData, UploadEntry } from '@Types/ProjectTypes';
 import { navigate } from '@Globals/NavigationControler';
 import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
@@ -25,7 +25,7 @@ export const ProjectButtons = memo((props: {
     <ProjectButton
       key={settings.id_project}
       title={settings.name}
-      status={SyncService.getSyncData(settings.id_project).project}
+      syncData={SyncService.getSyncData(settings.id_project)}
       uploads={settings.uploads}
       project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}
@@ -69,7 +69,7 @@ export const ProjectButtons = memo((props: {
 
 const ProjectButton = memo((props: {
   title: string
-  status: Status
+  syncData: SyncData
   uploads: UploadEntry[] | undefined
   project_id: string
   onPress: () => void
@@ -78,8 +78,6 @@ const ProjectButton = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const [pressed, setPressed] = useState<boolean>(false);
-
-  const showStatus = props.status !== 'new';
 
   const onPressIn = useCallback(() => {
     setPressed(true);
@@ -129,8 +127,8 @@ const ProjectButton = memo((props: {
             {props.project_id}
           </Text>
           <UploadStatus
-            showStatus={showStatus}
-            uploadStatus={props.status}
+            showStatus={props.syncData.project !== 'new'}
+            syncData={props.syncData}
             uploads={props.uploads}
             pressed={pressed}
           />

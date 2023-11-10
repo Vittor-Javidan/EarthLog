@@ -1,10 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.27 Upload PopuUp and Services Refactor.
+# 1.9.28 Missing Media Status Feedback
 
-- Services architecture map updated.
-- APIServices folder deleted
-- fetchAPIService deleted.
-- DataProcessService deleted
-- Upload Service created, to handle logics behind data uploading.
-- Now image upload updates syncData for each uploaded media.
+- Now project buttons display a status of "Media no uploaded" if the project uploads, but there is media not uploaded yet.
