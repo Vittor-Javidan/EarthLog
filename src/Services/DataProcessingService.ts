@@ -1,5 +1,5 @@
 import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
-import { DownloadedProjectDTO, ProjectDTO, Status, SyncData } from '@Types/ProjectTypes';
+import { DownloadedProjectDTO, InputData, ProjectDTO, Status, SyncData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import IDService from './IDService';
 import DateTimeService from './DateTimeService';
@@ -90,6 +90,7 @@ export default class DataProcessingService {
     for (let i = 0; i < o.projectDTO.projectWidgets.length; i++) {
       const id_widget = o.projectDTO.projectWidgets[i].id_widget;
       newSyncStatus_Project.widgets_Project[id_widget] = projectStatus;
+      mediaSyncStatus(o.projectDTO.projectWidgets[i].inputs);
     }
 
     for (let i = 0; i < o.projectDTO.template.length; i++) {
@@ -105,10 +106,22 @@ export default class DataProcessingService {
         const id_widget = o.projectDTO.samples[i].sampleWidgets[j].id_widget;
         newSyncStatus_Project.widgets_Samples[id_sample] ??= {};
         newSyncStatus_Project.widgets_Samples[id_sample][id_widget] = projectStatus;
+        mediaSyncStatus(o.projectDTO.samples[i].sampleWidgets[j].inputs);
       }
     }
 
     return newSyncStatus_Project;
+
+    function mediaSyncStatus(inputDataArray: InputData[]) {
+      for (let i = 0; i < inputDataArray.length; i++) {
+        const inputData = inputDataArray[i];
+        if (inputData.type === 'picture') {
+          for (let j = 0; j < inputData.value.length; j++) {
+            newSyncStatus_Project.pictures[inputData.value[j].id_picture] = 'uploaded';
+          }
+        }
+      }
+    }
   }
 
   private static job_AddUploadEntry(o: {

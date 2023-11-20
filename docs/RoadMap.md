@@ -18,8 +18,8 @@
 + Select Input
 + CameraComponent
 + Photo Input
++ Photo Upload API
 ~ Photo files export
-~ Photo Upload API
 - LTS versioning
 - Subscription Implementation
 - Public server with examples

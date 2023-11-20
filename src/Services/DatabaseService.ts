@@ -584,9 +584,7 @@ export default class DatabaseService {
     const { id_project, id_picture, photoUri } = options;
     const data = await FileSystemService.readFile(photoUri, 'base64');
     if (data !== null) {
-      const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
-      await FileSystemService.writeFile(path, data, 'base64');
-      await this.syncPicture(id_project, id_picture, 'creation');
+      await this.savePicture(id_project, id_picture, data, 'creation');
       onSave();
       return;
     }
@@ -605,11 +603,12 @@ export default class DatabaseService {
   static async savePicture(
     id_project: string,
     id_picture: string,
-    data: string
+    data: string,
+    operation: 'creation' | 'download'
   ): Promise<void> {
     const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
     await FileSystemService.writeFile(path, data, 'base64');
-    await this.syncPicture(id_project, id_picture, 'creation');
+    await this.syncPicture(id_project, id_picture, operation);
   }
 
   static getPictureUri(
@@ -718,12 +717,14 @@ export default class DatabaseService {
   static async syncPicture(
     id_project: string,
     id_picture: string,
-    operation: 'creation' | 'deletion',
+    operation: 'creation' | 'deletion' | 'download',
   ): Promise<void> {
-    const syncData = await this.readSyncFile(id_project);
-    this.defineStatus_Project(syncData);
-    this.defineStatus_Media(id_picture, syncData.pictures, operation);
-    await this.updateSyncFile(syncData);
+    if (operation !== 'download') {
+      const syncData = await this.readSyncFile(id_project);
+      this.defineStatus_Project(syncData);
+      this.defineStatus_Media(id_picture, syncData.pictures, operation);
+      await this.updateSyncFile(syncData);
+    }
   }
 
   /** Change project sync status by reference */

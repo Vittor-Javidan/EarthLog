@@ -2,18 +2,18 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
-import UtilService from '@Services/UtilService';
-import CameraService from '@Services/CameraService';
+import { translations } from '@Translations/index';
 import DateTimeService from '@Services/DateTimeService';
+import CameraService from '@Services/CameraService';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import MediaService from '@Services/MediaService';
+import CacheService from '@Services/CacheService';
+import UtilService from '@Services/UtilService';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
 import { PicturesCarousel } from './PicturesCarousel';
-import { translations } from '@Translations/index';
-import CacheService from '@Services/CacheService';
 
 export const PictureInput = memo((props: {
   widgetScope: WidgetScope
@@ -31,8 +31,9 @@ export const PictureInput = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [inputData       , setInputData       ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
-  const [show     , setShow     ] = useState({
+  const [inputData      , setInputData     ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
+  const [missingPictures, setMissingìctures] = useState<string[]>(CacheService.identifyMissingPicturesOnCache(inputData.value));
+  const [show           , setShow          ] = useState({
     openCamera: false,
   });
 
@@ -46,7 +47,7 @@ export const PictureInput = memo((props: {
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string) => {
-    const newData: PictureInputData = { ...inputData, label: newLabel};
+    const newData: PictureInputData = { ...inputData, label: newLabel };
     asyncSave(newData);
     setInputData(prev => ({ ...prev, label: newLabel}));
   }, [asyncSave, inputData]);
@@ -59,7 +60,7 @@ export const PictureInput = memo((props: {
         picturesAmount: inputData.value.length,
         picturesLimit: inputData.picturesAmountLimit,
       });
-      setShow(prev => ({ ...prev, openCamera: true}));
+      setShow(prev => ({ ...prev, openCamera: true }));
     }
   }, [inputData]);
 
@@ -85,8 +86,10 @@ export const PictureInput = memo((props: {
 
   const onPictureShare = useCallback(async (index: number) => {
     const { id_picture } = inputData.value[index];
-    await MediaService.sharePicture(props.widgetScope.id_project, id_picture);
-  }, [inputData]);
+    if (!missingPictures.includes(id_picture)) {
+      await MediaService.sharePicture(props.widgetScope.id_project, id_picture);
+    }
+  }, [inputData, missingPictures]);
 
   const onPictureDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
@@ -94,7 +97,7 @@ export const PictureInput = memo((props: {
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
       const { id_project } = props.widgetScope;
-      const newData: PictureInputData = { ...inputData };
+      const newData: PictureInputData = { ...inputData, value: [ ...inputData.value ] };
       await MediaService.deleteMedia({
         scope: 'picture',
         id_project: id_project,
@@ -112,6 +115,18 @@ export const PictureInput = memo((props: {
     setInputData(newData);
   }, [asyncSave, inputData]);
 
+  const onDownloadMissingPicture = useCallback(async (id_picture?: string) => {
+    const { id_project } = props.widgetScope;
+    await AlertService.handleAlert(true, {
+      type: 'download pictures',
+      id_project: id_project,
+      picturesIDs: id_picture ? [ id_picture ] : missingPictures,
+    }, () => {
+      console.log('checking missing pictures');
+      setMissingìctures(CacheService.identifyMissingPicturesOnCache(inputData.value));
+    });
+  }, [inputData, missingPictures]);
+
   useCameraWatcher(onPictureTake, () => {
     setShow(prev => ({ ...prev, openCamera: false }));
   }, [inputData, show.openCamera]);
@@ -124,10 +139,10 @@ export const PictureInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
-      onLabelChange={onLabelChange}
-      onInputDelete={props.onInputDelete}
-      onInputMoveUp={props.onInputMoveUp}
-      onInputMoveDow={props.onInputMoveDow}
+      onLabelChange={(newLabel) => onLabelChange(newLabel)}
+      onInputDelete={() => props.onInputDelete()}
+      onInputMoveUp={() => props.onInputMoveUp()}
+      onInputMoveDow={() => props.onInputMoveDow()}
       widgetRules={props.widgetRules}
       theme={props.theme}
       style={{
@@ -159,14 +174,16 @@ export const PictureInput = memo((props: {
         <PicturesCarousel
           id_project={props.widgetScope.id_project}
           pictures={inputData.value}
-          onPictureDelete={onPictureDelete}
-          onPictureShare={onPictureShare}
-          onDownloadPicture={() => {}}
-          onDescriptionChange={onDescriptionChange}
+          missingPictures={missingPictures}
+          onPictureDelete={(index) => onPictureDelete(index)}
+          onPictureShare={(index) => onPictureShare(index)}
+          onDescriptionChange={(text, index) => onDescriptionChange(text, index)}
+          onDownloadMissingPicture={(id_picture) => onDownloadMissingPicture(id_picture)}
+          onDownloadAllMissingPictures={() => onDownloadMissingPicture()}
           theme={props.theme}
         />
         <OpenCameraButton
-          onPress={openCamera}
+          onPress={() => openCamera()}
           theme={props.theme}
           showButton={(
             inputData.picturesAmountLimit === undefined ||
@@ -210,4 +227,3 @@ function useCameraWatcher(
     }
   }, [inputData, openCamera]);
 }
-

@@ -78,7 +78,7 @@ export const CreateProject = memo((props: {
           />
         </View>
       )}
-      <LC.Feedback
+      <LC.FeedbackDisplay
         showDisplay={show.feedbackDisplay}
         feedbackMessage={feedbacks}
       />

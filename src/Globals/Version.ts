@@ -1,4 +1,3 @@
-import { version } from '../../package.json';
 
 /*
   A.B.C
@@ -8,4 +7,4 @@ import { version } from '../../package.json';
   C: fix, refactor or new implementation
 */
 
-export const APP_VERSION: string = version;
+export const APP_VERSION: string = '1.9.29';

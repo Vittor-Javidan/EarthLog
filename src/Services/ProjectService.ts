@@ -140,28 +140,6 @@ export default class ProjectService {
     }
   }
 
-  static changeAllIds (widgetData: WidgetData) {
-
-    // Change Widget ID
-    widgetData.id_widget = UtilService.generateUuidV4();
-
-    for (let i = 0; i < widgetData.inputs.length; i++) {
-      const inputArray = widgetData.inputs[i];
-
-      // Change Input ID
-      inputArray.id_input = UtilService.generateUuidV4();
-
-      // Change Options IDs
-      if (inputArray.type === 'options') {
-        const options = inputArray.value;
-        for (let j = 0; j < options.length; j++) {
-          options[j].id = UtilService.generateUuidV4();
-        }
-      }
-    }
-
-    return widgetData;
-  }
 
 
 

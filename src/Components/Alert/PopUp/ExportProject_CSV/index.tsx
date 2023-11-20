@@ -74,7 +74,7 @@ export const ExportProject_CSV = memo((props: {
           autoFocus
         />
       )}
-      <LC.Feedback
+      <LC.FeedbackDisplay
         showDisplay={show.feedbackDisplay}
         feedbackMessage={feedbacks}
       />

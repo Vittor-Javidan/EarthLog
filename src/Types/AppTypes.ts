@@ -122,6 +122,10 @@ export type ModalConfig = {
 } | {
   type: 'warning'
   question: string
+} | {
+  type: 'download pictures'
+  id_project: string
+  picturesIDs: string[]
 }
 
 export type CameraLayerConfig = CameraPictureMode

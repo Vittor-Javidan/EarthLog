@@ -218,7 +218,7 @@ export default class RESTService {
       );
     }
 
-    return body.image;
+    return body.picture;
   }
 
   async postPicture(o: {

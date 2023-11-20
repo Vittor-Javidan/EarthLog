@@ -124,7 +124,7 @@ export default class DownloadService {
 
   }
 
-  async downloadImages(o: {
+  async downloadPictures(o: {
     config: ConfigDTO
     signal: AbortSignal
     id_project: string
@@ -145,15 +145,27 @@ export default class DownloadService {
 
       for (let i = 0; i < o.picturesIDs.length; i++) {
 
-        o.feedback('Fetching image. ID:' + ` ${o.picturesIDs[i]}`);
+        if (o.signal.aborted) {
+          o.feedback('Aborting.');
+          o.onFinish();
+          return;
+        }
+
+        o.feedback('Fetching picture. ID:' + ` ${o.picturesIDs[i]}`);
         const imageData = await this.restAPI.getPicture({
           ...o,
           accessToken: this.accessToken,
           id_picture: o.picturesIDs[i],
         });
 
-        o.feedback('Saving image.');
-        await MediaService.savePicture(o.id_project, o.picturesIDs[i], imageData);
+        if (o.signal.aborted) {
+          o.feedback('Aborting.');
+          o.onFinish();
+          return;
+        }
+
+        o.feedback('Saving picture.');
+        await MediaService.savePicture(o.id_project, o.picturesIDs[i], imageData, 'download');
       }
 
       o.onFinish();

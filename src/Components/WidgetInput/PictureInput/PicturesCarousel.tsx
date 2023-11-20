@@ -5,19 +5,20 @@ import PagerView from 'react-native-pager-view';
 import { PictureData, WidgetTheme } from '@Types/ProjectTypes';
 import MediaService from '@Services/MediaService';
 
-import { Button } from '@Button/index';
 import { Text } from '@Text/index';
-import CacheService from '@Services/CacheService';
+import { Button } from '@Button/index';
 import { Animation } from '@Animation/index';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
+  missingPictures: string[]
   theme: WidgetTheme
   onPictureShare: (index:number) => void
   onPictureDelete: (index: number) => void
   onDescriptionChange: (text: string, index: number) => void
-  onDownloadPicture: (id_picture: string) => void
+  onDownloadMissingPicture: (id_picture: string) => void
+  onDownloadAllMissingPictures: () => void
 }) => {
 
   const pageRef = useRef<PagerView | null>(null);
@@ -37,7 +38,7 @@ export const PicturesCarousel = memo((props: {
   }, [props.pictures, pageRef.current]);
 
   const AllImages = props.pictures.map(pictureData => {
-    return CacheService.allPicturesFiles.includes(`${pictureData.id_picture}.jpg`) ? (
+    return !props.missingPictures.includes(pictureData.id_picture) ? (
       <Image
         key={pictureData.id_picture}
         source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
@@ -50,24 +51,28 @@ export const PicturesCarousel = memo((props: {
         }}
       />
     ) : (
-      <Button.Icon
+      <View
         key={pictureData.id_picture}
-        iconName="download-outline"
-        onPress={() => props.onDownloadPicture(pictureData.id_picture)}
         style={{
+          flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          paddingHorizontal: 0,
-          paddingLeft: 10,
-          paddingVertical: 0,
         }}
-        theme={{
-          font: props.theme.background,
-          font_Pressed: props.theme.font,
-          background: props.theme.font,
-          background_Pressed: props.theme.background,
-        }}
-      />
+      >
+        <Button.RoundedIcon
+          key={pictureData.id_picture}
+          iconName="image"
+          buttonDiameter={80}
+          showPlusSign={false}
+          onPress={() => props.onDownloadMissingPicture(pictureData.id_picture)}
+          theme={{
+            font: props.theme.background,
+            font_Pressed: props.theme.font,
+            background: props.theme.font,
+            background_Pressed: props.theme.background,
+          }}
+        />
+      </View>
     );
   });
 
@@ -79,51 +84,63 @@ export const PicturesCarousel = memo((props: {
         width: '100%',
       }}
     >
-      <PagerView
-        initialPage={pictureIndex}
-        ref={pageRef}
-        onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
-        style={{
-          flex: 1,
-        }}
-      >
-        {AllImages}
-      </PagerView>
-      <IndexDisplay
-        selectedPicture={pictureIndex + 1}
-        pictureAmount={props.pictures.length}
-      />
-      <CarouselButtons
-        isFirstPicture={pictureIndex === 0}
-        isLastPicture={pictureIndex === props.pictures.length - 1}
-        onScrollLeft={() => scrollLeft(pictureIndex)}
-        onScrollRight={() => scrollRight(pictureIndex)}
-        onPictureShare={() => props.onPictureShare(pictureIndex)}
-        onPictureDelete={() => props.onPictureDelete(pictureIndex)}
-      />
+      {dimensions.height > 0 && (<>
+        <PagerView
+          initialPage={pictureIndex}
+          ref={pageRef}
+          onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
+          style={{
+            flex: 1,
+          }}
+        >
+          {AllImages}
+        </PagerView>
+        <IndexDisplay
+          selectedPicture={pictureIndex + 1}
+          pictureAmount={props.pictures.length}
+        />
+        <CarouselButtons
+          isPictureMissing={props.missingPictures.length > 0}
+          isFirstPicture={pictureIndex === 0}
+          isLastPicture={pictureIndex === props.pictures.length - 1}
+          onScrollLeft={() => scrollLeft(pictureIndex)}
+          onScrollRight={() => scrollRight(pictureIndex)}
+          onPictureShare={() => props.onPictureShare(pictureIndex)}
+          onPictureDelete={() => props.onPictureDelete(pictureIndex)}
+          onDownloadAllMissingPictures={() => props.onDownloadAllMissingPictures()}
+        />
+      </>)}
     </View>
-    <Animation.FadeOut
-      key={props.pictures[pictureIndex].id_picture}
-      delay={30}
-      duration={200}
-    >
-      <TextInput
-        value={props.pictures[pictureIndex].description}
-        placeholder={'- - - - - - - - - -'}
-        placeholderTextColor={props.theme.font_placeholder}
-        textAlign="center"
-        textAlignVertical="top"
-        multiline={true}
-        onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          paddingBottom: Platform.OS === 'ios' ? 10 : 0,
-          backgroundColor: props.theme.background,
-          color: props.theme.font,
-        }}
-      />
-    </Animation.FadeOut>
+    {/*TODO:
+      Move the input to outside this component, since is being possible to access propertie of undefined data.
+      clearly the block bellow do not sync in time when the its parent deletes the PictureData.
+    */}
+    {props.pictures[pictureIndex] !== undefined && (
+      <Animation.FadeOut
+        key={props.pictures[pictureIndex].id_picture}
+        delay={30}
+        duration={200}
+      >
+          <TextInput
+            value={props.pictures[pictureIndex].description}
+            placeholder={'- - - - - - - - - -'}
+            placeholderTextColor={props.theme.font_placeholder}
+            textAlign="center"
+            textAlignVertical="top"
+            multiline={true}
+            onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
+            style={{
+              alignSelf: 'center',
+              width: dimensions.width * 0.9,
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+              backgroundColor: props.theme.background,
+              color: props.theme.font,
+            }}
+          />
+      </Animation.FadeOut>
+    )}
   </>) : <></>;
 });
 
@@ -155,12 +172,14 @@ const IndexDisplay = memo((props: {
 });
 
 const CarouselButtons = memo((props: {
+  isPictureMissing: boolean
   isFirstPicture: boolean
   isLastPicture: boolean
   onScrollLeft: () => void
   onScrollRight: () => void
   onPictureShare: () => void
   onPictureDelete: () => void
+  onDownloadAllMissingPictures: () => void
 }) => {
   return (<>
     {!props.isFirstPicture && (
@@ -174,7 +193,7 @@ const CarouselButtons = memo((props: {
       >
         <Button.Icon
           iconName="chevron-back"
-          onPress={props.onScrollLeft}
+          onPress={() => props.onScrollLeft()}
           theme={{
             font: '#DDD',
             font_Pressed: '#666',
@@ -202,7 +221,7 @@ const CarouselButtons = memo((props: {
       >
         <Button.Icon
           iconName="chevron-forward"
-          onPress={props.onScrollRight}
+          onPress={() => props.onScrollRight()}
           theme={{
             font: '#DDD',
             font_Pressed: '#666',
@@ -229,9 +248,29 @@ const CarouselButtons = memo((props: {
         width: '100%',
       }}
     >
+      {props.isPictureMissing && (
+        <Button.Icon
+          iconName="download-outline"
+          onPress={() => props.onDownloadAllMissingPictures()}
+          theme={{
+            font: '#FFF',
+            font_Pressed: '#666',
+            background: '#666',
+            background_Pressed: '#222',
+          }}
+          style={{
+            backgroundColor: undefined,
+            height: 40,
+            width: 40,
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+            opacity: 0.5,
+          }}
+        />
+      )}
       <Button.Icon
         iconName="share-outline"
-        onPress={props.onPictureShare}
+        onPress={() => props.onPictureShare()}
         theme={{
           font: '#FFF',
           font_Pressed: '#666',
@@ -249,7 +288,7 @@ const CarouselButtons = memo((props: {
       />
       <Button.Icon
         iconName="trash"
-        onPress={props.onPictureDelete}
+        onPress={() => props.onPictureDelete()}
         theme={{
           font: '#FFF',
           font_Pressed: '#666',

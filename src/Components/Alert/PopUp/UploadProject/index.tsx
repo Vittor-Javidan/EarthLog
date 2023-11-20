@@ -7,8 +7,6 @@ import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 
 import { LC } from '@Alert/__LC__';
-import { CredentialsDisplay } from './CredentialsDisplay';
-import { ErrorDisplay } from './ErrorDisplay';
 import { FooterButtons } from './FooterButtons';
 
 export const UploadProjects = memo((props: {
@@ -19,6 +17,7 @@ export const UploadProjects = memo((props: {
   const controller = useMemo(() => new AbortController(), []);
   const config     = useMemo(() => ConfigService.config, []);
   const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
+  const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
   const [error    , setError    ] = useState<string | null>(null);
   const [feedbacks, setFeedbacks] = useState<string[]>([]);
   const [show     , setShow     ] = useState({
@@ -62,15 +61,16 @@ export const UploadProjects = memo((props: {
 
   return (
     <LC.PopUp>
-      <CredentialsDisplay
+      <LC.CredentialsDisplay
+        title={R['Upload this project to?']}
         showDisplay={show.credentialsDisplay}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
-      <ErrorDisplay
+      <LC.ErrorDisplay
         showDisplay={show.errorDisplay}
         error={error}
       />
-      <LC.Feedback
+      <LC.FeedbackDisplay
         showDisplay={show.loadingDisplay}
         feedbackMessage={feedbacks}
       />

@@ -11,6 +11,7 @@ import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
 import { ExportProject_DOCX } from './PopUp/ExportProject_DOCX';
 import { ExportProject_CSV } from './PopUp/ExportProject_CSV';
+import { DownloadPictures } from './PopUp/DownloadPictures';
 
 export const Selector = memo((props: {
   config: ModalConfig
@@ -66,6 +67,13 @@ export const Selector = memo((props: {
     case 'export project (CSV)': return (
       <ExportProject_CSV
         id_project={props.config.id_project}
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'download pictures': return (
+      <DownloadPictures
+        id_project={props.config.id_project}
+        picturesIDs={props.config.picturesIDs}
         closeModal={() => props.closeModal()}
       />
     );

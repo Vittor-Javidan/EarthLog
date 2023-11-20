@@ -8,8 +8,6 @@ import ConfigService from '@Services/ConfigService';
 import DownloadService from '@Services/DownloadService';
 
 import { LC } from '@Alert/__LC__';
-import { CredentialsDisplay } from './CredentialsDisplay';
-import { ErrorDisplay } from './ErrorDisplay';
 import { ProjectsDisplay } from './ProjectsDisplay';
 import { FooterButtons } from './FooterButtons';
 
@@ -116,11 +114,12 @@ export const DownloadProjects = memo((props: {
 
   return (
     <LC.PopUp>
-      <CredentialsDisplay
+      <LC.CredentialsDisplay
+        title={R['Download new projects from?']}
         showDisplay={show.credentialDisplay}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
-      <ErrorDisplay
+      <LC.ErrorDisplay
         showDisplay={showErrorDisplay}
         error={error}
       />
@@ -131,7 +130,7 @@ export const DownloadProjects = memo((props: {
           onSelect={(project_id, selected) => onSelectProject(project_id, selected)}
         />
       )}
-      <LC.Feedback
+      <LC.FeedbackDisplay
         showDisplay={show.loadingDisplay}
         feedbackMessage={feedbacks}
       />

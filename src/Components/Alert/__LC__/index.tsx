@@ -1,9 +1,13 @@
 import { PopUp } from './PopUp';
 import { Feedback } from './Feedback';
-import { FlexButton } from './FlexButton';
+import { CredentialsDisplay } from './CredemtialDisplay';
+import { ErrorDisplay } from './ErrorDisplay';
+import { TemplateWidgetCopyDisplay } from './TemplateWidgetsDisplay';
 
 export const LC = {
   PopUp: PopUp,
-  Feedback: Feedback,
-  FlexButton: FlexButton,
+  FeedbackDisplay: Feedback,
+  CredentialsDisplay: CredentialsDisplay,
+  ErrorDisplay: ErrorDisplay,
+  TemplateWidgetCopyDisplay: TemplateWidgetCopyDisplay,
 };

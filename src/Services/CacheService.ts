@@ -1,5 +1,5 @@
 import { ConfigDTO } from '@Types/AppTypes';
-import { ID, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { ID, PictureData, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
@@ -75,6 +75,16 @@ export default class CacheService {
     }
     const R = translations.service.cache[config.language];
     throw Error(R['ERROR: Sample does not exist on cache']);
+  }
+
+  static identifyMissingPicturesOnCache(picturesData: PictureData[]): string[] {
+    const missingPictures: string[] = [];
+    for (let i = 0; i < picturesData.length; i++) {
+      if (!CacheService.allPicturesFiles.includes(`${picturesData[i].id_picture}.jpg`)) {
+        missingPictures.push(picturesData[i].id_picture);
+      }
+    }
+    return missingPictures ?? [];
   }
 
   static updateCache_ProjectSettings(
