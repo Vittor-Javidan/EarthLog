@@ -8,28 +8,24 @@ export default class MediaService {
   // MEDIA
   // ===============================================================================================
 
-  static async deleteMedia(
-    options: {
-      scope: 'sample'
-      id_project: string
-      widgetArray: WidgetData[]
-    } | {
-      scope: 'widget'
-      id_project: string
-      widget: WidgetData
-    } | {
-      scope: 'input'
-      id_project: string
-      input: InputData
-    } | {
-      scope: 'picture'
-      id_project: string
-      id_media: string
-    },
-    onFinish: () => void
-  ): Promise<void> {
-    await DatabaseService.deleteMedia(options);
-    onFinish();
+  static async deleteMedia(o: {
+    scope: 'sample'
+    id_project: string
+    widgetArray: WidgetData[]
+  } | {
+    scope: 'widget'
+    id_project: string
+    widget: WidgetData
+  } | {
+    scope: 'input'
+    id_project: string
+    input: InputData
+  } | {
+    scope: 'picture'
+    id_project: string
+    id_media: string
+  }): Promise<void> {
+    await DatabaseService.deleteMedia(o);
   }
 
   // ===============================================================================================

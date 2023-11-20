@@ -19,7 +19,7 @@ export type SyncData = {
   widgets_Template: Record<string, Status | 'deleted'>
   samples:          Record<string, Status | 'deleted'>
   widgets_Samples:  Record<string, Record<string, Status | 'deleted'>>
-  pictures:         Record<string, Exclude<Status, 'modified'> | 'deleted'>
+  pictures:         Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>
 }
 
 export type DownloadedProjectDTO = {

@@ -158,7 +158,7 @@ export const Widget = memo((props: {
             scope: 'input',
             id_project: id_project,
             input: newData.inputs.splice(i, 1)[0],
-          }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
+          });
           break;
         }
       }

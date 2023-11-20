@@ -8,8 +8,8 @@ import CameraService from '@Services/CameraService';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 import MediaService from '@Services/MediaService';
-import CacheService from '@Services/CacheService';
 import UtilService from '@Services/UtilService';
+import SyncService from '@Services/SyncService';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
@@ -29,12 +29,13 @@ export const PictureInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
+  const id_project = useMemo(() => props.widgetScope.id_project, []);
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [inputData      , setInputData     ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
-  const [missingPictures, setMissingìctures] = useState<string[]>(CacheService.identifyMissingPicturesOnCache(inputData.value));
-  const [show           , setShow          ] = useState({
-    openCamera: false,
+  const [inputData         , setInputData        ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
+  const [allMissingPictures, setAllMissingìctures] = useState<string[]>(SyncService.identifyMissingPictures({ id_project }));
+  const [show              , setShow             ] = useState({
+    camera: false,
   });
 
   /**
@@ -60,7 +61,7 @@ export const PictureInput = memo((props: {
         picturesAmount: inputData.value.length,
         picturesLimit: inputData.picturesAmountLimit,
       });
-      setShow(prev => ({ ...prev, openCamera: true }));
+      setShow(prev => ({ ...prev, camera: true }));
     }
   }, [inputData]);
 
@@ -80,29 +81,28 @@ export const PictureInput = memo((props: {
       newData.picturesAmountLimit !== undefined &&
       newData.picturesAmountLimit === newData.value.length
     ) {
-      setShow(prev => ({ ...prev, openCamera: false}));
+      setShow(prev => ({ ...prev, camera: false}));
     }
   }, [asyncSave, inputData]);
 
   const onPictureShare = useCallback(async (index: number) => {
     const { id_picture } = inputData.value[index];
-    if (!missingPictures.includes(id_picture)) {
+    if (!allMissingPictures.includes(id_picture)) {
       await MediaService.sharePicture(props.widgetScope.id_project, id_picture);
     }
-  }, [inputData, missingPictures]);
+  }, [inputData, allMissingPictures]);
 
   const onPictureDelete = useCallback((index: number) => {
     AlertService.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
-      const { id_project } = props.widgetScope;
       const newData: PictureInputData = { ...inputData, value: [ ...inputData.value ] };
       await MediaService.deleteMedia({
         scope: 'picture',
         id_project: id_project,
         id_media: newData.value.splice(index, 1)[0].id_picture,
-      }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
+      });
       asyncSave(newData);
       setInputData(newData);
     });
@@ -116,20 +116,21 @@ export const PictureInput = memo((props: {
   }, [asyncSave, inputData]);
 
   const onDownloadMissingPicture = useCallback(async (id_picture?: string) => {
-    const { id_project } = props.widgetScope;
+    const picturesIDs = inputData.value.map(pictureData => pictureData.id_picture);
+    const inputMissingPictures = allMissingPictures.filter(id => picturesIDs.includes(id));
     await AlertService.handleAlert(true, {
       type: 'download pictures',
       id_project: id_project,
-      picturesIDs: id_picture ? [ id_picture ] : missingPictures,
-    }, () => {
-      console.log('checking missing pictures');
-      setMissingìctures(CacheService.identifyMissingPicturesOnCache(inputData.value));
+      picturesIDs: id_picture ? [ id_picture ] : inputMissingPictures,
+    }, async () => {
+      await SyncService.loadAllSyncData();
+      setAllMissingìctures(SyncService.identifyMissingPictures({ id_project }));
     });
-  }, [inputData, missingPictures]);
+  }, [inputData, allMissingPictures]);
 
   useCameraWatcher(onPictureTake, () => {
-    setShow(prev => ({ ...prev, openCamera: false }));
-  }, [inputData, show.openCamera]);
+    setShow(prev => ({ ...prev, camera: false }));
+  }, [inputData, show.camera]);
 
   return (
     <LC.Root
@@ -172,9 +173,9 @@ export const PictureInput = memo((props: {
           />
         )}
         <PicturesCarousel
-          id_project={props.widgetScope.id_project}
+          id_project={id_project}
           pictures={inputData.value}
-          missingPictures={missingPictures}
+          missingPictures={allMissingPictures}
           onPictureDelete={(index) => onPictureDelete(index)}
           onPictureShare={(index) => onPictureShare(index)}
           onDescriptionChange={(text, index) => onDescriptionChange(text, index)}

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
+import { ProjectSettings } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
 import CacheService from '@Services/CacheService';
@@ -13,7 +14,6 @@ import { Layout } from '@Layout/index';
 import { ProjectScreen } from '@Screens/ProjectScreen';
 import { TemplateScreen } from '@Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@Screens/ProjectInfoScreen';
-import { ProjectSettings } from '@Types/ProjectTypes';
 
 export default function ProjectScope() {
 
@@ -129,7 +129,6 @@ async function FetchData(
       CacheService.loadAllSamplesSettings(id_project),
       CacheService.loadAllWidgets_Project(id_project),
       CacheService.loadAllWidgets_Template(id_project),
-      CacheService.loadAllPicturesNameFiles(id_project),
     ];
     await Promise.all(promises);
   }

@@ -45,7 +45,7 @@ export const ProjectInfoScreen = memo((props: {
         scope: 'widget',
         id_project: id_project,
         widget: removedWidget,
-      }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
+      });
       CacheService.allWidgets_Project = newData;
       setProjectWidgets(newData);
     }, (errorMessage) => alert(errorMessage));

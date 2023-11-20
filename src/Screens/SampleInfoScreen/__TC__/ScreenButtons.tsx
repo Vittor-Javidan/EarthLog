@@ -31,7 +31,7 @@ export const ScreenButtons = memo(() => {
         scope: 'sample',
         id_project: id_project,
         widgetArray: CacheService.allWidgets_Sample,
-      }, async () => await CacheService.loadAllPicturesNameFiles(id_project));
+      });
       CacheService.removeFromSamples(id_sample);
       navigate('PROJECT SCOPE', id_project);
     }, (errorMessage) => alert(errorMessage));

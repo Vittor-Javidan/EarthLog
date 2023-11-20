@@ -40,6 +40,14 @@ export default class SyncService {
     }
   }
 
+  static identifyMissingPictures(o: {
+    id_project: string
+  }): string[] {
+    const syncData = this.getSyncData(o.id_project);
+    return Object.keys(syncData.pictures).filter(key => syncData.pictures[key] === 'on cloud');
+  }
+
+
 
 
 
@@ -108,10 +116,9 @@ export default class SyncService {
 
     function defineStatus(
       id_element: string,
-      recordList: Record<string, Exclude<Status, 'modified'> | 'deleted'>
+      recordList: Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>
     ) {
       switch (recordList[id_element]) {
-        case 'uploaded':  /*Do nothing*/ break;
         case 'new':       recordList[id_element] = 'uploaded'; break;
         case 'deleted':   delete recordList[id_element];       break;
       }

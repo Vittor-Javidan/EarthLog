@@ -561,18 +561,6 @@ export default class DatabaseService {
     }
   }
 
-  static async getAllPicturesNameFiles(
-    id_project: string
-  ): Promise<string[]> {
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures`;
-    const idsArray = await FileSystemService.readDirectory(path);
-    if (idsArray !== null) {
-      return idsArray;
-    }
-    alert('Pictures folder do not exist');
-    throw Error('Pictures folder do not exist');
-  }
-
   static async savePictureFromUri(
     options: {
       id_project: string,
@@ -719,12 +707,12 @@ export default class DatabaseService {
     id_picture: string,
     operation: 'creation' | 'deletion' | 'download',
   ): Promise<void> {
+    const syncData = await this.readSyncFile(id_project);
     if (operation !== 'download') {
-      const syncData = await this.readSyncFile(id_project);
       this.defineStatus_Project(syncData);
-      this.defineStatus_Media(id_picture, syncData.pictures, operation);
-      await this.updateSyncFile(syncData);
     }
+    this.defineStatus_Media(id_picture, syncData.pictures, operation);
+    await this.updateSyncFile(syncData);
   }
 
   /** Change project sync status by reference */
@@ -796,7 +784,6 @@ export default class DatabaseService {
           case 'uploaded': recordList[id_element] = 'deleted'; break;
           case 'new':      delete recordList[id_element];      break;
         }
-
         break;
       }
     }
@@ -804,10 +791,15 @@ export default class DatabaseService {
 
   private static defineStatus_Media(
     id_element: string,
-    recordList: Record<string, Exclude<Status, 'modified'> | 'deleted'>,
-    operation: 'creation' | 'deletion',
+    recordList: Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>,
+    operation: 'creation' | 'deletion' | 'download',
   ): void {
     switch (operation) {
+
+      case 'download': {
+        recordList[id_element] = 'uploaded';
+        break;
+      }
 
       case 'creation': {
         recordList[id_element] = 'new';
@@ -817,10 +809,10 @@ export default class DatabaseService {
       case 'deletion': {
 
         switch (recordList[id_element]) {
+          case 'on cloud': recordList[id_element] = 'deleted'; break;
           case 'uploaded': recordList[id_element] = 'deleted'; break;
           case 'new':      delete recordList[id_element];      break;
         }
-
         break;
       }
     }

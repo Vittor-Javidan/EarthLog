@@ -17,7 +17,7 @@ export default class DataProcessingService {
     // =============================================================================
 
     this.job_ChangeAllIDs(o);
-    this.job_InitialProjectSyncStatus(o);
+    this.job_InitialProjectStatus(o);
     const syncData = this.job_CreateSyncData(o);
 
     return {
@@ -58,7 +58,7 @@ export default class DataProcessingService {
     }
   }
 
-  private static job_InitialProjectSyncStatus(o: {
+  private static job_InitialProjectStatus(o: {
     config: ConfigDTO,
     projectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
@@ -117,7 +117,7 @@ export default class DataProcessingService {
         const inputData = inputDataArray[i];
         if (inputData.type === 'picture') {
           for (let j = 0; j < inputData.value.length; j++) {
-            newSyncStatus_Project.pictures[inputData.value[j].id_picture] = 'uploaded';
+            newSyncStatus_Project.pictures[inputData.value[j].id_picture] = 'on cloud';
           }
         }
       }

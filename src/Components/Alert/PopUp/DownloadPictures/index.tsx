@@ -2,13 +2,12 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
+import DownloadService from '@Services/DownloadService';
 import ConfigService from '@Services/ConfigService';
 import AlertService from '@Services/AlertService';
 
 import { LC } from '@Alert/__LC__';
 import { FooterButtons } from './FooterButtons';
-import DownloadService from '@Services/DownloadService';
-import CacheService from '@Services/CacheService';
 
 export const DownloadPictures = memo((props: {
   id_project: string
@@ -47,7 +46,6 @@ export const DownloadPictures = memo((props: {
       id_project: props.id_project,
       picturesIDs: props.picturesIDs,
       onFinish: async () => {
-        await CacheService.loadAllPicturesNameFiles(props.id_project);
         AlertService.runAcceptCallback();
         props.closeModal();
         setFeedbacks(prev => [ ...prev, RS['Done!']]);
