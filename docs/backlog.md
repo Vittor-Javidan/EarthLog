@@ -1,7 +1,7 @@
-- implemnet a download all pictures button on Project Scope menu.
 - fix translation files
 
 # After implementation finish
+- create a file for each drawer and navigation tree for all scopes
 - change all UtilServices.generateUuidV4 to IDService.
 - Add fade out animation for input rendering
 - Add fade out animation fro widget display rendering

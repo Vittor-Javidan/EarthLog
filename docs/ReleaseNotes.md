@@ -1,6 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.30 Image Sync status
+# 1.9.31 Download all pictures menu button
 
-- Now there is a new status for pictures called 'on cloud'
-- Now app identify missing pictures by consulting sync data.
+- added a buttonto download all pictures on project scope
+- Downloading all media forces the scope to restart.
+- alias path root changed to repo root.

@@ -1,13 +1,15 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { Loading } from '@Types/AppTypes';
 import { ProjectSettings } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
-import CacheService from '@Services/CacheService';
 import ConfigService from '@Services/ConfigService';
+import CacheService from '@Services/CacheService';
 import ThemeService from '@Services/ThemeService';
+import AlertService from '@Services/AlertService';
+import SyncService from '@Services/SyncService';
 
 import { Button } from '@Button/index';
 import { Layout } from '@Layout/index';
@@ -26,8 +28,21 @@ export default function ProjectScope() {
   const [state                   , setState                    ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
   const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
+  const [refresher               , refresh                     ] = useState<boolean>(true);
 
   const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
+
+  const onDownloadAllPictures = useCallback(async () => {
+    const allMissingPictures = SyncService.identifyMissingPictures({ id_project });
+    await AlertService.handleAlert(true, {
+      type: 'download pictures',
+      id_project: id_project,
+      picturesIDs: allMissingPictures,
+    }, async () => {
+      await SyncService.loadAllSyncData();
+      refresh(prev => !prev);
+    });
+  }, []);
 
   useEffect(() => {
     FetchData(id_project, () => setState('Loaded'));
@@ -35,10 +50,16 @@ export default function ProjectScope() {
 
   return (
     <Layout.Root
+      key={`${refresher}`}
       title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
-      drawerChildren={<Drawer projectSettings={projectSettings}/>}
       navigationTree={<NavigationTree />}
+      drawerChildren={
+        <Drawer
+          projectSettings={projectSettings}
+          onDownloadAllPictures={() => onDownloadAllPictures()}
+        />
+      }
     >
       {state === 'Loading' ? (
         <Layout.Loading />
@@ -95,9 +116,10 @@ const NavigationTree = memo(() => {
 
 const Drawer = memo((props: {
   projectSettings: ProjectSettings
+  onDownloadAllPictures: () => void
 }) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
+  const id_project = props.projectSettings.id_project;
   const config     = useMemo(() => ConfigService.config, []);
   const theme      = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R          = useMemo(() => translations.scope.project[config.language], []);
@@ -116,6 +138,17 @@ const Drawer = memo((props: {
         onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
       />
     )}
+    <Button.TextWithIcon
+      title={'Download all pictures'}
+      iconName="image"
+      theme={{
+        font: theme.font,
+        background: theme.background,
+        font_Pressed: theme.font_active,
+        background_Pressed: theme.background_active,
+      }}
+      onPress={() => props.onDownloadAllPictures()}
+    />
   </>);
 });
 
