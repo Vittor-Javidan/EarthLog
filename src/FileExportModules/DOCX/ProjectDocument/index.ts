@@ -1,25 +1,30 @@
-import { ProjectDTO } from '@Types/ProjectTypes';
 import { AlignmentType, HeadingLevel, Paragraph, TextRun } from 'docx';
 
+import { ConfigDTO } from '@Types/AppTypes';
+import { ProjectDTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
 
 import { document_ProjectWidgets } from '../ProjectWidgetsDocument';
 import { document_AllSamples } from '../AllSamplesDocument';
 
-export function document_Project(projectDTO: ProjectDTO) {
+export async function document_Project(o: {
+  config: ConfigDTO,
+  projectDTO: ProjectDTO,
+  feedback: (message: string) => void
+}) {
 
-  const R = translations.FileExportModules.docx[ConfigService.config.language];
+  const R = translations.FileExportModules.docx[o.config.language];
   const document: Paragraph[] = [];
 
   // DOCUMENT TITLE
+  o.feedback('Document title');
   document.push(
     new Paragraph({
       alignment: AlignmentType.CENTER,
       heading: HeadingLevel.HEADING_1,
       children: [
         new TextRun({
-          text: projectDTO.projectSettings.name,
+          text: o.projectDTO.projectSettings.name,
           bold: true,
           font: 'Calibri',
           size: `${18}pt`,
@@ -30,6 +35,7 @@ export function document_Project(projectDTO: ProjectDTO) {
   );
 
   // 1 - PROJECT INFO ========
+  o.feedback('Project info');
   document.push(new Paragraph({ text: '' }));
   document.push(new Paragraph({ text: '' }));
   document.push(
@@ -48,11 +54,12 @@ export function document_Project(projectDTO: ProjectDTO) {
     })
   );
   document.push(
-    ...document_ProjectWidgets(projectDTO),
+    ...await document_ProjectWidgets(o),
   );
 
   // 2 - SAMPLES =============
-  const sampleAlias_Plural = projectDTO.projectSettings.sampleAlias.plural;
+  o.feedback('Samples');
+  const sampleAlias_Plural = o.projectDTO.projectSettings.sampleAlias.plural;
   const sampleAliasToDisplay = sampleAlias_Plural !== '' ? sampleAlias_Plural : R['Samples'];
   document.push(new Paragraph({ text: '' }));
   document.push(
@@ -71,7 +78,7 @@ export function document_Project(projectDTO: ProjectDTO) {
     })
   );
   document.push(
-    ...document_AllSamples(projectDTO),
+    ...await document_AllSamples(o),
   );
 
   return document;

@@ -1,6 +1,6 @@
 import React, { ReactNode, memo, useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 
 export const FadeOut = memo((props: {
   delay: number
@@ -27,9 +27,6 @@ export const FadeOut = memo((props: {
         {
           opacity: opacity,
         },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: opacity.value }],
-        })),
       ]}
     >
       {props.children}

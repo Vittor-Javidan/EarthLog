@@ -1,12 +1,15 @@
 import { Paragraph, TextRun } from 'docx';
 
+import { ConfigDTO } from '@Types/AppTypes';
 import { OptionsInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
 
-export function InputDocument_Options(inputData: OptionsInputData) {
+export function InputDocument_Options(o: {
+  config: ConfigDTO
+  inputData: OptionsInputData
+}) {
 
-  const R = translations.FileExportModules.docx[ConfigService.config.language];
+  const R = translations.FileExportModules.docx[o.config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -18,15 +21,15 @@ export function InputDocument_Options(inputData: OptionsInputData) {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ inputData.label ],
+          children: [ o.inputData.label ],
         }),
       ],
     })
   );
 
   let amountPrinted = 0;
-  for (let i = 0; i < inputData.value.length; i++) {
-    if (inputData.value[i].checked === true) {
+  for (let i = 0; i < o.inputData.value.length; i++) {
+    if (o.inputData.value[i].checked === true) {
       amountPrinted++;
       document.push(
         new Paragraph({
@@ -35,7 +38,7 @@ export function InputDocument_Options(inputData: OptionsInputData) {
               color: '#000000',
               font: 'Calibri',
               size: `${12}pt`,
-              children: [inputData.value[i].optionLabel],
+              children: [o.inputData.value[i].optionLabel],
             }),
           ],
         })

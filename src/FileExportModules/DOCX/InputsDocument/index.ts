@@ -1,19 +1,28 @@
+import { Paragraph } from 'docx';
+
+import { ConfigDTO } from '@Types/AppTypes';
 import { InputData } from '@Types/ProjectTypes';
 
 import { InputDocument_String } from './String';
 import { InputDocument_Boolean } from './Boolean';
-import { InputDocument_GPS } from './GPS';
 import { InputDocument_Options } from './Options';
-import { Paragraph } from 'docx';
 import { InputDocument_Selection } from './Selection';
+import { InputDocument_GPS } from './GPS';
+import { InputDocument_Picture } from './Picture';
 
-export function document_inputData(inputData: InputData): Paragraph[] {
+export async function document_inputData(o: {
+  config: ConfigDTO
+  inputData: InputData
+}): Promise<Paragraph[]> {
+
+  const { inputData } = o;
+
   switch (inputData.type) {
-    case 'string':    return InputDocument_String(inputData);
-    case 'boolean':   return InputDocument_Boolean(inputData);
-    case 'options':   return InputDocument_Options(inputData);
-    case 'selection': return InputDocument_Selection(inputData);
-    case 'gps':       return InputDocument_GPS(inputData);
-    case 'picture':   return []; // TODO: Add picture document
+    case 'string':    return InputDocument_String({    ...o, inputData });
+    case 'boolean':   return InputDocument_Boolean({   ...o, inputData });
+    case 'options':   return InputDocument_Options({   ...o, inputData });
+    case 'selection': return InputDocument_Selection({ ...o, inputData });
+    case 'gps':       return InputDocument_GPS({       ...o, inputData });
+    case 'picture':   return InputDocument_Picture({   ...o, inputData });
   }
 }

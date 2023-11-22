@@ -20,7 +20,13 @@ export default class DOCX_Module {
     o.feedback('Mounting document');
     const document = new Document({
       sections: [{
-        children: [ ...document_Project(projectDTO) ],
+        children: [
+          ...await document_Project({
+            config: o.config,
+            projectDTO: projectDTO,
+            feedback: (message) => o.feedback(message),
+          }),
+        ],
       }],
     });
 

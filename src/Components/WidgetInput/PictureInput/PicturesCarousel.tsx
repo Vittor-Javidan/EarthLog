@@ -95,7 +95,8 @@ export const PicturesCarousel = memo((props: {
         >
           {AllImages}
         </PagerView>
-        <IndexDisplay
+        <InfoDisplay
+          id_picture={props.pictures[pictureIndex].id_picture}
           selectedPicture={pictureIndex + 1}
           pictureAmount={props.pictures.length}
         />
@@ -121,30 +122,38 @@ export const PicturesCarousel = memo((props: {
         delay={30}
         duration={200}
       >
-          <TextInput
-            value={props.pictures[pictureIndex].description}
-            placeholder={'- - - - - - - - - -'}
-            placeholderTextColor={props.theme.font_placeholder}
-            textAlign="center"
-            textAlignVertical="top"
-            multiline={true}
-            onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
-            style={{
-              alignSelf: 'center',
-              width: dimensions.width * 0.9,
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              paddingBottom: Platform.OS === 'ios' ? 10 : 0,
-              backgroundColor: props.theme.background,
-              color: props.theme.font,
-            }}
-          />
+        <Text h3
+          style={{
+            paddingHorizontal: 20,
+            color: props.theme.font,
+          }}
+        >
+          {`Picture ${pictureIndex + 1}: `}
+        </Text>
+        <TextInput
+          value={props.pictures[pictureIndex].description}
+          placeholder={'- - - - - - - - - -'}
+          placeholderTextColor={props.theme.font_placeholder}
+          textAlignVertical="top"
+          multiline={true}
+          onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
+          style={{
+            alignSelf: 'center',
+            width: dimensions.width,
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+            backgroundColor: props.theme.background,
+            color: props.theme.font,
+          }}
+        />
       </Animation.FadeOut>
     )}
   </>) : <></>;
 });
 
-const IndexDisplay = memo((props: {
+const InfoDisplay = memo((props: {
+  id_picture: string,
   selectedPicture: number,
   pictureAmount: number
 }) => {
@@ -154,15 +163,33 @@ const IndexDisplay = memo((props: {
         position: 'absolute',
         justifyContent: 'center',
         top: 10,
-        right: 10,
+        left: 10,
       }}
     >
-      <Text p
+      <Animation.FadeOut
+        key={props.id_picture}
+        delay={30}
+        duration={200}
+      >
+        <Text
+          style={{
+            color: '#FFF',
+            textShadowRadius: 5,
+            textShadowColor: '#000',
+            textShadowOffset: { width: 0, height: 0 },
+            fontSize: 10,
+          }}
+        >
+          {'ID: ' + props.id_picture}
+        </Text>
+      </Animation.FadeOut>
+      <Text
         style={{
           color: '#FFF',
           textShadowRadius: 5,
           textShadowColor: '#000',
           textShadowOffset: { width: 0, height: 0 },
+          fontSize: 10,
         }}
       >
         {props.selectedPicture.toString() + ' / ' + props.pictureAmount.toString()}

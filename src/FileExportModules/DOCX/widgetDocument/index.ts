@@ -1,10 +1,16 @@
 import { Paragraph, TextRun } from 'docx';
 
+import { ConfigDTO } from '@Types/AppTypes';
 import { WidgetData } from '@Types/ProjectTypes';
 
 import { document_inputData } from '../InputsDocument';
 
-export function document_Widget(widgetData: WidgetData) {
+export async function document_Widget(o: {
+  config: ConfigDTO
+  widgetData: WidgetData
+}) {
+
+  const { config, widgetData} = o;
 
   const document = [
     new Paragraph({
@@ -21,11 +27,20 @@ export function document_Widget(widgetData: WidgetData) {
   ];
 
   for (let i = 0; i < widgetData.inputs.length; i++) {
+
+    const inputData = widgetData.inputs[i];
     const isLastInput = i === widgetData.inputs.length - 1;
-    document.push(new Paragraph({ text: '' }));
-    document.push(...document_inputData(widgetData.inputs[i]));
+
+    document.push(
+      new Paragraph({ text: '' })
+    );
+    document.push(
+      ...await document_inputData({ config, inputData })
+    );
     if (isLastInput) {
-      document.push(new Paragraph({ text: '' }));
+      document.push(
+        new Paragraph({ text: '' })
+      );
     }
   }
 

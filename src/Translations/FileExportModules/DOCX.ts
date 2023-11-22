@@ -9,6 +9,8 @@ type TranslationDTO = Record<LanguageTag, {
   'Latitude:': string
   'Longitude:': string
   'Altitude:': string
+  'Picture': string
+  'Description': string
 }>
 
 export const R_FileExportModules_DOCX: TranslationDTO = {
@@ -21,6 +23,8 @@ export const R_FileExportModules_DOCX: TranslationDTO = {
     'Latitude:': 'Latitude:',
     'Longitude:': 'Longitude:',
     'Altitude:': 'Altitude:',
+    'Picture': 'Picture',
+    'Description': 'Description',
   },
   'pt-BR': {
     'Project info': 'Informações do projeto',
@@ -31,5 +35,7 @@ export const R_FileExportModules_DOCX: TranslationDTO = {
     'Latitude:': 'Latitude:',
     'Longitude:':'Longitude:',
     'Altitude:': 'Altitude:',
+    'Picture': 'Foto',
+    'Description': 'Descrição',
   },
 };

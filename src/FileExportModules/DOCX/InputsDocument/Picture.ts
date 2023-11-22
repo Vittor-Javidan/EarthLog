@@ -1,12 +1,12 @@
 import { Paragraph, TextRun } from 'docx';
 
 import { ConfigDTO } from '@Types/AppTypes';
-import { StringInputData } from '@Types/ProjectTypes';
+import { PictureInputData } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 
-export function InputDocument_String(o: {
+export async function InputDocument_Picture(o: {
   config: ConfigDTO
-  inputData: StringInputData
+  inputData: PictureInputData
 }) {
 
   const R = translations.FileExportModules.docx[o.config.language];
@@ -27,7 +27,13 @@ export function InputDocument_String(o: {
     })
   );
 
-  if (o.inputData.value !== '') {
+  for (let i = 0; i < o.inputData.value.length; i++) {
+
+    const { id_picture, description, dateAndTime } = o.inputData.value[i];
+    const pictureNumber = ` ${i + 1}`;
+    const isLast = i === o.inputData.value.length - 1;
+    const isDescriptionEmpty = description === '';
+
     document.push(
       new Paragraph({
         children: [
@@ -35,24 +41,33 @@ export function InputDocument_String(o: {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ o.inputData.value ],
+            children: [ R['Picture'], pictureNumber, ' - ', id_picture, ' - ', dateAndTime ],
           }),
         ],
       })
     );
-  } else {
     document.push(
       new Paragraph({
         children: [
           new TextRun({
-            color: '#FF0000',
+            color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ R['Empty'] ],
+            children: [ R['Description'], ': '],
+          }),
+          new TextRun({
+            color: isDescriptionEmpty ? '#FF0000' : '#000000',
+            font: 'Calibri',
+            size: `${12}pt`,
+            children: [ isDescriptionEmpty ? R['Empty'] : description ],
           }),
         ],
       })
     );
+
+    if (!isLast) {
+      document.push(new Paragraph({ text: '' }));
+    }
   }
 
   return document;

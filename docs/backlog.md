@@ -1,4 +1,4 @@
-- fix translation files
+- add a button to export all pictures
 
 # After implementation finish
 - create a file for each drawer and navigation tree for all scopes

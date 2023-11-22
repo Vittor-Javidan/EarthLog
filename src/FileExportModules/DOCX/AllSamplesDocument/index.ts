@@ -1,21 +1,29 @@
 import { HeadingLevel, Paragraph, TextRun } from 'docx';
 
 import { ProjectDTO } from '@Types/ProjectTypes';
+import { ConfigDTO } from '@Types/AppTypes';
 import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
 
 import { document_inputData } from '../InputsDocument';
 import { document_Widget } from '../widgetDocument';
 
-export function document_AllSamples(projectDTO: ProjectDTO) {
+export async function document_AllSamples(o: {
+  config: ConfigDTO
+  projectDTO: ProjectDTO
+}) {
 
-  const { samples } = projectDTO;
-  const R = translations.FileExportModules.docx[ConfigService.config.language];
+  const allSamples = o.projectDTO.samples;
+  const R = translations.FileExportModules.docx[o.config.language];
   const document: Paragraph[] = [];
 
   // SAMPLE INFO
-  for (let i = 0; i < samples.length; i++) {
-    document.push(new Paragraph({ text: '' }));
+  for (let i = 0; i < allSamples.length; i++) {
+
+    const sample = allSamples[i];
+
+    document.push(
+      new Paragraph({ text: '' })
+    );
     document.push(
       new Paragraph({
         heading: HeadingLevel.HEADING_3,
@@ -26,31 +34,50 @@ export function document_AllSamples(projectDTO: ProjectDTO) {
             color: '#000000',
             font: 'Calibri',
             size: `${14}pt`,
-            children: [ `2.${i + 1} `, samples[i].sampleSettings.name ],
+            children: [ `2.${i + 1} `, sample.sampleSettings.name ],
           }),
         ],
       })
     );
 
-    const sampleGPSReference = samples[i].sampleSettings.gps;
+    const sampleGPSReference = sample.sampleSettings.gps;
     if (sampleGPSReference) {
-      document.push(new Paragraph({ text: '' }));
       document.push(
-        ...document_inputData({
-          id_input: '',
-          type: 'gps',
-          label: R['Reference coordinate'],
-          value: sampleGPSReference,
+        new Paragraph({ text: '' })
+      );
+      document.push(
+        ...await document_inputData({
+          config: o.config,
+          inputData: {
+            id_input: '',
+            type: 'gps',
+            label: R['Reference coordinate'],
+            value: sampleGPSReference,
+          },
         })
       );
-      document.push(new Paragraph({ text: '' }));
+      document.push(
+        new Paragraph({ text: '' })
+      );
     }
 
     // SAMPLE WIDGETS
-    for (let j = 0; j < samples[i].sampleWidgets.length; j++) {
-      document.push(new Paragraph({ text: '' }));
-      document.push(...document_Widget(samples[i].sampleWidgets[j]));
-      document.push(new Paragraph({ text: '' }));
+    for (let j = 0; j < sample.sampleWidgets.length; j++) {
+
+      const widgetData = sample.sampleWidgets[j];
+
+      document.push(
+        new Paragraph({ text: '' })
+      );
+      document.push(
+        ...await document_Widget({
+          config: o.config,
+          widgetData: widgetData,
+        })
+      );
+      document.push(
+        new Paragraph({ text: '' })
+      );
     }
   }
 

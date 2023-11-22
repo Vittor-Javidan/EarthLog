@@ -1,18 +1,32 @@
 import { Paragraph } from 'docx';
 
+import { ConfigDTO } from '@Types/AppTypes';
 import { ProjectDTO } from '@Types/ProjectTypes';
 
 import { document_Widget } from '../widgetDocument';
 
-export function document_ProjectWidgets(projectDTO: ProjectDTO) {
+export async function document_ProjectWidgets(o: {
+  config: ConfigDTO
+  projectDTO: ProjectDTO
+}) {
 
-  const { projectWidgets } = projectDTO;
+  const { projectWidgets } = o.projectDTO;
   const document: Paragraph[] = [];
 
   for (let i = 0; i < projectWidgets.length; i++) {
-    document.push(new Paragraph({ text: '' }));
-    document.push(...document_Widget(projectWidgets[i]));
-    document.push(new Paragraph({ text: '' }));
+    const widgetData = projectWidgets[i];
+    document.push(
+      new Paragraph({ text: '' })
+    );
+    document.push(
+      ...await document_Widget({
+        config: o.config,
+        widgetData: widgetData,
+      })
+    );
+    document.push(
+      new Paragraph({ text: '' })
+    );
   }
 
   return document;
