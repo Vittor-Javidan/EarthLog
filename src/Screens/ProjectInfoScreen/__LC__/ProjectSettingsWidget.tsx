@@ -34,7 +34,7 @@ export const ProjectSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project, config)));
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutoSave_project(() => {
@@ -193,7 +193,6 @@ export const ProjectSettingsWidget = memo((props: {
  */
 function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean]) {
 
-  const config = useMemo(() => ConfigService.config, []);
   const [projectSettings, saved] = deps;
 
   useTimeout(async () => {
@@ -207,7 +206,7 @@ function useAutoSave_project(onSave: () => void, deps: [ProjectSettings, boolean
       sync: true,
     },
       () => {
-        CacheService.updateCache_ProjectSettings(projectSettings, config);
+        CacheService.updateCache_ProjectSettings(projectSettings);
         onSave();
       },
       (erroMessage) => alert(erroMessage)

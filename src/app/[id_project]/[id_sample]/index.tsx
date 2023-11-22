@@ -10,15 +10,13 @@ import UtilService from '@Services/UtilService';
 import { Layout } from '@Layout/index';
 import { SampleDataScreens } from '@Screens/SampleScreen';
 import { SampleInfoScreen } from '@Screens/SampleInfoScreen';
-import ConfigService from '@Services/ConfigService';
 
 export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-  const config          = useMemo(() => ConfigService.config, []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
-  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample, config), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);

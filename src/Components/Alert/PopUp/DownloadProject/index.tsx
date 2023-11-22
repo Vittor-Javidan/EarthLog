@@ -49,7 +49,6 @@ export const DownloadProjects = memo((props: {
 
     const downloadAPI = new DownloadService(credential);
     await downloadAPI.getAvailableProjects({
-      config: config,
       signal: controller.signal,
       onSuccess: (projects) => {
         setAllProjects(projects);
@@ -95,7 +94,6 @@ export const DownloadProjects = memo((props: {
     }));
 
     await downloadAPi.downloadProjects({
-      config: config,
       signal: controller.signal,
       projectIDs: Object.keys(selectedProjects),
       onFinish: () => {

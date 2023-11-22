@@ -34,7 +34,7 @@ export const SampleSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample, config)));
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutosave_sample(() => {
@@ -130,7 +130,6 @@ export const SampleSettingsWidget = memo((props: {
  */
 function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean]) {
 
-  const config     = useMemo(() => ConfigService.config, []);
   const id_project = useLocalSearchParams().id_project as string;
   const [sampleSettings, saved] = deps;
 
@@ -145,7 +144,7 @@ function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean])
       sampleSettings: sampleSettings,
       sync: true,
     }, () => {
-      CacheService.updateCache_SampleSettings(sampleSettings, config);
+      CacheService.updateCache_SampleSettings(sampleSettings);
       onSave();
     }, (erroMessage) => alert(erroMessage));
 

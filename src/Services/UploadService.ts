@@ -1,12 +1,11 @@
 import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
-import { translations } from '@Translations/index';
 import { navigate } from '@Globals/NavigationControler';
-import RESTService from './RESTService';
-import SyncService from './SyncService';
+import DataProcessingService from './DataProcessingService';
+import ProjectService from './ProjectService';
 import MediaService from './MediaService';
 import CacheService from './CacheService';
-import ProjectService from './ProjectService';
-import DataProcessingService from './DataProcessingService';
+import RESTService from './RESTService';
+import SyncService from './SyncService';
 
 export default class UploadService {
 
@@ -36,9 +35,6 @@ export default class UploadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
-
     try {
 
       const accessToken = this.accessToken ?? await this.getAccessToken(o);
@@ -107,7 +103,7 @@ export default class UploadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
           default: o.onError(error.message);
         }
         return;

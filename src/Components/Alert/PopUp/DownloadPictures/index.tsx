@@ -41,7 +41,6 @@ export const DownloadPictures = memo((props: {
 
     const downloadAPI = new DownloadService(credential);
     await downloadAPI.downloadPictures({
-      config: config,
       signal: controller.signal,
       id_project: props.id_project,
       picturesIDs: props.picturesIDs,

@@ -1,12 +1,11 @@
-import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
+import { CredentialDTO } from '@Types/AppTypes';
 import { ProjectSettings } from '@Types/ProjectTypes';
-import { translations } from '@Translations/index';
+import DataProcessingService from './DataProcessingService';
 import ProjectService from './ProjectService';
+import MediaService from './MediaService';
 import CacheService from './CacheService';
 import SyncService from './SyncService';
-import MediaService from './MediaService';
 import RESTService from './RESTService';
-import DataProcessingService from './DataProcessingService';
 
 export default class DownloadService {
 
@@ -18,26 +17,20 @@ export default class DownloadService {
   }
 
   private async getAccessToken(o: {
-    config: ConfigDTO
     signal: AbortSignal
     onError: (errorMessage: string) => void
     feedback: (feedbackMessage: string) => void
   }): Promise<void> {
-    const R = translations.APIServices.fetchAPI[o.config.language];
-    o.feedback(R['Connecting to server:'] + ` ${this.restAPI.credential.name}`);
+    o.feedback('Connecting to server:' + ` ${this.restAPI.credential.name}`);
     this.accessToken = await this.restAPI.auth(o);
   }
 
   async getAvailableProjects(o: {
-    config: ConfigDTO
     signal: AbortSignal
     onSuccess: (projects: ProjectSettings[]) => void
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
-
     try {
 
       this.accessToken ?? await this.getAccessToken(o);
@@ -56,7 +49,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
           default: o.onError(error.message);
         }
         return;
@@ -65,17 +58,12 @@ export default class DownloadService {
   }
 
   async downloadProjects(o: {
-    config: ConfigDTO
     signal: AbortSignal
     projectIDs: string[]
     onFinish: () => void
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
-    const R2 = translations.APIServices.dataProcess[o.config.language];
-
     try {
 
       this.accessToken ?? await this.getAccessToken(o);
@@ -94,14 +82,14 @@ export default class DownloadService {
           id_project: id_project,
         });
 
-        o.feedback(R2['Processing project:'] + ` ${downloadedProject.projectSettings.name}`);
+        o.feedback('Processing project:' + ` ${downloadedProject.projectSettings.name}`);
         const processedProject = DataProcessingService.processProject_AfterDownload({
           ...o,
           projectDTO: downloadedProject,
         });
 
         o.feedback('Saving project');
-        await ProjectService.createProject(processedProject, o.config,
+        await ProjectService.createProject(processedProject,
         () => {
           CacheService.addToAllProjects(processedProject.projectSettings);
           SyncService.addToSyncData(processedProject.syncData);
@@ -115,7 +103,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
           default: o.onError(error.message);
         }
         return;
@@ -125,7 +113,6 @@ export default class DownloadService {
   }
 
   async downloadPictures(o: {
-    config: ConfigDTO
     signal: AbortSignal
     id_project: string
     picturesIDs: string[]
@@ -133,9 +120,6 @@ export default class DownloadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }) {
-
-    const R = translations.APIServices.fetchAPI[o.config.language];
-
     try {
 
       this.accessToken ?? await this.getAccessToken(o);
@@ -173,7 +157,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError(R['Network request failed. Did your phone or server lose internet connection?']); break;
+          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
           default: o.onError(error.message);
         }
         return;

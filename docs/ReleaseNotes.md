@@ -1,7 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.31 Download all pictures menu button
+# 1.9.32 translations ajustments
 
-- added a buttonto download all pictures on project scope
-- Downloading all media forces the scope to restart.
-- alias path root changed to repo root.
+- added translation for 'Download all pictures' button.
+- removed translations for feedback and services

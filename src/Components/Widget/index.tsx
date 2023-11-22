@@ -265,7 +265,6 @@ export const Widget = memo((props: {
  */
 function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, boolean]) {
 
-  const config = useMemo(() => ConfigService.config, []);
   const [widgetData, widgetScope, saved] = deps;
 
   useTimeout(async () => {
@@ -283,7 +282,7 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           widgetData: widgetData,
           sync: true,
         }, () => {
-          CacheService.updateCache_ProjectWidget(widgetData, config);
+          CacheService.updateCache_ProjectWidget(widgetData);
           onSave();
         }, (erroMessage) => alert(erroMessage));
         break;
@@ -296,7 +295,7 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           widgetData: widgetData,
           sync: true,
         }, () => {
-          CacheService.updateCache_TemplateWidget(widgetData, config);
+          CacheService.updateCache_TemplateWidget(widgetData);
           onSave();
         }, (erroMessage) => alert(erroMessage));
         break;
@@ -310,7 +309,7 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           widgetData: widgetData,
           sync: true,
         }, () => {
-          CacheService.updateCache_SampleWidget(widgetData, config);
+          CacheService.updateCache_SampleWidget(widgetData);
           onSave();
         }, (erroMessage) => alert(erroMessage));
         break;

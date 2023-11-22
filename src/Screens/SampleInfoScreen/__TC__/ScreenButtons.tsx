@@ -17,7 +17,7 @@ export const ScreenButtons = memo(() => {
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample, config), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 

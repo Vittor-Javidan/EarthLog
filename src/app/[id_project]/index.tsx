@@ -23,7 +23,7 @@ export default function ProjectScope() {
 
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.project[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project, config), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
 
   const [state                   , setState                    ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
@@ -139,7 +139,7 @@ const Drawer = memo((props: {
       />
     )}
     <Button.TextWithIcon
-      title={'Download all pictures'}
+      title={R['Download all pictures']}
       iconName="image"
       theme={{
         font: theme.font,

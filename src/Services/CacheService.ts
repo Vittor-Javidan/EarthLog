@@ -1,6 +1,4 @@
-import { ConfigDTO } from '@Types/AppTypes';
 import { ID, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
-import { translations } from '@Translations/index';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
 
@@ -51,33 +49,28 @@ export default class CacheService {
 
   static getProjectFromCache(
     id_project: string,
-    config: ConfigDTO
   ): ProjectSettings {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         return this.allProjects[i];
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Project does not exist on cache']);
+    throw Error('ERROR: Project does not exist on cache');
   }
 
   static getSampleFromCache(
     id_sample: string,
-    config: ConfigDTO
   ): SampleSettings {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         return this.allSamples[i];
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Sample does not exist on cache']);
+    throw Error('ERROR: Sample does not exist on cache');
   }
 
   static updateCache_ProjectSettings(
     projectSettings: ProjectSettings,
-    config: ConfigDTO,
   ) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
@@ -85,13 +78,11 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Project does not exist on cache']);
+    throw Error('ERROR: Project does not exist on cache');
   }
 
   static updateCache_SampleSettings(
     sampleSettings: SampleSettings,
-    config: ConfigDTO,
   ) {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
@@ -99,13 +90,11 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Sample does not exist on cache']);
+    throw Error('ERROR: Sample does not exist on cache');
   }
 
   static updateCache_ProjectWidget(
     widgetData: WidgetData,
-    config: ConfigDTO,
   ) {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
@@ -113,13 +102,11 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Project Widget does not exist on cache']);
+    throw Error('ERROR: Project Widget does not exist on cache');
   }
 
   static updateCache_TemplateWidget(
     widgetData: WidgetData,
-    config: ConfigDTO,
   ) {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
@@ -127,13 +114,11 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Template Widget does not exist on cache']);
+    throw Error('ERROR: Template Widget does not exist on cache');
   }
 
   static updateCache_SampleWidget(
     widgetData: WidgetData,
-    config: ConfigDTO,
   ) {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
@@ -141,8 +126,7 @@ export default class CacheService {
         return;
       }
     }
-    const R = translations.service.cache[config.language];
-    throw Error(R['ERROR: Sample Widget does not exist on cache']);
+    throw Error('ERROR: Sample Widget does not exist on cache');
   }
 
   static async loadAllProjectsSettings(): Promise<void> {

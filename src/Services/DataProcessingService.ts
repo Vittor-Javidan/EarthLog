@@ -1,13 +1,11 @@
 import { ConfigDTO, CredentialDTO } from '@Types/AppTypes';
 import { DownloadedProjectDTO, InputData, ProjectDTO, Status, SyncData } from '@Types/ProjectTypes';
-import { translations } from '@Translations/index';
 import IDService from './IDService';
 import DateTimeService from './DateTimeService';
 
 export default class DataProcessingService {
 
   static processProject_AfterDownload(o: {
-    config: ConfigDTO,
     projectDTO: DownloadedProjectDTO,
     feedback: (message: string) => void
   }): ProjectDTO {
@@ -32,11 +30,10 @@ export default class DataProcessingService {
     projectDTO: ProjectDTO
     feedback: (message: string) => void
   }): void {
-    this.job_AddUploadEntry(o);
+    this.job_AddUploadDateAndTimeEntry(o);
   }
 
   static processProject_AfterUpload(o: {
-    config: ConfigDTO
     projectDTO: ProjectDTO
     feedback: (message: string) => void
   }) {
@@ -44,14 +41,12 @@ export default class DataProcessingService {
   }
 
   private static job_ChangeAllIDs(o: {
-    config: ConfigDTO,
     projectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }) {
-    const R = translations.APIServices.dataProcess[o.config.language];
     const { rules } = o.projectDTO.projectSettings;
     if (rules.allowMultipleDownloads) {
-      o.feedback(R['Changing all IDs']);
+      o.feedback('Changing all IDs');
       IDService.changeIDsByReference_Project(o.projectDTO);
       o.projectDTO.projectSettings.status = 'new';
       delete rules.allowMultipleDownloads;
@@ -59,7 +54,6 @@ export default class DataProcessingService {
   }
 
   private static job_InitialProjectStatus(o: {
-    config: ConfigDTO,
     projectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }) {
@@ -70,7 +64,6 @@ export default class DataProcessingService {
   }
 
   private static job_CreateSyncData(o: {
-    config: ConfigDTO,
     projectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }): SyncData {
@@ -124,17 +117,13 @@ export default class DataProcessingService {
     }
   }
 
-  private static job_AddUploadEntry(o: {
+  private static job_AddUploadDateAndTimeEntry(o: {
     credential: CredentialDTO
     projectDTO: ProjectDTO
     config: ConfigDTO
     feedback: (message: string) => void
   }): void {
-
-    const R = translations.APIServices.dataProcess[o.config.language];
-
-    // Upload Date/Time entry ================
-    o.feedback(R['Attaching upload date and time']);
+    o.feedback('Attaching upload date and time');
     o.projectDTO.projectSettings.uploads ??= [];
     o.projectDTO.projectSettings.uploads.push({
       url:     o.credential.rootURL,
@@ -147,7 +136,6 @@ export default class DataProcessingService {
   }
 
   private static job_DefineProjectAsUploaded(o:{
-    config: ConfigDTO,
     projectDTO: ProjectDTO
     feedback: (message: string) => void
   }) {

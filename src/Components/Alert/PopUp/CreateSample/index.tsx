@@ -28,7 +28,7 @@ export const CreateSample = memo((props: {
       return;
     }
 
-    const projectSettings = CacheService.getProjectFromCache(props.id_project, config);
+    const projectSettings = CacheService.getProjectFromCache(props.id_project);
     const newSampleSettings = ProjectService.getDefaultSampleSettings({
       name: name,
       gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,

@@ -1,8 +1,5 @@
 import { useRouter } from 'expo-router';
 
-import { translations } from '@Translations/index';
-import ConfigService from '@Services/ConfigService';
-
 import AppRoutes from './AppRoutes';
 
 type ScreenName = (
@@ -26,8 +23,6 @@ export function navigate(
   id_sample?: string,
 ) {
 
-  const config = ConfigService.config;
-  const R      = translations.global.navigationController[config.language];
   const navController = useRouter();
 
   switch (screen) {
@@ -45,7 +40,7 @@ export function navigate(
     case 'PROJECT SCOPE': {
 
       if (id_project === undefined) {
-        alert(R['Project ID undefined']);
+        alert('Project ID undefined');
         break;
       }
 
@@ -56,7 +51,7 @@ export function navigate(
     case 'EXPORT PROJECT SCOPE': {
 
       if (id_project === undefined) {
-        alert(R['Project ID undefined']);
+        alert('Project ID undefined');
         break;
       }
 
@@ -67,12 +62,12 @@ export function navigate(
     case 'SAMPLE SCOPE': {
 
       if (id_project === undefined) {
-        alert(R['Project ID undefined']);
+        alert('Project ID undefined');
         break;
       }
 
       if (id_sample === undefined) {
-        alert(R['Sample ID undefined']);
+        alert('Sample ID undefined');
         break;
       }
 

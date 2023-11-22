@@ -42,7 +42,7 @@ export const CreateProject = memo((props: {
     }));
 
     const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
-    await ProjectService.createProject(newProject, config, () => {
+    await ProjectService.createProject(newProject, () => {
       setFeedbacks(prev => ([ ...prev, RS['Done!']]));
       CacheService.addToAllProjects(newProject.projectSettings);
       SyncService.addToSyncData(newProject.syncData);
