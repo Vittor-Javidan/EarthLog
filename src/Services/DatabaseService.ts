@@ -1,9 +1,7 @@
 import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData, InputData, Status } from '@Types/ProjectTypes';
-import FileSystemService from './FileSystemService';
+import FileSystemService, { AppPath } from './FileSystemService';
 import LocalStorageService from './LocalStorageService';
 import IDService from './IDService';
-
-const DATA_BASE_DIRECTORY = `${FileSystemService.APP_MAIN_DIRECTORY}/database`;
 
 export default class DatabaseService {
 
@@ -12,17 +10,17 @@ export default class DatabaseService {
   // ===============================================================================================
 
   static async createDatabaseFolder(): Promise<void> {
-    const databaseFolderContents = await FileSystemService.readDirectory(DATA_BASE_DIRECTORY);
+    const databaseFolderContents = await FileSystemService.readDirectory(AppPath.DATABASE.ROOT);
     if (databaseFolderContents === null) {
-      const indexFilePath = `${DATA_BASE_DIRECTORY}/index.json`;
+      const indexFilePath = `${AppPath.DATABASE.ROOT}/index.json`;
       const indexJsonData = JSON.stringify([], null, 4);
-      await FileSystemService.createDirectory(DATA_BASE_DIRECTORY);
+      await FileSystemService.createDirectory(AppPath.DATABASE.ROOT);
       await FileSystemService.writeFile(indexFilePath, indexJsonData);
     }
   }
 
   static async deleteDatabaseFolder(): Promise<void> {
-    await FileSystemService.delete(DATA_BASE_DIRECTORY);
+    await FileSystemService.delete(AppPath.DATABASE.ROOT);
     await this.deleteLastOpenProject();
   }
 
@@ -75,7 +73,7 @@ export default class DatabaseService {
   }
 
   static async getAllProjects(): Promise<ProjectSettings[]> {
-    const allProjectsIDs = await this.readIndexFile(DATA_BASE_DIRECTORY);
+    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
     const allSettings: ProjectSettings[] = [];
     for (let i = 0; i < allProjectsIDs.length; i++) {
       const projectSettings = await this.readProject(allProjectsIDs[i]);
@@ -103,10 +101,10 @@ export default class DatabaseService {
     await createFiles();
 
     async function updateIndexFile() {
-      const allProjectsIDs = await DatabaseService.readIndexFile(DATA_BASE_DIRECTORY);
+      const allProjectsIDs = await DatabaseService.readIndexFile(AppPath.DATABASE.ROOT);
       if (!allProjectsIDs.includes(id_project)) {
         allProjectsIDs.push(id_project);
-        await DatabaseService.updateIndexFile(DATA_BASE_DIRECTORY, allProjectsIDs);
+        await DatabaseService.updateIndexFile(AppPath.DATABASE.ROOT, allProjectsIDs);
         return;
       }
       alert(`Not possible to create 2 projects with same ID. ID: ${id_project}`);
@@ -117,19 +115,19 @@ export default class DatabaseService {
       const projectSettingsJsonData  = JSON.stringify(projectSettings, null, 4);
       const indexJsonData            = JSON.stringify([], null, 4);
       const syncJsonData             = JSON.stringify(syncData, null, 4);
-      const projectFolderPath        = `${DATA_BASE_DIRECTORY}/${id_project}`;
-      const projectSettingsPath      = `${DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`;
-      const projectWidgetsFolderPath = `${DATA_BASE_DIRECTORY}/${id_project}/projectWidgets`;
-      const projectWidgetsIndexPath  = `${DATA_BASE_DIRECTORY}/${id_project}/projectWidgets/index.json`;
-      const templateFolderPath       = `${DATA_BASE_DIRECTORY}/${id_project}/template`;
-      const templateIndexPath        = `${DATA_BASE_DIRECTORY}/${id_project}/template/index.json`;
-      const samplesFolderPath        = `${DATA_BASE_DIRECTORY}/${id_project}/samples`;
-      const samplesIndexPath         = `${DATA_BASE_DIRECTORY}/${id_project}/samples/index.json`;
-      const mediaFolderPath          = `${DATA_BASE_DIRECTORY}/${id_project}/media`;
-      const picturesFolderPath       = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures`;
-      const videosFolderPath         = `${DATA_BASE_DIRECTORY}/${id_project}/media/videos`;
-      const audiosFolderPath         = `${DATA_BASE_DIRECTORY}/${id_project}/media/audios`;
-      const syncFilePath             = `${DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`;
+      const projectFolderPath        = `${AppPath.DATABASE.ROOT}/${id_project}`;
+      const projectSettingsPath      = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
+      const projectWidgetsFolderPath = `${AppPath.DATABASE.ROOT}/${id_project}/projectWidgets`;
+      const projectWidgetsIndexPath  = `${AppPath.DATABASE.ROOT}/${id_project}/projectWidgets/index.json`;
+      const templateFolderPath       = `${AppPath.DATABASE.ROOT}/${id_project}/template`;
+      const templateIndexPath        = `${AppPath.DATABASE.ROOT}/${id_project}/template/index.json`;
+      const samplesFolderPath        = `${AppPath.DATABASE.ROOT}/${id_project}/samples`;
+      const samplesIndexPath         = `${AppPath.DATABASE.ROOT}/${id_project}/samples/index.json`;
+      const mediaFolderPath          = `${AppPath.DATABASE.ROOT}/${id_project}/media`;
+      const picturesFolderPath       = `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures`;
+      const videosFolderPath         = `${AppPath.DATABASE.ROOT}/${id_project}/media/videos`;
+      const audiosFolderPath         = `${AppPath.DATABASE.ROOT}/${id_project}/media/audios`;
+      const syncFilePath             = `${AppPath.DATABASE.ROOT}/${id_project}/syncStatus.json`;
       await FileSystemService.createDirectory(projectFolderPath);
       await FileSystemService.createDirectory(projectWidgetsFolderPath);
       await FileSystemService.createDirectory(templateFolderPath);
@@ -149,7 +147,7 @@ export default class DatabaseService {
   static async readProject(
     id_project: string
   ): Promise<ProjectSettings> {
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
     const fileData = await FileSystemService.readFile(path);
     if (fileData !== null) {
       return JSON.parse(fileData);
@@ -163,7 +161,7 @@ export default class DatabaseService {
     sync: boolean
   }): Promise<void> {
     const { id_project } = options.projectSettings;
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/projectSettings.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
     const jsonData = JSON.stringify(options.projectSettings, null, 4);
     await FileSystemService.writeFile(path, jsonData);
     await this.syncProject({ ...options, operation: 'updating' });
@@ -172,10 +170,10 @@ export default class DatabaseService {
   static async deleteProject(
     id_project: string
   ): Promise<void> {
-    const allProjectsIDs = await this.readIndexFile(DATA_BASE_DIRECTORY);
+    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
     const newIDs = allProjectsIDs.filter(ID => ID !== id_project);
-    await this.updateIndexFile(DATA_BASE_DIRECTORY, newIDs);
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}`;
+    await this.updateIndexFile(AppPath.DATABASE.ROOT, newIDs);
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}`;
     await FileSystemService.delete(path);
   }
 
@@ -187,7 +185,7 @@ export default class DatabaseService {
     id_project: string
   ): Promise<SampleSettings[]> {
 
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/samples`;
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}/samples`;
     const allSamplesIDs = await this.readIndexFile(path);
     return await allSampleSettings();
 
@@ -218,7 +216,7 @@ export default class DatabaseService {
     await copyTemplateWidgets();
 
     async function updateIndexFile() {
-      const path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples`;
+      const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples`;
       const allSamplesIDs = await DatabaseService.readIndexFile(path);
       if (!allSamplesIDs.includes(id_sample)) {
         allSamplesIDs.push(id_sample);
@@ -230,10 +228,10 @@ export default class DatabaseService {
     }
 
     async function createFiles() {
-      const mainFolderPath          = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${id_sample}`;
-      const sampleSettingsFilePath  = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
-      const sampleWidgetsfolderPath = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${id_sample}/sampleWidgets`;
-      const indexFilePath           = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${id_sample}/sampleWidgets/index.json`;
+      const mainFolderPath          = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}`;
+      const sampleSettingsFilePath  = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
+      const sampleWidgetsfolderPath = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleWidgets`;
+      const indexFilePath           = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleWidgets/index.json`;
       const sampleSettingsJsonData  = JSON.stringify(options.sampleSettings, null, 4);
       const indexJsonData           = JSON.stringify([], null, 4);
       await FileSystemService.createDirectory(mainFolderPath);
@@ -268,7 +266,7 @@ export default class DatabaseService {
     id_project: string,
     id_sample: string
   }): Promise<SampleSettings> {
-    const path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleSettings.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleSettings.json`;
     const fileData = await FileSystemService.readFile(path);
     return await JSON.parse(fileData as string) as SampleSettings;
   }
@@ -279,7 +277,7 @@ export default class DatabaseService {
     sync: boolean,
   }): Promise<void> {
     const { id_sample } = options.sampleSettings;
-    const path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
     const jsonData = JSON.stringify(options.sampleSettings, null, 4);
     await FileSystemService.writeFile(path, jsonData);
     await this.syncSample({ ...options, operation: 'updating' });
@@ -292,7 +290,7 @@ export default class DatabaseService {
   }): Promise<void> {
 
     const { id_sample } = options.sampleSettings;
-    const samplesFolder = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples`;
+    const samplesFolder = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples`;
     await removeSampleIndex(samplesFolder, id_sample);
     await deleteSampleFolder(options.id_project, id_sample);
     await this.syncSample({ ...options, operation: 'deletion'});
@@ -301,7 +299,7 @@ export default class DatabaseService {
       id_project: string,
       id_sample: string,
     ): Promise<void> {
-      const sampleFolderPath = `${DATA_BASE_DIRECTORY}/${id_project}/samples/${id_sample}`;
+      const sampleFolderPath = `${AppPath.DATABASE.ROOT}/${id_project}/samples/${id_sample}`;
       await FileSystemService.delete(sampleFolderPath);
     }
 
@@ -330,9 +328,9 @@ export default class DatabaseService {
 
     let path;
     switch (options.path) {
-      case 'project widgets':   path = `${DATA_BASE_DIRECTORY}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets':  path = `${DATA_BASE_DIRECTORY}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':    path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+      case 'project widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
+      case 'template widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
+      case 'sample widgets':    path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
     }
     const allWidgetsIDs = await this.readIndexFile(path);
     const allWidgetsData: WidgetData[] = [];
@@ -360,9 +358,9 @@ export default class DatabaseService {
 
     let path;
     switch (options.path) {
-      case 'project widgets':  path = `${DATA_BASE_DIRECTORY}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${DATA_BASE_DIRECTORY}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
+      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
+      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
     }
 
     await updateIndexFiles(path);
@@ -402,9 +400,9 @@ export default class DatabaseService {
 
     let path;
     switch (options.path) {
-      case 'project widgets':  path = `${DATA_BASE_DIRECTORY}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${DATA_BASE_DIRECTORY}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
+      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
+      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
     }
 
     return await readFile(path);
@@ -437,9 +435,9 @@ export default class DatabaseService {
 
     let path;
     switch (options.path) {
-      case 'project widgets':  path = `${DATA_BASE_DIRECTORY}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${DATA_BASE_DIRECTORY}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
+      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
+      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
     }
 
     await updateFile(path);
@@ -468,9 +466,9 @@ export default class DatabaseService {
 
     let path;
     switch (options.path) {
-      case 'project widgets':  path = `${DATA_BASE_DIRECTORY}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${DATA_BASE_DIRECTORY}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${DATA_BASE_DIRECTORY}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
+      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
+      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
     }
 
     await updateIndexFile(path);
@@ -551,7 +549,7 @@ export default class DatabaseService {
       const syncData = await DatabaseService.readSyncFile(options.id_project);
 
       for (let i = 0; i < ids_pictures.length; i++) {
-        const path = `${DATA_BASE_DIRECTORY}/${options.id_project}/media/pictures/${ids_pictures[i]}.jpg`;
+        const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/media/pictures/${ids_pictures[i]}.jpg`;
         promises.push(FileSystemService.delete(path));
         DatabaseService.defineStatus_Media(ids_pictures[i], syncData.pictures, 'deletion');
       }
@@ -594,7 +592,7 @@ export default class DatabaseService {
     data: string,
     operation: 'creation' | 'download'
   ): Promise<void> {
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures/${id_picture}.jpg`;
     await FileSystemService.writeFile(path, data, 'base64');
     await this.syncPicture(id_project, id_picture, operation);
   }
@@ -603,7 +601,7 @@ export default class DatabaseService {
     id_project: string,
     id_picture: string
   ): string {
-    return `${DATA_BASE_DIRECTORY}/${id_project}/media/pictures/${id_picture}.jpg`;
+    return `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures/${id_picture}.jpg`;
   }
 
 
@@ -612,7 +610,7 @@ export default class DatabaseService {
   // ===============================================================================================
 
   static async getAllSyncData(): Promise<SyncData[]> {
-    const allProjectsIDs = await this.readIndexFile(DATA_BASE_DIRECTORY);
+    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
     const allSyncStatus: SyncData[] = [];
     for (let i = 0; i < allProjectsIDs.length; i++) {
       const syncData = await this.readSyncFile(allProjectsIDs[i]);
@@ -624,7 +622,7 @@ export default class DatabaseService {
   static async readSyncFile(
     id_project: string
   ): Promise<SyncData> {
-    const path = `${DATA_BASE_DIRECTORY}/${id_project}/syncStatus.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${id_project}/syncStatus.json`;
     const fileData = await FileSystemService.readFile(path);
     if (fileData !== null) {
       return JSON.parse(fileData);
@@ -635,7 +633,7 @@ export default class DatabaseService {
   static async updateSyncFile(
     syncData: SyncData
   ): Promise<void> {
-    const path = `${DATA_BASE_DIRECTORY}/${syncData.id_project}/syncStatus.json`;
+    const path = `${AppPath.DATABASE.ROOT}/${syncData.id_project}/syncStatus.json`;
     const jsonData = JSON.stringify(syncData, null, 4);
     await FileSystemService.writeFile(path, jsonData);
   }

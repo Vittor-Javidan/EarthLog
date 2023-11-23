@@ -1,10 +1,10 @@
 import { CredentialDTO } from '@Types/AppTypes';
-import FileSystemService from './FileSystemService';
+import FileSystemService, { AppPath } from './FileSystemService';
 import UtilService from './UtilService';
 
 export default class CredentialService {
 
-  private static CREDENTIAL_DIRECTORY    = `${FileSystemService.APP_MAIN_DIRECTORY}/ServersCredentials`;
+  private static CREDENTIALS_FILE_PATH  = `${AppPath.CREDENTIALS}/index.json`;
   static allCredentials: CredentialDTO[] = [];
 
   // ===============================================================================================
@@ -34,39 +34,32 @@ export default class CredentialService {
   // ===============================================================================================
 
   static async deleteCredentialsFolder(): Promise<void> {
-    await FileSystemService.delete(this.CREDENTIAL_DIRECTORY);
+    await FileSystemService.delete(AppPath.CREDENTIALS);
   }
 
   static async createCredentialsFolder(): Promise<void> {
-    const folderContents = await FileSystemService.readDirectory(this.CREDENTIAL_DIRECTORY);
+    const folderContents = await FileSystemService.readDirectory(AppPath.CREDENTIALS);
     if (folderContents === null) {
 
       // MAIN FOLDER
-      await FileSystemService.createDirectory(this.CREDENTIAL_DIRECTORY);
+      await FileSystemService.createDirectory(AppPath.CREDENTIALS);
 
       // CREDENTIALS FILE
-      await FileSystemService.writeFile(
-        `${this.CREDENTIAL_DIRECTORY}/index.json`,
-        JSON.stringify([])
-      );
+      await FileSystemService.writeFile(this.CREDENTIALS_FILE_PATH, JSON.stringify([]));
     }
   }
 
   static async getAllCredentials(): Promise<CredentialDTO[]> {
 
     // READ CREDENTIALS
-    const fileData = await FileSystemService.readFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`
-    );
+    const fileData = await FileSystemService.readFile(this.CREDENTIALS_FILE_PATH);
     return JSON.parse(fileData as string) as CredentialDTO[];
   }
 
   static async createCredential(newCredential: CredentialDTO): Promise<void> {
 
     // READ CREDENTIALS
-    const fileData = await FileSystemService.readFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`
-    );
+    const fileData = await FileSystemService.readFile(this.CREDENTIALS_FILE_PATH);
 
     // ADD
     const allCredentials = [
@@ -75,10 +68,7 @@ export default class CredentialService {
     ];
 
     // SAVE
-    await FileSystemService.writeFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`,
-      JSON.stringify(allCredentials),
-    );
+    await FileSystemService.writeFile(this.CREDENTIALS_FILE_PATH, JSON.stringify(allCredentials));
 
     // ADD TO CACHE
     this.allCredentials = [...this.allCredentials, newCredential];
@@ -87,9 +77,7 @@ export default class CredentialService {
   static async updateCredential(credential: CredentialDTO): Promise<void> {
 
     // READ CREDENTIALS
-    const fileData = await FileSystemService.readFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`
-    );
+    const fileData = await FileSystemService.readFile(this.CREDENTIALS_FILE_PATH);
 
     // PARSE DATA
     const allCredentials = JSON.parse(fileData as string) as CredentialDTO[];
@@ -103,17 +91,14 @@ export default class CredentialService {
     }
 
     // SAVE
-    await FileSystemService.writeFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`,
-      JSON.stringify(allCredentials),
-    );
+    await FileSystemService.writeFile(this.CREDENTIALS_FILE_PATH, JSON.stringify(allCredentials));
   }
 
   static async deleteCredential(credential: CredentialDTO): Promise<void> {
 
     // READ CREDENTIALS
     const fileData = await FileSystemService.readFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`
+      this.CREDENTIALS_FILE_PATH
     );
 
     // PARSE DATA
@@ -128,10 +113,7 @@ export default class CredentialService {
     }
 
     // SAVE
-    await FileSystemService.writeFile(
-      `${this.CREDENTIAL_DIRECTORY}/index.json`,
-      JSON.stringify(allCredentials),
-    );
+    await FileSystemService.writeFile(this.CREDENTIALS_FILE_PATH, JSON.stringify(allCredentials));
 
     // REMOVE FROM CACHE
     for (let i = 0; i < this.allCredentials.length; i++) {

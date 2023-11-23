@@ -1,12 +1,13 @@
 import { ConfigDTO } from '@Types/AppTypes';
-import LocalStorageService from './LocalStorageService';
+import FileSystemService, { AppPath } from './FileSystemService';
+import DateTimeService from './DateTimeService';
 import LanguageService from './LanguageService';
 import ThemeService from './ThemeService';
-import DateTimeService from './DateTimeService';
 
 export default class ConfigService {
 
-  static LOCAL_STORAGE_KEY: string = 'config';
+  private static CONFIG_FILE_PATH = `${AppPath.CONFIG}/index.json`;
+
   static deviceLanguage = LanguageService.getDeviceLanguage();
   static config: ConfigDTO = {
     language:     this.deviceLanguage,
@@ -18,7 +19,7 @@ export default class ConfigService {
   };
 
   static async loadConfig(): Promise<void> {
-    const data = await LocalStorageService.getData(ConfigService.LOCAL_STORAGE_KEY);
+    const data = await FileSystemService.readFile(this.CONFIG_FILE_PATH);
     if (data) {
       const verifiedData = this.verifyConfigDTOIntegrity(JSON.parse(data));
       this.config = verifiedData;
@@ -26,7 +27,7 @@ export default class ConfigService {
   }
 
   static async saveConfig(): Promise<void> {
-    await LocalStorageService.saveData(ConfigService.LOCAL_STORAGE_KEY, JSON.stringify(this.config));
+    await FileSystemService.writeFile(this.CONFIG_FILE_PATH, JSON.stringify(this.config));
   }
 
   /** Garantees migration when local storage config data is outdated */

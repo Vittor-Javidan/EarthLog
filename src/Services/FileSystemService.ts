@@ -1,18 +1,36 @@
 import * as ExpoFileSystem from 'expo-file-system';
 
+const ROOT = `${ExpoFileSystem.documentDirectory?.slice(0, -1)}`;
+const LTS_VERSION = '/V1';
+
+export const AppPath = {
+  ROOT        : `${ROOT}${LTS_VERSION}`,
+  CONFIG      : `${ROOT}${LTS_VERSION}/Config`,
+  CREDENTIALS : `${ROOT}${LTS_VERSION}/ServersCredentials`,
+  TEMP        : `${ROOT}${LTS_VERSION}/TemporaryFiles`,
+  DATABASE    : {
+    ROOT      : `${ROOT}${LTS_VERSION}/database`,
+    MEDIA     : (id_project: string) => `${ROOT}${LTS_VERSION}/database/${id_project}/media`,
+    PICTURES  : (id_project: string) => `${ROOT}${LTS_VERSION}/database/${id_project}/media/pictures`,
+    VIDEOS    : (id_project: string) => `${ROOT}${LTS_VERSION}/database/${id_project}/media/videos`,
+    AUDIOS    : (id_project: string) => `${ROOT}${LTS_VERSION}/database/${id_project}/media/audios`,
+  },
+};
+
 export default class FileSystemService {
 
-  static APP_MAIN_DIRECTORY = `${ExpoFileSystem.documentDirectory?.slice(0, -1)}`;
+  static async init(): Promise<void> {
+    await this.createDirectory(AppPath.ROOT);
+  }
 
   /**
-   * Deletes a directory recusively if exists. If a file is specified on the delete path, only the
-   * file will be deleted.
-   * @param directory directory, with file name included or not.
+   * Creates a new directory if not exist.
+   * @param directory directory path
    */
-  static async delete(directory: string): Promise<void> {
+  static async createDirectory(directory: string): Promise<void> {
     const directoryExists = (await ExpoFileSystem.getInfoAsync(directory)).exists;
-    if (directoryExists) {
-      await ExpoFileSystem.deleteAsync(directory);
+    if (!directoryExists) {
+      await ExpoFileSystem.makeDirectoryAsync(directory);
     }
   }
 
@@ -29,14 +47,12 @@ export default class FileSystemService {
   }
 
   /**
-   * Creates a new directory if not exist.
-   * @param directory directory path
+   * Update or create a file for a given directory.
+   * @param directory directory of the file, with file name included.
+   * @param data stringfied data to be saved on the file.
    */
-  static async createDirectory(directory: string): Promise<void> {
-    const directoryExists = (await ExpoFileSystem.getInfoAsync(directory)).exists;
-    if (!directoryExists) {
-      await ExpoFileSystem.makeDirectoryAsync(directory);
-    }
+  static async writeFile(directory: string, data: string, encoding?: 'utf8' | 'base64'): Promise<void> {
+    await ExpoFileSystem.writeAsStringAsync(directory, data, { encoding: encoding ?? 'utf8' });
   }
 
   /**
@@ -52,11 +68,14 @@ export default class FileSystemService {
   }
 
   /**
-   * Update or create a file for a given directory.
-   * @param directory directory of the file, with file name included.
-   * @param data stringfied data to be saved on the file.
+   * Deletes a directory recusively if exists. If a file is specified on the delete path, only the
+   * file will be deleted.
+   * @param directory directory, with file name included or not.
    */
-  static async writeFile(directory: string, data: string, encoding?: 'utf8' | 'base64'): Promise<void> {
-    await ExpoFileSystem.writeAsStringAsync(directory, data, { encoding: encoding ?? 'utf8' });
+  static async delete(directory: string): Promise<void> {
+    const directoryExists = (await ExpoFileSystem.getInfoAsync(directory)).exists;
+    if (directoryExists) {
+      await ExpoFileSystem.deleteAsync(directory);
+    }
   }
 }

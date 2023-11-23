@@ -7,4 +7,4 @@
   C: fix, refactor or new implementation
 */
 
-export const APP_VERSION: string = '1.9.33';
+export const APP_VERSION: string = '1.9.34';

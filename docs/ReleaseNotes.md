@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.33 Pictures info docx export
+# 1.9.34 File Path versioning
 
-- Added formatting for picture input on docx exports
+- Now directories includes a '/V1' before in their directories path, to indicate it belongs to LTS version 1
