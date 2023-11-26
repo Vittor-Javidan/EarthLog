@@ -1,12 +1,10 @@
 import { ConfigDTO } from '@Types/AppTypes';
-import FileSystemService, { AppPath } from './FileSystemService';
+import { FOLDER_Config } from './FileSystemService';
 import DateTimeService from './DateTimeService';
 import LanguageService from './LanguageService';
 import ThemeService from './ThemeService';
 
 export default class ConfigService {
-
-  private static CONFIG_FILE_PATH = `${AppPath.CONFIG}/index.json`;
 
   static deviceLanguage = LanguageService.getDeviceLanguage();
   static config: ConfigDTO = {
@@ -19,15 +17,15 @@ export default class ConfigService {
   };
 
   static async loadConfig(): Promise<void> {
-    const data = await FileSystemService.readFile(this.CONFIG_FILE_PATH);
-    if (data) {
-      const verifiedData = this.verifyConfigDTOIntegrity(JSON.parse(data));
-      this.config = verifiedData;
+    const config = await FOLDER_Config.get();
+    if (config) {
+      const verifiedConfig = this.verifyConfigDTOIntegrity(config);
+      this.config = verifiedConfig;
     }
   }
 
   static async saveConfig(): Promise<void> {
-    await FileSystemService.writeFile(this.CONFIG_FILE_PATH, JSON.stringify(this.config));
+    await FOLDER_Config.update(this.config);
   }
 
   /** Garantees migration when local storage config data is outdated */

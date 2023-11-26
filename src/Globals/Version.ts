@@ -2,9 +2,11 @@
 /*
   A.B.C
 
-  A: app breaking changes version
+  A: LTS version number
   B: feature version
   C: fix, refactor or new implementation
 */
 
-export const APP_VERSION: string = '1.9.34';
+const VERSION = 1;
+export const LTS_VERSION = `V${VERSION}`;
+export const APP_VERSION = `${VERSION}.9.35`;

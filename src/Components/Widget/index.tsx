@@ -2,7 +2,7 @@ import React, { useMemo, useState, memo, useCallback, useTransition } from 'reac
 import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { useTimeout } from '@Hooks/index';
 import UtilService from '@Services/UtilService';
@@ -115,7 +115,7 @@ export const Widget = memo((props: {
     });
   }, []);
 
-  const onMoveUp = useCallback((id_input: ID) => {
+  const onMoveUp = useCallback((id_input: string) => {
     setSaved(false);
     setWidgetData(prev => {
       for (let i = 0; i < prev.inputs.length; i++) {
@@ -130,7 +130,7 @@ export const Widget = memo((props: {
     });
   }, []);
 
-  const onMoveDown = useCallback((id_input: ID) => {
+  const onMoveDown = useCallback((id_input: string) => {
     setSaved(false);
     setWidgetData(prev => {
       for (let i = 0; i < prev.inputs.length; i++) {
@@ -145,7 +145,7 @@ export const Widget = memo((props: {
     });
   }, []);
 
-  const onInputDelete = useCallback(async (id_input: ID) => {
+  const onInputDelete = useCallback(async (id_input: string) => {
     await AlertService.handleAlert(true, {
       type: 'warning',
       question: R['This will delete any info or media related to this field. This action is permanent and cannot be undone.'],
@@ -154,7 +154,7 @@ export const Widget = memo((props: {
       const newData: WidgetData = { ...widgetData };
       for (let i = 0; i < newData.inputs.length; i++) {
         if (newData.inputs[i].id_input === id_input) {
-          await MediaService.deleteMedia({
+          await MediaService.deleteMediaRecursively({
             scope: 'input',
             id_project: id_project,
             input: newData.inputs.splice(i, 1)[0],

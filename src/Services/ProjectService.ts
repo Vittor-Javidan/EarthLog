@@ -165,6 +165,7 @@ export default class ProjectService {
       projectWidgets,
       template,
       samples,
+      syncData,
     } = projectDTO;
 
     const {
@@ -174,7 +175,7 @@ export default class ProjectService {
     try {
 
       feedback('Creating project folder');
-      await DatabaseService.createProject(projectSettings);
+      await DatabaseService.createProject({ projectSettings, syncData });
 
       feedback('Saving project widgets');
       for (let i = 0; i < projectWidgets.length; i++) {
@@ -220,9 +221,6 @@ export default class ProjectService {
           });
         }
       }
-
-      feedback('Saving project sync file');
-      await DatabaseService.updateSyncFile(projectDTO.syncData);
 
       onSuccess();
 

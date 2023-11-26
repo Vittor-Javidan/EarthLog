@@ -2,9 +2,6 @@
 // project TYPES
 // =================================================================================================
 
-export type IDsArray = ID[]
-export type ID = string
-
 export type Status = 'uploaded' | 'modified' | 'new'
 export type UploadEntry = {
   dateUTM: string
@@ -13,7 +10,7 @@ export type UploadEntry = {
 }
 
 export type SyncData = {
-  id_project:       ID
+  id_project:       string
   project:          Status
   widgets_Project:  Record<string, Status | 'deleted'>
   widgets_Template: Record<string, Status | 'deleted'>
@@ -44,7 +41,7 @@ export type SampleDTO = {
 }
 
 export type ProjectSettings = {
-  id_project: ID
+  id_project: string
   status: Status
   name: string
   sampleAlias: {
@@ -58,7 +55,7 @@ export type ProjectSettings = {
 }
 
 export type SampleSettings = {
-  id_sample: ID
+  id_sample: string
   name: string
   gps?: GPS_DTO
   rules: {
@@ -74,7 +71,7 @@ export type SampleSettings = {
 // =================================================================================================
 
 export type WidgetData = {
-  id_widget: ID
+  id_widget: string
   widgetName: string
   inputs: InputData[]
   rules: WidgetRules
@@ -127,7 +124,7 @@ export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
 export type StringInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'string'
   value: string
@@ -138,7 +135,7 @@ export type StringInputData = {
 
 // ============================
 export type BooleanInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'boolean'
   value: boolean
@@ -149,7 +146,7 @@ export type BooleanInputData = {
 
 // ============================
 export type OptionsInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'options'
   value: OptionData[]
@@ -160,14 +157,14 @@ export type OptionsInputData = {
   lockedData?: boolean
 }
 export type OptionData = {
-  id: ID
+  id: string
   optionLabel: string
   checked: boolean
 }
 
 // ============================
 export type SelectionInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'selection'
   value: SelectionOptionData
@@ -184,7 +181,7 @@ export type SelectionOptionData = {
 
 // ============================
 export type PictureInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'picture'
   value: PictureData[]
@@ -201,7 +198,7 @@ export type PictureData = {
 
 // ============================
 export type  GPSInputData = {
-  id_input: ID
+  id_input: string
   label: string
   type: 'gps'
   value: GPS_DTO

@@ -5,12 +5,11 @@ import { translations } from '@Translations/index';
 import ConfigService from '@Services/ConfigService';
 import ThemeService from '@Services/ThemeService';
 import HapticsService from '@Services/HapticsService';
-import CredentialService from '@Services/CredentialService';
-import DatabaseService from '@Services/DatabaseService';
 import CacheService from '@Services/CacheService';
 import AlertService from '@Services/AlertService';
 
 import { Button } from '@Button/index';
+import { FOLDER_App } from '@Services/FileSystemService';
 
 export const SettingsButtons = memo(() => {
 
@@ -95,8 +94,7 @@ async function whipeAllData() {
     },
     async () => {
       HapticsService.vibrate('success');
-      await CredentialService.deleteCredentialsFolder();
-      await DatabaseService.deleteDatabaseFolder();
+      await FOLDER_App.deleteFolder();
       await CacheService.deleteLastOpenProject();
       CacheService.lastOpenProject = {
         id_project: '',

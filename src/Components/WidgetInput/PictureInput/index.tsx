@@ -98,7 +98,7 @@ export const PictureInput = memo((props: {
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
       const newData: PictureInputData = { ...inputData, value: [ ...inputData.value ] };
-      await MediaService.deleteMedia({
+      await MediaService.deleteMediaRecursively({
         scope: 'picture',
         id_project: id_project,
         id_media: newData.value.splice(index, 1)[0].id_picture,

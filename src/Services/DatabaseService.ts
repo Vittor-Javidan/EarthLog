@@ -1,180 +1,46 @@
-import { ID, IDsArray, ProjectSettings, SyncData, SampleSettings, WidgetData, InputData, Status } from '@Types/ProjectTypes';
-import FileSystemService, { AppPath } from './FileSystemService';
-import LocalStorageService from './LocalStorageService';
+import { ProjectSettings, SyncData, SampleSettings, WidgetData, InputData, Status } from '@Types/ProjectTypes';
+import { FOLDER_Media, FOLDER_ProjectWidgets, FOLDER_Projects, FOLDER_SampleWidgets, FOLDER_Samples, FOLDER_SyncData, FOLDER_TemplateWidgets } from './FileSystemService';
 import IDService from './IDService';
 
 export default class DatabaseService {
 
   // ===============================================================================================
-  // DATABASE
-  // ===============================================================================================
-
-  static async createDatabaseFolder(): Promise<void> {
-    const databaseFolderContents = await FileSystemService.readDirectory(AppPath.DATABASE.ROOT);
-    if (databaseFolderContents === null) {
-      const indexFilePath = `${AppPath.DATABASE.ROOT}/index.json`;
-      const indexJsonData = JSON.stringify([], null, 4);
-      await FileSystemService.createDirectory(AppPath.DATABASE.ROOT);
-      await FileSystemService.writeFile(indexFilePath, indexJsonData);
-    }
-  }
-
-  static async deleteDatabaseFolder(): Promise<void> {
-    await FileSystemService.delete(AppPath.DATABASE.ROOT);
-    await this.deleteLastOpenProject();
-  }
-
-  // ===============================================================================================
-  // FILE INDEXING
-  // ===============================================================================================
-
-  private static async readIndexFile(
-    folderPath: string
-  ): Promise<IDsArray> {
-    const indexFilePath = `${folderPath}/index.json`;
-    const indexDataString = await FileSystemService.readFile(indexFilePath);
-    if (indexDataString !== null) {
-      return JSON.parse(indexDataString);
-    }
-    alert(`index.json file do not exist. Path: ${folderPath}`);
-    throw Error(`index.json file do not exist. Path: ${folderPath}`);
-  }
-
-  private static async updateIndexFile(
-    folderPath: string,
-    IDsArray: IDsArray
-  ): Promise<void> {
-    const indexFilePath = `${folderPath}/index.json`;
-    const indexDataString = await FileSystemService.readFile(indexFilePath);
-    if (indexDataString !== null) {
-      const path = `${folderPath}/index.json`;
-      const jsonData = JSON.stringify(IDsArray, null, 4);
-      await FileSystemService.writeFile(path, jsonData);
-      return;
-    }
-    alert(`index.json file do not exist. Path: ${folderPath}`);
-    throw Error(`index.json file do not exist. Path: ${folderPath}`);
-  }
-
-  // ===============================================================================================
   // PROJECT
   // ===============================================================================================
 
-  static async getLastOpenProject(): Promise<ID | null> {
-    return await LocalStorageService.getData('LastProject');
-  }
-
-  static async saveLastOpenProject(id_project: string): Promise<void> {
-    await LocalStorageService.saveData('LastProject', id_project);
-  }
-
-  static async deleteLastOpenProject(): Promise<void> {
-    await LocalStorageService.removeData('LastProject');
-  }
-
   static async getAllProjects(): Promise<ProjectSettings[]> {
-    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
-    const allSettings: ProjectSettings[] = [];
-    for (let i = 0; i < allProjectsIDs.length; i++) {
-      const projectSettings = await this.readProject(allProjectsIDs[i]);
-      allSettings.push(projectSettings);
-    }
-    return allSettings;
+    return FOLDER_Projects.getAll();
   }
 
-  static async createProject(
+  static async createProject(o: {
     projectSettings: ProjectSettings
-  ): Promise<void> {
-
-    const { id_project } = projectSettings;
-    const syncData: SyncData = {
-      id_project: projectSettings.id_project,
-      project: 'new',
-      widgets_Project: {},
-      widgets_Template: {},
-      widgets_Samples: {},
-      samples: {},
-      pictures: {},
-    };
-
-    await updateIndexFile();
-    await createFiles();
-
-    async function updateIndexFile() {
-      const allProjectsIDs = await DatabaseService.readIndexFile(AppPath.DATABASE.ROOT);
-      if (!allProjectsIDs.includes(id_project)) {
-        allProjectsIDs.push(id_project);
-        await DatabaseService.updateIndexFile(AppPath.DATABASE.ROOT, allProjectsIDs);
-        return;
-      }
-      alert(`Not possible to create 2 projects with same ID. ID: ${id_project}`);
-      throw Error(`Not possible to create 2 projects with same ID. ID: ${id_project}`);
-    }
-
-    async function createFiles() {
-      const projectSettingsJsonData  = JSON.stringify(projectSettings, null, 4);
-      const indexJsonData            = JSON.stringify([], null, 4);
-      const syncJsonData             = JSON.stringify(syncData, null, 4);
-      const projectFolderPath        = `${AppPath.DATABASE.ROOT}/${id_project}`;
-      const projectSettingsPath      = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
-      const projectWidgetsFolderPath = `${AppPath.DATABASE.ROOT}/${id_project}/projectWidgets`;
-      const projectWidgetsIndexPath  = `${AppPath.DATABASE.ROOT}/${id_project}/projectWidgets/index.json`;
-      const templateFolderPath       = `${AppPath.DATABASE.ROOT}/${id_project}/template`;
-      const templateIndexPath        = `${AppPath.DATABASE.ROOT}/${id_project}/template/index.json`;
-      const samplesFolderPath        = `${AppPath.DATABASE.ROOT}/${id_project}/samples`;
-      const samplesIndexPath         = `${AppPath.DATABASE.ROOT}/${id_project}/samples/index.json`;
-      const mediaFolderPath          = `${AppPath.DATABASE.ROOT}/${id_project}/media`;
-      const picturesFolderPath       = `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures`;
-      const videosFolderPath         = `${AppPath.DATABASE.ROOT}/${id_project}/media/videos`;
-      const audiosFolderPath         = `${AppPath.DATABASE.ROOT}/${id_project}/media/audios`;
-      const syncFilePath             = `${AppPath.DATABASE.ROOT}/${id_project}/syncStatus.json`;
-      await FileSystemService.createDirectory(projectFolderPath);
-      await FileSystemService.createDirectory(projectWidgetsFolderPath);
-      await FileSystemService.createDirectory(templateFolderPath);
-      await FileSystemService.createDirectory(samplesFolderPath);
-      await FileSystemService.createDirectory(mediaFolderPath);
-      await FileSystemService.createDirectory(picturesFolderPath);
-      await FileSystemService.createDirectory(videosFolderPath);
-      await FileSystemService.createDirectory(audiosFolderPath);
-      await FileSystemService.writeFile(projectSettingsPath,projectSettingsJsonData);
-      await FileSystemService.writeFile(projectWidgetsIndexPath,indexJsonData);
-      await FileSystemService.writeFile(templateIndexPath, indexJsonData);
-      await FileSystemService.writeFile(samplesIndexPath, indexJsonData);
-      await FileSystemService.writeFile(syncFilePath, syncJsonData);
-    }
+    syncData: SyncData
+  }): Promise<void> {
+    const { projectSettings, syncData } = o;
+    await FOLDER_Projects.create(projectSettings);
+    await FOLDER_SyncData.create(syncData);
   }
 
   static async readProject(
     id_project: string
   ): Promise<ProjectSettings> {
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
-    const fileData = await FileSystemService.readFile(path);
-    if (fileData !== null) {
-      return JSON.parse(fileData);
-    }
-    alert(`Project settings file do not exist. ID: ${id_project}`);
-    throw Error(`Project settings file do not exist. ID: ${id_project}`);
+    return FOLDER_Projects.get(id_project);
   }
 
-  static async updateProject(options: {
+  static async updateProject(o: {
     projectSettings: ProjectSettings
     sync: boolean
   }): Promise<void> {
-    const { id_project } = options.projectSettings;
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}/projectSettings.json`;
-    const jsonData = JSON.stringify(options.projectSettings, null, 4);
-    await FileSystemService.writeFile(path, jsonData);
-    await this.syncProject({ ...options, operation: 'updating' });
+    const { projectSettings, sync } = o;
+    await FOLDER_Projects.update(projectSettings);
+    await Sync.project({ operation: 'updating', projectSettings, sync });
   }
 
   static async deleteProject(
     id_project: string
   ): Promise<void> {
-    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
-    const newIDs = allProjectsIDs.filter(ID => ID !== id_project);
-    await this.updateIndexFile(AppPath.DATABASE.ROOT, newIDs);
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}`;
-    await FileSystemService.delete(path);
+    await FOLDER_Projects.delete(id_project);
+    await FOLDER_SyncData.delete(id_project);
   }
 
   // ===============================================================================================
@@ -184,140 +50,66 @@ export default class DatabaseService {
   static async getAllSamples(
     id_project: string
   ): Promise<SampleSettings[]> {
-
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}/samples`;
-    const allSamplesIDs = await this.readIndexFile(path);
-    return await allSampleSettings();
-
-    async function allSampleSettings() {
-      const allSettings: SampleSettings[] = [];
-      for (let i = 0; i < allSamplesIDs.length; i++) {
-        const sampleSettings = await DatabaseService.readSample({
-          id_project: id_project,
-          id_sample: allSamplesIDs[i],
-        });
-        allSettings.push(sampleSettings);
-      }
-      return allSettings;
-    }
+    return FOLDER_Samples.getAll(id_project);
   }
 
-  static async createSample(options: {
+  static async createSample(o: {
     id_project: string,
     sampleSettings: SampleSettings,
     addTemplateWidgets: boolean,
     sync: boolean,
   }): Promise<void> {
 
-    const { id_sample } = options.sampleSettings;
-    await updateIndexFile();
-    await createFiles();
-    await this.syncSample({ ...options, operation: 'creation'});
-    await copyTemplateWidgets();
+    const { id_project, sampleSettings, addTemplateWidgets, sync } = o;
+    const { id_sample } = o.sampleSettings;
+    await FOLDER_Samples.create({ id_project, sampleSettings });
+    await Sync.sample({ operation: 'creation', id_project, sampleSettings, sync });
 
-    async function updateIndexFile() {
-      const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples`;
-      const allSamplesIDs = await DatabaseService.readIndexFile(path);
-      if (!allSamplesIDs.includes(id_sample)) {
-        allSamplesIDs.push(id_sample);
-        await DatabaseService.updateIndexFile(path, allSamplesIDs);
-        return;
-      }
-      alert(`Not possible to create 2 samples with same ID. id_project: ${options.id_project}, id_sample: ${id_sample}`);
-      throw Error(`Not possible to create 2 samples with same ID. id_project: ${options.id_project}, id_sample: ${id_sample}`);
-    }
-
-    async function createFiles() {
-      const mainFolderPath          = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}`;
-      const sampleSettingsFilePath  = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
-      const sampleWidgetsfolderPath = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleWidgets`;
-      const indexFilePath           = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleWidgets/index.json`;
-      const sampleSettingsJsonData  = JSON.stringify(options.sampleSettings, null, 4);
-      const indexJsonData           = JSON.stringify([], null, 4);
-      await FileSystemService.createDirectory(mainFolderPath);
-      await FileSystemService.createDirectory(sampleWidgetsfolderPath);
-      await FileSystemService.writeFile(sampleSettingsFilePath, sampleSettingsJsonData);
-      await FileSystemService.writeFile(indexFilePath, indexJsonData);
-    }
-
-    async function copyTemplateWidgets() {
-      if (options.addTemplateWidgets) {
-        const templateWidgets = await DatabaseService.getAllWidgets({
-          path: 'template widgets',
-          id_project: options.id_project,
-        });
-        for (let i = 0; i < templateWidgets.length; i++) {
-          if (templateWidgets[i].addToNewSamples === true) {
-            IDService.changeIDsByReference_Widget(templateWidgets[i]);
-            await DatabaseService.createWidget({
-              path: 'sample widgets',
-              id_project: options.id_project,
-              id_sample: id_sample,
-              widgetData: templateWidgets[i],
-              sync: options.sync,
-            });
-          }
+    if (addTemplateWidgets) {
+      const templateWidgets = await this.getAllWidgets({ path: 'template widgets', id_project });
+      for (let i = 0; i < templateWidgets.length; i++) {
+        if (templateWidgets[i].addToNewSamples === true) {
+          const widgetData = templateWidgets[i];
+          IDService.changeIDsByReference_Widget(widgetData);
+          await this.createWidget({ path: 'sample widgets', id_project, id_sample, widgetData, sync });
         }
       }
     }
   }
 
-  static async readSample(options: {
+  static async readSample(o: {
     id_project: string,
     id_sample: string
   }): Promise<SampleSettings> {
-    const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleSettings.json`;
-    const fileData = await FileSystemService.readFile(path);
-    return await JSON.parse(fileData as string) as SampleSettings;
+    const { id_project, id_sample } = o;
+    return FOLDER_Samples.get({ id_project, id_sample });
   }
 
-  static async updateSample(options: {
+  static async updateSample(o: {
     id_project: string,
     sampleSettings: SampleSettings,
     sync: boolean,
   }): Promise<void> {
-    const { id_sample } = options.sampleSettings;
-    const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${id_sample}/sampleSettings.json`;
-    const jsonData = JSON.stringify(options.sampleSettings, null, 4);
-    await FileSystemService.writeFile(path, jsonData);
-    await this.syncSample({ ...options, operation: 'updating' });
+    const { id_project, sampleSettings, sync } = o;
+    await FOLDER_Samples.update({ id_project, sampleSettings });
+    await Sync.sample({ operation: 'updating', id_project, sampleSettings, sync });
   }
 
-  static async deleteSample(options: {
+  static async deleteSample(o: {
     id_project: string,
     sampleSettings: SampleSettings,
     sync: boolean,
   }): Promise<void> {
-
-    const { id_sample } = options.sampleSettings;
-    const samplesFolder = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples`;
-    await removeSampleIndex(samplesFolder, id_sample);
-    await deleteSampleFolder(options.id_project, id_sample);
-    await this.syncSample({ ...options, operation: 'deletion'});
-
-    async function deleteSampleFolder(
-      id_project: string,
-      id_sample: string,
-    ): Promise<void> {
-      const sampleFolderPath = `${AppPath.DATABASE.ROOT}/${id_project}/samples/${id_sample}`;
-      await FileSystemService.delete(sampleFolderPath);
-    }
-
-    async function removeSampleIndex(
-      samplesFolder: string,
-      id_sample: string,
-    ): Promise<void> {
-      const allSamplesIDs = await DatabaseService.readIndexFile(samplesFolder);
-      const newIDs = allSamplesIDs.filter(ID => ID !== id_sample);
-      await DatabaseService.updateIndexFile(samplesFolder, newIDs);
-    }
+    const { id_project, sampleSettings, sync } = o;
+    await FOLDER_Samples.delete({ id_project, sampleSettings });
+    await Sync.sample({ operation: 'deletion', id_project, sampleSettings, sync });
   }
 
   // ===============================================================================================
   // WIDGETS
   // ===============================================================================================
 
-  static async getAllWidgets(options: {
+  static async getAllWidgets(o: {
     path: 'project widgets' | 'template widgets'
     id_project: string,
   } | {
@@ -325,23 +117,23 @@ export default class DatabaseService {
     id_project: string
     id_sample: string
   }): Promise<WidgetData[]> {
-
-    let path;
-    switch (options.path) {
-      case 'project widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':    path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
+    switch (o.path) {
+      case 'project widgets': {
+        const { id_project } = o;
+        return FOLDER_ProjectWidgets.getAll({ id_project });
+      }
+      case 'template widgets': {
+        const { id_project } = o;
+        return FOLDER_TemplateWidgets.getAll({ id_project });
+      }
+      case 'sample widgets': {
+        const { id_project, id_sample } = o;
+        return FOLDER_SampleWidgets.getAll({ id_project, id_sample });
+      }
     }
-    const allWidgetsIDs = await this.readIndexFile(path);
-    const allWidgetsData: WidgetData[] = [];
-    for (let i = 0; i < allWidgetsIDs.length; i++) {
-      const widgetData = await this.readWidget({ ...options, id_widget: allWidgetsIDs[i]});
-      allWidgetsData.push(widgetData);
-    }
-    return allWidgetsData;
   }
 
-  static async createWidget(options: {
+  static async createWidget(o: {
     path: 'project widgets' | 'template widgets',
     id_project: string
     widgetData: WidgetData
@@ -353,41 +145,29 @@ export default class DatabaseService {
     widgetData: WidgetData
     sync: boolean
   }): Promise<void> {
-
-    const { id_widget } = options.widgetData;
-
-    let path;
-    switch (options.path) {
-      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
-    }
-
-    await updateIndexFiles(path);
-    await createFiles(path);
-    await this.syncWidget({ ...options, operation: 'creation'});
-
-    async function updateIndexFiles(path: string) {
-      const allWidgetsIDs = await DatabaseService.readIndexFile(path);
-      if (!allWidgetsIDs.includes(id_widget)) {
-        allWidgetsIDs.push(id_widget);
-        await DatabaseService.updateIndexFile(path, allWidgetsIDs);
-        return;
+    switch (o.path) {
+      case 'project widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_ProjectWidgets.create({ id_project, widgetData });
+        await Sync.widget({ operation: 'creation', path, id_project, widgetData, sync });
+        break;
       }
-      alert(`Not possible to create 2 widgets with same ID. id_widget: ${id_widget}`);
-      throw Error(`Not possible to create 2 widgets with same ID. id_widget: ${id_widget}`);
-    }
-
-    async function createFiles(path: string) {
-      const mainFolderPath = `${path}/${id_widget}`;
-      const filePath       = `${path}/${id_widget}/data.json`;
-      const widgetJsonData = JSON.stringify(options.widgetData, null, 4);
-      await FileSystemService.createDirectory(mainFolderPath);
-      await FileSystemService.writeFile(filePath, widgetJsonData);
+      case 'template widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_TemplateWidgets.create({ id_project, widgetData });
+        await Sync.widget({ operation: 'creation', path, id_project, widgetData, sync });
+        break;
+      }
+      case 'sample widgets': {
+        const { path, id_project, id_sample, widgetData, sync } = o;
+        await FOLDER_SampleWidgets.create({ id_project, id_sample, widgetData });
+        await Sync.widget({ operation: 'creation', path, id_project, id_sample, widgetData, sync });
+        break;
+      }
     }
   }
 
-  static async readWidget(options: {
+  static async readWidget(o: {
     path: 'project widgets' | 'template widgets'
     id_project: string,
     id_widget: string
@@ -397,28 +177,23 @@ export default class DatabaseService {
     id_sample: string,
     id_widget: string
   }): Promise<WidgetData> {
-
-    let path;
-    switch (options.path) {
-      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
-    }
-
-    return await readFile(path);
-
-    async function readFile(path: string) {
-      const filePath = `${path}/${options.id_widget}/data.json`;
-      const dataFile = await FileSystemService.readFile(filePath);
-      if (dataFile !== null) {
-        return await JSON.parse(dataFile);
+    switch (o.path) {
+      case 'project widgets': {
+        const { id_project, id_widget } = o;
+        return FOLDER_ProjectWidgets.get({ id_project, id_widget });
       }
-      alert(`Widget of id ${options.id_widget} do not exist on database`);
-      throw Error(`Widget of id ${options.id_widget} do not exist on database`);
+      case 'template widgets': {
+        const { id_project, id_widget } = o;
+        return FOLDER_TemplateWidgets.get({ id_project, id_widget });
+      }
+      case 'sample widgets': {
+        const { id_project, id_sample, id_widget } = o;
+        return FOLDER_SampleWidgets.get({ id_project, id_sample, id_widget });
+      }
     }
   }
 
-  static async updateWidget(options: {
+  static async updateWidget(o: {
     path: 'project widgets' | 'template widgets',
     id_project: string
     widgetData: WidgetData
@@ -430,27 +205,29 @@ export default class DatabaseService {
     widgetData: WidgetData
     sync: boolean
   }): Promise<void> {
-
-    const { id_widget } = options.widgetData;
-
-    let path;
-    switch (options.path) {
-      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
-    }
-
-    await updateFile(path);
-    await this.syncWidget({ ...options, operation: 'updating'});
-
-    async function updateFile(path: string) {
-      const filePath = `${path}/${id_widget}/data.json`;
-      const jsonData = JSON.stringify(options.widgetData, null, 4);
-      await FileSystemService.writeFile(filePath, jsonData);
+    switch (o.path) {
+      case 'project widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_ProjectWidgets.update({ id_project, widgetData });
+        await Sync.widget({ operation: 'updating', path, id_project, widgetData, sync });
+        break;
+      }
+      case 'template widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_TemplateWidgets.update({ id_project, widgetData });
+        await Sync.widget({ operation: 'updating', path, id_project, widgetData, sync });
+        break;
+      }
+      case 'sample widgets': {
+        const { path, id_project, id_sample, widgetData, sync } = o;
+        await FOLDER_SampleWidgets.update({ id_project, id_sample, widgetData });
+        await Sync.widget({ operation: 'updating', path, id_project, id_sample, widgetData, sync });
+        break;
+      }
     }
   }
 
-  static async deleteWidget(options: {
+  static async deleteWidget(o: {
     path: 'project widgets' | 'template widgets'
     id_project: string,
     widgetData: WidgetData
@@ -462,28 +239,25 @@ export default class DatabaseService {
     widgetData: WidgetData
     sync: boolean
   }): Promise<void> {
-    const { id_widget } = options.widgetData;
-
-    let path;
-    switch (options.path) {
-      case 'project widgets':  path = `${AppPath.DATABASE.ROOT}/${options.id_project}/projectWidgets`;                             break;
-      case 'template widgets': path = `${AppPath.DATABASE.ROOT}/${options.id_project}/template`;                                   break;
-      case 'sample widgets':   path = `${AppPath.DATABASE.ROOT}/${options.id_project}/samples/${options.id_sample}/sampleWidgets`; break;
-    }
-
-    await updateIndexFile(path);
-    await deleteFiles(path);
-    await this.syncWidget({ ...options, operation: 'deletion' });
-
-    async function updateIndexFile(path: string) {
-      const allWidgetsIDs = await DatabaseService.readIndexFile(path);
-      const newIDs = allWidgetsIDs.filter(ID => ID !== id_widget);
-      await DatabaseService.updateIndexFile(path, newIDs);
-    }
-
-    async function deleteFiles(path: string) {
-      const widgetFolder = `${path}/${options.widgetData}`;
-      await FileSystemService.delete(widgetFolder);
+    switch (o.path) {
+      case 'project widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_ProjectWidgets.delete({ id_project, widgetData });
+        await Sync.widget({ operation: 'deletion', path, id_project, widgetData, sync });
+        break;
+      }
+      case 'template widgets': {
+        const { path, id_project, widgetData, sync } = o;
+        await FOLDER_TemplateWidgets.delete({ id_project, widgetData });
+        await Sync.widget({ operation: 'deletion', path, id_project, widgetData, sync });
+        break;
+      }
+      case 'sample widgets': {
+        const { path, id_project, id_sample, widgetData, sync } = o;
+        await FOLDER_SampleWidgets.delete({ id_project, id_sample, widgetData });
+        await Sync.widget({ operation: 'deletion', path, id_project, id_sample, widgetData, sync });
+        break;
+      }
     }
   }
 
@@ -491,7 +265,7 @@ export default class DatabaseService {
   // MEDIA FILES
   // ===============================================================================================
 
-  static async deleteMedia(options: {
+  static async deleteMediaRecursively(o: {
     scope: 'sample'
     id_project: string
     widgetArray: WidgetData[]
@@ -509,16 +283,25 @@ export default class DatabaseService {
     id_media: string
   }): Promise<void> {
 
-    const ids_pictures: string[] = [];
+    const { id_project } = o;
+    const picturesIDs: string[] = [];
 
-    switch (options.scope) {
-      case 'sample':       getMediaIDs_Sample(options.widgetArray); break;
-      case 'widget':       getMediaIDs_Widget(options.widget);      break;
-      case 'input':        getMediaIDs_Input(options.input);        break;
-      case 'picture':      ids_pictures.push(options.id_media);     break;
+    switch (o.scope) {
+      case 'sample':       getMediaIDs_Sample(o.widgetArray); break;
+      case 'widget':       getMediaIDs_Widget(o.widget);      break;
+      case 'input':        getMediaIDs_Input(o.input);        break;
+      case 'picture':      picturesIDs.push(o.id_media);     break;
     }
 
-    await deleteAndSync();
+    const syncData = await this.readSyncFile(id_project);
+    const promises = [];
+    for (let i = 0; i < picturesIDs.length; i++) {
+      const id_picture = picturesIDs[i];
+      promises.push(FOLDER_Media.deletePicture({ id_project, id_picture }));
+      DefineSyncStatus.media(picturesIDs[i], syncData.pictures, 'deletion');
+    }
+    await Promise.all(promises);
+    await FOLDER_SyncData.update(syncData);
 
     function getMediaIDs_Sample(sampleWidgets: WidgetData[]) {
       for (let i = 0; i < sampleWidgets.length; i++) {
@@ -538,25 +321,18 @@ export default class DatabaseService {
       if (input.type === 'picture') {
         for (let i = 0; i < input.value.length; i++) {
           const pictureData = input.value[i];
-          ids_pictures.push(pictureData.id_picture);
+          picturesIDs.push(pictureData.id_picture);
         }
       }
     }
+  }
 
-    async function deleteAndSync() {
-
-      const promises = [];
-      const syncData = await DatabaseService.readSyncFile(options.id_project);
-
-      for (let i = 0; i < ids_pictures.length; i++) {
-        const path = `${AppPath.DATABASE.ROOT}/${options.id_project}/media/pictures/${ids_pictures[i]}.jpg`;
-        promises.push(FileSystemService.delete(path));
-        DatabaseService.defineStatus_Media(ids_pictures[i], syncData.pictures, 'deletion');
-      }
-
-      promises.push(DatabaseService.updateSyncFile(syncData));
-      await Promise.all(promises);
-    }
+  static async getPictureData(o: {
+    id_project: string,
+    id_picture: string,
+  }): Promise<string | null> {
+    const { id_project, id_picture } = o;
+    return FOLDER_Media.getPicture({ id_project, id_picture });
   }
 
   static async savePictureFromUri(
@@ -568,40 +344,26 @@ export default class DatabaseService {
     onSave: () => void,
   ): Promise<void> {
     const { id_project, id_picture, photoUri } = options;
-    const data = await FileSystemService.readFile(photoUri, 'base64');
-    if (data !== null) {
-      await this.savePicture(id_project, id_picture, data, 'creation');
-      onSave();
-      return;
-    }
-    alert(`Picture not found on phones cache. PhotoURI: ${photoUri}`);
-    throw Error(`Picture not found on phones cache. PhotoURI: ${photoUri}`);
-  }
-
-  static async getPictureData(options: {
-    id_project: string,
-    id_picture: string,
-  }): Promise<string | null> {
-    const pictureUri = this.getPictureUri(options.id_project, options.id_picture);
-    return await FileSystemService.readFile(pictureUri, 'base64');
+    await FOLDER_Media.createPictureFromURI({ id_project, id_picture, photoUri });
+    await Sync.picture(id_project, id_picture, 'creation');
+    onSave();
   }
 
   static async savePicture(
     id_project: string,
     id_picture: string,
-    data: string,
+    base64Data: string,
     operation: 'creation' | 'download'
   ): Promise<void> {
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures/${id_picture}.jpg`;
-    await FileSystemService.writeFile(path, data, 'base64');
-    await this.syncPicture(id_project, id_picture, operation);
+    await FOLDER_Media.createPicture({ id_project, id_picture, base64Data });
+    await Sync.picture(id_project, id_picture, operation);
   }
 
   static getPictureUri(
     id_project: string,
     id_picture: string
   ): string {
-    return `${AppPath.DATABASE.ROOT}/${id_project}/media/pictures/${id_picture}.jpg`;
+    return FOLDER_Media.getPictureURL({ id_project, id_picture });
   }
 
 
@@ -610,63 +372,54 @@ export default class DatabaseService {
   // ===============================================================================================
 
   static async getAllSyncData(): Promise<SyncData[]> {
-    const allProjectsIDs = await this.readIndexFile(AppPath.DATABASE.ROOT);
-    const allSyncStatus: SyncData[] = [];
-    for (let i = 0; i < allProjectsIDs.length; i++) {
-      const syncData = await this.readSyncFile(allProjectsIDs[i]);
-      allSyncStatus.push(syncData);
-    }
-    return allSyncStatus;
+    return FOLDER_SyncData.getAll();
   }
 
   static async readSyncFile(
     id_project: string
   ): Promise<SyncData> {
-    const path = `${AppPath.DATABASE.ROOT}/${id_project}/syncStatus.json`;
-    const fileData = await FileSystemService.readFile(path);
-    if (fileData !== null) {
-      return JSON.parse(fileData);
-    }
-    throw Error('sync file do not exist');
+    return FOLDER_SyncData.get(id_project);
   }
 
   static async updateSyncFile(
     syncData: SyncData
   ): Promise<void> {
-    const path = `${AppPath.DATABASE.ROOT}/${syncData.id_project}/syncStatus.json`;
-    const jsonData = JSON.stringify(syncData, null, 4);
-    await FileSystemService.writeFile(path, jsonData);
+    await FOLDER_SyncData.update(syncData);
   }
+}
 
-  static async syncProject(options: {
+class Sync {
+
+  static async project(o: {
     projectSettings: ProjectSettings,
     operation: 'updating',
     sync: boolean,
   }): Promise<void> {
-    if (options.sync) {
-      const { id_project } = options.projectSettings;
-      const syncData = await this.readSyncFile(id_project);
-      this.defineStatus_Project(syncData);
-      await this.updateSyncFile(syncData);
+    if (o.sync) {
+      const { id_project } = o.projectSettings;
+      const syncData = await FOLDER_SyncData.get(id_project);
+      DefineSyncStatus.project(syncData);
+      await FOLDER_SyncData.update(syncData);
     }
   }
 
-  static async syncSample(options: {
+  static async sample(o: {
     id_project: string
     sampleSettings: SampleSettings
     operation: 'creation' | 'updating' | 'deletion'
     sync: boolean
   }): Promise<void> {
-    if (options.sync) {
-      const { id_sample } = options.sampleSettings;
-      const syncData = await this.readSyncFile(options.id_project);
-      this.defineStatus_Project(syncData);
-      this.defineStatus_Sample(id_sample, syncData, options.operation);
-      await this.updateSyncFile(syncData);
+    if (o.sync) {
+      const { id_project, operation, sampleSettings } = o;
+      const { id_sample } = sampleSettings;
+      const syncData = await FOLDER_SyncData.get(id_project);
+      DefineSyncStatus.project(syncData);
+      DefineSyncStatus.sample(id_sample, syncData, operation);
+      await FOLDER_SyncData.update(syncData);
     }
   }
 
-  static async syncWidget(options: {
+  static async widget(o: {
     path: 'project widgets' | 'template widgets'
     id_project: string,
     widgetData: WidgetData,
@@ -680,41 +433,57 @@ export default class DatabaseService {
     operation: 'creation' | 'updating' | 'deletion',
     sync: boolean
   }): Promise<void> {
-    if (options.sync) {
-
-      const { id_widget } = options.widgetData;
-      const syncData = await this.readSyncFile(options.id_project);
-      this.defineStatus_Project(syncData);
-
-      switch (options.path) {
-        case 'project widgets':  this.defineStatus_Widget(id_widget, syncData.widgets_Project, options.operation);  break;
-        case 'template widgets': this.defineStatus_Widget(id_widget, syncData.widgets_Template, options.operation); break;
+    if (o.sync) {
+      switch (o.path) {
+        case 'project widgets': {
+          const { id_project, operation, widgetData } = o;
+          const { id_widget } = widgetData;
+          const syncData = await FOLDER_SyncData.get(id_project);
+          DefineSyncStatus.project(syncData);
+          DefineSyncStatus.widget(id_widget, syncData.widgets_Project, operation);
+          await FOLDER_SyncData.update(syncData);
+          break;
+        }
+        case 'template widgets': {
+          const { id_project, operation, widgetData } = o;
+          const { id_widget } = widgetData;
+          const syncData = await FOLDER_SyncData.get(id_project);
+          DefineSyncStatus.project(syncData);
+          DefineSyncStatus.widget(id_widget, syncData.widgets_Template, operation);
+          await FOLDER_SyncData.update(syncData);
+          break;
+        }
         case 'sample widgets': {
-          this.defineStatus_Sample(options.id_sample, syncData, 'updating');
-          this.defineStatus_Widget(id_widget, syncData.widgets_Samples[options.id_sample], options.operation);
+          const { id_project, id_sample, operation, widgetData } = o;
+          const { id_widget } = widgetData;
+          const syncData = await FOLDER_SyncData.get(id_project);
+          DefineSyncStatus.project(syncData);
+          DefineSyncStatus.sample(o.id_sample, syncData, 'updating');
+          DefineSyncStatus.widget(id_widget, syncData.widgets_Samples[id_sample], operation);
+          await FOLDER_SyncData.update(syncData);
           break;
         }
       }
-
-      await this.updateSyncFile(syncData);
     }
   }
 
-  static async syncPicture(
+  static async picture(
     id_project: string,
     id_picture: string,
     operation: 'creation' | 'deletion' | 'download',
   ): Promise<void> {
-    const syncData = await this.readSyncFile(id_project);
+    const syncData = await FOLDER_SyncData.get(id_project);
     if (operation !== 'download') {
-      this.defineStatus_Project(syncData);
+      DefineSyncStatus.project(syncData);
     }
-    this.defineStatus_Media(id_picture, syncData.pictures, operation);
-    await this.updateSyncFile(syncData);
+    DefineSyncStatus.media(id_picture, syncData.pictures, operation);
+    await FOLDER_SyncData.update(syncData);
   }
+}
 
-  /** Change project sync status by reference */
-  private static defineStatus_Project(
+class DefineSyncStatus {
+
+  static project(
     syncData: SyncData
   ): void {
     switch (syncData.project) {
@@ -722,8 +491,7 @@ export default class DatabaseService {
     }
   }
 
-  /** Change sync status by reference */
-  private static defineStatus_Sample(
+  static sample(
     id_sample: string,
     syncData: SyncData,
     operation: 'creation' | 'updating' | 'deletion',
@@ -756,8 +524,7 @@ export default class DatabaseService {
     }
   }
 
-  /** Change sync status by reference */
-  private static defineStatus_Widget(
+  static widget(
     id_element: string,
     recordList: Record<string, Status | 'deleted'>,
     operation: 'creation' | 'updating' | 'deletion',
@@ -787,7 +554,7 @@ export default class DatabaseService {
     }
   }
 
-  private static defineStatus_Media(
+  static media(
     id_element: string,
     recordList: Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>,
     operation: 'creation' | 'deletion' | 'download',

@@ -8,7 +8,7 @@ export default class MediaService {
   // MEDIA
   // ===============================================================================================
 
-  static async deleteMedia(o: {
+  static async deleteMediaRecursively(o: {
     scope: 'sample'
     id_project: string
     widgetArray: WidgetData[]
@@ -25,7 +25,7 @@ export default class MediaService {
     id_project: string
     id_media: string
   }): Promise<void> {
-    await DatabaseService.deleteMedia(o);
+    await DatabaseService.deleteMediaRecursively(o);
   }
 
   // ===============================================================================================

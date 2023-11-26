@@ -27,7 +27,7 @@ export const ScreenButtons = memo(() => {
       sampleSettings: sampleSettings,
       sync: true,
     }, async () => {
-      await MediaService.deleteMedia({
+      await MediaService.deleteMediaRecursively({
         scope: 'sample',
         id_project: id_project,
         widgetArray: CacheService.allWidgets_Sample,

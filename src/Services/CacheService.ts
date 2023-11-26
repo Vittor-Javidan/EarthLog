@@ -1,8 +1,12 @@
-import { ID, ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
+import { ProjectSettings, SampleSettings, WidgetData } from '@Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import UtilService from './UtilService';
+import { LTS_VERSION } from '@Globals/Version';
+import LocalStorageService from './LocalStorageService';
 
 export default class CacheService {
+
+  private static LAST_PROJECT_LOCAL_STORAGE_KEY = `${LTS_VERSION}_LastProject`;
 
   static lastOpenProject: ProjectSettings | null = null;
   static allProjects: ProjectSettings[]          = [];
@@ -16,7 +20,7 @@ export default class CacheService {
   // ===============================================================================================
 
   static async saveLastOpenProject(id_project: string): Promise<void> {
-    await DatabaseService.saveLastOpenProject(id_project);
+    await LocalStorageService.saveData(this.LAST_PROJECT_LOCAL_STORAGE_KEY, id_project);
     this.lastOpenProject = await DatabaseService.readProject(id_project);
   }
 
@@ -25,7 +29,7 @@ export default class CacheService {
    */
   static async loadLastOpenProject(): Promise<void> {
 
-    const lastProjectID = await DatabaseService.getLastOpenProject();
+    const lastProjectID = await LocalStorageService.getData(this.LAST_PROJECT_LOCAL_STORAGE_KEY);
     const allProjectSettingsIDs = this.allProjects.map(settings => settings.id_project);
 
     if (lastProjectID === null) {
@@ -43,7 +47,7 @@ export default class CacheService {
   }
 
   static async deleteLastOpenProject(): Promise<void> {
-    await DatabaseService.deleteLastOpenProject();
+    await LocalStorageService.removeData(this.LAST_PROJECT_LOCAL_STORAGE_KEY);
     this.lastOpenProject = null;
   }
 
@@ -198,7 +202,7 @@ export default class CacheService {
    * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
    * Does not update array reference.
    */
-  static removeFromProjects(id_project: ID): void {
+  static removeFromProjects(id_project: string): void {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         this.allProjects.splice(i, 1);
@@ -210,7 +214,7 @@ export default class CacheService {
    * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
    * Does not update array reference.
    */
-  static removeFromSamples(id_sample: ID): void {
+  static removeFromSamples(id_sample: string): void {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         this.allSamples.splice(i, 1);

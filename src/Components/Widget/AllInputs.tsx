@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { Loading } from '@Types/AppTypes';
-import { GPS_DTO, ID, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
+import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@Types/ProjectTypes';
 
 import { WidgetInput } from '@WidgetInput/index';
 
@@ -14,9 +14,9 @@ export const DataDisplay = memo((props: {
   rules: WidgetRules
   theme: WidgetTheme
   onSave: (inputData: InputData) => void
-  onInputDelete: (id_input: ID) => void
-  onInputMoveUp: (id_input: ID) => void
-  onInputMoveDow: (id_input: ID) => void
+  onInputDelete: (id_input: string) => void
+  onInputMoveUp: (id_input: string) => void
+  onInputMoveDow: (id_input: string) => void
 }) => {
 
   const [loading, setLoading] = useState<Loading>(props.inputs.length < 4 ? 'Loaded' : 'Loading');

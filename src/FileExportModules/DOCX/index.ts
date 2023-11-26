@@ -2,7 +2,7 @@ import { Document, Packer } from 'docx';
 
 import { ConfigDTO } from '@Types/AppTypes';
 import ProjectService from '@Services/ProjectService';
-import DocumentFileExportService from '@Services/DocumentFileExportService';
+import ExportService from '@Services/ExportService';
 
 import { document_Project } from './ProjectDocument';
 
@@ -32,6 +32,6 @@ export default class DOCX_Module {
 
     o.feedback('Sharing document');
     const fileData = await Packer.toBase64String(document);
-    await DocumentFileExportService.shareFile(`${o.fileName}.docx`, fileData, 'base64');
+    await ExportService.shareFile(`${o.fileName}.docx`, fileData, 'base64');
   }
 }

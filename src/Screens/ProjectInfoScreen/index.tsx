@@ -41,7 +41,7 @@ export const ProjectInfoScreen = memo((props: {
       widgetData: removedWidget,
       sync: true,
     }, async () => {
-      await MediaService.deleteMedia({
+      await MediaService.deleteMediaRecursively({
         scope: 'widget',
         id_project: id_project,
         widget: removedWidget,

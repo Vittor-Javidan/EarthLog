@@ -1,7 +1,7 @@
 import { GPS_DTO } from '@Types/ProjectTypes';
 import { translations } from '@Translations/index';
 import { ConfigDTO } from '@Types/AppTypes';
-import DocumentFileExportService from '@Services/DocumentFileExportService';
+import ExportService from '@Services/ExportService';
 import ProjectService from '@Services/ProjectService';
 
 export default class CSV_Module {
@@ -67,7 +67,7 @@ export default class CSV_Module {
     }
 
     o.feedback('Sharing document');
-    await DocumentFileExportService.shareFile(`${o.fileName}.csv`, document, 'utf8');
+    await ExportService.shareFile(`${o.fileName}.csv`, document, 'utf8');
   }
 
   private static getCSVRow_GPS(gps: GPS_DTO | undefined, options: {

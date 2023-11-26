@@ -1,5 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.34 File Path versioning
+# 1.9.35 Database abstraction implementation
 
-- Now directories includes a '/V1' before in their directories path, to indicate it belongs to LTS version 1
+- now each folder on database has their own CRUD api.
+- now syncData files has their own folder
+- now widgetData are files intead folders
+- now LTS Version is defined in only one place
