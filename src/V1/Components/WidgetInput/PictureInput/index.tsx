@@ -9,7 +9,7 @@ import CameraService from '@V1/Services/CameraService';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import MediaService from '@V1/Services/MediaService';
-import SyncService from '@V1/Services/SyncService';
+import CacheService from '@V1/Services/CacheService';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
@@ -33,7 +33,7 @@ export const PictureInput = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [inputData         , setInputData        ] = useState<PictureInputData>(deepCopy(props.inputData));
-  const [allMissingPictures, setAllMissingìctures] = useState<string[]>(SyncService.identifyMissingPictures({ id_project }));
+  const [allMissingPictures, setAllMissingìctures] = useState<string[]>(CacheService.identifyMissingPictures({ id_project }));
   const [show              , setShow             ] = useState({
     camera: false,
   });
@@ -123,8 +123,8 @@ export const PictureInput = memo((props: {
       id_project: id_project,
       picturesIDs: id_picture ? [ id_picture ] : inputMissingPictures,
     }, async () => {
-      await SyncService.loadAllSyncData();
-      setAllMissingìctures(SyncService.identifyMissingPictures({ id_project }));
+      await CacheService.loadAllSyncData();
+      setAllMissingìctures(CacheService.identifyMissingPictures({ id_project }));
     });
   }, [inputData, allMissingPictures]);
 

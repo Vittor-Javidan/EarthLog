@@ -7,7 +7,6 @@ import AlertService from '@V1/Services/AlertService';
 import ProjectService from '@V1/Services/ProjectService';
 import CacheService from '@V1/Services/CacheService';
 import ThemeService from '@V1/Services/ThemeService';
-import SyncService from '@V1/Services/SyncService';
 
 import { Input } from '@V1/Input/index';
 import { LC } from '@V1/Alert/__LC__';
@@ -45,7 +44,7 @@ export const CreateProject = memo((props: {
     await ProjectService.createProject(newProject, () => {
       setFeedbacks(prev => ([ ...prev, RS['Done!']]));
       CacheService.addToAllProjects(newProject.projectSettings);
-      SyncService.addToSyncData(newProject.syncData);
+      CacheService.addToSyncData(newProject.syncData);
       AlertService.runAcceptCallback();
       props.closeModal();
     }, (errorMesage) => {

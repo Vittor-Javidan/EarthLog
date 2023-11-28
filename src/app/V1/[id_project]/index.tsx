@@ -9,7 +9,6 @@ import ConfigService from '@V1/Services/ConfigService';
 import CacheService from '@V1/Services/CacheService';
 import ThemeService from '@V1/Services/ThemeService';
 import AlertService from '@V1/Services/AlertService';
-import SyncService from '@V1/Services/SyncService';
 
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
@@ -30,13 +29,13 @@ export default function ProjectScope() {
   const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   const onDownloadAllPictures = useCallback(async () => {
-    const allMissingPictures = SyncService.identifyMissingPictures({ id_project });
+    const allMissingPictures = CacheService.identifyMissingPictures({ id_project });
     await AlertService.handleAlert(true, {
       type: 'download pictures',
       id_project: id_project,
       picturesIDs: allMissingPictures,
     }, async () => {
-      await SyncService.loadAllSyncData();
+      await CacheService.loadAllSyncData();
       refresh(prev => !prev);
     });
   }, []);

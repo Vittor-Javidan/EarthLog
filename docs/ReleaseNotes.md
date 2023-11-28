@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.41 AlertService minor refactor
+# 1.9.42 Sync Service removed
 
-- some method arguments renamed.
+- methods from this service was moved to Project and Cache Services

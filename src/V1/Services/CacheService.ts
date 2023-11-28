@@ -1,6 +1,6 @@
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { LTS_VERSION } from '@V1/Globals/Version';
-import { ProjectSettings, SampleSettings, WidgetData } from '@V1/Types/ProjectTypes';
+import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V1/Types/ProjectTypes';
 import LocalStorageService from './LocalStorageService';
 import DatabaseService from './DatabaseService';
 
@@ -9,6 +9,8 @@ export default class CacheService {
   private static LAST_PROJECT_LOCAL_STORAGE_KEY = `${LTS_VERSION}_LastProject`;
 
   static lastOpenProject: ProjectSettings | null = null;
+
+  static syncData: SyncData[]                    = [];
   static allProjects: ProjectSettings[]          = [];
   static allWidgets_Project: WidgetData[]        = [];
   static allWidgets_Template: WidgetData[]       = [];
@@ -40,9 +42,9 @@ export default class CacheService {
       return;
     }
 
-    this.lastOpenProject     = await DatabaseService.readProject(lastProjectID);
-    this.allWidgets_Project  = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project: lastProjectID });
-    this.allWidgets_Template = await DatabaseService.getAllWidgets({ path: 'template widgets', id_project: lastProjectID });
+    this.lastOpenProject     =  await DatabaseService.readProject(lastProjectID);
+    this.allWidgets_Project  =  await DatabaseService.getAllWidgets({ path: 'project widgets', id_project: lastProjectID });
+    this.allWidgets_Template =  await DatabaseService.getAllWidgets({ path: 'template widgets', id_project: lastProjectID });
     this.allSamples          = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
   }
 
@@ -57,6 +59,17 @@ export default class CacheService {
     CacheService.allWidgets_Template = [];
     CacheService.allSamples = [];
     CacheService.allWidgets_Sample = [];
+  }
+
+  static getSyncDataFromCache(
+    id_project: string
+  ): SyncData {
+    for (let i = 0; i < this.syncData.length; i++) {
+      if (this.syncData[i].id_project === id_project) {
+        return this.syncData[i];
+      }
+    }
+    throw Error(`project of id ${id_project} has no sync data`);
   }
 
   static getProjectFromCache(
@@ -79,6 +92,14 @@ export default class CacheService {
       }
     }
     throw Error('ERROR: Sample does not exist on cache');
+  }
+
+  static updateCache_SyncData(syncData: SyncData) {
+    for (let i = 0; i < this.syncData.length; i++) {
+      if (this.syncData[i].id_project === syncData.id_project) {
+        this.syncData[i] = syncData;
+      }
+    }
   }
 
   static updateCache_ProjectSettings(
@@ -141,6 +162,10 @@ export default class CacheService {
     throw Error('ERROR: Sample Widget does not exist on cache');
   }
 
+  static async loadAllSyncData() {
+    this.syncData = await DatabaseService.getAllSyncData();
+  }
+
   static async loadAllProjectsSettings(): Promise<void> {
     this.allProjects = (await DatabaseService.getAllProjects()).reverse();
   }
@@ -171,45 +196,39 @@ export default class CacheService {
     });
   }
 
-  /**
-   * Adds a project direcly into the cache, to avoid the necessity of loading all projects again.
-   */
+  static addToSyncData(syncData: SyncData) {
+    this.syncData.push(syncData);
+  }
+
   static addToAllProjects(projectSettings: ProjectSettings): void {
     this.allProjects = [deepCopy(projectSettings), ...this.allProjects];
   }
 
-  /**
-   * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
-   */
   static addToAllSamples(sampleSettings: SampleSettings): void {
     this.allSamples = [deepCopy(sampleSettings), ...this.allSamples];
   }
 
-  /**
-   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
-   */
   static addToAllWidgets_Project(widgetData: WidgetData): void {
     this.allWidgets_Project = [...this.allWidgets_Project, deepCopy(widgetData)];
   }
 
-  /**
-   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
-   */
   static addToAllWidgets_Template(widgetData: WidgetData): void {
     this.allWidgets_Template = [...this.allWidgets_Template, deepCopy(widgetData)];
   }
 
-  /**
-   * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
-   */
   static addToAllWidgets_Sample(widgetData: WidgetData): void {
     this.allWidgets_Sample = [...this.allWidgets_Sample, deepCopy(widgetData)];
   }
 
-  /**
-   * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
-   * Does not update array reference.
-   */
+  static removeFromSyncData(id_project: string) {
+    for (let i = 0; i < this.syncData.length; i++) {
+      if (this.syncData[i].id_project === id_project) {
+        this.syncData.splice(i, 1);
+        return;
+      }
+    }
+  }
+
   static removeFromProjects(id_project: string): void {
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
@@ -218,15 +237,18 @@ export default class CacheService {
     }
   }
 
-  /**
-   * Remove widget directly from the cache, to avoid unnecessary loading of all samples again.
-   * Does not update array reference.
-   */
   static removeFromSamples(id_sample: string): void {
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         this.allSamples.splice(i, 1);
       }
     }
+  }
+
+  static identifyMissingPictures(o: {
+    id_project: string
+  }): string[] {
+    const syncData = this.getSyncDataFromCache(o.id_project);
+    return Object.keys(syncData.pictures).filter(key => syncData.pictures[key] === 'on cloud');
   }
 }

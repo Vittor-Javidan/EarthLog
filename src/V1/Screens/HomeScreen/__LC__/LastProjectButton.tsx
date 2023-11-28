@@ -7,10 +7,10 @@ import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
-import SyncService from '@V1/Services/SyncService';
 
 import { Text } from '@V1/Text/index';
 import { UploadStatus } from './UploadStatus';
+import CacheService from '@V1/Services/CacheService';
 
 export const LastProjectButton = memo((props: {
   projectSettings: ProjectSettings
@@ -19,7 +19,7 @@ export const LastProjectButton = memo((props: {
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R               = useMemo(() => translations.screen.home[config.language], []);
-  const projectSyncData = useMemo(() => SyncService.getSyncData(props.projectSettings.id_project), []);
+  const projectSyncData = useMemo(() => CacheService.getSyncDataFromCache(props.projectSettings.id_project), []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 

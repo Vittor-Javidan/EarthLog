@@ -11,7 +11,6 @@ import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import CacheService from '@V1/Services/CacheService';
 import ThemeService from '@V1/Services/ThemeService';
-import SyncService from '@V1/Services/SyncService';
 
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
@@ -104,8 +103,8 @@ async function fetchProject(whenLoaded: () => void) {
   await CacheService.loadAllProjectsSettings();
   const promises = [
     CacheService.loadLastOpenProject(),
+    CacheService.loadAllSyncData(),
     CredentialService.loadAllCredentials(),
-    SyncService.loadAllSyncData(),
   ];
   await Promise.all(promises);
   whenLoaded();

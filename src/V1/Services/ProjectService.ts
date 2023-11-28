@@ -1,4 +1,4 @@
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO } from '@V1/Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO, SyncData } from '@V1/Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import IDService from './IDService';
 
@@ -406,6 +406,23 @@ export default class ProjectService {
       onSuccess();
     } catch (error) {
       onError(
+        `${error}` +
+        `\n${JSON.stringify(error)}`
+      );
+    }
+  }
+
+  static async updateSyncData(o: {
+    syncData: SyncData
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  }): Promise<void> {
+    try {
+      const { syncData } = o;
+      await DatabaseService.updateSyncFile(syncData);
+      o.onSuccess();
+    } catch (error) {
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );

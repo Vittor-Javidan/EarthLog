@@ -7,7 +7,7 @@ import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
-import SyncService from '@V1/Services/SyncService';
+import CacheService from '@V1/Services/CacheService';
 
 import { Text } from '@V1/Text/index';
 import { Layout } from '@V1/Layout/index';
@@ -25,7 +25,7 @@ export const ProjectButtons = memo((props: {
     <ProjectButton
       key={settings.id_project}
       title={settings.name}
-      syncData={SyncService.getSyncData(settings.id_project)}
+      syncData={CacheService.getSyncDataFromCache(settings.id_project)}
       uploads={settings.uploads}
       project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}

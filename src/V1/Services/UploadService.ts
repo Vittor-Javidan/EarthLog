@@ -5,7 +5,6 @@ import ProjectService from './ProjectService';
 import MediaService from './MediaService';
 import CacheService from './CacheService';
 import RESTService from './RESTService';
-import SyncService from './SyncService';
 
 export default class UploadService {
 
@@ -57,11 +56,21 @@ export default class UploadService {
       await ProjectService.updateProject({
         projectSettings: projectDTO.projectSettings,
         sync: false,
-      }, async () => {
+      }, () => {
         CacheService.lastOpenProject = projectDTO.projectSettings;
-        DataProcessingService.processProject_AfterUpload({ ...o, projectDTO });
-        await SyncService.updateSyncData(projectDTO.syncData);
       }, (errorMessage) => { throw Error(errorMessage); });
+
+      o.feedback('Project sync...');
+      DataProcessingService.processProject_AfterUpload({ ...o, projectDTO });
+      await ProjectService.updateSyncData({
+        syncData: projectDTO.syncData,
+        onSuccess: () => {
+          CacheService.updateCache_SyncData(projectDTO.syncData);
+        },
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
 
       // UPLOAD MEDIA =================
       o.feedback('Uploading pictures');
@@ -78,8 +87,17 @@ export default class UploadService {
             syncData: projectDTO.syncData,
           });
 
+          o.feedback('Picture sync...');
           projectDTO.syncData.pictures[id_picture] = 'uploaded';
-          await SyncService.updateSyncData(projectDTO.syncData);
+          await ProjectService.updateSyncData({
+            syncData: projectDTO.syncData,
+            onSuccess: () => {
+              CacheService.updateCache_SyncData(projectDTO.syncData);
+            },
+            onError: (errorMessage) => {
+              throw Error(errorMessage);
+            },
+          });
         }
       }
 
@@ -88,14 +106,11 @@ export default class UploadService {
       const isAllPicturesUploaded = !Object.values(projectDTO.syncData.pictures).includes('new');
 
       if (rules.deleteAfterUpload === true && isAllPicturesUploaded) {
-
         o.feedback('Deleting project');
         await ProjectService.deleteProject(id_project, async () => {
           await CacheService.deleteLastOpenProject();
           navigate('HOME SCOPE');
         }, (errorMessage) => { throw Error(errorMessage); });
-
-        return;
       }
 
       o.onSuccess();

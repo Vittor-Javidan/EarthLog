@@ -4,7 +4,6 @@ import DataProcessingService from './DataProcessingService';
 import ProjectService from './ProjectService';
 import MediaService from './MediaService';
 import CacheService from './CacheService';
-import SyncService from './SyncService';
 import RESTService from './RESTService';
 
 export default class DownloadService {
@@ -92,7 +91,7 @@ export default class DownloadService {
         await ProjectService.createProject(processedProject,
         () => {
           CacheService.addToAllProjects(processedProject.projectSettings);
-          SyncService.addToSyncData(processedProject.syncData);
+          CacheService.addToSyncData(processedProject.syncData);
         },
         (errorMessage) => o.onError(errorMessage),
         (feedbackMessage) => o.feedback(feedbackMessage));
