@@ -17,8 +17,8 @@ export const AlertLayer = memo(() => {
     type: 'warning',
   });
 
-  AlertService.registterAlertShowSetter(setShowModal);
-  AlertService.registterAlertModalConfigSetter(setModalConfig);
+  AlertService.registerAlertShowSetter(setShowModal);
+  AlertService.registerAlertModalConfigSetter(setModalConfig);
 
   return (showModal ? (
     <ReactNative_Modal

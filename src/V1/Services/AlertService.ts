@@ -18,13 +18,13 @@ export default class AlertService {
     }
   }
 
-  static registterAlertShowSetter(
+  static registerAlertShowSetter(
     setter: React.Dispatch<React.SetStateAction<boolean>>
   ) {
     this.showModalSetter = setter;
   }
 
-  static registterAlertModalConfigSetter(
+  static registerAlertModalConfigSetter(
     setter: React.Dispatch<React.SetStateAction<ModalConfig>>
   ) {
     this.alertModalConfigSetter = setter;
