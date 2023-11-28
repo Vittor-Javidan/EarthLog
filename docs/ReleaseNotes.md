@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.40 hooks reoganized
+# 1.9.41 AlertService minor refactor
 
-- now hooks are always defined after the functions of the component.
+- some method arguments renamed.

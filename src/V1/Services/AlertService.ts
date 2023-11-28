@@ -12,9 +12,9 @@ export default class AlertService {
     }
   }
 
-  private static setConfig(question: ModalConfig) {
+  private static setConfig(modalConfig: ModalConfig) {
     if (this.alertModalConfigSetter !== null) {
-      this.alertModalConfigSetter(question);
+      this.alertModalConfigSetter(modalConfig);
     }
   }
 
@@ -32,7 +32,7 @@ export default class AlertService {
 
   static async handleAlert(
     trigger: boolean,
-    config: ModalConfig,
+    modalConfig: ModalConfig,
     onAcceptCallback: () => void
   ) {
 
@@ -42,7 +42,7 @@ export default class AlertService {
     }
 
     this.onAcceptCallback = onAcceptCallback;
-    this.setConfig(config);
+    this.setConfig(modalConfig);
     this.setShowModal(true);
   }
 
