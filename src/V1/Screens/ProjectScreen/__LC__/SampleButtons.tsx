@@ -23,10 +23,10 @@ export const SampleButtons = memo((props: {
       iconName="clipboard"
       onPress={() => navigate('SAMPLE SCOPE', id_project, sampleSettings.id_sample)}
       theme={{
-        font: theme.font_Button,
-        font_Pressed: theme.font_active,
-        background: theme.background_Button,
-        background_Pressed: theme.background_active,
+        font:              theme.font_Button,
+        font_active:       theme.font_active,
+        background:        theme.background_Button,
+        background_active: theme.background_active,
       }}
     />
   ));

@@ -80,20 +80,20 @@ const Drawer = memo(() => {
       iconName="card-outline"
       onPress={() => navigate('CREDENTIAL SCOPE')}
       theme={{
-        font: theme.font,
-        font_Pressed: theme.font_active,
-        background: theme.background,
-        background_Pressed: theme.background_active,
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
       }}
     />
     <Button.TextWithIcon
       title={R['Settings']}
       iconName="settings"
       theme={{
-        font: theme.font,
-        font_Pressed: theme.font_active,
-        background: theme.background,
-        background_Pressed: theme.background_active,
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
       }}
       onPress={() => navigate('SETTINGS SCOPE')}
     />

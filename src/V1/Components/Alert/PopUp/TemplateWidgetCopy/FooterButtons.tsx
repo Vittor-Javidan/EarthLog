@@ -27,10 +27,10 @@ export const FooterButtons = memo((props: {
         iconName="close"
         onPress={() => props.onCancel()}
         theme={{
-          font: theme.font,
-          font_Pressed: theme.wrong,
-          background: theme.wrong,
-          background_Pressed: theme.background_active,
+          font:              theme.font,
+          font_active:       theme.wrong,
+          background:        theme.wrong,
+          background_active: theme.background_active,
         }}
         style={{
           flex: 1,

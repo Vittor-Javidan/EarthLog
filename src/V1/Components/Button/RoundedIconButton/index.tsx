@@ -8,9 +8,9 @@ import { Text } from '@V1/Text/index';
 
 type ButtonTheme = {
   font: string
-  font_Pressed: string
+  font_active: string
   background: string
-  background_Pressed: string
+  background_active: string
 }
 
 export const RoundedIconButton = memo((props: {
@@ -42,8 +42,8 @@ export const RoundedIconButton = memo((props: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
-        borderColor: props.theme.background_Pressed,
+        backgroundColor: pressed ? props.theme.background_active : props.theme.background,
+        borderColor: props.theme.background_active,
         height: props.buttonDiameter,
         width: props.buttonDiameter,
         borderRadius: props.buttonDiameter,
@@ -56,7 +56,7 @@ export const RoundedIconButton = memo((props: {
       {props.showPlusSign && (
         <Text
           style={{
-            color: pressed ? props.theme.font_Pressed : props.theme.font,
+            color: pressed ? props.theme.font_active : props.theme.font,
             fontSize: 25,
           }}
         >
@@ -65,7 +65,7 @@ export const RoundedIconButton = memo((props: {
       )}
       <Icon
         iconName={props.iconName}
-        color={pressed ? props.theme.font_Pressed : props.theme.font}
+        color={pressed ? props.theme.font_active : props.theme.font}
       />
     </Pressable>
   );

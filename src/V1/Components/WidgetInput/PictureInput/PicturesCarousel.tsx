@@ -66,10 +66,10 @@ export const PicturesCarousel = memo((props: {
           showPlusSign={false}
           onPress={() => props.onDownloadMissingPicture(pictureData.id_picture)}
           theme={{
-            font: props.theme.background,
-            font_Pressed: props.theme.font,
-            background: props.theme.font,
-            background_Pressed: props.theme.background,
+            font:              props.theme.background,
+            font_active:       props.theme.font,
+            background:        props.theme.font,
+            background_active: props.theme.background,
           }}
         />
       </View>
@@ -223,9 +223,9 @@ const CarouselButtons = memo((props: {
           onPress={() => props.onScrollLeft()}
           theme={{
             font: '#DDD',
-            font_Pressed: '#666',
+            font_active: '#666',
             background: '#666',
-            background_Pressed: '#222',
+            background_active: '#222',
           }}
           style={{
             backgroundColor: undefined,
@@ -251,9 +251,9 @@ const CarouselButtons = memo((props: {
           onPress={() => props.onScrollRight()}
           theme={{
             font: '#DDD',
-            font_Pressed: '#666',
+            font_active: '#666',
             background: '#666',
-            background_Pressed: '#222',
+            background_active: '#222',
           }}
           style={{
             backgroundColor: undefined,
@@ -281,9 +281,9 @@ const CarouselButtons = memo((props: {
           onPress={() => props.onDownloadAllMissingPictures()}
           theme={{
             font: '#FFF',
-            font_Pressed: '#666',
+            font_active: '#666',
             background: '#666',
-            background_Pressed: '#222',
+            background_active: '#222',
           }}
           style={{
             backgroundColor: undefined,
@@ -300,9 +300,9 @@ const CarouselButtons = memo((props: {
         onPress={() => props.onPictureShare()}
         theme={{
           font: '#FFF',
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,
@@ -318,9 +318,9 @@ const CarouselButtons = memo((props: {
         onPress={() => props.onPictureDelete()}
         theme={{
           font: '#FFF',
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,

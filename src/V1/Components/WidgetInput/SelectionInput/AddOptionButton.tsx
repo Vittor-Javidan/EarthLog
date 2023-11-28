@@ -14,10 +14,10 @@ export const AddSelectionOptionButton = memo((props: {
       iconName="add"
       onPress={() => props.onAddOption()}
       theme={{
-        font: props.theme.background,
-        font_Pressed: props.theme.font,
-        background: props.theme.font,
-        background_Pressed: props.theme.background,
+        font:              props.theme.background,
+        font_active:       props.theme.font,
+        background:        props.theme.font,
+        background_active: props.theme.background,
       }}
       style={{
         alignSelf: 'center',

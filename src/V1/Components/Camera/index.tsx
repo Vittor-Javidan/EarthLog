@@ -77,10 +77,10 @@ export const CameraLayer = memo(() => {
                   iconName="camera"
                   onPress={async () => await requestPermission()}
                   theme={{
-                    font: theme.font_Button,
-                    font_Pressed: theme.background_active,
-                    background: theme.background_Button,
-                    background_Pressed: theme.background_active,
+                    font:              theme.font_Button,
+                    font_active:       theme.background_active,
+                    background:        theme.background_Button,
+                    background_active: theme.background_active,
                   }}
                   style={{
                     borderRadius: 10,

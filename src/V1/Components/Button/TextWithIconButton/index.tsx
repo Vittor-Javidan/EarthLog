@@ -8,9 +8,9 @@ import { Icon, IconName } from '@V1/Icon/index';
 
 type ButtonTheme = {
   font: string
-  font_Pressed: string
+  font_active: string
   background: string
-  background_Pressed: string
+  background_active: string
 }
 
 export const TextWithIcon = memo((props: {
@@ -46,12 +46,12 @@ export const TextWithIcon = memo((props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 5,
-				backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
+				backgroundColor: pressed ? props.theme.background_active : props.theme.background,
 			}, props.style]}
 		>
       <Text h2
 				style={{
-          color: pressed ? props.theme.font_Pressed : props.theme.font,
+          color: pressed ? props.theme.font_active : props.theme.font,
 				}}
 			>
 				{props.title}
@@ -64,7 +64,7 @@ export const TextWithIcon = memo((props: {
       >
         <Icon
           iconName={props.iconName}
-          color={pressed ? props.theme.font_Pressed : props.theme.font}
+          color={pressed ? props.theme.font_active : props.theme.font}
         />
       </View>
 		</Pressable>

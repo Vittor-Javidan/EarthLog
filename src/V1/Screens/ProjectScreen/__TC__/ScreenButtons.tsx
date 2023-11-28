@@ -29,10 +29,10 @@ export const ScreenButtons = memo((props: {
           buttonDiameter={60}
           onPress={() => navigate('HOME SCOPE')}
           theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
+            font:              theme.font,
+            font_active:       theme.backgroud,
+            background:        theme.backgroud,
+            background_active: theme.background_active,
           }}
         />
         <Button.RoundedIcon
@@ -41,10 +41,10 @@ export const ScreenButtons = memo((props: {
           buttonDiameter={60}
           onPress={props.onUploadProject}
           theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
+            font:              theme.font,
+            font_active:       theme.backgroud,
+            background:        theme.backgroud,
+            background_active: theme.background_active,
           }}
         />
         {projectSettings.rules.showSampleCreationButton && (
@@ -54,10 +54,10 @@ export const ScreenButtons = memo((props: {
             buttonDiameter={60}
             onPress={props.onCreateSample}
             theme={{
-              font: theme.font,
-              font_Pressed: theme.confirm,
-              background: theme.confirm,
-              background_Pressed: theme.background_active,
+              font:              theme.font,
+              font_active:       theme.confirm,
+              background:        theme.confirm,
+              background_active: theme.background_active,
             }}
           />
         )}

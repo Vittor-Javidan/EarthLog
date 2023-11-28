@@ -46,10 +46,10 @@ const DateFormatButton = memo((props: {
     <Button.TextWithIcon
       title={R[props.dateFormat]}
       theme={{
-        font:               props.isSelected ? theme.background : theme.font_Button,
-        font_Pressed:       props.isSelected ? theme.confirm    : theme.font_active,
-        background:         props.isSelected ? theme.confirm    : theme.background_Button,
-        background_Pressed: props.isSelected ? theme.background : theme.background_active,
+        font:              props.isSelected ? theme.background : theme.font_Button,
+        font_active:       props.isSelected ? theme.confirm    : theme.font_active,
+        background:        props.isSelected ? theme.confirm    : theme.background_Button,
+        background_active: props.isSelected ? theme.background : theme.background_active,
       }}
       iconName="calendar"
       onPress={() => props.onPress()}

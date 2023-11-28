@@ -7,9 +7,9 @@ import { Icon, IconName } from '../../Icon';
 
 type ButtonTheme = {
   font: string
-  font_Pressed: string
+  font_active: string
   background: string
-  background_Pressed: string
+  background_active: string
 }
 
 export const IconButton = memo((props: {
@@ -38,7 +38,7 @@ export const IconButton = memo((props: {
       onPress={() => onPress()}
       style={[{
         flexDirection: 'row',
-        backgroundColor: pressed ? props.theme.background_Pressed : props.theme.background,
+        backgroundColor: pressed ? props.theme.background_active : props.theme.background,
         paddingHorizontal: 20,
         paddingVertical: 5,
         justifyContent: 'center',
@@ -48,7 +48,7 @@ export const IconButton = memo((props: {
     >
       <Icon
         iconName={props.iconName}
-        color={pressed ? props.theme.font_Pressed : props.theme.font}
+        color={pressed ? props.theme.font_active : props.theme.font}
       />
     </Pressable>
   );

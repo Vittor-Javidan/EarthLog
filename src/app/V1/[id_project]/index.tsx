@@ -127,10 +127,10 @@ const Drawer = memo((props: {
         title={R['Export project']}
         iconName="arrow-redo"
         theme={{
-          font: theme.font,
-          background: theme.background,
-          font_Pressed: theme.font_active,
-          background_Pressed: theme.background_active,
+          font:              theme.font,
+          background:        theme.background,
+          font_active:       theme.font_active,
+          background_active: theme.background_active,
         }}
         onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
       />
@@ -139,10 +139,10 @@ const Drawer = memo((props: {
       title={R['Download all pictures']}
       iconName="image"
       theme={{
-        font: theme.font,
-        background: theme.background,
-        font_Pressed: theme.font_active,
-        background_Pressed: theme.background_active,
+        font:              theme.font,
+        background:        theme.background,
+        font_active:       theme.font_active,
+        background_active: theme.background_active,
       }}
       onPress={() => props.onDownloadAllPictures()}
     />

@@ -40,10 +40,10 @@ export const AvailableExportFormatButtons = memo(() => {
         iconName="document-text"
         onPress={async () => await onDocxSelected()}
         theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
+          font:              theme.font_Button,
+          font_active:       theme.font_active,
+          background:        theme.background_Button,
+          background_active: theme.background_active,
         }}
       />
       <Button.TextWithIcon
@@ -51,10 +51,10 @@ export const AvailableExportFormatButtons = memo(() => {
         iconName="document-text"
         onPress={async () => await onCSVSelected()}
         theme={{
-          font: theme.font_Button,
-          font_Pressed: theme.font_active,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
+          font:              theme.font_Button,
+          font_active:       theme.font_active,
+          background:        theme.background_Button,
+          background_active: theme.background_active,
         }}
       />
     </View>

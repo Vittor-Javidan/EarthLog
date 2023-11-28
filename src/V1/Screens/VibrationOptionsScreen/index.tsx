@@ -38,10 +38,10 @@ export const VibrationOptionsScreen = memo(() => {
             title={R['Default']}
             iconName="alert-circle"
             theme={{
-              font:               onlyWarnings === false ? theme.background : theme.font_Button,
-              font_Pressed:       onlyWarnings === false ? theme.confirm    : theme.font_active,
-              background:         onlyWarnings === false ? theme.confirm    : theme.background_Button,
-              background_Pressed: onlyWarnings === false ? theme.background : theme.background_active,
+              font:              onlyWarnings === false ? theme.background : theme.font_Button,
+              font_active:       onlyWarnings === false ? theme.confirm    : theme.font_active,
+              background:        onlyWarnings === false ? theme.confirm    : theme.background_Button,
+              background_active: onlyWarnings === false ? theme.background : theme.background_active,
             }}
             onPress={() => onOptionSelected(false)}
           />
@@ -49,10 +49,10 @@ export const VibrationOptionsScreen = memo(() => {
             title={R['Only warnings']}
             iconName="alert-circle"
             theme={{
-              font:               onlyWarnings === true ? theme.background : theme.font_Button,
-              font_Pressed:       onlyWarnings === true ? theme.confirm    : theme.font_active,
-              background:         onlyWarnings === true ? theme.confirm    : theme.background_Button,
-              background_Pressed: onlyWarnings === true ? theme.background : theme.background_active,
+              font:              onlyWarnings === true ? theme.background : theme.font_Button,
+              font_active:       onlyWarnings === true ? theme.confirm    : theme.font_active,
+              background:        onlyWarnings === true ? theme.confirm    : theme.background_Button,
+              background_active: onlyWarnings === true ? theme.background : theme.background_active,
             }}
             onPress={() => onOptionSelected(true)}
           />

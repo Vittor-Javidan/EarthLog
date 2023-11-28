@@ -27,10 +27,10 @@ export const ScreenButtons = memo((props: {
             buttonDiameter={60}
             onPress={props.onCreateWidget}
             theme={{
-              font: theme.font,
-              font_Pressed: theme.confirm,
-              background: theme.confirm,
-              background_Pressed: theme.background_active,
+              font:              theme.font,
+              font_active:       theme.confirm,
+              background:        theme.confirm,
+              background_active: theme.background_active,
             }}
           />
         )}

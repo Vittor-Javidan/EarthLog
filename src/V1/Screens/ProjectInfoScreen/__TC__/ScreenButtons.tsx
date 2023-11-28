@@ -21,36 +21,34 @@ export const ScreenButtons = memo((props: {
 
   return (
     <Layout.ScreenButtons
-      buttons={
-        <>
+      buttons={<>
+        <Button.RoundedIcon
+          iconName="trash-outline"
+          showPlusSign={false}
+          buttonDiameter={60}
+          onPress={() => setShow_DeleteSwap(true)}
+          theme={{
+            font:              theme.font,
+            font_active:       theme.wrong,
+            background:        theme.wrong,
+            background_active: theme.background_active,
+          }}
+        />
+        {projectSettings.rules.showCreateWidgetButton_Project && (
           <Button.RoundedIcon
-            iconName="trash-outline"
-            showPlusSign={false}
+            iconName="square"
+            showPlusSign={true}
             buttonDiameter={60}
-            onPress={() => setShow_DeleteSwap(true)}
+            onPress={props.onCreateWidget}
             theme={{
-              font: theme.font,
-              font_Pressed: theme.wrong,
-              background: theme.wrong,
-              background_Pressed: theme.background_active,
+              font:              theme.font,
+              font_active:       theme.confirm,
+              background:        theme.confirm,
+              background_active: theme.background_active,
             }}
           />
-          {projectSettings.rules.showCreateWidgetButton_Project && (
-            <Button.RoundedIcon
-              iconName="square"
-              showPlusSign={true}
-              buttonDiameter={60}
-              onPress={props.onCreateWidget}
-              theme={{
-                font: theme.font,
-                font_Pressed: theme.confirm,
-                background: theme.confirm,
-                background_Pressed: theme.background_active,
-              }}
-            />
-          )}
-        </>
-      }
+        )}
+      </>}
 
       showSwipe={show_DeleteSwap}
       SwipeButton={

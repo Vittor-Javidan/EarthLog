@@ -26,10 +26,10 @@ export const FooterButtons = memo((props: {
         iconName="checkmark-done-sharp"
         onPress={() => props.onConfirm()}
         theme={{
-          font: theme.confirm,
-          font_Pressed: theme.confirm,
-          background: theme.background_Button,
-          background_Pressed: theme.background_active,
+          font:              theme.confirm,
+          font_active:       theme.confirm,
+          background:        theme.background_Button,
+          background_active: theme.background_active,
         }}
         style={{
           height: 40,
@@ -43,10 +43,10 @@ export const FooterButtons = memo((props: {
         iconName="close"
         onPress={() => props.onCancel()}
         theme={{
-          font: theme.font,
-          font_Pressed: theme.wrong,
-          background: theme.wrong,
-          background_Pressed: theme.background_active,
+          font:              theme.font,
+          font_active:       theme.wrong,
+          background:        theme.wrong,
+          background_active: theme.background_active,
         }}
         style={{
           height: 40,

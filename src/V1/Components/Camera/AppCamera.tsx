@@ -168,9 +168,9 @@ const CloseButton = memo((props: {
         onPress={props.onPress}
         theme={{
           font: props.color,
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,
@@ -202,9 +202,9 @@ const CameraFooterButtons = memo((props: {
         onPress={props.flashButtonPress}
         theme={{
           font: props.color,
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,
@@ -219,9 +219,9 @@ const CameraFooterButtons = memo((props: {
         onPress={props.changeHudColorPress}
         theme={{
           font: props.color,
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,
@@ -236,9 +236,9 @@ const CameraFooterButtons = memo((props: {
         onPress={props.changeCameraTypePress}
         theme={{
           font: props.color,
-          font_Pressed: '#666',
+          font_active: '#666',
           background: '#666',
-          background_Pressed: '#222',
+          background_active: '#222',
         }}
         style={{
           backgroundColor: undefined,

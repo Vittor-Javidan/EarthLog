@@ -23,10 +23,10 @@ export const ScreenButtons = memo(() => {
           buttonDiameter={60}
           onPress={() => navigate('PROJECT SCOPE', id_project)}
           theme={{
-            font: theme.font,
-            font_Pressed: theme.backgroud,
-            background: theme.backgroud,
-            background_Pressed: theme.background_active,
+            font:              theme.font,
+            font_active:       theme.backgroud,
+            background:        theme.backgroud,
+            background_active: theme.background_active,
           }}
         />
       }

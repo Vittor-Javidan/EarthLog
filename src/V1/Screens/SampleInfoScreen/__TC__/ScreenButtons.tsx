@@ -47,10 +47,10 @@ export const ScreenButtons = memo(() => {
           buttonDiameter={60}
           onPress={() => setShow_DeleteSwap(true)}
           theme={{
-            font: theme.font,
-            font_Pressed: theme.wrong,
-            background: theme.wrong,
-            background_Pressed: theme.background_active,
+            font:              theme.font,
+            font_active:       theme.wrong,
+            background:        theme.wrong,
+            background_active: theme.background_active,
           }}
         />
       }

@@ -61,9 +61,9 @@ const PreviwButtons = memo((props: {
       onPress={() => props.onCancel()}
       theme={{
         font: '#F55',
-        font_Pressed: '#666',
+        font_active: '#666',
         background: '#666',
-        background_Pressed: '#F55',
+        background_active: '#F55',
       }}
       buttonDiameter={70}
       showPlusSign={false}
@@ -73,9 +73,9 @@ const PreviwButtons = memo((props: {
       onPress={() => props.onConfirm()}
       theme={{
         font: '#5F5',
-        font_Pressed: '#666',
+        font_active: '#666',
         background: '#666',
-        background_Pressed: '#5F5',
+        background_active: '#5F5',
       }}
       buttonDiameter={70}
       showPlusSign={false}
