@@ -37,10 +37,6 @@ export const SampleSettingsWidget = memo((props: {
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutosave_sample(() => {
-    setSaved(true);
-  }, [sampleSettings, saved]);
-
   const onSaveName = useCallback((inputData: StringInputData) => {
     setSaved(false);
     setSampleSettings(prev => ({ ...prev, name: inputData.value }));
@@ -52,6 +48,10 @@ export const SampleSettingsWidget = memo((props: {
     setSampleSettings(prev => ({ ...prev, gps: gpsData.value }));
     props.onGPSReferenceUpdate(deepCopy(gpsData.value));
   }, [props.onGPSReferenceUpdate]);
+
+  useAutosave_sample(() => {
+    setSaved(true);
+  }, [sampleSettings, saved]);
 
   return (
     <Layout.PseudoWidget

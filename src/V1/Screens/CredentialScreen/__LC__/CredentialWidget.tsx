@@ -38,10 +38,6 @@ export const CredentialWidget = memo((props: {
   const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
   const [saved            , setSaved            ] = useState<boolean>(true);
 
-  useAutoSave(() => {
-    setSaved(true);
-  }, [credential, saved]);
-
   const onLabelChange = useCallback((newLabel: string) => {
     setCredential(prev => ({ ...prev, name: newLabel}));
     setSaved(false);
@@ -68,6 +64,10 @@ export const CredentialWidget = memo((props: {
       question: R['Confirm to delete this credential.'],
     }, () => props.onCredentialDelete());
   }, [props.onCredentialDelete]);
+
+  useAutoSave(() => {
+    setSaved(true);
+  }, [credential, saved]);
 
   return (
     <Layout.PseudoWidget

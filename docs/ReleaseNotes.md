@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.39 Button prop renamed
+# 1.9.40 hooks reoganized
 
-- "pressed" prop names renamed to "active"
+- now hooks are always defined after the functions of the component.

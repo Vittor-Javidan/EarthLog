@@ -18,14 +18,14 @@ export const Warning = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
-  useEffect(() => {
-    HapticsService.vibrate('warning');
-  }, []);
-
   const onAccept = useCallback(() => {
     AlertService.runAcceptCallback();
     props.closeModal();
   }, [props.closeModal]);
+
+  useEffect(() => {
+    HapticsService.vibrate('warning');
+  }, []);
 
   return (
     <LC.PopUp>

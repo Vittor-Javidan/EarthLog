@@ -19,14 +19,14 @@ export const ExitApp = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const R      = useMemo(() => translations.component.alert.exitApp[config.language], []);
 
-  useEffect(() => {
-    HapticsService.vibrate('warning');
-  }, []);
-
   const onAccept = useCallback(() => {
     props.closeModal();
     AlertService.runAcceptCallback();
   }, [props.closeModal]);
+
+  useEffect(() => {
+    HapticsService.vibrate('warning');
+  }, []);
 
   return (
     <LC.PopUp>

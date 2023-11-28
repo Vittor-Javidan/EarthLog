@@ -47,10 +47,6 @@ export const Widget = memo((props: {
     disabled:         widgetData.widgetTheme?.disabled         ?? defaultTheme.disabled,
   }), [widgetData.widgetTheme]);
 
-  useAutoSave_widget(() => {
-    setSaved(true);
-  }, [widgetData, props.widgetScope, saved]);
-
   const selectDisplay = useCallback((newDisplay: WidgetDisplay) => {
     startTransitions(() => {
       if (display === newDisplay) {
@@ -178,6 +174,10 @@ export const Widget = memo((props: {
     setSaved(false);
     setWidgetData(prev => ({ ...prev, addToNewSamples: boolean }));
   }, []);
+
+  useAutoSave_widget(() => {
+    setSaved(true);
+  }, [widgetData, props.widgetScope, saved]);
 
   return (
     <View

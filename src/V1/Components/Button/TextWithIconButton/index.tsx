@@ -33,7 +33,6 @@ export const TextWithIcon = memo((props: {
     HapticsService.vibrate('success');
   }, []);
 
-
 	return (
 		<Pressable
 			onPressIn={() => onPressIn()}

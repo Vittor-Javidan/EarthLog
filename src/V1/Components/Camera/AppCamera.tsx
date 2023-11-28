@@ -27,12 +27,6 @@ export const AppCamera = memo((props: {
     loadingPreview: false,
   });
 
-  useEffect(() => {
-    if (show.loadingPreview && photo !== null) {
-      setShow(prev => ({ ...prev, loadingPreview: false}));
-    }
-  }, [show.loadingPreview]);
-
   const onPictureTake = useCallback(async () => {
     if (cameraRef.current !== null && show.loadingPreview === false) {
       setShow(prev => ({ ...prev, loadingPreview: true}));
@@ -74,6 +68,12 @@ export const AppCamera = memo((props: {
       return prev === '#000' ? '#DDD' : '#000';
     });
   }, []);
+
+  useEffect(() => {
+    if (show.loadingPreview && photo !== null) {
+      setShow(prev => ({ ...prev, loadingPreview: false}));
+    }
+  }, [show.loadingPreview]);
 
   return (
     <View

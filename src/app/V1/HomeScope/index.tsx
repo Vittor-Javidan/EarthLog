@@ -23,6 +23,12 @@ export default function HomeScope() {
   const R      = useMemo(() => translations.scope.home[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
+  const exitMessage = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'exit app',
+    }, () => BackHandler.exitApp());
+  }, []);
+
   useEffect(() => {
     fetchProject(() => setState('Loaded'));
   }, []);
@@ -30,12 +36,6 @@ export default function HomeScope() {
   useBackPress(async () => {
     await exitMessage();
     HapticsService.vibrate('warning');
-  }, []);
-
-  const exitMessage = useCallback(async () => {
-    await AlertService.handleAlert(true, {
-      type: 'exit app',
-    }, () => BackHandler.exitApp());
   }, []);
 
   return (

@@ -21,10 +21,6 @@ export const DataDisplay = memo((props: {
 
   const [loading, setLoading] = useState<Loading>(props.inputs.length < 4 ? 'Loaded' : 'Loading');
 
-  useEffect(() => {
-    setLoading('Loaded');
-  }, []);
-
   const AllInputs = props.inputs.map((inputData, index) => {
 
     const isFirst = index === 0;
@@ -48,6 +44,10 @@ export const DataDisplay = memo((props: {
       />
     );
   });
+
+  useEffect(() => {
+    setLoading('Loaded');
+  }, []);
 
   return loading === 'Loaded' ? (<>
     {AllInputs}

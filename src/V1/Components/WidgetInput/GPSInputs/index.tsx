@@ -48,26 +48,6 @@ export const GPSInput = memo((props: {
 
   const noGPSData = Object.keys(inputData.value).length <= 0;
 
-  useEffect(() => {
-    return () => { gpsWatcher.stopWatcher(); };
-  }, []);
-
-  useEffect(() => {
-    GPSService.checkReferenceCoordinateDifference(props.referenceGPSData, inputData.value,
-      () => {
-        if (alertMessages.gpsDistanceAlertMessage) {
-          setAlertMessages(prev => {
-            delete prev.gpsDistanceAlertMessage;
-            return { ...prev };
-          });
-        }
-      },
-      (distance) => setAlertMessages({
-        gpsDistanceAlertMessage: R['* Reference distance: '] + `${distance}m`,
-      })
-    );
-  }, [props.referenceGPSData, inputData]);
-
   /**
    * @WARNING
    * Never call this function from inside a state setter.
@@ -143,6 +123,26 @@ export const GPSInput = memo((props: {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
   }, []);
+
+  useEffect(() => {
+    return () => { gpsWatcher.stopWatcher(); };
+  }, []);
+
+  useEffect(() => {
+    GPSService.checkReferenceCoordinateDifference(props.referenceGPSData, inputData.value,
+      () => {
+        if (alertMessages.gpsDistanceAlertMessage) {
+          setAlertMessages(prev => {
+            delete prev.gpsDistanceAlertMessage;
+            return { ...prev };
+          });
+        }
+      },
+      (distance) => setAlertMessages({
+        gpsDistanceAlertMessage: R['* Reference distance: '] + `${distance}m`,
+      })
+    );
+  }, [props.referenceGPSData, inputData]);
 
   return (<>
     <LC.Root

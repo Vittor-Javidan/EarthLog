@@ -37,10 +37,6 @@ export const ProjectSettingsWidget = memo((props: {
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
-  useAutoSave_project(() => {
-    setSaved(true);
-  }, [projectSettings, saved]);
-
   const onSaveName = useCallback((inputData: StringInputData) => {
     setSaved(false);
     setProjectSettings(prev => ({ ...prev, name: inputData.value }));
@@ -68,6 +64,10 @@ export const ProjectSettingsWidget = memo((props: {
     setSaved(false);
     setProjectSettings(prev => ({ ...prev, gps: inputData.value }));
   }, []);
+
+  useAutoSave_project(() => {
+    setSaved(true);
+  }, [projectSettings, saved]);
 
   return (
     <Layout.PseudoWidget

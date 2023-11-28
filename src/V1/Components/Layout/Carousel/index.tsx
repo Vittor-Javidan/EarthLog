@@ -38,10 +38,6 @@ export const Carousel = memo((props: {
   const OFFSETS        = useMemo(() => getOffSets(props.screens.length), []);
   const [selectedScreen , setSelectedScreen] = useState<number>(1);
 
-  useBackPress(() => {
-    selectedScreen !== 1 ? onChangeScreen(1) : props.onBackPress();
-  }, [selectedScreen]);
-
   const onChangeScreen = useCallback((nextScreen: number) => {
     startTransitions(() => setSelectedScreen(nextScreen));
   }, []);
@@ -63,6 +59,10 @@ export const Carousel = memo((props: {
       />
     );
   });
+
+  useBackPress(() => {
+    selectedScreen !== 1 ? onChangeScreen(1) : props.onBackPress();
+  }, [selectedScreen]);
 
   return (
     <View
