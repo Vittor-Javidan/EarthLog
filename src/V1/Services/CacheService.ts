@@ -1,8 +1,8 @@
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { LTS_VERSION } from '@V1/Globals/Version';
 import { ProjectSettings, SampleSettings, WidgetData } from '@V1/Types/ProjectTypes';
 import LocalStorageService from './LocalStorageService';
 import DatabaseService from './DatabaseService';
-import UtilService from './UtilService';
 
 export default class CacheService {
 
@@ -86,7 +86,7 @@ export default class CacheService {
   ) {
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
-        this.allProjects[i] = UtilService.deepCopy(projectSettings);
+        this.allProjects[i] = deepCopy(projectSettings);
         return;
       }
     }
@@ -98,7 +98,7 @@ export default class CacheService {
   ) {
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
-        this.allSamples[i] = UtilService.deepCopy(sampleSettings);
+        this.allSamples[i] = deepCopy(sampleSettings);
         return;
       }
     }
@@ -110,7 +110,7 @@ export default class CacheService {
   ) {
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Project[i] = UtilService.deepCopy(widgetData);
+        this.allWidgets_Project[i] = deepCopy(widgetData);
         return;
       }
     }
@@ -122,7 +122,7 @@ export default class CacheService {
   ) {
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Template[i] = UtilService.deepCopy(widgetData);
+        this.allWidgets_Template[i] = deepCopy(widgetData);
         return;
       }
     }
@@ -134,7 +134,7 @@ export default class CacheService {
   ) {
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
-        this.allWidgets_Sample[i] = UtilService.deepCopy(widgetData);
+        this.allWidgets_Sample[i] = deepCopy(widgetData);
         return;
       }
     }
@@ -175,35 +175,35 @@ export default class CacheService {
    * Adds a project direcly into the cache, to avoid the necessity of loading all projects again.
    */
   static addToAllProjects(projectSettings: ProjectSettings): void {
-    this.allProjects = [UtilService.deepCopy(projectSettings), ...this.allProjects];
+    this.allProjects = [deepCopy(projectSettings), ...this.allProjects];
   }
 
   /**
    * Adds a sample direcly into the cache, to avoid the necessity of loading all samples again.
    */
   static addToAllSamples(sampleSettings: SampleSettings): void {
-    this.allSamples = [UtilService.deepCopy(sampleSettings), ...this.allSamples];
+    this.allSamples = [deepCopy(sampleSettings), ...this.allSamples];
   }
 
   /**
    * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
    */
   static addToAllWidgets_Project(widgetData: WidgetData): void {
-    this.allWidgets_Project = [...this.allWidgets_Project, UtilService.deepCopy(widgetData)];
+    this.allWidgets_Project = [...this.allWidgets_Project, deepCopy(widgetData)];
   }
 
   /**
    * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
    */
   static addToAllWidgets_Template(widgetData: WidgetData): void {
-    this.allWidgets_Template = [...this.allWidgets_Template, UtilService.deepCopy(widgetData)];
+    this.allWidgets_Template = [...this.allWidgets_Template, deepCopy(widgetData)];
   }
 
   /**
    * Adds a widget direcly into the cache, to avoid the necessity of loading all widgets again.
    */
   static addToAllWidgets_Sample(widgetData: WidgetData): void {
-    this.allWidgets_Sample = [...this.allWidgets_Sample, UtilService.deepCopy(widgetData)];
+    this.allWidgets_Sample = [...this.allWidgets_Sample, deepCopy(widgetData)];
   }
 
   /**

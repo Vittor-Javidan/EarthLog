@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback, memo } from 'react';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { GPSInputData, ProjectSettings, StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
@@ -9,7 +10,6 @@ import ProjectService from '@V1/Services/ProjectService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
 import CacheService from '@V1/Services/CacheService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Text } from '@V1/Text/index';
 import { Layout } from '@V1/Layout/index';
@@ -34,7 +34,7 @@ export const ProjectSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(UtilService.deepCopy(CacheService.getProjectFromCache(id_project)));
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(deepCopy(CacheService.getProjectFromCache(id_project)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutoSave_project(() => {

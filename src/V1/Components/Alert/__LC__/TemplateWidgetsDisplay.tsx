@@ -1,13 +1,13 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { WidgetData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import CacheService from '@V1/Services/CacheService';
 import ThemeService from '@V1/Services/ThemeService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Text } from '@V1/Text/index';
 
@@ -29,7 +29,7 @@ export const TemplateWidgetCopyDisplay = memo((props: {
         <TemplateWidgetButton
           key={widgetData.id_widget}
           title={widgetData.widgetName}
-          onPress={() => props.onWidgetTemplateCopy(UtilService.deepCopy(widgetData))}
+          onPress={() => props.onWidgetTemplateCopy(deepCopy(widgetData))}
         />
       );
     }

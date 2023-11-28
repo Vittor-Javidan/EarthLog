@@ -1,11 +1,11 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch, Platform } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { BooleanInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Text } from '@V1/Text/index';
 import { LC } from '../__LC__';
@@ -27,7 +27,7 @@ export const BooleanInput = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.boolean[config.language], []);
 
-  const [inputData , setInputData] = useState<BooleanInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData , setInputData] = useState<BooleanInputData>(deepCopy(props.inputData));
 
   const notApplicableUndefined = inputData.notApplicable === undefined;
   const notApplicableFalse     = inputData.notApplicable === false;
@@ -49,7 +49,7 @@ export const BooleanInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: BooleanInputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: BooleanInputData) => {

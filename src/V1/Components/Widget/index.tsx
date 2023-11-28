@@ -1,6 +1,7 @@
 import React, { useMemo, useState, memo, useCallback, useTransition } from 'react';
 import { View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { GPS_DTO, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
@@ -11,7 +12,6 @@ import AlertService from '@V1/Services/AlertService';
 import ThemeService from '@V1/Services/ThemeService';
 import CacheService from '@V1/Services/CacheService';
 import MediaService from '@V1/Services/MediaService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Navbar } from './Navbar';
 import { WidgetLabel } from './WidgetLabel';
@@ -31,7 +31,7 @@ export const Widget = memo((props: {
   const R      = useMemo(() => translations.widget.Root[config.language], []);
   const [_, startTransitions] = useTransition();
 
-  const [widgetData     , setWidgetData     ] = useState<WidgetData>(UtilService.deepCopy(props.widgetData));
+  const [widgetData     , setWidgetData     ] = useState<WidgetData>(deepCopy(props.widgetData));
   const [editInputs     , setEditInputs     ] = useState<boolean>(false);
   const [saved          , setSaved          ] = useState<boolean>(true);
   const [display        , setDisplay        ] = useState<WidgetDisplay>('data display');
@@ -90,7 +90,7 @@ export const Widget = memo((props: {
     setSaved(false);
     setWidgetData(prev => ({
       ...prev,
-      widgetTheme: UtilService.deepCopy(ThemeService.widgetThemes[themeName]),
+      widgetTheme: deepCopy(ThemeService.widgetThemes[themeName]),
     }));
   }, []);
 

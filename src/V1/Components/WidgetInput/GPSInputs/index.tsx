@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import GPSService, { GPSWatcherService } from '@V1/Services/GPSService';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
-import UtilService from '@V1/Services/UtilService';
 
 import { LC } from '../__LC__';
 import { ManualInput } from './ManualInput';
@@ -31,9 +31,9 @@ export const GPSInput = memo((props: {
 
   const config     = useMemo(() => ConfigService.config, []);
   const R          = useMemo(() => translations.widgetInput.gps[config.language], []);
-  const gpsWatcher = useMemo(() => new GPSWatcherService(UtilService.deepCopy(props.inputData.value)), []);
+  const gpsWatcher = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
 
-  const [inputData    , setInputData    ] = useState<GPSInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData    , setInputData    ] = useState<GPSInputData>(deepCopy(props.inputData));
   const [alertMessages, setAlertMessages] = useState<InputAlertMessage>({});
   const [accuracy     , setAccuracy     ] = useState<GPSAccuracyDTO>({
     coordinate: null,
@@ -74,7 +74,7 @@ export const GPSInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: GPSInputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: GPSInputData) => {
@@ -85,7 +85,7 @@ export const GPSInput = memo((props: {
 
   const onManualInput = useCallback((gpsData: GPS_DTO, inputData: GPSInputData) => {
     const newData: GPSInputData = { ...inputData, value: gpsData};
-    gpsWatcher.setGpsData(UtilService.deepCopy(gpsData));
+    gpsWatcher.setGpsData(deepCopy(gpsData));
     asyncSave(newData);
     setInputData(newData);
   }, [asyncSave]);
@@ -130,7 +130,7 @@ export const GPSInput = memo((props: {
       setFeatures(prev => ({ ...prev, gpsON: true }));
       await gpsWatcher.watchPositionAsync(
         (gpsData) => {
-          const newData: GPSInputData = { ...inputData, value: UtilService.deepCopy(gpsData)};
+          const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
           asyncSave(newData);
           setInputData(newData);
         },

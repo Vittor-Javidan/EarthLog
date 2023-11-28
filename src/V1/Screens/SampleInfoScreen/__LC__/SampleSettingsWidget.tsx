@@ -2,6 +2,7 @@ import React, { useState, useMemo, useCallback, memo } from 'react';
 import { View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { GPSInputData, GPS_DTO, SampleSettings, StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
@@ -9,7 +10,6 @@ import ProjectService from '@V1/Services/ProjectService';
 import ConfigService from '@V1/Services/ConfigService';
 import CacheService from '@V1/Services/CacheService';
 import ThemeService from '@V1/Services/ThemeService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Text } from '@V1/Text/index';
 import { Layout } from '@V1/Layout/index';
@@ -34,7 +34,7 @@ export const SampleSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(UtilService.deepCopy(CacheService.getSampleFromCache(id_sample)));
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(deepCopy(CacheService.getSampleFromCache(id_sample)));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   useAutosave_sample(() => {
@@ -50,7 +50,7 @@ export const SampleSettingsWidget = memo((props: {
   const onSaveGPS = useCallback((gpsData: GPSInputData) => {
     setSaved(false);
     setSampleSettings(prev => ({ ...prev, gps: gpsData.value }));
-    props.onGPSReferenceUpdate(UtilService.deepCopy(gpsData.value));
+    props.onGPSReferenceUpdate(deepCopy(gpsData.value));
   }, [props.onGPSReferenceUpdate]);
 
   return (

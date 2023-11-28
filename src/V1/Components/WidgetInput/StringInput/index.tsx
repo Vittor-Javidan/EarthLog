@@ -1,10 +1,10 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 import { TextInput, Platform, View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { StringInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
-import UtilService from '@V1/Services/UtilService';
 
 import { LC } from '../__LC__';
 
@@ -32,7 +32,7 @@ export const StringInput = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.string[config.language], []);
 
-  const [inputData  , setInputData  ] = useState<StringInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData  , setInputData  ] = useState<StringInputData>(deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ export const StringInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: StringInputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: StringInputData) => {

@@ -2,20 +2,12 @@
 
 # After implementation finish
 - create a file for each drawer and navigation tree for all scopes
-- change all UtilServices.generateUuidV4 to IDService.
 - Add fade out animation for input rendering
 - Add fade out animation fro widget display rendering
 - Add fade out animation for new widgets rendering
 - define all hooks after component functions definitions
-- find a way to move the download/upload sync logic to DataProcess Service.
-- create a database method to define all sync data into 'uploaded' or 'new'
-- rename sync methods on Sync Service
-- create a excalidraw map of all services already created.
-- add a popUp to normal alerts
-- remove all unecessary arrow functions reconstructions
 - change the gap between inputs to 15
 - fix the typos on AlertService
 - Inside AlertService, on setConfig, rename the argument from 'question' to 'config'
 - rename buttons theme props, to use 'active' instead 'pressed'
-- remove ID and IDsArray types
 - change all services functions to use a single object argument.

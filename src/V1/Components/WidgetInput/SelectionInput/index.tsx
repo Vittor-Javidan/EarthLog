@@ -1,11 +1,12 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { SelectionInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
-import UtilService from '@V1/Services/UtilService';
+import IDService from '@V1/Services/IDService';
 
 import { LC } from '../__LC__';
 import { AllSelectionOptions } from './AllSelectionOptions';
@@ -26,7 +27,7 @@ export const SelectionInput = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.options[config.language], []);
-  const [inputData, setInputData] = useState<SelectionInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData, setInputData] = useState<SelectionInputData>(deepCopy(props.inputData));
   const [editMode , setEditMode ] = useState<boolean>(false);
 
   /**
@@ -35,7 +36,7 @@ export const SelectionInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: SelectionInputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: SelectionInputData) => {
@@ -47,7 +48,7 @@ export const SelectionInput = memo((props: {
   const addSelectionOption = useCallback((inputData: SelectionInputData) => {
     const newData: SelectionInputData = { ...inputData, value: { ...inputData.value, options: [
       ...inputData.value.options, {
-      id: UtilService.generateUuidV4(),
+      id: IDService.generateUuidV4(),
       optionLabel: '',
     }]}};
     asyncSave(newData);

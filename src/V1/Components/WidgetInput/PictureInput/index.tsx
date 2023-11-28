@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import DateTimeService from '@V1/Services/DateTimeService';
@@ -8,7 +9,6 @@ import CameraService from '@V1/Services/CameraService';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import MediaService from '@V1/Services/MediaService';
-import UtilService from '@V1/Services/UtilService';
 import SyncService from '@V1/Services/SyncService';
 
 import { LC } from '../__LC__';
@@ -32,7 +32,7 @@ export const PictureInput = memo((props: {
   const id_project = useMemo(() => props.widgetScope.id_project, []);
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [inputData         , setInputData        ] = useState<PictureInputData>(UtilService.deepCopy(props.inputData));
+  const [inputData         , setInputData        ] = useState<PictureInputData>(deepCopy(props.inputData));
   const [allMissingPictures, setAllMissingìctures] = useState<string[]>(SyncService.identifyMissingPictures({ id_project }));
   const [show              , setShow             ] = useState({
     camera: false,
@@ -44,7 +44,7 @@ export const PictureInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: PictureInputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string) => {

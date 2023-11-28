@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import { StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
@@ -8,7 +9,6 @@ import CredentialService from '@V1/Services/CredentialService';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import ThemeService from '@V1/Services/ThemeService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Layout } from '@V1/Layout/index';
 import { WidgetInput } from '@V1/WidgetInput/index';
@@ -34,7 +34,7 @@ export const CredentialWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [credential       , setCredential       ] = useState<CredentialDTO>(UtilService.deepCopy(props.credential));
+  const [credential       , setCredential       ] = useState<CredentialDTO>(deepCopy(props.credential));
   const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
   const [saved            , setSaved            ] = useState<boolean>(true);
 

@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { InputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
-import UtilService from '@V1/Services/UtilService';
 
 import { LC } from '../__LC__';
 
@@ -22,7 +22,7 @@ export const BoylerPlateInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const [inputData, setInputData] = useState<InputData>(UtilService.deepCopy(props.inputData));
+  const [inputData, setInputData] = useState<InputData>(deepCopy(props.inputData));
 
   /**
    * @WARNING
@@ -30,7 +30,7 @@ export const BoylerPlateInput = memo((props: {
    * It can cause `Cannot update a component while rendering a different component` react error.
    */
   const asyncSave = useCallback(async (inputData: InputData) => {
-    props.onSave(UtilService.deepCopy(inputData));
+    props.onSave(deepCopy(inputData));
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: InputData) => {

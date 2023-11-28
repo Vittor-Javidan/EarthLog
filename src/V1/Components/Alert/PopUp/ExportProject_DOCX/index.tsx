@@ -4,7 +4,7 @@ import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
 import AlertService from '@V1/Services/AlertService';
-import UtilService from '@V1/Services/UtilService';
+import RegexService from '@V1/Services/RegexService';
 import DOCX_Module from '@V1/FileExportModules/DOCX';
 
 import { Input } from '@V1/Input/index';
@@ -28,7 +28,7 @@ export const ExportProject_DOCX = memo((props: {
   });
 
   const onFileNameChange = useCallback((newName: string) => {
-    if (UtilService.regexRules['fileName'].test(newName) || newName === '') {
+    if (RegexService.rule['fileName'].test(newName) || newName === '') {
       setFileName(newName);
     }
   }, []);

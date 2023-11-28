@@ -1,6 +1,6 @@
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO } from '@V1/Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
-import UtilService from './UtilService';
+import IDService from './IDService';
 
 export default class ProjectService {
 
@@ -11,7 +11,7 @@ export default class ProjectService {
   static getDefaultProjectTemplate(options: {
     name?: string
   }): ProjectDTO {
-    const id_project = UtilService.generateUuidV4();
+    const id_project = IDService.generateUuidV4();
     return {
       projectSettings: {
         id_project: id_project,
@@ -54,7 +54,7 @@ export default class ProjectService {
     gps?: GPS_DTO
   }): SampleSettings {
     return {
-      id_sample: UtilService.generateUuidV4(),
+      id_sample: IDService.generateUuidV4(),
       name: options.name ?? '',
       gps: options.gps,
       rules: options.rules ?? {
@@ -68,7 +68,7 @@ export default class ProjectService {
 
   static getWidgetData() : WidgetData {
     return {
-      id_widget: UtilService.generateUuidV4(),
+      id_widget: IDService.generateUuidV4(),
       widgetName: '',
       inputs: [],
       rules: {
@@ -90,20 +90,20 @@ export default class ProjectService {
   static getInputData(inputType: InputTypes): InputData {
     switch (inputType) {
       case 'boolean': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'boolean',
         value: false,
         notApplicable: true,
       };
       case 'string': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'string',
         value: '',
       };
       case 'options': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'options',
         value: [],
@@ -112,7 +112,7 @@ export default class ProjectService {
         allowOptionDeletion: true,
       };
       case 'selection': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'selection',
         value: {
@@ -124,13 +124,13 @@ export default class ProjectService {
         allowOptionDeletion: true,
       };
       case 'gps': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'gps',
         value: {},
       };
       case 'picture': return {
-        id_input: UtilService.generateUuidV4(),
+        id_input: IDService.generateUuidV4(),
         label: '',
         type: 'picture',
         value: [],

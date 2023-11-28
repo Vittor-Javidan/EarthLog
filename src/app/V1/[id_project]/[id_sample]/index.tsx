@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
+import { deepCopy } from '@V1/Globals/DeepCopy';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { GPS_DTO } from '@V1/Types/ProjectTypes';
 import CacheService from '@V1/Services/CacheService';
-import UtilService from '@V1/Services/UtilService';
 
 import { Layout } from '@V1/Layout/index';
 import { SampleDataScreens } from '@V1/Screens/SampleScreen';
@@ -21,7 +21,7 @@ export default function SampleScope() {
   const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
   const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(
-    sampleSettings.gps !== undefined ? UtilService.deepCopy(sampleSettings.gps) : undefined
+    sampleSettings.gps !== undefined ? deepCopy(sampleSettings.gps) : undefined
   );
 
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;

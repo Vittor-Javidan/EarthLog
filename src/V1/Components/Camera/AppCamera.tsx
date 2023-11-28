@@ -5,7 +5,7 @@ import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camer
 import { CameraPictureMode } from '@V1/Types/AppTypes';
 import CameraService from '@V1/Services/CameraService';
 import MediaService from '@V1/Services/MediaService';
-import UtilService from '@V1/Services/UtilService';
+import IDService from '@V1/Services/IDService';
 
 import { Button } from '@V1/Button/index';
 import { Text } from '@V1/Text/index';
@@ -42,7 +42,7 @@ export const AppCamera = memo((props: {
 
   const onConfirm = useCallback(() => {
     if (photo?.uri) {
-      const id_picture = UtilService.generateUuidV4();
+      const id_picture = IDService.generateUuidV4();
       MediaService.savePictureFromURI({
         id_project: props.cameraConfig.id_project,
         id_picture: id_picture,
