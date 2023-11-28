@@ -1,8 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.35 Database abstraction implementation
+# 1.9.36 Codebase LTS versioning
 
-- now each folder on database has their own CRUD api.
-- now syncData files has their own folder
-- now widgetData are files intead folders
-- now LTS Version is defined in only one place
+- Now LTS versions have two main folders. A app V folder, and a src V folder.
+- Now each LTS versions has their own import alias.
+- Added a version manager, that can start a default version if its first boot, start the last load version from last boot, or switch between any available versions.
+- Services Architecture Map updated. 
