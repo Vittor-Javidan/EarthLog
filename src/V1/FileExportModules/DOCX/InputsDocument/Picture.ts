@@ -9,7 +9,8 @@ export async function InputDocument_Picture(o: {
   inputData: PictureInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,17 +22,17 @@ export async function InputDocument_Picture(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
   );
 
-  for (let i = 0; i < o.inputData.value.length; i++) {
+  for (let i = 0; i < inputData.value.length; i++) {
 
-    const { id_picture, description, dateAndTime } = o.inputData.value[i];
+    const { id_picture, description, dateAndTime } = inputData.value[i];
     const pictureNumber = ` ${i + 1}`;
-    const isLast = i === o.inputData.value.length - 1;
+    const isLast = i === inputData.value.length - 1;
     const isDescriptionEmpty = description === '';
 
     document.push(

@@ -34,7 +34,7 @@ export const SampleSettingsWidget = memo((props: {
     widgetRules:    {},
   }), []);
 
-  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(deepCopy(CacheService.getSampleFromCache(id_sample)));
+  const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(deepCopy(CacheService.getSampleFromCache({ id_sample })));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
   const onSaveName = useCallback((inputData: StringInputData) => {
@@ -143,10 +143,12 @@ function useAutosave_sample(onSave: () => void, deps: [SampleSettings, boolean])
       id_project: id_project,
       sampleSettings: sampleSettings,
       sync: true,
-    }, () => {
-      CacheService.updateCache_SampleSettings(sampleSettings);
-      onSave();
-    }, (erroMessage) => alert(erroMessage));
+      onSuccess: () => {
+        CacheService.updateCache_SampleSettings({ sampleSettings });
+        onSave();
+      },
+      onError: (erroMessage) => alert(erroMessage),
+    });
 
   }, [sampleSettings], 200);
 }

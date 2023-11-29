@@ -14,7 +14,7 @@ export const CredentialSelectionScreen = memo(() => {
 
   const onCreateCredential = useCallback(async () => {
     const newCredential = CredentialService.getNewCredential();
-    await CredentialService.createCredential(newCredential);
+    await CredentialService.createCredential({ credential: newCredential});
     const newData: CredentialDTO[] = [ ...credentials, newCredential ];
     CredentialService.allCredentials = newData;
     setCredentials(newData);
@@ -23,7 +23,7 @@ export const CredentialSelectionScreen = memo(() => {
   const onDeleteCredential = useCallback(async (index: number) => {
     const newData: CredentialDTO[] = [ ...credentials ];
     const removedCredential = newData.splice(index, 1)[0];
-    await CredentialService.deleteCredential(removedCredential);
+    await CredentialService.deleteCredential({ credential: removedCredential });
     CredentialService.allCredentials = newData;
     setCredentials(newData);
   }, [credentials]);

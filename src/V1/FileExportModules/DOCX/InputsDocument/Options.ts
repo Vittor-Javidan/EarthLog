@@ -9,7 +9,8 @@ export function InputDocument_Options(o: {
   inputData: OptionsInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,15 +22,15 @@ export function InputDocument_Options(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
   );
 
   let amountPrinted = 0;
-  for (let i = 0; i < o.inputData.value.length; i++) {
-    if (o.inputData.value[i].checked === true) {
+  for (let i = 0; i < inputData.value.length; i++) {
+    if (inputData.value[i].checked === true) {
       amountPrinted++;
       document.push(
         new Paragraph({
@@ -38,7 +39,7 @@ export function InputDocument_Options(o: {
               color: '#000000',
               font: 'Calibri',
               size: `${12}pt`,
-              children: [o.inputData.value[i].optionLabel],
+              children: [inputData.value[i].optionLabel],
             }),
           ],
         })

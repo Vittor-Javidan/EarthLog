@@ -1,4 +1,4 @@
-import { ProjectSettings, SyncData, SampleSettings, WidgetData, InputData, Status } from '@V1/Types/ProjectTypes';
+import { ProjectSettings, SyncData, SampleSettings, WidgetData, InputData } from '@V1/Types/ProjectTypes';
 import { FOLDER_Media, FOLDER_ProjectWidgets, FOLDER_Projects, FOLDER_SampleWidgets, FOLDER_Samples, FOLDER_SyncData, FOLDER_TemplateWidgets } from './FileSystemService';
 import IDService from './IDService';
 
@@ -17,14 +17,15 @@ export default class DatabaseService {
     syncData: SyncData
   }): Promise<void> {
     const { projectSettings, syncData } = o;
-    await FOLDER_Projects.create(projectSettings);
-    await FOLDER_SyncData.create(syncData);
+    await FOLDER_Projects.create({ projectSettings });
+    await FOLDER_SyncData.create({ syncData });
   }
 
-  static async readProject(
+  static async readProject(o: {
     id_project: string
-  ): Promise<ProjectSettings> {
-    return FOLDER_Projects.get(id_project);
+  }): Promise<ProjectSettings> {
+    const { id_project } = o;
+    return FOLDER_Projects.get({ id_project });
   }
 
   static async updateProject(o: {
@@ -32,25 +33,27 @@ export default class DatabaseService {
     sync: boolean
   }): Promise<void> {
     const { projectSettings, sync } = o;
-    await FOLDER_Projects.update(projectSettings);
+    await FOLDER_Projects.update({ projectSettings });
     await Sync.project({ operation: 'updating', projectSettings, sync });
   }
 
-  static async deleteProject(
+  static async deleteProject(o: {
     id_project: string
-  ): Promise<void> {
-    await FOLDER_Projects.delete(id_project);
-    await FOLDER_SyncData.delete(id_project);
+  }): Promise<void> {
+    const { id_project } = o;
+    await FOLDER_Projects.delete({ id_project });
+    await FOLDER_SyncData.delete({ id_project });
   }
 
   // ===============================================================================================
   // SAMPLE
   // ===============================================================================================
 
-  static async getAllSamples(
+  static async getAllSamples(o: {
     id_project: string
-  ): Promise<SampleSettings[]> {
-    return FOLDER_Samples.getAll(id_project);
+  }): Promise<SampleSettings[]> {
+    const { id_project } = o;
+    return FOLDER_Samples.getAll({ id_project });
   }
 
   static async createSample(o: {
@@ -293,15 +296,15 @@ export default class DatabaseService {
       case 'picture':      picturesIDs.push(o.id_media);     break;
     }
 
-    const syncData = await this.readSyncFile(id_project);
+    const syncData = await this.readSyncFile({ id_project });
     const promises = [];
     for (let i = 0; i < picturesIDs.length; i++) {
       const id_picture = picturesIDs[i];
       promises.push(FOLDER_Media.deletePicture({ id_project, id_picture }));
-      DefineSyncStatus.media(picturesIDs[i], syncData.pictures, 'deletion');
+      DefineSyncStatus.pictures({ operation: 'deletion', id_picture, syncData });
     }
     await Promise.all(promises);
-    await FOLDER_SyncData.update(syncData);
+    await FOLDER_SyncData.update({ syncData });
 
     function getMediaIDs_Sample(sampleWidgets: WidgetData[]) {
       for (let i = 0; i < sampleWidgets.length; i++) {
@@ -335,34 +338,34 @@ export default class DatabaseService {
     return FOLDER_Media.getPicture({ id_project, id_picture });
   }
 
-  static async savePictureFromUri(
-    options: {
-      id_project: string,
-      id_picture: string,
-      photoUri: string,
-    },
+  static async savePictureFromUri(o: {
+    id_project: string,
+    id_picture: string,
+    photoUri: string,
     onSave: () => void,
-  ): Promise<void> {
-    const { id_project, id_picture, photoUri } = options;
+  }): Promise<void> {
+    const { id_project, id_picture, photoUri } = o;
     await FOLDER_Media.createPictureFromURI({ id_project, id_picture, photoUri });
-    await Sync.picture(id_project, id_picture, 'creation');
-    onSave();
+    await Sync.picture({ operation: 'creation', id_project, id_picture });
+    o.onSave();
   }
 
-  static async savePicture(
+  static async savePicture(o: {
+    operation: 'creation' | 'download'
     id_project: string,
     id_picture: string,
     base64Data: string,
-    operation: 'creation' | 'download'
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project, id_picture, operation, base64Data } = o;
     await FOLDER_Media.createPicture({ id_project, id_picture, base64Data });
-    await Sync.picture(id_project, id_picture, operation);
+    await Sync.picture({ operation, id_project, id_picture });
   }
 
-  static getPictureUri(
+  static getPictureUri(o: {
     id_project: string,
     id_picture: string
-  ): string {
+  }): string {
+    const { id_project, id_picture } = o;
     return FOLDER_Media.getPictureURL({ id_project, id_picture });
   }
 
@@ -375,62 +378,64 @@ export default class DatabaseService {
     return FOLDER_SyncData.getAll();
   }
 
-  static async readSyncFile(
+  static async readSyncFile(o: {
     id_project: string
-  ): Promise<SyncData> {
-    return FOLDER_SyncData.get(id_project);
+  }): Promise<SyncData> {
+    const { id_project } = o;
+    return FOLDER_SyncData.get({ id_project });
   }
 
-  static async updateSyncFile(
+  static async updateSyncFile(o: {
     syncData: SyncData
-  ): Promise<void> {
-    await FOLDER_SyncData.update(syncData);
+  }): Promise<void> {
+    const { syncData } = o;
+    await FOLDER_SyncData.update({ syncData });
   }
 }
 
 class Sync {
 
   static async project(o: {
-    projectSettings: ProjectSettings,
     operation: 'updating',
+    projectSettings: ProjectSettings,
     sync: boolean,
   }): Promise<void> {
     if (o.sync) {
       const { id_project } = o.projectSettings;
-      const syncData = await FOLDER_SyncData.get(id_project);
-      DefineSyncStatus.project(syncData);
-      await FOLDER_SyncData.update(syncData);
+      const syncData = await FOLDER_SyncData.get({ id_project });
+      DefineSyncStatus.project({ syncData });
+      await FOLDER_SyncData.update({ syncData });
     }
   }
 
   static async sample(o: {
+    operation: 'creation' | 'updating' | 'deletion'
     id_project: string
     sampleSettings: SampleSettings
-    operation: 'creation' | 'updating' | 'deletion'
     sync: boolean
   }): Promise<void> {
     if (o.sync) {
       const { id_project, operation, sampleSettings } = o;
       const { id_sample } = sampleSettings;
-      const syncData = await FOLDER_SyncData.get(id_project);
-      DefineSyncStatus.project(syncData);
-      DefineSyncStatus.sample(id_sample, syncData, operation);
-      await FOLDER_SyncData.update(syncData);
+      const syncData = await FOLDER_SyncData.get({ id_project });
+      DefineSyncStatus.project({ syncData });
+      DefineSyncStatus.sample({ operation, id_sample, syncData });
+      await FOLDER_SyncData.update({ syncData });
     }
   }
 
   static async widget(o: {
     path: 'project widgets' | 'template widgets'
+    operation: 'creation' | 'updating' | 'deletion',
     id_project: string,
     widgetData: WidgetData,
-    operation: 'creation' | 'updating' | 'deletion',
     sync: boolean
   } | {
     path: 'sample widgets'
+    operation: 'creation' | 'updating' | 'deletion',
     id_project: string,
     id_sample: string,
     widgetData: WidgetData,
-    operation: 'creation' | 'updating' | 'deletion',
     sync: boolean
   }): Promise<void> {
     if (o.sync) {
@@ -438,64 +443,67 @@ class Sync {
         case 'project widgets': {
           const { id_project, operation, widgetData } = o;
           const { id_widget } = widgetData;
-          const syncData = await FOLDER_SyncData.get(id_project);
-          DefineSyncStatus.project(syncData);
-          DefineSyncStatus.widget(id_widget, syncData.widgets_Project, operation);
-          await FOLDER_SyncData.update(syncData);
+          const syncData = await FOLDER_SyncData.get({ id_project });
+          DefineSyncStatus.project({ syncData });
+          DefineSyncStatus.widget_project({ operation, id_widget, syncData });
+          await FOLDER_SyncData.update({ syncData });
           break;
         }
         case 'template widgets': {
           const { id_project, operation, widgetData } = o;
           const { id_widget } = widgetData;
-          const syncData = await FOLDER_SyncData.get(id_project);
-          DefineSyncStatus.project(syncData);
-          DefineSyncStatus.widget(id_widget, syncData.widgets_Template, operation);
-          await FOLDER_SyncData.update(syncData);
+          const syncData = await FOLDER_SyncData.get({ id_project });
+          DefineSyncStatus.project({ syncData });
+          DefineSyncStatus.widget_template({ operation, id_widget, syncData });
+          await FOLDER_SyncData.update({ syncData });
           break;
         }
         case 'sample widgets': {
           const { id_project, id_sample, operation, widgetData } = o;
           const { id_widget } = widgetData;
-          const syncData = await FOLDER_SyncData.get(id_project);
-          DefineSyncStatus.project(syncData);
-          DefineSyncStatus.sample(o.id_sample, syncData, 'updating');
-          DefineSyncStatus.widget(id_widget, syncData.widgets_Samples[id_sample], operation);
-          await FOLDER_SyncData.update(syncData);
+          const syncData = await FOLDER_SyncData.get({ id_project });
+          DefineSyncStatus.project({ syncData });
+          DefineSyncStatus.sample({ operation: 'updating', id_sample, syncData });
+          DefineSyncStatus.widget_sample({ operation, id_sample, id_widget, syncData });
+          await FOLDER_SyncData.update({ syncData });
           break;
         }
       }
     }
   }
 
-  static async picture(
+  static async picture(o: {
+    operation: 'creation' | 'deletion' | 'download',
     id_project: string,
     id_picture: string,
-    operation: 'creation' | 'deletion' | 'download',
-  ): Promise<void> {
-    const syncData = await FOLDER_SyncData.get(id_project);
+  }): Promise<void> {
+    const { id_project, id_picture, operation } = o;
+    const syncData = await FOLDER_SyncData.get({ id_project });
     if (operation !== 'download') {
-      DefineSyncStatus.project(syncData);
+      DefineSyncStatus.project({ syncData });
     }
-    DefineSyncStatus.media(id_picture, syncData.pictures, operation);
-    await FOLDER_SyncData.update(syncData);
+    DefineSyncStatus.pictures({ operation, id_picture, syncData });
+    await FOLDER_SyncData.update({ syncData });
   }
 }
 
 class DefineSyncStatus {
 
-  static project(
+  static project(o: {
     syncData: SyncData
-  ): void {
+  }): void {
+    const { syncData } = o;
     switch (syncData.project) {
       case 'uploaded': syncData.project = 'modified'; break;
     }
   }
 
-  static sample(
+  static sample(o: {
+    operation: 'creation' | 'updating' | 'deletion',
     id_sample: string,
     syncData: SyncData,
-    operation: 'creation' | 'updating' | 'deletion',
-  ): void {
+  }): void {
+    const { operation, id_sample, syncData } = o;
     switch (operation) {
 
       case 'creation': {
@@ -524,59 +532,124 @@ class DefineSyncStatus {
     }
   }
 
-  static widget(
-    id_element: string,
-    recordList: Record<string, Status | 'deleted'>,
+  static widget_project(o: {
     operation: 'creation' | 'updating' | 'deletion',
-  ): void {
+    id_widget: string,
+    syncData: SyncData,
+  }): void {
+    const { operation, id_widget, syncData } = o;
     switch (operation) {
 
       case 'creation': {
-        recordList[id_element] = 'new';
+        syncData.widgets_Project[id_widget] = 'new';
         break;
       }
 
       case 'updating': {
-        switch (recordList[id_element]) {
-          case 'uploaded': recordList[id_element] = 'modified'; break;
+        switch (syncData.widgets_Project[id_widget]) {
+          case 'uploaded': syncData.widgets_Project[id_widget] = 'modified'; break;
         }
         break;
       }
 
       case 'deletion': {
-        switch (recordList[id_element]) {
-          case 'modified': recordList[id_element] = 'deleted'; break;
-          case 'uploaded': recordList[id_element] = 'deleted'; break;
-          case 'new':      delete recordList[id_element];      break;
+        switch (syncData.widgets_Project[id_widget]) {
+          case 'modified': syncData.widgets_Project[id_widget] = 'deleted'; break;
+          case 'uploaded': syncData.widgets_Project[id_widget] = 'deleted'; break;
+          case 'new':      delete syncData.widgets_Project[id_widget];      break;
         }
         break;
       }
     }
   }
 
-  static media(
-    id_element: string,
-    recordList: Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>,
+  static widget_template(o: {
+    operation: 'creation' | 'updating' | 'deletion',
+    id_widget: string,
+    syncData: SyncData,
+  }): void {
+    const { operation, id_widget, syncData } = o;
+    switch (operation) {
+
+      case 'creation': {
+        syncData.widgets_Template[id_widget] = 'new';
+        break;
+      }
+
+      case 'updating': {
+        switch (syncData.widgets_Template[id_widget]) {
+          case 'uploaded': syncData.widgets_Template[id_widget] = 'modified'; break;
+        }
+        break;
+      }
+
+      case 'deletion': {
+        switch (syncData.widgets_Template[id_widget]) {
+          case 'modified': syncData.widgets_Template[id_widget] = 'deleted'; break;
+          case 'uploaded': syncData.widgets_Template[id_widget] = 'deleted'; break;
+          case 'new':      delete syncData.widgets_Template[id_widget];      break;
+        }
+        break;
+      }
+    }
+  }
+
+  static widget_sample(o: {
+    operation: 'creation' | 'updating' | 'deletion',
+    id_sample: string,
+    id_widget: string,
+    syncData: SyncData,
+  }): void {
+    const { operation, id_sample, id_widget, syncData } = o;
+    switch (operation) {
+
+      case 'creation': {
+        syncData.widgets_Samples[id_sample][id_widget] = 'new';
+        break;
+      }
+
+      case 'updating': {
+        switch (syncData.widgets_Samples[id_sample][id_widget]) {
+          case 'uploaded': syncData.widgets_Samples[id_sample][id_widget] = 'modified'; break;
+        }
+        break;
+      }
+
+      case 'deletion': {
+        switch (syncData.widgets_Samples[id_sample][id_widget]) {
+          case 'modified': syncData.widgets_Samples[id_sample][id_widget] = 'deleted'; break;
+          case 'uploaded': syncData.widgets_Samples[id_sample][id_widget] = 'deleted'; break;
+          case 'new':      delete syncData.widgets_Samples[id_sample][id_widget];      break;
+        }
+        break;
+      }
+    }
+  }
+
+  static pictures(o: {
     operation: 'creation' | 'deletion' | 'download',
-  ): void {
+    id_picture: string,
+    syncData: SyncData,
+  }): void {
+    const { operation, id_picture, syncData } = o;
     switch (operation) {
 
       case 'download': {
-        recordList[id_element] = 'uploaded';
+        syncData.pictures[id_picture] = 'uploaded';
         break;
       }
 
       case 'creation': {
-        recordList[id_element] = 'new';
+        syncData.pictures[id_picture] = 'new';
         break;
       }
 
       case 'deletion': {
 
-        switch (recordList[id_element]) {
-          case 'on cloud': recordList[id_element] = 'deleted'; break;
-          case 'uploaded': recordList[id_element] = 'deleted'; break;
-          case 'new':      delete recordList[id_element];      break;
+        switch (syncData.pictures[id_picture]) {
+          case 'on cloud': syncData.pictures[id_picture] = 'deleted'; break;
+          case 'uploaded': syncData.pictures[id_picture] = 'deleted'; break;
+          case 'new':      delete syncData.pictures[id_picture];      break;
         }
         break;
       }

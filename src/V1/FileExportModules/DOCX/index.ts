@@ -32,6 +32,10 @@ export default class DOCX_Module {
 
     o.feedback('Sharing document');
     const fileData = await Packer.toBase64String(document);
-    await ExportService.shareFile(`${o.fileName}.docx`, fileData, 'base64');
+    await ExportService.shareFile({
+      filename: `${o.fileName}.docx`,
+      data: fileData,
+      encoding: 'base64',
+    });
   }
 }

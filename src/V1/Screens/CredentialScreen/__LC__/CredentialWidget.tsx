@@ -161,7 +161,7 @@ function useAutoSave(onSave: () => void, deps: [CredentialDTO, boolean]) {
     }
 
     credential.rootURL = convertProtocolToLowerCase(credential.rootURL);
-    await CredentialService.updateCredential(credential);
+    await CredentialService.updateCredential({ credential });
 
     onSave();
 

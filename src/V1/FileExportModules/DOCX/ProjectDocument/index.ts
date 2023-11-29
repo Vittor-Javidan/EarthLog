@@ -13,7 +13,8 @@ export async function document_Project(o: {
   feedback: (message: string) => void
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, projectDTO } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   // DOCUMENT TITLE
@@ -24,7 +25,7 @@ export async function document_Project(o: {
       heading: HeadingLevel.HEADING_1,
       children: [
         new TextRun({
-          text: o.projectDTO.projectSettings.name,
+          text: projectDTO.projectSettings.name,
           bold: true,
           font: 'Calibri',
           size: `${18}pt`,
@@ -59,7 +60,7 @@ export async function document_Project(o: {
 
   // 2 - SAMPLES =============
   o.feedback('Samples');
-  const sampleAlias_Plural = o.projectDTO.projectSettings.sampleAlias.plural;
+  const sampleAlias_Plural = projectDTO.projectSettings.sampleAlias.plural;
   const sampleAliasToDisplay = sampleAlias_Plural !== '' ? sampleAlias_Plural : R['Samples'];
   document.push(new Paragraph({ text: '' }));
   document.push(

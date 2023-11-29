@@ -17,7 +17,7 @@ export const ScreenButtons = memo(() => {
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
 
   const [show_DeleteSwap, setShow_DeleteSwap] = useState<boolean>(false);
 
@@ -26,15 +26,17 @@ export const ScreenButtons = memo(() => {
       id_project: id_project,
       sampleSettings: sampleSettings,
       sync: true,
-    }, async () => {
-      await MediaService.deleteMediaRecursively({
-        scope: 'sample',
-        id_project: id_project,
-        widgetArray: CacheService.allWidgets_Sample,
-      });
-      CacheService.removeFromSamples(id_sample);
-      navigate('PROJECT SCOPE', id_project);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: async () => {
+        await MediaService.deleteMediaRecursively({
+          scope: 'sample',
+          id_project: id_project,
+          widgetArray: CacheService.allWidgets_Sample,
+        });
+        CacheService.removeFromSamples({ id_sample });
+        navigate('PROJECT SCOPE', id_project);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [id_project, id_sample]);
 
   return (

@@ -15,8 +15,8 @@ export default function SampleScope() {
 
   const id_project = useLocalSearchParams().id_project as string;
   const id_sample  = useLocalSearchParams().id_sample as string;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
-  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
+  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
 
   const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
@@ -97,8 +97,8 @@ async function fetchWidgets(
   whenLoaded: () => void
 ) {
   const promises = [
-    CacheService.loadAllWidgets_Sample(id_project, id_sample),
-    CacheService.loadAllWidgets_Template(id_project),
+    CacheService.loadAllWidgets_Sample({ id_project, id_sample }),
+    CacheService.loadAllWidgets_Template({ id_project }),
   ];
   await Promise.all(promises);
   whenLoaded();

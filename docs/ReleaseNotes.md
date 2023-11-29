@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.42 Sync Service removed
+# 1.9.43 Services arguments refactored
 
-- methods from this service was moved to Project and Cache Services
+- almost all Services methods now uses a single object instead many arguments.

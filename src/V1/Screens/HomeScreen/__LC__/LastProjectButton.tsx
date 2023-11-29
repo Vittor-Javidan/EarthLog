@@ -19,7 +19,7 @@ export const LastProjectButton = memo((props: {
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R               = useMemo(() => translations.screen.home[config.language], []);
-  const projectSyncData = useMemo(() => CacheService.getSyncDataFromCache(props.projectSettings.id_project), []);
+  const projectSyncData = useMemo(() => CacheService.getSyncDataFromCache({ id_project: props.projectSettings.id_project }), []);
 
   const [pressed, setPressed] = useState<boolean>(false);
 

@@ -5,7 +5,10 @@ import * as Sharing from 'expo-sharing';
  */
 export default class ShareService {
 
-  static async share(filePath: string): Promise<void> {
-    await Sharing.shareAsync(filePath);
+  static async share(o: {
+    directory: string
+  }): Promise<void> {
+    const { directory } = o;
+    await Sharing.shareAsync(directory);
   }
 }

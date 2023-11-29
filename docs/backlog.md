@@ -3,4 +3,4 @@
 - Add fade out animation fro widget display rendering
 - Add fade out animation for new widgets rendering
 - change the gap between inputs to 15
-- change all services functions to use a single object argument.
+- refactor all onError callbacks that stringfy errors

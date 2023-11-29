@@ -18,7 +18,7 @@ export const ScreenButtons = memo((props: {
   const id_sample  = useLocalSearchParams().id_sample as string;
   const config         = useMemo(() => ConfigService.config, []);
   const theme          = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-  const sampleSettings = useMemo(() => CacheService.getSampleFromCache(id_sample), []);
+  const sampleSettings = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
 
   return (
     <Layout.ScreenButtons

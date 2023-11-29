@@ -281,10 +281,12 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           id_project: widgetScope.id_project,
           widgetData: widgetData,
           sync: true,
-        }, () => {
-          CacheService.updateCache_ProjectWidget(widgetData);
-          onSave();
-        }, (erroMessage) => alert(erroMessage));
+          onSuccess: () => {
+            CacheService.updateCache_ProjectWidget({ widgetData });
+            onSave();
+          },
+          onError: (erroMessage) => alert(erroMessage),
+        });
         break;
       }
 
@@ -294,10 +296,12 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           id_project: widgetScope.id_project,
           widgetData: widgetData,
           sync: true,
-        }, () => {
-          CacheService.updateCache_TemplateWidget(widgetData);
-          onSave();
-        }, (erroMessage) => alert(erroMessage));
+          onSuccess: () => {
+            CacheService.updateCache_TemplateWidget({ widgetData });
+            onSave();
+          },
+          onError: (erroMessage) => alert(erroMessage),
+        });
         break;
       }
 
@@ -308,10 +312,12 @@ function useAutoSave_widget(onSave: () => void, deps: [WidgetData, WidgetScope, 
           id_sample: widgetScope.id_sample,
           widgetData: widgetData,
           sync: true,
-        }, () => {
-          CacheService.updateCache_SampleWidget(widgetData);
-          onSave();
-        }, (erroMessage) => alert(erroMessage));
+          onSuccess: () => {
+            CacheService.updateCache_SampleWidget({ widgetData });
+            onSave();
+          },
+          onError: (erroMessage) => alert(erroMessage),
+        });
         break;
       }
     }

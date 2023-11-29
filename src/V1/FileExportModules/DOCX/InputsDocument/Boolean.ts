@@ -9,7 +9,8 @@ export function InputDocument_Boolean(o: {
   inputData: BooleanInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,7 +22,7 @@ export function InputDocument_Boolean(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
@@ -35,7 +36,7 @@ export function InputDocument_Boolean(o: {
           font: 'Calibri',
           size: `${12}pt`,
           children: [
-            o.inputData.notApplicable === true ? R['Not applicable'] : String(o.inputData.value),
+            inputData.notApplicable === true ? R['Not applicable'] : String(inputData.value),
           ],
         }),
       ],

@@ -23,11 +23,13 @@ export const TemplateWidgetCopy = memo((props: {
       id_sample: props.id_sample,
       widgetData: widgetData,
       sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Sample(widgetData);
-      AlertService.runAcceptCallback();
-      props.closeModal();
-    }, (errorMesage) => alert(errorMesage));
+      onSuccess: () => {
+        CacheService.addToAllWidgets_Sample({ widgetData });
+        AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      onError: (errorMesage) => alert(errorMesage),
+    });
   }, [props]);
 
   return (

@@ -16,7 +16,7 @@ export default function exportProjectScope() {
   const id_project      = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.exportProject[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('PROJECT SCOPE', id_project), []);

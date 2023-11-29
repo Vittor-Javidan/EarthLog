@@ -5,7 +5,7 @@ type VibrationType = 'success' | 'warning'
 
 export default class HapticsService {
 
-  static vibrate(type: VibrationType) {
+  static vibrate(type: VibrationType): void {
     switch (type) {
       case 'success': {
         if (ConfigService.config.onlyWarningVibrations === false) {

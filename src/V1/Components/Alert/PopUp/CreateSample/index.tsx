@@ -28,7 +28,8 @@ export const CreateSample = memo((props: {
       return;
     }
 
-    const projectSettings = CacheService.getProjectFromCache(props.id_project);
+    const { id_project } = props;
+    const projectSettings = CacheService.getProjectFromCache({ id_project });
     const newSampleSettings = ProjectService.getDefaultSampleSettings({
       name: name,
       gps: projectSettings.rules.addGPSToNewSamples ? {} : undefined,
@@ -40,11 +41,13 @@ export const CreateSample = memo((props: {
       sampleSettings: newSampleSettings,
       addTemplateWidgets: true,
       sync: true,
-    }, () => {
-      CacheService.addToAllSamples(newSampleSettings);
-      AlertService.runAcceptCallback();
-      props.closeModal();
-    }, (errorMesage) => alert(errorMesage));
+      onSuccess: () => {
+        CacheService.addToAllSamples({ sampleSettings: newSampleSettings });
+        AlertService.runAcceptCallback();
+        props.closeModal();
+      },
+      onError: (errorMesage) => alert(errorMesage) ,
+    });
 
   }, [props.id_project, props.closeModal, name]);
 

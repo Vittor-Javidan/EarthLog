@@ -25,7 +25,7 @@ export const ProjectButtons = memo((props: {
     <ProjectButton
       key={settings.id_project}
       title={settings.name}
-      syncData={CacheService.getSyncDataFromCache(settings.id_project)}
+      syncData={CacheService.getSyncDataFromCache({ id_project: settings.id_project })}
       uploads={settings.uploads}
       project_id={settings.id_project}
       onPress={() => navigate('PROJECT SCOPE', settings.id_project)}

@@ -9,7 +9,8 @@ export function InputDocument_Selection(o: {
   inputData: SelectionInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,15 +22,15 @@ export function InputDocument_Selection(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
   );
 
   let nothingSelected = true;
-  for (let i = 0; i < o.inputData.value.options.length; i++) {
-    if (o.inputData.value.options[i].id === o.inputData.value.id_selected) {
+  for (let i = 0; i < inputData.value.options.length; i++) {
+    if (inputData.value.options[i].id === inputData.value.id_selected) {
       nothingSelected = false;
       document.push(
         new Paragraph({
@@ -38,7 +39,7 @@ export function InputDocument_Selection(o: {
               color: '#000000',
               font: 'Calibri',
               size: `${12}pt`,
-              children: [o.inputData.value.options[i].optionLabel],
+              children: [inputData.value.options[i].optionLabel],
             }),
           ],
         })

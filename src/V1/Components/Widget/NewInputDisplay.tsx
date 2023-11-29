@@ -18,7 +18,7 @@ export const NewInputDisplay = memo((props: {
   const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onCreate = useCallback((inputType: InputTypes) => {
-    props.onCreate(ProjectService.getInputData(inputType));
+    props.onCreate(ProjectService.getInputData({ inputType }));
   }, [props.onCreate]);
 
   const AllButtons = InputTypesArray.map(type => (

@@ -21,10 +21,12 @@ export const TemplateScreen = memo(() => {
       id_project: id_project,
       widgetData: newWidget,
       sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Template(newWidget);
-      setTemplateWidgets(CacheService.allWidgets_Template);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: () => {
+        CacheService.addToAllWidgets_Template({ widgetData: newWidget });
+        setTemplateWidgets(CacheService.allWidgets_Template);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [templateWidgets]);
 
   const onWidgetDelete = useCallback(async (index: number) => {
@@ -35,10 +37,12 @@ export const TemplateScreen = memo(() => {
       id_project: id_project,
       widgetData: removedWidget,
       sync: true,
-    }, () => {
-      CacheService.allWidgets_Template = newData;
-      setTemplateWidgets(newData);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: () => {
+        CacheService.allWidgets_Template = newData;
+        setTemplateWidgets(newData);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [templateWidgets]);
 
   return (

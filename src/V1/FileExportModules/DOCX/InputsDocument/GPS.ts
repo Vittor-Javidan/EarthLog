@@ -9,7 +9,8 @@ export function InputDocument_GPS(o: {
   inputData: GPSInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,13 +22,13 @@ export function InputDocument_GPS(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
   );
 
-  if (o.inputData.value.altitude === undefined && o.inputData.value.coordinates === undefined) {
+  if (inputData.value.altitude === undefined && inputData.value.coordinates === undefined) {
     document.push(
       new Paragraph({
         children: [
@@ -42,7 +43,7 @@ export function InputDocument_GPS(o: {
     );
   }
 
-  if (o.inputData.value.coordinates !== undefined) {
+  if (inputData.value.coordinates !== undefined) {
     document.push(
       new Paragraph({
         children: [
@@ -52,8 +53,8 @@ export function InputDocument_GPS(o: {
             size: `${12}pt`,
             children: [
               R['Latitude:'], ' ',
-              String(o.inputData.value.coordinates.lat), ' ',
-              `(${String(o.inputData.value.coordinates.accuracy)}m)`,
+              String(inputData.value.coordinates.lat), ' ',
+              `(${String(inputData.value.coordinates.accuracy)}m)`,
             ],
           }),
         ],
@@ -68,8 +69,8 @@ export function InputDocument_GPS(o: {
             size: `${12}pt`,
             children: [
               R['Longitude:'], ' ',
-              String(o.inputData.value.coordinates.long), ' ',
-              `(${String(o.inputData.value.coordinates.accuracy)}m)`,
+              String(inputData.value.coordinates.long), ' ',
+              `(${String(inputData.value.coordinates.accuracy)}m)`,
             ],
           }),
         ],
@@ -77,7 +78,7 @@ export function InputDocument_GPS(o: {
     );
   }
 
-  if (o.inputData.value.altitude !== undefined) {
+  if (inputData.value.altitude !== undefined) {
     document.push(
       new Paragraph({
         children: [
@@ -87,8 +88,8 @@ export function InputDocument_GPS(o: {
             size: `${12}pt`,
             children: [
               R['Altitude:'], ' ',
-              String(o.inputData.value.altitude.value), ' ',
-              `(${String(o.inputData.value.altitude.accuracy)}m)`,
+              String(inputData.value.altitude.value), ' ',
+              `(${String(inputData.value.altitude.accuracy)}m)`,
             ],
           }),
         ],

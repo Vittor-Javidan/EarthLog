@@ -21,9 +21,12 @@ export default class CacheService {
   // PROJECT RELATED METHODS
   // ===============================================================================================
 
-  static async saveLastOpenProject(id_project: string): Promise<void> {
+  static async saveLastOpenProject(o: {
+    id_project: string
+  }): Promise<void> {
+    const { id_project } = o;
     await LocalStorageService.saveData(this.LAST_PROJECT_LOCAL_STORAGE_KEY, id_project);
-    this.lastOpenProject = await DatabaseService.readProject(id_project);
+    this.lastOpenProject = await DatabaseService.readProject({ id_project });
   }
 
   /**
@@ -42,10 +45,10 @@ export default class CacheService {
       return;
     }
 
-    this.lastOpenProject     =  await DatabaseService.readProject(lastProjectID);
+    this.lastOpenProject     =  await DatabaseService.readProject({ id_project: lastProjectID });
     this.allWidgets_Project  =  await DatabaseService.getAllWidgets({ path: 'project widgets', id_project: lastProjectID });
     this.allWidgets_Template =  await DatabaseService.getAllWidgets({ path: 'template widgets', id_project: lastProjectID });
-    this.allSamples          = (await DatabaseService.getAllSamples(lastProjectID)).reverse();
+    this.allSamples          = (await DatabaseService.getAllSamples({ id_project: lastProjectID })).reverse();
   }
 
   static async deleteLastOpenProject(): Promise<void> {
@@ -61,9 +64,10 @@ export default class CacheService {
     CacheService.allWidgets_Sample = [];
   }
 
-  static getSyncDataFromCache(
+  static getSyncDataFromCache(o: {
     id_project: string
-  ): SyncData {
+  }): SyncData {
+    const { id_project } = o;
     for (let i = 0; i < this.syncData.length; i++) {
       if (this.syncData[i].id_project === id_project) {
         return this.syncData[i];
@@ -72,9 +76,10 @@ export default class CacheService {
     throw Error(`project of id ${id_project} has no sync data`);
   }
 
-  static getProjectFromCache(
+  static getProjectFromCache(o: {
     id_project: string,
-  ): ProjectSettings {
+  }): ProjectSettings {
+    const { id_project } = o;
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         return this.allProjects[i];
@@ -83,9 +88,10 @@ export default class CacheService {
     throw Error('ERROR: Project does not exist on cache');
   }
 
-  static getSampleFromCache(
+  static getSampleFromCache(o: {
     id_sample: string,
-  ): SampleSettings {
+  }): SampleSettings {
+    const { id_sample } = o;
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         return this.allSamples[i];
@@ -94,7 +100,10 @@ export default class CacheService {
     throw Error('ERROR: Sample does not exist on cache');
   }
 
-  static updateCache_SyncData(syncData: SyncData) {
+  static updateCache_SyncData(o: {
+    syncData: SyncData
+  }): void {
+    const { syncData } = o;
     for (let i = 0; i < this.syncData.length; i++) {
       if (this.syncData[i].id_project === syncData.id_project) {
         this.syncData[i] = syncData;
@@ -102,9 +111,10 @@ export default class CacheService {
     }
   }
 
-  static updateCache_ProjectSettings(
+  static updateCache_ProjectSettings(o: {
     projectSettings: ProjectSettings,
-  ) {
+  }): void {
+    const { projectSettings } = o;
     for (let i = 0; i < CacheService.allProjects.length; i++) {
       if (this.allProjects[i].id_project === projectSettings.id_project) {
         this.allProjects[i] = deepCopy(projectSettings);
@@ -114,9 +124,10 @@ export default class CacheService {
     throw Error('ERROR: Project does not exist on cache');
   }
 
-  static updateCache_SampleSettings(
+  static updateCache_SampleSettings(o: {
     sampleSettings: SampleSettings,
-  ) {
+  }): void {
+    const { sampleSettings } = o;
     for (let i = 0; i < CacheService.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === sampleSettings.id_sample) {
         this.allSamples[i] = deepCopy(sampleSettings);
@@ -126,9 +137,10 @@ export default class CacheService {
     throw Error('ERROR: Sample does not exist on cache');
   }
 
-  static updateCache_ProjectWidget(
+  static updateCache_ProjectWidget(o: {
     widgetData: WidgetData,
-  ) {
+  }): void {
+    const { widgetData } = o;
     for (let i = 0; i < CacheService.allWidgets_Project.length; i++) {
       if (this.allWidgets_Project[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Project[i] = deepCopy(widgetData);
@@ -138,9 +150,10 @@ export default class CacheService {
     throw Error('ERROR: Project Widget does not exist on cache');
   }
 
-  static updateCache_TemplateWidget(
+  static updateCache_TemplateWidget(o: {
     widgetData: WidgetData,
-  ) {
+  }): void {
+    const { widgetData } = o;
     for (let i = 0; i < CacheService.allWidgets_Template.length; i++) {
       if (this.allWidgets_Template[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Template[i] = deepCopy(widgetData);
@@ -150,9 +163,10 @@ export default class CacheService {
     throw Error('ERROR: Template Widget does not exist on cache');
   }
 
-  static updateCache_SampleWidget(
+  static updateCache_SampleWidget(o: {
     widgetData: WidgetData,
-  ) {
+  }): void {
+    const { widgetData } = o;
     for (let i = 0; i < CacheService.allWidgets_Sample.length; i++) {
       if (this.allWidgets_Sample[i].id_widget === widgetData.id_widget) {
         this.allWidgets_Sample[i] = deepCopy(widgetData);
@@ -162,7 +176,7 @@ export default class CacheService {
     throw Error('ERROR: Sample Widget does not exist on cache');
   }
 
-  static async loadAllSyncData() {
+  static async loadAllSyncData(): Promise<void> {
     this.syncData = await DatabaseService.getAllSyncData();
   }
 
@@ -170,77 +184,109 @@ export default class CacheService {
     this.allProjects = (await DatabaseService.getAllProjects()).reverse();
   }
 
-  static async loadAllSamplesSettings(id_project: string): Promise<void> {
-    this.allSamples = (await DatabaseService.getAllSamples(id_project)).reverse();
+  static async loadAllSamplesSettings(o: {
+    id_project: string
+  }): Promise<void> {
+    const { id_project } = o;
+    this.allSamples = (await DatabaseService.getAllSamples({ id_project })).reverse();
   }
 
-  static async loadAllWidgets_Project(id_project: string): Promise<void> {
-    this.allWidgets_Project = await DatabaseService.getAllWidgets({
-      path: 'project widgets',
-      id_project: id_project,
-    });
+  static async loadAllWidgets_Project(o: {
+    id_project: string
+  }): Promise<void> {
+    const { id_project } = o;
+    this.allWidgets_Project = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project });
   }
 
-  static async loadAllWidgets_Template(id_project: string): Promise<void> {
-    this.allWidgets_Template = await DatabaseService.getAllWidgets({
-      path: 'template widgets',
-      id_project: id_project,
-    });
+  static async loadAllWidgets_Template(o: {
+    id_project: string
+  }): Promise<void> {
+    const { id_project } = o;
+    this.allWidgets_Template = await DatabaseService.getAllWidgets({ path: 'template widgets', id_project });
   }
 
-  static async loadAllWidgets_Sample(id_project: string, id_sample: string): Promise<void> {
-    this.allWidgets_Sample = await DatabaseService.getAllWidgets({
-      path: 'sample widgets',
-      id_project: id_project,
-      id_sample: id_sample,
-    });
+  static async loadAllWidgets_Sample(o: {
+    id_project: string,
+    id_sample: string
+  }): Promise<void> {
+    const { id_project, id_sample } = o;
+    this.allWidgets_Sample = await DatabaseService.getAllWidgets({ path: 'sample widgets', id_project, id_sample });
   }
 
-  static addToSyncData(syncData: SyncData) {
+  static addToSyncData(o: {
+    syncData: SyncData
+  }): void {
+    const { syncData } = o;
     this.syncData.push(syncData);
   }
 
-  static addToAllProjects(projectSettings: ProjectSettings): void {
+  static addToAllProjects(o: {
+    projectSettings: ProjectSettings
+  }): void {
+    const { projectSettings } = o;
     this.allProjects = [deepCopy(projectSettings), ...this.allProjects];
   }
 
-  static addToAllSamples(sampleSettings: SampleSettings): void {
+  static addToAllSamples(o: {
+    sampleSettings: SampleSettings
+  }): void {
+    const { sampleSettings } = o;
     this.allSamples = [deepCopy(sampleSettings), ...this.allSamples];
   }
 
-  static addToAllWidgets_Project(widgetData: WidgetData): void {
+  static addToAllWidgets_Project(o: {
+    widgetData: WidgetData
+  }): void {
+    const { widgetData } = o;
     this.allWidgets_Project = [...this.allWidgets_Project, deepCopy(widgetData)];
   }
 
-  static addToAllWidgets_Template(widgetData: WidgetData): void {
+  static addToAllWidgets_Template(o: {
+    widgetData: WidgetData
+  }): void {
+    const { widgetData } = o;
     this.allWidgets_Template = [...this.allWidgets_Template, deepCopy(widgetData)];
   }
 
-  static addToAllWidgets_Sample(widgetData: WidgetData): void {
+  static addToAllWidgets_Sample(o: {
+    widgetData: WidgetData
+  }): void {
+    const { widgetData } = o;
     this.allWidgets_Sample = [...this.allWidgets_Sample, deepCopy(widgetData)];
   }
 
-  static removeFromSyncData(id_project: string) {
+  static removeFromSyncData(o: {
+    id_project: string
+  }): void {
+    const { id_project } = o;
     for (let i = 0; i < this.syncData.length; i++) {
       if (this.syncData[i].id_project === id_project) {
         this.syncData.splice(i, 1);
-        return;
+        break;
       }
     }
   }
 
-  static removeFromProjects(id_project: string): void {
+  static removeFromProjects(o: {
+    id_project: string
+  }): void {
+    const { id_project } = o;
     for (let i = 0; i < this.allProjects.length; i++) {
       if (this.allProjects[i].id_project === id_project) {
         this.allProjects.splice(i, 1);
+        break;
       }
     }
   }
 
-  static removeFromSamples(id_sample: string): void {
+  static removeFromSamples(o: {
+    id_sample: string
+  }): void {
+    const { id_sample } = o;
     for (let i = 0; i < this.allSamples.length; i++) {
       if (this.allSamples[i].id_sample === id_sample) {
         this.allSamples.splice(i, 1);
+        break;
       }
     }
   }
@@ -248,7 +294,8 @@ export default class CacheService {
   static identifyMissingPictures(o: {
     id_project: string
   }): string[] {
-    const syncData = this.getSyncDataFromCache(o.id_project);
+    const { id_project } = o;
+    const syncData = this.getSyncDataFromCache({ id_project });
     return Object.keys(syncData.pictures).filter(key => syncData.pictures[key] === 'on cloud');
   }
 }

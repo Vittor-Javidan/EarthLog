@@ -33,12 +33,12 @@ export default class MediaService {
   // ===============================================================================================
 
   static async sharePicture(id_project: string, id_picture: string): Promise<void> {
-    const imageFilePath = DatabaseService.getPictureUri(id_project, id_picture);
-    await ShareService.share(imageFilePath);
+    const imageFilePath = DatabaseService.getPictureUri({ id_project, id_picture });
+    await ShareService.share({ directory: imageFilePath });
   }
 
   static getPictureUri(id_project: string, id_picture: string): string {
-    return DatabaseService.getPictureUri(id_project, id_picture);
+    return DatabaseService.getPictureUri({ id_project, id_picture });
   }
 
   static async getPictureData(o: {
@@ -48,23 +48,21 @@ export default class MediaService {
     return DatabaseService.getPictureData(o);
   }
 
-  static async savePicture(
+  static async savePicture(o: {
     id_project: string,
     id_picture: string,
-    data: string,
+    base64Data: string,
     operation: 'creation' | 'download'
-  ): Promise<void> {
-    await DatabaseService.savePicture(id_project, id_picture, data, operation);
+  }): Promise<void> {
+    await DatabaseService.savePicture(o);
   }
 
-  static async savePictureFromURI(
-    options: {
-      id_project: string,
-      id_picture: string,
-      photoUri: string,
-    },
+  static async savePictureFromURI(o: {
+    id_project: string,
+    id_picture: string,
+    photoUri: string,
     onSave: () => void
-  ): Promise<void> {
-    await DatabaseService.savePictureFromUri(options, onSave);
+  }): Promise<void> {
+    await DatabaseService.savePictureFromUri(o);
   }
 }

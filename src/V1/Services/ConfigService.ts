@@ -19,28 +19,31 @@ export default class ConfigService {
   static async loadConfig(): Promise<void> {
     const config = await FOLDER_Config.get();
     if (config) {
-      const verifiedConfig = this.verifyConfigDTOIntegrity(config);
+      const verifiedConfig = this.verifyConfigDTOIntegrity({ config });
       this.config = verifiedConfig;
     }
   }
 
   static async saveConfig(): Promise<void> {
-    await FOLDER_Config.update(this.config);
+    await FOLDER_Config.update({ config: this.config });
   }
 
   /** Garantees migration when local storage config data is outdated */
-  private static verifyConfigDTOIntegrity(dto: ConfigDTO): ConfigDTO {
+  private static verifyConfigDTOIntegrity(o: {
+    config: ConfigDTO
+  }): ConfigDTO {
 
+    const { config } = o;
     const { App, Widget } = ThemeService.themeNamesArray;
     const deviceLanguage = LanguageService.getDeviceLanguage();
 
     const verifiedConfigDTO: ConfigDTO = {
-      appTheme:              App.includes(dto.appTheme) ? dto.appTheme : 'Dark',
-      widgetTheme:           Widget.includes(dto.widgetTheme) ? dto.widgetTheme : 'Light',
-      language:              dto.language   ?? deviceLanguage,
-      dateFormat:            dto.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
-      timeFormat:            dto.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
-      onlyWarningVibrations: dto.onlyWarningVibrations ?? false,
+      appTheme:              App.includes(config.appTheme) ? config.appTheme : 'Dark',
+      widgetTheme:           Widget.includes(config.widgetTheme) ? config.widgetTheme : 'Light',
+      language:              config.language   ?? deviceLanguage,
+      dateFormat:            config.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
+      timeFormat:            config.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
+      onlyWarningVibrations: config.onlyWarningVibrations ?? false,
     };
     return verifiedConfigDTO;
   }

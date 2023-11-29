@@ -8,15 +8,16 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
-  static getDefaultProjectTemplate(options: {
+  static getDefaultProjectTemplate(o: {
     name?: string
   }): ProjectDTO {
+    const { name } = o;
     const id_project = IDService.generateUuidV4();
     return {
       projectSettings: {
         id_project: id_project,
         status: 'new',
-        name: options.name ?? '',
+        name: name ?? '',
         gps: {},
         sampleAlias: {
           singular: '',
@@ -48,16 +49,17 @@ export default class ProjectService {
     };
   }
 
-  static getDefaultSampleSettings(options: {
+  static getDefaultSampleSettings(o: {
     name?: string
     rules?: SampleRules,
     gps?: GPS_DTO
   }): SampleSettings {
+    const { name, rules, gps } = o;
     return {
       id_sample: IDService.generateUuidV4(),
-      name: options.name ?? '',
-      gps: options.gps,
-      rules: options.rules ?? {
+      name: name ?? '',
+      gps: gps,
+      rules: rules ?? {
         allowGPSChange: true,
         allowSampleNameChange: true,
         showCreateWidgetButton: true,
@@ -87,7 +89,10 @@ export default class ProjectService {
     };
   }
 
-  static getInputData(inputType: InputTypes): InputData {
+  static getInputData(o: {
+    inputType: InputTypes
+  }): InputData {
+    const { inputType } = o;
     switch (inputType) {
       case 'boolean': return {
         id_input: IDService.generateUuidV4(),
@@ -153,12 +158,14 @@ export default class ProjectService {
   // BASIC DATABASE METHODS
   // ===============================================================================================
 
-  static async createProject(
+  static async createProject(o: {
     projectDTO: ProjectDTO,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
     feedback: (message: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+
+    const { projectDTO } = o;
 
     const {
       projectSettings,
@@ -174,10 +181,10 @@ export default class ProjectService {
 
     try {
 
-      feedback('Creating project folder');
+      o.feedback('Creating project folder');
       await DatabaseService.createProject({ projectSettings, syncData });
 
-      feedback('Saving project widgets');
+      o.feedback('Saving project widgets');
       for (let i = 0; i < projectWidgets.length; i++) {
         await DatabaseService.createWidget({
           path: 'project widgets',
@@ -187,7 +194,7 @@ export default class ProjectService {
         });
       }
 
-      feedback('Saving template widgets');
+      o.feedback('Saving template widgets');
       for (let i = 0; i < template.length; i++) {
         await DatabaseService.createWidget({
           path: 'template widgets',
@@ -202,7 +209,7 @@ export default class ProjectService {
         const { sampleSettings, sampleWidgets } = samples[i];
         const { id_sample } = sampleSettings;
 
-        feedback('Saving sample of ID:' + ` ${samples[i].sampleSettings.id_sample}`);
+        o.feedback('Saving sample of ID:' + ` ${samples[i].sampleSettings.id_sample}`);
         await DatabaseService.createSample({
           id_project: id_project,
           sampleSettings: sampleSettings,
@@ -211,7 +218,7 @@ export default class ProjectService {
         });
 
         for (let j = 0; j < sampleWidgets.length; j++) {
-          feedback('Saving sample widget of ID:' + ` ${sampleWidgets[j].id_widget}`);
+          o.feedback('Saving sample widget of ID:' + ` ${sampleWidgets[j].id_widget}`);
           await DatabaseService.createWidget({
             path: 'sample widgets',
             id_project: id_project,
@@ -222,190 +229,187 @@ export default class ProjectService {
         }
       }
 
-      onSuccess();
+      o.onSuccess();
 
     } catch (error) {
-      DatabaseService.deleteProject(projectSettings.id_project);
-      onError(
+      DatabaseService.deleteProject({ id_project });
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async updateProject(
-    options: {
-      projectSettings: ProjectSettings,
-      sync: boolean
-    },
+  static async updateProject(o: {
+    projectSettings: ProjectSettings,
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+    const { projectSettings, sync } = o;
     try {
-      await DatabaseService.updateProject(options);
-      onSuccess();
+      await DatabaseService.updateProject({ projectSettings, sync });
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async deleteProject(
+  static async deleteProject(o: {
     id_project: string,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project } = o;
     try {
-      await DatabaseService.deleteProject(id_project);
-      onSuccess();
+      await DatabaseService.deleteProject({ id_project });
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async createSample(
-    options: {
-      id_project: string,
-      sampleSettings: SampleSettings,
-      addTemplateWidgets: boolean,
-      sync: boolean,
-    },
+  static async createSample(o: {
+    id_project: string,
+    sampleSettings: SampleSettings,
+    addTemplateWidgets: boolean,
+    sync: boolean,
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project, sampleSettings, sync, addTemplateWidgets } = o;
     try {
-      await DatabaseService.createSample(options);
-      onSuccess();
+      await DatabaseService.createSample({ id_project, sampleSettings, sync, addTemplateWidgets });
+      o.onSuccess();
     } catch (error) {
-      await DatabaseService.deleteSample(options);
-      onError(
+      await DatabaseService.deleteSample({ id_project, sampleSettings, sync });
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async updateSample(
-    options: {
-      id_project: string,
-      sampleSettings: SampleSettings,
-      sync: boolean
-    },
+  static async updateSample(o: {
+    id_project: string,
+    sampleSettings: SampleSettings,
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project, sampleSettings, sync } = o;
     try {
-      await DatabaseService.updateSample(options);
-      onSuccess();
+      await DatabaseService.updateSample({ id_project, sampleSettings, sync });
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async deleteSample(
-    options: {
-      id_project: string
-      sampleSettings: SampleSettings
-      sync: boolean
-    },
+  static async deleteSample(o: {
+    id_project: string
+    sampleSettings: SampleSettings
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  }): Promise<void> {
+    const { id_project, sampleSettings, sync } = o;
     try {
-      await DatabaseService.deleteSample(options);
-      onSuccess();
+      await DatabaseService.deleteSample({ id_project, sampleSettings, sync });
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async createWidget(
-    options: {
-      path: 'project widgets' | 'template widgets'
-      id_project: string
-      widgetData: WidgetData
-      sync: boolean
-    } | {
-      path: 'sample widgets'
-      id_project: string
-      id_sample: string
-      widgetData: WidgetData
-      sync: boolean
-    },
+  static async createWidget(o: {
+    path: 'project widgets' | 'template widgets'
+    id_project: string
+    widgetData: WidgetData
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  } | {
+    path: 'sample widgets'
+    id_project: string
+    id_sample: string
+    widgetData: WidgetData
+    sync: boolean
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  }): Promise<void> {
     try {
-      await DatabaseService.createWidget(options);
-      onSuccess();
+      await DatabaseService.createWidget(o);
+      o.onSuccess();
     } catch (error) {
-      await DatabaseService.deleteWidget(options);
-      onError(
+      await DatabaseService.deleteWidget(o);
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async updateWidget(
-    options: {
-      path: 'project widgets' | 'template widgets'
-      id_project: string,
-      widgetData: WidgetData,
-      sync: boolean
-    } | {
-      path: 'sample widgets'
-      id_project: string,
-      id_sample: string
-      widgetData: WidgetData,
-      sync: boolean
-    },
+  static async updateWidget(o: {
+    path: 'project widgets' | 'template widgets'
+    id_project: string,
+    widgetData: WidgetData,
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ) {
+  } | {
+    path: 'sample widgets'
+    id_project: string,
+    id_sample: string
+    widgetData: WidgetData,
+    sync: boolean
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  }) {
     try {
-      await DatabaseService.updateWidget(options);
-      onSuccess();
+      await DatabaseService.updateWidget(o);
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
     }
   }
 
-  static async deleteWidget(
-    options: {
-      path: 'project widgets' | 'template widgets'
-      id_project: string
-      widgetData: WidgetData
-      sync: boolean
-    } | {
-      path: 'sample widgets'
-      id_project: string
-      id_sample: string
-      widgetData: WidgetData
-      sync: boolean
-    },
+  static async deleteWidget(o: {
+    path: 'project widgets' | 'template widgets'
+    id_project: string
+    widgetData: WidgetData
+    sync: boolean
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
-  ): Promise<void> {
+  } | {
+    path: 'sample widgets'
+    id_project: string
+    id_sample: string
+    widgetData: WidgetData
+    sync: boolean
+    onSuccess: () => void,
+    onError: (errorMessage: string) => void,
+  }): Promise<void> {
     try {
-      await DatabaseService.deleteWidget(options);
-      onSuccess();
+      await DatabaseService.deleteWidget(o);
+      o.onSuccess();
     } catch (error) {
-      onError(
+      o.onError(
         `${error}` +
         `\n${JSON.stringify(error)}`
       );
@@ -419,7 +423,7 @@ export default class ProjectService {
   }): Promise<void> {
     try {
       const { syncData } = o;
-      await DatabaseService.updateSyncFile(syncData);
+      await DatabaseService.updateSyncFile({ syncData });
       o.onSuccess();
     } catch (error) {
       o.onError(
@@ -448,31 +452,31 @@ export default class ProjectService {
     feedback: (message: string) => void
   }): Promise<ProjectDTO> {
 
+    const { id_project } = o;
+
     // GET PROJECT SETTINGS
     o.feedback('Loading project settings');
-    const projectSettings = await DatabaseService.readProject(o.id_project);
+    const projectSettings = await DatabaseService.readProject({ id_project });
 
     o.feedback('Loading project widgets');
-    const projectWidgets = await DatabaseService.getAllWidgets({
-      path: 'project widgets',
-      id_project: o.id_project,
-    });
+    const projectWidgets = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project });
 
     o.feedback('Loading project template');
     const templateWidgets = await DatabaseService.getAllWidgets({
       path: 'template widgets',
-      id_project: o.id_project,
+      id_project: id_project,
     });
 
     // GET ALL SAMPLES
     o.feedback('Loading all sample settings');
     const samples: SampleDTO[] = [];
-    const samplesSettings = await DatabaseService.getAllSamples(o.id_project);
+    const samplesSettings = await DatabaseService.getAllSamples({ id_project });
     for (let i = 0; i < samplesSettings.length; i++) {
+
       o.feedback('Loading sample widgets of' + ` "${samplesSettings[i].name}".` + ` ID: ${samplesSettings[i].id_sample}`);
       const sampleWidgets = await DatabaseService.getAllWidgets({
         path: 'sample widgets',
-        id_project: o.id_project,
+        id_project: id_project,
         id_sample: samplesSettings[i].id_sample,
       });
       samples.push({
@@ -483,7 +487,7 @@ export default class ProjectService {
 
     // GET SYNC DATA
     o.feedback('Loading project sync data');
-    const syncData = await DatabaseService.readSyncFile(o.id_project);
+    const syncData = await DatabaseService.readSyncFile({ id_project });
 
     // SYNC PROJECT SETTINGS STATUS WITH PROJECT SYNC FILE
     projectSettings.status = syncData.project;

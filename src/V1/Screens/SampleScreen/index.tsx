@@ -28,10 +28,12 @@ export const SampleDataScreens = memo((props: {
       id_sample: id_sample,
       widgetData: newWidget,
       sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Sample(newWidget);
-      setSampleWidgets(CacheService.allWidgets_Sample);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: () => {
+        CacheService.addToAllWidgets_Sample({ widgetData: newWidget });
+        setSampleWidgets(CacheService.allWidgets_Sample);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [sampleWidgets]);
 
   const onDeleteWidget = useCallback(async (index: number) => {
@@ -43,15 +45,17 @@ export const SampleDataScreens = memo((props: {
       id_sample: id_sample,
       widgetData: removedWidget,
       sync: true,
-    }, async () => {
-      await MediaService.deleteMediaRecursively({
-        scope: 'widget',
-        id_project: id_project,
-        widget: removedWidget,
-      });
-      CacheService.allWidgets_Sample = newData;
-      setSampleWidgets(newData);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: async () => {
+        await MediaService.deleteMediaRecursively({
+          scope: 'widget',
+          id_project: id_project,
+          widget: removedWidget,
+        });
+        CacheService.allWidgets_Sample = newData;
+        setSampleWidgets(newData);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [sampleWidgets]);
 
   const onCopyTemplateWidget = useCallback(async () => {

@@ -41,9 +41,10 @@ export const AppCamera = memo((props: {
         id_project: props.cameraConfig.id_project,
         id_picture: id_picture,
         photoUri: photo.uri,
-      }, () => {
-        CameraService.triggerOnPictureTake(id_picture);
-        setPicturesAmount(prev => prev + 1);
+        onSave: () => {
+          CameraService.triggerOnPictureTake(id_picture);
+          setPicturesAmount(prev => prev + 1);
+        },
       });
       setShow(prev => ({ ...prev, loadingPreview: false }));
       setPhoto(null);

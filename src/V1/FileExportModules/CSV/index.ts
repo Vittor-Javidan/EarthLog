@@ -29,7 +29,8 @@ export default class CSV_Module {
     ;
 
     // ADD PROJECT GPS
-    document += this.getCSVRow_GPS(projectDTO.projectSettings.gps, {
+    document += this.getCSVRow_GPS({
+      gps: projectDTO.projectSettings.gps,
       source: R['Project settings'],
       widgetName: R['Project info'],
       inputLabel: R['GPS'],
@@ -39,7 +40,8 @@ export default class CSV_Module {
       const sample = projectDTO.samples[i];
 
       // ADD SAMPLE REFERENCE GPS
-      document += this.getCSVRow_GPS(sample.sampleSettings.gps, {
+      document += this.getCSVRow_GPS({
+        gps: sample.sampleSettings.gps,
         source: sample.sampleSettings.name,
         widgetName: R['Sample info'],
         inputLabel: R['GPS'],
@@ -56,7 +58,8 @@ export default class CSV_Module {
             const inputGPS = input.value;
 
             // ADD GPS FROM INPUT
-            document += this.getCSVRow_GPS(inputGPS, {
+            document += this.getCSVRow_GPS({
+              gps: inputGPS,
               source: sample.sampleSettings.name,
               widgetName: widget.widgetName,
               inputLabel: input.label,
@@ -67,19 +70,26 @@ export default class CSV_Module {
     }
 
     o.feedback('Sharing document');
-    await ExportService.shareFile(`${o.fileName}.csv`, document, 'utf8');
+    await ExportService.shareFile({
+      filename: `${o.fileName}.csv`,
+      data: document,
+      encoding: 'utf8',
+    });
   }
 
-  private static getCSVRow_GPS(gps: GPS_DTO | undefined, options: {
+  private static getCSVRow_GPS(o: {
+    gps: GPS_DTO | undefined,
     source: string
     widgetName: string
     inputLabel: string
   }): string {
 
+    const { gps, source, widgetName, inputLabel } = o;
+
     let document =
-      this.stringToCSVText(options.source)     + ',' + // From
-      this.stringToCSVText(options.widgetName) + ',' + // Widget Name
-      this.stringToCSVText(options.inputLabel) + ','   // Input Name
+      this.stringToCSVText(source)     + ',' + // From
+      this.stringToCSVText(widgetName) + ',' + // Widget Name
+      this.stringToCSVText(inputLabel) + ','   // Input Name
     ;
 
     if (gps === undefined) {

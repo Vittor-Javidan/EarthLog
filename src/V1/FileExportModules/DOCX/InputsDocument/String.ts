@@ -9,7 +9,8 @@ export function InputDocument_String(o: {
   inputData: StringInputData
 }) {
 
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, inputData } = o;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   document.push(
@@ -21,13 +22,13 @@ export function InputDocument_String(o: {
           color: '#000000',
           font: 'Calibri',
           size: `${12}pt`,
-          children: [ o.inputData.label ],
+          children: [ inputData.label ],
         }),
       ],
     })
   );
 
-  if (o.inputData.value !== '') {
+  if (inputData.value !== '') {
     document.push(
       new Paragraph({
         children: [
@@ -35,7 +36,7 @@ export function InputDocument_String(o: {
             color: '#000000',
             font: 'Calibri',
             size: `${12}pt`,
-            children: [ o.inputData.value ],
+            children: [ inputData.value ],
           }),
         ],
       })

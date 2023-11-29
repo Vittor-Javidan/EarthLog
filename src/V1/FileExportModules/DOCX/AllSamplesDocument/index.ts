@@ -12,8 +12,9 @@ export async function document_AllSamples(o: {
   projectDTO: ProjectDTO
 }) {
 
-  const allSamples = o.projectDTO.samples;
-  const R = translations.FileExportModules.docx[o.config.language];
+  const { config, projectDTO } = o;
+  const allSamples = projectDTO.samples;
+  const R = translations.FileExportModules.docx[config.language];
   const document: Paragraph[] = [];
 
   // SAMPLE INFO
@@ -47,7 +48,7 @@ export async function document_AllSamples(o: {
       );
       document.push(
         ...await document_inputData({
-          config: o.config,
+          config,
           inputData: {
             id_input: '',
             type: 'gps',

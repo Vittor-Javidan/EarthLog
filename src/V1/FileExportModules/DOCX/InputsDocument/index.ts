@@ -15,14 +15,14 @@ export async function document_inputData(o: {
   inputData: InputData
 }): Promise<Paragraph[]> {
 
-  const { inputData } = o;
+  const { config, inputData } = o;
 
   switch (inputData.type) {
-    case 'string':    return InputDocument_String({    ...o, inputData });
-    case 'boolean':   return InputDocument_Boolean({   ...o, inputData });
-    case 'options':   return InputDocument_Options({   ...o, inputData });
-    case 'selection': return InputDocument_Selection({ ...o, inputData });
-    case 'gps':       return InputDocument_GPS({       ...o, inputData });
-    case 'picture':   return InputDocument_Picture({   ...o, inputData });
+    case 'string':    return InputDocument_String({ config, inputData });
+    case 'boolean':   return InputDocument_Boolean({ config, inputData });
+    case 'options':   return InputDocument_Options({ config, inputData });
+    case 'selection': return InputDocument_Selection({ config, inputData });
+    case 'gps':       return InputDocument_GPS({ config, inputData });
+    case 'picture':   return InputDocument_Picture({ config, inputData });
   }
 }

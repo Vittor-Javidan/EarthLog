@@ -21,7 +21,7 @@ export default function ProjectScope() {
   const id_project = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const R               = useMemo(() => translations.scope.project[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const [state                   , setState                    ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
   const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
@@ -154,10 +154,10 @@ async function FetchData(
 ) {
   if (id_project !== CacheService.lastOpenProject?.id_project) {
     const promises = [
-      CacheService.saveLastOpenProject(id_project),
-      CacheService.loadAllSamplesSettings(id_project),
-      CacheService.loadAllWidgets_Project(id_project),
-      CacheService.loadAllWidgets_Template(id_project),
+      CacheService.saveLastOpenProject({ id_project }),
+      CacheService.loadAllSamplesSettings({ id_project }),
+      CacheService.loadAllWidgets_Project({ id_project }),
+      CacheService.loadAllWidgets_Template({ id_project }),
     ];
     await Promise.all(promises);
   }

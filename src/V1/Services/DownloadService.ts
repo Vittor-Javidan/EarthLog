@@ -20,8 +20,9 @@ export default class DownloadService {
     onError: (errorMessage: string) => void
     feedback: (feedbackMessage: string) => void
   }): Promise<void> {
+    const { signal } = o;
     o.feedback('Connecting to server:' + ` ${this.restAPI.credential.name}`);
-    this.accessToken = await this.restAPI.auth(o);
+    this.accessToken = await this.restAPI.auth({ signal });
   }
 
   async getAvailableProjects(o: {
@@ -30,19 +31,26 @@ export default class DownloadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
+
+    const { signal } = o;
+
     try {
 
-      this.accessToken ?? await this.getAccessToken(o);
+      this.accessToken ?? await this.getAccessToken({
+        signal,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
+
       if (this.accessToken === null) {
-        return;
+        throw Error('No access token was provided by the server');
       }
 
       o.feedback('fetching available projects');
       o.onSuccess(
-        await this.restAPI.getAllProjects({
-          ...o,
-          accessToken: this.accessToken,
-        })
+        await this.restAPI.getAllProjects({ accessToken: this.accessToken, signal })
       );
 
     } catch (error) {
@@ -63,38 +71,48 @@ export default class DownloadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
+
+    const { signal, projectIDs } = o;
+
     try {
 
-      this.accessToken ?? await this.getAccessToken(o);
+      this.accessToken ?? await this.getAccessToken({
+        signal,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
+
       if (this.accessToken === null) {
-        return;
+        throw Error('No access token was provided by the server');
       }
 
-      for (let i = 0; i < o.projectIDs.length; i++) {
+      for (let i = 0; i < projectIDs.length; i++) {
 
-        const id_project = o.projectIDs[i];
+        const id_project = projectIDs[i];
 
         o.feedback('Downloading project. ID:' + ` ${id_project}`);
-        const downloadedProject = await this.restAPI.getProject({
-          ...o,
-          accessToken: this.accessToken,
-          id_project: id_project,
-        });
+        const downloadedProjectDTO = await this.restAPI.getProject({ accessToken: this.accessToken, id_project, signal });
 
-        o.feedback('Processing project:' + ` ${downloadedProject.projectSettings.name}`);
-        const processedProject = DataProcessingService.processProject_AfterDownload({
-          ...o,
-          projectDTO: downloadedProject,
+        o.feedback('Processing project:' + ` ${downloadedProjectDTO.projectSettings.name}`);
+        const projectDTO = DataProcessingService.processProject_AfterDownload({
+          downloadedProjectDTO,
+          feedback: (feedbackMessage) => o.feedback(feedbackMessage),
         });
+        const { projectSettings, syncData } = projectDTO;
 
         o.feedback('Saving project');
-        await ProjectService.createProject(processedProject,
-        () => {
-          CacheService.addToAllProjects(processedProject.projectSettings);
-          CacheService.addToSyncData(processedProject.syncData);
-        },
-        (errorMessage) => o.onError(errorMessage),
-        (feedbackMessage) => o.feedback(feedbackMessage));
+        await ProjectService.createProject({ projectDTO,
+          onSuccess: () => {
+            CacheService.addToAllProjects({ projectSettings });
+            CacheService.addToSyncData({ syncData });
+          },
+          onError: (errorMessage) => {
+            throw Error(errorMessage);
+          },
+          feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+        });
       }
 
       o.onFinish();
@@ -119,27 +137,36 @@ export default class DownloadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }) {
+
+    const { signal, id_project, picturesIDs } = o;
+
     try {
 
-      this.accessToken ?? await this.getAccessToken(o);
+
+      this.accessToken ?? await this.getAccessToken({
+        signal,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
+
       if (this.accessToken === null) {
-        return;
+        throw Error('No access token was provided by the server');
       }
 
-      for (let i = 0; i < o.picturesIDs.length; i++) {
+      for (let i = 0; i < picturesIDs.length; i++) {
 
-        if (o.signal.aborted) {
+        const id_picture = picturesIDs[i];
+
+        if (signal.aborted) {
           o.feedback('Aborting.');
           o.onFinish();
           return;
         }
 
-        o.feedback('Fetching picture. ID:' + ` ${o.picturesIDs[i]}`);
-        const imageData = await this.restAPI.getPicture({
-          ...o,
-          accessToken: this.accessToken,
-          id_picture: o.picturesIDs[i],
-        });
+        o.feedback('Fetching picture. ID:' + ` ${id_picture}`);
+        const base64Data = await this.restAPI.getPicture({ signal, id_project, id_picture, accessToken: this.accessToken });
 
         if (o.signal.aborted) {
           o.feedback('Aborting.');
@@ -148,7 +175,7 @@ export default class DownloadService {
         }
 
         o.feedback('Saving picture.');
-        await MediaService.savePicture(o.id_project, o.picturesIDs[i], imageData, 'download');
+        await MediaService.savePicture({ operation: 'download', id_project, id_picture, base64Data });
       }
 
       o.onFinish();

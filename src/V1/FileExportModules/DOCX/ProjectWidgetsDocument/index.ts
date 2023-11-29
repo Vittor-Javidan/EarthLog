@@ -10,7 +10,8 @@ export async function document_ProjectWidgets(o: {
   projectDTO: ProjectDTO
 }) {
 
-  const { projectWidgets } = o.projectDTO;
+  const { config, projectDTO } = o;
+  const { projectWidgets } = projectDTO;
   const document: Paragraph[] = [];
 
   for (let i = 0; i < projectWidgets.length; i++) {
@@ -20,7 +21,7 @@ export async function document_ProjectWidgets(o: {
     );
     document.push(
       ...await document_Widget({
-        config: o.config,
+        config,
         widgetData: widgetData,
       })
     );

@@ -26,10 +26,12 @@ export const ProjectInfoScreen = memo((props: {
       id_project: id_project,
       widgetData: newWidget,
       sync: true,
-    }, () => {
-      CacheService.addToAllWidgets_Project(newWidget);
-      setProjectWidgets(CacheService.allWidgets_Project);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: () => {
+        CacheService.addToAllWidgets_Project({ widgetData: newWidget});
+        setProjectWidgets(CacheService.allWidgets_Project);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [projectWidgets]);
 
   const onDeleteWidget = useCallback(async (index: number) => {
@@ -40,26 +42,29 @@ export const ProjectInfoScreen = memo((props: {
       id_project: id_project,
       widgetData: removedWidget,
       sync: true,
-    }, async () => {
-      await MediaService.deleteMediaRecursively({
-        scope: 'widget',
-        id_project: id_project,
-        widget: removedWidget,
-      });
-      CacheService.allWidgets_Project = newData;
-      setProjectWidgets(newData);
-    }, (errorMessage) => alert(errorMessage));
+      onSuccess: async () => {
+        await MediaService.deleteMediaRecursively({
+          scope: 'widget',
+          id_project: id_project,
+          widget: removedWidget,
+        });
+        CacheService.allWidgets_Project = newData;
+        setProjectWidgets(newData);
+      },
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, [projectWidgets]);
 
   const onDeleteProject = useCallback(async () => {
     await CacheService.deleteLastOpenProject();
-    await ProjectService.deleteProject(id_project,
-      () => {
-        CacheService.removeFromProjects(id_project);
+    await ProjectService.deleteProject({
+      id_project,
+      onSuccess: () => {
+        CacheService.removeFromProjects({ id_project });
         navigate('HOME SCOPE');
       },
-      (errorMessage) => alert(errorMessage)
-    );
+      onError: (errorMessage) => alert(errorMessage),
+    });
   }, []);
 
   return (

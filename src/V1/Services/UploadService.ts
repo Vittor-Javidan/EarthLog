@@ -19,11 +19,11 @@ export default class UploadService {
     signal: AbortSignal
     onError: (errorMessage: string) => void
     feedback: (feedbackMessage: string) => void
-  }): Promise<string> {
+  }): Promise<void> {
+    const { signal } = o;
     o.feedback('Connecting to server');
-    const accessToken = await this.restAPI.auth(o);
+    const accessToken = await this.restAPI.auth({ signal });
     this.accessToken = accessToken;
-    return accessToken;
   }
 
   async uploadProject(o: {
@@ -34,38 +34,65 @@ export default class UploadService {
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
+
+    const { config, signal, id_project } = o;
+
     try {
 
-      const accessToken = this.accessToken ?? await this.getAccessToken(o);
+      this.accessToken ?? await this.getAccessToken({
+        signal,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
+
+      if (this.accessToken === null) {
+        throw Error('No access token was provided by the server');
+      }
 
       o.feedback('Building project');
-      const projectDTO = await ProjectService.buildProjectDTO(o);
+      const projectDTO = await ProjectService.buildProjectDTO({
+        id_project,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+      });
+      const { projectSettings, syncData } = projectDTO;
 
       o.feedback('Preparing project');
-      DataProcessingService.processProject_BeforeUpload({ ...o, projectDTO,
+      DataProcessingService.processProject_BeforeUpload({
+        config,
+        projectDTO,
         credential: this.restAPI.credential,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
       });
 
       // UPLOAD PROJECT ==============
       o.feedback('Uploading project');
-      projectDTO.projectSettings.status === 'new'
-      ? await this.restAPI.postProject({ ...o, accessToken, projectDTO })
-      : await this.restAPI.updateProject({ ...o, accessToken, projectDTO });
+      projectSettings.status === 'new'
+      ? await this.restAPI.postProject({ signal, accessToken: this.accessToken, projectDTO })
+      : await this.restAPI.updateProject({ signal, accessToken: this.accessToken, projectDTO });
 
       o.feedback('Updating project locally');
       await ProjectService.updateProject({
-        projectSettings: projectDTO.projectSettings,
+        projectSettings,
         sync: false,
-      }, () => {
-        CacheService.lastOpenProject = projectDTO.projectSettings;
-      }, (errorMessage) => { throw Error(errorMessage); });
+        onSuccess: () => {
+          CacheService.lastOpenProject = projectSettings;
+        },
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
 
       o.feedback('Project sync...');
-      DataProcessingService.processProject_AfterUpload({ ...o, projectDTO });
+      DataProcessingService.processProject_AfterUpload({
+        projectDTO,
+        feedback: (feedbackMessage) => o.feedback(feedbackMessage),
+      });
       await ProjectService.updateSyncData({
-        syncData: projectDTO.syncData,
+        syncData,
         onSuccess: () => {
-          CacheService.updateCache_SyncData(projectDTO.syncData);
+          CacheService.updateCache_SyncData({ syncData });
         },
         onError: (errorMessage) => {
           throw Error(errorMessage);
@@ -74,8 +101,8 @@ export default class UploadService {
 
       // UPLOAD MEDIA =================
       o.feedback('Uploading pictures');
-      for (let id_picture in projectDTO.syncData.pictures) {
-        if (projectDTO.syncData.pictures[id_picture] === 'new') {
+      for (let id_picture in syncData.pictures) {
+        if (syncData.pictures[id_picture] === 'new') {
 
           const base64Data = await MediaService.getPictureData({ ...o, id_picture });
           if (!base64Data) {
@@ -83,16 +110,14 @@ export default class UploadService {
           }
 
           o.feedback('Uploading picture of ID: ' + id_picture);
-          await this.restAPI.postPicture({ ...o, accessToken, id_picture, base64Data,
-            syncData: projectDTO.syncData,
-          });
+          await this.restAPI.postPicture({ accessToken: this.accessToken, syncData, id_picture, base64Data, id_project, signal });
 
           o.feedback('Picture sync...');
-          projectDTO.syncData.pictures[id_picture] = 'uploaded';
+          syncData.pictures[id_picture] = 'uploaded';
           await ProjectService.updateSyncData({
-            syncData: projectDTO.syncData,
+            syncData,
             onSuccess: () => {
-              CacheService.updateCache_SyncData(projectDTO.syncData);
+              CacheService.updateCache_SyncData({ syncData });
             },
             onError: (errorMessage) => {
               throw Error(errorMessage);
@@ -102,15 +127,20 @@ export default class UploadService {
       }
 
       // AFTER UPLOAD =========================================
-      const { rules, id_project } = projectDTO.projectSettings;
-      const isAllPicturesUploaded = !Object.values(projectDTO.syncData.pictures).includes('new');
+      const { rules } = projectSettings;
+      const isAllPicturesUploaded = !Object.values(syncData.pictures).includes('new');
 
       if (rules.deleteAfterUpload === true && isAllPicturesUploaded) {
         o.feedback('Deleting project');
-        await ProjectService.deleteProject(id_project, async () => {
-          await CacheService.deleteLastOpenProject();
-          navigate('HOME SCOPE');
-        }, (errorMessage) => { throw Error(errorMessage); });
+        await ProjectService.deleteProject({ id_project,
+          onSuccess: async () => {
+            await CacheService.deleteLastOpenProject();
+            navigate('HOME SCOPE');
+          },
+          onError: (errorMessage) => {
+            throw Error(errorMessage);
+          }}
+        );
       }
 
       o.onSuccess();

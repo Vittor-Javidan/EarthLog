@@ -6,9 +6,11 @@ import IDService from './IDService';
 export default class DataProcessingService {
 
   static processProject_AfterDownload(o: {
-    projectDTO: DownloadedProjectDTO,
+    downloadedProjectDTO: DownloadedProjectDTO,
     feedback: (message: string) => void
   }): ProjectDTO {
+
+    const { downloadedProjectDTO: projectDTO } = o;
 
     // =============================================================================
     // TODO: add a job to verify project integrity here, and throws error if needed.
@@ -19,7 +21,7 @@ export default class DataProcessingService {
     const syncData = this.job_CreateSyncData(o);
 
     return {
-      ...o.projectDTO,
+      ...projectDTO,
       syncData: syncData,
     };
   }
@@ -41,37 +43,41 @@ export default class DataProcessingService {
   }
 
   private static job_ChangeAllIDs(o: {
-    projectDTO: DownloadedProjectDTO
+    downloadedProjectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }) {
-    const { rules } = o.projectDTO.projectSettings;
+    const { downloadedProjectDTO: projectDTO } = o;
+    const { rules } = projectDTO.projectSettings;
     if (rules.allowMultipleDownloads) {
       o.feedback('Changing all IDs');
-      IDService.changeIDsByReference_Project(o.projectDTO);
-      o.projectDTO.projectSettings.status = 'new';
+      IDService.changeIDsByReference_Project(projectDTO);
+      projectDTO.projectSettings.status = 'new';
       delete rules.allowMultipleDownloads;
     }
   }
 
   private static job_InitialProjectStatus(o: {
-    projectDTO: DownloadedProjectDTO
+    downloadedProjectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }) {
-    if (o.projectDTO.projectSettings.status !== 'uploaded') {
+    const { downloadedProjectDTO: projectDTO } = o;
+    if (projectDTO.projectSettings.status !== 'uploaded') {
       o.feedback('Defining project sync status');
-      o.projectDTO.projectSettings.status = 'new';
+      projectDTO.projectSettings.status = 'new';
     }
   }
 
   private static job_CreateSyncData(o: {
-    projectDTO: DownloadedProjectDTO
+    downloadedProjectDTO: DownloadedProjectDTO
     feedback: (message: string) => void
   }): SyncData {
 
+    const { downloadedProjectDTO: projectDTO } = o;
+
     o.feedback('Creating sync data');
-    const projectStatus = o.projectDTO.projectSettings.status;
+    const projectStatus = projectDTO.projectSettings.status;
     const newSyncStatus_Project: SyncData = {
-      id_project: o.projectDTO.projectSettings.id_project,
+      id_project: projectDTO.projectSettings.id_project,
       project: projectStatus,
       widgets_Project: {},
       widgets_Template: {},
@@ -80,26 +86,26 @@ export default class DataProcessingService {
       pictures: {},
     };
 
-    for (let i = 0; i < o.projectDTO.projectWidgets.length; i++) {
-      const id_widget = o.projectDTO.projectWidgets[i].id_widget;
+    for (let i = 0; i < projectDTO.projectWidgets.length; i++) {
+      const id_widget = projectDTO.projectWidgets[i].id_widget;
       newSyncStatus_Project.widgets_Project[id_widget] = projectStatus;
-      mediaSyncStatus(o.projectDTO.projectWidgets[i].inputs);
+      mediaSyncStatus(projectDTO.projectWidgets[i].inputs);
     }
 
-    for (let i = 0; i < o.projectDTO.template.length; i++) {
-      const id_widget = o.projectDTO.template[i].id_widget;
+    for (let i = 0; i < projectDTO.template.length; i++) {
+      const id_widget = projectDTO.template[i].id_widget;
       newSyncStatus_Project.widgets_Template[id_widget] = projectStatus;
     }
 
-    for (let i = 0; i < o.projectDTO.samples.length; i++) {
-      const id_sample = o.projectDTO.samples[i].sampleSettings.id_sample;
+    for (let i = 0; i < projectDTO.samples.length; i++) {
+      const id_sample = projectDTO.samples[i].sampleSettings.id_sample;
       newSyncStatus_Project.samples[id_sample] = projectStatus;
 
-      for (let j = 0; j < o.projectDTO.samples[i].sampleWidgets.length; j++) {
-        const id_widget = o.projectDTO.samples[i].sampleWidgets[j].id_widget;
+      for (let j = 0; j < projectDTO.samples[i].sampleWidgets.length; j++) {
+        const id_widget = projectDTO.samples[i].sampleWidgets[j].id_widget;
         newSyncStatus_Project.widgets_Samples[id_sample] ??= {};
         newSyncStatus_Project.widgets_Samples[id_sample][id_widget] = projectStatus;
-        mediaSyncStatus(o.projectDTO.samples[i].sampleWidgets[j].inputs);
+        mediaSyncStatus(projectDTO.samples[i].sampleWidgets[j].inputs);
       }
     }
 
@@ -123,14 +129,15 @@ export default class DataProcessingService {
     config: ConfigDTO
     feedback: (message: string) => void
   }): void {
+    const { projectDTO, credential, config } = o;
     o.feedback('Attaching upload date and time');
-    o.projectDTO.projectSettings.uploads ??= [];
-    o.projectDTO.projectSettings.uploads.push({
-      url:     o.credential.rootURL,
+    projectDTO.projectSettings.uploads ??= [];
+    projectDTO.projectSettings.uploads.push({
+      url:     credential.rootURL,
       dateUTM: DateTimeService.getCurrentDateTimeUTC(),
       date:    DateTimeService.getCurrentDateTime({
-        dateFormat: o.config.dateFormat,
-        timeFormat: o.config.timeFormat,
+        dateFormat: config.dateFormat,
+        timeFormat: config.timeFormat,
       }),
     });
   }
@@ -140,20 +147,21 @@ export default class DataProcessingService {
     feedback: (message: string) => void
   }) {
 
-    o.projectDTO.syncData.project = 'uploaded';
+    const { projectDTO } = o;
+    projectDTO.syncData.project = 'uploaded';
 
-    for (const id_widget in o.projectDTO.syncData.widgets_Project) {
-      defineStatus(id_widget, o.projectDTO.syncData.widgets_Project);
+    for (const id_widget in projectDTO.syncData.widgets_Project) {
+      defineStatus(id_widget, projectDTO.syncData.widgets_Project);
     }
-    for (const id_widget in o.projectDTO.syncData.widgets_Template) {
-      defineStatus(id_widget, o.projectDTO.syncData.widgets_Template);
+    for (const id_widget in projectDTO.syncData.widgets_Template) {
+      defineStatus(id_widget, projectDTO.syncData.widgets_Template);
     }
-    for (const id_sample in o.projectDTO.syncData.samples) {
-      defineStatus(id_sample, o.projectDTO.syncData.samples);
+    for (const id_sample in projectDTO.syncData.samples) {
+      defineStatus(id_sample, projectDTO.syncData.samples);
     }
-    for (const id_sample in o.projectDTO.syncData.widgets_Samples) {
-      for (const id_widget in o.projectDTO.syncData.widgets_Samples[id_sample]) {
-        defineStatus(id_widget, o.projectDTO.syncData.widgets_Samples[id_sample]);
+    for (const id_sample in projectDTO.syncData.widgets_Samples) {
+      for (const id_widget in projectDTO.syncData.widgets_Samples[id_sample]) {
+        defineStatus(id_widget, projectDTO.syncData.widgets_Samples[id_sample]);
       }
     }
 

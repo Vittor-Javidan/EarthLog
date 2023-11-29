@@ -17,7 +17,7 @@ export const ScreenButtons = memo((props: {
   const id_project      = useLocalSearchParams().id_project as string;
   const config          = useMemo(() => ConfigService.config, []);
   const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache(id_project), []);
+  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
 
   return (
     <Layout.ScreenButtons
