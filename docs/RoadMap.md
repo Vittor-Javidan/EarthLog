@@ -16,21 +16,23 @@
 + CSV file export
 + Options Input
 + Select Input
-- CameraComponent
-- Photo Input
-- Photo Upload API
-- Photo files export
-- Youtube button redirecting to a page with many YoutTube creators
-- Roadmap button redirecting to a page with the app roadmap
-- Community button redirecting to linkedin community
++ CameraComponent
++ Photo Input
++ Photo Upload API
+~ Photo files export
+- LTS versioning
 - Subscription Implementation
+- Public server with examples
+- documentation website
 
 # Apple/Play Store publishing
 
 # Post-Realease Stage
+- App horizontal layout (To allow horizontal pictures and videos)
+- App tablet layout
 - Date/Time Input
 - GPS Poligon Input
-- Audio Widget
+- Audio Input
 - Audio Upload API
 - Video Input
 - Video Upload API

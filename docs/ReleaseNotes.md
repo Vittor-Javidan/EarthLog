@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 0.1.8.2 Import refactor
+# 1.9.44 Animations and styles
 
-- Many import reorganized.
+- added fade out animations for many widgets related components
+- Removed explicit paddingBottom props from <Layout.ScrollView />
+- Gap between widgets inputs are now 15
