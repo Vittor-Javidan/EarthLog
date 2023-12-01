@@ -88,52 +88,56 @@ export const ProjectSettingsWidget = memo((props: {
         >
           {R['Project info']}
         </Text>
-        <WidgetInput.String
-          inputData={{
-            id_input: '',
-            label: R['ID'],
-            value: projectSettings.id_project,
-            type: 'string',
-            placeholder: '',
-            lockedLabel: true,
-            lockedData: true,
-          }}
-          onSave={() => {}}
-          multiline={false}
-          theme={theme}
-          {...unusedProps}
-        />
-        <WidgetInput.String
-          inputData={{
-            id_input: '',
-            label: R['Name'],
-            value: projectSettings.name,
-            type: 'string',
-            placeholder: R['Write the project name here...'],
-            lockedLabel: true,
-            lockedData: !projectSettings.rules.allowProjectNameChange,
-          }}
-          onSave={(inputData) => onSaveName(inputData)}
-          multiline={false}
-          theme={theme}
-          {...unusedProps}
-        />
-        {projectSettings.gps !== undefined && (
-          <WidgetInput.GPS
+        <View
+          style={{ gap: 15 }}
+        >
+          <WidgetInput.String
             inputData={{
               id_input: '',
-              label: 'GPS',
-              value: projectSettings.gps,
-              type: 'gps',
+              label: R['ID'],
+              value: projectSettings.id_project,
+              type: 'string',
+              placeholder: '',
               lockedLabel: true,
-              lockedData: !projectSettings.rules.allowGPSChange,
+              lockedData: true,
             }}
-            onSave={(inputData) => onSaveGPS(inputData)}
-            referenceGPSData={undefined}
+            onSave={() => {}}
+            multiline={false}
             theme={theme}
             {...unusedProps}
           />
-        )}
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: R['Name'],
+              value: projectSettings.name,
+              type: 'string',
+              placeholder: R['Write the project name here...'],
+              lockedLabel: true,
+              lockedData: !projectSettings.rules.allowProjectNameChange,
+            }}
+            onSave={(inputData) => onSaveName(inputData)}
+            multiline={false}
+            theme={theme}
+            {...unusedProps}
+          />
+          {projectSettings.gps !== undefined && (
+            <WidgetInput.GPS
+              inputData={{
+                id_input: '',
+                label: 'GPS',
+                value: projectSettings.gps,
+                type: 'gps',
+                lockedLabel: true,
+                lockedData: !projectSettings.rules.allowGPSChange,
+              }}
+              onSave={(inputData) => onSaveGPS(inputData)}
+              referenceGPSData={undefined}
+              theme={theme}
+              {...unusedProps}
+            />
+          )}
+        </View>
       </View>
       <View
         style={{
@@ -151,36 +155,40 @@ export const ProjectSettingsWidget = memo((props: {
         >
           {R['Sample Alias']}
         </Text>
-        <WidgetInput.String
-          inputData={{
-            id_input: '',
-            label: 'Singular',
-            value: projectSettings.sampleAlias.singular,
-            type: 'string',
-            placeholder: R['Write your sample alias here'],
-            lockedLabel: true,
-            lockedData: !projectSettings.rules.allowSampleAliasChange,
-          }}
-          onSave={(inputData) => onSaveAlias_Singular(inputData)}
-          multiline={false}
-          theme={theme}
-          {...unusedProps}
-        />
-        <WidgetInput.String
-          inputData={{
-            id_input: '',
-            label: 'Plural',
-            value: projectSettings.sampleAlias.plural,
-            type: 'string',
-            placeholder: R['Write your sample alias here'],
-            lockedLabel: true,
-            lockedData: !projectSettings.rules.allowSampleAliasChange,
-          }}
-          onSave={(inputData) => onSaveAlias_Plural(inputData)}
-          multiline={false}
-          theme={theme}
-          {...unusedProps}
-        />
+        <View
+          style={{ gap: 15 }}
+        >
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: 'Singular',
+              value: projectSettings.sampleAlias.singular,
+              type: 'string',
+              placeholder: R['Write your sample alias here'],
+              lockedLabel: true,
+              lockedData: !projectSettings.rules.allowSampleAliasChange,
+            }}
+            onSave={(inputData) => onSaveAlias_Singular(inputData)}
+            multiline={false}
+            theme={theme}
+            {...unusedProps}
+          />
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: 'Plural',
+              value: projectSettings.sampleAlias.plural,
+              type: 'string',
+              placeholder: R['Write your sample alias here'],
+              lockedLabel: true,
+              lockedData: !projectSettings.rules.allowSampleAliasChange,
+            }}
+            onSave={(inputData) => onSaveAlias_Plural(inputData)}
+            multiline={false}
+            theme={theme}
+            {...unusedProps}
+          />
+        </View>
       </View>
     </Layout.PseudoWidget>
   );

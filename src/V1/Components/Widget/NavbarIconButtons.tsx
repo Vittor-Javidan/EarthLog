@@ -4,6 +4,7 @@ import { Pressable } from 'react-native';
 import HapticsService from '@V1/Services/HapticsService';
 
 import { Icon, IconName } from '@V1/Icon/index';
+import { Animation } from '@V1/Animation/index';
 
 type ButtonTheme = {
   font: string
@@ -31,28 +32,33 @@ export const NavbarIconButton = memo((props: {
   }, []);
 
   return (
-    <Pressable
-      onPressIn={() => onPressIn()}
-      onPressOut={() => setPressed(false)}
-      onPress={() => onPress()}
-      style={{
-        flexDirection: 'row',
-        backgroundColor: (props.selected || pressed) ? props.theme.font : props.theme.background,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        paddingHorizontal: 5,
-        paddingVertical: 5,
-        borderTopLeftRadius: props.position === 'bottom right' ? 10 : 0,
-        borderTopRightRadius: props.position === 'right' ? 10 : 0,
-        borderBottomRightRadius: props.position === 'right' ? 0 : 10,
-        borderBottomLeftRadius: props.position === 'bottom right' ? 0 : 10,
-      }}
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
     >
-      <Icon
-        iconName={props.iconName}
-        color={(props.selected || pressed) ? props.theme.background : props.theme.font}
-      />
-    </Pressable>
+      <Pressable
+        onPressIn={() => onPressIn()}
+        onPressOut={() => setPressed(false)}
+        onPress={() => onPress()}
+        style={{
+          flexDirection: 'row',
+          backgroundColor: (props.selected || pressed) ? props.theme.font : undefined,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          paddingHorizontal: 5,
+          paddingVertical: 5,
+          borderTopLeftRadius: props.position === 'bottom right' ? 10 : 0,
+          borderTopRightRadius: props.position === 'right' ? 10 : 0,
+          borderBottomRightRadius: props.position === 'right' ? 0 : 10,
+          borderBottomLeftRadius: props.position === 'bottom right' ? 0 : 10,
+        }}
+      >
+        <Icon
+          iconName={props.iconName}
+          color={(props.selected || pressed) ? props.theme.background : props.theme.font}
+        />
+      </Pressable>
+    </Animation.FadeOut>
   );
 });

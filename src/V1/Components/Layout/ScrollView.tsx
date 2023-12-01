@@ -6,6 +6,7 @@ export const ScrollView = memo((props: {
   style?: StyleProp<ViewStyle>
   contentContainerStyle?: StyleProp<ViewStyle>
 }) => {
+
   return (
     <ReactNative_ScrollView
       style={props.style}

@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
+import { Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V1/Globals/NavigationControler';
@@ -79,8 +80,8 @@ export const ProjectInfoScreen = memo((props: {
       <Layout.ScrollView
         contentContainerStyle={{
           paddingTop: 55,
-          paddingBottom: 150,
           paddingHorizontal: 5,
+          paddingBottom: Dimensions.get('window').height - 240,
           gap: 10,
         }}
       >

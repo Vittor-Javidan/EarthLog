@@ -8,6 +8,7 @@ import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
+import { Animation } from '@V1/Animation/index';
 
 export const NewInputDisplay = memo((props: {
   theme: WidgetTheme
@@ -31,7 +32,10 @@ export const NewInputDisplay = memo((props: {
   ));
 
   return (
-    <View>
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
+    >
       <Text h3
         style={{
           color: props.theme.font,
@@ -53,7 +57,7 @@ export const NewInputDisplay = memo((props: {
       >
         {AllButtons}
       </View>
-    </View>
+    </Animation.FadeOut>
   );
 });
 

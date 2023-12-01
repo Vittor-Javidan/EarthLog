@@ -4,6 +4,7 @@ import { StyleProp, TextInput, View, ViewStyle } from 'react-native';
 import { WidgetRules } from '@V1/Types/ProjectTypes';
 import HapticsService from '@V1/Services/HapticsService';
 
+import { Animation } from '@V1/Animation/index';
 import { NavbarIconButton } from './NavbarIconButtons';
 
 type InputTheme = {
@@ -30,7 +31,9 @@ export const InputRoot = memo((props: {
   onInputMoveDow: () => void
 }) => {
   return (
-    <View
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
       style={{
         paddingHorizontal: 5,
         paddingTop: 15,
@@ -79,7 +82,7 @@ export const InputRoot = memo((props: {
       >
         {props.children}
       </View>
-    </View>
+    </Animation.FadeOut>
   );
 });
 

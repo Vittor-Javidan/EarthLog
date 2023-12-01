@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.43 Services arguments refactored
+# 1.9.44 Animations and styles
 
-- almost all Services methods now uses a single object instead many arguments.
+- added fade out animations for many widgets related components
+- Removed explicit paddingBottom props from <Layout.ScrollView />
+- Gap between widgets inputs are now 15

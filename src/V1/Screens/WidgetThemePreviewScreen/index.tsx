@@ -17,6 +17,7 @@ export const WidgetThemePreviewScreen = memo((props: {
         contentContainerStyle={{
           paddingHorizontal: 5,
           paddingTop: 55,
+          paddingBottom: 10,
           gap: 1,
         }}
       >

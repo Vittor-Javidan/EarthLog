@@ -37,6 +37,26 @@ export const WidgetPreview = memo((props: {
         >
           {R['Widget preview']}
         </Text>
+        <WidgetInput.Boolean
+          inputData={{
+            id_input: '',
+            label: R['True/False'],
+            value: true,
+            type: 'boolean',
+            notApplicable: false,
+            lockedLabel: true,
+            lockedData: false,
+          }}
+          onSave={() => {}}
+          editWidget={false}
+          isFirstInput={true}
+          isLastInput={false}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          widgetRules={{}}
+          theme={theme}
+        />
         <WidgetInput.String
           inputData={{
             id_input: '',
@@ -58,20 +78,61 @@ export const WidgetPreview = memo((props: {
           widgetRules={{}}
           theme={theme}
         />
-        <WidgetInput.Boolean
+        <WidgetInput.Options
           inputData={{
             id_input: '',
-            label: R['True/False'],
-            value: true,
-            type: 'boolean',
-            notApplicable: false,
+            label: R['Options'],
+            value: [{
+              id: '1',
+              optionLabel: R['Option 1'],
+              checked: true,
+            }, {
+              id: '2',
+              optionLabel: R['Option 2'],
+              checked: true,
+            }],
+            type: 'options',
             lockedLabel: true,
             lockedData: false,
+            showAddOptionButton: true,
+            allowOptionDeletion: true,
+            allowOptionLabelChange: true,
           }}
-          onSave={() => {}}
           editWidget={false}
           isFirstInput={false}
           isLastInput={false}
+          onSave={() => {}}
+          onInputDelete={() => {}}
+          onInputMoveDow={() => {}}
+          onInputMoveUp={() => {}}
+          widgetRules={{}}
+          theme={theme}
+        />
+        <WidgetInput.Selection
+          inputData={{
+            id_input: '',
+            label: R['Selection'],
+            value: {
+              id_selected: '1',
+              options: [{
+                id: '1',
+                optionLabel: R['Option 1'],
+              }, {
+                id: '2',
+                optionLabel: R['Option 2'],
+              }],
+            },
+            type: 'selection',
+            lockedLabel: true,
+            lockedData: false,
+            showAddOptionButton: true,
+            allowOptionDeletion: true,
+            allowOptionLabelChange: true,
+          }}
+          editWidget={false}
+          isFirstInput={false}
+          isLastInput={false}
+          onSave={() => {}}
           onInputDelete={() => {}}
           onInputMoveDow={() => {}}
           onInputMoveUp={() => {}}

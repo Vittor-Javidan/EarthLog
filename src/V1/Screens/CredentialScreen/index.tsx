@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
+import { Dimensions } from 'react-native';
 
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import CredentialService from '@V1/Services/CredentialService';
@@ -44,6 +45,7 @@ export const CredentialSelectionScreen = memo(() => {
           contentContainerStyle={{
             paddingTop: 10,
             paddingHorizontal: 5,
+            paddingBottom: Dimensions.get('window').height - 410,
             gap: 10,
           }}
         >

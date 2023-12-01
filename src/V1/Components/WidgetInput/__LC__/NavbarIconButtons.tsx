@@ -4,6 +4,7 @@ import { Pressable } from 'react-native';
 import HapticsService from '@V1/Services/HapticsService';
 
 import { Icon, IconName } from '@V1/Icon/index';
+import { Animation } from '@V1/Animation/index';
 
 type InputTheme = {
   font: string
@@ -30,25 +31,30 @@ export const NavbarIconButton = memo((props: {
   }, []);
 
   return (
-    <Pressable
-      onPressIn={() => onPressIn()}
-      onPressOut={() => setPressed(false)}
-      onPress={() => onPress()}
-      style={{
-        flexDirection: 'row',
-        backgroundColor: (props.selected || pressed) ? props.theme.font : props.theme.background,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        paddingHorizontal: 2,
-        paddingVertical: 0,
-        borderRadius: 10,
-      }}
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
     >
-      <Icon
-        iconName={props.iconName}
-        color={(props.selected || pressed) ? props.theme.background : props.theme.font}
-      />
-    </Pressable>
+      <Pressable
+        onPressIn={() => onPressIn()}
+        onPressOut={() => setPressed(false)}
+        onPress={() => onPress()}
+        style={{
+          flexDirection: 'row',
+          backgroundColor: (props.selected || pressed) ? props.theme.font : props.theme.background,
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          paddingHorizontal: 2,
+          paddingVertical: 0,
+          borderRadius: 10,
+        }}
+      >
+        <Icon
+          iconName={props.iconName}
+          color={(props.selected || pressed) ? props.theme.background : props.theme.font}
+        />
+      </Pressable>
+    </Animation.FadeOut>
   );
 });

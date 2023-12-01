@@ -28,25 +28,26 @@ export const WidgetLabel = memo((props: {
       }}
     >
       <TextInput
-          editable={props.allowWidgetNameChange ?? false}
-          style={{
-            textAlign: 'center',
-            color: focused ? props.theme.background : props.theme.font,
-            backgroundColor: focused ? props.theme.font : props.theme.background,
-            fontSize: FontService.FONTS.h2,
-            borderRadius: 5,
-            paddingVertical: 0,
-            paddingHorizontal: 5,
-            minWidth: 50,
-          }}
-          placeholder="-------"
-          placeholderTextColor={focused ? props.theme.background : props.theme.font}
-          value={props.label}
-          onChangeText={(text) => props.onLabelChange(text)}
-          onBlur={() => setFocused(false)}
-          onFocus={() => onFocus()}
-          multiline
-        />
+        editable={props.allowWidgetNameChange ?? false}
+        style={{
+          textAlign: 'center',
+          color: focused ? props.theme.background : props.theme.font,
+          backgroundColor: focused ? props.theme.font : undefined,
+          fontSize: FontService.FONTS.h2,
+          fontWeight: '500',
+          borderRadius: 5,
+          paddingVertical: 0,
+          paddingHorizontal: 5,
+          minWidth: 50,
+        }}
+        placeholder="-------"
+        placeholderTextColor={focused ? props.theme.background : props.theme.font}
+        value={props.label}
+        onChangeText={(text) => props.onLabelChange(text)}
+        onBlur={() => setFocused(false)}
+        onFocus={() => onFocus()}
+        multiline
+      />
     </View>
   );
 });

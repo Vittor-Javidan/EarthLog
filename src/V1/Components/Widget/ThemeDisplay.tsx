@@ -10,6 +10,7 @@ import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
 
 import { Text } from '@V1/Text/index';
+import { Animation } from '@V1/Animation/index';
 
 export const ThemeDisplay = memo((props: {
   theme: WidgetTheme
@@ -20,7 +21,10 @@ export const ThemeDisplay = memo((props: {
   const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   return (
-    <View>
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
+    >
       <Text h3
         style={{
           color: props.theme.font,
@@ -44,7 +48,7 @@ export const ThemeDisplay = memo((props: {
           onPress={(themeName) => props.onThemeSelected(themeName)}
         />
       </View>
-    </View>
+    </Animation.FadeOut>
   );
 });
 

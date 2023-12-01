@@ -45,7 +45,6 @@ export const ProjectScreen = memo(() => {
         <Layout.ScrollView
           contentContainerStyle={{
             paddingTop: 55,
-            paddingBottom: 150,
             gap: 1,
           }}
         >

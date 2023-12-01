@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { Loading } from '@V1/Types/AppTypes';
 import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 
+import { Animation } from '@V1/Animation/index';
 import { WidgetInput } from '@V1/WidgetInput/index';
 
 export const DataDisplay = memo((props: {
@@ -49,9 +50,17 @@ export const DataDisplay = memo((props: {
     setLoading('Loaded');
   }, []);
 
-  return loading === 'Loaded' ? (<>
-    {AllInputs}
-  </>) : (
+  return loading === 'Loaded' ? (
+    <Animation.FadeOut
+      delay={30}
+      duration={100}
+      style={{
+        gap: 15,
+      }}
+    >
+      {AllInputs}
+    </Animation.FadeOut>
+  ) : (
     <View
       style={{
         paddingVertical: 20,

@@ -13,9 +13,10 @@ import ThemeService from '@V1/Services/ThemeService';
 import CacheService from '@V1/Services/CacheService';
 import MediaService from '@V1/Services/MediaService';
 
+import { Animation } from '@V1/Animation/index';
 import { Navbar } from './Navbar';
 import { WidgetLabel } from './WidgetLabel';
-import { DataDisplay } from './AllInputs';
+import { DataDisplay } from './DataDisplay';
 import { NewInputDisplay } from './NewInputDisplay';
 import { ThemeDisplay } from './ThemeDisplay';
 import { Footer } from './Footer';
@@ -180,7 +181,9 @@ export const Widget = memo((props: {
   }, [widgetData, props.widgetScope, saved]);
 
   return (
-    <View
+    <Animation.FadeOut
+      delay={30}
+      duration={200}
       style={{
         backgroundColor: widgetTheme.background,
         borderRadius: 10,
@@ -254,7 +257,7 @@ export const Widget = memo((props: {
           theme={widgetTheme}
         />
       </View>
-    </View>
+    </Animation.FadeOut>
   );
 });
 

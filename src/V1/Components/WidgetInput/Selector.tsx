@@ -24,6 +24,20 @@ export const InputSelector = memo((props: {
   onInputMoveDow: () => void
 }) => {
   switch (props.inputData.type) {
+    case 'boolean': return (
+      <BooleanInput
+        inputData={props.inputData}
+        editWidget={props.editWidget}
+        isFirstInput={props.isFirstInput}
+        isLastInput={props.isLastInput}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
+        widgetRules={props.widgetRules}
+        theme={props.widgetTheme}
+      />
+    );
     case 'string': return (
       <StringInput
         inputData={props.inputData}
@@ -37,20 +51,6 @@ export const InputSelector = memo((props: {
         widgetRules={props.widgetRules}
         theme={props.widgetTheme}
         multiline
-      />
-    );
-    case 'boolean': return (
-      <BooleanInput
-        inputData={props.inputData}
-        editWidget={props.editWidget}
-        isFirstInput={props.isFirstInput}
-        isLastInput={props.isLastInput}
-        onSave={props.onSave}
-        onInputDelete={props.onInputDelete}
-        onInputMoveUp={props.onInputMoveUp}
-        onInputMoveDow={props.onInputMoveDow}
-        widgetRules={props.widgetRules}
-        theme={props.widgetTheme}
       />
     );
     case 'options': return (
