@@ -233,10 +233,9 @@ export default class ProjectService {
 
     } catch (error) {
       DatabaseService.deleteProject({ id_project });
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -251,10 +250,9 @@ export default class ProjectService {
       await DatabaseService.updateProject({ projectSettings, sync });
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -268,10 +266,9 @@ export default class ProjectService {
       await DatabaseService.deleteProject({ id_project });
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -289,10 +286,9 @@ export default class ProjectService {
       o.onSuccess();
     } catch (error) {
       await DatabaseService.deleteSample({ id_project, sampleSettings, sync });
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -308,10 +304,9 @@ export default class ProjectService {
       await DatabaseService.updateSample({ id_project, sampleSettings, sync });
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -327,10 +322,9 @@ export default class ProjectService {
       await DatabaseService.deleteSample({ id_project, sampleSettings, sync });
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -355,10 +349,9 @@ export default class ProjectService {
       o.onSuccess();
     } catch (error) {
       await DatabaseService.deleteWidget(o);
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -382,10 +375,9 @@ export default class ProjectService {
       await DatabaseService.updateWidget(o);
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -409,10 +401,9 @@ export default class ProjectService {
       await DatabaseService.deleteWidget(o);
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 
@@ -426,10 +417,9 @@ export default class ProjectService {
       await DatabaseService.updateSyncFile({ syncData });
       o.onSuccess();
     } catch (error) {
-      o.onError(
-        `${error}` +
-        `\n${JSON.stringify(error)}`
-      );
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
     }
   }
 

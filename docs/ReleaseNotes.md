@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.44 Animations and styles
+# 1.9.45 Project Services: onError refactor
 
-- added fade out animations for many widgets related components
-- Removed explicit paddingBottom props from <Layout.ScrollView />
-- Gap between widgets inputs are now 15
+- Now it just catch the message, intead stringfy the full error.
