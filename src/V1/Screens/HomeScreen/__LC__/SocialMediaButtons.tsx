@@ -53,7 +53,9 @@ const YoutubeTutorialButton = memo(() => {
 
   const onPress = useCallback(() => {
     HapticsService.vibrate('success');
-    Linking.openURL('https://www.youtube.com/channel/UCBLi8DgOv6LT9xH5c5_xqWw');
+    ConfigService.config.language === 'pt-BR'
+    ? Linking.openURL('https://www.youtube.com/channel/UCSn8QU6ZzMm-Qd66fWsbr2w')
+    : Linking.openURL('https://www.youtube.com/channel/UCBLi8DgOv6LT9xH5c5_xqWw');
   }, []);
 
   return (
