@@ -1,6 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.46 ProjectDTO
+# 1.9.47 "Create a server" button
 
-- SyncData is now independent, removed from inside ProjectDTO
-- DownloadedProjectDTO is now just ProjectDTO
+- added a button to redirect to github page about creating a local server.
