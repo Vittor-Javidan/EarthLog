@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.45 Project Services: onError refactor
+# 1.9.46 ProjectDTO
 
-- Now it just catch the message, intead stringfy the full error.
+- SyncData is now independent, removed from inside ProjectDTO
+- DownloadedProjectDTO is now just ProjectDTO

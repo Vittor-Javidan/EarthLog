@@ -96,14 +96,16 @@ export default class DownloadService {
         const downloadedProjectDTO = await this.restAPI.getProject({ accessToken: this.accessToken, id_project, signal });
 
         o.feedback('Processing project:' + ` ${downloadedProjectDTO.projectSettings.name}`);
-        const projectDTO = DataProcessingService.processProject_AfterDownload({
-          downloadedProjectDTO,
+        const { projectDTO, syncData } = DataProcessingService.processProject_AfterDownload({
+          projectDTO: downloadedProjectDTO,
           feedback: (feedbackMessage) => o.feedback(feedbackMessage),
         });
-        const { projectSettings, syncData } = projectDTO;
+        const { projectSettings } = projectDTO;
 
         o.feedback('Saving project');
-        await ProjectService.createProject({ projectDTO,
+        await ProjectService.createProject({
+          projectDTO,
+          syncData,
           onSuccess: () => {
             CacheService.addToAllProjects({ projectSettings });
             CacheService.addToSyncData({ syncData });

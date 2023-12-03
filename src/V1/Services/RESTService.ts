@@ -1,5 +1,5 @@
 import { CredentialDTO } from '@V1/Types/AppTypes';
-import { DownloadedProjectDTO, ProjectDTO, ProjectSettings, SyncData } from '@V1/Types/ProjectTypes';
+import { ProjectDTO, ProjectSettings, SyncData } from '@V1/Types/ProjectTypes';
 
 export default class RESTService {
 
@@ -93,7 +93,7 @@ export default class RESTService {
     accessToken: string
     signal: AbortSignal
     id_project: string
-  }): Promise<DownloadedProjectDTO> {
+  }): Promise<ProjectDTO> {
 
     const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${o.id_project}`, {
       signal: o.signal,
@@ -130,6 +130,7 @@ export default class RESTService {
     accessToken: string
     signal: AbortSignal
     projectDTO: ProjectDTO
+    syncData: SyncData
   }): Promise<void> {
 
     const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT, {
@@ -141,6 +142,7 @@ export default class RESTService {
       },
       body: JSON.stringify({
         project: o.projectDTO,
+        syncData: o.syncData,
       }),
     });
 
@@ -158,6 +160,7 @@ export default class RESTService {
     accessToken: string
     signal: AbortSignal
     projectDTO: ProjectDTO
+    syncData: SyncData
   }): Promise<void> {
 
     const { id_project } = o.projectDTO.projectSettings;
@@ -170,6 +173,7 @@ export default class RESTService {
       },
       body: JSON.stringify({
         project: o.projectDTO,
+        syncData: o.syncData,
       }),
     });
 
@@ -230,19 +234,18 @@ export default class RESTService {
     syncData: SyncData
   }): Promise<void> {
 
-    const formData = new FormData();
-    formData.append('id_picture', o.id_picture);
-    formData.append('picture', o.base64Data);
-    formData.append('syncData', JSON.stringify(o.syncData));
-
     const response = await fetch(this.credential.rootURL + this.endpoints.IMAGE + `/${o.id_project}`, {
       signal: o.signal,
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${o.accessToken}`,
-        'Content-type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
-      body: formData,
+      body: JSON.stringify({
+        id_picture: o.id_picture,
+        picture: o.base64Data,
+        syncData: o.syncData,
+      }),
     });
 
     if (!response.ok) {

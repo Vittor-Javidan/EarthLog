@@ -8,6 +8,21 @@ export default class ProjectService {
   // DATA CREATION METHODS
   // ===============================================================================================
 
+  static getDefaultSyncData(o: {
+    id_project: string
+  }): SyncData {
+    const { id_project } = o;
+    return {
+      id_project: id_project,
+      project: 'new',
+      widgets_Project: {},
+      widgets_Template: {},
+      samples: {},
+      widgets_Samples: {},
+      pictures: {},
+    };
+  }
+
   static getDefaultProjectTemplate(o: {
     name?: string
   }): ProjectDTO {
@@ -37,15 +52,6 @@ export default class ProjectService {
       projectWidgets: [],
       template: [],
       samples: [],
-      syncData: {
-        id_project: id_project,
-        project: 'new',
-        widgets_Project: {},
-        widgets_Template: {},
-        samples: {},
-        widgets_Samples: {},
-        pictures: {},
-      },
     };
   }
 
@@ -160,19 +166,19 @@ export default class ProjectService {
 
   static async createProject(o: {
     projectDTO: ProjectDTO,
+    syncData: SyncData
     onSuccess: () => void,
     onError: (errorMessage: string) => void,
     feedback: (message: string) => void,
   }): Promise<void> {
 
-    const { projectDTO } = o;
+    const { projectDTO, syncData } = o;
 
     const {
       projectSettings,
       projectWidgets,
       template,
       samples,
-      syncData,
     } = projectDTO;
 
     const {
@@ -475,20 +481,12 @@ export default class ProjectService {
       });
     }
 
-    // GET SYNC DATA
-    o.feedback('Loading project sync data');
-    const syncData = await DatabaseService.readSyncFile({ id_project });
-
-    // SYNC PROJECT SETTINGS STATUS WITH PROJECT SYNC FILE
-    projectSettings.status = syncData.project;
-
     // ASSEMBLY PROJECT
     const projectDTO: ProjectDTO = {
       projectSettings: projectSettings,
       projectWidgets:  projectWidgets,
       template:        templateWidgets,
       samples:         samples,
-      syncData:        syncData,
     };
 
     return projectDTO;

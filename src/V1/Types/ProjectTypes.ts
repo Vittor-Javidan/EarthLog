@@ -19,20 +19,11 @@ export type SyncData = {
   pictures:         Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>
 }
 
-export type DownloadedProjectDTO = {
-  projectSettings: ProjectSettings
-  projectWidgets: WidgetData[]
-  template: WidgetData[]
-  samples: SampleDTO[]
-  syncData?: SyncData
-}
-
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
   template: WidgetData[]
   samples: SampleDTO[]
-  syncData: SyncData
 }
 
 export type SampleDTO = {

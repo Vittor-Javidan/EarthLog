@@ -1,6 +1,6 @@
 import uuid from 'react-native-uuid';
 
-import { DownloadedProjectDTO, InputData, ProjectDTO, SampleDTO, WidgetData } from '@V1/Types/ProjectTypes';
+import { InputData, ProjectDTO, SampleDTO, WidgetData } from '@V1/Types/ProjectTypes';
 
 export default class IDService {
 
@@ -8,7 +8,7 @@ export default class IDService {
     return uuid.v4() as string;
   }
 
-  static changeIDsByReference_Project(project: ProjectDTO | DownloadedProjectDTO): void {
+  static changeIDsByReference_Project(project: ProjectDTO): void {
     project.projectSettings.id_project = this.generateUuidV4();
     for (let i = 0; i < project.projectWidgets.length; i++) {
       this.changeIDsByReference_Widget(project.projectWidgets[i]);

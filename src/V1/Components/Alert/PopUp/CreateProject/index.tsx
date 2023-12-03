@@ -40,11 +40,13 @@ export const CreateProject = memo((props: {
       showFooterButtons: false,
     }));
 
-    const newProject = ProjectService.getDefaultProjectTemplate({ name: name });
-    const { projectSettings, syncData } = newProject;
+    const projectDTO = ProjectService.getDefaultProjectTemplate({ name: name });
+    const { projectSettings } = projectDTO;
+    const { id_project } = projectSettings;
+    const syncData = ProjectService.getDefaultSyncData({ id_project });
 
     await ProjectService.createProject({
-      projectDTO: newProject,
+      projectDTO, syncData,
       onSuccess: () => {
         setFeedbacks(prev => ([ ...prev, RS['Done!']]));
         CacheService.addToAllProjects({ projectSettings });

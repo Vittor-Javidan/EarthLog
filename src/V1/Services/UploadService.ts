@@ -56,7 +56,9 @@ export default class UploadService {
         id_project,
         feedback: (feedbackMessage) => o.feedback(feedbackMessage),
       });
-      const { projectSettings, syncData } = projectDTO;
+      const { projectSettings } = projectDTO;
+      await CacheService.loadAllSyncData();
+      const syncData = CacheService.getSyncDataFromCache({ id_project });
 
       o.feedback('Preparing project');
       DataProcessingService.processProject_BeforeUpload({
@@ -69,8 +71,8 @@ export default class UploadService {
       // UPLOAD PROJECT ==============
       o.feedback('Uploading project');
       projectSettings.status === 'new'
-      ? await this.restAPI.postProject({ signal, accessToken: this.accessToken, projectDTO })
-      : await this.restAPI.updateProject({ signal, accessToken: this.accessToken, projectDTO });
+      ? await this.restAPI.postProject({ signal, accessToken: this.accessToken, projectDTO, syncData })
+      : await this.restAPI.updateProject({ signal, accessToken: this.accessToken, projectDTO, syncData });
 
       o.feedback('Updating project locally');
       await ProjectService.updateProject({
@@ -86,7 +88,7 @@ export default class UploadService {
 
       o.feedback('Project sync...');
       DataProcessingService.processProject_AfterUpload({
-        projectDTO,
+        projectDTO, syncData,
         feedback: (feedbackMessage) => o.feedback(feedbackMessage),
       });
       await ProjectService.updateSyncData({

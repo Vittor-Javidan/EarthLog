@@ -1,16 +1,16 @@
 import { ConfigDTO, CredentialDTO } from '@V1/Types/AppTypes';
-import { DownloadedProjectDTO, InputData, ProjectDTO, Status, SyncData } from '@V1/Types/ProjectTypes';
+import { InputData, ProjectDTO, Status, SyncData } from '@V1/Types/ProjectTypes';
 import DateTimeService from './DateTimeService';
 import IDService from './IDService';
 
 export default class DataProcessingService {
 
   static processProject_AfterDownload(o: {
-    downloadedProjectDTO: DownloadedProjectDTO,
+    projectDTO: ProjectDTO,
     feedback: (message: string) => void
-  }): ProjectDTO {
+  }): { projectDTO: ProjectDTO, syncData: SyncData } {
 
-    const { downloadedProjectDTO: projectDTO } = o;
+    const { projectDTO } = o;
 
     // =============================================================================
     // TODO: add a job to verify project integrity here, and throws error if needed.
@@ -20,10 +20,7 @@ export default class DataProcessingService {
     this.job_InitialProjectStatus(o);
     const syncData = this.job_CreateSyncData(o);
 
-    return {
-      ...projectDTO,
-      syncData: syncData,
-    };
+    return { projectDTO, syncData };
   }
 
   static processProject_BeforeUpload(o: {
@@ -37,16 +34,17 @@ export default class DataProcessingService {
 
   static processProject_AfterUpload(o: {
     projectDTO: ProjectDTO
+    syncData: SyncData
     feedback: (message: string) => void
   }) {
     this.job_DefineProjectAsUploaded(o);
   }
 
   private static job_ChangeAllIDs(o: {
-    downloadedProjectDTO: DownloadedProjectDTO
+    projectDTO: ProjectDTO
     feedback: (message: string) => void
   }) {
-    const { downloadedProjectDTO: projectDTO } = o;
+    const { projectDTO } = o;
     const { rules } = projectDTO.projectSettings;
     if (rules.allowMultipleDownloads) {
       o.feedback('Changing all IDs');
@@ -57,10 +55,10 @@ export default class DataProcessingService {
   }
 
   private static job_InitialProjectStatus(o: {
-    downloadedProjectDTO: DownloadedProjectDTO
+    projectDTO: ProjectDTO
     feedback: (message: string) => void
   }) {
-    const { downloadedProjectDTO: projectDTO } = o;
+    const { projectDTO } = o;
     if (projectDTO.projectSettings.status !== 'uploaded') {
       o.feedback('Defining project sync status');
       projectDTO.projectSettings.status = 'new';
@@ -68,11 +66,11 @@ export default class DataProcessingService {
   }
 
   private static job_CreateSyncData(o: {
-    downloadedProjectDTO: DownloadedProjectDTO
+    projectDTO: ProjectDTO
     feedback: (message: string) => void
   }): SyncData {
 
-    const { downloadedProjectDTO: projectDTO } = o;
+    const { projectDTO } = o;
 
     o.feedback('Creating sync data');
     const projectStatus = projectDTO.projectSettings.status;
@@ -143,25 +141,25 @@ export default class DataProcessingService {
   }
 
   private static job_DefineProjectAsUploaded(o:{
-    projectDTO: ProjectDTO
+    syncData: SyncData
     feedback: (message: string) => void
   }) {
 
-    const { projectDTO } = o;
-    projectDTO.syncData.project = 'uploaded';
+    const { syncData } = o;
+    syncData.project = 'uploaded';
 
-    for (const id_widget in projectDTO.syncData.widgets_Project) {
-      defineStatus(id_widget, projectDTO.syncData.widgets_Project);
+    for (const id_widget in syncData.widgets_Project) {
+      defineStatus(id_widget, syncData.widgets_Project);
     }
-    for (const id_widget in projectDTO.syncData.widgets_Template) {
-      defineStatus(id_widget, projectDTO.syncData.widgets_Template);
+    for (const id_widget in syncData.widgets_Template) {
+      defineStatus(id_widget, syncData.widgets_Template);
     }
-    for (const id_sample in projectDTO.syncData.samples) {
-      defineStatus(id_sample, projectDTO.syncData.samples);
+    for (const id_sample in syncData.samples) {
+      defineStatus(id_sample, syncData.samples);
     }
-    for (const id_sample in projectDTO.syncData.widgets_Samples) {
-      for (const id_widget in projectDTO.syncData.widgets_Samples[id_sample]) {
-        defineStatus(id_widget, projectDTO.syncData.widgets_Samples[id_sample]);
+    for (const id_sample in syncData.widgets_Samples) {
+      for (const id_widget in syncData.widgets_Samples[id_sample]) {
+        defineStatus(id_widget, syncData.widgets_Samples[id_sample]);
       }
     }
 
