@@ -12,10 +12,6 @@ export default class DataProcessingService {
 
     const { projectDTO } = o;
 
-    // =============================================================================
-    // TODO: add a job to verify project integrity here, and throws error if needed.
-    // =============================================================================
-
     this.job_ChangeAllIDs(o);
     this.job_InitialProjectStatus(o);
     const syncData = this.job_CreateSyncData(o);

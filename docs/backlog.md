@@ -1,2 +1,0 @@
-- Add a projectDTO integrity check for downloaded projects, to alert when a project do not respect the DTOs structures.
-- Move the FOLDERS APIs to their own file, and add a folder inside services to server like a package for FileSystem, FOLDERs API and Services that uses this APIs.
