@@ -1,5 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.48 Youtube button
+# 1.10.0 Subscription configuration
 
-- Added Brazil youtube channel redirect if language is set to pt-br.
+- Added react-native-IAP library
+- expo-network library installed
+- Subscription Manager created

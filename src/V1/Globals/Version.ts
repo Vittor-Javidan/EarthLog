@@ -9,4 +9,4 @@
 
 const VERSION = 1;
 export const LTS_VERSION = `V${VERSION}`;
-export const APP_VERSION = `${VERSION}.9.48`;
+export const APP_VERSION = `${VERSION}.10.0`;

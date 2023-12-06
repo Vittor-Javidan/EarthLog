@@ -2,7 +2,7 @@
   "expo": {
     "name": "EarthLog",
     "slug": "earth-log",
-    "version": "1.0.0",
+    "version": "1.9.48",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
-      "versionCode": 1,
+      "versionCode": 2,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
