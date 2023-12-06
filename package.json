@@ -3,8 +3,8 @@
   "version": "1.9.48",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest"
   },
@@ -37,7 +37,9 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "13.9.0",
     "react-native-uuid": "^2.0.1",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "expo-splash-screen": "~0.20.5",
+    "expo-dev-client": "~2.4.12"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

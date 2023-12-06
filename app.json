@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Earth Log",
+    "name": "EarthLog",
     "slug": "earth-log",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lonewispapps.earthlog"
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
