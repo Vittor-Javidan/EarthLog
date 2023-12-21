@@ -75,6 +75,17 @@ const Drawer = memo(() => {
 
   return (<>
     <Button.TextWithIcon
+      title={R['Premium']}
+      iconName="wallet-outline"
+      onPress={() => navigate('IAP SCOPE')}
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
       title={R['Credentials']}
       iconName="card-outline"
       onPress={() => navigate('CREDENTIAL SCOPE')}
@@ -87,7 +98,7 @@ const Drawer = memo(() => {
     />
     <Button.TextWithIcon
       title={R['Settings']}
-      iconName="settings"
+      iconName="settings-outline"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,

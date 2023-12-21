@@ -1,11 +1,13 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
 import HapticsService from '@V1/Services/HapticsService';
+import ConfigService from '@V1/Services/ConfigService';
 import FontService from '@V1/Services/FontService';
 
 import { Button } from '@V1/Button/index';
+import { translations } from '@V1/Translations/index';
 
 export const OptionButton = memo((props: {
   label: string
@@ -81,12 +83,16 @@ export const OptionLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.options[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
+
+  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -105,9 +111,10 @@ export const OptionLabel = memo((props: {
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,
+          fontStyle: isLabelEmpty ? 'italic' : undefined,
         }}
-        placeholder="-------"
-        placeholderTextColor={focused ? props.theme.background : props.theme.font}
+        placeholder={R['Option name']}
+        placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}
         onBlur={() => setFocused(false)}

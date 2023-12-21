@@ -14,6 +14,7 @@ export default class ThemeService {
   static appThemes: Record<ThemeNames_APP, AppTheme> = {
     'Light': appThemes.LIGHT,
     'Dark':  appThemes.DARK,
+    'Dark High Constrast': appThemes.DARK_HIGH_CONTRAST,
   };
 
   static widgetThemes: Record<ThemeNames_Widgets, WidgetTheme> = {

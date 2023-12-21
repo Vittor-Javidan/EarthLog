@@ -5,6 +5,7 @@ import { LTS_VERSION } from './Version';
 class AppRoutes {
 
   static RESTART_APP       = `/${LTS_VERSION}`;
+  static IAP_SCOPE         = `/${LTS_VERSION}/IAPScope`;
   static TEST_SCOPE        = `/${LTS_VERSION}/TestScope`;
   static HOME_SCOPE        = `/${LTS_VERSION}/HomeScope`;
   static CREDENTIALS_SCOPE = `/${LTS_VERSION}/CredentialScope`;
@@ -21,6 +22,7 @@ class AppRoutes {
 }
 
 type ScreenName = (
+  'IAP SCOPE'                                         |
   'TEST SCOPE'                                        |
   'RESTART APP'                                       |
   'SETTINGS SCOPE'                                    |
@@ -45,6 +47,7 @@ export function navigate(
 
   switch (screen) {
 
+    case 'IAP SCOPE':                navController.push(AppRoutes.IAP_SCOPE);                   break;
     case 'TEST SCOPE':               navController.push(AppRoutes.TEST_SCOPE);                  break;
     case 'RESTART APP':              navController.push(AppRoutes.RESTART_APP);                 break;
     case 'SETTINGS SCOPE':           navController.push(AppRoutes.SETTINGS_SCOPE);              break;

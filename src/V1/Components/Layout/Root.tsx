@@ -3,6 +3,8 @@ import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'r
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 
+import SubscriptionManager from '@SubscriptionManager';
+
 import { APP_VERSION } from '@V1/Globals/Version';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
@@ -227,10 +229,22 @@ const Drawer = memo((props: {
           onPress={() => props.onPress_Background()}
           style={{
             flex: 1,
-            justifyContent: 'flex-end',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
             backgroundColor: theme.background,
           }}
         >
+          <Text
+            style={{
+              color: theme.font,
+              textAlign: 'left',
+              fontSize: 16,
+              padding: 8,
+            }}
+          >
+            {`${SubscriptionManager.getPlan()} plan`}
+          </Text>
           <Text
             style={{
               color: theme.font,

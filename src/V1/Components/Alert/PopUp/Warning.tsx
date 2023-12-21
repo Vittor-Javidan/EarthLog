@@ -37,7 +37,6 @@ export const Warning = memo((props: {
       >
         <Text h3
           style={{
-            textAlign: 'center',
             paddingHorizontal: 10,
             color: theme.font,
           }}
@@ -52,7 +51,7 @@ export const Warning = memo((props: {
         compensateMargin={30}
         theme={{
           font: theme.confirm,
-          background: theme.background_active,
+          background: theme.background_Button,
           confirm: theme.confirm,
           wrong: theme.wrong,
         }}

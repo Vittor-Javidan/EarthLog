@@ -107,7 +107,7 @@ export const BooleanInput = memo((props: {
           justifyContent: 'space-between',
           alignItems: 'center',
           marginTop: props.editWidget || inputData.lockedData ? 0 : -5,
-          paddingVertical: Platform.OS === 'ios' ? 10 : 0,
+          paddingVertical: 10,
         }}
       >
         <Text h3

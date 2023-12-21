@@ -5,7 +5,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Option name': string
 }>
 
-export const R_Input_Options: TranslationDTO = {
+export const R_Input_Selection: TranslationDTO = {
   'en-US': {
     'Confirm to delete this option': 'Confirm to delete this option',
     'Option name': 'Option name',

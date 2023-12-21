@@ -1,7 +1,7 @@
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
 
 export const DARK: WidgetTheme = {
-  font_placeholder: '#999',
+  font_placeholder: '#555',
   font:             '#EEE',
   background:       '#444',
   wrong:            '#F55',

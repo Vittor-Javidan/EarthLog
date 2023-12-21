@@ -1,8 +1,10 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
+import ConfigService from '@V1/Services/ConfigService';
 import FontService from '@V1/Services/FontService';
 
 export const WidgetLabel = memo((props: {
@@ -12,12 +14,16 @@ export const WidgetLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
+
+  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -39,9 +45,10 @@ export const WidgetLabel = memo((props: {
           paddingVertical: 0,
           paddingHorizontal: 5,
           minWidth: 50,
+          fontStyle: isLabelEmpty ? 'italic' : undefined,
         }}
-        placeholder="-------"
-        placeholderTextColor={focused ? props.theme.background : props.theme.font}
+        placeholder={R['Widget name']}
+        placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}
         onBlur={() => setFocused(false)}

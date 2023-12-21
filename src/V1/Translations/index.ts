@@ -38,6 +38,9 @@ import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
 import { R_Input_Picture } from './widgetInput/PictureInput';
 import { R_Screen_VibrationOptions } from './Screen/VibrationOptionsScreen';
 import { R_Scope_VibrationOptions } from './scope/VibrationsOptionsScope';
+import { R_Scope_IAP } from './scope/IAPScope';
+import { R_Input_Root } from './widgetInput/Root';
+import { R_Input_Selection } from './widgetInput/SelectionInput';
 
 export const translations = {
   FileExportModules: {
@@ -46,6 +49,7 @@ export const translations = {
     docx:                     R_FileExportModules_DOCX,
   },
   scope: {
+    iap:                      R_Scope_IAP,
     home:                     R_Scope_Home,
     languageSelection:        R_Scope_Language,
     project:                  R_Scope_Project,
@@ -91,8 +95,10 @@ export const translations = {
     boolean:                  R_Input_Boolean,
     string:                   R_Input_String,
     options:                  R_Input_Options,
+    selection:                R_Input_Selection,
     picture:                  R_Input_Picture,
     gps:                      R_Input_GPS,
+    Root:                     R_Input_Root,
   },
   themes: {
     app:                      R_Themes_App,
