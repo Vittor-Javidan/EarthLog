@@ -41,6 +41,7 @@ import { R_Scope_VibrationOptions } from './scope/VibrationsOptionsScope';
 import { R_Scope_IAP } from './scope/IAPScope';
 import { R_Input_Root } from './widgetInput/Root';
 import { R_Input_Selection } from './widgetInput/SelectionInput';
+import { R_Screen_IAP } from './Screen/IAPScreen';
 
 export const translations = {
   FileExportModules: {
@@ -72,6 +73,7 @@ export const translations = {
     timeFormat:               R_Screen_TimeFormat,
     exportProject:            R_Screen_ExportProject,
     vibrationOptions:         R_Screen_VibrationOptions,
+    iap:                      R_Screen_IAP,
   },
   component: {
     alert: {

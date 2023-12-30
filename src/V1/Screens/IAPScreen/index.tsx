@@ -9,15 +9,17 @@ import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
 
 import { Text } from '@V1/Text/index';
+import { Button } from '@V1/Button/index';
 import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';
-import { Button } from '@V1/Button/index';
 import { TC } from './__TC__';
+import { translations } from '@V1/Translations/index';
 
 export const IAPScreen = withIAPContext(memo(() => {
 
   const config                = useMemo(() => ConfigService.config, []);
   const theme                 = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R                     = useMemo(() => translations.screen.iap[config.language], []);
   const [loading, setLoading] = useState<boolean>(false);
 
   const {
@@ -40,6 +42,7 @@ export const IAPScreen = withIAPContext(memo(() => {
   useEffect(() => {
     if (currentPurchaseError?.message) {
       alert(JSON.stringify(currentPurchaseError));
+      setLoading(false);
     }
   }, [currentPurchaseError]);
 
@@ -51,10 +54,10 @@ export const IAPScreen = withIAPContext(memo(() => {
 
   useEffect(() => {
     Alert.alert(
-      'Subscriptions Under Testing',
-      'Subscriptions are currently being tested and not fully implemented. All app features are currently fully unlocked. Purchasing a subscription at this time will not change app usage and will not persist once testing is complete. Please check back later once subscription integration is complete.',
+      R['Subscriptions Under Testing'],
+      R['Subscriptions are currently being tested and not fully implemented. All app features are currently fully unlocked. Purchasing a subscription at this time will not change app usage and will not persist once testing is complete. Please check back later once subscription integration is complete.'],
       [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => {}},
       ]
     );
   }, []);
@@ -77,33 +80,56 @@ export const IAPScreen = withIAPContext(memo(() => {
               padding: 10,
             }}
           >
-            <View>
-              <Text h3>
-                {'Subscribing will allow you to:'}
+            <View
+              style={{
+                padding: 10,
+                gap: 20,
+                borderRadius: 10,
+                backgroundColor: theme.background,
+              }}
+            >
+              <Text h2
+                style={{
+                  color: theme.font,
+                }}
+              >
+                {R['Subscribing will allow you to:']}
               </Text>
-              <View>
-                <Text h3>
-                  {'- Download projects with more than 5 samples'}
+              <View
+                style={{
+                  paddingHorizontal: 10,
+                }}
+              >
+                <Text h3
+                  style={{
+                    color: theme.font,
+                  }}
+                >
+                  {R['- Download projects with more than 5 samples']}
                 </Text>
-                <Text h3>
-                  {'- Create unlimited samples within a single project'}
+                <Text h3
+                  style={{
+                    color: theme.font,
+                  }}
+                >
+                  {R['- Create unlimited samples within a single project']}
                 </Text>
               </View>
+              <Button.TextWithIcon
+                title="Buy subscription"
+                iconName="wallet"
+                onPress={async () => await buySubscription()}
+                theme={{
+                  font_active: theme.font_active,
+                  background: theme.background_Button,
+                  background_active: theme.background_active,
+                  font: theme.font_Button,
+                }}
+                style={{
+                  borderRadius: 10,
+                }}
+              />
             </View>
-            <Button.TextWithIcon
-              title="Buy subscription"
-              iconName="wallet"
-              onPress={async () => await buySubscription()}
-              theme={{
-                font_active: theme.font_active,
-                background: theme.background_Button,
-                background_active: theme.background_active,
-                font: theme.font_Button,
-              }}
-              style={{
-                borderRadius: 10,
-              }}
-            />
           </View>
         )}
       </Animation.SlideFromLeft>
