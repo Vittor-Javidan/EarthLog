@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { ThemeNamesArray_APP, ThemeNames_Widgets } from '@V1/Types/AppTypes';
+import { ThemeNamesArray_Widgets, ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
@@ -23,7 +23,7 @@ export const ThemeButtons = memo((props: {
     }
   }, [props.onWidgetThemeSelect, selectedTheme]);
 
-  const AllButtons = ThemeNamesArray_APP.map(theme => (
+  const AllButtons = ThemeNamesArray_Widgets.map(theme => (
     <ThemButton
       key={theme}
       isSelected={selectedTheme === theme}
