@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.3 Subscription ajustments
+# 1.10.4 Splash Screen and Icons
 
-- Added timeout to internet connection
+- Development Build updated.
