@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.5 IAP Screen translations and Fix
+# 1.10.6 Theme Preview Fix
 
-- Fixed font color not being setted.
-- Now the subscription is a card.
-- Added missing translations to the screen.
+- Changed the gap between inputs from 10 to 15.

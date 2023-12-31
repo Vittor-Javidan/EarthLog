@@ -1,2 +1,1 @@
 - add space between inputs on widget example on theme selection.
-- Add font style to text on subscription screen

@@ -37,128 +37,132 @@ export const WidgetPreview = memo((props: {
         >
           {R['Widget preview']}
         </Text>
-        <WidgetInput.Boolean
-          inputData={{
-            id_input: '',
-            label: R['True/False'],
-            value: true,
-            type: 'boolean',
-            notApplicable: false,
-            lockedLabel: true,
-            lockedData: false,
-          }}
-          onSave={() => {}}
-          editWidget={false}
-          isFirstInput={true}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={theme}
-        />
-        <WidgetInput.String
-          inputData={{
-            id_input: '',
-            label: R['Text'],
-            value: '',
-            type: 'string',
-            placeholder: R['Write Something here'],
-            lockedLabel: true,
-            lockedData: false,
-          }}
-          multiline={false}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onSave={() => {}}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={theme}
-        />
-        <WidgetInput.Options
-          inputData={{
-            id_input: '',
-            label: R['Options'],
-            value: [{
-              id: '1',
-              optionLabel: R['Option 1'],
-              checked: true,
-            }, {
-              id: '2',
-              optionLabel: R['Option 2'],
-              checked: true,
-            }],
-            type: 'options',
-            lockedLabel: true,
-            lockedData: false,
-            showAddOptionButton: true,
-            allowOptionDeletion: true,
-            allowOptionLabelChange: true,
-          }}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onSave={() => {}}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={theme}
-        />
-        <WidgetInput.Selection
-          inputData={{
-            id_input: '',
-            label: R['Selection'],
-            value: {
-              id_selected: '1',
-              options: [{
+        <View
+          style={{ gap: 15 }}
+        >
+          <WidgetInput.Boolean
+            inputData={{
+              id_input: '',
+              label: R['True/False'],
+              value: true,
+              type: 'boolean',
+              notApplicable: false,
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={() => {}}
+            editWidget={false}
+            isFirstInput={true}
+            isLastInput={false}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            widgetRules={{}}
+            theme={theme}
+          />
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: R['Text'],
+              value: '',
+              type: 'string',
+              placeholder: R['Write Something here'],
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            multiline={false}
+            editWidget={false}
+            isFirstInput={false}
+            isLastInput={false}
+            onSave={() => {}}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            widgetRules={{}}
+            theme={theme}
+          />
+          <WidgetInput.Options
+            inputData={{
+              id_input: '',
+              label: R['Options'],
+              value: [{
                 id: '1',
                 optionLabel: R['Option 1'],
+                checked: true,
               }, {
                 id: '2',
                 optionLabel: R['Option 2'],
+                checked: true,
               }],
-            },
-            type: 'selection',
-            lockedLabel: true,
-            lockedData: false,
-            showAddOptionButton: true,
-            allowOptionDeletion: true,
-            allowOptionLabelChange: true,
-          }}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onSave={() => {}}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={theme}
-        />
-        <WidgetInput.GPS
-          inputData={{
-            id_input: '',
-            label: R['GPS'],
-            value: {},
-            type: 'gps',
-            lockedLabel: true,
-            lockedData: false,
-          }}
-          onSave={() => {}}
-          referenceGPSData={undefined}
-          editWidget={false}
-          isFirstInput={false}
-          isLastInput={false}
-          onInputDelete={() => {}}
-          onInputMoveDow={() => {}}
-          onInputMoveUp={() => {}}
-          widgetRules={{}}
-          theme={theme}
-        />
+              type: 'options',
+              lockedLabel: true,
+              lockedData: false,
+              showAddOptionButton: true,
+              allowOptionDeletion: true,
+              allowOptionLabelChange: true,
+            }}
+            editWidget={false}
+            isFirstInput={false}
+            isLastInput={false}
+            onSave={() => {}}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            widgetRules={{}}
+            theme={theme}
+          />
+          <WidgetInput.Selection
+            inputData={{
+              id_input: '',
+              label: R['Selection'],
+              value: {
+                id_selected: '1',
+                options: [{
+                  id: '1',
+                  optionLabel: R['Option 1'],
+                }, {
+                  id: '2',
+                  optionLabel: R['Option 2'],
+                }],
+              },
+              type: 'selection',
+              lockedLabel: true,
+              lockedData: false,
+              showAddOptionButton: true,
+              allowOptionDeletion: true,
+              allowOptionLabelChange: true,
+            }}
+            editWidget={false}
+            isFirstInput={false}
+            isLastInput={false}
+            onSave={() => {}}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            widgetRules={{}}
+            theme={theme}
+          />
+          <WidgetInput.GPS
+            inputData={{
+              id_input: '',
+              label: R['GPS'],
+              value: {},
+              type: 'gps',
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={() => {}}
+            referenceGPSData={undefined}
+            editWidget={false}
+            isFirstInput={false}
+            isLastInput={false}
+            onInputDelete={() => {}}
+            onInputMoveDow={() => {}}
+            onInputMoveUp={() => {}}
+            widgetRules={{}}
+            theme={theme}
+          />
+        </View>
       </View>
     </Layout.PseudoWidget>
   );
