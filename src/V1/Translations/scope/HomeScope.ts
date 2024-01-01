@@ -6,6 +6,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Settings': string
   'Credentials': string
   'Premium': string
+  'Privacy Policy': string
 }>
 
 export const R_Scope_Home: TranslationDTO = {
@@ -15,6 +16,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Settings': 'Settings',
     'Credentials': 'Credentials',
     'Premium': 'Premium',
+    'Privacy Policy': 'Privacy Policy',
   },
   'pt-BR': {
     'Home screen': 'Tela inicial',
@@ -22,5 +24,6 @@ export const R_Scope_Home: TranslationDTO = {
     'Settings': 'Configurações',
     'Credentials': 'Credenciais',
     'Premium': 'Premium',
+    'Privacy Policy': 'Política de Privacidade',
   },
 };
