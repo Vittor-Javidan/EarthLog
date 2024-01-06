@@ -14,7 +14,7 @@ export const TimeFormatsArray = [
 export type DateFormat = (typeof DateFormatsArray)[number];
 export type TimeFormat = (typeof TimeFormatsArray)[number];
 
-export const ThemeNamesArray_APP     = ['Light', 'Dark'] as const;
+export const ThemeNamesArray_APP     = ['Light', 'Dark', 'Dark High Constrast'] as const;
 export const ThemeNamesArray_Widgets = ['Light', 'Dark'] as const;
 export type ThemeNames_APP     = (typeof ThemeNamesArray_APP)[number];
 export type ThemeNames_Widgets = (typeof ThemeNamesArray_Widgets)[number];

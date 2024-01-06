@@ -1,18 +1,13 @@
-import React, { ReactNode, useState, memo, useCallback } from 'react';
+import React, { ReactNode, useState, memo, useCallback, useMemo } from 'react';
 import { StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
-import { WidgetRules } from '@V1/Types/ProjectTypes';
+import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import HapticsService from '@V1/Services/HapticsService';
 
 import { Animation } from '@V1/Animation/index';
 import { NavbarIconButton } from './NavbarIconButtons';
-
-type InputTheme = {
-  font: string
-  background: string
-  confirm: string
-  wrong: string
-}
+import ConfigService from '@V1/Services/ConfigService';
+import { translations } from '@V1/Translations/index';
 
 export const InputRoot = memo((props: {
   label: string
@@ -21,7 +16,7 @@ export const InputRoot = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   widgetRules: WidgetRules
-  theme: InputTheme
+  theme: WidgetTheme
   iconButtons: JSX.Element
   children: ReactNode
   style?: StyleProp<ViewStyle>
@@ -89,10 +84,12 @@ export const InputRoot = memo((props: {
 const InputLabel = memo((props: {
   label: string
   editable: boolean
-  theme: InputTheme
+  theme: WidgetTheme
   onLabelChange: (label: string) => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.Root[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onLabelChange = useCallback((newLabel: string) => {
@@ -105,6 +102,8 @@ const InputLabel = memo((props: {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
+
+  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -125,10 +124,11 @@ const InputLabel = memo((props: {
           paddingHorizontal: 5,
           textAlign: 'center',
           height: 25,
+          fontStyle: isLabelEmpty ? 'italic' : undefined,
         }}
         value={props.label}
-        placeholder="-------"
-        placeholderTextColor={focused ? props.theme.background : props.theme.font}
+        placeholder={isLabelEmpty ? R['Input name'] : ''}
+        placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
         onChangeText={(text) => onLabelChange(text)}
         onSubmitEditing={() => setFocused(false)}
         onBlur={() => setFocused(false)}
@@ -143,7 +143,7 @@ const IconButton = memo((props: {
   isFirstInput: boolean
   isLastInput: boolean
   widgetRules: WidgetRules
-  theme: InputTheme
+  theme: WidgetTheme
   onPress_Trash: () => void
   onPress_ChevronUp: () => void
   onPress_ChevronDown: () => void

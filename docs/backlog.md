@@ -1,0 +1,1 @@
+- add space between inputs on widget example on theme selection.

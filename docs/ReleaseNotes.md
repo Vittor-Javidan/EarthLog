@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.9.48 Youtube button
+# 1.10.12 Animations updated
 
-- Added Brazil youtube channel redirect if language is set to pt-br.
+- Now animations use useAnimatedStyle methods to animate.

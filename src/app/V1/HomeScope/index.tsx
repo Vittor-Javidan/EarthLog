@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, Linking } from 'react-native';
 
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
@@ -75,6 +75,17 @@ const Drawer = memo(() => {
 
   return (<>
     <Button.TextWithIcon
+      title={R['Premium']}
+      iconName="wallet-outline"
+      onPress={() => navigate('IAP SCOPE')}
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
       title={R['Credentials']}
       iconName="card-outline"
       onPress={() => navigate('CREDENTIAL SCOPE')}
@@ -87,7 +98,7 @@ const Drawer = memo(() => {
     />
     <Button.TextWithIcon
       title={R['Settings']}
-      iconName="settings"
+      iconName="settings-outline"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,
@@ -95,6 +106,17 @@ const Drawer = memo(() => {
         background_active: theme.background_active,
       }}
       onPress={() => navigate('SETTINGS SCOPE')}
+    />
+    <Button.TextWithIcon
+      title={R['Privacy Policy']}
+      iconName="shield-outline"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/PRIVACY_POLICIES/blob/main/EARTH_LOG.md')}
     />
   </>);
 });

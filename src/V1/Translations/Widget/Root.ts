@@ -9,6 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Saving...': string
   'Select a theme:': string
   'Add a new field:': string
+  'Widget name': string
 } & Record<InputTypes, string>>
 
 export const R_Widget_Root: TranslationDTO = {
@@ -20,6 +21,7 @@ export const R_Widget_Root: TranslationDTO = {
     'Saving...': 'Saving...',
     'Select a theme:': 'Select a theme:',
     'Add a new field:': 'Add a new field:',
+    'Widget name': 'Widget name',
 
     // INPUT TYPES
     'boolean': 'True/False',
@@ -37,6 +39,7 @@ export const R_Widget_Root: TranslationDTO = {
     'Saving...': 'Salvando...',
     'Select a theme:': 'Selecione um tema:',
     'Add a new field:': 'Adicione um novo campo',
+    'Widget name': 'Nome do widget',
 
     // INPUT TYPES
     'boolean': 'Verdadeiro/Falso',

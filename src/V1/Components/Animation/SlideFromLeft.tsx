@@ -1,24 +1,24 @@
-import React, { ReactNode, memo, useEffect, useMemo } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
 export const SlideFromLeft = memo((props: {
-  delay: number
-  duration: number
-  children: ReactNode
+  delay: number;
+  duration: number;
+  children: ReactNode;
 }) => {
 
-  const { width } = useMemo(() => Dimensions.get('window'), []);
+  const { width } = Dimensions.get('window');
   const leftOffset = useSharedValue(0);
 
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withDelay(props.delay, withTiming(width, {
-        duration: props.duration,
-      }));
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, []);
+  leftOffset.value = withDelay(
+    props.delay,
+    withTiming(width, { duration: props.duration })
+  );
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: leftOffset.value }],
+  }));
 
   return (
     <Animated.View
@@ -27,9 +27,7 @@ export const SlideFromLeft = memo((props: {
           flex: 1,
           left: -width,
         },
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
+        animatedStyle,
       ]}
     >
       {props.children}

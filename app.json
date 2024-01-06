@@ -1,29 +1,30 @@
 {
   "expo": {
-    "name": "Earth Log",
+    "name": "EarthLog",
     "slug": "earth-log",
-    "version": "1.0.0",
+    "version": "1.10.12",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#00122a"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lonewispapps.earthlog"
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
-      "versionCode": 1,
+      "versionCode": 9,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#00122a"
       }
     },
     "scheme": "myapp",
