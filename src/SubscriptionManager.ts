@@ -144,8 +144,6 @@ export default class SubscriptionManager {
 
       const purchases = await getAvailablePurchases();
 
-      console.log(purchases);
-
       for (let i = 0; i < purchases.length; i++) {
         if (purchases[i].productId === this.PREMIUM_PLAN_SKU) {
           this.userPlan = 'Premium';
@@ -158,7 +156,6 @@ export default class SubscriptionManager {
         await this.removeOfflineAccess();
       }
 
-      console.log(this.userPlan);
       o.onFinish();
 
     } catch (error) {
