@@ -1,3 +1,6 @@
+import SubscriptionManager from '@SubscriptionManager';
+
+import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
 import DataProcessingService from './DataProcessingService';
@@ -45,7 +48,7 @@ export default class DownloadService {
       });
 
       if (this.accessToken === null) {
-        throw Error('No access token was provided by the server');
+        throw Error(ErrorCodes.SERVER_DID_NOT_RETURN_ACCESS_TOKEN);
       }
 
       o.feedback('fetching available projects');
@@ -56,7 +59,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': o.onError(ErrorCodes.NETWORK_NOT_AVAILABLE); break;
           default: o.onError(error.message);
         }
         return;
@@ -85,7 +88,7 @@ export default class DownloadService {
       });
 
       if (this.accessToken === null) {
-        throw Error('No access token was provided by the server');
+        throw Error(ErrorCodes.SERVER_DID_NOT_RETURN_ACCESS_TOKEN);
       }
 
       for (let i = 0; i < projectIDs.length; i++) {
@@ -94,6 +97,10 @@ export default class DownloadService {
 
         o.feedback('Downloading project. ID:' + ` ${id_project}`);
         const downloadedProjectDTO = await this.restAPI.getProject({ accessToken: this.accessToken, id_project, signal });
+
+        if (SubscriptionManager.freeUserLimitCheck(downloadedProjectDTO.samples.length > 5)) {
+          throw Error(ErrorCodes.FREE_USER_DOWNLOAD_RESTRICTION);
+        }
 
         o.feedback('Processing project:' + ` ${downloadedProjectDTO.projectSettings.name}`);
         const { projectDTO, syncData } = DataProcessingService.processProject_AfterDownload({
@@ -122,7 +129,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': o.onError(ErrorCodes.NETWORK_NOT_AVAILABLE); break;
           default: o.onError(error.message);
         }
         return;
@@ -154,7 +161,7 @@ export default class DownloadService {
       });
 
       if (this.accessToken === null) {
-        throw Error('No access token was provided by the server');
+        throw Error(ErrorCodes.SERVER_DID_NOT_RETURN_ACCESS_TOKEN);
       }
 
       for (let i = 0; i < picturesIDs.length; i++) {
@@ -185,7 +192,7 @@ export default class DownloadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': o.onError(ErrorCodes.NETWORK_NOT_AVAILABLE); break;
           default: o.onError(error.message);
         }
         return;

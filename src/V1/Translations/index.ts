@@ -42,8 +42,13 @@ import { R_Scope_IAP } from './scope/IAPScope';
 import { R_Input_Root } from './widgetInput/Root';
 import { R_Input_Selection } from './widgetInput/SelectionInput';
 import { R_Screen_IAP } from './Screen/IAPScreen';
+import { R_ErrorCodes } from './globals/ErrorCodes';
+import { R_Alert_BuySubscription } from './component/Alert/BuySubscription';
 
 export const translations = {
+  global: {
+    errors:                   R_ErrorCodes,
+  },
   FileExportModules: {
     share:                    R_FileExportModules_Shared,
     csv:                      R_FileExportModules_CSV,
@@ -84,6 +89,7 @@ export const translations = {
       createProject:          R_Alert_CreateProject,
       uploadProject:          R_Alert_UploadProject,
       downloadProjecs:        R_Alert_DownloadProjects,
+      buySubscription:        R_Alert_BuySubscription,
     },
     button:                   R_Button,
     layout: {

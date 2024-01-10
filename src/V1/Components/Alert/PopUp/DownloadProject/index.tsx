@@ -11,6 +11,7 @@ import { LC } from '@V1/Alert/__LC__';
 import { ProjectsDisplay } from './ProjectsDisplay';
 import { FooterButtons } from './FooterButtons';
 import { VERSION } from '@V1/Globals/Version';
+import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 
 export const DownloadProjects = memo((props: {
   closeModal: () => void
@@ -18,7 +19,8 @@ export const DownloadProjects = memo((props: {
 
   const controller = useMemo(() => new AbortController(), []);
   const config     = useMemo(() => ConfigService.config, []);
-  const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
+  const RError     = useMemo(() => translations.global.errors[config.language], []);
+  const RShared    = useMemo(() => translations.component.alert.shared[config.language], []);
   const R          = useMemo(() => translations.component.alert.downloadProjecs[config.language], []);
 
   const [allProjects      , setAllProjects         ] = useState<ProjectSettings[] | null>(null);
@@ -54,7 +56,7 @@ export const DownloadProjects = memo((props: {
       onSuccess: (projects) => {
         const projects_ltsVersion1 = projects.filter(project => (project?.lts_version === VERSION || project?.lts_version === undefined));
         setAllProjects(projects_ltsVersion1);
-        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+        setFeedbacks(prev => [ ...prev, RShared['Done!']]);
         setTimeout(() => {
           setShow(prev => ({ ...prev,
             projectsDisplay: true,
@@ -63,8 +65,8 @@ export const DownloadProjects = memo((props: {
         }, 200);
       },
       onError: (errorMessage) => {
-        setError(errorMessage);
-        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+        setError(RError(errorMessage));
+        setFeedbacks(prev => [ ...prev, RShared['Error!']]);
       },
       feedback: (feedbackMessage) => {
         setFeedbacks(prev => ([...prev, feedbackMessage]));
@@ -99,13 +101,20 @@ export const DownloadProjects = memo((props: {
       signal: controller.signal,
       projectIDs: Object.keys(selectedProjects),
       onFinish: () => {
-        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+        setFeedbacks(prev => [ ...prev, RShared['Done!']]);
         AlertService.runAcceptCallback();
         props.closeModal();
       },
       onError: (errorMessage) => {
-        setError(errorMessage);
-        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+        setError(RError(errorMessage));
+        setFeedbacks(prev => [ ...prev, RShared['Error!']]);
+        if (errorMessage === ErrorCodes.FREE_USER_DOWNLOAD_RESTRICTION) {
+          props.closeModal();
+          AlertService.handleAlert(true, {
+            type: 'Buy Subscription',
+            message: RError(errorMessage),
+          }, () => {});
+        }
       },
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
     });

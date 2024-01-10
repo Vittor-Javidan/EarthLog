@@ -58,7 +58,7 @@ export default class SubscriptionManager {
   private static userPlan: AppSubscribePlan = 'Free';
   private static OFFLINE_TIME_LOCAL_STORAGE_KEY = 'OfflineTime';
   private static PREMIUM_PLAN_SKU = Platform.select({
-    default: 'premium_test',
+    default: 'premium',
   });
 
   static getPlan(): AppSubscribePlan {
@@ -86,6 +86,10 @@ export default class SubscriptionManager {
         }
       }
     }
+  }
+
+  static freeUserLimitCheck(condition: boolean) {
+    return this.userPlan === 'Free' && condition;
   }
 
   static async loadPlan(o: {

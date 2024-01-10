@@ -16,7 +16,8 @@ export const UploadProjects = memo((props: {
 
   const controller = useMemo(() => new AbortController(), []);
   const config     = useMemo(() => ConfigService.config, []);
-  const RS         = useMemo(() => translations.component.alert.shared[config.language], []);
+  const RError     = useMemo(() => translations.global.errors[config.language], []);
+  const RShared    = useMemo(() => translations.component.alert.shared[config.language], []);
   const R          = useMemo(() => translations.component.alert.uploadProject[config.language], []);
   const [error    , setError    ] = useState<string | null>(null);
   const [feedbacks, setFeedbacks] = useState<string[]>([]);
@@ -47,11 +48,11 @@ export const UploadProjects = memo((props: {
       onSuccess: async () => {
         AlertService.runAcceptCallback();
         props.closeModal();
-        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+        setFeedbacks(prev => [ ...prev, RShared['Done!']]);
       },
       onError: (errorMessage) => {
-        setFeedbacks(prev => [ ...prev, RS['Error!']]);
-        setError(errorMessage);
+        setFeedbacks(prev => [ ...prev, RShared['Error!']]);
+        setError(RError(errorMessage));
         setShow(prev => ({ ...prev, errorDisplay: true }));
       },
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),

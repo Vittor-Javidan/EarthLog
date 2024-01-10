@@ -123,6 +123,9 @@ export type ModalConfig = {
   type: 'warning'
   question: string
 } | {
+  type: 'Buy Subscription'
+  message: string
+} | {
   type: 'download pictures'
   id_project: string
   picturesIDs: string[]

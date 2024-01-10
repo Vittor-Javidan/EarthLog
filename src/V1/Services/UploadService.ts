@@ -1,4 +1,5 @@
 import { navigate } from '@V1/Globals/NavigationControler';
+import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 import { ConfigDTO, CredentialDTO } from '@V1/Types/AppTypes';
 import DataProcessingService from './DataProcessingService';
 import ProjectService from './ProjectService';
@@ -48,7 +49,7 @@ export default class UploadService {
       });
 
       if (this.accessToken === null) {
-        throw Error('No access token was provided by the server');
+        throw Error(ErrorCodes.SERVER_DID_NOT_RETURN_ACCESS_TOKEN);
       }
 
       o.feedback('Building project');
@@ -108,7 +109,7 @@ export default class UploadService {
 
           const base64Data = await MediaService.getPictureData({ ...o, id_picture });
           if (!base64Data) {
-            throw Error('Attempt to upload a image not available on device.');
+            throw Error(ErrorCodes.ATTEMPT_TO_UPLOAD_A_NOT_AVAILABLE_PICTURE);
           }
 
           o.feedback('Uploading picture of ID: ' + id_picture);
@@ -150,7 +151,7 @@ export default class UploadService {
     } catch (error) {
       if (error instanceof Error) {
         switch (error.message) {
-          case 'Network request failed': o.onError('Network request failed. Did your phone or server lose internet connection?'); break;
+          case 'Network request failed': o.onError(ErrorCodes.NETWORK_NOT_AVAILABLE); break;
           default: o.onError(error.message);
         }
         return;

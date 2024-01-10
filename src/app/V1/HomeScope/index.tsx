@@ -15,6 +15,7 @@ import ThemeService from '@V1/Services/ThemeService';
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
 import { HomeScreen } from '@V1/Screens/HomeScreen';
+import SubscriptionManager from '@SubscriptionManager';
 
 export default function HomeScope() {
 
@@ -73,18 +74,27 @@ const Drawer = memo(() => {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.scope.home[config.language], []);
 
+  const buySubscription = useCallback(async () => {
+    await AlertService.handleAlert(true, {
+      type: 'Buy Subscription',
+      message: R['Premium subscription'],
+    }, () => {});
+  }, []);
+
   return (<>
-    <Button.TextWithIcon
-      title={R['Premium']}
-      iconName="wallet-outline"
-      onPress={() => navigate('IAP SCOPE')}
-      theme={{
-        font:              theme.font,
-        font_active:       theme.font_active,
-        background:        theme.background,
-        background_active: theme.background_active,
-      }}
-    />
+    {SubscriptionManager.getPlan() === 'Free' && (
+      <Button.TextWithIcon
+        title={R['Premium']}
+        iconName="wallet-outline"
+        onPress={async () => await buySubscription()}
+        theme={{
+          font:              theme.font,
+          font_active:       theme.font_active,
+          background:        theme.background,
+          background_active: theme.background_active,
+        }}
+      />
+    )}
     <Button.TextWithIcon
       title={R['Credentials']}
       iconName="card-outline"
