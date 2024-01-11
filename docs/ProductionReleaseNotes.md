@@ -1,6 +1,6 @@
 <en-US>
-- Premium subscription tests ended
+- Horizontal layout for camera
 </en-US>
 <pt-BR>
-- Testes de subscrições finalizados
+- Layout horizontal da camera
 </pt-BR>

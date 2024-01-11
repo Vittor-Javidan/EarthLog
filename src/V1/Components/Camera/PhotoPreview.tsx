@@ -1,6 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { View, Image, LayoutRectangle, ActivityIndicator } from 'react-native';
 import { CameraCapturedPicture } from 'expo-camera';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
@@ -8,6 +9,7 @@ import ThemeService from '@V1/Services/ThemeService';
 import { Button } from '@V1/Button/index';
 
 export const PhotoPreview = memo((props: {
+  orientation: ScreenOrientation.Orientation
   photo: CameraCapturedPicture | null
   dimensions: LayoutRectangle
   onCancel: () => void
@@ -19,13 +21,17 @@ export const PhotoPreview = memo((props: {
         position: 'absolute',
         width: props.dimensions.width,
         height: props.dimensions.height,
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <Image
         source={{ uri: props.photo.uri }}
         style={{
-          flex: 1,
-          aspectRatio: 9 / 16,
+          aspectRatio: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
+          width: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
+          height: props.orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
+          overflow: 'hidden',
         }}
       />
       <PreviwButtons

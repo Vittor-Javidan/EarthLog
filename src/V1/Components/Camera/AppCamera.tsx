@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import { CameraPictureMode } from '@V1/Types/AppTypes';
 import CameraService from '@V1/Services/CameraService';
@@ -19,6 +20,7 @@ export const AppCamera = memo((props: {
   const cameraRef = useRef<Camera>(null);
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
   const [cameraType       , setCameraType       ] = useState<CameraType>(CameraType.back);
+  const [orientation      , setOrientation      ] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
   const [flashMode        , setFlashMode        ] = useState<FlashMode>(FlashMode.off);
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
   const [picturesAmount   , setPicturesAmount   ] = useState<number>(props.cameraConfig.picturesAmount);
@@ -76,6 +78,18 @@ export const AppCamera = memo((props: {
     }
   }, [show.loadingPreview]);
 
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
+    return () => { ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP); };
+  }, []);
+
+  useEffect(() => {
+    const eventListener = ScreenOrientation.addOrientationChangeListener((orientationChangeEvent) => {
+      setOrientation(orientationChangeEvent.orientationInfo.orientation);
+    });
+    return () => { eventListener.remove(); };
+  }, []);
+
   return (
     <View
       style={{
@@ -93,8 +107,9 @@ export const AppCamera = memo((props: {
         ratio="16:9"
         style={[
           {
-            aspectRatio: 9 / 16,
-            width: '100%',
+            aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
+            width: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
+            height: orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
             overflow: 'hidden',
           },
           cameraType ===  CameraType.front && {
@@ -111,6 +126,7 @@ export const AppCamera = memo((props: {
         <PhotoPreview
           photo={photo}
           dimensions={previewDimensions}
+          orientation={orientation}
           onCancel={() => onCancel()}
           onConfirm={() =>  onConfirm()}
         />
@@ -201,7 +217,7 @@ const CameraFooterButtons = memo((props: {
     >
       <Button.Icon
         iconName={props.flashMode === FlashMode.on ? 'flash-off' : 'flash'}
-        onPress={props.flashButtonPress}
+        onPress={() => props.flashButtonPress()}
         theme={{
           font: props.color,
           font_active: '#666',
@@ -218,7 +234,7 @@ const CameraFooterButtons = memo((props: {
       />
       <Button.Icon
         iconName="contrast"
-        onPress={props.changeHudColorPress}
+        onPress={() => props.changeHudColorPress()}
         theme={{
           font: props.color,
           font_active: '#666',
@@ -235,7 +251,7 @@ const CameraFooterButtons = memo((props: {
       />
       <Button.Icon
         iconName="camera-reverse"
-        onPress={props.changeCameraTypePress}
+        onPress={() => props.changeCameraTypePress()}
         theme={{
           font: props.color,
           font_active: '#666',
