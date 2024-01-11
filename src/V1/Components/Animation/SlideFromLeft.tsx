@@ -1,8 +1,8 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode } from 'react';
 import { Dimensions } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
-export const SlideFromLeft = memo((props: {
+export const SlideFromLeft = (props: {
   delay: number;
   duration: number;
   children: ReactNode;
@@ -33,4 +33,4 @@ export const SlideFromLeft = memo((props: {
       {props.children}
     </Animated.View>
   );
-});
+};

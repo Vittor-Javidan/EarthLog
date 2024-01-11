@@ -261,7 +261,7 @@ const Drawer = memo((props: {
   ) : <></>;
 });
 
-const DrawerAnimation = memo((props: {
+const DrawerAnimation = (props: {
   show: boolean
   children: ReactNode
 }) => {
@@ -289,4 +289,4 @@ const DrawerAnimation = memo((props: {
       {props.children}
     </Animated.View>
   );
-});
+};

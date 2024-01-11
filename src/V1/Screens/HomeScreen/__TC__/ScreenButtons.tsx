@@ -21,7 +21,7 @@ export const ScreenButtons = memo((props: {
           iconName="cloud-download-outline"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={props.onDownloadProject}
+          onPress={() => props.onDownloadProject()}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,
@@ -33,7 +33,7 @@ export const ScreenButtons = memo((props: {
           iconName="folder"
           showPlusSign={true}
           buttonDiameter={60}
-          onPress={props.onCreateProject}
+          onPress={() => props.onCreateProject()}
           theme={{
             font:              theme.font,
             font_active:       theme.confirm,

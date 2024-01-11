@@ -61,7 +61,7 @@ const NavigationTree = memo(() => {
         <Layout.NavigationTree.Button
           key="treeIcon_1"
           iconName="home"
-          onPress={() => {}}
+          onPress={() => navigate('RESTART APP')}
         />,
       ]}
     />

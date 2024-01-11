@@ -119,7 +119,7 @@ const CarouselButtonsRoot = memo((props: {
   );
 });
 
-const CarouselAnimation = memo((props: {
+const CarouselAnimation = (props: {
   width: number
   offset: number
   children: ReactNode
@@ -153,4 +153,4 @@ const CarouselAnimation = memo((props: {
       {props.children}
     </Animated.View>
   );
-});
+};

@@ -38,10 +38,9 @@ export function useAppStoreConnection(o: {
 
     } else {
 
-      initConnection().then(() => {
-        flushFailedPurchasesCachedAsPendingAndroid().then(() => {
-          o.onFinish();
-        });
+      initConnection().then(async () => {
+        await flushFailedPurchasesCachedAsPendingAndroid();
+        o.onFinish();
       }).catch(() => {
         o.onError('Could not connect to app store');
       });

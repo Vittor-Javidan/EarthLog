@@ -31,8 +31,8 @@ export const HomeScreen = memo(() => {
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onCreateProject={onCreateProject}
-          onDownloadProject={onDownloadProjects}
+          onCreateProject={async () => await onCreateProject()}
+          onDownloadProject={async () => await onDownloadProjects()}
         />
       }
     >

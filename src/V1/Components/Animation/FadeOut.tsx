@@ -1,8 +1,8 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 
-export const FadeOut = memo((props: {
+export const FadeOut = (props: {
   delay: number
   duration: number
   children: ReactNode
@@ -29,5 +29,5 @@ export const FadeOut = memo((props: {
       {props.children}
     </Animated.View>
   );
-});
+};
 

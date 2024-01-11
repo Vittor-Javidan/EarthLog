@@ -30,7 +30,7 @@ export default function DateAndTimeScope() {
         <Layout.Loading />
       ) : (
         <Layout.Carousel
-          onBackPress={(() => navigate('SETTINGS SCOPE'))}
+          onBackPress={(() => navigate('RESTART APP'))}
           buttonData={[{
             title: '',
             iconName: 'calendar',

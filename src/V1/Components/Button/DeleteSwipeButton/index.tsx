@@ -17,7 +17,7 @@ type ButtonTheme = {
   wrong: string
 }
 
-export const DeleteSwipeButton = memo((props: {
+export const DeleteSwipeButton = (props: {
   buttonRadius?: number
   compensateMargin?: number
   theme: ButtonTheme
@@ -158,7 +158,7 @@ export const DeleteSwipeButton = memo((props: {
       </Animated.View>
     </View>
   );
-});
+};
 
 const CancelButton = memo((props: {
   theme: ButtonTheme
