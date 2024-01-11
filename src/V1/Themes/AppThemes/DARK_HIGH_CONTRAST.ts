@@ -64,7 +64,7 @@ export const DARK_HIGH_CONTRAST: AppTheme = {
       font_placeHolder: '#999',
       background: '#FFF',
       background_Button: '#222',
-      background_active: '#FAFAFA',
+      background_active: '#333',
       confirm: '#5F5',
       wrong: '#F55',
     },

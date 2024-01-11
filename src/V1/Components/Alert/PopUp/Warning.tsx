@@ -51,7 +51,7 @@ export const Warning = memo((props: {
         compensateMargin={30}
         theme={{
           font: theme.confirm,
-          background: theme.background_Button,
+          background: theme.background_active,
           confirm: theme.confirm,
           wrong: theme.wrong,
         }}

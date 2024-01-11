@@ -1,6 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.14 Animations memo removed
+# 1.10.15 Theme Fix
 
-- Removed memo hook for animations
-- Now home buttons on navigation tree always restart the app
+- Dark High Contrast modal pop up button active color changed
+- Now warning pop swipe button background uses button active color as background

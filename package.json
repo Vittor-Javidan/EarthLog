@@ -1,6 +1,6 @@
 {
   "name": "earthlog",
-  "version": "1.10.14",
+  "version": "1.10.15",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
