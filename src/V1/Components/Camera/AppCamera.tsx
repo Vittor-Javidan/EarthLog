@@ -82,6 +82,7 @@ export const AppCamera = memo((props: {
         flex: 1,
         backgroundColor: '#000',
         justifyContent: 'center',
+        alignItems: 'center',
       }}
       onLayout={(e) => setPreviewDimensions(e.nativeEvent.layout)}
     >
@@ -93,7 +94,7 @@ export const AppCamera = memo((props: {
         style={[
           {
             aspectRatio: 9 / 16,
-            height: '100%',
+            width: '100%',
             overflow: 'hidden',
           },
           cameraType ===  CameraType.front && {

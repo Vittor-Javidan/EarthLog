@@ -1,6 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.15 Theme Fix
+# 1.10.16 Camera fix
 
-- Dark High Contrast modal pop up button active color changed
-- Now warning pop swipe button background uses button active color as background
+- Camera having a black bar on the right side in some devices
