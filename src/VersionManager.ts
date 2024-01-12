@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DEFAULT_VERSION  = 'V1'; // Version to start when version is not define on local storage.
-type AvailableVersions = 'V1';
+type AvailableVersions = 'V1' | 'V2';
 
 export default class VersionManager {
 

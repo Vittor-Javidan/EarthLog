@@ -19,6 +19,26 @@ module.exports = function (api) {
           '@VersionManager':       './src/VersionManager.ts',
           '@SubscriptionManager':  './src/SubscriptionManager.ts',
 
+          // LTS VERSION 2
+          '@V2/FileExportModules': './src/V2/FileExportModules',
+          '@V2/Themes':            './src/V2/Themes',
+          '@V2/Types':             './src/V2/Types',
+          '@V2/Globals':           './src/V2/Globals',
+          '@V2/Translations':      './src/V2/Translations',
+          '@V2/Services':          './src/V2/Services',
+          '@V2/Hooks':             './src/V2/Hooks',
+          '@V2/Screens':           './src/V2/Screens',
+          '@V2/Icon':              './src/V2/Components/Icon',
+          '@V2/Text':              './src/V2/Components/Text',
+          '@V2/Button':            './src/V2/Components/Button',
+          '@V2/Input':             './src/V2/Components/Input',
+          '@V2/Animation':         './src/V2/Components/Animation',
+          '@V2/Layout':            './src/V2/Components/Layout',
+          '@V2/Alert':             './src/V2/Components/Alert',
+          '@V2/Camera':            './src/V2/Components/Camera',
+          '@V2/Widget':            './src/V2/Components/Widget',
+          '@V2/WidgetInput':       './src/V2/Components/WidgetInput',
+
           // LTS VERSION 1
           '@V1/FileExportModules': './src/V1/FileExportModules',
           '@V1/Themes':            './src/V1/Themes',

@@ -1,6 +1,6 @@
 <en-US>
-- Camera bug fix
+- Added Beta Version Access inside the app
 </en-US>
 <pt-BR>
-- Camera bug fix
+- Added Beta Version Access inside the app
 </pt-BR>
