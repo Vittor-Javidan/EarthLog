@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 2.0.0 LTS V2 Initial Files created
+# 2.0.1 Type Update
 
-- Added a button to change between LTS V1 and LTS V2 on Both V1 and V2 versions
+- Now ProjectSettings type lts_version propertie has explicit a single number possible
