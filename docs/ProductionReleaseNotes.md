@@ -1,6 +1,6 @@
 <en-US>
-- Horizontal layout for camera
+- Camera bug fix
 </en-US>
 <pt-BR>
-- Layout horizontal da camera
+- Camera bug fix
 </pt-BR>

@@ -108,8 +108,8 @@ export const AppCamera = memo((props: {
         style={[
           {
             aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-            width: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
-            height: orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
+            width: orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+            height: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
             overflow: 'hidden',
           },
           cameraType ===  CameraType.front && {

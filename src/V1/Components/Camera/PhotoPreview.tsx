@@ -29,8 +29,8 @@ export const PhotoPreview = memo((props: {
         source={{ uri: props.photo.uri }}
         style={{
           aspectRatio: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-          width: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
-          height: props.orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '100%' : undefined,
+          width: props.orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+          height: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
           overflow: 'hidden',
         }}
       />
