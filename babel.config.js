@@ -7,9 +7,7 @@ module.exports = function (api) {
       '@babel/preset-typescript',
     ],
     plugins: [
-      // NOTE: `expo-router/babel` is a temporary extension to `babel-preset-expo`.
-      require.resolve('expo-router/babel'),
-      'react-native-reanimated/plugin',
+      'expo-router/babel', // NOTE: `expo-router/babel` is a temporary extension to `babel-preset-expo`.
       '@babel/plugin-proposal-export-namespace-from',
       ['module-resolver', {
         root: '.',
@@ -61,6 +59,7 @@ module.exports = function (api) {
           '@V1/WidgetInput':       './src/V1/Components/WidgetInput',
         },
       }],
+      'react-native-reanimated/plugin', // Must be declare as last according to docs
     ],
   };
 };
