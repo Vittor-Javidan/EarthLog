@@ -18,6 +18,7 @@ module.exports = function (api) {
 
           '@VersionManager':       './src/VersionManager.ts',
           '@SubscriptionManager':  './src/SubscriptionManager.ts',
+          '@DevTools':             './src/DevTools.ts',
 
           // LTS VERSION 2
           '@V2/FileExportModules': './src/V2/FileExportModules',

@@ -1,6 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.20 Social Media Buttons
+# 2.0.3 Fix and Refactor
 
-- Remove Roadmap button
-- Design changed
+- Devtools moved to outside services, to have just one version of devtools.
+- Fix LTS V2 version being able to download Projects from LTS V1
