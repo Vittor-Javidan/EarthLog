@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 2.0.1 Type Update
+# 2.0.2 Social Media Buttons
 
-- Now ProjectSettings type lts_version propertie has explicit a single number possible
+- Remove Roadmap button
+- Design changed

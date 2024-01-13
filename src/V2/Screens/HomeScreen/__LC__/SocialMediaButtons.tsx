@@ -15,24 +15,12 @@ export const SocialMediaButtons = memo(() => {
       style={{
         flexDirection: 'row',
         width: '100%',
-        height: 80,
+        height: 65,
         gap: 10,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          gap: 10,
-        }}
-      >
-        <YoutubeTutorialButton />
-        <RoadMapButton />
-      </View>
-      <View
-        style={{ flex: 1 }}
-      >
-        <LinkedinCommunityButton />
-      </View>
+      <YoutubeTutorialButton />
+      <LinkedinCommunityButton />
     </View>
   );
 });
@@ -65,9 +53,7 @@ const YoutubeTutorialButton = memo(() => {
       onPress={() => onPress()}
       style={{
         flex: 1,
-        flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
         borderRadius: 10,
         backgroundColor: pressed ? theme.background_active : YOUTUBE_COLOR,
         paddingLeft: 5,
@@ -75,66 +61,26 @@ const YoutubeTutorialButton = memo(() => {
         elevation: 3,
       }}
     >
-      <Icon
-        color={pressed ? YOUTUBE_COLOR : theme.font}
-        iconName="logo-youtube"
-      />
-      <Text h3
+      <Text h1
         style={{
           color: pressed ? YOUTUBE_COLOR : theme.font,
           fontWeight: '900',
+          textAlign: 'left',
         }}
       >
         {R['Tutorials']}
       </Text>
-    </Pressable>
-  );
-});
-
-const RoadMapButton = memo(() => {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R      = useMemo(() => translations.screen.home[config.language], []);
-  const ROADMAP_COLOR = 'orange';
-
-  const [pressed, setPressed] = useState<boolean>(false);
-
-  const onPressIn = useCallback(() => {
-    setPressed(true);
-    HapticsService.vibrate('success');
-  }, []);
-
-  const onPress = useCallback(() => {
-    HapticsService.vibrate('success');
-    alert(config.language === 'pt-BR' ? 'Website ainda não construído' : 'Website not builded yet');
-    // Linking.openURL('https://www.google.com/');
-  }, []);
-
-  return (
-    <Pressable
-      onPressIn={() => onPressIn()}
-      onPressOut={() => setPressed(false)}
-      onPress={() => onPress()}
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        backgroundColor: pressed ? theme.background_active : ROADMAP_COLOR,
-        paddingHorizontal: 10,
-        elevation: 3,
-      }}
-    >
-      <Text h3
+      <View
         style={{
-          color: pressed ? ROADMAP_COLOR : theme.font,
-          fontWeight: '900',
+          flex: 1,
+          alignItems: 'flex-end',
         }}
       >
-        {R['ROADMAP']}
-      </Text>
+        <Icon
+          color={pressed ? YOUTUBE_COLOR : theme.font}
+          iconName="logo-youtube"
+        />
+      </View>
     </Pressable>
   );
 });
@@ -173,33 +119,24 @@ const LinkedinCommunityButton = memo(() => {
         elevation: 3,
       }}
     >
+      <Text h1
+        style={{
+          color: pressed ? LINKEDIN_COLOR : theme.font,
+          fontWeight: '900',
+        }}
+      >
+        {R['Community']}
+      </Text>
       <View
         style={{
           flex: 1,
           alignItems: 'flex-end',
-          paddingTop: 5,
         }}
       >
         <Icon
           color={pressed ? LINKEDIN_COLOR : theme.font}
           iconName="logo-linkedin"
         />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'flex-end',
-          paddingBottom: 5,
-        }}
-      >
-        <Text h1
-          style={{
-            color: pressed ? LINKEDIN_COLOR : theme.font,
-            fontWeight: '900',
-          }}
-        >
-          {R['Community']}
-        </Text>
       </View>
     </Pressable>
   );
