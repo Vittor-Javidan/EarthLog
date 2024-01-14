@@ -69,7 +69,7 @@ const Drawer = memo(() => {
   return (<>
     <Button.TextWithIcon
       title={R['Create a server']}
-      iconName="server"
+      iconName="server-outline"
       onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLogServerExample')}
       theme={{
         font:              theme.font,

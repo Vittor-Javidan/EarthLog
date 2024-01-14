@@ -120,7 +120,7 @@ const Drawer = memo(() => {
     />
     <Button.TextWithIcon
       title={R['Change version']}
-      iconName="shuffle"
+      iconName="shuffle-outline"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,

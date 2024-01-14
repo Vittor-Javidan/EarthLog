@@ -124,7 +124,7 @@ const Drawer = memo((props: {
     {props.projectSettings.rules.allowProjectExport && (
       <Button.TextWithIcon
         title={R['Export project']}
-        iconName="arrow-redo"
+        iconName="arrow-redo-outline"
         theme={{
           font:              theme.font,
           background:        theme.background,
@@ -136,7 +136,7 @@ const Drawer = memo((props: {
     )}
     <Button.TextWithIcon
       title={R['Download all pictures']}
-      iconName="image"
+      iconName="image-outline"
       theme={{
         font:              theme.font,
         background:        theme.background,
