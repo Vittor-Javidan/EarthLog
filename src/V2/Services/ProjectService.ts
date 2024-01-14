@@ -1,6 +1,8 @@
+import { VERSION } from '@V2/Globals/Version';
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO, SyncData } from '@V2/Types/ProjectTypes';
 import DatabaseService from './DatabaseService';
 import IDService from './IDService';
+
 
 export default class ProjectService {
 
@@ -31,6 +33,7 @@ export default class ProjectService {
     return {
       projectSettings: {
         id_project: id_project,
+        lts_version: VERSION,
         status: 'new',
         name: name ?? '',
         gps: {},

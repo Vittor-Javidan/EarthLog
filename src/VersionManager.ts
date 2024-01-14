@@ -39,6 +39,5 @@ export default class VersionManager {
   2: Copy and paste the last V folders inside app and src folders, but with the new version name.
   3: Define the Version on {LTS_VERSION_NAME}/Globals/Version.ts file present inside the copied V folders.
   4: Copy and paste the new alias for absolute imports for the new LTS version, and fix all imports of the copied V folders to the new LTS Version.
-  5: Update the lts_version propertie number on ProjectTypes file.
-  6: Add a button on VersionChangeScreen of the new version for each pre-existed version to allow anyone on any version to switch between the versions without getting stuck.
+  5: Add a button on VersionChangeScreen of the new version for each pre-existed version to allow anyone on any version to switch between the versions without getting stuck.
 */

@@ -1,3 +1,5 @@
+import { VERSION } from '@V2/Globals/Version';
+
 // =================================================================================================
 // project TYPES
 // =================================================================================================
@@ -33,7 +35,7 @@ export type SampleDTO = {
 
 export type ProjectSettings = {
   id_project: string
-  lts_version: 2
+  lts_version: typeof VERSION
   status: Status
   name: string
   sampleAlias: {

@@ -59,12 +59,12 @@ const NavigationTree = memo(() => {
       iconButtons={[
         <Layout.NavigationTree.Button
           key="treeIcon_1"
-          iconName="home"
+          iconName="home-outline"
           onPress={() => navigate('HOME SCOPE')}
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"
-          iconName="settings"
+          iconName="settings-outline"
           onPress={() => navigate('SETTINGS SCOPE')}
         />,
         <Layout.NavigationTree.Button
