@@ -62,11 +62,8 @@ export const SettingsButtons = memo(() => {
         background_active: theme.background_active,
       }}
     />
-
-
-    {/* TODO: This must be removed before production release */}
     <Button.TextWithIcon
-      title={'Whipe All Data'}
+      title={R['Whipe ALL DATA']}
       iconName="trash-outline"
       onPress={async () => await whipeAllData()}
       theme={{
@@ -76,18 +73,11 @@ export const SettingsButtons = memo(() => {
         background_active: theme.background_active,
       }}
     />
-
-
   </>);
 });
 
 async function whipeAllData() {
-
-  /* TODO:
-    - This must be removed before production release.
-  */
-
-  AlertService.handleAlert(true,
+  await AlertService.handleAlert(true,
     {
       question: 'Want to whipe database?',
       type: 'warning',

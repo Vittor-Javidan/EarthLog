@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 1.10.19 Fix Camera not overflowing
+# dependencies upgrade
 
-- Camera was not everflowing in some devices, making the camera have a black target on top or on sides.
+- expo-dev-client: 2.4.12 > 3.3.4
+- react-native-reanimated: 3.3.0 > 3.4.0

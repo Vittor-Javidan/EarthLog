@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 import { BackHandler, Linking } from 'react-native';
 
+import SubscriptionManager from '@SubscriptionManager';
+
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
@@ -15,7 +17,6 @@ import ThemeService from '@V1/Services/ThemeService';
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
 import { HomeScreen } from '@V1/Screens/HomeScreen';
-import SubscriptionManager from '@SubscriptionManager';
 
 export default function HomeScope() {
 
@@ -41,7 +42,7 @@ export default function HomeScope() {
   return (
     <Layout.Root
       title={R['Home screen']}
-      subtitle=""
+      subtitle="LTS V1"
       drawerChildren={ <Drawer /> }
       navigationTree={ <NavigationTree /> }
     >
@@ -116,6 +117,17 @@ const Drawer = memo(() => {
         background_active: theme.background_active,
       }}
       onPress={() => navigate('SETTINGS SCOPE')}
+    />
+    <Button.TextWithIcon
+      title={R['Change version']}
+      iconName="shuffle"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => navigate('VERSION CHANGE SCOPE')}
     />
     <Button.TextWithIcon
       title={R['Privacy Policy']}

@@ -33,7 +33,7 @@ export type SampleDTO = {
 
 export type ProjectSettings = {
   id_project: string
-  lts_version?: number
+  lts_version?: 1
   status: Status
   name: string
   sampleAlias: {

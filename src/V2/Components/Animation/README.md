@@ -1,0 +1,1 @@
+# This folder only contains animations that are reusable.
