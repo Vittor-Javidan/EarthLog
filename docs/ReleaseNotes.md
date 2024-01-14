@@ -1,6 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# downgrade react-native-reanimate 3.3.0
+# dependencies upgrade
 
-- expo does not allow the newer version yet.
-- Confirmed: It is the animations the issue of weird behaviors in the app.
+- expo-dev-client: 2.4.12 > 3.3.4
+- react-native-reanimated: 3.3.0 > 3.4.0
