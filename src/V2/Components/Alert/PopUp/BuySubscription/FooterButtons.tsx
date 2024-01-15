@@ -8,8 +8,8 @@ import ThemeService from '@V2/Services/ThemeService';
 import { Button } from '@V2/Button/index';
 
 export const FooterButtons = memo((props: {
-  connected: boolean
-  loadingTransaction: boolean
+  showBuyButton: boolean
+  showCancelButton: boolean
   onCancel: () => void
   buySubscription: () => void
 }) => {
@@ -26,24 +26,26 @@ export const FooterButtons = memo((props: {
         gap: 10,
       }}
     >
-      <Button.Icon
-        iconName="close"
-        onPress={() => props.onCancel()}
-        theme={{
-          font:              theme.wrong,
-          font_active:       theme.wrong,
-          background:        theme.background_Button,
-          background_active: theme.background_active,
-        }}
-        style={{
-          height: 40,
-          flex: 1,
-          justifyContent: 'center',
-          paddingVertical: 0,
-          borderRadius: 10,
-        }}
-      />
-      {(props.connected && props.loadingTransaction === false) && (
+      {props.showCancelButton && (
+        <Button.Icon
+          iconName="close"
+          onPress={() => props.onCancel()}
+          theme={{
+            font:              theme.wrong,
+            font_active:       theme.wrong,
+            background:        theme.background_Button,
+            background_active: theme.background_active,
+          }}
+          style={{
+            height: 40,
+            flex: 1,
+            justifyContent: 'center',
+            paddingVertical: 0,
+            borderRadius: 10,
+          }}
+        />
+      )}
+      {props.showBuyButton && (
         <Button.TextWithIcon
           title={R['Buy']}
           iconName="wallet-sharp"

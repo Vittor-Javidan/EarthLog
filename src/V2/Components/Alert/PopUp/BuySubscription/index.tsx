@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, memo, useCallback, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { withIAPContext, useIAP, finishTransaction, Purchase } from 'react-native-iap';
-
-import SubscriptionManager, { useAppStoreConnection } from '@SubscriptionManager';
+import { ActivityIndicator, Platform, View } from 'react-native';
+import { withIAPContext, useIAP, finishTransaction, Purchase, SubscriptionAndroid, requestSubscription, endConnection, initConnection, flushFailedPurchasesCachedAsPendingAndroid, SubscriptionIOS, getSubscriptions } from 'react-native-iap';
 
 import { navigate } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
@@ -19,12 +17,15 @@ export const BuySubscription = withIAPContext(memo((props: {
   closeModal: () => void
 }) => {
 
-  const config                          = useMemo(() => ConfigService.config, []);
-  const theme                           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R                               = useMemo(() => translations.component.alert.buySubscription[config.language], []);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [state       , setState       ] = useState({
+  const config                                        = useMemo(() => ConfigService.config, []);
+  const theme                                         = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R                                             = useMemo(() => translations.component.alert.buySubscription[config.language], []);
+  const [subscriptionAndroid, setSubscriptionAndroid] = useState<SubscriptionAndroid | null>(null);
+  const [subscriptionIOS    , setSubscriptionIOS    ] = useState<SubscriptionIOS | null>(null);
+  const [errorMessage       , setErrorMessage       ] = useState<string | null>(null);
+  const [state              , setState              ] = useState({
     loadingTransaction: false,
+    restartingApp: false,
   });
 
   const {
@@ -34,41 +35,89 @@ export const BuySubscription = withIAPContext(memo((props: {
   } = useIAP();
 
   const buySubscription = useCallback(async () => {
-    setState({ loadingTransaction: true });
-    await SubscriptionManager.buySubscription({
-      onError: (errorMessage) => {
-        setErrorMessage(errorMessage);
-        setState({ loadingTransaction: false });
-      },
-    });
-  }, []);
+    try {
+      setState(prev => ({ ...prev, loadingTransaction: true }));
+      if (Platform.OS === 'android' && subscriptionAndroid !== null) {
+        await requestSubscription({
+          sku: subscriptionAndroid.productId,
+          subscriptionOffers: [{
+            sku: subscriptionAndroid.productId,
+            offerToken: subscriptionAndroid.subscriptionOfferDetails[0].offerToken,
+          }],
+        });
+      }
+      if (Platform.OS === 'ios' && subscriptionIOS !== null) {
+        await requestSubscription({ sku: subscriptionIOS.productId });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+        setState(prev => ({ ...prev, loadingTransaction: false }));
+      }
+    }
+  }, [subscriptionAndroid, subscriptionIOS]);
 
   const onFinishTransaction = useCallback(async (currentPurchase: Purchase) => {
-    await finishTransaction({ purchase: currentPurchase, isConsumable: false });
-    setState({ loadingTransaction: false });
-    AlertService.runAcceptCallback();
-    props.closeModal();
-    navigate('RESTART APP');
-  }, [props.closeModal]);
+    if (connected) {
+      await finishTransaction({ purchase: currentPurchase, isConsumable: false });
+      AlertService.runAcceptCallback();
+      props.closeModal();
+      navigate('RESTART APP');
+    }
+  }, [props.closeModal, connected]);
+
+  useEffect(() => {
+    if (connected) {
+
+      const PREMIUM_PLAN_SKU = Platform.select({
+        default: 'premium',
+      });
+
+      try {
+        if (Platform.OS === 'android') {
+          getSubscriptions({ skus: [PREMIUM_PLAN_SKU ]}).then(subscriptions => {
+            setSubscriptionAndroid(subscriptions[0] as SubscriptionAndroid);
+          });
+        }
+        if (Platform.OS === 'ios') {
+          getSubscriptions({ skus: [PREMIUM_PLAN_SKU ]}).then(subscriptions => {
+            setSubscriptionIOS(subscriptions[0] as SubscriptionIOS);
+          });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        }
+      }
+    }
+  }, [connected]);
 
   useEffect(() => {
     if (currentPurchaseError?.message) {
       setErrorMessage(currentPurchaseError.message);
-      setState({ loadingTransaction: false });
+      setState(prev => ({ ...prev,  loadingTransaction: false }));
     }
   }, [currentPurchaseError]);
 
   useEffect(() => {
-    if (currentPurchase) {
+    if (currentPurchase && state.restartingApp === false) {
+      setState(prev => ({ ...prev, restartingApp: true }));
       onFinishTransaction(currentPurchase);
     }
-  }, [currentPurchase, onFinishTransaction]);
+  }, [state.restartingApp, currentPurchase, onFinishTransaction]);
 
-  useAppStoreConnection({
-    onFinish: () => {},
-    onError: (errorMessage) => {
-      setErrorMessage(errorMessage);
-    },
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      initConnection().then(async () => {
+        await flushFailedPurchasesCachedAsPendingAndroid();
+      }).catch(() => {
+        setErrorMessage('Could not connect to app store');
+      });
+    }
+    if (Platform.OS === 'ios') {
+      setErrorMessage('Store connection not implemented for IOS');
+    }
+    return () => { endConnection(); };
   }, []);
 
   return (
@@ -82,22 +131,34 @@ export const BuySubscription = withIAPContext(memo((props: {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
+            gap: 10,
+            padding: 10,
           }}
         >
-          <Text h3
-            style={{
-              textAlign: 'justify',
-              color: theme.font,
-              fontStyle: 'italic',
-              padding: 10,
-            }}
-          >
-            {state.loadingTransaction === true ? R['Openning store...'] : props.message}
-          </Text>
+          {state.restartingApp === false ? (
+            <Text h3
+              style={{
+                textAlign: 'justify',
+                color: theme.font,
+                fontStyle: 'italic',
+              }}
+            >
+              {state.loadingTransaction === true ? R['Openning store...'] : props.message}
+            </Text>
+          ) : (
+            <Text h3
+              style={{
+                textAlign: 'justify',
+                color: theme.font,
+                fontStyle: 'italic',
+              }}
+            >
+              {R['Restarting the app...']}
+            </Text>
+          )}
           {state.loadingTransaction !== true && (
             <View
               style={{
-                padding: 10,
                 gap: 5,
                 borderRadius: 10,
               }}
@@ -134,9 +195,29 @@ export const BuySubscription = withIAPContext(memo((props: {
               </View>
             </View>
           )}
+          {(subscriptionAndroid !== null && state.loadingTransaction === false) && (
+            <Text h2
+              style={{
+                paddingHorizontal: 10,
+                color: theme.font,
+              }}
+            >
+              {subscriptionAndroid.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice}
+            </Text>
+          )}
+          {(subscriptionIOS !== null && state.loadingTransaction === false) && (
+            <Text h2
+              style={{
+                paddingHorizontal: 10,
+                color: theme.font,
+              }}
+            >
+              {subscriptionIOS.localizedPrice}
+            </Text>
+          )}
         </View>
       )}
-      {state.loadingTransaction === true && (
+      {(state.loadingTransaction === true) && (
         <ActivityIndicator
           style={{ alignSelf: 'center' }}
           size="large"
@@ -144,8 +225,8 @@ export const BuySubscription = withIAPContext(memo((props: {
         />
       )}
       <FooterButtons
-        connected={connected}
-        loadingTransaction={state.loadingTransaction}
+        showBuyButton={connected && subscriptionAndroid !== null && state.loadingTransaction === false && errorMessage === null}
+        showCancelButton={state.restartingApp === false}
         onCancel={() => props.closeModal()}
         buySubscription={async () => await buySubscription()}
       />

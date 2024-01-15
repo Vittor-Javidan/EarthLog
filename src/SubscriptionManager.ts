@@ -6,10 +6,6 @@ import {
   initConnection,
   endConnection,
   getAvailablePurchases,
-  getSubscriptions,
-  requestSubscription,
-  SubscriptionAndroid,
-  flushFailedPurchasesCachedAsPendingAndroid,
 } from 'react-native-iap';
 
 export type AppSubscribePlan = 'Free' | 'Premium'
@@ -26,32 +22,6 @@ export function useRestoreSubscription(o: {
   }, deps);
 }
 
-export function useAppStoreConnection(o: {
-  onFinish: () => void
-  onError: (errorMessage: string) => void
-}, deps: React.DependencyList) {
-  useEffect(() => {
-
-    if (Platform.OS === 'ios') {
-
-      o.onError('Store connection not implemented for IOS');
-
-    } else {
-
-      initConnection().then(async () => {
-        await flushFailedPurchasesCachedAsPendingAndroid();
-        o.onFinish();
-      }).catch(() => {
-        o.onError('Could not connect to app store');
-      });
-
-    }
-    return () => {
-      endConnection();
-    };
-  }, deps);
-}
-
 export default class SubscriptionManager {
 
   private static userPlan: AppSubscribePlan = 'Free';
@@ -62,29 +32,6 @@ export default class SubscriptionManager {
 
   static getPlan(): AppSubscribePlan {
     return this.userPlan;
-  }
-
-  static async buySubscription(o: {
-    onError: (errorMessage: string) => void
-  }) {
-    if (this.userPlan === 'Free') {
-      try {
-        if (Platform.OS === 'android') {
-          const subscription = (await getSubscriptions({ skus: [this.PREMIUM_PLAN_SKU ]}))[0] as SubscriptionAndroid;
-          await requestSubscription({
-            sku: subscription.productId,
-            subscriptionOffers: [{
-              sku: subscription.productId,
-              offerToken: subscription.subscriptionOfferDetails[0].offerToken,
-            }],
-          });
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          o.onError(error.message);
-        }
-      }
-    }
   }
 
   static freeUserLimitCheck(condition: boolean) {
