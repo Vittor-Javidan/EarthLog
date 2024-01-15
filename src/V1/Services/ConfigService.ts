@@ -13,7 +13,7 @@ export default class ConfigService {
     timeFormat:   DateTimeService.TimeFormatByTag(this.deviceLanguage),
     appTheme:     'Dark',
     widgetTheme:  'Light',
-    onlyWarningVibrations: false,
+    onlyWarningVibrations: true,
   };
 
   static async loadConfig(): Promise<void> {
@@ -43,7 +43,7 @@ export default class ConfigService {
       language:              config.language   ?? deviceLanguage,
       dateFormat:            config.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
       timeFormat:            config.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
-      onlyWarningVibrations: config.onlyWarningVibrations ?? false,
+      onlyWarningVibrations: config.onlyWarningVibrations ?? true,
     };
     return verifiedConfigDTO;
   }
