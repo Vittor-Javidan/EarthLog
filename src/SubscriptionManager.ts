@@ -45,10 +45,10 @@ export function useAppStoreConnection(o: {
         o.onError('Could not connect to app store');
       });
 
-      return () => {
-        endConnection();
-      };
     }
+    return () => {
+      endConnection();
+    };
   }, deps);
 }
 
@@ -56,7 +56,7 @@ export default class SubscriptionManager {
 
   private static userPlan: AppSubscribePlan = 'Free';
   private static OFFLINE_TIME_LOCAL_STORAGE_KEY = 'OfflineTime';
-  private static PREMIUM_PLAN_SKU = Platform.select({
+  static PREMIUM_PLAN_SKU = Platform.select({
     default: 'premium',
   });
 
