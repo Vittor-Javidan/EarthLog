@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Camera } from 'expo-camera';
 
 import { CameraLayerConfig } from '@V2/Types/AppTypes';
+import { translations } from '@V2/Translations/index';
 import CameraService from '@V2/Services/CameraService';
 import ConfigService from '@V2/Services/ConfigService';
 import ThemeService from '@V2/Services/ThemeService';
@@ -16,8 +17,9 @@ const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export const CameraLayer = memo(() => {
 
-  const config    = useMemo(() => ConfigService.config, []);
-  const theme     = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.component.camera[config.language], []);
   const [permission  , requestPermission] = Camera.useCameraPermissions();
   const [showCamera  , setShowCamera    ] = useState<boolean>(false);
   const [cameraConfig, setCameraConfig  ] = useState<CameraLayerConfig | null>(null);
@@ -64,21 +66,27 @@ export const CameraLayer = memo(() => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'red',
+                backgroundColor: theme.background,
                 padding: 50,
+                gap: 10,
               }}
             >
-              <Text h1>
-                Camera permission denied
+              <Text h1
+                style={{
+                  color: theme.font,
+                  textAlign: 'center',
+                }}
+              >
+                {R['Camera permission denied']}
               </Text>
               {permission.canAskAgain ? (
                 <Button.TextWithIcon
-                  title="Grant permission"
+                  title={R['Grant permission']}
                   iconName="camera"
                   onPress={async () => await requestPermission()}
                   theme={{
                     font:              theme.font_Button,
-                    font_active:       theme.background_active,
+                    font_active:       theme.font_active,
                     background:        theme.background_Button,
                     background_active: theme.background_active,
                   }}
@@ -87,8 +95,12 @@ export const CameraLayer = memo(() => {
                   }}
                 />
               ) : (
-                <Text h1>
-                  Please give permission on your phone settings
+                <Text h1
+                  style={{
+                    color: theme.font,
+                  }}
+                >
+                  {R['Please give camera access permission on your phone settings']}
                 </Text>
               )}
             </View>

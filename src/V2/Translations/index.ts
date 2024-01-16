@@ -45,6 +45,7 @@ import { R_Screen_IAP } from './Screen/IAPScreen';
 import { R_ErrorCodes } from './globals/ErrorCodes';
 import { R_Alert_BuySubscription } from './component/Alert/BuySubscription';
 import { R_Scope_VersionChange } from './scope/VersionChangeScope';
+import { R_Component_Camera } from './component/Camera';
 
 export const translations = {
   global: {
@@ -94,6 +95,7 @@ export const translations = {
       buySubscription:        R_Alert_BuySubscription,
     },
     button:                   R_Button,
+    camera:                   R_Component_Camera,
     layout: {
       pseudoWidget:           R_Layout_PseudoWidget,
     },

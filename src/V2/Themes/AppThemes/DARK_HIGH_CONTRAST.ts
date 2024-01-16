@@ -35,7 +35,7 @@ export const DARK_HIGH_CONTRAST: AppTheme = {
     },
     drawerButton: {
       font: '#333',
-      font_active: '#333',
+      font_active: '#FAFAFA',
       background: '#FAFAFA',
       background_active: '#333',
     },
@@ -74,7 +74,7 @@ export const DARK_HIGH_CONTRAST: AppTheme = {
     font_Button: '#333',
     font_active: '#FAFAFA',
     background: '#333',
-    background_active: '#333',
+    background_active: '#222',
     background_Button: '#FAFAFA',
     confirm: '#5F5',
     wrong: '#F55',

@@ -1,5 +1,10 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# 2.0.7 Subscriptions policy fix
+# Camera permission feedback and Theme fix
 
-- Now <BuySubscriptions /> popup shows subscription price
+LTS V1: 1.10.24
+LTS V2: 2.0.8
+
+- Removed red background
+- Added translations
+- DARK_HIGH_CONTRAST theme fix
