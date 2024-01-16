@@ -34,6 +34,8 @@ export const BuySubscription = withIAPContext(memo((props: {
     currentPurchaseError,
   } = useIAP();
 
+  const isBothPlataformSubscriptionNull = (subscriptionAndroid === null && subscriptionIOS === null);
+
   const buySubscription = useCallback(async () => {
     try {
       setState(prev => ({ ...prev, loadingTransaction: true }));
@@ -130,17 +132,16 @@ export const BuySubscription = withIAPContext(memo((props: {
         <View
           style={{
             justifyContent: 'center',
-            alignItems: 'center',
             gap: 10,
-            paddingVertical: 10,
-            paddingHorizontal: 5,
+            paddingTop: 10,
+            paddingHorizontal: 20,
           }}
         >
           {state.restartingApp === false ? (
             <Text h3
               style={{
-                textAlign: 'justify',
                 color: theme.font,
+                textAlign: 'center',
                 fontStyle: 'italic',
               }}
             >
@@ -149,69 +150,72 @@ export const BuySubscription = withIAPContext(memo((props: {
           ) : (
             <Text h3
               style={{
-                textAlign: 'justify',
                 color: theme.font,
+                textAlign: 'justify',
                 fontStyle: 'italic',
               }}
             >
               {R['Restarting the app...']}
             </Text>
           )}
-          {state.loadingTransaction !== true && (
+          {state.loadingTransaction === false && (<>
             <View
               style={{
                 gap: 5,
                 borderRadius: 10,
-                paddingHorizontal: 10,
               }}
             >
               <Text h2
                 style={{
-                  paddingHorizontal: 5,
                   color: theme.font,
+                  textAlign: 'justify',
+                  fontWeight: '500',
                 }}
               >
                 {R['A premium subscription will allow you to:']}
               </Text>
               <View
                 style={{
-                  paddingHorizontal: 15,
+                  paddingHorizontal: 20,
                 }}
               >
                 <Text p
                   style={{
-                    textAlign: 'left',
                     color: theme.font,
+                    textAlign: 'left',
                   }}
                 >
                   {R['- Download projects with more than 5 samples']}
                 </Text>
                 <Text p
                   style={{
-                    textAlign: 'left',
                     color: theme.font,
+                    textAlign: 'left',
                   }}
                 >
                   {R['- Create unlimited samples within a single project']}
                 </Text>
               </View>
             </View>
-          )}
-          <Text p
-            style={{
-              textAlign: 'left',
-              color: theme.font,
-              fontStyle: 'italic',
-              paddingHorizontal: 10,
-            }}
-          >
-            {R['Subscriptions are not required to use the app and can be canceled at any time.']}
-          </Text>
+            <View>
+              <Text p
+                style={{
+                  color: theme.font,
+                  textAlign: 'justify',
+                  fontStyle: 'italic',
+                  fontWeight: '500',
+                }}
+              >
+                {R['Subscriptions are not required to use the app and can be canceled at any time.']}
+              </Text>
+            </View>
+          </>)}
           {(subscriptionAndroid !== null && state.loadingTransaction === false) && (
             <Text h2
               style={{
-                paddingHorizontal: 10,
                 color: theme.font,
+                textAlign: 'center',
+                paddingHorizontal: 10,
               }}
             >
               {`${subscriptionAndroid.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice} / ${R['Month']}`}
@@ -220,8 +224,8 @@ export const BuySubscription = withIAPContext(memo((props: {
           {(subscriptionIOS !== null && state.loadingTransaction === false) && (
             <Text h2
               style={{
-                paddingHorizontal: 10,
                 color: theme.font,
+                paddingHorizontal: 10,
               }}
             >
               {subscriptionIOS.localizedPrice}
@@ -229,7 +233,7 @@ export const BuySubscription = withIAPContext(memo((props: {
           )}
         </View>
       )}
-      {(state.loadingTransaction === true) && (
+      {(state.loadingTransaction === true || isBothPlataformSubscriptionNull) && (
         <ActivityIndicator
           style={{ alignSelf: 'center' }}
           size="large"
@@ -238,7 +242,7 @@ export const BuySubscription = withIAPContext(memo((props: {
       )}
       <FooterButtons
         showBuyButton={connected && subscriptionAndroid !== null && state.loadingTransaction === false && errorMessage === null}
-        showCancelButton={state.restartingApp === false}
+        showCancelButton={state.restartingApp === false &&  state.loadingTransaction === false}
         onCancel={() => props.closeModal()}
         buySubscription={async () => await buySubscription()}
       />

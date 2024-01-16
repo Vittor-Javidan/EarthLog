@@ -1,8 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# Fix subscription policy
+# BuySubscription PopUp Alert
 
-LTS V1: 1.10.26
-LTS V2: 2.0.10
+LTS V1: 1.10.27
+LTS V2: 2.0.11
 
-- Added a easy way to manage and cancel subscriptions
+- Aesthetics improvements on <BuySubscription /> alert popup
