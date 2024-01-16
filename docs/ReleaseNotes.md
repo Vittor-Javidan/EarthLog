@@ -1,9 +1,9 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# Camera permission feedback and Theme fix
+# Fix subscription policy
 
-LTS V1: 1.10.24
-LTS V2: 2.0.8
+LTS V1: 1.10.25
+LTS V2: 2.0.9
 
 - Removed red background
 - Added translations

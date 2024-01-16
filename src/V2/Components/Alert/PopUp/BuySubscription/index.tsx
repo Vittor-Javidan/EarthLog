@@ -132,7 +132,8 @@ export const BuySubscription = withIAPContext(memo((props: {
             justifyContent: 'center',
             alignItems: 'center',
             gap: 10,
-            padding: 10,
+            paddingVertical: 10,
+            paddingHorizontal: 5,
           }}
         >
           {state.restartingApp === false ? (
@@ -161,19 +162,20 @@ export const BuySubscription = withIAPContext(memo((props: {
               style={{
                 gap: 5,
                 borderRadius: 10,
+                paddingHorizontal: 10,
               }}
             >
               <Text h2
                 style={{
-                  paddingHorizontal: 10,
+                  paddingHorizontal: 5,
                   color: theme.font,
                 }}
               >
-                {R['Subscribing will allow you to:']}
+                {R['A premium subscription will allow you to:']}
               </Text>
               <View
                 style={{
-                  paddingHorizontal: 10,
+                  paddingHorizontal: 15,
                 }}
               >
                 <Text p
@@ -195,6 +197,16 @@ export const BuySubscription = withIAPContext(memo((props: {
               </View>
             </View>
           )}
+          <Text p
+            style={{
+              textAlign: 'left',
+              color: theme.font,
+              fontStyle: 'italic',
+              paddingHorizontal: 10,
+            }}
+          >
+            {R['Subscriptions are not required to use the app and can be canceled at any time.']}
+          </Text>
           {(subscriptionAndroid !== null && state.loadingTransaction === false) && (
             <Text h2
               style={{
@@ -202,7 +214,7 @@ export const BuySubscription = withIAPContext(memo((props: {
                 color: theme.font,
               }}
             >
-              {subscriptionAndroid.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice}
+              {`${subscriptionAndroid.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice} / ${R['Month']}`}
             </Text>
           )}
           {(subscriptionIOS !== null && state.loadingTransaction === false) && (
