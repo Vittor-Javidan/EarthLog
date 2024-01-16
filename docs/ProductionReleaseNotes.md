@@ -1,8 +1,6 @@
 <en-US>
-- Camera permission access screen
-- Fix subscription info
+- Added a easy way to cancel subscriptions
 </en-US>
 <pt-BR>
-- Tela permissão de accesso a câmera
-- Corrigido informações da subscrição
+- Adicionado fácil acesso ao cancelamento de subscrições
 </pt-BR>

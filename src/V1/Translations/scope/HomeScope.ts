@@ -7,6 +7,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Credentials': string
   'Premium': string
   'Premium subscription': string
+  'Google Play subscriptions': string
   'Privacy Policy': string
   'Change version': string
 }>
@@ -19,6 +20,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Credentials': 'Credentials',
     'Premium': 'Premium',
     'Premium subscription': 'Subcribe to premium',
+    'Google Play subscriptions': 'Google Play subscriptions',
     'Privacy Policy': 'Privacy Policy',
     'Change version': 'Change version',
   },
@@ -29,6 +31,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Credentials': 'Credenciais',
     'Premium': 'Premium',
     'Premium subscription': 'Assine o plano premium',
+    'Google Play subscriptions': 'Assinaturas Google Play',
     'Privacy Policy': 'Política de Privacidade',
     'Change version': 'Mudar versão',
   },

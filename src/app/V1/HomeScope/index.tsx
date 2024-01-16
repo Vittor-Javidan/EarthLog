@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { BackHandler, Linking } from 'react-native';
+import { BackHandler, Linking, Platform } from 'react-native';
 
 import SubscriptionManager from '@SubscriptionManager';
 
@@ -140,6 +140,19 @@ const Drawer = memo(() => {
       }}
       onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/PRIVACY_POLICIES/blob/main/EARTH_LOG.md')}
     />
+    {Platform.OS === 'android' && (
+      <Button.TextWithIcon
+        title={R['Google Play subscriptions']}
+        iconName="logo-google-playstore"
+        onPress={() => Linking.openURL('https://play.google.com/store/account/subscriptions')}
+        theme={{
+          font:              theme.font,
+          font_active:       theme.font_active,
+          background:        theme.background,
+          background_active: theme.background_active,
+        }}
+      />
+    )}
   </>);
 });
 
