@@ -167,7 +167,7 @@ export const PictureInput = memo((props: {
         {props.widgetScope.type === 'template' && (
           <LC.AlertMessages
             alertMessages={{
-              templatePictureScope: '* Templates are not allowed to take pictures',
+              templatePictureScope: R['* Templates are not allowed to take pictures'],
             }}
             theme={props.theme}
           />

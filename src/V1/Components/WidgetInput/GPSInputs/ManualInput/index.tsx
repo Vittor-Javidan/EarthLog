@@ -1,8 +1,10 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@V1/Types/ProjectTypes';
+import { translations } from '@V1/Translations/index';
 import AlertService from '@V1/Services/AlertService';
+import ConfigService from '@V1/Services/ConfigService';
 
 import { ManualInputButton } from './ManualInputButton';
 import { InputsDisplay } from './InputsDisplay';
@@ -14,13 +16,15 @@ export const ManualInput = memo((props: {
   onConfirm: (gpsData: GPS_DTO) => void
 }) => {
 
+  const config                    = useMemo(() => ConfigService.config, []);
+  const R                         = useMemo(() => translations.widgetInput.gps[config.language], []);
   const [showInput, setShowInput] = useState<boolean>(false);
   const [error    , setError    ] = useState<boolean>(false);
 
   const onSave = useCallback(async (newGPSData: GPS_DTO) => {
     await AlertService.handleAlert(props.noGPSData, {
       type: 'warning',
-      question: 'current saved data will be replaced. Are you sure?',
+      question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, () => {
       setShowInput(false);
       setError(false);
