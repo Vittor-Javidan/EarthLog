@@ -2,6 +2,8 @@ import { LanguageTag } from '@V2/Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, {
   'Openning store...': string
+  'Closing...': string
+  'Loading price...': string
   'Buy': string
   'A premium subscription will allow you to:': string
   '- Download projects with more than 5 samples': string
@@ -15,6 +17,8 @@ type TranslationDTO = Record<LanguageTag, {
 export const R_Alert_BuySubscription: TranslationDTO = {
   'en-US': {
     'Openning store...': 'Openning store...',
+    'Closing...': 'Closing...',
+    'Loading price...': 'Loading price...',
     'Buy': 'Buy',
     'A premium subscription will allow you to:': 'A premium subscription will allow you to:',
     '- Download projects with more than 5 samples': '- Download projects with more than 5 samples',
@@ -26,6 +30,8 @@ export const R_Alert_BuySubscription: TranslationDTO = {
   },
   'pt-BR': {
     'Openning store...': 'Abrindo a loja...',
+    'Closing...': 'Fechando...',
+    'Loading price...': 'Carregando preço...',
     'Buy': 'Comprar',
     'A premium subscription will allow you to:': 'Com a subscrição premium, você poderá:',
     '- Download projects with more than 5 samples': '- Baixar projetos com mais de 5 amostras',

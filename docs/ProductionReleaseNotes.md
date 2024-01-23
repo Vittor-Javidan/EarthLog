@@ -1,6 +1,6 @@
 <en-US>
-- Added a easy way to cancel subscriptions
+- Bug fix: Subscription store openning not working some times.
 </en-US>
 <pt-BR>
-- Adicionado fácil acesso ao cancelamento de subscrições
+- Correção de bug: Loja de subscrição não abrindo algumas vezes.
 </pt-BR>

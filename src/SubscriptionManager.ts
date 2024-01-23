@@ -6,9 +6,111 @@ import {
   initConnection,
   endConnection,
   getAvailablePurchases,
+  SubscriptionAndroid,
+  SubscriptionIOS,
+  getSubscriptions,
+  useIAP,
+  flushFailedPurchasesCachedAsPendingAndroid,
+  finishTransaction,
 } from 'react-native-iap';
 
 export type AppSubscribePlan = 'Free' | 'Premium'
+
+function useConnected(callback: () => void, deps: React.DependencyList) {
+  const { connected } = useIAP();
+  useEffect(() => {
+    if (connected) {
+      callback();
+    }
+  }, [connected, ...deps]);
+}
+
+export function useConnectStore(o: {
+  onError: (errorMessage: string) => void,
+}) {
+  const { connected } = useIAP();
+  useEffect(() => {
+    if (!connected) {
+      if (Platform.OS === 'android') {
+        initConnection().then(async () => {
+          await flushFailedPurchasesCachedAsPendingAndroid().catch(() => {});
+        }).catch(() => {
+          o.onError('Could not connect to app store');
+        });
+      }
+      if (Platform.OS === 'ios') {
+        o.onError('Store connection not implemented for IOS');
+      }
+    }
+    return () => {
+      if (connected) {
+        endConnection();
+      }
+    };
+  }, [connected]);
+}
+
+export function useCloseStore(o: {onClose: () => void}, deps: [ boolean ]) {
+  const { connected } = useIAP();
+  const [ closeStore ] = deps;
+  useEffect(() => {
+    if (closeStore) {
+      connected
+      ? endConnection().then(() => o.onClose())
+      : o.onClose();
+    }
+  }, [connected, closeStore]);
+}
+
+export function useGetSubscriptions(o: {
+  subscriptionAndroid: (subscriptions: SubscriptionAndroid) => void
+  subscriptionIOS: (subscriptions: SubscriptionIOS) => void
+  onError: (errorMessage: string) => void
+}, deps: [ retryToGetSubscriptions: boolean ]) {
+  const [ retryToGetSubscriptions ] = deps;
+  useConnected(() => {
+    const PREMIUM_PLAN_SKU = Platform.select({
+      default: 'premium',
+    });
+    getSubscriptions({ skus: [PREMIUM_PLAN_SKU ]}).then(subscriptions => {
+      if (Platform.OS === 'android') {
+        o.subscriptionAndroid(subscriptions[0] as SubscriptionAndroid);
+      }
+      if (Platform.OS === 'ios') {
+        o.subscriptionIOS(subscriptions[0] as SubscriptionIOS);
+      }
+    }).catch(error => {
+      if (error instanceof Error) {
+        o.onError(error.message);
+      }
+    });
+  }, [ retryToGetSubscriptions ]);
+}
+
+export function useFinishTransaction(o: {
+  onTransactionProcessing: () => void
+  onFinishTransaction: () => void
+}, deps: [ restartingApp: boolean ]) {
+  const [ restartingApp ] = deps;
+  const { currentPurchase } = useIAP();
+  useEffect(() => {
+    if (currentPurchase && restartingApp === false) {
+      o.onTransactionProcessing();
+      finishTransaction({ purchase: currentPurchase, isConsumable: false }).then(() => o.onFinishTransaction());
+    }
+  }, [currentPurchase, restartingApp]);
+}
+
+export function useCurrentPurchaseError(o: {
+  onError: (errorMessage: string) => void
+}) {
+  const { currentPurchaseError } = useIAP();
+  useEffect(() => {
+    if (currentPurchaseError?.message) {
+      o.onError(currentPurchaseError.message);
+    }
+  }, [currentPurchaseError]);
+}
 
 export function useRestoreSubscription(o: {
   onFinish: () => void

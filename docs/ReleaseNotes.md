@@ -1,8 +1,9 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# BuySubscription PopUp Alert
+# BuySubscription Popup Bug fix
 
-LTS V1: 1.10.27
-LTS V2: 2.0.11
+LTS V1: 1.10.28
+LTS V2: 2.0.12
 
-- Aesthetics improvements on <BuySubscription /> alert popup
+- Subscription store openning not working some times.
+- New hooks added into SubscriptionManager.ts
