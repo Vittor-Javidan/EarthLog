@@ -9,15 +9,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "@expo-google-fonts/fira-code": "^0.2.3",
     "@jest/globals": "^29.5.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/cli-debugger-ui": "^11.3.2",
     "docx": "^8.2.3",
     "expo": "~49.0.7",
+    "expo-app-loading": "^2.1.1",
     "expo-camera": "~13.4.4",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~3.3.4",
     "expo-file-system": "~15.4.5",
+    "expo-font": "~11.4.0",
     "expo-haptics": "~12.4.0",
     "expo-linking": "~5.0.2",
     "expo-localization": "~14.3.0",
