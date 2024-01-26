@@ -14,8 +14,8 @@ export const ManualInputButton = memo((props: {
 	onPress: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.gps[config.language], []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const R                     = useMemo(() => translations.widgetInput.gps[config.language], []);
 	const [pressed, setPressed] = useState<boolean>(false);
 
   const onPress = useCallback(() => {

@@ -97,8 +97,9 @@ const FeedbackMessage = memo((props: {
           />
         </View>
       )}
-      <Text
+      <Text p
         style={{
+          textAlign: 'left',
           color: theme.font,
           fontSize: 10,
         }}

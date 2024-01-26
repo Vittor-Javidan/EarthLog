@@ -2,12 +2,12 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
+import ConfigService from '@V1/Services/ConfigService';
 import FontService from '@V1/Services/FontService';
 
 import { Button } from '@V1/Button/index';
-import ConfigService from '@V1/Services/ConfigService';
-import { translations } from '@V1/Translations/index';
 
 export const SelectionOptionButton = memo((props: {
   label: string
@@ -83,16 +83,14 @@ export const OptionLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.selection[config.language], []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const R                     = useMemo(() => translations.widgetInput.selection[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
-
-  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -107,11 +105,12 @@ export const OptionLabel = memo((props: {
         style={{
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : props.theme.background,
+          fontFamily: FontService.FONT_FAMILY.h3,
           fontSize: FontService.FONTS.h3,
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,
-          fontStyle: isLabelEmpty ? 'italic' : undefined,
+          width: '100%',
         }}
         placeholder={R['Option name']}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}

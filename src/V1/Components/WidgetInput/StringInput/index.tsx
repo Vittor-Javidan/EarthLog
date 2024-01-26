@@ -5,6 +5,7 @@ import { deepCopy } from '@V1/Globals/DeepCopy';
 import { StringInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
+import FontService from '@V1/Services/FontService';
 
 import { LC } from '../__LC__';
 
@@ -29,9 +30,8 @@ export const StringInput = memo((props: {
    * callback to trigger.
   */
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.string[config.language], []);
-
+  const config                        = useMemo(() => ConfigService.config, []);
+  const R                             = useMemo(() => translations.widgetInput.string[config.language], []);
   const [inputData  , setInputData  ] = useState<StringInputData>(deepCopy(props.inputData));
   const [deletedText, setDeletedText] = useState<string>('');
   const [showUndo   , setShowUndo   ] = useState<boolean>(false);
@@ -46,7 +46,7 @@ export const StringInput = memo((props: {
   }, [props.onSave]);
 
   const onLabelChange = useCallback((newLabel: string, inputData: StringInputData) => {
-    const newData: StringInputData = { ...inputData, label: newLabel};
+    const newData: StringInputData = { ...inputData, label: newLabel };
     asyncSave(newData);
     setInputData(newData);
   }, [asyncSave]);
@@ -121,7 +121,8 @@ export const StringInput = memo((props: {
             paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
             backgroundColor: props.theme.background,
             color: props.theme.font,
-            fontStyle: props.inputData.value === '' ? 'italic' : 'normal',
+            fontFamily: FontService.FONT_FAMILY.p,
+            fontStyle: 'normal',
           }}
         />
       </View>

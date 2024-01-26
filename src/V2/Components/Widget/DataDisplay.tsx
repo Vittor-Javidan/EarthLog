@@ -55,7 +55,7 @@ export const DataDisplay = memo((props: {
       delay={30}
       duration={100}
       style={{
-        gap: 15,
+        gap: 20,
       }}
     >
       {AllInputs}

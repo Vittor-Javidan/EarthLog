@@ -25,7 +25,7 @@ export const WidgetPreview = memo((props: {
     >
       <View
         style={{
-          gap: 5,
+          gap: 15,
         }}
       >
         <Text h2
@@ -38,7 +38,7 @@ export const WidgetPreview = memo((props: {
           {R['Widget preview']}
         </Text>
         <View
-          style={{ gap: 15 }}
+          style={{ gap: 20 }}
         >
           <WidgetInput.Boolean
             inputData={{

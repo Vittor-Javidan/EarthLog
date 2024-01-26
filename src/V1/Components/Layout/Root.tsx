@@ -112,24 +112,40 @@ const Navbar = memo((props: {
       }]}
     >
       <View
-        style={{
-          flex: 8,
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-          paddingHorizontal: 10,
-        }}
+        style={{ flex: 8 }}
       >
-        <Text h1
-          style={{ color: theme.font }}
+        <View
+          style={{
+            flex: 6,
+            paddingHorizontal: 10,
+            justifyContent: 'center',
+          }}
         >
-          {props.title}
-        </Text>
-        {props.subtitle !== '' && (
-          <Text p
-            style={{ color: theme.font }}
+          <Text h1
+            style={{
+              color: theme.font,
+            }}
           >
-            {props.subtitle}
+            {props.title}
           </Text>
+        </View>
+        {props.subtitle !== '' && (
+          <View
+            style={{
+              flex: 4,
+              paddingHorizontal: 10,
+              justifyContent: 'center',
+            }}
+          >
+              <Text p
+                style={{
+                  color: theme.font,
+                  fontSize: 12,
+                }}
+              >
+                {props.subtitle}
+              </Text>
+          </View>
         )}
       </View>
       <MenuButton

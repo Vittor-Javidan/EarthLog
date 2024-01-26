@@ -29,9 +29,9 @@ export const PictureInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const id_project = useMemo(() => props.widgetScope.id_project, []);
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.picture[config.language], []);
+  const id_project                                 = useMemo(() => props.widgetScope.id_project, []);
+  const config                                     = useMemo(() => ConfigService.config, []);
+  const R                                          = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [inputData         , setInputData        ] = useState<PictureInputData>(deepCopy(props.inputData));
   const [allMissingPictures, setAllMissingìctures] = useState<string[]>(CacheService.identifyMissingPictures({ id_project }));
   const [show              , setShow             ] = useState({

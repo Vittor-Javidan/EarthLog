@@ -6,6 +6,7 @@ import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, r
 import { translations } from '@V2/Translations/index';
 import HapticsService from '@V2/Services/HapticsService';
 import ConfigService from '@V2/Services/ConfigService';
+import FontService from '@V2/Services/FontService';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
@@ -199,6 +200,7 @@ const CancelButton = memo((props: {
 		>
       <Text
 				style={{
+          fontFamily: FontService.FONT_FAMILY.p,
 					fontSize: 200,
           color: pressed ? props.theme.background : props.theme.font,
           paddingVertical: 5,

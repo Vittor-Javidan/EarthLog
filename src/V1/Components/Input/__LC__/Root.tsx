@@ -1,6 +1,8 @@
 import React, { ReactNode, memo } from 'react';
 import { View, Platform } from 'react-native';
 
+import FontService from '@V1/Services/FontService';
+
 import { Text } from '@V1/Text/index';
 
 type InputTheme = {
@@ -24,7 +26,7 @@ export const InputRoot = memo((props: {
       <View
         style={{
           position: 'absolute',
-          top: Platform.OS === 'ios' ? 2 : 0,
+          top: Platform.OS === 'ios' ? 0 : -2,
           paddingLeft: 15,
           zIndex: 1,
         }}
@@ -33,6 +35,7 @@ export const InputRoot = memo((props: {
           style={{
             backgroundColor: props.theme.background,
             color: props.theme.font,
+            fontFamily: FontService.FONT_FAMILY.h3,
             fontSize: 18,
             paddingHorizontal: 5,
           }}

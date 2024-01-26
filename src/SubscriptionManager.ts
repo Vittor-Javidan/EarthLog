@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
-import * as Network from 'expo-network';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   initConnection,
@@ -13,6 +12,8 @@ import {
   flushFailedPurchasesCachedAsPendingAndroid,
   finishTransaction,
 } from 'react-native-iap';
+
+import NetworkManager from '@NetworkManager';
 
 export type AppSubscribePlan = 'Free' | 'Premium'
 
@@ -147,7 +148,7 @@ export default class SubscriptionManager {
 
     this.userPlan = 'Free';
 
-    if (await this.hasInternetConection() === false) {
+    if (await NetworkManager.hasInternetConection() === false) {
       await this.readOfflineAccess({
         onFinish: () => o.onFinish(),
       });
@@ -187,7 +188,7 @@ export default class SubscriptionManager {
     onError: (errorMessage: string) => void
   }) {
 
-    if (!o.skipConnectionCheck && await this.hasInternetConection() === false) {
+    if (!o.skipConnectionCheck && await NetworkManager.hasInternetConection() === false) {
       o.onError('No internet connection');
       return;
     }
@@ -258,19 +259,4 @@ export default class SubscriptionManager {
       alert('Could not remove offline premium access');
     }
   }
-
-  private static async hasInternetConection(): Promise<boolean> {
-    try {
-      const networkPromise = Network.getNetworkStateAsync();
-      const timeoutPromise = new Promise<void>((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000));
-      const network = await Promise.race([
-        networkPromise,
-        timeoutPromise,
-      ]);
-      return network?.isInternetReachable ?? false;
-    } catch (error) {
-      return false;
-    }
-  }
-
 }

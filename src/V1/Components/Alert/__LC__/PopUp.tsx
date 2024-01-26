@@ -1,7 +1,8 @@
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
 import React, { memo, ReactNode, useMemo } from 'react';
 import { View } from 'react-native';
+
+import ConfigService from '@V1/Services/ConfigService';
+import ThemeService from '@V1/Services/ThemeService';
 
 export const PopUp = memo((props: {
   children: ReactNode
@@ -14,7 +15,7 @@ export const PopUp = memo((props: {
     <View
       style={{
         width: '100%',
-        maxHeight: '80%',
+        maxHeight: '95%',
         backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,

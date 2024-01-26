@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useSharedValue, withDelay, withTiming, useAnimatedStyle, AnimatedStyle } from 'react-native-reanimated';
 
 export const FadeOut = (props: {
   delay: number
   duration: number
   children: ReactNode
-  style?: StyleProp<Animated.AnimateStyle<StyleProp<ViewStyle>>>
+  style?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>
 }) => {
 
   const opacity = useSharedValue(0);
@@ -30,4 +30,3 @@ export const FadeOut = (props: {
     </Animated.View>
   );
 };
-

@@ -115,24 +115,29 @@ const ProjectButton = memo((props: {
           />
         )}
       </View>
-      <View>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
         <Text p
           style={{
             color: theme.font_button,
+            textAlign: 'left',
           }}
         >
           {props.projectSettings.name}
         </Text>
-        <Text
+        <Text p
           style={{
             color: theme.font_button,
+            textAlign: 'left',
             fontSize: 8,
           }}
         >
           {props.projectSettings.id_project}
         </Text>
       </View>
-
 		</Pressable>
   );
 });

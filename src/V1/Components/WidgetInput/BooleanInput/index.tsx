@@ -24,9 +24,8 @@ export const BooleanInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.boolean[config.language], []);
-
+  const config                     = useMemo(() => ConfigService.config, []);
+  const R                          = useMemo(() => translations.widgetInput.boolean[config.language], []);
   const [inputData , setInputData] = useState<BooleanInputData>(deepCopy(props.inputData));
 
   const notApplicableUndefined = inputData.notApplicable === undefined;
@@ -113,7 +112,6 @@ export const BooleanInput = memo((props: {
         <Text h3
           style={{
             color: valueColor,
-            fontWeight: '900',
           }}
         >
           {R[`${inputData.value}`]}

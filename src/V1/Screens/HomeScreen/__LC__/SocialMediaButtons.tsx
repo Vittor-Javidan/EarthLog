@@ -56,6 +56,7 @@ const YoutubeTutorialButton = memo(() => {
         justifyContent: 'space-between',
         borderRadius: 10,
         backgroundColor: pressed ? theme.background_active : YOUTUBE_COLOR,
+        paddingVertical: 5,
         paddingLeft: 5,
         paddingRight: 10,
         elevation: 3,
@@ -64,7 +65,6 @@ const YoutubeTutorialButton = memo(() => {
       <Text h1
         style={{
           color: pressed ? YOUTUBE_COLOR : theme.font,
-          fontWeight: '900',
           textAlign: 'left',
         }}
       >
@@ -114,6 +114,7 @@ const LinkedinCommunityButton = memo(() => {
         justifyContent: 'space-between',
         borderRadius: 10,
         backgroundColor: pressed ? theme.background_active : LINKEDIN_COLOR,
+        paddingVertical: 5,
         paddingLeft: 10,
         paddingRight: 5,
         elevation: 3,
@@ -122,7 +123,6 @@ const LinkedinCommunityButton = memo(() => {
       <Text h1
         style={{
           color: pressed ? LINKEDIN_COLOR : theme.font,
-          fontWeight: '900',
         }}
       >
         {R['Community']}
