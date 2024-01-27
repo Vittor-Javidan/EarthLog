@@ -26,9 +26,9 @@ export const WidgetLabel = memo((props: {
   return (
     <View
       style={{
-        alignItems: 'flex-start',
-        alignSelf: 'center',
+        alignItems: 'center',
         paddingHorizontal: 5,
+        width: '100%',
       }}
     >
       <TextInput
@@ -43,7 +43,7 @@ export const WidgetLabel = memo((props: {
           paddingVertical: 0,
           paddingHorizontal: 5,
           minHeight: 34,
-          minWidth: 200,
+          width: '90%',
         }}
         placeholder={R['Widget name']}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}

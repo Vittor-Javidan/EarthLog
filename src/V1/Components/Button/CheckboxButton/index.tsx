@@ -20,8 +20,8 @@ export const Checkbox = memo((props: {
         backgroundColor: props.value ? props.theme.confirm : props.theme.font,
         justifyContent: 'center',
         alignItems: 'center',
-        height: 25,
-        width: 25,
+        height: 30,
+        width: 30,
         borderRadius: 6,
       }}
     >

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { LayoutChangeEvent, Pressable, View } from 'react-native';
 
 import { WidgetTheme } from '@V2/Types/ProjectTypes';
 
@@ -17,13 +17,21 @@ export const ThemeDisplay = memo((props: {
   onThemeSelected: (themeName: ThemeNames_Widgets) => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const config                               = useMemo(() => ConfigService.config, []);
+  const R                                    = useMemo(() => translations.widget.Root[config.language], []);
+  const [startAnimation , setStartAnimation] = useState<boolean>(false);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
 
   return (
     <Animation.FadeOut
-      delay={30}
-      duration={100}
+      start={startAnimation}
+      duration={300}
+      onLayout={event => onLayout(event)}
     >
       <Text h3
         style={{

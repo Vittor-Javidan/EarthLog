@@ -1,6 +1,6 @@
 <en-US>
-- Bug fix: Subscription store openning not working some times.
+- Some visual bugs fixed
 </en-US>
 <pt-BR>
-- Correção de bug: Loja de subscrição não abrindo algumas vezes.
+- Correção de alguns bugs visuais
 </pt-BR>

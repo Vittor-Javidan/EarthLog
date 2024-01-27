@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { View, Image, LayoutRectangle, TextInput, Platform } from 'react-native';
+import { View, Image, LayoutRectangle, TextInput, Platform, LayoutChangeEvent } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@V1/Types/ProjectTypes';
@@ -24,11 +24,12 @@ export const PicturesCarousel = memo((props: {
   onDownloadAllMissingPictures: () => void
 }) => {
 
-  const pageRef                         = useRef<PagerView | null>(null);
-  const config                          = useMemo(() => ConfigService.config, []);
-  const R                               = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [dimensions  , setDimensions  ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
-  const [pictureIndex, setPictureIndex] = useState<number>(0);
+  const pageRef                             = useRef<PagerView | null>(null);
+  const config                              = useMemo(() => ConfigService.config, []);
+  const R                                   = useMemo(() => translations.widgetInput.picture[config.language], []);
+  const [dimensions    , setDimensions    ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
+  const [pictureIndex  , setPictureIndex  ] = useState<number>(0);
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
 
   const scrollRight = useCallback((currentIndex: number) => {
     if (pageRef.current !== null) {
@@ -41,6 +42,12 @@ export const PicturesCarousel = memo((props: {
       pageRef.current.setPage(currentIndex - 1);
     }
   }, [props.pictures, pageRef.current]);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
 
   const AllImages = props.pictures.map(pictureData => {
     return !props.missingPictures.includes(pictureData.id_picture) ? (
@@ -124,8 +131,9 @@ export const PicturesCarousel = memo((props: {
     {props.pictures[pictureIndex] !== undefined && (
       <Animation.FadeOut
         key={props.pictures[pictureIndex].id_picture}
-        delay={30}
-        duration={200}
+        start={startAnimation}
+        duration={300}
+        onLayout={event => onLayout(event)}
       >
         <Text h3
           style={{
@@ -163,6 +171,15 @@ const InfoDisplay = memo((props: {
   selectedPicture: number,
   pictureAmount: number
 }) => {
+
+  const [startAnimation , setStartAnimation] = useState<boolean>(false);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
+
   return (
     <View
       style={{
@@ -174,8 +191,9 @@ const InfoDisplay = memo((props: {
     >
       <Animation.FadeOut
         key={props.id_picture}
-        delay={30}
-        duration={200}
+        start={startAnimation}
+        duration={300}
+        onLayout={event => onLayout(event)}
       >
         <Text p
           style={{

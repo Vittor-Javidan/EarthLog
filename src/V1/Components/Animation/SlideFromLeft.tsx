@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Dimensions, LayoutChangeEvent } from 'react-native';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useSharedValue, withTiming, useAnimatedStyle, withDelay } from 'react-native-reanimated';
 
 export const SlideFromLeft = (props: {
   start: boolean;
@@ -17,7 +17,7 @@ export const SlideFromLeft = (props: {
   }));
 
   if (props.start) {
-    leftOffset.value = withTiming(width, { duration: props.duration });
+    leftOffset.value = withDelay(50, withTiming(width, { duration: props.duration }));
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback } from 'react';
-import { Pressable } from 'react-native';
+import { LayoutChangeEvent, Pressable } from 'react-native';
 
 import HapticsService from '@V1/Services/HapticsService';
 
@@ -19,7 +19,8 @@ export const NavbarIconButton = memo((props: {
   onPress: () => void
 }) => {
 
-  const [pressed, setPressed] = useState<boolean>(false);
+  const [pressed        , setPressed       ] = useState<boolean>(false);
+  const [startAnimation , setStartAnimation] = useState<boolean>(false);
 
   const onPress = useCallback(() => {
     props.onPress();
@@ -31,10 +32,17 @@ export const NavbarIconButton = memo((props: {
     HapticsService.vibrate('success');
   }, []);
 
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
+
   return (
     <Animation.FadeOut
-      delay={30}
-      duration={100}
+      start={startAnimation}
+      duration={300}
+      onLayout={event => onLayout(event)}
     >
       <Pressable
         onPressIn={() => onPressIn()}

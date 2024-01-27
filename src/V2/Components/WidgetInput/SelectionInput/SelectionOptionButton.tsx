@@ -106,7 +106,7 @@ export const OptionLabel = memo((props: {
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : props.theme.background,
           fontFamily: FontService.FONT_FAMILY.h3,
-          fontSize: FontService.FONTS.h3,
+          fontSize: 14,
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,

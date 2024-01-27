@@ -1,7 +1,6 @@
-import React, { useState, useEffect, memo } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React, { memo, useCallback, useState } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 
-import { Loading } from '@V2/Types/AppTypes';
 import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 
 import { Animation } from '@V2/Animation/index';
@@ -20,7 +19,13 @@ export const DataDisplay = memo((props: {
   onInputMoveDow: (id_input: string) => void
 }) => {
 
-  const [loading, setLoading] = useState<Loading>(props.inputs.length < 4 ? 'Loaded' : 'Loading');
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
 
   const AllInputs = props.inputs.map((inputData, index) => {
 
@@ -46,30 +51,16 @@ export const DataDisplay = memo((props: {
     );
   });
 
-  useEffect(() => {
-    setLoading('Loaded');
-  }, []);
-
-  return loading === 'Loaded' ? (
+  return (
     <Animation.FadeOut
-      delay={30}
-      duration={100}
+      start={startAnimation}
+      duration={300}
+      onLayout={event => onLayout(event)}
       style={{
         gap: 20,
       }}
     >
       {AllInputs}
     </Animation.FadeOut>
-  ) : (
-    <View
-      style={{
-        paddingVertical: 20,
-      }}
-    >
-      <ActivityIndicator
-        size="large"
-        color={props.theme.font}
-      />
-    </View>
   );
 });

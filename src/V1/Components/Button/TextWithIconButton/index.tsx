@@ -45,11 +45,13 @@ export const TextWithIcon = memo((props: {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 5,
+        gap: 10,
 				backgroundColor: pressed ? props.theme.background_active : props.theme.background,
 			}, props.style]}
 		>
       <Text h2
 				style={{
+          flex: 1,
           color: pressed ? props.theme.font_active : props.theme.font,
 				}}
 			>

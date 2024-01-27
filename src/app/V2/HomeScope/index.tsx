@@ -129,17 +129,6 @@ const Drawer = memo(() => {
       }}
       onPress={() => navigate('VERSION CHANGE SCOPE')}
     />
-    <Button.TextWithIcon
-      title={R['Privacy Policy']}
-      iconName="shield-outline"
-      theme={{
-        font:              theme.font,
-        font_active:       theme.font_active,
-        background:        theme.background,
-        background_active: theme.background_active,
-      }}
-      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/PRIVACY_POLICIES/blob/main/EARTH_LOG.md')}
-    />
     {Platform.OS === 'android' && (
       <Button.TextWithIcon
         title={R['Google Play subscriptions']}
@@ -153,6 +142,17 @@ const Drawer = memo(() => {
         }}
       />
     )}
+    <Button.TextWithIcon
+      title={R['Privacy Policy']}
+      iconName="shield-outline"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/PRIVACY_POLICIES/blob/main/EARTH_LOG.md')}
+    />
   </>);
 });
 
