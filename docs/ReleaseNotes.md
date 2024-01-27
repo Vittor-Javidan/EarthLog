@@ -1,15 +1,13 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1, 2] Widget Input Changes
+# [1, 2] Widget Input Label Limit
 
-1.10.33:
-- Now widget input label has a background color that contrast with the widget background color.
-- Fixed the Widget Dark theme placeholder color, to improve contrast with background.
-- Option and Selection widgets <OptionButton /> now has FontFamily of p when value is empty.
-- Now Input Label has FontFamily of p when value is empty.
+1.10.34:
+- Removed the limitation of widget inputs having a max of 25 characteres.
+- Added bottom padding for some widget displays.
+- Changed some widget translations.
 
-2.0.17:
-- Now widget input label has a background color that contrast with the widget background color.
-- Fixed the Widget Dark theme placeholder color, to improve contrast with background.
-- Option and Selection widgets <OptionButton /> now has FontFamily of p when value is empty.
-- Now Input Label has FontFamily of p when value is empty.
+2.0.18:
+- Removed the limitation of widget inputs having a max of 25 characteres.
+- Added bottom padding for some widget displays.
+- Changed some widget translations.

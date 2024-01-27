@@ -40,7 +40,8 @@ export const ThemeDisplay = memo((props: {
           justifyContent: 'center',
           gap: 5,
           paddingTop: 10,
-          paddingHorizontal: 10,
+          paddingHorizontal: 20,
+          paddingBottom: 20,
         }}
       >
         <ThemeButtons

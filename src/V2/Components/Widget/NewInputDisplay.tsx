@@ -42,7 +42,7 @@ export const NewInputDisplay = memo((props: {
           alignSelf: 'center',
         }}
       >
-        {R['Add a new field:']}
+        {R['Add a new input:']}
       </Text>
       <View
         style={{
@@ -52,6 +52,7 @@ export const NewInputDisplay = memo((props: {
           gap: 5,
           paddingTop: 10,
           paddingHorizontal: 20,
+          paddingBottom: 20,
         }}
       >
         {AllButtons}

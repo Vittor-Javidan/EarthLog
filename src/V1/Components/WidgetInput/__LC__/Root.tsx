@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, memo, useCallback, useMemo } from 'react';
-import { StyleProp, TextInput, View, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
 import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
@@ -26,6 +26,13 @@ export const InputRoot = memo((props: {
   onInputMoveUp: () => void
   onInputMoveDow: () => void
 }) => {
+
+  const [inputTopPadding, setInputTopPadding] = useState<number | null>(null);
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    setInputTopPadding(Math.round(event.nativeEvent.layout.height - 17));
+  }, []);
+
   return (
     <Animation.FadeOut
       duration={300}
@@ -40,7 +47,6 @@ export const InputRoot = memo((props: {
           flexDirection: 'row',
           justifyContent: 'space-between',
           zIndex: 1,
-          height: 30,
           width: '95%',
           top: 0,
           marginHorizontal: 15,
@@ -51,6 +57,7 @@ export const InputRoot = memo((props: {
           editable={!props.lockedLabel}
           onLabelChange={(label) => props.onLabelChange(label)}
           theme={props.theme}
+          onLayout={(event) => onLayout(event)}
         />
         <View
           style={{
@@ -75,7 +82,7 @@ export const InputRoot = memo((props: {
       <View
         style={[{
           width: '100%',
-          paddingTop: 15,
+          paddingTop: inputTopPadding ?? 17,
           paddingHorizontal: 10,
           gap: 10,
           backgroundColor: props.theme.background,
@@ -95,17 +102,12 @@ const InputLabel = memo((props: {
   editable: boolean
   theme: WidgetTheme
   onLabelChange: (label: string) => void
+  onLayout: (event: LayoutChangeEvent) => void
 }) => {
 
   const config                = useMemo(() => ConfigService.config, []);
   const R                     = useMemo(() => translations.widgetInput.Root[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
-
-  const onLabelChange = useCallback((newLabel: string) => {
-    if (newLabel.length <= 25) {
-      props.onLabelChange(newLabel);
-    }
-  }, [props.onLabelChange]);
 
   const onFocus = useCallback(() => {
     setFocused(true);
@@ -119,8 +121,8 @@ const InputLabel = memo((props: {
       style={{
         top: 2,
         zIndex: 1,
-        backgroundColor: props.theme.background,
       }}
+      onLayout={(event) => props.onLayout(event)}
     >
       <TextInput
         style={{
@@ -131,18 +133,19 @@ const InputLabel = memo((props: {
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,
-          minWidth: 225,
+          width: 225,
           borderWidth: 3,
           borderColor: props.theme.font,
         }}
         value={props.label}
         placeholder={isLabelEmpty ? R['Input name'] : ''}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
-        onChangeText={(text) => onLabelChange(text)}
+        onChangeText={(text) => props.onLabelChange(text)}
         onSubmitEditing={() => setFocused(false)}
         onBlur={() => setFocused(false)}
         onFocus={() => onFocus()}
         editable={props.editable}
+        multiline
       />
     </View>
   );

@@ -8,7 +8,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Saved': string
   'Saving...': string
   'Select a theme:': string
-  'Add a new field:': string
+  'Add a new input:': string
   'Widget name': string
 } & Record<InputTypes, string>>
 
@@ -20,7 +20,7 @@ export const R_Widget_Root: TranslationDTO = {
     'Saved': 'Saved',
     'Saving...': 'Saving...',
     'Select a theme:': 'Select a theme:',
-    'Add a new field:': 'Add a new field:',
+    'Add a new input:': 'Add a new input:',
     'Widget name': 'Widget name',
 
     // INPUT TYPES
@@ -38,7 +38,7 @@ export const R_Widget_Root: TranslationDTO = {
     'Saved': 'Salvo',
     'Saving...': 'Salvando...',
     'Select a theme:': 'Selecione um tema:',
-    'Add a new field:': 'Adicione um novo campo',
+    'Add a new input:': 'Adicionar um novo input:',
     'Widget name': 'Nome do widget',
 
     // INPUT TYPES
