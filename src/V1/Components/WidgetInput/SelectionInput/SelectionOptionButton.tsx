@@ -92,6 +92,8 @@ export const OptionLabel = memo((props: {
     HapticsService.vibrate('success');
   }, []);
 
+  const isLabelEmpty = props.label === '';
+
   return (
     <View
       style={{
@@ -105,7 +107,7 @@ export const OptionLabel = memo((props: {
         style={{
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : props.theme.background,
-          fontFamily: FontService.FONT_FAMILY.h3,
+          fontFamily: isLabelEmpty ? FontService.FONT_FAMILY.p : FontService.FONT_FAMILY.h3,
           fontSize: 14,
           borderRadius: 5,
           paddingVertical: 0,

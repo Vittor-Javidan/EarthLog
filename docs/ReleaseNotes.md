@@ -1,17 +1,15 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1, 2] Animations refactor
+# [1, 2] Widget Input Changes
 
-1.10.32:
-- Added padding top on <CredentialWidget />
-- Animations are now memoized
-- Now start animation states are inside the animation component scope.
-- Remoce the props "onLayout" and "start" from animation components
-- Fix <SlideFromLeft /> animation starting before ready.
+1.10.33:
+- Now widget input label has a background color that contrast with the widget background color.
+- Fixed the Widget Dark theme placeholder color, to improve contrast with background.
+- Option and Selection widgets <OptionButton /> now has FontFamily of p when value is empty.
+- Now Input Label has FontFamily of p when value is empty.
 
-2.0.16:
-- Added padding top on <CredentialWidget />
-- Animations are now memoized
-- Now start animation states are inside the animation component scope.
-- Remoce the props "onLayout" and "start" from animation components
-- Fix <SlideFromLeft /> animation starting before ready.
+2.0.17:
+- Now widget input label has a background color that contrast with the widget background color.
+- Fixed the Widget Dark theme placeholder color, to improve contrast with background.
+- Option and Selection widgets <OptionButton /> now has FontFamily of p when value is empty.
+- Now Input Label has FontFamily of p when value is empty.
