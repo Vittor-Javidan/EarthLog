@@ -1,9 +1,9 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import SubscriptionManager from '@SubscriptionManager';
 
+import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 import { translations } from '@V1/Translations/index';
 import { SampleSettings } from '@V1/Types/ProjectTypes';
 import ConfigService from '@V1/Services/ConfigService';
@@ -14,15 +14,13 @@ import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';
-import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 
 export const ProjectScreen = memo(() => {
 
-  const id_project                          = useLocalSearchParams().id_project as string;
-  const config                              = useMemo(() => ConfigService.config, []);
-  const RError                              = useMemo(() => translations.global.errors[config.language], []);
-  const [samples       , setSamples       ] = useState<SampleSettings[]>(CacheService.allSamples);
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const id_project            = useLocalSearchParams().id_project as string;
+  const config                = useMemo(() => ConfigService.config, []);
+  const RError                = useMemo(() => translations.global.errors[config.language], []);
+  const [samples, setSamples] = useState<SampleSettings[]>(CacheService.allSamples);
 
   const onCreateSample = useCallback(async () => {
     if (SubscriptionManager.freeUserLimitCheck(samples.length >= 5)) {
@@ -45,12 +43,6 @@ export const ProjectScreen = memo(() => {
     }, () => {});
   }, []);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={
@@ -62,8 +54,6 @@ export const ProjectScreen = memo(() => {
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <Layout.ScrollView
           contentContainerStyle={{

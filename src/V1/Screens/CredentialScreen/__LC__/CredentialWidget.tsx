@@ -95,6 +95,7 @@ export const CredentialWidget = memo((props: {
     >
       <View
         style={{
+          paddingTop: 20,
           gap: 15,
         }}
       >

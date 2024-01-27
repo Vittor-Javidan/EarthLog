@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
@@ -15,9 +15,8 @@ export const NewInputDisplay = memo((props: {
   onCreate: (inputData: InputData) => void
 }) => {
 
-  const config                               = useMemo(() => ConfigService.config, []);
-  const R                                    = useMemo(() => translations.widget.Root[config.language], []);
-  const [startAnimation , setStartAnimation] = useState<boolean>(false);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widget.Root[config.language], []);
 
   const onCreate = useCallback((inputType: InputTypes) => {
     props.onCreate(ProjectService.getInputData({ inputType }));
@@ -32,17 +31,9 @@ export const NewInputDisplay = memo((props: {
     />
   ));
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Animation.FadeOut
-      start={startAnimation}
       duration={300}
-      onLayout={event => onLayout(event)}
     >
       <Text h3
         style={{

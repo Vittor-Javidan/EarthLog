@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { Dimensions, LayoutChangeEvent } from 'react-native';
+import { Dimensions } from 'react-native';
 
 import { CredentialDTO } from '@V2/Types/AppTypes';
 import CredentialService from '@V2/Services/CredentialService';
@@ -11,8 +11,7 @@ import { LC } from './__LC__';
 
 export const CredentialSelectionScreen = memo(() => {
 
-  const [credentials   , setCredentials   ] = useState<CredentialDTO[]>(CredentialService.allCredentials);
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const [credentials, setCredentials] = useState<CredentialDTO[]>(CredentialService.allCredentials);
 
   const onCreateCredential = useCallback(async () => {
     const newCredential = CredentialService.getNewCredential();
@@ -30,12 +29,6 @@ export const CredentialSelectionScreen = memo(() => {
     setCredentials(newData);
   }, [credentials]);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={
@@ -46,8 +39,6 @@ export const CredentialSelectionScreen = memo(() => {
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <Layout.ScrollView
           contentContainerStyle={{

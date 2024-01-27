@@ -1,22 +1,27 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo, useCallback, useState } from 'react';
 import { StyleProp, ViewStyle, LayoutChangeEvent } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle, AnimatedStyle, withDelay } from 'react-native-reanimated';
 
-export const FadeOut = (props: {
-  start: boolean;
+export const FadeOut = memo((props: {
   duration: number
   children: ReactNode
   style?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>
-  onLayout: (event: LayoutChangeEvent) => void
 }) => {
 
-  const opacity = useSharedValue(0);
+  const opacity                             = useSharedValue(0);
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
 
-  if (!props.start) {
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
+
+  if (startAnimation) {
     opacity.value = withDelay(50, withTiming(1, { duration: props.duration }));
   }
 
@@ -26,9 +31,9 @@ export const FadeOut = (props: {
         props.style,
         animatedStyle,
       ]}
-      onLayout={(event) => props.onLayout(event)}
+      onLayout={(event) => onLayout(event)}
     >
       {props.children}
     </Animated.View>
   );
-};
+});

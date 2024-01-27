@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback } from 'react';
-import { Dimensions, LayoutChangeEvent } from 'react-native';
+import { Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { GPS_DTO, WidgetData } from '@V1/Types/ProjectTypes';
@@ -17,10 +17,9 @@ export const SampleDataScreens = memo((props: {
   referenceGPS: GPS_DTO | undefined
 }) => {
 
-  const id_project                          = useLocalSearchParams().id_project as string;
-  const id_sample                           = useLocalSearchParams().id_sample as string;
-  const [sampleWidgets , setSampleWidgets ] = useState<WidgetData[]>(CacheService.allWidgets_Sample);
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const id_project                         = useLocalSearchParams().id_project as string;
+  const id_sample                          = useLocalSearchParams().id_sample as string;
+  const [sampleWidgets , setSampleWidgets] = useState<WidgetData[]>(CacheService.allWidgets_Sample);
 
   const onCreateWidget = useCallback(async () => {
     const newWidget = ProjectService.getWidgetData();
@@ -68,12 +67,6 @@ export const SampleDataScreens = memo((props: {
     }, () => setSampleWidgets(CacheService.allWidgets_Sample));
   }, []);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={
@@ -85,8 +78,6 @@ export const SampleDataScreens = memo((props: {
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <Layout.ScrollView
           contentContainerStyle={{

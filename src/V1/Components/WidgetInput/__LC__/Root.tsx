@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, memo, useCallback, useMemo } from 'react';
-import { LayoutChangeEvent, StyleProp, TextInput, View, ViewStyle } from 'react-native';
+import { StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
 import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
@@ -26,20 +26,9 @@ export const InputRoot = memo((props: {
   onInputMoveUp: () => void
   onInputMoveDow: () => void
 }) => {
-
-  const [startAnimation , setStartAnimation] = useState<boolean>(false);
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Animation.FadeOut
-      start={startAnimation}
       duration={300}
-      onLayout={event => onLayout(event)}
       style={{
         paddingHorizontal: 5,
         paddingTop: 15,

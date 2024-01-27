@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useState } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import React, { memo } from 'react';
+import { View } from 'react-native';
 
 import { LanguageTag } from '@V2/Types/AppTypes';
 
@@ -11,23 +11,12 @@ import { LC } from './__LC__';
 export const LanguagesSelectionScreen = memo((props: {
   onLanguageChange: (languageTag: LanguageTag) => void
 }) => {
-
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <View
           style={{ gap: 1 }}

@@ -1,5 +1,5 @@
 import React, { useMemo, useState, memo, useCallback, useTransition } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { View } from 'react-native';
 
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
@@ -28,17 +28,15 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const config                               = useMemo(() => ConfigService.config, []);
-  const R                                    = useMemo(() => translations.widget.Root[config.language], []);
-  const [_              , startTransitions]  = useTransition();
-  const [widgetData     , setWidgetData    ] = useState<WidgetData>(deepCopy(props.widgetData));
-  const [editInputs     , setEditInputs    ] = useState<boolean>(false);
-  const [saved          , setSaved         ] = useState<boolean>(true);
-  const [display        , setDisplay       ] = useState<WidgetDisplay>('data display');
-  const [startAnimation , setStartAnimation] = useState<boolean>(false);
-
-  const defaultTheme = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const widgetTheme  = useMemo<WidgetTheme>(() => ({
+  const config                         = useMemo(() => ConfigService.config, []);
+  const R                              = useMemo(() => translations.widget.Root[config.language], []);
+  const defaultTheme                   = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const [_         , startTransitions] = useTransition();
+  const [widgetData, setWidgetData   ] = useState<WidgetData>(deepCopy(props.widgetData));
+  const [editInputs, setEditInputs   ] = useState<boolean>(false);
+  const [saved     , setSaved        ] = useState<boolean>(true);
+  const [display   , setDisplay      ] = useState<WidgetDisplay>('data display');
+  const widgetTheme                    = useMemo<WidgetTheme>(() => ({
     font:             widgetData.widgetTheme?.font             ?? defaultTheme.font,
     font_placeholder: widgetData.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,
     background:       widgetData.widgetTheme?.background       ?? defaultTheme.background,
@@ -176,21 +174,13 @@ export const Widget = memo((props: {
     setWidgetData(prev => ({ ...prev, addToNewSamples: boolean }));
   }, []);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   useAutoSave_widget(() => {
     setSaved(true);
   }, [widgetData, props.widgetScope, saved]);
 
   return (
     <Animation.FadeOut
-      start={startAnimation}
       duration={300}
-      onLayout={event => onLayout(event)}
       style={{
         backgroundColor: widgetTheme.background,
         borderRadius: 10,

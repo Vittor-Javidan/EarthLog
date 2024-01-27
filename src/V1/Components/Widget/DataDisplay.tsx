@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import React, { memo } from 'react';
 
 import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 
@@ -18,14 +17,6 @@ export const DataDisplay = memo((props: {
   onInputMoveUp: (id_input: string) => void
   onInputMoveDow: (id_input: string) => void
 }) => {
-
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
 
   const AllInputs = props.inputs.map((inputData, index) => {
 
@@ -53,9 +44,7 @@ export const DataDisplay = memo((props: {
 
   return (
     <Animation.FadeOut
-      start={startAnimation}
       duration={300}
-      onLayout={event => onLayout(event)}
       style={{
         gap: 20,
       }}

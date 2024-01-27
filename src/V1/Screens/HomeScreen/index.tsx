@@ -1,5 +1,5 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { View } from 'react-native';
 
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
 import CacheService from '@V1/Services/CacheService';
@@ -12,9 +12,8 @@ import { TC } from './__TC__';
 
 export const HomeScreen = memo(() => {
 
-  const lastOpenProjectSettings             = useMemo(() => CacheService.lastOpenProject, [CacheService.lastOpenProject]);
-  const [projects      , setProject       ] = useState<ProjectSettings[]>(CacheService.allProjects);
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const lastOpenProjectSettings = useMemo(() => CacheService.lastOpenProject, [CacheService.lastOpenProject]);
+  const [projects, setProject]  = useState<ProjectSettings[]>(CacheService.allProjects);
 
   const onCreateProject = useCallback(async () => {
     await AlertService.handleAlert(true, {
@@ -28,12 +27,6 @@ export const HomeScreen = memo(() => {
     }, () => setProject(CacheService.allProjects));
   }, []);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={
@@ -45,8 +38,6 @@ export const HomeScreen = memo(() => {
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <View
           style={{

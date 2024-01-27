@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import React, { memo } from 'react';
 
 import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';
@@ -9,23 +8,12 @@ import { TC } from './__TC__';
 export const AppThemeScreen = memo((props: {
   onAppThemeChange: () => void
 }) => {
-
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <Layout.ScrollView
           contentContainerStyle={{

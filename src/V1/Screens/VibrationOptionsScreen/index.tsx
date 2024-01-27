@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { LayoutChangeEvent, View } from 'react-native';
+import { View } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
@@ -12,11 +12,10 @@ import { TC } from './__TC__';
 
 export const VibrationOptionsScreen = memo(() => {
 
-  const config                              = useMemo(() => ConfigService.config, []);
-  const theme                               = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R                                   = useMemo(() => translations.screen.vibrationOptions[config.language], []);
-  const [onlyWarnings  , setOnlyWarnings  ] = useState<boolean>(config.onlyWarningVibrations);
-  const [startAnimation, setStartAnimation] = useState<boolean>(false);
+  const config                          = useMemo(() => ConfigService.config, []);
+  const theme                           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R                               = useMemo(() => translations.screen.vibrationOptions[config.language], []);
+  const [onlyWarnings, setOnlyWarnings] = useState<boolean>(config.onlyWarningVibrations);
 
   const onOptionSelected = useCallback(async (enableOnlyWarnings: boolean) => {
     ConfigService.config.onlyWarningVibrations = enableOnlyWarnings;
@@ -24,20 +23,12 @@ export const VibrationOptionsScreen = memo(() => {
     setOnlyWarnings(enableOnlyWarnings);
   }, [onlyWarnings]);
 
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.height > 0) {
-      setStartAnimation(true);
-    }
-  }, []);
-
   return (
     <Layout.Screen
       screenButtons={<TC.ScreenButtons />}
     >
       <Animation.SlideFromLeft
         duration={200}
-        start={startAnimation}
-        onLayout={event => onLayout(event)}
       >
         <View
           style={{ gap: 1 }}
