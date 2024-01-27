@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
+import { View } from 'react-native';
 
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { CredentialDTO } from '@V2/Types/AppTypes';
@@ -21,10 +22,10 @@ export const CredentialWidget = memo((props: {
   onCredentialDelete: () => void
 }) => {
 
-  const config      = useMemo(() => ConfigService.config, []);
-  const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R           = useMemo(() => translations.screen.credential[config.language], []);
-  const unusedProps = useMemo(() => ({
+  const config                                    = useMemo(() => ConfigService.config, []);
+  const theme                                     = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R                                         = useMemo(() => translations.screen.credential[config.language], []);
+  const unusedProps                               = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,
     isLastInput:    false,
@@ -33,7 +34,6 @@ export const CredentialWidget = memo((props: {
     onInputMoveUp:  () => {},
     widgetRules:    {},
   }), []);
-
   const [credential       , setCredential       ] = useState<CredentialDTO>(deepCopy(props.credential));
   const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
   const [saved            , setSaved            ] = useState<boolean>(true);
@@ -93,59 +93,69 @@ export const CredentialWidget = memo((props: {
         />
       </>}
     >
-      <WidgetLabel
-        label={credential.name}
-        theme={theme}
-        onLabelChange={(newLabel) => onLabelChange(newLabel)}
-      />
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: R['User'],
-          value: credential.user,
-          type: 'string',
-          placeholder: R['Write here your username...'],
-          lockedLabel: true,
-          lockedData: false,
+      <View
+        style={{
+          gap: 15,
         }}
-        onSave={(inputData) => onSaveUser(inputData)}
-        multiline={false}
-        secureTextEntry={!showSensitiveInfo}
-        theme={theme}
-        {...unusedProps}
-      />
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: R['Password'],
-          value: credential.password,
-          type: 'string',
-          placeholder: R['Write here your password...'],
-          lockedLabel: true,
-          lockedData: false,
-        }}
-        onSave={(inputData) => onSavePassword(inputData)}
-        multiline={false}
-        secureTextEntry={!showSensitiveInfo}
-        theme={theme}
-        {...unusedProps}
-      />
-      <WidgetInput.String
-        inputData={{
-          id_input: '',
-          label: R['URL'],
-          value: credential.rootURL,
-          type: 'string',
-          placeholder: R['Write here the server root URL...'],
-          lockedLabel: true,
-          lockedData: false,
-        }}
-        onSave={(inputData) => onSaveURL(inputData)}
-        multiline={false}
-        secureTextEntry={!showSensitiveInfo}
-        theme={theme}
-        {...unusedProps}
-      />
+      >
+        <WidgetLabel
+          label={credential.name}
+          theme={theme}
+          onLabelChange={(newLabel) => onLabelChange(newLabel)}
+        />
+        <View
+          style={{ gap: 20 }}
+        >
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: R['User'],
+              value: credential.user,
+              type: 'string',
+              placeholder: R['Write here your username...'],
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={(inputData) => onSaveUser(inputData)}
+            multiline={false}
+            secureTextEntry={!showSensitiveInfo}
+            theme={theme}
+            {...unusedProps}
+          />
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: R['Password'],
+              value: credential.password,
+              type: 'string',
+              placeholder: R['Write here your password...'],
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={(inputData) => onSavePassword(inputData)}
+            multiline={false}
+            secureTextEntry={!showSensitiveInfo}
+            theme={theme}
+            {...unusedProps}
+          />
+          <WidgetInput.String
+            inputData={{
+              id_input: '',
+              label: R['URL'],
+              value: credential.rootURL,
+              type: 'string',
+              placeholder: R['Write here the server root URL...'],
+              lockedLabel: true,
+              lockedData: false,
+            }}
+            onSave={(inputData) => onSaveURL(inputData)}
+            multiline={false}
+            secureTextEntry={!showSensitiveInfo}
+            theme={theme}
+            {...unusedProps}
+          />
+        </View>
+      </View>
     </Layout.PseudoWidget>
   );
 });

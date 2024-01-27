@@ -20,11 +20,11 @@ export const SampleSettingsWidget = memo((props: {
   onGPSReferenceUpdate: (gpsData: GPS_DTO) => void
 }) => {
 
-  const id_sample       = useLocalSearchParams().id_sample as string;
-  const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R               = useMemo(() => translations.screen.sampleInfo[config.language], []);
-  const unusedProps     = useMemo(() => ({
+  const id_sample                             = useLocalSearchParams().id_sample as string;
+  const config                                = useMemo(() => ConfigService.config, []);
+  const theme                                 = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R                                     = useMemo(() => translations.screen.sampleInfo[config.language], []);
+  const unusedProps                           = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,
     isLastInput:    false,
@@ -33,7 +33,6 @@ export const SampleSettingsWidget = memo((props: {
     onInputMoveUp:  () => {},
     widgetRules:    {},
   }), []);
-
   const [sampleSettings,  setSampleSettings ] = useState<SampleSettings>(deepCopy(CacheService.getSampleFromCache({ id_sample })));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
@@ -60,7 +59,7 @@ export const SampleSettingsWidget = memo((props: {
     >
       <View
         style={{
-          gap: 5,
+          gap: 15,
         }}
       >
         <Text h2
@@ -73,7 +72,7 @@ export const SampleSettingsWidget = memo((props: {
           {R['Sample info']}
         </Text>
         <View
-          style={{ gap: 15 }}
+          style={{ gap: 20 }}
         >
           <WidgetInput.String
             inputData={{

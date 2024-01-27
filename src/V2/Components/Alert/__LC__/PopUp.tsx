@@ -15,7 +15,7 @@ export const PopUp = memo((props: {
     <View
       style={{
         width: '100%',
-        maxHeight: '80%',
+        maxHeight: '95%',
         backgroundColor: theme.background,
         borderRadius: 10,
         paddingVertical: 10,

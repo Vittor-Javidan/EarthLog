@@ -2,6 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { View, TextInput, Platform } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import FontService from '@V1/Services/FontService';
 
 import { Text } from '@V1/Text/index';
 
@@ -62,6 +63,7 @@ export const TextInput_GPS = memo((props: {
           color: invalidValue ? props.theme.wrong : props.theme.font,
           borderColor: invalidValue ? props.theme.wrong : props.theme.font,
           borderBottomWidth: 1,
+          fontFamily: FontService.FONT_FAMILY.p,
         }}
         value={value}
         placeholder={props.value_placeholder}

@@ -16,11 +16,10 @@ export const LastProjectButton = memo((props: {
   projectSettings: ProjectSettings
 }) => {
 
-  const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
-  const R               = useMemo(() => translations.screen.home[config.language], []);
-  const projectSyncData = useMemo(() => CacheService.getSyncDataFromCache({ id_project: props.projectSettings.id_project }), []);
-
+  const config                = useMemo(() => ConfigService.config, []);
+  const theme                 = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R                     = useMemo(() => translations.screen.home[config.language], []);
+  const projectSyncData       = useMemo(() => CacheService.getSyncDataFromCache({ id_project: props.projectSettings.id_project }), []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   const lastProjectOpenExist = props.projectSettings.id_project !== '';
@@ -44,6 +43,7 @@ export const LastProjectButton = memo((props: {
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
+        maxHeight: 70,
         borderRadius: 10,
         backgroundColor: pressed ? theme.background_active : theme.background_Button,
         paddingVertical: 5,
@@ -54,14 +54,11 @@ export const LastProjectButton = memo((props: {
       <View
         style={{
           width: '100%',
-          gap: 5,
         }}
       >
         <Text h2
-          numberOfLine={1}
           style={{
             color: pressed ? theme.font_active : theme.font_Button,
-            fontWeight: '900',
           }}
         >
           {props.projectSettings.name}
@@ -78,14 +75,13 @@ export const LastProjectButton = memo((props: {
             syncData={projectSyncData}
             uploads={props.projectSettings.uploads}
           />
-          <Text
+          <Text p
             style={{
               color: pressed ? theme.font_active : theme.font_Button,
               alignSelf: 'flex-end',
               paddingBottom: 4,
               paddingHorizontal: 4,
               fontSize: 10,
-              fontStyle: 'italic',
             }}
           >
             {R['Recently Open']}

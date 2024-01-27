@@ -20,11 +20,11 @@ export const ProjectSettingsWidget = memo((props: {
   onSampleAliasChange_Plural: (newSampleAlias: string) => void
 }) => {
 
-  const id_project  = useLocalSearchParams().id_project as string;
-  const config      = useMemo(() => ConfigService.config, []);
-  const theme       = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R           = useMemo(() => translations.screen.projectInfo[config.language], []);
-  const unusedProps = useMemo(() => ({
+  const id_project                            = useLocalSearchParams().id_project as string;
+  const config                                = useMemo(() => ConfigService.config, []);
+  const theme                                 = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R                                     = useMemo(() => translations.screen.projectInfo[config.language], []);
+  const unusedProps                           = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,
     isLastInput:    false,
@@ -33,7 +33,6 @@ export const ProjectSettingsWidget = memo((props: {
     onInputMoveUp:  () => {},
     widgetRules:    {},
   }), []);
-
   const [projectSettings, setProjectSettings] = useState<ProjectSettings>(deepCopy(CacheService.getProjectFromCache({ id_project })));
   const [saved,           setSaved          ] = useState<boolean>(true);
 
@@ -76,7 +75,7 @@ export const ProjectSettingsWidget = memo((props: {
     >
       <View
         style={{
-          gap: 5,
+          gap: 15,
         }}
       >
         <Text h2
@@ -89,7 +88,7 @@ export const ProjectSettingsWidget = memo((props: {
           {R['Project info']}
         </Text>
         <View
-          style={{ gap: 15 }}
+          style={{ gap: 20 }}
         >
           <WidgetInput.String
             inputData={{
@@ -142,7 +141,7 @@ export const ProjectSettingsWidget = memo((props: {
       <View
         style={{
           paddingTop: 15,
-          gap: 5,
+          gap: 15,
         }}
       >
         <Text h2
@@ -156,7 +155,7 @@ export const ProjectSettingsWidget = memo((props: {
           {R['Sample Alias']}
         </Text>
         <View
-          style={{ gap: 15 }}
+          style={{ gap: 20 }}
         >
           <WidgetInput.String
             inputData={{

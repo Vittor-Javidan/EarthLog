@@ -14,16 +14,14 @@ export const WidgetLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const R                     = useMemo(() => translations.widget.Root[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
-
-  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -39,13 +37,13 @@ export const WidgetLabel = memo((props: {
           textAlign: 'center',
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : undefined,
-          fontSize: FontService.FONTS.h2,
-          fontWeight: '500',
+          fontSize: 20,
+          fontFamily: FontService.FONT_FAMILY.h2,
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,
-          minWidth: 50,
-          fontStyle: isLabelEmpty ? 'italic' : undefined,
+          minHeight: 34,
+          minWidth: 200,
         }}
         placeholder={R['Widget name']}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}

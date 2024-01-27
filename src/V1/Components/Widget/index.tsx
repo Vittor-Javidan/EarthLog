@@ -28,8 +28,8 @@ export const Widget = memo((props: {
   onDeleteWidget: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widget.Root[config.language], []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const R                     = useMemo(() => translations.widget.Root[config.language], []);
   const [_, startTransitions] = useTransition();
 
   const [widgetData     , setWidgetData     ] = useState<WidgetData>(deepCopy(props.widgetData));
@@ -204,14 +204,14 @@ export const Widget = memo((props: {
       />
       <View
         style={{
-          paddingTop: 10,
+          paddingTop: 20,
           gap: 10,
         }}
       >
         <View
           style={{
             paddingBottom: 5,
-            gap: 5,
+            gap: 20,
           }}
         >
           <WidgetLabel

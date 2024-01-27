@@ -62,8 +62,7 @@ export const UploadStatus = memo((props: {
         <Text p
           style={{
             color: props.pressed ? theme.font_active : theme.font_Button,
-            fontSize: 10,
-            fontStyle: 'italic',
+            fontSize: 9,
           }}
         >
           {statusMessage}

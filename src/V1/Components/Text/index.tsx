@@ -20,22 +20,29 @@ export const Text = memo((props: {
       numberOfLines={props.numberOfLine}
       style={[
         props.h1 && {
-          textAlign: 'left',
-          fontWeight: '700',
-          fontSize: FontService.FONTS.h1,
+          textAlign:  'left',
+          fontFamily: FontService.FONT_FAMILY.h1,
+          fontSize:   FontService.FONTS.h1,
+          letterSpacing: 0,
+          lineHeight: 30,
         },
         props.h2 && {
-          textAlign: 'left',
-          fontWeight: '500',
-          fontSize: FontService.FONTS.h2,
+          textAlign:  'left',
+          fontFamily: FontService.FONT_FAMILY.h2,
+          fontSize:   FontService.FONTS.h2,
+          letterSpacing: 0,
         },
         props.h3 && {
-          textAlign: 'left',
-          fontSize: FontService.FONTS.h3,
+          textAlign:  'left',
+          fontFamily: FontService.FONT_FAMILY.h3,
+          fontSize:   FontService.FONTS.h3,
+          letterSpacing: 0,
         },
         props.p && {
           textAlign: 'justify',
-          fontSize: FontService.FONTS.p,
+          fontFamily: FontService.FONT_FAMILY.p,
+          fontSize:   FontService.FONTS.p,
+          letterSpacing: 0,
         },
         props.style,
       ]}

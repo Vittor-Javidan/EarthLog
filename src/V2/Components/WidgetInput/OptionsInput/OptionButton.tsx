@@ -83,16 +83,14 @@ export const OptionLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.options[config.language], []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const R                     = useMemo(() => translations.widgetInput.options[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {
     setFocused(true);
     HapticsService.vibrate('success');
   }, []);
-
-  const isLabelEmpty = props.label === '';
 
   return (
     <View
@@ -107,11 +105,12 @@ export const OptionLabel = memo((props: {
         style={{
           color: focused ? props.theme.background : props.theme.font,
           backgroundColor: focused ? props.theme.font : props.theme.background,
+          fontFamily: FontService.FONT_FAMILY.h3,
           fontSize: FontService.FONTS.h3,
           borderRadius: 5,
           paddingVertical: 0,
           paddingHorizontal: 5,
-          fontStyle: isLabelEmpty ? 'italic' : undefined,
+          width: '100%',
         }}
         placeholder={R['Option name']}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}

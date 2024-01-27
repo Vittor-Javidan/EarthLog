@@ -2,6 +2,7 @@ import React, { useState, memo, useCallback, useRef } from 'react';
 import { TextInput, Platform } from 'react-native';
 
 import { useTimeout } from '@V1/Hooks/index';
+import FontService from '@V1/Services/FontService';
 
 import { LC } from '../__LC__';
 
@@ -82,8 +83,8 @@ export const StringInput = memo((props: {
           paddingVertical: 15,
           paddingBottom: (props.multiline || Platform.OS === 'ios') ? 10 : 0,
           backgroundColor: props.theme.background,
+          fontFamily: FontService.FONT_FAMILY.p,
           color: props.theme.font,
-          fontStyle: props.value === '' ? 'italic' : 'normal',
         }}
       />
     </LC.Root>

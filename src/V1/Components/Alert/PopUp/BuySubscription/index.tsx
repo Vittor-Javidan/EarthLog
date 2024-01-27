@@ -128,11 +128,11 @@ export const BuySubscription = withIAPContext(memo((props: {
         >
 
           {/* MESSAGE FEEDBACK */}
-          <Text h3
+          <Text p
             style={{
               color: theme.font,
               textAlign: 'center',
-              fontStyle: 'italic',
+              fontSize: 16,
             }}
           >
             {
@@ -155,7 +155,6 @@ export const BuySubscription = withIAPContext(memo((props: {
                 style={{
                   color: theme.font,
                   textAlign: 'left',
-                  fontWeight: '500',
                 }}
               >
                 {R['A premium subscription will allow you to:']}
@@ -184,12 +183,11 @@ export const BuySubscription = withIAPContext(memo((props: {
               </View>
             </View>
             <View>
-              <Text p
+              <Text h2
                 style={{
                   color: theme.font,
                   textAlign: 'justify',
-                  fontStyle: 'italic',
-                  fontWeight: '500',
+                  fontSize: 12,
                 }}
               >
                 {R['Subscriptions are not required to use the app and can be canceled at any time.']}
@@ -204,6 +202,7 @@ export const BuySubscription = withIAPContext(memo((props: {
                 color: theme.font,
                 textAlign: 'center',
                 paddingHorizontal: 10,
+                fontSize: 20,
               }}
             >
               {R['Loading price...']}
@@ -225,6 +224,7 @@ export const BuySubscription = withIAPContext(memo((props: {
               style={{
                 color: theme.font,
                 paddingHorizontal: 10,
+                fontSize: 20,
               }}
             >
               {subscriptionIOS.localizedPrice}

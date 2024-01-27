@@ -75,8 +75,8 @@ const ProjectButton = memo((props: {
   onPress: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const config                = useMemo(() => ConfigService.config, []);
+  const theme                 = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const [pressed, setPressed] = useState<boolean>(false);
 
   const onPressIn = useCallback(() => {
@@ -120,8 +120,7 @@ const ProjectButton = memo((props: {
           <Text p
             style={{
               color: pressed ? theme.font_active : theme.font_Button,
-              fontSize: 10,
-              fontStyle: 'italic',
+              fontSize: 9,
             }}
           >
             {props.project_id}

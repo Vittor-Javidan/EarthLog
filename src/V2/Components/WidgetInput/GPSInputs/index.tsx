@@ -29,10 +29,9 @@ export const GPSInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const config     = useMemo(() => ConfigService.config, []);
-  const R          = useMemo(() => translations.widgetInput.gps[config.language], []);
-  const gpsWatcher = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
-
+  const config                            = useMemo(() => ConfigService.config, []);
+  const R                                 = useMemo(() => translations.widgetInput.gps[config.language], []);
+  const gpsWatcher                        = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
   const [inputData    , setInputData    ] = useState<GPSInputData>(deepCopy(props.inputData));
   const [alertMessages, setAlertMessages] = useState<InputAlertMessage>({});
   const [accuracy     , setAccuracy     ] = useState<GPSAccuracyDTO>({

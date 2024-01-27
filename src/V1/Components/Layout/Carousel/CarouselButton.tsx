@@ -51,10 +51,10 @@ export const CarouselButton = memo((props: {
 			}, leftPositionStyle, rightPositionStyle]}
 		>
       {props.title !== '' && (
-        <Text p
+        <Text h2
           style={{
             color: props.selected ? theme.font_active : theme.font,
-            fontWeight: '900',
+            fontSize: 12,
           }}
         >
           {props.title}

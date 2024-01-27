@@ -1,4 +1,5 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
+import { LayoutChangeEvent } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import SubscriptionManager from '@SubscriptionManager';
@@ -17,10 +18,11 @@ import { LC } from './__LC__';
 
 export const ProjectScreen = memo(() => {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config     = useMemo(() => ConfigService.config, []);
-  const RError     = useMemo(() => translations.global.errors[config.language], []);
-  const [samples, setSamples] = useState<SampleSettings[]>(CacheService.allSamples);
+  const id_project                          = useLocalSearchParams().id_project as string;
+  const config                              = useMemo(() => ConfigService.config, []);
+  const RError                              = useMemo(() => translations.global.errors[config.language], []);
+  const [samples       , setSamples       ] = useState<SampleSettings[]>(CacheService.allSamples);
+  const [startAnimation, setStartAnimation] = useState<boolean>(false);
 
   const onCreateSample = useCallback(async () => {
     if (SubscriptionManager.freeUserLimitCheck(samples.length >= 5)) {
@@ -43,6 +45,12 @@ export const ProjectScreen = memo(() => {
     }, () => {});
   }, []);
 
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.height > 0) {
+      setStartAnimation(true);
+    }
+  }, []);
+
   return (
     <Layout.Screen
       screenButtons={
@@ -53,8 +61,9 @@ export const ProjectScreen = memo(() => {
       }
     >
       <Animation.SlideFromLeft
-        delay={200}
         duration={200}
+        start={startAnimation}
+        onLayout={event => onLayout(event)}
       >
         <Layout.ScrollView
           contentContainerStyle={{

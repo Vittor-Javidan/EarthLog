@@ -4,6 +4,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { GPSFeaturesDTO, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
+import FontService from '@V1/Services/FontService';
 
 import { Text } from '@V1/Text/index';
 
@@ -38,7 +39,8 @@ export const LoadingFeedback = memo((props: {
       <Text p
         style={{
           color: props.theme.font,
-          textAlign: 'justify',
+          textAlign: 'left',
+          fontFamily: FontService.FONT_FAMILY.h2,
         }}
       >
         {nothingEnable

@@ -1,9 +1,12 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { View, Image, LayoutRectangle, TextInput, Platform } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@V2/Types/ProjectTypes';
+import { translations } from '@V2/Translations/index';
 import MediaService from '@V2/Services/MediaService';
+import ConfigService from '@V2/Services/ConfigService';
+import FontService from '@V2/Services/FontService';
 
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';
@@ -21,7 +24,9 @@ export const PicturesCarousel = memo((props: {
   onDownloadAllMissingPictures: () => void
 }) => {
 
-  const pageRef = useRef<PagerView | null>(null);
+  const pageRef                         = useRef<PagerView | null>(null);
+  const config                          = useMemo(() => ConfigService.config, []);
+  const R                               = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [dimensions  , setDimensions  ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
   const [pictureIndex, setPictureIndex] = useState<number>(0);
 
@@ -132,7 +137,7 @@ export const PicturesCarousel = memo((props: {
         </Text>
         <TextInput
           value={props.pictures[pictureIndex].description}
-          placeholder={'- - - - - - - - - -'}
+          placeholder={R['Write here the picture caption']}
           placeholderTextColor={props.theme.font_placeholder}
           textAlignVertical="top"
           multiline={true}
@@ -145,6 +150,7 @@ export const PicturesCarousel = memo((props: {
             paddingBottom: Platform.OS === 'ios' ? 10 : 0,
             backgroundColor: props.theme.background,
             color: props.theme.font,
+            fontFamily: FontService.FONT_FAMILY.p,
           }}
         />
       </Animation.FadeOut>
@@ -171,7 +177,7 @@ const InfoDisplay = memo((props: {
         delay={30}
         duration={200}
       >
-        <Text
+        <Text p
           style={{
             color: '#FFF',
             textShadowRadius: 5,
@@ -183,7 +189,7 @@ const InfoDisplay = memo((props: {
           {'ID: ' + props.id_picture}
         </Text>
       </Animation.FadeOut>
-      <Text
+      <Text p
         style={{
           color: '#FFF',
           textShadowRadius: 5,

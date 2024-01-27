@@ -25,8 +25,8 @@ export const SelectionInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.selection[config.language], []);
+  const config                    = useMemo(() => ConfigService.config, []);
+  const R                         = useMemo(() => translations.widgetInput.selection[config.language], []);
   const [inputData, setInputData] = useState<SelectionInputData>(deepCopy(props.inputData));
   const [editMode , setEditMode ] = useState<boolean>(false);
 

@@ -29,7 +29,6 @@ export const NotApplicableButton = memo((props: {
         <Text h3
           style={{
             color: props.theme.font,
-            fontWeight: '900',
           }}
         >
           {R['N/A:']}
