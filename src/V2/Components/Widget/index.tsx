@@ -35,7 +35,7 @@ export const Widget = memo((props: {
   const [widgetData, setWidgetData   ] = useState<WidgetData>(deepCopy(props.widgetData));
   const [editInputs, setEditInputs   ] = useState<boolean>(false);
   const [saved     , setSaved        ] = useState<boolean>(true);
-  const [display   , setDisplay      ] = useState<WidgetDisplay>('data display');
+  const [display   , setDisplay      ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
   const widgetTheme                    = useMemo<WidgetTheme>(() => ({
     font:             widgetData.widgetTheme?.font             ?? defaultTheme.font,
     font_placeholder: widgetData.widgetTheme?.font_placeholder ?? defaultTheme.font_placeholder,

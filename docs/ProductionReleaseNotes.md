@@ -1,6 +1,6 @@
 <en-US>
-- Translations improvements.
+- User experience improvements.
 </en-US>
 <pt-BR>
-- Aprimoração nas traduções.
+- Aprimorações de experiência de usuário.
 </pt-BR>
