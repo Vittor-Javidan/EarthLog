@@ -1,6 +1,6 @@
 {
   "name": "earthlog",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",

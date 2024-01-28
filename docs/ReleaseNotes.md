@@ -1,11 +1,9 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1, 2] Premium restrictions removed
+# [1, 2] Translations improvement
 
-1.10.35:
-- Premium restrictions removed until the app gets 1000 users.
-- Free user paywall ajusted for 10 samples for each project
+1.10.36:
+- Translations improved for layout Root component.
 
-2.0.19:
-- Premium restrictions removed until the app gets 1000 users.
-- Free user paywall ajusted for 10 samples for each project
+2.0.20:
+- Translations improved for layout Root component.

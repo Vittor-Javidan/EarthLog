@@ -264,7 +264,7 @@ const Drawer = memo((props: {
             }}
           >
             {isFreePlan
-              ? R['Free Premium befenefits for you until the app gets a peak of 1000 users!\n\nIf you wish to support the app development financially, you can still buy the premium plan.']
+              ? R['Free Premium befenefits for you until we hit 1000 users! If you wish to support the app development financially, you can still buy the premium plan.']
               : R['Premium plan']
             }
           </Text>
