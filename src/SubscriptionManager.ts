@@ -17,6 +17,10 @@ import NetworkManager from '@NetworkManager';
 
 export type AppSubscribePlan = 'Free' | 'Premium'
 
+const PREMIUM_PLAN_SKU = Platform.select({
+  default: 'premium',
+});
+
 function useConnected(callback: () => void, deps: React.DependencyList) {
   const { connected } = useIAP();
   useEffect(() => {
@@ -70,9 +74,6 @@ export function useGetSubscriptions(o: {
 }, deps: [ retryToGetSubscriptions: boolean ]) {
   const [ retryToGetSubscriptions ] = deps;
   useConnected(() => {
-    const PREMIUM_PLAN_SKU = Platform.select({
-      default: 'premium',
-    });
     getSubscriptions({ skus: [PREMIUM_PLAN_SKU ]}).then(subscriptions => {
       if (Platform.OS === 'android') {
         o.subscriptionAndroid(subscriptions[0] as SubscriptionAndroid);
@@ -129,16 +130,16 @@ export default class SubscriptionManager {
 
   private static userPlan: AppSubscribePlan = 'Free';
   private static OFFLINE_TIME_LOCAL_STORAGE_KEY = 'OfflineTime';
-  static PREMIUM_PLAN_SKU = Platform.select({
-    default: 'premium',
-  });
+  static FREE_PLAN_MAX_SAMPLES = 10;
 
   static getPlan(): AppSubscribePlan {
     return this.userPlan;
   }
 
   static freeUserLimitCheck(condition: boolean) {
-    return this.userPlan === 'Free' && condition;
+    // return this.userPlan === 'Free' && condition; // Uncomment this line remove free premium for free users.
+    console.log(condition);
+    return false; // Always will return false until the app reachs a peak of 1000 users.
   }
 
   static async loadPlan(o: {
@@ -198,7 +199,7 @@ export default class SubscriptionManager {
       const purchases = await getAvailablePurchases();
 
       for (let i = 0; i < purchases.length; i++) {
-        if (purchases[i].productId === this.PREMIUM_PLAN_SKU) {
+        if (purchases[i].productId === PREMIUM_PLAN_SKU) {
           this.userPlan = 'Premium';
           await this.saveOfflineAccess();
           break;

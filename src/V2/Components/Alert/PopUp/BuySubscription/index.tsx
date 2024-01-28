@@ -170,7 +170,7 @@ export const BuySubscription = withIAPContext(memo((props: {
                     textAlign: 'left',
                   }}
                 >
-                  {R['- Download projects with more than 5 samples']}
+                  {R['- Download projects with more than 10 samples']}
                 </Text>
                 <Text p
                   style={{
@@ -178,7 +178,7 @@ export const BuySubscription = withIAPContext(memo((props: {
                     textAlign: 'left',
                   }}
                 >
-                  {R['- Create unlimited samples within a single project']}
+                  {R['- Create more than 10 samples within a single project']}
                 </Text>
               </View>
             </View>

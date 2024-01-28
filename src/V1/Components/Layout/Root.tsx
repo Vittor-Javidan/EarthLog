@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import SubscriptionManager from '@SubscriptionManager';
 
 import { APP_VERSION } from '@V1/Globals/Version';
+import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
@@ -218,8 +219,10 @@ const Drawer = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
+  const R      = useMemo(() => translations.component.layout.root[config.language], []);
 
   const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
+  const isFreePlan = SubscriptionManager.getPlan() === 'Free';
 
   return showDrawer ? (
     <DrawerAnimation show={props.show}>
@@ -245,27 +248,31 @@ const Drawer = memo((props: {
           onPress={() => props.onPress_Background()}
           style={{
             flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
+            flexDirection: isFreePlan ? undefined : 'row',
+            justifyContent: isFreePlan ? 'flex-end' : 'space-between',
+            alignItems: isFreePlan ? undefined : 'flex-end',
             backgroundColor: theme.background,
           }}
         >
-          <Text
+          <Text p
             style={{
+              flex: 1,
               color: theme.font,
-              textAlign: 'left',
-              fontSize: 16,
+              textAlign: 'justify',
+              fontSize: 10,
               padding: 8,
             }}
           >
-            {`${SubscriptionManager.getPlan()} plan`}
+            {isFreePlan
+              ? R['Free Premium befenefits for you until the app gets a peak of 1000 users!\n\nIf you wish to support the app development financially, you can still buy the premium plan.']
+              : R['Premium plan']
+            }
           </Text>
-          <Text
+          <Text p
             style={{
               color: theme.font,
               textAlign: 'right',
-              fontSize: 16,
+              fontSize: 10,
               padding: 8,
             }}
           >

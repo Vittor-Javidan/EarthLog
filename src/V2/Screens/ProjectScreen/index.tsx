@@ -23,7 +23,7 @@ export const ProjectScreen = memo(() => {
   const [samples, setSamples] = useState<SampleSettings[]>(CacheService.allSamples);
 
   const onCreateSample = useCallback(async () => {
-    if (SubscriptionManager.freeUserLimitCheck(samples.length >= 5)) {
+    if (SubscriptionManager.freeUserLimitCheck(samples.length >= SubscriptionManager.FREE_PLAN_MAX_SAMPLES)) {
       await AlertService.handleAlert(true, {
         type: 'Buy Subscription',
         message: RError(ErrorCodes.FREE_USER_SAMPLE_CREATION_LIMIT),

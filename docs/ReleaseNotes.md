@@ -1,13 +1,11 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1, 2] Widget Input Label Limit
+# [1, 2] Premium restrictions removed
 
-1.10.34:
-- Removed the limitation of widget inputs having a max of 25 characteres.
-- Added bottom padding for some widget displays.
-- Changed some widget translations.
+1.10.35:
+- Premium restrictions removed until the app gets 1000 users.
+- Free user paywall ajusted for 10 samples for each project
 
-2.0.18:
-- Removed the limitation of widget inputs having a max of 25 characteres.
-- Added bottom padding for some widget displays.
-- Changed some widget translations.
+2.0.19:
+- Premium restrictions removed until the app gets 1000 users.
+- Free user paywall ajusted for 10 samples for each project
