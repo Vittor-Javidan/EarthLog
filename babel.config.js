@@ -8,7 +8,6 @@ module.exports = function (api) {
     ],
     plugins: [
       'expo-router/babel', // NOTE: `expo-router/babel` is a temporary extension to `babel-preset-expo`.
-      '@babel/plugin-proposal-export-namespace-from',
       ['module-resolver', {
         root: '.',
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
