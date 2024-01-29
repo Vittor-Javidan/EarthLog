@@ -1,31 +1,31 @@
-import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
-import { ProjectSettings } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import ConfigService from '@V2/Services/ConfigService';
 import CacheService from '@V2/Services/CacheService';
-import ThemeService from '@V2/Services/ThemeService';
 import AlertService from '@V2/Services/AlertService';
 
-import { Button } from '@V2/Button/index';
 import { Layout } from '@V2/Layout/index';
 import { ProjectScreen } from '@V2/Screens/ProjectScreen';
 import { TemplateScreen } from '@V2/Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@V2/Screens/ProjectInfoScreen';
+import { NavigationTree } from './NavigationTree';
+import { Drawer } from './Drawer';
 
 export default function ProjectScope() {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.scope.project[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
+  const id_project                                               = useLocalSearchParams().id_project as string;
+  const config                                                   = useMemo(() => ConfigService.config, []);
+  const R                                                        = useMemo(() => translations.scope.project[config.language], []);
+  const projectSettings                                          = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const [state                   , setState                    ] = useState<Loading>('Loading');
   const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
   const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
   const [refresher               , refresh                     ] = useState<boolean>(true);
+
   const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
 
   const onDownloadAllPictures = useCallback(async () => {
@@ -90,63 +90,6 @@ export default function ProjectScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="folder"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});
-
-const Drawer = memo((props: {
-  projectSettings: ProjectSettings
-  onDownloadAllPictures: () => void
-}) => {
-
-  const id_project = props.projectSettings.id_project;
-  const config     = useMemo(() => ConfigService.config, []);
-  const theme      = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
-  const R          = useMemo(() => translations.scope.project[config.language], []);
-
-  return (<>
-    {props.projectSettings.rules.allowProjectExport && (
-      <Button.TextWithIcon
-        title={R['Export project']}
-        iconName="arrow-redo-outline"
-        theme={{
-          font:              theme.font,
-          background:        theme.background,
-          font_active:       theme.font_active,
-          background_active: theme.background_active,
-        }}
-        onPress={() => navigate('EXPORT PROJECT SCOPE', id_project)}
-      />
-    )}
-    <Button.TextWithIcon
-      title={R['Download all pictures']}
-      iconName="image-outline"
-      theme={{
-        font:              theme.font,
-        background:        theme.background,
-        font_active:       theme.font_active,
-        background_active: theme.background_active,
-      }}
-      onPress={() => props.onDownloadAllPictures()}
-    />
-  </>);
-});
 
 async function FetchData(
   id_project: string,

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Loading } from '@V2/Types/AppTypes';
 import { navigate } from '@V2/Globals/NavigationControler';
@@ -8,11 +8,12 @@ import ConfigService from '@V2/Services/ConfigService';
 
 import { Layout } from '@V2/Layout/index';
 import { SettingsScreen } from '@V2/Screens/SettingsScreen';
+import { NavigationTree } from './NavigationTree';
 
 export default function SettingsScope() {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.settings[config.language], []);
+  const config            = useMemo(() => ConfigService.config, []);
+  const R                 = useMemo(() => translations.scope.settings[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('HOME SCOPE'), []);
@@ -35,22 +36,3 @@ export default function SettingsScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="settings"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { deepCopy } from '@V1/Globals/DeepCopy';
@@ -10,19 +10,17 @@ import CacheService from '@V1/Services/CacheService';
 import { Layout } from '@V1/Layout/index';
 import { SampleDataScreens } from '@V1/Screens/SampleScreen';
 import { SampleInfoScreen } from '@V1/Screens/SampleInfoScreen';
+import { NavigationTree } from './NavigationTree';
 
 export default function SampleScope() {
 
-  const id_project = useLocalSearchParams().id_project as string;
-  const id_sample  = useLocalSearchParams().id_sample as string;
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
-  const sampleSettings  = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
-
+  const id_project                       = useLocalSearchParams().id_project as string;
+  const id_sample                        = useLocalSearchParams().id_sample as string;
+  const projectSettings                  = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
+  const sampleSettings                   = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
   const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
-  const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(
-    sampleSettings.gps !== undefined ? deepCopy(sampleSettings.gps) : undefined
-  );
+  const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(sampleSettings.gps !== undefined ? deepCopy(sampleSettings.gps) : undefined);
 
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
 
@@ -65,31 +63,6 @@ export default function SampleScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-  const id_project = useLocalSearchParams().id_project as string;
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="folder-outline"
-          onPress={() => navigate('PROJECT SCOPE', id_project)}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_3"
-          iconName="clipboard"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});
 
 async function fetchWidgets(
   id_project: string,

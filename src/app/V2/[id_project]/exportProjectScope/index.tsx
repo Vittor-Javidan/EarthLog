@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V2/Globals/NavigationControler';
@@ -10,13 +10,14 @@ import CacheService from '@V2/Services/CacheService';
 
 import { Layout } from '@V2/Layout/index';
 import { ExportProjectScreen } from '@V2/Screens/ExportProject';
+import { NavigationTree } from './NavigationTree';
 
 export default function exportProjectScope() {
 
-  const id_project      = useLocalSearchParams().id_project as string;
-  const config          = useMemo(() => ConfigService.config, []);
-  const R               = useMemo(() => translations.scope.exportProject[config.language], []);
-  const projectSettings = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
+  const id_project        = useLocalSearchParams().id_project as string;
+  const config            = useMemo(() => ConfigService.config, []);
+  const R                 = useMemo(() => translations.scope.exportProject[config.language], []);
+  const projectSettings   = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('PROJECT SCOPE', id_project), []);
@@ -39,30 +40,3 @@ export default function exportProjectScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-
-  const id_project = useLocalSearchParams().id_project as string;
-
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="folder-outline"
-          onPress={() => navigate('PROJECT SCOPE', id_project)}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_3"
-          iconName="arrow-redo"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
@@ -8,6 +8,7 @@ import ConfigService from '@V2/Services/ConfigService';
 import { Layout } from '@V2/Layout/index';
 import { DateFormatScreen } from '@V2/Screens/DateFormatScreen';
 import { TimeFormatScreen } from '@V2/Screens/TimeFormatScreen';
+import { NavigationTree } from './NavigationTree';
 
 export default function DateAndTimeScope() {
 
@@ -52,27 +53,3 @@ export default function DateAndTimeScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="settings-outline"
-          onPress={() => navigate('SETTINGS SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_3"
-          iconName="time"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});

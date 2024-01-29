@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
@@ -8,11 +8,12 @@ import ConfigService from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { VersionChangeScreen } from '@V1/Screens/VersionChangeScreen';
+import { NavigationTree } from './NavigationTree';
 
 export default function VersionChangeScope() {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.versionChange[config.language], []);
+  const config            = useMemo(() => ConfigService.config, []);
+  const R                 = useMemo(() => translations.scope.versionChange[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useBackPress(() => navigate('HOME SCOPE'), []);
@@ -35,22 +36,3 @@ export default function VersionChangeScope() {
     </Layout.Root>
   );
 }
-
-const NavigationTree = memo(() => {
-  return (
-    <Layout.NavigationTree.Root
-      iconButtons={[
-        <Layout.NavigationTree.Button
-          key="treeIcon_1"
-          iconName="home-outline"
-          onPress={() => navigate('HOME SCOPE')}
-        />,
-        <Layout.NavigationTree.Button
-          key="treeIcon_2"
-          iconName="shuffle"
-          onPress={() => {}}
-        />,
-      ]}
-    />
-  );
-});
