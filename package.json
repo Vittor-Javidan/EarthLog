@@ -60,7 +60,7 @@
     "typescript": "^5.1.3"
   },
   "private": true,
-  "overrides": {
+  "resolutions": {
     "react-refresh": "~0.14.0"
   },
   "jest": {

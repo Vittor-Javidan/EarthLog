@@ -2,10 +2,6 @@
 
 add the prop `android:usesCleartextTraffic="true"` on <application /> inside android/app/src/main/AndroidManifest.xml
 
-# Duplicate Splash Screen:
-
-add `<item name="android:windowIsTranslucent">true</item>` inside android/app/src/main/res/values/styles.xml
-
 # react-native-iap (Android)
 
 docs: https://react-native-iap.dooboolab.com/docs/get-started/#android-1
