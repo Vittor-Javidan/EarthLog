@@ -15,7 +15,6 @@
     "@react-native-community/cli-debugger-ui": "^11.3.2",
     "docx": "^8.2.3",
     "expo": "~49.0.7",
-    "expo-app-loading": "^2.1.1",
     "expo-camera": "~13.4.4",
     "expo-constants": "~14.4.2",
     "expo-dev-client": "~3.3.4",
