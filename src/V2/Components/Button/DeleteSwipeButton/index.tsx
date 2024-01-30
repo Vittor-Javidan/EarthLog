@@ -1,7 +1,7 @@
 import React, { useMemo, useState, memo, useCallback } from 'react';
 import { View, Dimensions, Pressable } from 'react-native';
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
-import Animated, { useAnimatedGestureHandler, useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
+import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
+import Animated, { useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
 
 import { translations } from '@V2/Translations/index';
 import HapticsService from '@V2/Services/HapticsService';
@@ -56,28 +56,23 @@ export const DeleteSwipeButton = (props: {
     HapticsService.vibrate('warning');
   }, []);
 
-  const panGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, { x: number }>({
-    onStart: (_, context) => {
-      context.x = adjustedTranslateX.value;
-      runOnJS(vibrate)();
-    },
-    onActive: (event, context) => {
-      translateX.value = event.translationX + context.x;
-    },
-    onEnd: () => {
-      'worklet';
-      if (translateX.value < THRESHOLD) {
-        translateX.value = 0;
-      } else {
-        translateX.value = WIDTH - PADDING - CIRCLE_RADIUS;
-        runOnJS(vibrate)();
-        runOnJS(props.onSwipe)();
-      }
-    },
+  const panGestureEvent = Gesture.Pan().onStart(() => {
+    runOnJS((vibrate))();
+  }).onChange((event) => {
+    translateX.value = event.translationX;
+  }).onEnd(() => {
+    'worklet';
+    if (translateX.value < THRESHOLD) {
+      translateX.value = 0;
+    } else {
+      translateX.value = WIDTH - PADDING - CIRCLE_RADIUS;
+      runOnJS((vibrate))();
+      runOnJS(props.onSwipe)();
+    }
   });
 
   return (
-    <View
+    <GestureHandlerRootView
       style={{
         paddingHorizontal: PADDING,
         width: '100%',
@@ -134,30 +129,30 @@ export const DeleteSwipeButton = (props: {
             color={props.theme.background}
           />
         </Animated.View>
-        <PanGestureHandler onGestureEvent={panGestureEvent}>
-          <Animated.View
-            style={[{
-              position: 'absolute',
-              left: 0,
-              height: CIRCLE_DIAMETER,
-              width: CIRCLE_DIAMETER,
-              borderRadius: CIRCLE_RADIUS,
-              borderWidth: 3,
-              borderColor: props.theme.background,
-              backgroundColor: props.theme.confirm,
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 20,
-            }, animatedStyle_circle]}
-          >
-            <Icon
-              iconName="finger-print"
-              color={props.theme.background}
-            />
-          </Animated.View>
-        </PanGestureHandler>
+          <GestureDetector gesture={panGestureEvent}>
+            <Animated.View
+              style={[{
+                position: 'absolute',
+                left: 0,
+                height: CIRCLE_DIAMETER,
+                width: CIRCLE_DIAMETER,
+                borderRadius: CIRCLE_RADIUS,
+                borderWidth: 3,
+                borderColor: props.theme.background,
+                backgroundColor: props.theme.confirm,
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 20,
+              }, animatedStyle_circle]}
+            >
+              <Icon
+                iconName="finger-print"
+                color={props.theme.background}
+              />
+            </Animated.View>
+          </GestureDetector>
       </Animated.View>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

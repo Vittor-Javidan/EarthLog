@@ -138,7 +138,7 @@ export default class SubscriptionManager {
 
   static freeUserLimitCheck(condition: boolean) {
     // return this.userPlan === 'Free' && condition; // Uncomment this line remove free premium for free users.
-    console.log(condition);
+    this.userPlan === 'Free' && condition && console.log('Free user limit removed');
     return false; // Always will return false until the app reachs a peak of 1000 users.
   }
 

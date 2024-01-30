@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { BackHandler } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
@@ -28,7 +29,10 @@ export default function HomeScope() {
   }, []);
 
   useEffect(() => {
-    fetchProject(() => setState('Loaded'));
+    fetchProject(() => {
+      setState('Loaded');
+      SplashScreen.hideAsync();
+    });
   }, []);
 
   useBackPress(async () => {

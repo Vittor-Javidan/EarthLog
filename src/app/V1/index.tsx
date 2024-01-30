@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { useRestoreSubscription } from '@SubscriptionManager';
+
 import { navigate } from '@V1/Globals/NavigationControler';
 import CoreService from '@V1/Services/CoreService';
-
-import { Layout } from '@V1/Layout/index';
-import { useRestoreSubscription } from '@SubscriptionManager';
 
 export default function Home_LTS_VERSION_1() {
 
@@ -18,7 +17,7 @@ export default function Home_LTS_VERSION_1() {
     },
   }, []);
 
-  return <Layout.Loading />;
+  return <></>;
 }
 
 async function initApp() {
