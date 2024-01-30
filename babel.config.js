@@ -7,7 +7,6 @@ module.exports = function (api) {
       '@babel/preset-typescript',
     ],
     plugins: [
-      'expo-router/babel', // NOTE: `expo-router/babel` is a temporary extension to `babel-preset-expo`.
       ['module-resolver', {
         root: '.',
         extensions: ['.js', '.jsx', '.ts', '.tsx'],

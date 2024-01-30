@@ -202,7 +202,7 @@ const MenuButton = memo((props: {
         }}
       >
         <Icon
-          iconName="md-menu-sharp"
+          iconName="menu-sharp"
           color={pressed ? props.theme.font_active : props.theme.font}
         />
       </Pressable>
