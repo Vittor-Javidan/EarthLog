@@ -3,11 +3,10 @@ module.exports = function (api) {
   return {
     presets: [
       'babel-preset-expo',
-      ['@babel/preset-env', {targets: {node: 'current'}}],
+      // ['@babel/preset-env', {targets: {node: 'current'}}],
       '@babel/preset-typescript',
     ],
     plugins: [
-      'expo-router/babel', // NOTE: `expo-router/babel` is a temporary extension to `babel-preset-expo`.
       ['module-resolver', {
         root: '.',
         extensions: ['.js', '.jsx', '.ts', '.tsx'],

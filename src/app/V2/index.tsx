@@ -5,9 +5,7 @@ import { useRestoreSubscription } from '@SubscriptionManager';
 import { navigate } from '@V2/Globals/NavigationControler';
 import CoreService from '@V2/Services/CoreService';
 
-import { Layout } from '@V2/Layout/index';
-
-export default function Home_LTS_VERSION_1() {
+export default function Home_LTS_VERSION_2() {
 
   useRestoreSubscription({
     onFinish: () => {
@@ -19,7 +17,7 @@ export default function Home_LTS_VERSION_1() {
     },
   }, []);
 
-  return <Layout.Loading />;
+  return <></>;
 }
 
 async function initApp() {

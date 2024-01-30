@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DEFAULT_VERSION  = 'V1'; // Version to start when version is not define on local storage.
@@ -11,9 +11,8 @@ export default class VersionManager {
   static async selectLTSVersion() {
     try {
       const ltsVersion = await AsyncStorage.getItem(this.SELECTED_VERSION_LOCAL_STORAGE_KEY);
-      const navController = useRouter();
       try {
-        navController.push(`/${ltsVersion ?? DEFAULT_VERSION}`);
+        router.navigate(`/${ltsVersion ?? DEFAULT_VERSION}`);
       } catch (error) {
         alert(`Was not possible to start the version ${ltsVersion}`);
       }
@@ -24,8 +23,7 @@ export default class VersionManager {
 
   static async switchVersion(version: AvailableVersions) {
     try {
-      const navController = useRouter();
-      navController.push(`/${version}`);
+      router.navigate(`/${version}`);
       await AsyncStorage.setItem(this.SELECTED_VERSION_LOCAL_STORAGE_KEY, version);
     } catch (error) {
       alert(`Was not possible to switch to version ${version}`);
