@@ -47,6 +47,7 @@ import { R_Alert_BuySubscription } from './component/Alert/BuySubscription';
 import { R_Scope_VersionChange } from './scope/VersionChangeScope';
 import { R_Component_Camera } from './component/Camera';
 import { R_Layout_Root } from './component/Layout/Root';
+import { R_Scope_Sample } from './scope/SampleScope';
 
 export const translations = {
   global: {
@@ -62,6 +63,7 @@ export const translations = {
     home:                     R_Scope_Home,
     languageSelection:        R_Scope_Language,
     project:                  R_Scope_Project,
+    sample:                   R_Scope_Sample,
     settings:                 R_Scope_Settings,
     versionChange:            R_Scope_VersionChange,
     credential:               R_Scope_Credential,

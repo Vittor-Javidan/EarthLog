@@ -132,7 +132,7 @@ export const PicturesCarousel = memo((props: {
             color: props.theme.font,
           }}
         >
-          {`Picture ${pictureIndex + 1}: `}
+          {`${R['Picture']} ${pictureIndex + 1}: `}
         </Text>
         <TextInput
           value={props.pictures[pictureIndex].description}

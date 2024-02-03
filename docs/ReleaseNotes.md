@@ -1,9 +1,13 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# Expo 50 update fix
+# [1,2] Add Translations
 
-- Removed jest
-- Removed @babel/preset-env preset
-- Expor useRouter replaced by router
-- Now Splash Screen is hidden after first Home Screen load.
-- Gesture events updated due useAnimatedGestureHandler being deprecated.
+1.10.39:
+
+- Added translations to <PicturesCarousel />
+- Added translations to <SampleScope />
+
+2.0.23:
+
+- Added translations to <PicturesCarousel />
+- Added translations to <SampleScope />

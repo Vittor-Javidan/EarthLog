@@ -5,6 +5,8 @@ import { deepCopy } from '@V1/Globals/DeepCopy';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { GPS_DTO } from '@V1/Types/ProjectTypes';
+import { translations } from '@V1/Translations/index';
+import ConfigService from '@V1/Services/ConfigService';
 import CacheService from '@V1/Services/CacheService';
 
 import { Layout } from '@V1/Layout/index';
@@ -16,13 +18,15 @@ export default function SampleScope() {
 
   const id_project                       = useLocalSearchParams().id_project as string;
   const id_sample                        = useLocalSearchParams().id_sample as string;
+  const config                           = useMemo(() => ConfigService.config, []);
+  const R                                = useMemo(() => translations.scope.sample[config.language], []);
   const projectSettings                  = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const sampleSettings                   = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
   const [state       , setState        ] = useState<Loading>('Loading');
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
   const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(sampleSettings.gps !== undefined ? deepCopy(sampleSettings.gps) : undefined);
 
-  const sampleAlias = projectSettings.sampleAlias.singular === '' ? 'Sample' : projectSettings.sampleAlias.singular;
+  const sampleAlias = projectSettings.sampleAlias.singular === '' ? R['Sample'] : projectSettings.sampleAlias.singular;
 
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setState('Loaded'));

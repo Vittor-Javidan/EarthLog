@@ -1,2 +1,4 @@
-# Alerts:
-- useAnimatedGestureHandler can become deprecated on react-native-gesture-handler 2.4.X
+# Details missing:
+
+- when creating a new sample, the alias is not consider on the popup
+- When create a new sample, there is no sugested name.

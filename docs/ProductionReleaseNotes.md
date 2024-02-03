@@ -1,6 +1,6 @@
 <en-US>
-- User experience improvements.
+- New translations added.
 </en-US>
 <pt-BR>
-- Aprimorações de experiência de usuário.
+- Novas traduções adicionadas.
 </pt-BR>
