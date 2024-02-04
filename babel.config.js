@@ -3,7 +3,6 @@ module.exports = function (api) {
   return {
     presets: [
       'babel-preset-expo',
-      // ['@babel/preset-env', {targets: {node: 'current'}}],
       '@babel/preset-typescript',
     ],
     plugins: [
@@ -58,7 +57,6 @@ module.exports = function (api) {
           '@V1/WidgetInput':       './src/V1/Components/WidgetInput',
         },
       }],
-      'react-native-reanimated/plugin', // Must be declare as last according to docs
     ],
   };
 };
