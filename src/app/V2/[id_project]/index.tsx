@@ -15,18 +15,24 @@ import { ProjectInfoScreen } from '@V2/Screens/ProjectInfoScreen';
 import { NavigationTree } from './NavigationTree';
 import { Drawer } from './Drawer';
 
+type UpdatedAlias = {
+  plural: null | string
+  singular: null | string
+}
+
 export default function ProjectScope() {
 
-  const id_project                                               = useLocalSearchParams().id_project as string;
-  const config                                                   = useMemo(() => ConfigService.config, []);
-  const R                                                        = useMemo(() => translations.scope.project[config.language], []);
-  const projectSettings                                          = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
-  const [state                   , setState                    ] = useState<Loading>('Loading');
-  const [updatedName             , setUpdatedName              ] = useState<string | null>(null);
-  const [updatedSampleAliasPlural, setUpdatedSampleAliasPlural ] = useState<string | null>(null);
-  const [refresher               , refresh                     ] = useState<boolean>(true);
+  const id_project                                  = useLocalSearchParams().id_project as string;
+  const config                                      = useMemo(() => ConfigService.config, []);
+  const R                                           = useMemo(() => translations.scope.project[config.language], []);
+  const projectSettings                             = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
+  const [state             , setState             ] = useState<Loading>('Loading');
+  const [updatedName       , setUpdatedName       ] = useState<string | null>(null);
+  const [refresher         , refresh              ] = useState<boolean>(true);
+  const [updatedSampleAlias, setUpdatedSampleAlias] = useState<UpdatedAlias>({ plural: null, singular: null });
 
-  const sampleAliasPlural = updatedSampleAliasPlural ?? projectSettings.sampleAlias.plural;
+  const sampleAlias_Plural   = updatedSampleAlias.plural ?? projectSettings.sampleAlias.plural;
+  const sampleAlias_Singular = updatedSampleAlias.singular ?? projectSettings.sampleAlias.singular;
 
   const onDownloadAllPictures = useCallback(async () => {
     const allMissingPictures = CacheService.identifyMissingPictures({ id_project });
@@ -63,7 +69,7 @@ export default function ProjectScope() {
         <Layout.Carousel
           onBackPress={() => navigate('HOME SCOPE')}
           buttonData={[{
-            title: sampleAliasPlural !== '' ? sampleAliasPlural : R['Samples'],
+            title: sampleAlias_Plural !== '' ? sampleAlias_Plural : R['Samples'],
           },{
             title: 'Template',
             iconName: 'copy-sharp',
@@ -75,6 +81,7 @@ export default function ProjectScope() {
           screens={[
             <ProjectScreen
               key="1"
+              sampleAlias_Singular={sampleAlias_Singular !== '' ? sampleAlias_Singular : R['Sample']}
             />,
             <TemplateScreen
               key="2"
@@ -82,7 +89,8 @@ export default function ProjectScope() {
             <ProjectInfoScreen
               key="3"
               onProjectNameUpdate={(newName) => setUpdatedName(newName)}
-              onSampleAliasChange_Plural={(newSampleAlias) => setUpdatedSampleAliasPlural(newSampleAlias)}
+              onSampleAliasChange_Plural={(newSampleAlias) => setUpdatedSampleAlias(prev => ({ ...prev, plural: newSampleAlias }))}
+              onSampleAliasChange_Singular={(newSampleAlias) => setUpdatedSampleAlias(prev => ({ ...prev, singular: newSampleAlias }))}
             />,
           ]}
         />

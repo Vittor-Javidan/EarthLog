@@ -2,9 +2,9 @@ import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@V2/Translations/index';
+import ProjectService from '@V2/Services/ProjectService';
 import ConfigService from '@V2/Services/ConfigService';
 import AlertService from '@V2/Services/AlertService';
-import ProjectService from '@V2/Services/ProjectService';
 import CacheService from '@V2/Services/CacheService';
 import ThemeService from '@V2/Services/ThemeService';
 
@@ -14,13 +14,15 @@ import { FooterButtons } from './FooterButtons';
 
 export const CreateSample = memo((props: {
   id_project: string
+  sampleNumber: number
+  sampleAlias_Singular: string
   closeModal: () => void
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
-  const R      = useMemo(() => translations.component.alert.createSample[config.language], []);
-  const [name, setName] = useState<string>('');
+  const config          = useMemo(() => ConfigService.config, []);
+  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
+  const R               = useMemo(() => translations.component.alert.createSample[config.language], []);
+  const [name, setName] = useState<string>(`${props.sampleNumber}`);
 
   const onAccept = useCallback(async () => {
 
@@ -59,10 +61,10 @@ export const CreateSample = memo((props: {
         }}
       >
         <Input.String
-          label={R['Sample name']}
+          label={props.sampleAlias_Singular !== '' ? props.sampleAlias_Singular : R['Sample name']}
           value={name}
           onTextChange={(text) => setName(text)}
-          placeholder={R["Write sample's name here"]}
+          placeholder={''}
           multiline={false}
           theme={{
             font: theme.font,
@@ -70,6 +72,7 @@ export const CreateSample = memo((props: {
             background: theme.background,
           }}
           autoFocus
+          selectTextOnFocus
         />
       </View>
       <FooterButtons

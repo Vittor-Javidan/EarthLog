@@ -15,9 +15,10 @@ import { LC } from './__LC__';
 export const ProjectInfoScreen = memo((props: {
   onProjectNameUpdate: (newName: string) => void
   onSampleAliasChange_Plural: (newAliasName: string) => void
+  onSampleAliasChange_Singular: (newAliasName: string) => void
 }) => {
 
-  const id_project = useLocalSearchParams().id_project as string;
+  const id_project                          = useLocalSearchParams().id_project as string;
   const [projectWidgets, setProjectWidgets] = useState<WidgetData[]>(CacheService.allWidgets_Project);
 
   const onCreateWidget = useCallback(async () => {
@@ -72,8 +73,8 @@ export const ProjectInfoScreen = memo((props: {
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onCreateWidget={onCreateWidget}
-          onDeleteProject={onDeleteProject}
+          onCreateWidget={async () => await onCreateWidget()}
+          onDeleteProject={async () => await onDeleteProject()}
         />
       }
     >
@@ -86,13 +87,14 @@ export const ProjectInfoScreen = memo((props: {
         }}
       >
         <LC.ProjectSettingsWidget
-          onProjectNameUpdate={props.onProjectNameUpdate}
-          onSampleAliasChange_Plural={props.onSampleAliasChange_Plural}
+          onProjectNameUpdate={(newName) => props.onProjectNameUpdate(newName)}
+          onSampleAliasChange_Plural={(newAlias) => props.onSampleAliasChange_Plural(newAlias)}
+          onSampleAliasChange_Singular={(newAlias) => props.onSampleAliasChange_Singular(newAlias)}
         />
         <LC.ProjectWidgets
           id_project={id_project}
           projectWidgets={projectWidgets}
-          onDeleteWidget={onDeleteWidget}
+          onDeleteWidget={async (index) => await onDeleteWidget(index)}
         />
       </Layout.ScrollView>
     </Layout.Screen>

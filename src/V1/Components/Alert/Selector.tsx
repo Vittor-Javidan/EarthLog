@@ -38,6 +38,8 @@ export const Selector = memo((props: {
     case 'sample creation': return (
       <CreateSample
         id_project={props.config.id_project}
+        sampleNumber={props.config.sampleNumber}
+        sampleAlias_Singular={props.config.sampleAlias_Singular}
         closeModal={() => props.closeModal()}
       />
     );

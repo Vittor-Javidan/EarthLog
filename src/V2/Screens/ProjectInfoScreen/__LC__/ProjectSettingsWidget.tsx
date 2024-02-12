@@ -17,7 +17,8 @@ import { WidgetInput } from '@V2/WidgetInput/index';
 
 export const ProjectSettingsWidget = memo((props: {
   onProjectNameUpdate: (newName: string) => void
-  onSampleAliasChange_Plural: (newSampleAlias: string) => void
+  onSampleAliasChange_Plural: (newAliasName: string) => void
+  onSampleAliasChange_Singular: (newAliasName: string) => void
 }) => {
 
   const id_project                            = useLocalSearchParams().id_project as string;
@@ -57,7 +58,8 @@ export const ProjectSettingsWidget = memo((props: {
       ...prev.sampleAlias,
       singular: inputData.value,
     }}));
-  }, []);
+    props.onSampleAliasChange_Singular(inputData.value);
+  }, [props.onSampleAliasChange_Singular]);
 
   const onSaveGPS = useCallback((inputData: GPSInputData) => {
     setSaved(false);
