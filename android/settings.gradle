@@ -1,4 +1,4 @@
-rootProject.name = 'EarthLog'
+rootProject.name = 'Terra Note'
 
 dependencyResolutionManagement {
   versionCatalogs {

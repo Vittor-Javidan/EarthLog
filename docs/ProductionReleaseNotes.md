@@ -1,6 +1,8 @@
 <en-US>
-- New translations added.
+- Sample Creation improved
+- App name changed
 </en-US>
 <pt-BR>
-- Novas traduções adicionadas.
+- Melhorias na criação de amostras
+- Nome do aplicativo alterado
 </pt-BR>
