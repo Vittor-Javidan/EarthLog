@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Terra Note",
+    "name": "Earth Log",
     "slug": "earth-log",
     "version": "2.0.24",
     "orientation": "portrait",
@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
-      "versionCode": 23,
+      "versionCode": 24,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
