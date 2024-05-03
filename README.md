@@ -1,3 +1,7 @@
+# What is Earth Log?
+
+Earth Log is a client that can connect to any server. It was created with the purpose of reducing company costs when they need to develop a mobile app to allow their employees to collect data in the field (such as in cities, farms, etc.). The app features synchronization, high-accuracy GPS acquisition, picture acquisition, and multiple server connections. For more details, visit the [Play Store page](https://play.google.com/store/apps/details?id=com.lonewispapps.earthlog).
+
 # How to Install the Project
 
 All you need to do is simply run `npm install`. If you need to use an emulator, install Android Studio and use its built-in emulator.
