@@ -30,7 +30,7 @@ Your commit message must come in the format of `[LTS Version Number] <Your Commi
 
 - The release notes must be included inside the commit message as well. Reminder: Use the command `git commit` to be allowed to write formatted messages on commits.
 
-- I will read, test your code, and look for unexpected bugs. If any are found, I will refuse the pull request with the reason, so you can fix it.
+- I will read, test your code, and look for unexpected bugs. If any are found, I will refuse the pull request with the reason why, so you can fix it.
 
 - Try not to change the app architecture. If an architecture change is necessary, I will need to analyze all aspects of it with patience since many things were done for a reason. I can clarify why I wrote each part of the codebase in a specific format if needed, so you can adapt in the new architecture.
 
