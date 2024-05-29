@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { View, StyleProp, ViewStyle, Dimensions, ScrollView, Pressable } from 'react-native';
+import { View, StyleProp, ViewStyle, Dimensions, Pressable } from 'react-native';
 import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 
@@ -225,61 +225,57 @@ const Drawer = memo((props: {
   const isFreePlan = SubscriptionManager.getPlan() === 'Free';
 
   return showDrawer ? (
-    <DrawerAnimation show={props.show}>
-      <ScrollView
-        contentContainerStyle={{
-          flex: 1,
-          backgroundColor: theme.background,
-          gap: 1,
-        }}
+    <DrawerAnimation
+      show={props.show}
+      contentContainerStyle={{ gap: 1 }}
+      style={{
+        position: 'absolute',
+        borderColor: theme.border,
+        backgroundColor: theme.background,
+        height: props.dimensions.height,
+        width: props.dimensions.width,
+        bottom: 0,
+        left: 0,
+        borderRightWidth: 2,
+        zIndex: 2,
+      }}
+    >
+      {props.children}
+      <Pressable
+        onPress={() => props.onPress_Background()}
         style={{
-          position: 'absolute',
-          borderColor: theme.border,
-          height: props.dimensions.height,
-          width: props.dimensions.width,
-          bottom: 0,
-          left: 0,
-          borderRightWidth: 2,
-          zIndex: 2,
+          flex: 1,
+          flexDirection: isFreePlan ? undefined : 'row',
+          justifyContent: isFreePlan ? 'flex-end' : 'space-between',
+          alignItems: isFreePlan ? undefined : 'flex-end',
+          backgroundColor: theme.background,
         }}
       >
-        {props.children}
-        <Pressable
-          onPress={() => props.onPress_Background()}
+        <Text p
           style={{
             flex: 1,
-            flexDirection: isFreePlan ? undefined : 'row',
-            justifyContent: isFreePlan ? 'flex-end' : 'space-between',
-            alignItems: isFreePlan ? undefined : 'flex-end',
-            backgroundColor: theme.background,
+            color: theme.font,
+            textAlign: 'justify',
+            fontSize: 10,
+            padding: 8,
           }}
         >
-          <Text p
-            style={{
-              flex: 1,
-              color: theme.font,
-              textAlign: 'justify',
-              fontSize: 10,
-              padding: 8,
-            }}
-          >
-            {isFreePlan
-              ? R['Free Premium befenefits for you until we hit 1000 users! If you wish to support the app development financially, you can still buy the premium plan.']
-              : R['Premium plan']
-            }
-          </Text>
-          <Text p
-            style={{
-              color: theme.font,
-              textAlign: 'right',
-              fontSize: 10,
-              padding: 8,
-            }}
-          >
-            {'v: ' + APP_VERSION}
-          </Text>
-        </Pressable>
-      </ScrollView>
+          {isFreePlan
+            ? R['Free Premium befenefits for you until we hit 1000 users! If you wish to support the app development financially, you can still buy the premium plan.']
+            : R['Premium plan']
+          }
+        </Text>
+        <Text p
+          style={{
+            color: theme.font,
+            textAlign: 'right',
+            fontSize: 10,
+            padding: 8,
+          }}
+        >
+          {'v: ' + APP_VERSION}
+        </Text>
+      </Pressable>
     </DrawerAnimation>
   ) : <></>;
 });
@@ -287,6 +283,8 @@ const Drawer = memo((props: {
 const DrawerAnimation = (props: {
   show: boolean
   children: ReactNode
+  style?: StyleProp<ViewStyle>
+  contentContainerStyle?: StyleProp<ViewStyle>
 }) => {
 
   const { width } = useMemo(() => Dimensions.get('window'), []);
@@ -302,14 +300,16 @@ const DrawerAnimation = (props: {
   }, [props.show]);
 
   return (
-    <Animated.View
+    <Animated.ScrollView
+      contentContainerStyle={[props.contentContainerStyle]}
       style={[
+        props.style,
         useAnimatedStyle(() => ({
           transform: [{ translateX: leftOffset.value }],
         })),
       ]}
     >
       {props.children}
-    </Animated.View>
+    </Animated.ScrollView>
   );
 };

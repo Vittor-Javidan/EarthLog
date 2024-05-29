@@ -10,6 +10,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Google Play subscriptions': string
   'Privacy Policy': string
   'Change version': string
+  'GitHub': string
 }>
 
 export const R_Scope_Home: TranslationDTO = {
@@ -23,6 +24,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Google Play subscriptions': 'Google Play subscriptions',
     'Privacy Policy': 'Privacy Policy',
     'Change version': 'Change version',
+    'GitHub': 'GitHub',
   },
   'pt-BR': {
     'Home screen': 'Tela inicial',
@@ -34,5 +36,6 @@ export const R_Scope_Home: TranslationDTO = {
     'Google Play subscriptions': 'Assinaturas Google Play',
     'Privacy Policy': 'Política de Privacidade',
     'Change version': 'Mudar versão',
+    'GitHub': 'GitHub',
   },
 };

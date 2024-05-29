@@ -85,6 +85,17 @@ export const Drawer = memo(() => {
       />
     )}
     <Button.TextWithIcon
+      title={R['GitHub']}
+      iconName="logo-github"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLog')}
+    />
+    <Button.TextWithIcon
       title={R['Privacy Policy']}
       iconName="shield-outline"
       theme={{
