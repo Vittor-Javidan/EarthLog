@@ -21,15 +21,6 @@ const PREMIUM_PLAN_SKU = Platform.select({
   default: 'premium',
 });
 
-function useConnected(callback: () => void, deps: React.DependencyList) {
-  const { connected } = useIAP();
-  useEffect(() => {
-    if (connected) {
-      callback();
-    }
-  }, [connected, ...deps]);
-}
-
 export function useConnectStore(o: {
   onError: (errorMessage: string) => void,
 }) {
@@ -55,7 +46,9 @@ export function useConnectStore(o: {
   }, [connected]);
 }
 
-export function useCloseStore(o: {onClose: () => void}, deps: [ boolean ]) {
+export function useCloseStore(o: {
+  onClose: () => void
+}, deps: [ closeStore: boolean ]) {
   const { connected } = useIAP();
   const [ closeStore ] = deps;
   useEffect(() => {
@@ -67,26 +60,32 @@ export function useCloseStore(o: {onClose: () => void}, deps: [ boolean ]) {
   }, [connected, closeStore]);
 }
 
+/**
+ * @param {boolean} deps[0] - `retry`: toggle this value to retry to get subscriptions.
+ */
 export function useGetSubscriptions(o: {
   subscriptionAndroid: (subscriptions: SubscriptionAndroid) => void
   subscriptionIOS: (subscriptions: SubscriptionIOS) => void
   onError: (errorMessage: string) => void
-}, deps: [ retryToGetSubscriptions: boolean ]) {
-  const [ retryToGetSubscriptions ] = deps;
-  useConnected(() => {
-    getSubscriptions({ skus: [PREMIUM_PLAN_SKU ]}).then(subscriptions => {
-      if (Platform.OS === 'android') {
-        o.subscriptionAndroid(subscriptions[0] as SubscriptionAndroid);
-      }
-      if (Platform.OS === 'ios') {
-        o.subscriptionIOS(subscriptions[0] as SubscriptionIOS);
-      }
-    }).catch(error => {
-      if (error instanceof Error) {
-        o.onError(error.message);
-      }
-    });
-  }, [ retryToGetSubscriptions ]);
+}, deps: [ retry: boolean ]) {
+  const { connected } = useIAP();
+  const [ retry ] = deps;
+  useEffect(() => {
+    if (connected) {
+      getSubscriptions({ skus: [ PREMIUM_PLAN_SKU ]}).then(subscriptions => {
+        if (Platform.OS === 'android') {
+          o.subscriptionAndroid(subscriptions[0] as SubscriptionAndroid);
+        }
+        if (Platform.OS === 'ios') {
+          o.subscriptionIOS(subscriptions[0] as SubscriptionIOS);
+        }
+      }).catch(error => {
+        if (error instanceof Error) {
+          o.onError(error.message);
+        }
+      });
+    }
+  }, [connected, retry]);
 }
 
 export function useFinishTransaction(o: {
