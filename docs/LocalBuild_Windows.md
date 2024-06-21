@@ -5,9 +5,11 @@ full docs: https://gist.github.com/4wk-/889b26043f519259ab60386ca13ba91b
 - Destroy distros: `wsl --unregister Ubuntu`
 - In Settings > Apps > Apps & Features: Search for ubuntu and linux, and unistall all results
 - Reboot PC
+- If the linux fodler still showing on Home folder, search for `Turn Windows features on or off`, and enable `Windows Subsystem for linux`, reboot your pc, disable `Windows Subsystem for linux` again, and reboot the pc again.
 
 # WSL Instalation
 
+- Make sure virtualization is enable for your processor.
 - run `wsl --install` on powershell
 - Reboot PC
 
@@ -26,7 +28,7 @@ full docs: https://halimsamy.com/wsl-for-developers-installing-the-android-sdk
 
 - run `sudo apt update`
 - install gradle: `sudo apt install openjdk-17-jdk gradle`
-- add JAVA_HOME variable on home/[linux user]/.profile:
+- manually add JAVA_HOME variable on `home/[linux user]/.bashrc` by copying and paste the line:
 ```
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ```
@@ -42,7 +44,7 @@ rm /tmp/cmd-tools.zip # delete the zip file (optional)
 
 ```
 
-- Setup the enviroments home/[linux user]/.profile:
+- manually add Setup the enviroments variables on `home/[linux user]/.bashrc` by copying and paste the line:
 ```
 export ANDROID_HOME=$HOME/android
 export ANDROID_SDK_ROOT=${ANDROID_HOME}
