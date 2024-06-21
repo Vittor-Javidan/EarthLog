@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
-      "versionCode": 24,
+      "versionCode": 25,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -55,6 +55,14 @@
         "expo-screen-orientation",
         {
           "initialOrientation": "DEFAULT"
+        }
+      ],
+      [
+        "expo-build-properties", 
+        {
+          "android": {
+            "usesCleartextTraffic": true //allows http requests
+          }
         }
       ],
       "expo-font"

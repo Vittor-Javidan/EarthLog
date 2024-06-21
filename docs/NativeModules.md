@@ -1,7 +1,3 @@
-# LocalHost connetion on production:
-
-add the prop `android:usesCleartextTraffic="true"` on <application /> inside android/app/src/main/AndroidManifest.xml
-
 # react-native-iap (Android)
 
 docs: https://react-native-iap.dooboolab.com/docs/get-started/#android-1
