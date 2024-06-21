@@ -57,6 +57,14 @@
           "initialOrientation": "DEFAULT"
         }
       ],
+      [
+        "expo-build-properties", 
+        {
+          "android": {
+            "usesCleartextTraffic": true //allows http requests
+          }
+        }
+      ],
       "expo-font"
     ],
     "owner": "vittorjavidan"
