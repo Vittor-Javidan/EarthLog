@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.lonewispapps.earthlog",
-      "versionCode": 25,
+      "versionCode": 26,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -58,14 +58,15 @@
         }
       ],
       [
-        "expo-build-properties", 
+        "expo-build-properties",
         {
           "android": {
-            "usesCleartextTraffic": true //allows http requests
+            "usesCleartextTraffic": true
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-router"
     ],
     "owner": "vittorjavidan"
   }
