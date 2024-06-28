@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, LayoutRectangle, Pressable } from 'react-native';
-import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
+import { CameraView, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
 import { CameraPictureMode } from '@V1/Types/AppTypes';
@@ -17,12 +17,12 @@ export const AppCamera = memo((props: {
   onBackPress: () => void
 }) => {
 
-  const cameraRef = useRef<Camera>(null);
+  const cameraRef = useRef<CameraView>(null);
   const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
-  const [cameraType       , setCameraType       ] = useState<CameraType>(CameraType.back);
+  const [cameraType       , setCameraType       ] = useState<CameraType>('back');
   const [orientation      , setOrientation      ] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
-  const [flashMode        , setFlashMode        ] = useState<FlashMode>(FlashMode.off);
-  const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null>(null);
+  const [flashMode        , setFlashMode        ] = useState<FlashMode>('off');
+  const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null | undefined>(null);
   const [picturesAmount   , setPicturesAmount   ] = useState<number>(props.cameraConfig.picturesAmount);
   const [hudColor         , setHudColor         ] = useState<'#DDD' | '#000'>('#000');
   const [show             , setShow             ] = useState({
@@ -59,11 +59,11 @@ export const AppCamera = memo((props: {
   }, []);
 
   const onChangeCameraType = useCallback(() => {
-    setCameraType(prev => prev === CameraType.front ? CameraType.back : CameraType.front);
+    setCameraType(prev => prev === 'front' ? 'back' : 'front');
   }, [cameraType]);
 
   const onChangeFlashMode = useCallback(() => {
-    setFlashMode(prev => prev === FlashMode.off ? FlashMode.on : FlashMode.off);
+    setFlashMode(prev => prev === 'off' ? 'on' : 'off');
   }, [flashMode]);
 
   const onChangeHudColor = useCallback(() => {
@@ -100,19 +100,19 @@ export const AppCamera = memo((props: {
       }}
       onLayout={(e) => setPreviewDimensions(e.nativeEvent.layout)}
     >
-      <Camera
+      <CameraView
         ref={cameraRef}
-        type={cameraType}
-        flashMode={flashMode}
-        ratio="16:9"
+        facing={cameraType}
+        flash={flashMode}
+        videoQuality="2160p"
         style={[
           {
             aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-            width: orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-            height: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+            width:       orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+            height:      orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
             overflow: 'hidden',
           },
-          cameraType ===  CameraType.front && {
+          cameraType ===  'front' && {
             transform: [{ scaleX: -1 }],
           },
         ]}
@@ -121,8 +121,8 @@ export const AppCamera = memo((props: {
           onPress={async () => await onPictureTake()}
           style={{ flex: 1 }}
         />
-      </Camera>
-      {show.loadingPreview ? (
+      </CameraView>
+      {(show.loadingPreview && photo !== undefined) ? (
         <PhotoPreview
           photo={photo}
           dimensions={previewDimensions}
@@ -216,7 +216,7 @@ const CameraFooterButtons = memo((props: {
       }}
     >
       <Button.Icon
-        iconName={props.flashMode === FlashMode.on ? 'flash-off' : 'flash'}
+        iconName={props.flashMode === 'on' ? 'flash-off' : 'flash'}
         onPress={() => props.flashButtonPress()}
         theme={{
           font: props.color,

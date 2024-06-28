@@ -1,7 +1,7 @@
 import React, { memo, useMemo, useState } from 'react';
 import { Modal as ReactNative_Modal, Dimensions, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Camera } from 'expo-camera';
+import { useCameraPermissions } from 'expo-camera';
 
 import { CameraLayerConfig } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
@@ -20,7 +20,7 @@ export const CameraLayer = memo(() => {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
   const R      = useMemo(() => translations.component.camera[config.language], []);
-  const [permission  , requestPermission] = Camera.useCameraPermissions();
+  const [permission  , requestPermission] = useCameraPermissions();
   const [showCamera  , setShowCamera    ] = useState<boolean>(false);
   const [cameraConfig, setCameraConfig  ] = useState<CameraLayerConfig | null>(null);
 
