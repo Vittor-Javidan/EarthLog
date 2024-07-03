@@ -1,19 +1,13 @@
-import React, { ReactNode, memo, useCallback, useState } from 'react';
-import { Dimensions, LayoutChangeEvent } from 'react-native';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle, withDelay } from 'react-native-reanimated';
+import React, { ReactNode, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Dimensions, LayoutChangeEvent, Animated } from 'react-native';
 
 export const SlideFromLeft = memo((props: {
   duration: number;
   children: ReactNode;
 }) => {
-
   const { width }                           = Dimensions.get('window');
-  const leftOffset                          = useSharedValue(0);
+  const leftOffset                          = useMemo(() => new Animated.Value(-width), []);
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: leftOffset.value }],
-  }));
 
   const onLayout = useCallback((event: LayoutChangeEvent) => {
     if (event.nativeEvent.layout.height > 0) {
@@ -21,19 +15,23 @@ export const SlideFromLeft = memo((props: {
     }
   }, []);
 
-  if (startAnimation) {
-    leftOffset.value = withDelay(50, withTiming(width, { duration: props.duration }));
-  }
+  useEffect(() => {
+    if (startAnimation) {
+      Animated.timing(leftOffset, {
+        toValue: 0,
+        duration: props.duration,
+        useNativeDriver: true,
+        delay: 50,
+      }).start();
+    }
+  }, [startAnimation, props.duration]);
 
   return (
     <Animated.View
-      style={[
-        {
-          flex: 1,
-          left: -width,
-        },
-        animatedStyle,
-      ]}
+      style={{
+        flex: 1,
+        transform: [{ translateX: leftOffset }],
+      }}
       onLayout={(event) => onLayout(event)}
     >
       {props.children}
