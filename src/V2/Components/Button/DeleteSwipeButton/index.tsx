@@ -1,15 +1,14 @@
-import React, { useMemo, useState, memo, useCallback } from 'react';
-import { View, Dimensions, Pressable } from 'react-native';
-import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
-import Animated, { useDerivedValue, useSharedValue, runOnJS, useAnimatedStyle } from 'react-native-reanimated';
+import React, { useMemo, useState, useEffect, memo } from 'react';
+import { View, Dimensions, Animated, PanResponder } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { translations } from '@V2/Translations/index';
 import HapticsService from '@V2/Services/HapticsService';
 import ConfigService from '@V2/Services/ConfigService';
-import FontService from '@V2/Services/FontService';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
+import { CancelButton } from './CancelButton';
 
 type ButtonTheme = {
   font: string
@@ -18,7 +17,7 @@ type ButtonTheme = {
   wrong: string
 }
 
-export const DeleteSwipeButton = (props: {
+export const DeleteSwipeButton = memo((props: {
   buttonRadius?: number
   compensateMargin?: number
   theme: ButtonTheme
@@ -26,50 +25,47 @@ export const DeleteSwipeButton = (props: {
   onCancel: () => void
 }) => {
 
-  const { width: WIDTH } = useMemo(() => Dimensions.get('window'), []);
-  const config           = useMemo(() => ConfigService.config, []);
-  const R                = useMemo(() => translations.component.button[config.language], []);
+  const config                                = useMemo(() => ConfigService.config, []);
+  const R                                     = useMemo(() => translations.component.button[config.language], []);
+  const { width: WIDTH }                      = useMemo(() => Dimensions.get('window'), []);
+  const COMPENSATE_MARGIN                     = useMemo(() => props.compensateMargin ?? 0, []);
+  const PADDING                               = useMemo(() => 10, []);
+  const CIRCLE_RADIUS                         = useMemo(() => props.buttonRadius ?? 35, []);
+  const CIRCLE_DIAMETER                       = useMemo(() => CIRCLE_RADIUS * 2, []);
+  const THRESHOLD                             = useMemo(() => WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - COMPENSATE_MARGIN - COMPENSATE_MARGIN, []);
+  const translateX                            = useMemo(() => new Animated.Value(0), []);
+  const panResponder                          = useMemo(() => PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
+      HapticsService.vibrate('warning');
+    },
+    onPanResponderMove: (evt, gestureState) => {
+      translateX.setValue(gestureState.dx);
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dx >= THRESHOLD) {
+        props.onSwipe();
+        HapticsService.vibrate('warning');
+      } else {
+        Animated.timing(translateX, {
+          toValue: 0,
+          duration: 100,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+  }), [translateX, props.onSwipe]);
 
-  const COMPENSATE_MARGIN = props.compensateMargin ?? 0;
-  const PADDING           = 10;
-  const CIRCLE_RADIUS     = props.buttonRadius ?? 35;
-  const CIRCLE_DIAMETER   = CIRCLE_RADIUS * 2;
-  const THRESHOLD         = WIDTH - CIRCLE_DIAMETER - PADDING - PADDING - 10 - COMPENSATE_MARGIN - COMPENSATE_MARGIN;
+  const [isTargetReached, setIsTargetReached] = useState(false);
 
-  const translateX         = useSharedValue(0);
-  const adjustedTranslateX = useDerivedValue(() => Math.min(
-    Math.max(translateX.value, 0),
-    WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2),
-  ));
-
-  const animatedStyle_circle     = useAnimatedStyle(() => ({
-    transform: [{ translateX: adjustedTranslateX.value }],
-  }));
-  const animatedStyle_slider     = useAnimatedStyle(() => ({
-    backgroundColor: translateX.value < THRESHOLD ? props.theme.background : props.theme.wrong,
-  }));
-  const animatedStyle_targetArea = useAnimatedStyle(() => ({
-    backgroundColor: translateX.value < THRESHOLD ? props.theme.wrong : props.theme.background,
-  }));
-
-  const vibrate = useCallback(() => {
-    HapticsService.vibrate('warning');
-  }, []);
-
-  const panGestureEvent = Gesture.Pan().onStart(() => {
-    runOnJS((vibrate))();
-  }).onChange((event) => {
-    translateX.value = event.translationX;
-  }).onEnd(() => {
-    'worklet';
-    if (translateX.value < THRESHOLD) {
-      translateX.value = 0;
-    } else {
-      translateX.value = WIDTH - PADDING - CIRCLE_RADIUS;
-      runOnJS((vibrate))();
-      runOnJS(props.onSwipe)();
-    }
-  });
+  useEffect(() => {
+    translateX.addListener(({ value }) => {
+      setIsTargetReached(value >= THRESHOLD);
+    });
+    return () => {
+      translateX.removeAllListeners();
+    };
+  }, [translateX]);
 
   return (
     <GestureHandlerRootView
@@ -84,6 +80,8 @@ export const DeleteSwipeButton = (props: {
         onPress={() => props.onCancel()}
         theme={props.theme}
       />
+
+      {/* Swipe Line */}
       <Animated.View
         style={[{
           flexDirection: 'row',
@@ -92,10 +90,15 @@ export const DeleteSwipeButton = (props: {
           height: CIRCLE_DIAMETER,
           width: '100%',
           paddingLeft: 20,
-          backgroundColor: props.theme.background,
           borderColor: props.theme.font,
           borderRadius: 40,
-        }, animatedStyle_slider]}
+        }, {
+          backgroundColor: translateX.interpolate({
+            inputRange:  [-PADDING - COMPENSATE_MARGIN , 0, THRESHOLD, THRESHOLD + PADDING + COMPENSATE_MARGIN],
+            outputRange: [props.theme.background, props.theme.background, props.theme.wrong, props.theme.wrong],
+            extrapolate: 'clamp',
+          }),
+        }]}
       >
         <View
           style={{
@@ -104,14 +107,18 @@ export const DeleteSwipeButton = (props: {
             alignItems: 'center',
           }}
         >
-          <Text h3
-            style={{
-              color: props.theme.background,
-            }}
-          >
-            {R['Release to confirm']}
-          </Text>
+          {isTargetReached && (
+            <Text h3
+              style={{
+                color: props.theme.background,
+              }}
+            >
+              {R['Release to confirm']}
+            </Text>
+          )}
         </View>
+
+        {/* Swipe Target */}
         <Animated.View
           style={[{
             height: CIRCLE_DIAMETER,
@@ -119,94 +126,54 @@ export const DeleteSwipeButton = (props: {
             borderRadius: CIRCLE_RADIUS,
             borderWidth: 3,
             borderColor: props.theme.background,
-            backgroundColor: props.theme.wrong,
             justifyContent: 'center',
             alignItems: 'center',
-          }, animatedStyle_targetArea]}
+          }, {
+            backgroundColor: translateX.interpolate({
+              inputRange:  [-PADDING - COMPENSATE_MARGIN , 0, THRESHOLD, THRESHOLD + PADDING + COMPENSATE_MARGIN],
+              outputRange: [props.theme.wrong, props.theme.wrong, props.theme.background, props.theme.background],
+              extrapolate: 'clamp',
+            }),
+          }]}
         >
           <Icon
             iconName="trash-outline"
             color={props.theme.background}
           />
         </Animated.View>
-          <GestureDetector gesture={panGestureEvent}>
-            <Animated.View
-              style={[{
-                position: 'absolute',
-                left: 0,
-                height: CIRCLE_DIAMETER,
-                width: CIRCLE_DIAMETER,
-                borderRadius: CIRCLE_RADIUS,
-                borderWidth: 3,
-                borderColor: props.theme.background,
-                backgroundColor: props.theme.confirm,
-                justifyContent: 'center',
-                alignItems: 'center',
-                zIndex: 20,
-              }, animatedStyle_circle]}
-            >
-              <Icon
-                iconName="finger-print"
-                color={props.theme.background}
-              />
-            </Animated.View>
-          </GestureDetector>
+
+        {/* Swipe button */}
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={[{
+            position: 'absolute',
+            left: 0,
+            height: CIRCLE_DIAMETER,
+            width: CIRCLE_DIAMETER,
+            borderRadius: CIRCLE_RADIUS,
+            borderWidth: 3,
+            borderColor: props.theme.background,
+            backgroundColor: props.theme.confirm,
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 20,
+          }, {
+            transform: [{
+              translateX: translateX.interpolate({
+                inputRange:  [0, WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2)],
+                outputRange: [0, WIDTH - (CIRCLE_DIAMETER) - (PADDING * 2) - (COMPENSATE_MARGIN * 2)],
+                extrapolate: 'clamp',
+              }),
+            }],
+          }]}
+        >
+          <Icon
+            iconName="finger-print"
+            color={props.theme.background}
+          />
+        </Animated.View>
+
       </Animated.View>
     </GestureHandlerRootView>
   );
-};
-
-const CancelButton = memo((props: {
-  theme: ButtonTheme
-	onPress: () => void
-}) => {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.component.button[config.language], []);
-  const [pressed, setPressed] = useState<boolean>(false);
-
-  const onPressIn = useCallback(() => {
-    setPressed(true);
-    HapticsService.vibrate('success');
-  }, []);
-
-  const onPress = useCallback(() => {
-    props.onPress();
-    HapticsService.vibrate('success');
-  }, [props.onPress]);
-
-	return (
-		<Pressable
-			onPressIn={() => onPressIn()}
-			onPressOut={() => setPressed(false)}
-			onPress={() => onPress()}
-			style={{
-				backgroundColor: pressed ? props.theme.font : props.theme.background,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: 100,
-        height: 30,
-        borderRadius: 15,
-        paddingVertical: 0,
-				paddingLeft: 10,
-        paddingRight: 6,
-			}}
-		>
-      <Text
-				style={{
-          fontFamily: FontService.FONT_FAMILY.p,
-					fontSize: 200,
-          color: pressed ? props.theme.background : props.theme.font,
-          paddingVertical: 5,
-				}}
-			>
-				{R['Cancel']}
-			</Text>
-      <Icon
-        iconName="close"
-        color={pressed ? props.theme.background : props.theme.font}
-      />
-		</Pressable>
-	);
 });

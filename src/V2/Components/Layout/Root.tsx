@@ -1,6 +1,5 @@
-import React, { ReactNode, useState, useMemo, useEffect, memo, useCallback } from 'react';
-import { View, StyleProp, ViewStyle, Dimensions, Pressable } from 'react-native';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
+import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import SubscriptionManager from '@SubscriptionManager';
@@ -13,6 +12,7 @@ import ThemeService from '@V2/Services/ThemeService';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
+import { Animation } from '@V2/Animation/index';
 import { AlertLayer } from '@V2/Alert/index';
 import { CameraLayer } from '@V2/Camera/index';
 
@@ -225,7 +225,7 @@ const Drawer = memo((props: {
   const isFreePlan = SubscriptionManager.getPlan() === 'Free';
 
   return showDrawer ? (
-    <DrawerAnimation
+    <Animation.Drawer
       show={props.show}
       contentContainerStyle={{ gap: 1 }}
       style={{
@@ -276,40 +276,6 @@ const Drawer = memo((props: {
           {'v: ' + APP_VERSION}
         </Text>
       </Pressable>
-    </DrawerAnimation>
+    </Animation.Drawer>
   ) : <></>;
 });
-
-const DrawerAnimation = (props: {
-  show: boolean
-  children: ReactNode
-  style?: StyleProp<ViewStyle>
-  contentContainerStyle?: StyleProp<ViewStyle>
-}) => {
-
-  const { width } = useMemo(() => Dimensions.get('window'), []);
-  const leftOffset = useSharedValue(-width);
-
-  useEffect(() => {
-    const animationFrameId = requestAnimationFrame(() => {
-      leftOffset.value = withTiming(props.show ? 0 : -width, {
-        duration: 200,
-      });
-    });
-    return () => { cancelAnimationFrame(animationFrameId); };
-  }, [props.show]);
-
-  return (
-    <Animated.ScrollView
-      contentContainerStyle={[props.contentContainerStyle]}
-      style={[
-        props.style,
-        useAnimatedStyle(() => ({
-          transform: [{ translateX: leftOffset.value }],
-        })),
-      ]}
-    >
-      {props.children}
-    </Animated.ScrollView>
-  );
-};
