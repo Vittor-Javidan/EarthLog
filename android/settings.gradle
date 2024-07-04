@@ -1,4 +1,4 @@
-rootProject.name = 'Earth Log'
+rootProject.name = 'Field Data Collector'
 
 dependencyResolutionManagement {
   versionCatalogs {

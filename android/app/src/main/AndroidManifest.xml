@@ -29,8 +29,8 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
-        <data android:scheme="com.lonewispapps.earthlog"/>
-        <data android:scheme="exp+earth-log"/>
+        <data android:scheme="com.vittorjavidan.fielddatacollector"/>
+        <data android:scheme="exp+field-data-collector"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

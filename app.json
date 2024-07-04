@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Earth Log",
-    "slug": "earth-log",
+    "name": "Field Data Collector",
+    "slug": "field-data-collector",
     "version": "2.0.26",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,11 +16,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lonewispapps.earthlog"
+      "bundleIdentifier": "com.vittorjavidan.fielddatacollector"
     },
     "android": {
-      "package": "com.lonewispapps.earthlog",
-      "versionCode": 26,
+      "package": "com.vittorjavidan.fielddatacollector",
+      "versionCode": 1,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -34,7 +34,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c5345f06-d7e6-49bd-ae5c-c3a2362d0dec"
+        "projectId": "c2eb23bc-0277-4046-b205-388e321e6839"
       }
     },
     "plugins": [

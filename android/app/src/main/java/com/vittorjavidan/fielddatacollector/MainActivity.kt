@@ -1,4 +1,4 @@
-package com.lonewispapps.earthlog
+package com.vittorjavidan.fielddatacollector
 
 import android.os.Build
 import android.os.Bundle
