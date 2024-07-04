@@ -20,14 +20,14 @@ export const Drawer = memo(() => {
   const buySubscription = useCallback(async () => {
     await AlertService.handleAlert(true, {
       type: 'Buy Subscription',
-      message: R['Premium subscription'],
+      message: R['Sponsor this app!'],
     }, () => {});
   }, []);
 
   return (<>
     {SubscriptionManager.getPlan() === 'Free' && (
       <Button.TextWithIcon
-        title={R['Premium']}
+        title={R['Sponsor this app!']}
         iconName="wallet-outline"
         onPress={async () => await buySubscription()}
         theme={{

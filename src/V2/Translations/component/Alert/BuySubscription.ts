@@ -5,10 +5,8 @@ type TranslationDTO = Record<LanguageTag, {
   'Closing...': string
   'Loading price...': string
   'Buy': string
-  'A premium subscription will allow you to:': string
-  '- Download projects with more than 10 samples': string
-  '- Create more than 10 samples within a single project': string
-  'Subscriptions are not required to use the app and can be canceled at any time.': string
+  'Incentivize the development of new features and improvements!': string
+  '- Not being a sponsor does not affect your app usage in any way, and you can cancel at any time.': string
   'Price': string
   'Restarting the app...': string
   'Month': string
@@ -20,10 +18,8 @@ export const R_Alert_BuySubscription: TranslationDTO = {
     'Closing...': 'Closing...',
     'Loading price...': 'Loading price...',
     'Buy': 'Buy',
-    'A premium subscription will allow you to:': 'A premium subscription will allow you to:',
-    '- Download projects with more than 10 samples': '- Download projects with more than 10 samples',
-    '- Create more than 10 samples within a single project': '- Create more than 10 samples within a single project',
-    'Subscriptions are not required to use the app and can be canceled at any time.': 'Subscriptions are not required to use the app and can be canceled at any time.',
+    'Incentivize the development of new features and improvements!': 'Incentivize the development of new features and improvements!',
+    '- Not being a sponsor does not affect your app usage in any way, and you can cancel at any time.': '- Not being a sponsor does not affect your app usage in any way, and you can cancel at any time.',
     'Price': 'Price',
     'Restarting the app...': 'Restarting the app...',
     'Month': 'Month',
@@ -33,10 +29,8 @@ export const R_Alert_BuySubscription: TranslationDTO = {
     'Closing...': 'Fechando...',
     'Loading price...': 'Carregando preço...',
     'Buy': 'Comprar',
-    'A premium subscription will allow you to:': 'Com a subscrição premium, você poderá:',
-    '- Download projects with more than 10 samples': '- Baixar projetos com mais de 10 amostras',
-    '- Create more than 10 samples within a single project': '- Criar mais de 10 amostras em um único projeto',
-    'Subscriptions are not required to use the app and can be canceled at any time.': 'A subscrição não é obrigatória para a utilização do aplicativo, e pode ser cancelada a qualquer momento.',
+    'Incentivize the development of new features and improvements!': 'Incentive o desenvolvimento de novas funcionalidades e melhorias!',
+    '- Not being a sponsor does not affect your app usage in any way, and you can cancel at any time.': '- Não ser um patrocinador não afeta em nada o uso do seu aplicativo, e você pode cancelar a qualquer momento.',
     'Price': 'Preço',
     'Restarting the app...': 'Reiniciando o aplicativo...',
     'Month': 'Mês',

@@ -222,7 +222,7 @@ const Drawer = memo((props: {
   const R      = useMemo(() => translations.component.layout.root[config.language], []);
 
   const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
-  const isFreePlan = SubscriptionManager.getPlan() === 'Free';
+  const isSponsor  = SubscriptionManager.getPlan() === 'Premium';
 
   return showDrawer ? (
     <Animation.Drawer
@@ -245,26 +245,23 @@ const Drawer = memo((props: {
         onPress={() => props.onPress_Background()}
         style={{
           flex: 1,
-          flexDirection: isFreePlan ? undefined : 'row',
-          justifyContent: isFreePlan ? 'flex-end' : 'space-between',
-          alignItems: isFreePlan ? undefined : 'flex-end',
+          flexDirection: isSponsor ? undefined : 'row',
+          justifyContent: isSponsor ? 'flex-end' : 'space-between',
+          alignItems: isSponsor ? undefined : 'flex-end',
           backgroundColor: theme.background,
         }}
       >
-        <Text p
+        {<Text p
           style={{
             flex: 1,
             color: theme.font,
-            textAlign: 'justify',
+            textAlign: 'left',
             fontSize: 10,
             padding: 8,
           }}
         >
-          {isFreePlan
-            ? R['Free Premium befenefits for you until we hit 1000 users! If you wish to support the app development financially, you can still buy the premium plan.']
-            : R['Premium plan']
-          }
-        </Text>
+          {isSponsor ? R['Thanks for sponsoring s2'] : ''}
+        </Text>}
         <Text p
           style={{
             color: theme.font,

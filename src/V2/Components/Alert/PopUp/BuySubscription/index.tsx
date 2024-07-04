@@ -147,7 +147,7 @@ export const BuySubscription = withIAPContext(memo((props: {
           {showSubscriptionDescription && (<>
             <View
               style={{
-                gap: 5,
+                gap: 10,
                 borderRadius: 10,
               }}
             >
@@ -157,40 +157,17 @@ export const BuySubscription = withIAPContext(memo((props: {
                   textAlign: 'left',
                 }}
               >
-                {R['A premium subscription will allow you to:']}
+                {R['Incentivize the development of new features and improvements!']}
               </Text>
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                }}
-              >
-                <Text p
-                  style={{
-                    color: theme.font,
-                    textAlign: 'left',
-                  }}
-                >
-                  {R['- Download projects with more than 10 samples']}
-                </Text>
-                <Text p
-                  style={{
-                    color: theme.font,
-                    textAlign: 'left',
-                  }}
-                >
-                  {R['- Create more than 10 samples within a single project']}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text h2
+              <Text p
                 style={{
                   color: theme.font,
                   textAlign: 'justify',
                   fontSize: 12,
+                  paddingHorizontal: 20,
                 }}
               >
-                {R['Subscriptions are not required to use the app and can be canceled at any time.']}
+                {R['- Not being a sponsor does not affect your app usage in any way, and you can cancel at any time.']}
               </Text>
             </View>
           </>)}
