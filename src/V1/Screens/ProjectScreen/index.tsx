@@ -1,12 +1,7 @@
-import React, { useState, memo, useCallback, useMemo } from 'react';
+import React, { useState, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import SubscriptionManager from '@SubscriptionManager';
-
-import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
-import { translations } from '@V1/Translations/index';
 import { SampleSettings } from '@V1/Types/ProjectTypes';
-import ConfigService from '@V1/Services/ConfigService';
 import CacheService from '@V1/Services/CacheService';
 import AlertService from '@V1/Services/AlertService';
 
@@ -20,24 +15,15 @@ export const ProjectScreen = memo((props: {
 }) => {
 
   const id_project            = useLocalSearchParams().id_project as string;
-  const config                = useMemo(() => ConfigService.config, []);
-  const RError                = useMemo(() => translations.global.errors[config.language], []);
   const [samples, setSamples] = useState<SampleSettings[]>(CacheService.allSamples);
 
   const onCreateSample = useCallback(async () => {
-    if (SubscriptionManager.freeUserLimitCheck(samples.length >= SubscriptionManager.FREE_PLAN_MAX_SAMPLES)) {
-      await AlertService.handleAlert(true, {
-        type: 'Buy Subscription',
-        message: RError(ErrorCodes.FREE_USER_SAMPLE_CREATION_LIMIT),
-      }, () => {});
-    } else {
-      await AlertService.handleAlert(true, {
-        type: 'sample creation',
-        id_project: id_project,
-        sampleNumber: samples.length + 1,
-        sampleAlias_Singular: props.sampleAlias_Singular,
-      }, () => setSamples(CacheService.allSamples));
-    }
+    await AlertService.handleAlert(true, {
+      type: 'sample creation',
+      id_project: id_project,
+      sampleNumber: samples.length + 1,
+      sampleAlias_Singular: props.sampleAlias_Singular,
+    }, () => setSamples(CacheService.allSamples));
   }, [props.sampleAlias_Singular, samples]);
 
   const onUploadProject = useCallback(async () => {

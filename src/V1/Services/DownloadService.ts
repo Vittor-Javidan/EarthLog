@@ -1,5 +1,3 @@
-import SubscriptionManager from '@SubscriptionManager';
-
 import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
@@ -97,10 +95,6 @@ export default class DownloadService {
 
         o.feedback('Downloading project. ID:' + ` ${id_project}`);
         const downloadedProjectDTO = await this.restAPI.getProject({ accessToken: this.accessToken, id_project, signal });
-
-        if (SubscriptionManager.freeUserLimitCheck(downloadedProjectDTO.samples.length > SubscriptionManager.FREE_PLAN_MAX_SAMPLES)) {
-          throw Error(ErrorCodes.FREE_USER_DOWNLOAD_RESTRICTION);
-        }
 
         o.feedback('Processing project:' + ` ${downloadedProjectDTO.projectSettings.name}`);
         const { projectDTO, syncData } = DataProcessingService.processProject_AfterDownload({

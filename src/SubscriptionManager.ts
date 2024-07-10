@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   initConnection,
   endConnection,
@@ -128,17 +127,9 @@ export function useRestoreSubscription(o: {
 export default class SubscriptionManager {
 
   private static userPlan: AppSubscribePlan = 'Free';
-  private static OFFLINE_TIME_LOCAL_STORAGE_KEY = 'OfflineTime';
-  static FREE_PLAN_MAX_SAMPLES = 10;
 
   static getPlan(): AppSubscribePlan {
     return this.userPlan;
-  }
-
-  static freeUserLimitCheck(condition: boolean) {
-    // return this.userPlan === 'Free' && condition; // Uncomment this line remove free premium for free users.
-    this.userPlan === 'Free' && condition && console.log('Free user limit removed');
-    return false; // Always will return false until the app reachs a peak of 1000 users.
   }
 
   static async loadPlan(o: {
@@ -149,9 +140,6 @@ export default class SubscriptionManager {
     this.userPlan = 'Free';
 
     if (await NetworkManager.hasInternetConection() === false) {
-      await this.readOfflineAccess({
-        onFinish: () => o.onFinish(),
-      });
       return;
     }
 
@@ -200,13 +188,8 @@ export default class SubscriptionManager {
       for (let i = 0; i < purchases.length; i++) {
         if (purchases[i].productId === PREMIUM_PLAN_SKU) {
           this.userPlan = 'Premium';
-          await this.saveOfflineAccess();
           break;
         }
-      }
-
-      if (this.userPlan !== 'Premium') {
-        await this.removeOfflineAccess();
       }
 
       o.onFinish();
@@ -215,48 +198,6 @@ export default class SubscriptionManager {
       if (error instanceof Error) {
         o.onError(error.message);
       }
-    }
-  }
-
-  private static async readOfflineAccess(o: {
-    onFinish: (userPlan: AppSubscribePlan) => void
-  }): Promise<void> {
-    try {
-
-      const savedTimeSinceEpoch = await AsyncStorage.getItem(this.OFFLINE_TIME_LOCAL_STORAGE_KEY);
-
-      if (savedTimeSinceEpoch !== null) {
-
-        const savedTime = parseInt(savedTimeSinceEpoch, 10);
-        const currentTime = Date.now();
-        const timeDifference = currentTime - savedTime;
-        const PREMIUM_OFFLINE_TIME_LIMIT = 4 * 24 * 60 * 60 * 1000; // 4 days
-
-        if (timeDifference > 0 && timeDifference <= PREMIUM_OFFLINE_TIME_LIMIT) {
-          this.userPlan = 'Premium';
-        }
-      }
-
-      o.onFinish(this.userPlan);
-
-    } catch (error) {
-      alert('Could not read offline premium access');
-    }
-  }
-
-  private static async saveOfflineAccess(): Promise<void> {
-    try {
-      await AsyncStorage.setItem(this.OFFLINE_TIME_LOCAL_STORAGE_KEY, `${Date.now()}`);
-    } catch (error) {
-      alert('Could not save offline premium access');
-    }
-  }
-
-  private static async removeOfflineAccess(): Promise<void> {
-    try {
-      await AsyncStorage.removeItem(this.OFFLINE_TIME_LOCAL_STORAGE_KEY);
-    } catch (error) {
-      alert('Could not remove offline premium access');
     }
   }
 }

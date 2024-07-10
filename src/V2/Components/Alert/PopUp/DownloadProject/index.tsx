@@ -1,7 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { VERSION } from '@V2/Globals/Version';
-import { ErrorCodes } from '@V2/Globals/ErrorsCodes';
 import { CredentialDTO } from '@V2/Types/AppTypes';
 import { ProjectSettings } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
@@ -108,13 +107,6 @@ export const DownloadProjects = memo((props: {
       onError: (errorMessage) => {
         setError(RError(errorMessage));
         setFeedbacks(prev => [ ...prev, RShared['Error!']]);
-        if (errorMessage === ErrorCodes.FREE_USER_DOWNLOAD_RESTRICTION) {
-          props.closeModal();
-          AlertService.handleAlert(true, {
-            type: 'Buy Subscription',
-            message: RError(errorMessage),
-          }, () => {});
-        }
       },
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage ])),
     });
