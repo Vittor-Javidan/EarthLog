@@ -245,7 +245,7 @@ const Drawer = memo((props: {
         onPress={() => props.onPress_Background()}
         style={{
           flex: 1,
-          flexDirection: isSponsor ? undefined : 'row',
+          flexDirection: 'row',
           justifyContent: isSponsor ? 'flex-end' : 'space-between',
           alignItems: isSponsor ? undefined : 'flex-end',
           backgroundColor: theme.background,
