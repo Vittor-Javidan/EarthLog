@@ -12,7 +12,6 @@ module.exports = function (api) {
         alias: {
 
           '@VersionManager':       './src/VersionManager.ts',
-          '@SubscriptionManager':  './src/SubscriptionManager.ts',
           '@NetworkManager':       './src/NetworkManager.ts',
           '@DevTools':             './src/DevTools.ts',
 

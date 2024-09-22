@@ -2,10 +2,7 @@ import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
-import SubscriptionManager from '@SubscriptionManager';
-
 import { APP_VERSION } from '@V1/Globals/Version';
-import { translations } from '@V1/Translations/index';
 import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
@@ -219,12 +216,10 @@ const Drawer = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
-  const R      = useMemo(() => translations.component.layout.root[config.language], []);
 
   const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
-  const isSponsor  = SubscriptionManager.getPlan() === 'Premium';
 
-  return showDrawer ? (
+  return showDrawer ? (<>
     <Animation.Drawer
       show={props.show}
       contentContainerStyle={{ gap: 1 }}
@@ -244,24 +239,10 @@ const Drawer = memo((props: {
       <Pressable
         onPress={() => props.onPress_Background()}
         style={{
-          flex: 1,
           flexDirection: 'row',
-          justifyContent: isSponsor ? 'flex-end' : 'space-between',
-          alignItems: isSponsor ? undefined : 'flex-end',
-          backgroundColor: theme.background,
+          justifyContent: 'flex-end',
         }}
       >
-        {<Text p
-          style={{
-            flex: 1,
-            color: theme.font,
-            textAlign: 'left',
-            fontSize: 10,
-            padding: 8,
-          }}
-        >
-          {isSponsor ? R['Thanks for sponsoring s2'] : ''}
-        </Text>}
         <Text p
           style={{
             color: theme.font,
@@ -274,5 +255,5 @@ const Drawer = memo((props: {
         </Text>
       </Pressable>
     </Animation.Drawer>
-  ) : <></>;
+  </>) : <></>;
 });

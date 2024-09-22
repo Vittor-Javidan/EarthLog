@@ -19,17 +19,14 @@
 + CameraComponent
 + Photo Input
 + Photo Upload API
-~ Photo files export
-- LTS versioning
-- Subscription Implementation
-- Public server with examples
++ Photo files export
++ LTS versioning
++ Public server with examples
 - documentation website
 
 # Apple/Play Store publishing
 
 # Post-Realease Stage
-- App horizontal layout (To allow horizontal pictures and videos)
-- App tablet layout
 - Date/Time Input
 - GPS Poligon Input
 - Audio Input

@@ -6,7 +6,6 @@ type TranslationDTO = Record<LanguageTag, {
   'Settings': string
   'Credentials': string
   'Sponsor this app!': string
-  'Google Play subscriptions': string
   'Privacy Policy': string
   'Change version': string
   'GitHub': string
@@ -19,7 +18,6 @@ export const R_Scope_Home: TranslationDTO = {
     'Settings': 'Settings',
     'Credentials': 'Credentials',
     'Sponsor this app!': 'Sponsor this app!',
-    'Google Play subscriptions': 'Google Play subscriptions',
     'Privacy Policy': 'Privacy Policy',
     'Change version': 'Change version',
     'GitHub': 'GitHub',
@@ -30,7 +28,6 @@ export const R_Scope_Home: TranslationDTO = {
     'Settings': 'Configurações',
     'Credentials': 'Credenciais',
     'Sponsor this app!': 'Patrocine o app!',
-    'Google Play subscriptions': 'Assinaturas Google Play',
     'Privacy Policy': 'Política de Privacidade',
     'Change version': 'Mudar versão',
     'GitHub': 'GitHub',

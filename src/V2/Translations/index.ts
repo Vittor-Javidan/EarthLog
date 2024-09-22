@@ -38,15 +38,11 @@ import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
 import { R_Input_Picture } from './widgetInput/PictureInput';
 import { R_Screen_VibrationOptions } from './Screen/VibrationOptionsScreen';
 import { R_Scope_VibrationOptions } from './scope/VibrationsOptionsScope';
-import { R_Scope_IAP } from './scope/IAPScope';
 import { R_Input_Root } from './widgetInput/Root';
 import { R_Input_Selection } from './widgetInput/SelectionInput';
-import { R_Screen_IAP } from './Screen/IAPScreen';
 import { R_ErrorCodes } from './globals/ErrorCodes';
-import { R_Alert_BuySubscription } from './component/Alert/BuySubscription';
 import { R_Scope_VersionChange } from './scope/VersionChangeScope';
 import { R_Component_Camera } from './component/Camera';
-import { R_Layout_Root } from './component/Layout/Root';
 import { R_Scope_Sample } from './scope/SampleScope';
 
 export const translations = {
@@ -59,7 +55,6 @@ export const translations = {
     docx:                     R_FileExportModules_DOCX,
   },
   scope: {
-    iap:                      R_Scope_IAP,
     home:                     R_Scope_Home,
     languageSelection:        R_Scope_Language,
     project:                  R_Scope_Project,
@@ -84,7 +79,6 @@ export const translations = {
     timeFormat:               R_Screen_TimeFormat,
     exportProject:            R_Screen_ExportProject,
     vibrationOptions:         R_Screen_VibrationOptions,
-    iap:                      R_Screen_IAP,
   },
   component: {
     alert: {
@@ -95,12 +89,10 @@ export const translations = {
       createProject:          R_Alert_CreateProject,
       uploadProject:          R_Alert_UploadProject,
       downloadProjecs:        R_Alert_DownloadProjects,
-      buySubscription:        R_Alert_BuySubscription,
     },
     button:                   R_Button,
     camera:                   R_Component_Camera,
     layout: {
-      root:                   R_Layout_Root,
       pseudoWidget:           R_Layout_PseudoWidget,
     },
   },

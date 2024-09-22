@@ -12,7 +12,6 @@ import { UploadProjects } from './PopUp/UploadProject';
 import { ExportProject_DOCX } from './PopUp/ExportProject_DOCX';
 import { ExportProject_CSV } from './PopUp/ExportProject_CSV';
 import { DownloadPictures } from './PopUp/DownloadPictures';
-import { BuySubscription } from './PopUp/BuySubscription';
 
 export const Selector = memo((props: {
   config: ModalConfig
@@ -77,12 +76,6 @@ export const Selector = memo((props: {
       <DownloadPictures
         id_project={props.config.id_project}
         picturesIDs={props.config.picturesIDs}
-        closeModal={() => props.closeModal()}
-      />
-    );
-    case 'Buy Subscription': return (
-      <BuySubscription
-        message={props.config.message}
         closeModal={() => props.closeModal()}
       />
     );
