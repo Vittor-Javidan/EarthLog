@@ -1,4 +1,4 @@
-import * as ExpoFileSystem from 'expo-file-system';
+import * as ExpoFileSystem from 'expo-file-system/legacy';
 
 import { LTS_VERSION } from '@V1/Globals/Version';
 import { ConfigDTO, CredentialDTO } from '@V1/Types/AppTypes';

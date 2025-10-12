@@ -1,0 +1,6 @@
+- Change any legacy functionality of expo-file-system to new version
+- Fix Icon sizes
+- Fix Modal not opening on the first click
+- Fix bottom buttons being behind the backpress button
+- Fix camera permissions
+- Fix GPS not being collected
