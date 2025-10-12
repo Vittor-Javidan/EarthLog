@@ -9,8 +9,9 @@ import ConfigService from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { CredentialSelectionScreen } from '@V1/Screens/CredentialScreen';
-import { NavigationTree } from './NavigationTree';
-import { Drawer } from './Drawer';
+
+import NavigationTree from './NavigationTree';
+import Drawer from './Drawer';
 
 export default function LanguageSelectionScope() {
 

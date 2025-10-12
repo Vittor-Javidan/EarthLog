@@ -8,7 +8,8 @@ import ConfigService from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { SettingsScreen } from '@V1/Screens/SettingsScreen';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function SettingsScope() {
 

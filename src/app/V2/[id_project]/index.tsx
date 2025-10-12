@@ -12,8 +12,9 @@ import { Layout } from '@V2/Layout/index';
 import { ProjectScreen } from '@V2/Screens/ProjectScreen';
 import { TemplateScreen } from '@V2/Screens/TemplateScreen';
 import { ProjectInfoScreen } from '@V2/Screens/ProjectInfoScreen';
-import { NavigationTree } from './NavigationTree';
-import { Drawer } from './Drawer';
+
+import NavigationTree from './NavigationTree';
+import Drawer from './Drawer';
 
 type UpdatedAlias = {
   plural: null | string

@@ -5,7 +5,7 @@ import { navigate } from '@V2/Globals/NavigationControler';
 
 import { Layout } from '@V2/Layout/index';
 
-export const NavigationTree = memo(() => {
+const NavigationTree = memo(() => {
 
   const id_project = useLocalSearchParams().id_project as string;
 
@@ -31,3 +31,5 @@ export const NavigationTree = memo(() => {
     />
   );
 });
+
+export default NavigationTree;

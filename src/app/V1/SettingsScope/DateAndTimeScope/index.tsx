@@ -8,7 +8,8 @@ import ConfigService from '@V1/Services/ConfigService';
 import { Layout } from '@V1/Layout/index';
 import { DateFormatScreen } from '@V1/Screens/DateFormatScreen';
 import { TimeFormatScreen } from '@V1/Screens/TimeFormatScreen';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function DateAndTimeScope() {
 

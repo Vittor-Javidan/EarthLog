@@ -13,8 +13,9 @@ import CacheService from '@V1/Services/CacheService';
 
 import { Layout } from '@V1/Layout/index';
 import { HomeScreen } from '@V1/Screens/HomeScreen';
-import { NavigationTree } from './NavigationTree';
-import { Drawer } from './Drawer';
+
+import NavigationTree from './NavigationTree';
+import Drawer from './Drawer';
 
 export default function HomeScope() {
 

@@ -9,7 +9,8 @@ import { Layout } from '@V2/Layout/index';
 import { AppThemeScreen } from '@V2/Screens/AppThemeScreen';
 import { WidgetThemeScreen } from '@V2/Screens/WidgetThemeScreen';
 import { WidgetThemePreviewScreen } from '@V2/Screens/WidgetThemePreviewScreen';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function ThemeScope() {
 

@@ -4,7 +4,7 @@ import { navigate } from '@V2/Globals/NavigationControler';
 
 import { Layout } from '@V2/Layout/index';
 
-export const NavigationTree = memo(() => {
+const NavigationTree = memo(() => {
   return (
     <Layout.NavigationTree.Root
       iconButtons={[
@@ -22,3 +22,5 @@ export const NavigationTree = memo(() => {
     />
   );
 });
+
+export default NavigationTree;

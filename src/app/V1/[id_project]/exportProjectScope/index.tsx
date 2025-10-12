@@ -10,7 +10,8 @@ import CacheService from '@V1/Services/CacheService';
 
 import { Layout } from '@V1/Layout/index';
 import { ExportProjectScreen } from '@V1/Screens/ExportProject';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function exportProjectScope() {
 
