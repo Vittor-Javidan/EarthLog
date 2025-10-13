@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback } from 'react';
-import { View, TextInput, Platform } from 'react-native';
+import { View, TextInput } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
 import FontService from '@V1/Services/FontService';
@@ -58,7 +58,7 @@ export const TextInput_GPS = memo((props: {
       <TextInput
         style={{
           width: '50%',
-          paddingBottom: Platform.OS === 'ios' ? 5 : 0,
+          paddingBottom: 0,
           paddingHorizontal: 5,
           color: invalidValue ? props.theme.wrong : props.theme.font,
           borderColor: invalidValue ? props.theme.wrong : props.theme.font,

@@ -1,5 +1,5 @@
 import React, { ReactNode, memo } from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 
 import FontService from '@V2/Services/FontService';
 
@@ -26,7 +26,7 @@ export const InputRoot = memo((props: {
       <View
         style={{
           position: 'absolute',
-          top: Platform.OS === 'ios' ? 0 : -2,
+          top: -2,
           paddingLeft: 15,
           zIndex: 1,
         }}

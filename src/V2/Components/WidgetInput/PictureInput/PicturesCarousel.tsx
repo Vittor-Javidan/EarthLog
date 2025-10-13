@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { View, Image, LayoutRectangle, TextInput, Platform } from 'react-native';
+import { View, Image, LayoutRectangle, TextInput } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -146,7 +146,7 @@ export const PicturesCarousel = memo((props: {
             width: dimensions.width,
             paddingHorizontal: 20,
             paddingVertical: 10,
-            paddingBottom: Platform.OS === 'ios' ? 10 : 0,
+            paddingBottom: 0,
             backgroundColor: props.theme.background,
             color: props.theme.font,
             fontFamily: FontService.FONT_FAMILY.p,
