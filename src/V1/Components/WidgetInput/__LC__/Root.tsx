@@ -18,7 +18,7 @@ export const InputRoot = memo((props: {
   isLastInput: boolean
   widgetRules: WidgetRules
   theme: WidgetTheme
-  iconButtons: JSX.Element
+  iconButtons: React.JSX.Element
   children: ReactNode
   style?: StyleProp<ViewStyle>
   onLabelChange: (label: string) => void

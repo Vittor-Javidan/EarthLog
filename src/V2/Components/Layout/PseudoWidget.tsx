@@ -11,7 +11,7 @@ export const PseudoWidget = memo((props: {
   saved: boolean
   children: ReactNode
   theme: WidgetTheme
-  navbarIcons?: JSX.Element
+  navbarIcons?: React.JSX.Element
 }) => {
   return (
     <View

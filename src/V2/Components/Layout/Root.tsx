@@ -19,8 +19,8 @@ export const Root = memo((props: {
   title: string
   subtitle: string
   children: ReactNode
-  drawerChildren: JSX.Element
-  navigationTree: JSX.Element
+  drawerChildren: React.JSX.Element
+  navigationTree: React.JSX.Element
 }) => {
   return (<>
     <StatusBarLayer />
@@ -40,8 +40,8 @@ export const Root = memo((props: {
 const AppLayer = memo((props: {
   title: string
   subtitle: string
-  navigationTree: JSX.Element
-  drawerChildren: JSX.Element
+  navigationTree: React.JSX.Element
+  drawerChildren: React.JSX.Element
   children: ReactNode
 }) => {
 

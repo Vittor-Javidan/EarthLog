@@ -6,7 +6,7 @@ import ConfigService from '@V2/Services/ConfigService';
 import ThemeService from '@V2/Services/ThemeService';
 
 export const NavigationTreeRoot = memo((props: {
-  iconButtons: JSX.Element[]
+  iconButtons: React.JSX.Element[]
 }) => {
 
   if (props.iconButtons === undefined) {
@@ -15,7 +15,7 @@ export const NavigationTreeRoot = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navigationTree, []);
-  const tree: JSX.Element[] = [];
+  const tree: React.JSX.Element[] = [];
 
   for (let i = 0; i < props.iconButtons.length; i++) {
     tree.push(props.iconButtons[i]);

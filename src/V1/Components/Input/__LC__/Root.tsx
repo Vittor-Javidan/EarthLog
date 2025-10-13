@@ -13,7 +13,7 @@ type InputTheme = {
 export const InputRoot = memo((props: {
   label: string
   theme: InputTheme
-  iconButtons: JSX.Element
+  iconButtons: React.JSX.Element
   children: ReactNode
 }) => {
   return (
