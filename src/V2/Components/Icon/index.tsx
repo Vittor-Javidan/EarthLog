@@ -4,15 +4,14 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 export const Icon = memo((props: {
   iconName: IconName
   color: string
+  fontSize?: number
 }) => {
   return (
     <Ionicons
       name={props.iconName}
-      adjustsFontSizeToFit={true}
-      maxFontSizeMultiplier={0}
       style={{
         color: props.color,
-        fontSize: 200,
+        fontSize: props.fontSize ?? undefined,
       }}
     />
   );

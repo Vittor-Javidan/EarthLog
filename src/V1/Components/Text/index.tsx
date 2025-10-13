@@ -15,7 +15,6 @@ export const Text = memo((props: {
 
   return (
     <ReactNative_Text
-      maxFontSizeMultiplier={0}
       adjustsFontSizeToFit={true}
       numberOfLines={props.numberOfLine}
       style={[
