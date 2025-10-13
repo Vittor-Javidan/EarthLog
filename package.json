@@ -1,6 +1,6 @@
 {
   "name": "fielddatacollector",
-  "version": "2.0.31",
+  "version": "2.0.32",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/fira-code": "^0.2.3",
+    "@expo/vector-icons": "^15.0.2",
     "@jest/globals": "^29.5.0",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/cli-debugger-ui": "^11.3.2",
