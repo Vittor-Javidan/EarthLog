@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback, useRef } from 'react';
-import { TextInput, Platform } from 'react-native';
+import { TextInput } from 'react-native';
 
 import { useTimeout } from '@V1/Hooks/index';
 import FontService from '@V1/Services/FontService';
@@ -83,7 +83,7 @@ export const StringInput = memo((props: {
         style={{
           width: '100%',
           paddingVertical: 15,
-          paddingBottom: (props.multiline || Platform.OS === 'ios') ? 10 : 0,
+          paddingBottom: (props.multiline) ? 10 : 0,
           backgroundColor: props.theme.background,
           fontFamily: FontService.FONT_FAMILY.p,
           color: props.theme.font,

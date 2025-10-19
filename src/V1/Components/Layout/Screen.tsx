@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo, memo } from 'react';
 import { Dimensions, StyleProp, View, ViewStyle } from 'react-native';
 
 export const Screen = memo((props: {
-  screenButtons: JSX.Element
+  screenButtons: React.JSX.Element
   children: ReactNode
   style?: StyleProp<ViewStyle>
 }) => {

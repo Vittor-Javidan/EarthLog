@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -20,8 +20,9 @@ export const AlertLayer = memo(() => {
   AlertService.registerAlertShowSetter(setShowModal);
   AlertService.registerAlertModalConfigSetter(setModalConfig);
 
-  return (showModal ? (
+  return (
     <ReactNative_Modal
+      visible={showModal}
       animationType="fade"
       style={{
         width: WIDTH,
@@ -61,5 +62,5 @@ export const AlertLayer = memo(() => {
         </View>
       </GestureHandlerRootView>
     </ReactNative_Modal>
-  ) : <></>);
+  );
 });

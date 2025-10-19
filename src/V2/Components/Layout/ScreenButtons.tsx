@@ -2,12 +2,12 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 
 export const ScreenButtons = memo((props: {
-  buttons: JSX.Element
+  buttons: React.JSX.Element
   showSwipe?: boolean
-  SwipeButton?: JSX.Element
+  SwipeButton?: React.JSX.Element
 }) => {
 
-  const BOTTOM = 10;
+  const BOTTOM = 90;
 
   return (props.showSwipe ? (
     <View

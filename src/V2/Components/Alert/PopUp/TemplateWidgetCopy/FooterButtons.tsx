@@ -32,6 +32,7 @@ export const FooterButtons = memo((props: {
           background:        theme.wrong,
           background_active: theme.background_active,
         }}
+        iconSize={30}
         style={{
           flex: 1,
           height: 40,

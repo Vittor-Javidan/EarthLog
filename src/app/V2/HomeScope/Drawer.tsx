@@ -8,7 +8,7 @@ import ThemeService from '@V2/Services/ThemeService';
 
 import { Button } from '@V2/Button/index';
 
-export const Drawer = memo(() => {
+const Drawer = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
@@ -72,3 +72,5 @@ export const Drawer = memo(() => {
     />
   </>);
 });
+
+export default Drawer;

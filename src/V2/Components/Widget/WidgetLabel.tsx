@@ -40,7 +40,6 @@ export const WidgetLabel = memo((props: {
           fontSize: 20,
           fontFamily: FontService.FONT_FAMILY.h2,
           borderRadius: 5,
-          paddingVertical: 0,
           paddingHorizontal: 5,
           minHeight: 34,
           width: '90%',

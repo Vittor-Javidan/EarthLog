@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import * as Location from 'expo-location';
 
 import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@V2/Types/ProjectTypes';
@@ -52,8 +51,7 @@ export default class GPSService {
 
 export class GPSWatcherService {
 
-  private iosInterval: NodeJS.Timer | null = null;
-  private androidLocationSubscription: Location.LocationSubscription | null = null;
+  private androidSubscription: Location.LocationSubscription | null = null;
   private watchCoordinate: boolean = true;
   private watchAltitude: boolean = true;
   private gpsData: GPS_DTO;
@@ -101,18 +99,8 @@ export class GPSWatcherService {
     };
 
     await GPSService.getPermission(async () => {
-
-      if (Platform.OS === 'ios' && this.iosInterval === null) {
-        await this.iosWatcher(
-        {
-          accuracy: Location.Accuracy.BestForNavigation,
-          timeInterval: 1,
-        }, (coordinates) => sendData(coordinates));
-        return;
-      }
-
-      if (this.androidLocationSubscription === null) {
-        await this.androidWatcher({
+      if (this.androidSubscription === null) {
+        this.androidSubscription = await Location.watchPositionAsync({
           accuracy: Location.Accuracy.BestForNavigation,
           timeInterval: 500,
         }, (coordinates) => sendData(coordinates));
@@ -122,34 +110,11 @@ export class GPSWatcherService {
   }
 
   stopWatcher() {
-
-    if (this.iosInterval !== null) {
-      clearInterval(this.iosInterval);
-      this.iosInterval = null;
+    if (this.androidSubscription !== null) {
+      this.androidSubscription.remove();
+      this.androidSubscription = null;
       return;
     }
-
-    if (this.androidLocationSubscription !== null) {
-      this.androidLocationSubscription.remove();
-      this.androidLocationSubscription = null;
-      return;
-    }
-  }
-
-  private async iosWatcher(
-    options: Location.LocationOptions,
-    callback: Location.LocationCallback
-  ) {
-    this.iosInterval = setInterval(async () => {
-      callback(await Location.getCurrentPositionAsync(options));
-    }, 500);
-  }
-
-  private async androidWatcher(
-    options: Location.LocationOptions,
-    callback: Location.LocationCallback
-  ) {
-    this.androidLocationSubscription = await Location.watchPositionAsync(options, callback);
   }
 
   private updateCoordinate(

@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
-import { TextInput, Platform, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { StringInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -103,7 +103,7 @@ export const StringInput = memo((props: {
     >
       <View
         style={{
-          paddingVertical: Platform.OS === 'ios' ? 10 : 0,
+          paddingVertical: 0,
         }}
       >
         <TextInput
@@ -118,7 +118,7 @@ export const StringInput = memo((props: {
           style={{
             width: '100%',
             paddingVertical: 15,
-            paddingBottom: props.multiline || Platform.OS === 'ios' ? 10 : 0,
+            paddingBottom: props.multiline ? 10 : 0,
             backgroundColor: props.theme.background,
             color: props.theme.font,
             fontFamily: FontService.FONT_FAMILY.p,

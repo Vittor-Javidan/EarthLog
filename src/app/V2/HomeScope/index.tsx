@@ -13,8 +13,8 @@ import CacheService from '@V2/Services/CacheService';
 
 import { Layout } from '@V2/Layout/index';
 import { HomeScreen } from '@V2/Screens/HomeScreen';
-import { NavigationTree } from './NavigationTree';
-import { Drawer } from './Drawer';
+import NavigationTree from './NavigationTree';
+import Drawer from './Drawer';
 
 export default function HomeScope() {
 

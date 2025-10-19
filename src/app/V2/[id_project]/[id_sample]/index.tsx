@@ -12,7 +12,8 @@ import CacheService from '@V2/Services/CacheService';
 import { Layout } from '@V2/Layout/index';
 import { SampleDataScreens } from '@V2/Screens/SampleScreen';
 import { SampleInfoScreen } from '@V2/Screens/SampleInfoScreen';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function SampleScope() {
 

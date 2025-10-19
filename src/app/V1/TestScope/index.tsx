@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 
 import { Layout } from '@V1/Layout/index';
-import { Screen1 as _Screen1 } from './Screen1';
-import { Screen2 as _Screen2 } from './Screen2';
-import { Screen3 as _Screen3 } from './Screen3';
-import { Screen4 as _Screen4 } from './Screen4';
+import _Screen1 from './Screen1';
+import _Screen2 from './Screen2';
+import _Screen3 from './Screen3';
+import _Screen4 from './Screen4';
 
 const Screen1 = memo(() => { return <_Screen1 />; });
 const Screen2 = memo(() => { return <_Screen2 />; });

@@ -1,0 +1,3 @@
+- horizontal camera not fiting the whole screen
+- alert popup buttons with small icons size
+- <PictureInput /> having its Carousell showing download buttons for already available pictures

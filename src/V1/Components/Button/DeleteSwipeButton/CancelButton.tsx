@@ -56,9 +56,7 @@ export const CancelButton = memo((props: {
       <Text
         style={{
           fontFamily: FontService.FONT_FAMILY.p,
-          fontSize: 200,
           color: pressed ? props.theme.background : props.theme.font,
-          paddingVertical: 5,
         }}
       >
         {R['Cancel']}

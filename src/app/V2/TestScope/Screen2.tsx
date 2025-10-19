@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Layout } from '@V2/Layout/index';
 
-export function Screen2() {
+export default function Screen2() {
   return (
     <Layout.Screen
       screenButtons={<></>}

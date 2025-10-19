@@ -1,6 +1,7 @@
 import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Constants from 'expo-constants';
 
 import { APP_VERSION } from '@V1/Globals/Version';
 import HapticsService from '@V1/Services/HapticsService';
@@ -13,14 +14,14 @@ import { Animation } from '@V1/Animation/index';
 import { AlertLayer } from '@V1/Alert/index';
 import { CameraLayer } from '@V1/Camera/index';
 
-const NAVBAR_HEIGH = 60;
+const NAVBAR_HEIGHT = 90;
 
 export const Root = memo((props: {
   title: string
   subtitle: string
   children: ReactNode
-  drawerChildren: JSX.Element
-  navigationTree: JSX.Element
+  drawerChildren: React.JSX.Element
+  navigationTree: React.JSX.Element
 }) => {
   return (<>
     <StatusBarLayer />
@@ -40,8 +41,8 @@ export const Root = memo((props: {
 const AppLayer = memo((props: {
   title: string
   subtitle: string
-  navigationTree: JSX.Element
-  drawerChildren: JSX.Element
+  navigationTree: React.JSX.Element
+  drawerChildren: React.JSX.Element
   children: ReactNode
 }) => {
 
@@ -55,7 +56,7 @@ const AppLayer = memo((props: {
       title={props.title}
       subtitle={props.subtitle}
       onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-      style={{ height: NAVBAR_HEIGH }}
+      style={{ height: NAVBAR_HEIGHT }}
     />
     {props.navigationTree}
     <View
@@ -107,16 +108,20 @@ const Navbar = memo((props: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: theme.background,
+        paddingTop: Constants.statusBarHeight,
       }]}
     >
       <View
-        style={{ flex: 8 }}
+        style={{
+          flex: 8,
+          justifyContent: 'space-between',
+        }}
       >
         <View
           style={{
-            flex: 6,
+            flex: 1,
             paddingHorizontal: 10,
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
           }}
         >
           <Text h1
@@ -130,7 +135,6 @@ const Navbar = memo((props: {
         {props.subtitle !== '' && (
           <View
             style={{
-              flex: 4,
               paddingHorizontal: 10,
               justifyContent: 'center',
             }}
@@ -191,16 +195,16 @@ const MenuButton = memo((props: {
           flexDirection: 'row',
           backgroundColor: pressed ? props.theme.background_active : props.theme.background,
           paddingHorizontal: 10,
-          paddingVertical: 0,
           borderRadius: 5,
-          justifyContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
           height: '100%',
         }}
       >
         <Icon
-          iconName="menu-sharp"
+          iconName="menu"
           color={pressed ? props.theme.font_active : props.theme.font}
+          fontSize={NAVBAR_HEIGHT - Constants.statusBarHeight}
         />
       </Pressable>
     </View>

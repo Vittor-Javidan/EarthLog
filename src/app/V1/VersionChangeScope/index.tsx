@@ -8,7 +8,8 @@ import ConfigService from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { VersionChangeScreen } from '@V1/Screens/VersionChangeScreen';
-import { NavigationTree } from './NavigationTree';
+
+import NavigationTree from './NavigationTree';
 
 export default function VersionChangeScope() {
 

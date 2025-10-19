@@ -1,15 +1,15 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import DateTimeService from '@V1/Services/DateTimeService';
-import CameraService from '@V1/Services/CameraService';
 import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import MediaService from '@V1/Services/MediaService';
 import CacheService from '@V1/Services/CacheService';
+import { useCameraLayer } from '@V1/Services/CameraService';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';
@@ -55,12 +55,6 @@ export const PictureInput = memo((props: {
 
   const openCamera = useCallback(() => {
     if (props.widgetScope.type !== 'template') {
-      CameraService.configCamera({
-        id_project: props.widgetScope.id_project,
-        mode: 'photo',
-        picturesAmount: inputData.value.length,
-        picturesLimit: inputData.picturesAmountLimit,
-      });
       setShow(prev => ({ ...prev, camera: true }));
     }
   }, [inputData]);
@@ -128,8 +122,18 @@ export const PictureInput = memo((props: {
     });
   }, [inputData, allMissingPictures]);
 
-  useCameraWatcher(onPictureTake, () => {
-    setShow(prev => ({ ...prev, camera: false }));
+  useCameraLayer({
+    scope: props.widgetScope,
+    config: {
+      id_project: props.widgetScope.id_project,
+      mode: 'photo',
+      picturesAmount: inputData.value.length,
+      picturesLimit: inputData.picturesAmountLimit,
+    },
+    onPictureCallback: (id_picture: string) => onPictureTake(id_picture),
+    onCameraClose: () => {
+      setShow(prev => ({ ...prev, camera: false }));
+    }
   }, [inputData, show.camera]);
 
   return (
@@ -213,18 +217,3 @@ const IconButtons = memo((props: {
     )}
   </>);
 });
-
-function useCameraWatcher(
-  onPictureCallback: (id_picture: string) => void,
-  onCameraClose: () => void,
-  deps: [PictureInputData, boolean]
-) {
-  const [inputData, openCamera] = deps;
-  useEffect(() => {
-    CameraService.onPictureCallback(onPictureCallback);
-    CameraService.onCameraCloseCallback(onCameraClose);
-    if (openCamera) {
-      CameraService.openCamera();
-    }
-  }, [inputData, openCamera]);
-}

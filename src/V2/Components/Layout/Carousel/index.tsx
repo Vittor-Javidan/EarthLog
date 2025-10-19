@@ -16,7 +16,7 @@ type buttonData = {
 
 export const Carousel = memo((props: {
   buttonData: buttonData[]
-  screens: JSX.Element[]
+  screens: React.JSX.Element[]
   onBackPress: () => void
 }) => {
 

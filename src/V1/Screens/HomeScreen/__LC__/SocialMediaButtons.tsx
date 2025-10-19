@@ -79,6 +79,7 @@ const YoutubeTutorialButton = memo(() => {
         <Icon
           color={pressed ? YOUTUBE_COLOR : theme.font}
           iconName="logo-youtube"
+          fontSize={20}
         />
       </View>
     </Pressable>
@@ -136,6 +137,7 @@ const LinkedinCommunityButton = memo(() => {
         <Icon
           color={pressed ? LINKEDIN_COLOR : theme.font}
           iconName="logo-linkedin"
+          fontSize={20}
         />
       </View>
     </Pressable>

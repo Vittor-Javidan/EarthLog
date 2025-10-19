@@ -1,5 +1,5 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
-import { View, Switch, Platform } from 'react-native';
+import { View, Switch } from 'react-native';
 
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { BooleanInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
@@ -129,9 +129,8 @@ export const BooleanInput = memo((props: {
             theme={props.theme}
           />
           <Switch
-            style={{ transform: [{ scale: Platform.OS === 'ios' ? 0.75 : 1 }] }}
+            style={{ transform: [{ scale: 1 }] }}
             trackColor={{ false: props.theme.font, true: props.theme.font }}
-            ios_backgroundColor={props.theme.font}
             value={inputData.value}
             onValueChange={(boolean) => onSwitchChange(boolean, inputData)}
             thumbColor={thumbColor}

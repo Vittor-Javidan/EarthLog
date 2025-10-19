@@ -8,7 +8,7 @@ import ThemeService from '@V1/Services/ThemeService';
 
 import { Button } from '@V1/Button/index';
 
-export const Drawer = memo((props: {
+const Drawer = memo((props: {
   projectSettings: ProjectSettings
   onDownloadAllPictures: () => void
 }) => {
@@ -45,3 +45,5 @@ export const Drawer = memo((props: {
     />
   </>);
 });
+
+export default Drawer;

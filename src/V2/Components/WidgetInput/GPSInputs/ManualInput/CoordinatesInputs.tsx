@@ -1,5 +1,5 @@
 import React, { useMemo, memo } from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 
 import { WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
@@ -27,7 +27,7 @@ export const CoordinatesInputs = memo((props: {
   return (
     <View
       style={{
-        gap: Platform.OS === 'ios' ? 10 : 0,
+        gap: 0,
       }}
     >
       <TextInput_GPS

@@ -43,7 +43,6 @@ export const LastProjectButton = memo((props: {
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
-        maxHeight: 70,
         borderRadius: 10,
         backgroundColor: pressed ? theme.background_active : theme.background_Button,
         paddingVertical: 5,
