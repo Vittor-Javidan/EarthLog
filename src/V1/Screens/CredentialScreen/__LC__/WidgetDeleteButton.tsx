@@ -47,6 +47,7 @@ export const WidgetDeleteButton = memo((props: {
       <Icon
         iconName="trash-outline"
         color={pressed ? props.theme.font : props.theme.background}
+        fontSize={30}
       />
     </Pressable>
   );

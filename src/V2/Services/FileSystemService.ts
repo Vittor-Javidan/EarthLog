@@ -68,7 +68,7 @@ class FileSystemService {
     const file = new File(directory);
     if (!file.exists) { return null; }
     switch (encoding) {
-      case 'base64': return file.base64();
+      case 'base64': return file.base64Sync();
       case 'utf8':   return file.textSync();
     }
   }

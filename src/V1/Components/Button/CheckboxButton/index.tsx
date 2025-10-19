@@ -27,11 +27,9 @@ export const Checkbox = memo((props: {
     >
       {props.value && <Ionicons
         name="checkmark-sharp"
-        adjustsFontSizeToFit={true}
-        maxFontSizeMultiplier={0}
         style={{
           color: props.theme.background,
-          fontSize: 200,
+          fontSize: 20,
         }}
       />}
     </Pressable>

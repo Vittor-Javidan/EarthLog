@@ -48,6 +48,7 @@ export const WidgetSensitiveDataButton = memo((props: {
       <Icon
         iconName={props.showSensitiveInfo ? 'eye' : 'eye-off'}
         color={pressed ? props.theme.background : props.theme.font}
+        fontSize={30}
       />
     </Pressable>
   );

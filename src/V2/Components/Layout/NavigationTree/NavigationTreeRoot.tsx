@@ -24,11 +24,8 @@ export const NavigationTreeRoot = memo((props: {
         <Ionicons
           key={`treeIcon_Chevrn_${i + 1}`}
           name="chevron-forward"
-          adjustsFontSizeToFit={true}
-          maxFontSizeMultiplier={0}
           style={{
             color: theme.font,
-            fontSize: 200,
           }}
         />
       );

@@ -139,6 +139,7 @@ export const DeleteSwipeButton = memo((props: {
           <Icon
             iconName="trash-outline"
             color={props.theme.background}
+            fontSize={30}
           />
         </Animated.View>
 
@@ -170,6 +171,7 @@ export const DeleteSwipeButton = memo((props: {
           <Icon
             iconName="finger-print"
             color={props.theme.background}
+            fontSize={30}
           />
         </Animated.View>
 

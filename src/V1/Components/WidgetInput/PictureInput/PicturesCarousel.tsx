@@ -218,6 +218,7 @@ const CarouselButtons = memo((props: {
         style={{
           position: 'absolute',
           justifyContent: 'center',
+          alignContent: 'center',
           left: 0,
           height: '100%',
         }}
@@ -231,10 +232,9 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          iconSize={60}
           style={{
             backgroundColor: undefined,
-            height: 50,
-            width: 50,
             paddingHorizontal: 0,
             paddingVertical: 0,
           }}
@@ -246,6 +246,7 @@ const CarouselButtons = memo((props: {
         style={{
           position: 'absolute',
           justifyContent: 'center',
+          alignContent: 'center',
           right: 0,
           height: '100%',
         }}
@@ -259,10 +260,9 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          iconSize={60}
           style={{
             backgroundColor: undefined,
-            height: 50,
-            width: 50,
             paddingHorizontal: 0,
             paddingVertical: 0,
           }}
@@ -289,10 +289,9 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          iconSize={40}
           style={{
             backgroundColor: undefined,
-            height: 40,
-            width: 40,
             paddingHorizontal: 0,
             paddingVertical: 0,
             opacity: 0.5,
@@ -308,11 +307,10 @@ const CarouselButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={40}
         style={{
           backgroundColor: undefined,
-          height: 40,
-          width: 40,
-          paddingHorizontal: 0,
+          paddingHorizontal: 10,
           paddingVertical: 0,
           opacity: 0.5,
         }}
@@ -326,10 +324,9 @@ const CarouselButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={40}
         style={{
           backgroundColor: undefined,
-          height: 40,
-          width: 40,
           paddingHorizontal: 0,
           paddingVertical: 0,
           opacity: 0.5,

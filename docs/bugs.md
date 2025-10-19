@@ -1,6 +1,3 @@
-- Fix Icon sizes
-- Fix Modal not opening on the first click
-- Fix bottom buttons being behind the backpress button
-- Fix camera permissions
-- Fix GPS not being collected
-- Fix Widget titles offset
+- horizontal camera not fiting the whole screen
+- alert popup buttons with small icons size
+- <PictureInput /> having its Carousell showing download buttons for already available pictures

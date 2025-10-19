@@ -11,7 +11,6 @@ const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export const AlertLayer = memo(() => {
 
-  const [rerender, setRerender] = useState<boolean>(false); // This is a hack to force the modal to rerender after expo 52 update
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<ModalConfig>({
     question: '',
@@ -21,13 +20,10 @@ export const AlertLayer = memo(() => {
   AlertService.registerAlertShowSetter(setShowModal);
   AlertService.registerAlertModalConfigSetter(setModalConfig);
 
-  useEffect(() => {}, [rerender]);
-
   return (
     <ReactNative_Modal
       visible={showModal}
       animationType="fade"
-      onShow={() => setRerender(prev => !prev)} // This is a hack to force the modal to rerender after expo 52 update
       style={{
         width: WIDTH,
         height: HEIGHT,

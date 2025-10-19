@@ -16,6 +16,7 @@ export const IconButton = memo((props: {
   iconName: IconName
   theme: ButtonTheme
   style?: StyleProp<ViewStyle>
+  iconSize?: number
   onPress: () => void
 }) => {
 
@@ -49,6 +50,7 @@ export const IconButton = memo((props: {
       <Icon
         iconName={props.iconName}
         color={pressed ? props.theme.font_active : props.theme.font}
+        fontSize={props.iconSize}
       />
     </Pressable>
   );

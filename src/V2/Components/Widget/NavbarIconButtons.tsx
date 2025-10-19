@@ -56,6 +56,7 @@ export const NavbarIconButton = memo((props: {
         <Icon
           iconName={props.iconName}
           color={(props.selected || pressed) ? props.theme.background : props.theme.font}
+          fontSize={30}
         />
       </Pressable>
     </Animation.FadeOut>

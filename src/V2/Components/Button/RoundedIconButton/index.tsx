@@ -66,6 +66,7 @@ export const RoundedIconButton = memo((props: {
       <Icon
         iconName={props.iconName}
         color={pressed ? props.theme.font_active : props.theme.font}
+        fontSize={20}
       />
     </Pressable>
   );

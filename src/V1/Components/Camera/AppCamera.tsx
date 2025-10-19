@@ -100,28 +100,28 @@ export const AppCamera = memo((props: {
       }}
       onLayout={(e) => setPreviewDimensions(e.nativeEvent.layout)}
     >
-      <CameraView
-        ref={cameraRef}
-        facing={cameraType}
-        flash={flashMode}
-        videoQuality="2160p"
-        style={[
-          {
-            aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-            width:       orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-            height:      orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-            overflow: 'hidden',
-          },
-          cameraType ===  'front' && {
-            transform: [{ scaleX: -1 }],
-          },
-        ]}
+      <Pressable
+        onPress={async () => await onPictureTake()}
+        style={{ flex: 1 }}
       >
-        <Pressable
-          onPress={async () => await onPictureTake()}
-          style={{ flex: 1 }}
+        <CameraView
+          ref={cameraRef}
+          facing={cameraType}
+          flash={flashMode}
+          videoQuality="2160p"
+          style={[
+            {
+              aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
+              width:       orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+              height:      orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+              overflow: 'hidden',
+            },
+            cameraType ===  'front' && {
+              transform: [{ scaleX: -1 }],
+            },
+          ]}
         />
-      </CameraView>
+      </Pressable>
       {(show.loadingPreview && photo !== undefined) ? (
         <PhotoPreview
           photo={photo}
@@ -190,6 +190,7 @@ const CloseButton = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={50}
         style={{
           backgroundColor: undefined,
           height: 50,
@@ -213,10 +214,11 @@ const CameraFooterButtons = memo((props: {
     <View
       style={{
         flexDirection: 'row',
+        gap: 20,
       }}
     >
       <Button.Icon
-        iconName={props.flashMode === 'on' ? 'flash-off' : 'flash'}
+        iconName={props.flashMode === 'on' ? 'flash' : 'flash-off'}
         onPress={() => props.flashButtonPress()}
         theme={{
           font: props.color,
@@ -224,6 +226,7 @@ const CameraFooterButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={50}
         style={{
           backgroundColor: undefined,
           height: 50,
@@ -241,6 +244,7 @@ const CameraFooterButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={50}
         style={{
           backgroundColor: undefined,
           height: 50,
@@ -258,6 +262,7 @@ const CameraFooterButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        iconSize={50}
         style={{
           backgroundColor: undefined,
           height: 50,

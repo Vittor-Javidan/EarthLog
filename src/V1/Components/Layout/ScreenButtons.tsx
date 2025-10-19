@@ -7,7 +7,7 @@ export const ScreenButtons = memo((props: {
   SwipeButton?: React.JSX.Element
 }) => {
 
-  const BOTTOM = 10;
+  const BOTTOM = 90;
 
   return (props.showSwipe ? (
     <View

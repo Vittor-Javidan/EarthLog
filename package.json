@@ -1,8 +1,9 @@
 {
   "name": "fielddatacollector",
-  "version": "2.0.32",
+  "version": "2.0.33",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --go",
+    "tsc": "tsc --noemit",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web"
