@@ -39,3 +39,9 @@
 - Can create widget
 - Are selected templates widgets auto added
 - Can delete Sample
+
+## Explore File Screen
+
+- Can open folders
+- Can open JSON files
+- Can open Images

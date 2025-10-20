@@ -1,8 +1,8 @@
-import { Directory, File, Paths } from 'expo-file-system';
+import { Directory, File } from 'expo-file-system';
 
-import { LTS_VERSION } from '@V2/Globals/Version';
 import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
 import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V2/Types/ProjectTypes';
+import { PathService } from '../FileServices/PathService';
 
 class FileSystemService {
 
@@ -101,39 +101,9 @@ class FileSystemService {
   }
 }
 
-const APP_ROOT_PATH = Paths.document.uri.slice(0, -1);
-export const getPath = { // TODO: Rename it to 'FilePath'
-  ROOT                   : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}`,
-  CONFIG                 : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Config`,
-  CREDENTIALS            : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Credentials`,
-  TEMP                   : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}/TemporaryFiles`,
-  SYNC_DATA              : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}/SyncData`,
-  PROJECTS: {
-    ROOT                 : (                                     ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects`,
-    PROJECT : {
-      ROOT               : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}`,
-      PROJECT_WIDGETS    : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/projectWidgets`,
-      TEMPLATE_WIDGETS   : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/templateWidgets`,
-      SAMPLES: {
-        ROOT             : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/samples`,
-        SAMPLE: {
-          ROOT           : (id_project: string, id_sample: string) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/samples/${id_sample}`,
-          SAMPLE_WIDGETS : (id_project: string, id_sample: string) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/samples/${id_sample}/sampleWidgets`,
-        },
-      },
-      MEDIA: {
-        ROOT             : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/media`,
-        PICTURES         : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/media/pictures`,
-        VIDEOS           : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/media/videos`,
-        AUDIOS           : (id_project: string                   ) => `${APP_ROOT_PATH}/${LTS_VERSION}/Projects/${id_project}/media/audios`,
-      },
-    },
-  },
-};
-
 export class FOLDER_App {
 
-  private static APP_ROOT_FOLDER = () => getPath.ROOT();
+  private static APP_ROOT_FOLDER = () => PathService.getDir().ROOT();
 
   static async init(): Promise<void> {
     FileSystemService.createDirectory({ directory: this.APP_ROOT_FOLDER() });
@@ -154,7 +124,7 @@ export class FOLDER_App {
 
 export class FOLDER_Temp {
 
-  private static TEMP_FOLDER = () => getPath.TEMP();
+  private static TEMP_FOLDER = () => PathService.getDir().TEMP();
 
   static async init(): Promise<void> {
     try {
@@ -189,8 +159,8 @@ export class FOLDER_Temp {
 
 export class FOLDER_Config {
 
-  private static CONFIG_FOLDER     = () =>    getPath.CONFIG();
-  private static CONFIG_FILE_PATH  = () => `${getPath.CONFIG()}/index.json`;
+  private static CONFIG_FOLDER     = () =>    PathService.getDir().CONFIG();
+  private static CONFIG_FILE_PATH  = () => `${PathService.getDir().CONFIG()}/index.json`;
 
   static async init(): Promise<void> {
     try {
@@ -216,8 +186,8 @@ export class FOLDER_Config {
 
 export class FOLDER_Credentials {
 
-  private static CREDENTIALS_FOLDER     = () =>    getPath.CREDENTIALS();
-  private static CREDENTIALS_FILE_PATH  = () => `${getPath.CREDENTIALS()}/index.json`;
+  private static CREDENTIALS_FOLDER     = () =>    PathService.getDir().CREDENTIALS();
+  private static CREDENTIALS_FILE_PATH  = () => `${PathService.getDir().CREDENTIALS()}/index.json`;
 
   static async init(): Promise<void> {
     try {
@@ -273,8 +243,8 @@ export class FOLDER_Credentials {
 
 export class FOLDER_SyncData {
 
-  static SYNC_DATA_FOLDER    = (                  ) =>    getPath.SYNC_DATA();
-  static SYNC_DATA_FILE_PATH = (id_project: string) => `${getPath.SYNC_DATA()}/${id_project}.json`;
+  static SYNC_DATA_FOLDER    = (                  ) =>    PathService.getDir().SYNC_DATA();
+  static SYNC_DATA_FILE_PATH = (id_project: string) => `${PathService.getDir().SYNC_DATA()}/${id_project}.json`;
 
   static async init(): Promise<void> {
     try {
@@ -340,10 +310,10 @@ export class FOLDER_SyncData {
 
 export class FOLDER_Projects {
 
-  private static PROJECTS_FODLER            = (                  ) =>    getPath.PROJECTS.ROOT();
-  private static PROJECTS_INDEX_FILE_PATH   = (                  ) => `${getPath.PROJECTS.ROOT()}/index.json`;
-  private static PROJECT_FOLDER             = (id_project: string) => `${getPath.PROJECTS.PROJECT.ROOT(id_project)}`;
-  private static PROJECT_SETTINGS_FILE_PATH = (id_project: string) => `${getPath.PROJECTS.PROJECT.ROOT(id_project)}/projectSettings.json`;
+  private static PROJECTS_FODLER            = (                  ) =>    PathService.getDir().PROJECTS.ROOT();
+  private static PROJECTS_INDEX_FILE_PATH   = (                  ) => `${PathService.getDir().PROJECTS.ROOT()}/index.json`;
+  private static PROJECT_FOLDER             = (id_project: string) => `${PathService.getDir().PROJECTS.PROJECT.ROOT(id_project)}`;
+  private static PROJECT_SETTINGS_FILE_PATH = (id_project: string) => `${PathService.getDir().PROJECTS.PROJECT.ROOT(id_project)}/projectSettings.json`;
 
   static async init(): Promise<void> {
     try {
@@ -444,9 +414,9 @@ export class FOLDER_Projects {
 
 export class FOLDER_ProjectWidgets {
 
-  private static PROJECT_WIDGETS_FOLDER  = (id_project: string                   ) =>    getPath.PROJECTS.PROJECT.PROJECT_WIDGETS(id_project);
-  private static WIDGETS_INDEX_FILE_PATH = (id_project: string                   ) => `${getPath.PROJECTS.PROJECT.PROJECT_WIDGETS(id_project)}/index.json`;
-  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_widget: string) => `${getPath.PROJECTS.PROJECT.PROJECT_WIDGETS(id_project)}/${id_widget}.json`;
+  private static PROJECT_WIDGETS_FOLDER  = (id_project: string                   ) =>    PathService.getDir().PROJECTS.PROJECT.PROJECT_WIDGETS(id_project);
+  private static WIDGETS_INDEX_FILE_PATH = (id_project: string                   ) => `${PathService.getDir().PROJECTS.PROJECT.PROJECT_WIDGETS(id_project)}/index.json`;
+  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_widget: string) => `${PathService.getDir().PROJECTS.PROJECT.PROJECT_WIDGETS(id_project)}/${id_widget}.json`;
 
   static async init(o: {
     id_project: string
@@ -554,9 +524,9 @@ export class FOLDER_ProjectWidgets {
 
 export class FOLDER_TemplateWidgets {
 
-  private static TEMPLATE_WIDGETS_FOLDER = (id_project: string,                  ) =>    getPath.PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project);
-  private static WIDGETS_INDEX_FILE_PATH = (id_project: string,                  ) => `${getPath.PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project)}/index.json`;
-  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_widget: string) => `${getPath.PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project)}/${id_widget}.json`;
+  private static TEMPLATE_WIDGETS_FOLDER = (id_project: string,                  ) =>    PathService.getDir().PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project);
+  private static WIDGETS_INDEX_FILE_PATH = (id_project: string,                  ) => `${PathService.getDir().PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project)}/index.json`;
+  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_widget: string) => `${PathService.getDir().PROJECTS.PROJECT.TEMPLATE_WIDGETS(id_project)}/${id_widget}.json`;
 
   static async init(o: {
     id_project: string
@@ -664,10 +634,10 @@ export class FOLDER_TemplateWidgets {
 
 export class FOLDER_Samples {
 
-  private static SAMPLES_FOLDER            = (id_project: string                   ) =>    getPath.PROJECTS.PROJECT.SAMPLES.ROOT(id_project);
-  private static SAMPLES_INDEX_FILE_PATH   = (id_project: string                   ) => `${getPath.PROJECTS.PROJECT.SAMPLES.ROOT(id_project)}/index.json`;
-  private static SAMPLE_FOLDER             = (id_project: string, id_sample: string) => `${getPath.PROJECTS.PROJECT.SAMPLES.SAMPLE.ROOT(id_project, id_sample)}`;
-  private static SAMPLE_SETTINGS_FILE_PATH = (id_project: string, id_sample: string) => `${getPath.PROJECTS.PROJECT.SAMPLES.SAMPLE.ROOT(id_project, id_sample)}/sampleSettings.json`;
+  private static SAMPLES_FOLDER            = (id_project: string                   ) =>    PathService.getDir().PROJECTS.PROJECT.SAMPLES.ROOT(id_project);
+  private static SAMPLES_INDEX_FILE_PATH   = (id_project: string                   ) => `${PathService.getDir().PROJECTS.PROJECT.SAMPLES.ROOT(id_project)}/index.json`;
+  private static SAMPLE_FOLDER             = (id_project: string, id_sample: string) => `${PathService.getDir().PROJECTS.PROJECT.SAMPLES.SAMPLE.ROOT(id_project, id_sample)}`;
+  private static SAMPLE_SETTINGS_FILE_PATH = (id_project: string, id_sample: string) => `${PathService.getDir().PROJECTS.PROJECT.SAMPLES.SAMPLE.ROOT(id_project, id_sample)}/sampleSettings.json`;
 
   static async init(o: {
     id_project: string
@@ -778,9 +748,9 @@ export class FOLDER_Samples {
 
 export class FOLDER_SampleWidgets {
 
-  private static SAMPLE_WIDGETS_FOLDER   = (id_project: string, id_sample: string                   ) =>    getPath.PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample);
-  private static WIDGETS_INDEX_FILE_PATH = (id_project: string, id_sample: string                   ) => `${getPath.PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample)}/index.json`;
-  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_sample: string, id_widget: string) => `${getPath.PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample)}/${id_widget}.json`;
+  private static SAMPLE_WIDGETS_FOLDER   = (id_project: string, id_sample: string                   ) =>    PathService.getDir().PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample);
+  private static WIDGETS_INDEX_FILE_PATH = (id_project: string, id_sample: string                   ) => `${PathService.getDir().PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample)}/index.json`;
+  private static WIDGET_DATA_FILE_PATH   = (id_project: string, id_sample: string, id_widget: string) => `${PathService.getDir().PROJECTS.PROJECT.SAMPLES.SAMPLE.SAMPLE_WIDGETS(id_project, id_sample)}/${id_widget}.json`;
 
   static async init(o: {
     id_project: string
@@ -897,10 +867,10 @@ export class FOLDER_SampleWidgets {
 
 export class FOLDER_Media {
 
-  static MEDIA_FOLDER   = (id_project: string) => getPath.PROJECTS.PROJECT.MEDIA.ROOT(id_project);
-  static PICTURE_FOLDER = (id_project: string) => getPath.PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
-  static VIDEO_FOLDER   = (id_project: string) => getPath.PROJECTS.PROJECT.MEDIA.VIDEOS(id_project);
-  static AUDIO_FOLDER   = (id_project: string) => getPath.PROJECTS.PROJECT.MEDIA.AUDIOS(id_project);
+  static MEDIA_FOLDER   = (id_project: string) => PathService.getDir().PROJECTS.PROJECT.MEDIA.ROOT(id_project);
+  static PICTURE_FOLDER = (id_project: string) => PathService.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
+  static VIDEO_FOLDER   = (id_project: string) => PathService.getDir().PROJECTS.PROJECT.MEDIA.VIDEOS(id_project);
+  static AUDIO_FOLDER   = (id_project: string) => PathService.getDir().PROJECTS.PROJECT.MEDIA.AUDIOS(id_project);
 
   static async init(o: {
     id_project: string

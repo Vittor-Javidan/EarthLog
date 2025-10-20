@@ -9,6 +9,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Privacy Policy': string
   'Change version': string
   'GitHub': string
+  'File Explorer': string
 }>
 
 export const R_Scope_Home: TranslationDTO = {
@@ -21,6 +22,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Privacy Policy': 'Privacy Policy',
     'Change version': 'Change version',
     'GitHub': 'GitHub',
+    'File Explorer': 'File Explorer',
   },
   'pt-BR': {
     'Home screen': 'Tela inicial',
@@ -31,5 +33,6 @@ export const R_Scope_Home: TranslationDTO = {
     'Privacy Policy': 'Política de Privacidade',
     'Change version': 'Mudar versão',
     'GitHub': 'GitHub',
+    'File Explorer': 'Explorador de Arquivos',
   },
 };
