@@ -1,5 +1,4 @@
 - Sync Files not being deleted when project is deleted.
-- Check why there is no config file.
 - horizontal camera not fiting the whole screen
 - alert popup buttons with small icons size
 - <PictureInput /> having its Carousell showing download buttons for already available pictures
