@@ -44,6 +44,8 @@ import { R_ErrorCodes } from './globals/ErrorCodes';
 import { R_Scope_VersionChange } from './scope/VersionChangeScope';
 import { R_Component_Camera } from './component/Camera';
 import { R_Scope_Sample } from './scope/SampleScope';
+import { R_Screen_FileExplore } from './Screen/FileExplore'
+import { R_Scope_FileExplore } from './scope/FileExplore';
 
 export const translations = {
   global: {
@@ -66,6 +68,7 @@ export const translations = {
     dateAndTime:              R_Scope_DateAndTime,
     exportProject:            R_Scope_ExportProject,
     vibrationOptions:         R_Scope_VibrationOptions,
+    fileExplore:              R_Scope_FileExplore,
   },
   screen: {
     home:                     R_Screen_Home,
@@ -79,6 +82,7 @@ export const translations = {
     timeFormat:               R_Screen_TimeFormat,
     exportProject:            R_Screen_ExportProject,
     vibrationOptions:         R_Screen_VibrationOptions,
+    fileExplore:              R_Screen_FileExplore,
   },
   component: {
     alert: {

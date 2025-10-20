@@ -9,6 +9,7 @@ class AppRoutes {
   static TEST_SCOPE           = `/${LTS_VERSION}/TestScope`;
   static HOME_SCOPE           = `/${LTS_VERSION}/HomeScope`;
   static CREDENTIALS_SCOPE    = `/${LTS_VERSION}/CredentialScope`;
+  static FILE_EXPLORE_SCOPE   = `/${LTS_VERSION}/FileExploreScope`;
 
   static SETTINGS_SCOPE               = `/${LTS_VERSION}/SettingsScope`;
   static SS_LANGUAGE_SELECTION_SCOPE  = `${this.SETTINGS_SCOPE}/LanguageSelectionScope`;
@@ -32,6 +33,7 @@ type ScreenName = (
     'VIBRATION OPTIONS SCOPE'                         |
   'CREDENTIAL SCOPE'                                  |
   'HOME SCOPE'                                        |
+  'FILE EXPLORE SCOPE'                                |
   'PROJECT SCOPE'                                     |
     'SAMPLE SCOPE'                                    |
     'EXPORT PROJECT SCOPE'
@@ -54,7 +56,7 @@ export function navigate(
     case 'VIBRATION OPTIONS SCOPE':  router.navigate(AppRoutes.SS_VIBRATIONS_OPTIONS_SCOPE); break;
     case 'CREDENTIAL SCOPE':         router.navigate(AppRoutes.CREDENTIALS_SCOPE);           break;
     case 'HOME SCOPE':               router.navigate(AppRoutes.HOME_SCOPE);                  break;
-
+    case 'FILE EXPLORE SCOPE':       router.navigate(AppRoutes.FILE_EXPLORE_SCOPE);          break;
     case 'PROJECT SCOPE': {
 
       if (id_project === undefined) {

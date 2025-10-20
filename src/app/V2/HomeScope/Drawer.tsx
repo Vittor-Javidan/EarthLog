@@ -38,6 +38,17 @@ const Drawer = memo(() => {
       onPress={() => navigate('SETTINGS SCOPE')}
     />
     <Button.TextWithIcon
+      title={R['File Explorer']}
+      iconName="search-outline"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => navigate('FILE EXPLORE SCOPE')}
+    />
+    <Button.TextWithIcon
       title={R['Change version']}
       iconName="shuffle-outline"
       theme={{
