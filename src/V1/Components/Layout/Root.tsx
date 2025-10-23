@@ -24,7 +24,7 @@ export const Root = memo((props: {
   navigationTree: React.JSX.Element
 }) => {
   return (<>
-    <StatusBarLayer />
+    <StatusBar style="auto" />
     <AlertLayer />
     <CameraLayer />
     <AppLayer
@@ -76,20 +76,6 @@ const AppLayer = memo((props: {
       {props.drawerChildren}
     </Drawer>
   </>);
-});
-
-const StatusBarLayer = memo(() => {
-
-  const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.statusBar, []);
-
-  return (
-    <StatusBar
-      animated={true}
-      networkActivityIndicatorVisible={true}
-      backgroundColor={theme.background}
-    />
-  );
 });
 
 const Navbar = memo((props: {

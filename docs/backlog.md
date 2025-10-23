@@ -13,6 +13,7 @@
 ## features:
 + implement a new DOCX export, with images
 - implement a new folder location to save exported documents, and allow their sharing
+- implement an export of all images into a zip file
 - implement a way to incentivize the users to update the app
 - implement quality camera options
 - implement flah auto option
