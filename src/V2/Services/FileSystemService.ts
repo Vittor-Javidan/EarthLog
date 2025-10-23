@@ -4,6 +4,9 @@ import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
 import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V2/Types/ProjectTypes';
 import { PathService } from '../FileServices/PathService';
 
+/**
+ * @deprecated Use FileSystemService in src/V2/GlobalServices/FileSystemService.ts instead.
+ */
 class FileSystemService {
 
   /**

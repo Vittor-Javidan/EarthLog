@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import ConfigService from "@V2/Services/ConfigService";
 import ThemeService from "@V2/Services/ThemeService";
@@ -94,10 +94,25 @@ export const ContentButtons = memo((props: {
     }
   })
 
+  const allOtherFiles = props.contents.map(content => {
+    if (content.type === 'file') {
+      const fileName = content.name;
+      if (!fileName.endsWith('.json') && !fileName.endsWith('.jpg')) {
+        return (
+          <OtherFiles
+            key={`key_file_${fileName}`}
+            name={fileName}
+          />
+        );
+      }
+    }
+  })
+
   return (<>
     {allFolders}
     {allJsonFiles}
     {allImageFiles}
+    {allOtherFiles}
   </>);
 });
 
@@ -182,5 +197,31 @@ const ImageFileButton = memo((props: {
         {props.name}
       </Text>
     </Pressable>
+  );
+});
+
+const OtherFiles = memo((props: {
+  name: string
+}) => {
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 8,
+        paddingVertical: 10,
+      }}
+    >
+      <Icon iconName="file" fontSize={18} color={theme.font} />
+      <Text p
+        style={{
+          color: theme.font
+        }}
+      >
+        {props.name}
+      </Text>
+    </View>
   );
 });

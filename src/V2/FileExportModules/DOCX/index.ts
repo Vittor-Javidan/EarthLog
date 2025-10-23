@@ -1,9 +1,12 @@
-import { Document, Packer } from 'docx';
-
 import { ConfigDTO } from '@V2/Types/AppTypes';
-import ProjectService from '@V2/Services/ProjectService';
-import ExportService from '@V2/Services/ExportService';
 
+import { FileSystemService } from '@V2/GlobalServices/FileSystemService';
+import { PathService } from '@V2/FileServices/PathService';
+import ShareService from '@V2/Services/ShareService';
+import ProjectService from '@V2/Services/ProjectService';
+
+import { Docx } from './Docx';
+import { ZipService } from './Zip';
 import { document_Project } from './ProjectDocument';
 
 export default class DOCX_Module {
@@ -15,27 +18,34 @@ export default class DOCX_Module {
     feedback: (message: string) => void
   }) {
 
-    const projectDTO = await ProjectService.buildProjectDTO(o);
+    o.feedback('Resetting temporary directory');
+    FileSystemService.resetTempDirectory();
+    Docx.setImageFilePath(o.id_project);
 
     o.feedback('Mounting document');
-    const document = new Document({
-      sections: [{
-        children: [
-          ...await document_Project({
-            config: o.config,
-            projectDTO: projectDTO,
-            feedback: (message) => o.feedback(message),
-          }),
-        ],
-      }],
-    });
+    const document = await document_Project({
+      config: o.config,
+      projectDTO: await ProjectService.buildProjectDTO(o),
+      feedback: (message) => o.feedback(message),
+    })
+    
+    o.feedback('Building document');
+    await Docx.build({
+      document: document,
+      feedback: (message) => o.feedback(message),
+    })
 
-    o.feedback('Sharing document');
-    const fileData = await Packer.toBase64String(document);
-    await ExportService.shareFile({
+    o.feedback('Creating DOCX file');
+    await ZipService.zipPathContents({
+      sourcePath: PathService.getDir().TEMP(),
+      outputPath: PathService.getDir().TEMP(),
       filename: `${o.fileName}.docx`,
-      data: fileData,
-      encoding: 'base64',
-    });
+      feedback: (msg: string) => o.feedback(msg),
+    })
+
+    o.feedback('Preparing to share document');
+    await ShareService.share({
+      directory: `${PathService.getDir().TEMP()}/${o.fileName}.docx`,
+    })
   }
 }

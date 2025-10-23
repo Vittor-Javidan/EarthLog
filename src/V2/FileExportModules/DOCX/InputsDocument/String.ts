@@ -1,4 +1,4 @@
-import { Paragraph, TextRun } from 'docx';
+import { Docx } from '../Docx';
 
 import { ConfigDTO } from '@V2/Types/AppTypes';
 import { StringInputData } from '@V2/Types/ProjectTypes';
@@ -7,52 +7,43 @@ import { translations } from '@V2/Translations/index';
 export function InputDocument_String(o: {
   config: ConfigDTO
   inputData: StringInputData
-}) {
+}): string[] {
 
   const { config, inputData } = o;
   const R = translations.FileExportModules.docx[config.language];
-  const document: Paragraph[] = [];
+  const document: string[] = [];
 
   document.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          bold: true,
-          italics: true,
-          color: '#000000',
-          font: 'Calibri',
-          size: `${12}pt`,
-          children: [ inputData.label ],
-        }),
-      ],
-    })
+    Docx.paragraph([
+      Docx.text({
+        text: inputData.label,
+        fontSize: 12,
+        color: '000000',
+        bold: true,
+        italic: true,
+      })
+    ])
   );
 
   if (inputData.value !== '') {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#000000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [ inputData.value ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: inputData.value,
+          fontSize: 12,
+          color: '000000',
+        })
+      ])
     );
   } else {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#FF0000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [ R['Empty'] ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: R['Empty'],
+          fontSize: 12,
+          color: 'FF0000',
+        })
+      ])
     );
   }
 

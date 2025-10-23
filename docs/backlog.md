@@ -1,6 +1,7 @@
 # Expo camera
 
 ## refactoring:
+- Create a new service folder called "GlobalServices"
 - All file system calls are now syncronous. Fix the unecessary async calls
 - clean all redudant styles on all JSX components
 - Rename AlertService to PopUpService
@@ -10,7 +11,7 @@
 - Make the Config being saved as a files, instead of using local storage
 
 ## features:
-- implement a new DOCX export, with images
++ implement a new DOCX export, with images
 - implement a way to incentivize the users to update the app
 - publish on Play Store, and make a few videos for Youtube
 - implement quality camera options
