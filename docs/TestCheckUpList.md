@@ -1,6 +1,5 @@
 # Why there is no automated test?
-- Not a single library that I found could test native modules, without being a black box test.
-- These tests does not include UI, it's just about functionality checks
+- I will automate these test when I find a test framework that can test native modules without being black box. If I don't find, I will probalby create my own implementation in the future.
 
 ## Credentials screen
 - Can create multiple credentials
