@@ -1,4 +1,4 @@
-import { Paragraph, TextRun } from 'docx';
+import { Docx } from '../Docx';
 
 import { ConfigDTO } from '@V1/Types/AppTypes';
 import { GPSInputData } from '@V1/Types/ProjectTypes';
@@ -7,93 +7,64 @@ import { translations } from '@V1/Translations/index';
 export function InputDocument_GPS(o: {
   config: ConfigDTO
   inputData: GPSInputData
-}) {
+}): string[] {
 
   const { config, inputData } = o;
   const R = translations.FileExportModules.docx[config.language];
-  const document: Paragraph[] = [];
+  const document: string[] = [];
 
   document.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          bold: true,
-          italics: true,
-          color: '#000000',
-          font: 'Calibri',
-          size: `${12}pt`,
-          children: [ inputData.label ],
-        }),
-      ],
-    })
+    Docx.paragraph([
+      Docx.text({
+        text: inputData.label,
+        fontSize: 12,
+        color: '000000',
+        bold: true,
+        italic: true,
+      })
+    ])
   );
 
   if (inputData.value.altitude === undefined && inputData.value.coordinates === undefined) {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#FF0000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [ R['Empty'] ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: R['Empty'],
+          fontSize: 12,
+          color: 'FF0000',
+        })
+      ])
     );
   }
 
   if (inputData.value.coordinates !== undefined) {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#000000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [
-              R['Latitude:'], ' ',
-              String(inputData.value.coordinates.lat), ' ',
-              `(${String(inputData.value.coordinates.accuracy)}m)`,
-            ],
-          }),
-        ],
-      })
-    );
-    document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#000000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [
-              R['Longitude:'], ' ',
-              String(inputData.value.coordinates.long), ' ',
-              `(${String(inputData.value.coordinates.accuracy)}m)`,
-            ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: `${R['Latitude:']} ${inputData.value.coordinates.lat} (${inputData.value.coordinates.accuracy}m)`,
+          fontSize: 12,
+          color: '000000',
+        })
+      ]),
+      Docx.paragraph([
+        Docx.text({
+          text: `${R['Longitude:']} ${inputData.value.coordinates.long} (${inputData.value.coordinates.accuracy}m)`,
+          fontSize: 12,
+          color: '000000',
+        })
+      ])
     );
   }
 
   if (inputData.value.altitude !== undefined) {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#000000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [
-              R['Altitude:'], ' ',
-              String(inputData.value.altitude.value), ' ',
-              `(${String(inputData.value.altitude.accuracy)}m)`,
-            ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: `${R['Altitude:']} ${inputData.value.altitude.value} (${inputData.value.altitude.accuracy}m)`,
+          fontSize: 12,
+          color: '000000',
+        })
+      ])
     );
   }
 

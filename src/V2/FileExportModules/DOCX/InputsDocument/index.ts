@@ -1,5 +1,3 @@
-import { Paragraph } from 'docx';
-
 import { ConfigDTO } from '@V2/Types/AppTypes';
 import { InputData } from '@V2/Types/ProjectTypes';
 
@@ -13,7 +11,7 @@ import { InputDocument_Picture } from './Picture';
 export async function document_inputData(o: {
   config: ConfigDTO
   inputData: InputData
-}): Promise<Paragraph[]> {
+}): Promise<string[]> {
 
   const { config, inputData } = o;
 
@@ -23,6 +21,6 @@ export async function document_inputData(o: {
     case 'options':   return InputDocument_Options({ config, inputData });
     case 'selection': return InputDocument_Selection({ config, inputData });
     case 'gps':       return InputDocument_GPS({ config, inputData });
-    case 'picture':   return InputDocument_Picture({ config, inputData });
+    case 'picture':   return await InputDocument_Picture({ config, inputData });
   }
 }

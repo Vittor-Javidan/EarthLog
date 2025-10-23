@@ -1,4 +1,4 @@
-import { Paragraph, TextRun } from 'docx';
+import { Docx } from '../Docx';
 
 import { ConfigDTO } from '@V2/Types/AppTypes';
 import { WidgetData } from '@V2/Types/ProjectTypes';
@@ -8,22 +8,19 @@ import { document_inputData } from '../InputsDocument';
 export async function document_Widget(o: {
   config: ConfigDTO
   widgetData: WidgetData
-}) {
+}): Promise<string[]> {
 
   const { config, widgetData} = o;
 
   const document = [
-    new Paragraph({
-      children: [
-        new TextRun({
-          bold: true,
-          color: '#000000',
-          children: [ widgetData.widgetName ],
-          font: 'Calibri',
-          size: `${14}pt`,
-        }),
-      ],
-    }),
+    Docx.paragraph([
+      Docx.text({
+        text: widgetData.widgetName,
+        fontSize: 14,
+        color: '000000',
+        bold: true,
+      })
+    ]),
   ];
 
   for (let i = 0; i < widgetData.inputs.length; i++) {
@@ -32,14 +29,13 @@ export async function document_Widget(o: {
     const isLastInput = i === widgetData.inputs.length - 1;
 
     document.push(
-      new Paragraph({ text: '' })
+      Docx.paragraph([]),
+      ...await document_inputData({ config, inputData }),
     );
-    document.push(
-      ...await document_inputData({ config, inputData })
-    );
+
     if (isLastInput) {
       document.push(
-        new Paragraph({ text: '' })
+        Docx.paragraph([])
       );
     }
   }

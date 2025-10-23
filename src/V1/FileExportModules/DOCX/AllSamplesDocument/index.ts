@@ -1,8 +1,10 @@
-import { HeadingLevel, Paragraph, TextRun } from 'docx';
+import { Docx } from '../Docx';
 
 import { ProjectDTO } from '@V1/Types/ProjectTypes';
 import { ConfigDTO } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
+
+import FontService from '@V1/Services/FontService';
 
 import { document_inputData } from '../InputsDocument';
 import { document_Widget } from '../widgetDocument';
@@ -10,43 +12,34 @@ import { document_Widget } from '../widgetDocument';
 export async function document_AllSamples(o: {
   config: ConfigDTO
   projectDTO: ProjectDTO
-}) {
+  feedback: (message: string) => void
+}): Promise<string[]> {
 
   const { config, projectDTO } = o;
   const allSamples = projectDTO.samples;
   const R = translations.FileExportModules.docx[config.language];
-  const document: Paragraph[] = [];
+  const document: string[] = [];
 
-  // SAMPLE INFO
   for (let i = 0; i < allSamples.length; i++) {
 
+    o.feedback(`Processing sample of id: ${allSamples[i].sampleSettings.id_sample}`);
     const sample = allSamples[i];
 
     document.push(
-      new Paragraph({ text: '' })
-    );
-    document.push(
-      new Paragraph({
-        heading: HeadingLevel.HEADING_3,
-        children: [
-          new TextRun({
-            bold: true,
-            underline: { color: '#000000' },
-            color: '#000000',
-            font: 'Calibri',
-            size: `${14}pt`,
-            children: [ `2.${i + 1} `, sample.sampleSettings.name ],
-          }),
-        ],
-      })
+      Docx.paragraph([]),
+      Docx.paragraph([
+        Docx.text({
+          text: `2.${i + 1} ${sample.sampleSettings.name}`,
+          fontSize: FontService.FONTS.h3,
+          color: '000000',
+        })
+      ])
     );
 
     const sampleGPSReference = sample.sampleSettings.gps;
     if (sampleGPSReference) {
       document.push(
-        new Paragraph({ text: '' })
-      );
-      document.push(
+        Docx.paragraph([]),
         ...await document_inputData({
           config,
           inputData: {
@@ -55,29 +48,24 @@ export async function document_AllSamples(o: {
             label: R['Reference coordinate'],
             value: sampleGPSReference,
           },
-        })
-      );
-      document.push(
-        new Paragraph({ text: '' })
+        }),
+        Docx.paragraph([])
       );
     }
 
     // SAMPLE WIDGETS
     for (let j = 0; j < sample.sampleWidgets.length; j++) {
 
+      o.feedback(`Processing widget of id: ${sample.sampleWidgets[j].id_widget}`);
       const widgetData = sample.sampleWidgets[j];
 
       document.push(
-        new Paragraph({ text: '' })
-      );
-      document.push(
+        Docx.paragraph([]),
         ...await document_Widget({
           config: o.config,
           widgetData: widgetData,
-        })
-      );
-      document.push(
-        new Paragraph({ text: '' })
+        }),
+        Docx.paragraph([]),
       );
     }
   }

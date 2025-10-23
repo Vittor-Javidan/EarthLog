@@ -1,4 +1,4 @@
-import { Paragraph, TextRun } from 'docx';
+import { Docx } from '../Docx';
 
 import { ConfigDTO } from '@V2/Types/AppTypes';
 import { SelectionInputData } from '@V2/Types/ProjectTypes';
@@ -7,25 +7,22 @@ import { translations } from '@V2/Translations/index';
 export function InputDocument_Selection(o: {
   config: ConfigDTO
   inputData: SelectionInputData
-}) {
+}): string[] {
 
   const { config, inputData } = o;
   const R = translations.FileExportModules.docx[config.language];
-  const document: Paragraph[] = [];
+  const document: string[] = [];
 
   document.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          bold: true,
-          italics: true,
-          color: '#000000',
-          font: 'Calibri',
-          size: `${12}pt`,
-          children: [ inputData.label ],
-        }),
-      ],
-    })
+    Docx.paragraph([
+      Docx.text({
+        text: inputData.label,
+        fontSize: 12,
+        color: '000000',
+        bold: true,
+        italic: true,
+      })
+    ])
   );
 
   let nothingSelected = true;
@@ -33,32 +30,26 @@ export function InputDocument_Selection(o: {
     if (inputData.value.options[i].id === inputData.value.id_selected) {
       nothingSelected = false;
       document.push(
-        new Paragraph({
-          children: [
-            new TextRun({
-              color: '#000000',
-              font: 'Calibri',
-              size: `${12}pt`,
-              children: [inputData.value.options[i].optionLabel],
-            }),
-          ],
-        })
+        Docx.paragraph([
+          Docx.text({
+            text: inputData.value.options[i].optionLabel,
+            fontSize: 12,
+            color: '000000',
+          })
+        ])
       );
     }
   }
 
   if (nothingSelected) {
     document.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            color: '#FF0000',
-            font: 'Calibri',
-            size: `${12}pt`,
-            children: [ R['Empty'] ],
-          }),
-        ],
-      })
+      Docx.paragraph([
+        Docx.text({
+          text: R['Empty'],
+          fontSize: 12,
+          color: 'FF0000',
+        })
+      ])
     );
   }
 
