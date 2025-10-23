@@ -12,8 +12,8 @@
 
 ## features:
 + implement a new DOCX export, with images
+- implement a new folder location to save exported documents, and allow their sharing
 - implement a way to incentivize the users to update the app
-- publish on Play Store, and make a few videos for Youtube
 - implement quality camera options
 - implement flah auto option
 - implement compassUI and compass input (Geologic and Normal)
