@@ -26,7 +26,8 @@ export const PhotoPreview = memo((props: {
       <Image
         source={{ uri: props.photo.uri }}
         style={{
-          flex: 1,
+          height: props.dimensions.height,
+          width: props.dimensions.width,
           overflow: 'hidden',
         }}
       />
