@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useState } from 'react';
-import { Modal as ReactNative_Modal, Dimensions, View, ActivityIndicator } from 'react-native';
+import { Modal as ReactNative_Modal, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useCameraPermissions } from 'expo-camera';
 
@@ -12,8 +12,6 @@ import ThemeService from '@V2/Services/ThemeService';
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';
 import { AppCamera } from './AppCamera';
-
-const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
 
 export const CameraLayer = memo(() => {
 
@@ -31,10 +29,6 @@ export const CameraLayer = memo(() => {
     <ReactNative_Modal
       onRequestClose={() => CameraService.closeCamera()}
       animationType="fade"
-      style={{
-        width: WIDTH,
-        height: HEIGHT,
-      }}
       statusBarTranslucent={true}
       transparent
     >

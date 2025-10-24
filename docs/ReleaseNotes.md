@@ -1,8 +1,7 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Docx Performance Improvement
+# [1,2] Camera Improvements
 
-- Feedback Messages Remade
-- Added optional quality for docx export
-- Docx file totally refactored
-- Added a summary option in case a export fails, to warning the user to reduce the export quality (Not working yet)
+- Code simplified
+- Now buttons are visible regardless of high or low brightness
+- Status bar removed (At least on development was showing anyways)

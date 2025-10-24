@@ -17,6 +17,9 @@ export const IconButton = memo((props: {
   theme: ButtonTheme
   style?: StyleProp<ViewStyle>
   iconSize?: number
+  iconStyle?: StyleProp<ViewStyle>
+  shadow?: boolean
+  shadowColor?: string
   onPress: () => void
 }) => {
 
@@ -51,6 +54,14 @@ export const IconButton = memo((props: {
         iconName={props.iconName}
         color={pressed ? props.theme.font_active : props.theme.font}
         fontSize={props.iconSize}
+        style={[
+          props.shadow && {
+            textShadowColor: props.shadowColor ?? '#000',
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 3,
+          },
+          props.iconStyle
+        ]}
       />
     </Pressable>
   );

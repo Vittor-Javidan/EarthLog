@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { View, LayoutRectangle, Pressable } from 'react-native';
+import { View, Pressable, Dimensions, ScaledSize } from 'react-native';
 import { CameraView, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
@@ -16,15 +16,13 @@ export const AppCamera = memo((props: {
   cameraConfig: CameraPictureMode
   onBackPress: () => void
 }) => {
-
   const cameraRef = useRef<CameraView>(null);
-  const [previewDimensions, setPreviewDimensions] = useState<LayoutRectangle>({ height: 0, width: 0, x: 0, y: 0});
+  const [screenDimensions , setScreenDimensions ] = useState<ScaledSize>(Dimensions.get('screen'));
   const [cameraType       , setCameraType       ] = useState<CameraType>('back');
   const [orientation      , setOrientation      ] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
   const [flashMode        , setFlashMode        ] = useState<FlashMode>('off');
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null | undefined>(null);
   const [picturesAmount   , setPicturesAmount   ] = useState<number>(props.cameraConfig.picturesAmount);
-  const [hudColor         , setHudColor         ] = useState<'#DDD' | '#000'>('#000');
   const [show             , setShow             ] = useState({
     loadingPreview: false,
   });
@@ -66,12 +64,6 @@ export const AppCamera = memo((props: {
     setFlashMode(prev => prev === 'off' ? 'on' : 'off');
   }, [flashMode]);
 
-  const onChangeHudColor = useCallback(() => {
-    setHudColor(prev => {
-      return prev === '#000' ? '#DDD' : '#000';
-    });
-  }, []);
-
   useEffect(() => {
     if (show.loadingPreview && photo !== null) {
       setShow(prev => ({ ...prev, loadingPreview: false}));
@@ -86,6 +78,7 @@ export const AppCamera = memo((props: {
   useEffect(() => {
     const eventListener = ScreenOrientation.addOrientationChangeListener((orientationChangeEvent) => {
       setOrientation(orientationChangeEvent.orientationInfo.orientation);
+      setScreenDimensions(Dimensions.get('screen'));
     });
     return () => { eventListener.remove(); };
   }, []);
@@ -98,7 +91,6 @@ export const AppCamera = memo((props: {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      onLayout={(e) => setPreviewDimensions(e.nativeEvent.layout)}
     >
       <Pressable
         onPress={async () => await onPictureTake()}
@@ -111,10 +103,8 @@ export const AppCamera = memo((props: {
           videoQuality="2160p"
           style={[
             {
-              aspectRatio: orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-              width:       orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-              height:      orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-              overflow: 'hidden',
+              width: screenDimensions.width,
+              height: screenDimensions.height,
             },
             cameraType ===  'front' && {
               transform: [{ scaleX: -1 }],
@@ -125,14 +115,14 @@ export const AppCamera = memo((props: {
       {(show.loadingPreview && photo !== undefined) ? (
         <PhotoPreview
           photo={photo}
-          dimensions={previewDimensions}
+          dimensions={screenDimensions}
           orientation={orientation}
           onCancel={() => onCancel()}
           onConfirm={() =>  onConfirm()}
         />
       ) : (<>
         <CloseButton
-          color={hudColor}
+          orientation={orientation}
           onPress={props.onBackPress}
         />
         <View
@@ -146,17 +136,17 @@ export const AppCamera = memo((props: {
           }}
         >
           <Text h3
+            shadow
+            shadowColor={'#fff'}
             style={{
-              color: hudColor,
+              color: '#000',
             }}
           >
             {`${picturesAmount} / ${props.cameraConfig.picturesLimit ?? '...'}`}
           </Text>
           <CameraFooterButtons
-            color={hudColor}
             flashMode={flashMode}
             flashButtonPress={onChangeFlashMode}
-            changeHudColorPress={onChangeHudColor}
             changeCameraTypePress={onChangeCameraType}
           />
         </View>
@@ -166,15 +156,19 @@ export const AppCamera = memo((props: {
 });
 
 const CloseButton = memo((props: {
-  color: string
+  orientation: ScreenOrientation.Orientation
   onPress: () => void
 }) => {
+
+  const TOP = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 30 : 40;
+  const LEFT = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 20 : 50;
+
   return (
     <View
       style={{
         position: 'absolute',
-        top: 20,
-        right: 10,
+        top: TOP,
+        right: LEFT,
         flexDirection: 'row',
         justifyContent: 'center',
         gap: 10,
@@ -185,43 +179,45 @@ const CloseButton = memo((props: {
         iconName="close"
         onPress={props.onPress}
         theme={{
-          font: props.color,
+          font: '#000',
           font_active: '#666',
           background: '#666',
           background_active: '#222',
         }}
-        iconSize={50}
+        iconSize={70}
         style={{
           backgroundColor: undefined,
-          height: 50,
-          width: 50,
           paddingHorizontal: 0,
           paddingVertical: 0,
         }}
+        shadow
+        shadowColor={'#fff'}
       />
     </View>
   );
 });
 
 const CameraFooterButtons = memo((props: {
-  color: string
   flashMode: FlashMode
   flashButtonPress: () => void
-  changeHudColorPress: () => void
   changeCameraTypePress: () => void
 }) => {
+
+  const BOTTOM = 40;
+
   return (
     <View
       style={{
         flexDirection: 'row',
         gap: 20,
+        paddingBottom: BOTTOM,
       }}
     >
       <Button.Icon
         iconName={props.flashMode === 'on' ? 'flash' : 'flash-off'}
         onPress={() => props.flashButtonPress()}
         theme={{
-          font: props.color,
+          font: '#000',
           font_active: '#666',
           background: '#666',
           background_active: '#222',
@@ -234,30 +230,14 @@ const CameraFooterButtons = memo((props: {
           paddingHorizontal: 0,
           paddingVertical: 0,
         }}
-      />
-      <Button.Icon
-        iconName="contrast"
-        onPress={() => props.changeHudColorPress()}
-        theme={{
-          font: props.color,
-          font_active: '#666',
-          background: '#666',
-          background_active: '#222',
-        }}
-        iconSize={50}
-        style={{
-          backgroundColor: undefined,
-          height: 50,
-          width: 50,
-          paddingHorizontal: 0,
-          paddingVertical: 0,
-        }}
+        shadow
+        shadowColor={'#fff'}
       />
       <Button.Icon
         iconName="camera-reverse"
         onPress={() => props.changeCameraTypePress()}
         theme={{
-          font: props.color,
+          font: '#000',
           font_active: '#666',
           background: '#666',
           background_active: '#222',
@@ -270,6 +250,8 @@ const CameraFooterButtons = memo((props: {
           paddingHorizontal: 0,
           paddingVertical: 0,
         }}
+        shadow
+        shadowColor={'#fff'}
       />
     </View>
   );

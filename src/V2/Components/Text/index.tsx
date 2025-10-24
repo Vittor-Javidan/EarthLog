@@ -11,6 +11,8 @@ export const Text = memo((props: {
   numberOfLine?: number
   children: string
   style?: StyleProp<TextStyle>
+  shadow?: boolean
+  shadowColor?: string
 }) => {
 
   return (
@@ -42,6 +44,11 @@ export const Text = memo((props: {
           fontFamily: FontService.FONT_FAMILY.p,
           fontSize:   FontService.FONTS.p,
           letterSpacing: 0,
+        },
+        props.shadow && {
+          textShadowColor: props.shadowColor ?? '#000',
+          textShadowOffset: { width: 1, height: 1 },
+          textShadowRadius: 3,
         },
         props.style,
       ]}

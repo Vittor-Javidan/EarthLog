@@ -1,27 +1,20 @@
 import React, { memo } from 'react';
+import { StyleProp, TextStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export const Icon = memo((props: {
   iconName: IconName
   color: string
   fontSize?: number
+  style?: StyleProp<TextStyle>
 }) => {
   switch (props.iconName) {
-    case 'file'        : return <AntDesign name="file" size={props.fontSize} color={props.color} />
-    case 'code-json'   : return <MaterialCommunityIcons name="code-json" size={props.fontSize} color={props.color} />
-    case 'folder-home' : return <MaterialCommunityIcons name="folder-home" size={props.fontSize} color={props.color} />
-    default:
-      return (
-        <Ionicons
-          name={props.iconName}
-          style={{
-            color: props.color,
-            fontSize: props.fontSize ?? undefined,
-          }}
-        />
-      );
+    case 'file'        : return <AntDesign              name="file"           size={props.fontSize} color={props.color} style={props.style} />
+    case 'code-json'   : return <MaterialCommunityIcons name="code-json"      size={props.fontSize} color={props.color} style={props.style} />
+    case 'folder-home' : return <MaterialCommunityIcons name="folder-home"    size={props.fontSize} color={props.color} style={props.style} />
+    default            : return <Ionicons               name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
   }
 });
 

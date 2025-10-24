@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { View, Image, LayoutRectangle, ActivityIndicator } from 'react-native';
+import { View, Image, ActivityIndicator, ScaledSize } from 'react-native';
 import { CameraCapturedPicture } from 'expo-camera';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
@@ -11,7 +11,7 @@ import { Button } from '@V2/Button/index';
 export const PhotoPreview = memo((props: {
   orientation: ScreenOrientation.Orientation
   photo: CameraCapturedPicture | null
-  dimensions: LayoutRectangle
+  dimensions: ScaledSize
   onCancel: () => void
   onConfirm: () => void
 }) => {
@@ -21,20 +21,17 @@ export const PhotoPreview = memo((props: {
         position: 'absolute',
         width: props.dimensions.width,
         height: props.dimensions.height,
-        justifyContent: 'center',
-        alignItems: 'center',
+        backgroundColor: 'green',
       }}
     >
       <Image
         source={{ uri: props.photo.uri }}
         style={{
-          aspectRatio: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
-          width: props.orientation !== ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
-          height: props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? '120%' : undefined,
+          flex: 1,
           overflow: 'hidden',
         }}
       />
-      <PreviwButtons
+      <PreviewButtons
         onConfirm={() => props.onConfirm()}
         onCancel={() => props.onCancel()}
       />
@@ -46,22 +43,24 @@ export const PhotoPreview = memo((props: {
   );
 });
 
-const PreviwButtons = memo((props: {
+const PreviewButtons = memo((props: {
   onCancel: () => void
   onConfirm: () => void
 }) => {
+  const BOTTOM = 40;
   return (
     <View
-    style={{
-      position: 'absolute',
-      bottom: 10,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      width: '100%',
-      paddingHorizontal: 10,
-      gap: 10,
-    }}
-  >
+      style={{
+        position: 'absolute',
+        bottom: BOTTOM,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%',
+        paddingHorizontal: 10,
+        gap: 40,
+        backgroundColor: 'blue',
+      }}
+    >
     <Button.RoundedIcon
       iconName="close"
       onPress={() => props.onCancel()}
@@ -91,7 +90,7 @@ const PreviwButtons = memo((props: {
 });
 
 const LoadingFeedback = memo((props: {
-  dimensions: LayoutRectangle
+  dimensions: ScaledSize
 }) => {
 
   const config    = useMemo(() => ConfigService.config, []);
