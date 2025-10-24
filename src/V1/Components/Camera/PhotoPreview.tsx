@@ -21,7 +21,6 @@ export const PhotoPreview = memo((props: {
         position: 'absolute',
         width: props.dimensions.width,
         height: props.dimensions.height,
-        backgroundColor: 'green',
       }}
     >
       <Image
@@ -58,7 +57,6 @@ const PreviewButtons = memo((props: {
         width: '100%',
         paddingHorizontal: 10,
         gap: 40,
-        backgroundColor: 'blue',
       }}
     >
     <Button.RoundedIcon

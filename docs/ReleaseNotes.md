@@ -2,4 +2,5 @@
 
 # [1,2] File Explore
 
-- Now it always reset to the root path when screen is closed
+- Some debugging colors was removed (Forgot to remove before last commit)
+- Horizontal Camera UI slightly Ajusted

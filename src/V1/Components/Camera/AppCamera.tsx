@@ -146,6 +146,7 @@ export const AppCamera = memo((props: {
           </Text>
           <CameraFooterButtons
             flashMode={flashMode}
+            orientation={orientation}
             flashButtonPress={onChangeFlashMode}
             changeCameraTypePress={onChangeCameraType}
           />
@@ -160,7 +161,7 @@ const CloseButton = memo((props: {
   onPress: () => void
 }) => {
 
-  const TOP = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 30 : 40;
+  const TOP = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 30 : 15;
   const LEFT = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 20 : 50;
 
   return (
@@ -199,12 +200,11 @@ const CloseButton = memo((props: {
 
 const CameraFooterButtons = memo((props: {
   flashMode: FlashMode
+  orientation: ScreenOrientation.Orientation
   flashButtonPress: () => void
   changeCameraTypePress: () => void
 }) => {
-
-  const BOTTOM = 40;
-
+  const BOTTOM = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 40 : 0;
   return (
     <View
       style={{
