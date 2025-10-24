@@ -1,9 +1,8 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Docx export with images
+# [1,2] Docx Performance Improvement
 
-- Now docx files are exported much faster, with images included
-- Now explore files shows every file inside folders, but only folders, images and json files still openable.
-  - New Icon added to represent other files
-- Docx class fully rewritten
-- Docx files are build inside the app, with no third partie libraries. But Zip still need third parties.
+- Feedback Messages Remade
+- Added optional quality for docx export
+- Docx file totally refactored
+- Added a summary option in case a export fails, to warning the user to reduce the export quality (Not working yet)

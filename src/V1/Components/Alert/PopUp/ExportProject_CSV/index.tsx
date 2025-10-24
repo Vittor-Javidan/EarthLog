@@ -28,9 +28,8 @@ export const ExportProject_CSV = memo((props: {
   });
 
   const onFileNameChange = useCallback((newName: string) => {
-    if (RegexService.rule['fileName'].test(newName) || newName === '') {
-      setFileName(newName);
-    }
+    const sanitized = newName.replace(RegexService.rule['fileName'], '');
+    setFileName(sanitized);
   }, []);
 
   const onExport = useCallback(async () => {

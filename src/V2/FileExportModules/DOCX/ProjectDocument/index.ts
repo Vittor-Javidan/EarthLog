@@ -10,7 +10,6 @@ import { document_AllSamples } from '../AllSamplesDocument';
 export async function document_Project(o: {
   config: ConfigDTO,
   projectDTO: ProjectDTO,
-  feedback: (message: string) => void
 }): Promise<string[]> {
 
   const { config, projectDTO } = o;
@@ -18,7 +17,6 @@ export async function document_Project(o: {
   const document: string[] = [];
 
   // DOCUMENT TITLE
-  o.feedback('Document title');
   document.push(
     Docx.paragraph([
       Docx.text({
@@ -31,7 +29,6 @@ export async function document_Project(o: {
   );
 
   // 1 - PROJECT INFO ========
-  o.feedback('Project info');
   document.push(
     Docx.paragraph([]),
     Docx.paragraph([]),
@@ -47,7 +44,6 @@ export async function document_Project(o: {
   )
 
   // 2 - SAMPLES =============
-  o.feedback('Samples');
   const sampleAlias_Plural = projectDTO.projectSettings.sampleAlias.plural;
   const sampleAliasToDisplay = sampleAlias_Plural !== '' ? sampleAlias_Plural : R['Samples'];
 

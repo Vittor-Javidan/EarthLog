@@ -1,8 +1,7 @@
-import { ImageManipulator } from 'expo-image-manipulator'
+import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
-import { Docx_Builder } from './Builder';
+import { FileSystemService } from '@V2/GlobalServices/FileSystemService';
 import { PathService } from '@V2/FileServices/PathService';
-
 
 type TextProps = {
   text: string;
@@ -18,31 +17,150 @@ type TextProps = {
 */
 export class Docx {
 
+  static baseDirectory =  PathService.getDir().TEMP();
   static documentImageCounter = 0;
   static imageFilePath: string = "";
-
-  static async build(o: {
-    document: string[],
-    feedback: (message: string) => void
-  }): Promise<void> {
-    await new Docx_Builder().createWordFolder({
-      imagesFilePath: this.imageFilePath,
-      document: this.document(o.document),
-      feedback: (message) => o.feedback(message),
-    });
-
-    o.feedback('document successfully built');
-    this.finish();
-  }
 
   static setImageFilePath(id_project: string) {
     this.imageFilePath = PathService.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
   }
 
-  private static finish(): void {
+  static createWordFolder() {
+    FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word` });
+  }
+
+  static createContentTypesFile() {
+    /*
+      brackets are not allowed in file names,
+      so we need to create `[Content_Types].xml` manually during the zipping process.
+    */
+    FileSystemService.writeFile({
+      directory: `${this.baseDirectory}/Content_Types.xml`,
+      encoding: 'utf8',
+      data: (
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">` +
+          `<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>` +
+          `<Default Extension="xml" ContentType="application/xml"/>` +
+          `<Default Extension="jpg" ContentType="image/jpeg"/>` +
+          `<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>` +
+          `<Override PartName="/word/webSettings.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml"/>` +
+        `</Types>`    
+      )
+    })
+  }
+
+  static createRelationshipFolder() {
+    FileSystemService.createDirectory({ directory: `${this.baseDirectory}/_rels` });
+    FileSystemService.writeFile({
+      directory: `${this.baseDirectory}/_rels/.rels`,
+      encoding: 'utf8',
+      data: (
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+          `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+          `<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>` +
+        `</Relationships>` 
+      )
+    })
+  }
+
+  static createwebSettingsFile() {
+    FileSystemService.writeFile({
+      directory: `${this.baseDirectory}/word/webSettings.xml`,
+      encoding: 'utf8',
+      data: (
+        `<w:webSettings ` +
+          `xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" ` +
+          `xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ` +
+          `xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" ` +
+          `xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" ` + 
+          `xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" ` +
+          `xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" ` +
+          `xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" ` +
+          `xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" ` +
+          `xmlns:w16du="http://schemas.microsoft.com/office/word/2023/wordml/word16du" ` + 
+          `xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" ` +
+          `xmlns:w16sdtfl="http://schemas.microsoft.com/office/word/2024/wordml/sdtformatlock" ` + 
+          `xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh w16sdtfl w16du" ` +
+        `/>`
+      ),
+    })
+  }
+
+  static createRelationshipFile() {
+    const imageFiles = Docx_Utils.listImageFiles(this.imageFilePath);
+    const imageRelationships = imageFiles.map((fileName) => {
+      return `<Relationship Id="rId${fileName.slice(0, -4)}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/${fileName}"/>`
+    })
+    FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/_rels` });
+    FileSystemService.writeFile({
+      directory: `${this.baseDirectory}/word/_rels/document.xml.rels`,
+      encoding: 'utf8',
+      data: (
+        `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
+        `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">` +
+          imageRelationships.join("") +
+        `</Relationships>`
+      ),
+    })
+  }
+
+  static async copyImageFilesToMediaFolder(o: {
+    imageQuality: 'High' | 'Medium' | 'Low'
+  }) {
+    const { imageQuality } = o;
+    const imageFiles = Docx_Utils.listImageFiles(this.imageFilePath);
+    FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/media` });
+    for (const fileName of imageFiles) {
+
+      const originalFilePath = `${this.imageFilePath}/${fileName}`;
+      const context = ImageManipulator.manipulate(originalFilePath)
+
+      switch (imageQuality) {
+        case 'High': context.resize({ width: 1920 }); break;
+        case 'Medium': context.resize({ width: 800 }); break;
+        case 'Low': context.resize({ width: 400 }); break;
+      }
+
+      const ref = (await context.renderAsync()).saveAsync({
+        base64: true,
+        compress: 0.8,
+        format: SaveFormat.JPEG
+      })
+
+      const data = FileSystemService.readFile({
+        directory: (await ref).uri,
+        encoding: 'base64'
+      });
+
+      if (!data) {
+        throw new Error(`Failed to read manipulated image file: ${(await ref).uri}`);
+      }
+
+      FileSystemService.writeFile({
+        directory: `${this.baseDirectory}/word/media/${fileName}`,
+        encoding: 'base64',
+        data: data,
+      })
+    }
+  }
+
+  static createDocumentFile(paragraphs: string[]): void {
+    FileSystemService.writeFile({
+      directory: `${this.baseDirectory}/word/document.xml`,
+      encoding: 'utf8',
+      data: this.document(paragraphs),
+    })
+  }
+
+  static finish(): void {
     this.documentImageCounter = 0;
     this.imageFilePath = "";
   }
+
+  // ======================================================================================
+  // DOCX ELEMENTS GENERATORS
+  // ======================================================================================
 
   private static document(paragraphs: string[]): string {
     const joinedParagraphs = paragraphs.join("");
@@ -140,7 +258,9 @@ export class Docx {
 
     const { id_picture } =  o;
     const fileId = "rId" + id_picture;
-    const { width, height } = await ImageManipulator.manipulate(`${this.imageFilePath}/${id_picture}.jpg`).renderAsync();
+    console.log('Generating image for document:', id_picture);
+    const { width, height } = await ImageManipulator.manipulate(`${PathService.getDir().TEMP()}/word/media/${id_picture}.jpg`).renderAsync();
+    console.log('Original image dimensions:', width, height);
     const proportion = height / width;
     const MAX_WIDTH_EMU = 5391150
     const cx = MAX_WIDTH_EMU;
@@ -194,5 +314,27 @@ export class Docx {
         `</w:r>` +
       `</w:p>`
     );
+  }
+}
+
+class Docx_Utils {
+
+  static listImageFiles(imagesFilePath: string): string[] {
+    const imageFiles = FileSystemService.readDirectory({ directory: imagesFilePath });
+    if (!imageFiles) {
+      throw new Error(`Images directory not found: ${imagesFilePath}`);
+    }
+    return imageFiles;
+  }
+
+  static readImageFile(imagesFilePath: string): string {
+    const fileData = FileSystemService.readFile({
+      directory: imagesFilePath,
+      encoding: 'base64' }
+    );
+    if (!fileData) {
+      throw new Error(`Image file not found: ${imagesFilePath}`);
+    }
+    return fileData;
   }
 }

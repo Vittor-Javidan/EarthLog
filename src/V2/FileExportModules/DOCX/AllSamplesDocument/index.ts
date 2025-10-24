@@ -12,7 +12,6 @@ import { document_Widget } from '../widgetDocument';
 export async function document_AllSamples(o: {
   config: ConfigDTO
   projectDTO: ProjectDTO
-  feedback: (message: string) => void
 }): Promise<string[]> {
 
   const { config, projectDTO } = o;
@@ -22,7 +21,6 @@ export async function document_AllSamples(o: {
 
   for (let i = 0; i < allSamples.length; i++) {
 
-    o.feedback(`Processing sample of id: ${allSamples[i].sampleSettings.id_sample}`);
     const sample = allSamples[i];
 
     document.push(
@@ -56,7 +54,6 @@ export async function document_AllSamples(o: {
     // SAMPLE WIDGETS
     for (let j = 0; j < sample.sampleWidgets.length; j++) {
 
-      o.feedback(`Processing widget of id: ${sample.sampleWidgets[j].id_widget}`);
       const widgetData = sample.sampleWidgets[j];
 
       document.push(

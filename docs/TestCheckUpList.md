@@ -44,3 +44,8 @@
 - Can open folders
 - Can open JSON files
 - Can open Images
+
+## Inputs
+
+- Picture Input
+  - Can delete last picture

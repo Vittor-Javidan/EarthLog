@@ -1,8 +1,8 @@
 <en-US>
-- File explore added
-- Now the app export docx with images included
+- Docx export performance hugely improved
+- New Docx export qualities
 </en-US>
 <pt-BR>
-- Adicionado explorador de arquivos
-- Agora o app exporta arquivos docx com imagens incluidas
+- Performance de exportação Docx muito melhorada
+- Adicionado opção de qualidade de exportação
 </pt-BR>
