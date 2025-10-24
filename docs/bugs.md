@@ -4,7 +4,6 @@
 - Having to click twice on project download all images to actually start downloading the images
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
-- File explore not reseting when closing the screen
 - Sync Files not being deleted when project is deleted.
 - <PictureInput /> having its Carousell showing download buttons for already available pictures when some pictures are just on cloud
 - <PictureInput /> showing share button for unavailable pictures.\

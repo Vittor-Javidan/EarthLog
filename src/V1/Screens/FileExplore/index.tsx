@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
+import { navigate } from '@V1/Globals/NavigationControler';
 import { FileExploreService, FileType } from '@V1/FileServices/FileExploreService';
 
 import { Layout } from '@V1/Layout/index';
@@ -56,6 +57,11 @@ export const FileExploreScreen = memo(() => {
     setContents(FileExploreService.goToRoot());
     setCurrentPath(FileExploreService.currentPath);
   }, [currentPath, contents]);
+  
+  const onGoToHome = useCallback(() => {
+    FileExploreService.goToRoot();
+    navigate('HOME SCOPE');
+  }, []);
 
   return (
     <Layout.Screen
@@ -63,6 +69,7 @@ export const FileExploreScreen = memo(() => {
         <TC.ScreenButtons
           onCloseFolder={() => onCloseFolder()}
           onGoToRoot={() => onGoToRoot()}
+          onGoToHome={() => onGoToHome()}
         />
       }
     >

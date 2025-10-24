@@ -5,12 +5,11 @@ import ThemeService from '@V1/Services/ThemeService';
 
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
-import { navigate } from '@V1/Globals/NavigationControler';
-import { FileExploreService } from '@V1/FileServices/FileExploreService';
 
 export const ScreenButtons = memo((props: {
   onCloseFolder: () => void
   onGoToRoot: () => void
+  onGoToHome: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -23,9 +22,7 @@ export const ScreenButtons = memo((props: {
           iconName="home"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => {
-            navigate('HOME SCOPE')
-          }}
+          onPress={() => props.onGoToHome()}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,

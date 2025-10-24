@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Camera Improvements
+# [1,2] File Explore
 
-- Code simplified
-- Now buttons are visible regardless of high or low brightness
-- Status bar removed (At least on development was showing anyways)
+- Now it always reset to the root path when screen is closed
