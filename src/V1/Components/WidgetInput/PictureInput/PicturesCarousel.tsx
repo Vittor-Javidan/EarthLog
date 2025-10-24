@@ -100,11 +100,13 @@ export const PicturesCarousel = memo((props: {
         >
           {AllImages}
         </PagerView>
-        <InfoDisplay
-          id_picture={props.pictures[pictureIndex].id_picture}
-          selectedPicture={pictureIndex + 1}
-          pictureAmount={props.pictures.length}
-        />
+        {props.pictures[pictureIndex] !== undefined && (
+          <InfoDisplay
+            id_picture={props.pictures[pictureIndex].id_picture}
+            selectedPicture={pictureIndex + 1}
+            pictureAmount={props.pictures.length}
+          />
+        )}
         <CarouselButtons
           isPictureMissing={props.missingPictures.length > 0}
           isFirstPicture={pictureIndex === 0}
@@ -117,13 +119,8 @@ export const PicturesCarousel = memo((props: {
         />
       </>)}
     </View>
-    {/*TODO:
-      Move the input to outside this component, since is being possible to access propertie of undefined data.
-      clearly the block bellow do not sync in time when the its parent deletes the PictureData.
-    */}
     {props.pictures[pictureIndex] !== undefined && (
       <Animation.FadeOut
-        key={props.pictures[pictureIndex].id_picture}
         duration={300}
       >
         <Text h3
