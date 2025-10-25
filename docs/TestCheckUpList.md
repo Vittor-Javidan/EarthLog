@@ -61,3 +61,4 @@
   - Can Preview picture
   - Can Preview other pictures after a deletion
   - Preview shows only cancel button
+  - Can move caroussel through drag
