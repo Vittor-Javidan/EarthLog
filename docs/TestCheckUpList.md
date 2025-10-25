@@ -49,10 +49,15 @@
 
 - Can take pictures
 - Camera can change orientation
-- Preview covers full screen (Horizontal and Vertical)
 - Camera covers full screen (Horizontal and Vertical)
+- Preview can be moved
+- Preview can zoomed
+- Show both save and cancel buttons
 
 ## Inputs
 
 - Picture Input
   - Can delete last picture
+  - Can Preview picture
+  - Can Preview other pictures after a deletion
+  - Preview shows only cancel button

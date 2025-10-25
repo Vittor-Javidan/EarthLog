@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Modal as ReactNative_Modal, View, ActivityIndicator, Image } from 'react-native';
+import { Modal as ReactNative_Modal, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import ConfigService from '@V2/Services/ConfigService';
@@ -7,12 +7,15 @@ import ThemeService from '@V2/Services/ThemeService';
 
 import { CameraPreviewLayerAPI } from '../API/CameraPreview';
 import { PreviewButtons } from './PreviewButtons';
+import { ZoomableImage } from './ZoomImageAnimation';
 
 export const CameraPreviewLayer = memo(() => {
 
-  const [pictureUri , setPictureUri]  = useState<string | null>(null);
+  const [pictureUri     , setPictureUri     ] = useState<string | null>(null);
+  const [showSaveButton , setShowSaveButton ] = useState<boolean>(false)
 
   CameraPreviewLayerAPI.registerPictureUriSetter(setPictureUri);
+  CameraPreviewLayerAPI.registerShowSaveButtonSetter(setShowSaveButton)
 
   const onSavePicture = useCallback(() => {
     if (pictureUri) {
@@ -29,20 +32,26 @@ export const CameraPreviewLayer = memo(() => {
     <ReactNative_Modal
       onRequestClose={() => CameraPreviewLayerAPI.closePreview()}
       animationType="fade"
-      statusBarTranslucent={true}
+      statusBarTranslucent
       backdropColor={'#000'}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         {pictureUri ? (<>
-          <Image
+          {/* <Image
             source={{ uri: pictureUri }}
             style={{
               flex: 1,
               resizeMode: 'contain',
               backgroundColor: ''
             }}
+          /> */}
+          <ZoomableImage
+            pictureUri={pictureUri}
+            minScale={0.5}
+            maxScale={10}
           />
           <PreviewButtons
+            showSaveButton={showSaveButton}
             onConfirm={() => onSavePicture()}
             onCancel={() => CameraPreviewLayerAPI.closePreview()}
           />

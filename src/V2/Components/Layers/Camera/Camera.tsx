@@ -89,6 +89,7 @@ export const Camera = memo((props: {
   }, []);
 
   useCameraPreviewLayer({
+    showSaveButton: true,
     onSavePicture: () => onConfirm(),
     onClosePreview: () => onCancel(),
   }, [photo?.uri ?? null, show.loadingPreview]);

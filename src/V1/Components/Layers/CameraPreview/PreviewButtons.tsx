@@ -5,6 +5,7 @@ import { addOrientationChangeListener, Orientation, getOrientationAsync } from '
 import { Button } from '@V1/Button/index';
 
 export const PreviewButtons = memo((props: {
+  showSaveButton: boolean
   onCancel: () => void
   onConfirm: () => void
 }) => {
@@ -54,7 +55,7 @@ export const PreviewButtons = memo((props: {
       buttonDiameter={70}
       showPlusSign={false}
     />
-    <Button.RoundedIcon
+    {props.showSaveButton && (<Button.RoundedIcon
       iconName="save"
       onPress={() => props.onConfirm()}
       theme={{
@@ -65,7 +66,7 @@ export const PreviewButtons = memo((props: {
       }}
       buttonDiameter={70}
       showPlusSign={false}
-    />
+    />)}
   </View>
   );
 });

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 export function useCameraPreviewLayer(
   o: {
+    showSaveButton: boolean,
     onSavePicture: () => void,
     onClosePreview: () => void,
   },
@@ -10,12 +11,9 @@ export function useCameraPreviewLayer(
   const [pictureUri, openPreview] = deps;
   useEffect(() => {
     if (openPreview) {
-      CameraPreviewLayerAPI.openPreview(pictureUri);
+      CameraPreviewLayerAPI.openPreview(pictureUri, o.showSaveButton);
       CameraPreviewLayerAPI.onSavePictureCallback(o.onSavePicture);
       CameraPreviewLayerAPI.onClosePreviewCallback(o.onClosePreview);
-      if (openPreview) {
-        CameraPreviewLayerAPI.openPreview(pictureUri);
-      }
     }
   }, [pictureUri, openPreview]);
 }
@@ -23,6 +21,7 @@ export function useCameraPreviewLayer(
 export class CameraPreviewLayerAPI {
 
   private static pictureUriSetter: React.Dispatch<React.SetStateAction<string | null>> | null = null;
+  private static showSaveButtonSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static onSavePicture: (() => void) | null = null;
   private static onClosePreview: (() => void) | null = null;
 
@@ -35,10 +34,17 @@ export class CameraPreviewLayerAPI {
   static registerPictureUriSetter(setter: React.Dispatch<React.SetStateAction<string | null>>) {
     this.pictureUriSetter = setter;
   }
+  static registerShowSaveButtonSetter(setter: React.Dispatch<React.SetStateAction<boolean>>) {
+    this.showSaveButtonSetter = setter;
+  }
 
-  static openPreview(string: string | null) {
-    if (this.pictureUriSetter !== null) {
+  static openPreview(string: string | null, showSaveButton: boolean) {
+    if (
+      this.pictureUriSetter !== null &&
+      this.showSaveButtonSetter !== null
+    ) {
       this.pictureUriSetter(string)
+      this.showSaveButtonSetter(showSaveButton)
     }
   }
 
