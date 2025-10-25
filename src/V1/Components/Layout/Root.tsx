@@ -1,5 +1,6 @@
 import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 
 import { APP_VERSION } from '@V1/Globals/Version';
@@ -24,6 +25,7 @@ export const Root = memo((props: {
   navigationTree: React.JSX.Element
 }) => {
   return (<>
+    <StatusBar style="auto" />
     <AlertLayer />
     <CameraLayer />
     <CameraPreviewLayer />
