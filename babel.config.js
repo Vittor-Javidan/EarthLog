@@ -33,7 +33,7 @@ module.exports = function (api) {
           '@V2/Animation':         './src/V2/Components/Animation',
           '@V2/Layout':            './src/V2/Components/Layout',
           '@V2/Alert':             './src/V2/Components/Alert',
-          '@V2/Camera':            './src/V2/Components/Camera',
+          '@V2/Layers':            './src/V2/Components/Layers',
           '@V2/Widget':            './src/V2/Components/Widget',
           '@V2/WidgetInput':       './src/V2/Components/WidgetInput',
 
@@ -55,7 +55,7 @@ module.exports = function (api) {
           '@V1/Animation':         './src/V1/Components/Animation',
           '@V1/Layout':            './src/V1/Components/Layout',
           '@V1/Alert':             './src/V1/Components/Alert',
-          '@V1/Camera':            './src/V1/Components/Camera',
+          '@V1/Layers':            './src/V1/Components/Layers',
           '@V1/Widget':            './src/V1/Components/Widget',
           '@V1/WidgetInput':       './src/V1/Components/WidgetInput',
         },

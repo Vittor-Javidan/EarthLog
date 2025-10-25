@@ -9,7 +9,7 @@ import ConfigService from '@V1/Services/ConfigService';
 import AlertService from '@V1/Services/AlertService';
 import MediaService from '@V1/Services/MediaService';
 import CacheService from '@V1/Services/CacheService';
-import { useCameraLayer } from '@V1/Services/CameraService';
+import { useCameraLayer } from '@V1/Layers/API/Camera';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';

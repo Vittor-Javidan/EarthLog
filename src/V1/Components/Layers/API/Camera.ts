@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { CameraLayerConfig, CameraPictureMode } from '@V2/Types/AppTypes';
-import { PictureInputData, WidgetScope } from '@V2/Types/ProjectTypes';
+import { CameraLayerConfig, CameraPictureMode } from '@V1/Types/AppTypes';
+import { PictureInputData, WidgetScope } from '@V1/Types/ProjectTypes';
 
 /**
  * Custom hook that allows `<PictureInput />` to control `<CameraLayer />`.
@@ -17,11 +17,11 @@ export function useCameraLayer(
   const [inputData, openCamera] = deps;
   useEffect(() => {
     if (o.scope.type !== 'template') {
-      CameraService.configCamera(o.config);
-      CameraService.onPictureCallback(o.onPictureCallback);
-      CameraService.onCameraCloseCallback(o.onCameraClose);
+      CameraLayerAPI.configCamera(o.config);
+      CameraLayerAPI.onPictureCallback(o.onPictureCallback);
+      CameraLayerAPI.onCameraCloseCallback(o.onCameraClose);
       if (openCamera) {
-        CameraService.openCamera();
+        CameraLayerAPI.openCamera();
       }
     }
   }, [inputData, openCamera]);
@@ -30,7 +30,7 @@ export function useCameraLayer(
 /**
  * A service that works as an API between `<CameraLayer />` and `<PictureInput />`.
  */
-export default class CameraService {
+export class CameraLayerAPI {
 
   private static showCameraSetter: React.Dispatch<React.SetStateAction<boolean>> | null = null;
   private static cameraConfigSetter: React.Dispatch<React.SetStateAction<CameraLayerConfig | null>> | null = null;
@@ -64,6 +64,13 @@ export default class CameraService {
   }
 
   /**
+   * Allows `<PictureInput />` to open `<CameraLayer />`.
+   */
+  static openCamera() {
+    this.setShowCamera(true);
+  }
+
+  /**
    * This allows `<CameraLayer />` to trigger the closing process defined by `<PictureInput />`. After that, it cleans `onCameraClose` and `onPictureTake` callbacks defined by `<PictureInput />`.
    */
   static closeCamera() {
@@ -73,13 +80,6 @@ export default class CameraService {
       this.onCameraClose = null;
       this.onPictureTake = null;
     }
-  }
-
-  /**
-   * Allows `<PictureInput />` to open `<CameraLayer />`.
-   */
-  static openCamera() {
-    this.setShowCamera(true);
   }
 
   /**

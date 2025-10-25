@@ -1,3 +1,13 @@
+# Some parts of this tutorial is deprecated
+
+- You can follow this tutorial, but you may require help from ChatGPT to figure out the errors if you receive any.
+- The important is:
+  - Have WSL or any other linux enviroment
+  - Inside the linux enviroment:
+    - Install Node
+    - Install JAVA and Android SDK
+    - Install EAS Cli
+
 # WSL CLean Uninstall
 
 full docs: https://gist.github.com/4wk-/889b26043f519259ab60386ca13ba91b
@@ -51,7 +61,7 @@ export ANDROID_SDK_ROOT=${ANDROID_HOME}
 export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${PATH}
 ```
 
-- install sdkmanager: `sudo apt install sdkmanager`
+- install sdkmanager: `sudo apt install google-android-cmdline-tools-13.0-installer` or latest
 - Close and reopen terminal, and accept the lincenses: `yes | sdkmanager --licenses`
 - update sdkmanager: `sdkmanager --update`
 

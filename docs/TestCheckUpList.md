@@ -45,6 +45,13 @@
 - Can open JSON files
 - Can open Images
 
+## Camera
+
+- Can take pictures
+- Camera can change orientation
+- Preview covers full screen (Horizontal and Vertical)
+- Camera covers full screen (Horizontal and Vertical)
+
 ## Inputs
 
 - Picture Input

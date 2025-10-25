@@ -11,7 +11,8 @@ import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 import { Animation } from '@V1/Animation/index';
 import { AlertLayer } from '@V1/Alert/index';
-import { CameraLayer } from '@V1/Camera/index';
+import { CameraLayer } from '@V1/Layers/Camera/index';
+import { CameraPreviewLayer } from '@V1/Layers/CameraPreview';
 
 const NAVBAR_HEIGHT = 90;
 
@@ -25,6 +26,7 @@ export const Root = memo((props: {
   return (<>
     <AlertLayer />
     <CameraLayer />
+    <CameraPreviewLayer />
     <AppLayer
       title={props.title}
       subtitle={props.subtitle}

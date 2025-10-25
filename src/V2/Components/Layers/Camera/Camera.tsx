@@ -1,25 +1,24 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { View, Pressable, Dimensions, ScaledSize } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { CameraView, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
-import * as ScreenOrientation from 'expo-screen-orientation';
+import { Orientation, lockAsync, OrientationLock, addOrientationChangeListener, getOrientationAsync } from 'expo-screen-orientation';
 
 import { CameraPictureMode } from '@V2/Types/AppTypes';
-import CameraService from '@V2/Services/CameraService';
+import { CameraLayerAPI } from '@V2/Layers/API/Camera';
+import { useCameraPreviewLayer } from '@V2/Layers/API/CameraPreview';
 import MediaService from '@V2/Services/MediaService';
 import IDService from '@V2/Services/IDService';
 
 import { Button } from '@V2/Button/index';
 import { Text } from '@V2/Text/index';
-import { PhotoPreview } from './PhotoPreview';
 
-export const AppCamera = memo((props: {
+export const Camera = memo((props: {
   cameraConfig: CameraPictureMode
   onBackPress: () => void
 }) => {
   const cameraRef = useRef<CameraView>(null);
-  const [screenDimensions , setScreenDimensions ] = useState<ScaledSize>(Dimensions.get('screen'));
   const [cameraType       , setCameraType       ] = useState<CameraType>('back');
-  const [orientation      , setOrientation      ] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
+  const [orientation      , setOrientation      ] = useState<Orientation | null>(null);
   const [flashMode        , setFlashMode        ] = useState<FlashMode>('off');
   const [photo            , setPhoto            ] = useState<CameraCapturedPicture | null | undefined>(null);
   const [picturesAmount   , setPicturesAmount   ] = useState<number>(props.cameraConfig.picturesAmount);
@@ -42,7 +41,7 @@ export const AppCamera = memo((props: {
         id_picture: id_picture,
         photoUri: photo.uri,
         onSave: () => {
-          CameraService.triggerOnPictureTake(id_picture);
+          CameraLayerAPI.triggerOnPictureTake(id_picture);
           setPicturesAmount(prev => prev + 1);
         },
       });
@@ -71,30 +70,38 @@ export const AppCamera = memo((props: {
   }, [show.loadingPreview]);
 
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL);
-    return () => { ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP); };
+    lockAsync(OrientationLock.ALL);
+    return () => { lockAsync(OrientationLock.PORTRAIT_UP); };
   }, []);
 
   useEffect(() => {
-    const eventListener = ScreenOrientation.addOrientationChangeListener((orientationChangeEvent) => {
+    const eventListener = addOrientationChangeListener((orientationChangeEvent) => {
       setOrientation(orientationChangeEvent.orientationInfo.orientation);
-      setScreenDimensions(Dimensions.get('screen'));
     });
     return () => { eventListener.remove(); };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const currentOrientation = await getOrientationAsync();
+      setOrientation(currentOrientation);
+    })();
+  }, []);
+
+  useCameraPreviewLayer({
+    onSavePicture: () => onConfirm(),
+    onClosePreview: () => onCancel(),
+  }, [photo?.uri ?? null, show.loadingPreview]);
+
+  if (orientation === null) {
+    return <></>;
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#000',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <>
       <Pressable
         onPress={async () => await onPictureTake()}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}
       >
         <CameraView
           ref={cameraRef}
@@ -103,8 +110,9 @@ export const AppCamera = memo((props: {
           videoQuality="2160p"
           style={[
             {
-              width: screenDimensions.width,
-              height: screenDimensions.height,
+              aspectRatio: orientation === Orientation.PORTRAIT_UP ? (9 / 16) : (16 / 9),
+              width:       orientation === Orientation.PORTRAIT_UP ? 'auto' : '100%',
+              height:      orientation === Orientation.PORTRAIT_UP ? '100%' : 'auto',
             },
             cameraType ===  'front' && {
               transform: [{ scaleX: -1 }],
@@ -112,57 +120,67 @@ export const AppCamera = memo((props: {
           ]}
         />
       </Pressable>
-      {(show.loadingPreview && photo !== undefined) ? (
-        <PhotoPreview
-          photo={photo}
-          dimensions={screenDimensions}
-          orientation={orientation}
-          onCancel={() => onCancel()}
-          onConfirm={() =>  onConfirm()}
-        />
-      ) : (<>
-        <CloseButton
-          orientation={orientation}
-          onPress={props.onBackPress}
-        />
-        <View
-          style={{
-            position: 'absolute',
-            alignItems: 'center',
-            bottom: 20,
-            gap: 10,
-            opacity: 0.5,
-            width: '100%',
-          }}
-        >
-          <Text h3
-            shadow
-            shadowColor={'#fff'}
-            style={{
-              color: '#000',
-            }}
-          >
-            {`${picturesAmount} / ${props.cameraConfig.picturesLimit ?? '...'}`}
-          </Text>
-          <CameraFooterButtons
-            flashMode={flashMode}
-            orientation={orientation}
-            flashButtonPress={onChangeFlashMode}
-            changeCameraTypePress={onChangeCameraType}
-          />
-        </View>
-      </>)}
-    </View>
-  );
+      <CloseButton
+        orientation={orientation}
+        onPress={props.onBackPress}
+      />
+      <PicturesCounter
+        cameraConfig={props.cameraConfig}
+        orientation={orientation}
+        picturesAmount={picturesAmount}
+        flashMode={flashMode}
+        onChangeFlashMode={() => onChangeFlashMode()}
+        onChangeCameraType={() => onChangeCameraType()}
+      />
+    </>
+    );
 });
 
+const PicturesCounter = memo((props: {
+  cameraConfig: CameraPictureMode
+  picturesAmount: number
+  flashMode: FlashMode
+  orientation: Orientation
+  onChangeFlashMode: () => void
+  onChangeCameraType: () => void
+}) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        alignItems: 'center',
+        bottom: 20,
+        gap: 10,
+        opacity: 0.5,
+        width: '100%',
+      }}
+    >
+      <Text h3
+        shadow
+        shadowColor={'#fff'}
+        style={{
+          color: '#000',
+        }}
+      >
+        {`${props.picturesAmount} / ${props.cameraConfig.picturesLimit ?? '...'}`}
+      </Text>
+      <CameraFooterButtons
+        flashMode={props.flashMode}
+        orientation={props.orientation}
+        flashButtonPress={() => props.onChangeFlashMode()}
+        changeCameraTypePress={() => props.onChangeCameraType()}
+      />
+    </View>
+  );
+})
+
 const CloseButton = memo((props: {
-  orientation: ScreenOrientation.Orientation
+  orientation: Orientation
   onPress: () => void
 }) => {
 
-  const TOP = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 30 : 15;
-  const LEFT = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 20 : 50;
+  const TOP = props.orientation === Orientation.PORTRAIT_UP ? 30 : 15;
+  const LEFT = props.orientation === Orientation.PORTRAIT_UP ? 20 : 50;
 
   return (
     <View
@@ -200,11 +218,11 @@ const CloseButton = memo((props: {
 
 const CameraFooterButtons = memo((props: {
   flashMode: FlashMode
-  orientation: ScreenOrientation.Orientation
+  orientation: Orientation
   flashButtonPress: () => void
   changeCameraTypePress: () => void
 }) => {
-  const BOTTOM = props.orientation === ScreenOrientation.Orientation.PORTRAIT_UP ? 40 : 0;
+  const BOTTOM = props.orientation === Orientation.PORTRAIT_UP ? 40 : 0;
   return (
     <View
       style={{
