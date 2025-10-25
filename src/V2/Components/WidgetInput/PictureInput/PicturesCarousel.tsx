@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { View, Image, LayoutRectangle, TextInput } from 'react-native';
+import { View, Image, LayoutRectangle, TextInput, Pressable } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -11,6 +11,7 @@ import FontService from '@V2/Services/FontService';
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';
 import { Animation } from '@V2/Animation/index';
+import { useCameraPreviewLayer } from '@V2/Layers/API/CameraPreview';
 
 export const PicturesCarousel = memo((props: {
   id_project: string
@@ -29,6 +30,7 @@ export const PicturesCarousel = memo((props: {
   const R                                   = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [dimensions    , setDimensions    ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
   const [pictureIndex  , setPictureIndex  ] = useState<number>(0);
+  const [showPreview   , setShowPreview   ] = useState<boolean>(false);
 
   const scrollRight = useCallback((currentIndex: number) => {
     if (pageRef.current !== null) {
@@ -81,6 +83,12 @@ export const PicturesCarousel = memo((props: {
     );
   });
 
+  useCameraPreviewLayer({
+    showSaveButton: false,
+    onClosePreview: () => setShowPreview(false),
+    onSavePicture: () => {},
+  }, [MediaService.getPictureUri(props.id_project, props.pictures[pictureIndex]?.id_picture ?? null), showPreview])
+
   return props.pictures.length > 0 ? (<>
     <View
       onLayout={e => setDimensions(e.nativeEvent.layout)}
@@ -90,16 +98,25 @@ export const PicturesCarousel = memo((props: {
       }}
     >
       {dimensions.height > 0 && (<>
-        <PagerView
-          initialPage={pictureIndex}
-          ref={pageRef}
-          onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
-          style={{
-            flex: 1,
+        <Pressable
+          onPress={() => {
+            setShowPreview(true)
+            console.log('image clicked')
           }}
+          style={{ flex: 1 }}
         >
-          {AllImages}
-        </PagerView>
+          <PagerView
+            key={props.pictures.map(p => p.id_picture).join('-')} //We need a key to allow <Pressable /> to work when a deletion occurs
+            initialPage={pictureIndex}
+            ref={pageRef}
+            onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
+            style={{
+              flex: 1,
+            }}
+          >
+            {AllImages}
+          </PagerView>
+        </Pressable>
         {props.pictures[pictureIndex] !== undefined && (
           <InfoDisplay
             id_picture={props.pictures[pictureIndex].id_picture}

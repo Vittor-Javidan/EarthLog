@@ -1,6 +1,7 @@
 # Expo camera
 
 ## refactoring:
+- Move AlertLayer to Layer Folders
 - Create a new service folder called "GlobalServices"
 - All file system calls are now syncronous. Fix the unecessary async calls
 - clean all redudant styles on all JSX components

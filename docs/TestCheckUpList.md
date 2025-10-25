@@ -45,7 +45,19 @@
 - Can open JSON files
 - Can open Images
 
+## Camera
+
+- Can take pictures
+- Camera can change orientation
+- Camera covers full screen (Horizontal and Vertical)
+- Preview can be moved
+- Preview can zoomed
+- Show both save and cancel buttons
+
 ## Inputs
 
 - Picture Input
   - Can delete last picture
+  - Can Preview picture
+  - Can Preview other pictures after a deletion
+  - Preview shows only cancel button
