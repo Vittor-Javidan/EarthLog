@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- fix <GPSInput /> manual display icons (Manual button, cancel and confirm buttons)
 - <PictureInput /> Carousel not dragging
 - Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
 - Having to click twice on project download all images to actually start downloading the images

@@ -49,13 +49,14 @@ export const ManualInputButton = memo((props: {
 		>
       <Text
 				style={{
-					fontSize: 200,
+          fontSize: 18,
           color: pressed ? props.theme.font : props.theme.background,
 				}}
 			>
 				{R['Manual']}
 			</Text>
       <Icon
+        fontSize={18}
         iconName="pencil-sharp"
         color={pressed ? props.theme.font : props.theme.background}
       />

@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Fix: Sample Info Screen
+# [1,2] Fix: <GPSInput />
 
-- sample info not having enough bottom padding
+- Manual input icons fixed

@@ -1,14 +1,12 @@
 # Expo camera
 
 ## refactoring:
-- Create a new service folder called "GlobalServices"
 - All file system calls are now syncronous. Fix the unecessary async calls
-- clean all redudant styles on all JSX components
-- Rename AlertService to PopUpService
+- Rename AlertLayer to PopUpLayer
 - Rename Default vibration to "all clicks"
 - Rename CSV export to "CSV (all coordinates)"
-- Change the Services folder architecture to something more specialized for the app development
 - Make the Config being saved as a files, instead of using local storage
+- clean all redudant styles on all JSX components
 
 ## features:
 - Add a loading indicator for file explore when an item is clicked
