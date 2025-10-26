@@ -4,10 +4,10 @@ import { Pressable, View } from 'react-native';
 import { navigate } from '@V2/Globals/NavigationControler';
 import { ProjectSettings } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
-import CacheService from '@V2/Services/CacheService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
 
 import { Text } from '@V2/Text/index';
 import { UploadStatus } from './UploadStatus';

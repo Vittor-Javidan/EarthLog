@@ -5,8 +5,8 @@ import { useCameraPermissions } from 'expo-camera';
 
 import { CameraLayerConfig } from '@V1/Types/AppTypes';
 import { CameraLayerAPI } from '@V1/Layers/API/Camera';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Camera } from './Camera';
 import { PermissionScreen } from './PermissionScreen';

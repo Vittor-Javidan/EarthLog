@@ -2,8 +2,8 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Modal as ReactNative_Modal, View, ActivityIndicator } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { CameraPreviewLayerAPI } from '../API/CameraPreview';
 import { PreviewButtons } from './PreviewButtons';

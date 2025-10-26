@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Layout } from '@V2/Layout/index';
 import { DateFormatScreen } from '@V2/Screens/DateFormatScreen';
@@ -13,8 +13,8 @@ import NavigationTree from './NavigationTree';
 
 export default function DateAndTimeScope() {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.scope.dateAndTime[config.language], []);
+  const config            = useMemo(() => ConfigService.config, []);
+  const R                 = useMemo(() => translations.scope.dateAndTime[config.language], []);
   const [state, setState] = useState<Loading>('Loading');
 
   useEffect(() => {

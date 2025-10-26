@@ -1,10 +1,10 @@
 import * as Location from 'expo-location';
 
-import { FOLDER_App } from './FileSystemService';
-import ConfigService from './ConfigService';
-import CacheService from './CacheService';
+import { FOLDER_App } from '@V1/Services_Files/AppFolders';
+import { ConfigService } from './ConfigService';
+import { CacheService } from './CacheService';
 
-export default class CoreService {
+export class AppService {
 
   static async initApp(): Promise<void> {
     await FOLDER_App.init();

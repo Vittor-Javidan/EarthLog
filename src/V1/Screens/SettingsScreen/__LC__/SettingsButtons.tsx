@@ -2,11 +2,11 @@ import React, { memo, useMemo } from 'react';
 
 import { navigate } from '@V1/Globals/NavigationControler';
 import { translations } from '@V1/Translations/index';
-import { FOLDER_App } from '@V1/Services/FileSystemService';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
-import CacheService from '@V1/Services/CacheService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { FOLDER_App } from '@V1/Services_Files/AppFolders';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { CacheService } from '@V1/Services/CacheService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { Button } from '@V1/Button/index';

@@ -4,9 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 
 import { APP_VERSION } from '@V1/Globals/Version';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';

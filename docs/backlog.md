@@ -11,6 +11,7 @@
 - Make the Config being saved as a files, instead of using local storage
 
 ## features:
+- Add a loading indicator for file explore when an item is clicked
 - implement a new folder location to save exported documents, and allow their sharing
 - implement an export of all images into a zip file
 - implement a way to incentivize the users to update the app

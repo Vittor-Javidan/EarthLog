@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { GPSFeaturesDTO, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';

@@ -2,8 +2,8 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { CredentialDTO } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
-import UploadService from '@V2/Services/UploadService';
-import ConfigService from '@V2/Services/ConfigService';
+import { UploadService } from '@V2/Services/UploadService';
+import { ConfigService } from '@V2/Services/ConfigService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
 
 import { LC } from '@V2/Layers/Alert/__LC__';

@@ -1,11 +1,11 @@
 import React, { memo, useMemo, useCallback, useState } from 'react';
 
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
-import { AlertAPI } from '@V1/Layers/API/Alert';
-import RegexService from '@V1/Services/RegexService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { RegexService } from '@V1/Services/RegexService';
 import CSV_Module from '@V1/FileExportModules/CSV';
+import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { Input } from '@V1/Input/index';
 import { LC } from '@V1/Layers/Alert/__LC__';

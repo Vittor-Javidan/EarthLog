@@ -1,9 +1,9 @@
 import React, { ReactNode, useMemo, memo, useState, useTransition, useCallback } from 'react';
 import { View, Dimensions } from 'react-native';
 
+import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { useBackPress } from '@V2/Hooks/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { IconName } from '@V2/Icon/index';
 import { CarouselButton } from './CarouselButton';

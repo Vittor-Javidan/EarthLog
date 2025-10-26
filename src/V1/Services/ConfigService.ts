@@ -1,10 +1,10 @@
 import { ConfigDTO } from '@V1/Types/AppTypes';
-import { FOLDER_Config } from './FileSystemService';
-import DateTimeService from './DateTimeService';
-import LanguageService from './LanguageService';
-import ThemeService from './ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { LanguageService } from '@V1/Services_Core/LanguageService';
+import { FOLDER_Config } from '@V1/Services_Files/AppFolders';
+import { DateTimeService } from '@V1/Services_Core/DateTimeService';
 
-export default class ConfigService {
+export class ConfigService {
 
   static deviceLanguage = LanguageService.getDeviceLanguage();
   static config: ConfigDTO = {

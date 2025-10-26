@@ -4,8 +4,8 @@ import { View, Switch } from 'react-native';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { BooleanInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Text } from '@V2/Text/index';
 import { LC } from '../__LC__';
@@ -131,7 +131,6 @@ export const BooleanInput = memo((props: {
           <Switch
             style={{ transform: [{ scale: 1 }] }}
             trackColor={{ false: props.theme.font, true: props.theme.font }}
-            ios_backgroundColor={props.theme.font}
             value={inputData.value}
             onValueChange={(boolean) => onSwitchChange(boolean, inputData)}
             thumbColor={thumbColor}

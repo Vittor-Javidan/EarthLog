@@ -1,13 +1,14 @@
 import { navigate } from '@V2/Globals/NavigationControler';
 import { ErrorCodes } from '@V2/Globals/ErrorsCodes';
 import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
-import DataProcessingService from './DataProcessingService';
-import ProjectService from './ProjectService';
-import MediaService from './MediaService';
-import CacheService from './CacheService';
-import RESTService from './RESTService';
 
-export default class UploadService {
+import { RESTService } from '@V2/Services_Core/RESTService';
+import { DataProcessingService } from './DataProcessingService';
+import { ProjectService } from './ProjectService';
+import { MediaService } from './MediaService';
+import { CacheService } from './CacheService';
+
+export class UploadService {
 
   restAPI: RESTService;
   accessToken: string | null = null;

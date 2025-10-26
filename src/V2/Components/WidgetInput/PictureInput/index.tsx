@@ -4,11 +4,11 @@ import { View } from 'react-native';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import DateTimeService from '@V2/Services/DateTimeService';
-import ConfigService from '@V2/Services/ConfigService';
+import { DateTimeService } from '@V2/Services_Core/DateTimeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
-import MediaService from '@V2/Services/MediaService';
-import CacheService from '@V2/Services/CacheService';
+import { MediaService } from '@V2/Services/MediaService';
+import { CacheService } from '@V2/Services/CacheService';
 import { useCameraLayer } from '@V2/Layers/API/Camera';
 
 import { LC } from '../__LC__';

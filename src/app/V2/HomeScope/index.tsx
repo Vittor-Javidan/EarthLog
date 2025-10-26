@@ -5,14 +5,15 @@ import * as SplashScreen from 'expo-splash-screen';
 import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
-import CredentialService from '@V2/Services/CredentialService';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
-import CacheService from '@V2/Services/CacheService';
+import { CacheService } from '@V2/Services/CacheService';
 
 import { Layout } from '@V2/Layout/index';
 import { HomeScreen } from '@V2/Screens/HomeScreen';
+
 import NavigationTree from './NavigationTree';
 import Drawer from './Drawer';
 

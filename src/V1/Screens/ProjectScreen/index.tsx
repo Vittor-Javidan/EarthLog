@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { SampleSettings } from '@V1/Types/ProjectTypes';
-import CacheService from '@V1/Services/CacheService';
+import { CacheService } from '@V1/Services/CacheService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { Animation } from '@V1/Animation/index';

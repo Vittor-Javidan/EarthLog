@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from 'react';
 
 import { WidgetData } from '@V1/Types/ProjectTypes';
-import ProjectService from '@V1/Services/ProjectService';
-import CacheService from '@V1/Services/CacheService';
+import { IDService } from '@V1/Services_Core/IDService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { CacheService } from '@V1/Services/CacheService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
-import IDService from '@V1/Services/IDService';
 
 import { LC } from '@V1/Layers/Alert/__LC__';
 import { FooterButtons } from './FooterButtons';

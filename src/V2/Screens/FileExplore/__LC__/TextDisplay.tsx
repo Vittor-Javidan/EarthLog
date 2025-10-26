@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
 
-import ConfigService from "@V2/Services/ConfigService";
-import ThemeService from "@V2/Services/ThemeService";
+import { ThemeService } from "@V2/Services_Core/ThemeService";
+import { ConfigService } from "@V2/Services/ConfigService";
 
 import { Text } from "@V2/Text/index";
 import { Layout } from "@V2/Layout/index";

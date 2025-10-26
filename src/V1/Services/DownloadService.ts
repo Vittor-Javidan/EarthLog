@@ -1,13 +1,14 @@
 import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
-import DataProcessingService from './DataProcessingService';
-import ProjectService from './ProjectService';
-import MediaService from './MediaService';
-import CacheService from './CacheService';
-import RESTService from './RESTService';
 
-export default class DownloadService {
+import { RESTService } from '@V1/Services_Core/RESTService';
+import { DataProcessingService } from './DataProcessingService';
+import { ProjectService } from './ProjectService';
+import { MediaService } from './MediaService';
+import { CacheService } from './CacheService';
+
+export class DownloadService {
 
   restAPI: RESTService;
   accessToken: string | null = null;

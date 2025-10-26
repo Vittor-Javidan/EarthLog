@@ -4,8 +4,8 @@ import { View } from 'react-native';
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import GPSService, { GPSWatcherService } from '@V1/Services/GPSService';
-import ConfigService from '@V1/Services/ConfigService';
+import { GPSService, GPSWatcherService } from '@V1/Services_Core/GPSService';
+import { ConfigService } from '@V1/Services/ConfigService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { LC } from '../__LC__';

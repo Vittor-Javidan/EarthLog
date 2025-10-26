@@ -1,8 +1,8 @@
 import { memo, useMemo } from "react";
 import { View } from "react-native";
 
-import ConfigService from "@V1/Services/ConfigService";
-import ThemeService from "@V1/Services/ThemeService";
+import { ThemeService } from "@V1/Services_Core/ThemeService";
+import { ConfigService } from "@V1/Services/ConfigService";
 
 import { Text } from "@V1/Text/index";
 

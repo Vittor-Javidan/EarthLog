@@ -6,8 +6,8 @@ import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
 import { GPS_DTO } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import CacheService from '@V2/Services/CacheService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
 
 import { Layout } from '@V2/Layout/index';
 import { SampleDataScreens } from '@V2/Screens/SampleScreen';

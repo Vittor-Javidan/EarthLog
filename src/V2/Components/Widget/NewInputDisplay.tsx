@@ -3,9 +3,9 @@ import { Pressable, View } from 'react-native';
 
 import { InputData, InputTypes, InputTypesArray, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import ProjectService from '@V2/Services/ProjectService';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
+import { ProjectService } from '@V2/Services/ProjectService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';

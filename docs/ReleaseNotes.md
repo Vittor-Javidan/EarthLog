@@ -1,5 +1,9 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Refactoring: AlertLayer
+# [1,2] Refactoring: Service Folders
 
-- Alert layer moved to Layer folders
+- Added 3 types of service folder:
+  - For app file handling
+  - For general services
+  - For core services (that only import external libraries)
+- All services default exports removed

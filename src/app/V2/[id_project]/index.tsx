@@ -4,8 +4,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import CacheService from '@V2/Services/CacheService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
 
 import { Layout } from '@V2/Layout/index';

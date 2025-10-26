@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 import { navigate } from '@V2/Globals/NavigationControler';
-import { FileExploreService, FileType } from '@V2/FileServices/FileExploreService';
+import { FileExploreService, FileType } from '@V2/Services_Files/FileExploreService';
 
 import { Layout } from '@V2/Layout/index';
 import { LC } from './__LC__';
@@ -57,7 +57,7 @@ export const FileExploreScreen = memo(() => {
     setContents(FileExploreService.goToRoot());
     setCurrentPath(FileExploreService.currentPath);
   }, [currentPath, contents]);
-
+  
   const onGoToHome = useCallback(() => {
     FileExploreService.goToRoot();
     navigate('HOME SCOPE');

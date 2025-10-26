@@ -3,9 +3,9 @@ import { Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { GPS_DTO, WidgetData } from '@V1/Types/ProjectTypes';
-import ProjectService from '@V1/Services/ProjectService';
-import MediaService from '@V1/Services/MediaService';
-import CacheService from '@V1/Services/CacheService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { MediaService } from '@V1/Services/MediaService';
+import { CacheService } from '@V1/Services/CacheService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { Animation } from '@V1/Animation/index';

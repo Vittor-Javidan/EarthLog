@@ -2,9 +2,9 @@ import React, { useMemo, useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';

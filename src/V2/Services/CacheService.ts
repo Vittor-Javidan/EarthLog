@@ -1,10 +1,10 @@
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { LTS_VERSION } from '@V2/Globals/Version';
 import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V2/Types/ProjectTypes';
-import LocalStorageService from './LocalStorageService';
-import DatabaseService from './DatabaseService';
+import { LocalStorageService } from '@V2/Services_Core/LocalStorageService';
+import { DatabaseService } from './DatabaseService';
 
-export default class CacheService {
+export class CacheService {
 
   private static LAST_PROJECT_LOCAL_STORAGE_KEY = `${LTS_VERSION}_LastProject`;
 

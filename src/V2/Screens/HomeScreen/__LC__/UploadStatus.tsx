@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { SyncData, UploadEntry } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Icon, IconName } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';

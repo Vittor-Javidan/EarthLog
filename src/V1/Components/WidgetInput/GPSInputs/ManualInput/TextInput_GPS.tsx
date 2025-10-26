@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { View, TextInput } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
 
 import { Text } from '@V1/Text/index';
 

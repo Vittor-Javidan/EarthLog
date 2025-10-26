@@ -4,7 +4,7 @@ import { Loading } from '@V1/Types/AppTypes';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { useBackPress } from '@V1/Hooks/index';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { SettingsScreen } from '@V1/Screens/SettingsScreen';

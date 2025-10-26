@@ -1,8 +1,8 @@
 import { ProjectSettings, SyncData, SampleSettings, WidgetData, InputData } from '@V1/Types/ProjectTypes';
-import { FOLDER_Media, FOLDER_ProjectWidgets, FOLDER_Projects, FOLDER_SampleWidgets, FOLDER_Samples, FOLDER_SyncData, FOLDER_TemplateWidgets } from './FileSystemService';
-import IDService from './IDService';
+import { IDService } from '@V1/Services_Core/IDService';
+import { FOLDER_Media, FOLDER_ProjectWidgets, FOLDER_Projects, FOLDER_SampleWidgets, FOLDER_Samples, FOLDER_SyncData, FOLDER_TemplateWidgets } from '@V1/Services_Files/AppFolders';
 
-export default class DatabaseService {
+export class DatabaseService {
 
   // ===============================================================================================
   // PROJECT

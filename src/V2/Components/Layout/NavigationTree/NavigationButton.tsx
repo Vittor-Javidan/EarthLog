@@ -1,9 +1,9 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Icon, IconName } from '@V2/Icon/index';
 

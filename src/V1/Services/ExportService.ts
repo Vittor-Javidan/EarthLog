@@ -1,7 +1,7 @@
-import { FOLDER_Temp } from '@V1/Services/FileSystemService';
-import ShareService from './ShareService';
+import { ShareService } from '@V1/Services_Core/ShareService';
+import { FOLDER_Temp } from '@V1/Services_Files/AppFolders';
 
-export default class ExportService {
+export class ExportService {
   static async shareFile(o: {
     filename: string
     data: string

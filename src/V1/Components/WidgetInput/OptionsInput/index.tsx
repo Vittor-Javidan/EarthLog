@@ -4,9 +4,9 @@ import { View } from 'react-native';
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { OptionsInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
+import { IDService } from '@V1/Services_Core/IDService';
+import { ConfigService } from '@V1/Services/ConfigService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
-import IDService from '@V1/Services/IDService';
 
 import { LC } from '../__LC__';
 import { AllOptions } from './AllOptions';

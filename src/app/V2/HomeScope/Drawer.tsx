@@ -3,8 +3,8 @@ import { Linking } from 'react-native';
 
 import { navigate } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Button } from '@V2/Button/index';
 
@@ -50,7 +50,7 @@ const Drawer = memo(() => {
     />
     <Button.TextWithIcon
       title={R['Change version']}
-      iconName="shuffle-outline"
+      iconName="shuffle"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,

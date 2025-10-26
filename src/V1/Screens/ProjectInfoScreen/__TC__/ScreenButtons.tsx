@@ -1,9 +1,9 @@
 import React, { useState, useMemo, memo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
-import CacheService from '@V1/Services/CacheService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { CacheService } from '@V1/Services/CacheService';
 
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';

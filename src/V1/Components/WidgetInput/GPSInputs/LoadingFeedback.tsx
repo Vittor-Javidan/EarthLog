@@ -3,8 +3,8 @@ import { View, ActivityIndicator } from 'react-native';
 
 import { GPSFeaturesDTO, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 

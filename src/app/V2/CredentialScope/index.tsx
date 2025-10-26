@@ -4,8 +4,8 @@ import { navigate } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
-import CredentialService from '@V2/Services/CredentialService';
-import ConfigService from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Layout } from '@V2/Layout/index';
 import { CredentialSelectionScreen } from '@V2/Screens/CredentialScreen';

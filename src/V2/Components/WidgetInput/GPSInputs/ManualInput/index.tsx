@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { AlertAPI } from '@V2/Layers/API/Alert';
-import ConfigService from '@V2/Services/ConfigService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { ManualInputButton } from './ManualInputButton';
 import { InputsDisplay } from './InputsDisplay';

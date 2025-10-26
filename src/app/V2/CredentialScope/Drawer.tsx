@@ -2,8 +2,8 @@ import React, { memo, useMemo } from 'react';
 import { Linking } from 'react-native';
 
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Button } from '@V2/Button/index';
 
@@ -16,7 +16,7 @@ const Drawer = memo(() => {
   return (<>
     <Button.TextWithIcon
       title={R['Create a server']}
-      iconName="server-outline"
+      iconName="server"
       onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLogServerExample')}
       theme={{
         font:              theme.font,

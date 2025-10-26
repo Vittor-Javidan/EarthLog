@@ -4,9 +4,9 @@ import PagerView from 'react-native-pager-view';
 
 import { PictureData, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import MediaService from '@V1/Services/MediaService';
-import ConfigService from '@V1/Services/ConfigService';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
+import { MediaService } from '@V1/Services/MediaService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 import { Button } from '@V1/Button/index';

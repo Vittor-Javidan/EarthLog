@@ -2,11 +2,11 @@ import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { CacheService } from '@V1/Services/CacheService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
-import ProjectService from '@V1/Services/ProjectService';
-import CacheService from '@V1/Services/CacheService';
-import ThemeService from '@V1/Services/ThemeService';
 
 import { Input } from '@V1/Input/index';
 import { LC } from '@V1/Layers/Alert/__LC__';

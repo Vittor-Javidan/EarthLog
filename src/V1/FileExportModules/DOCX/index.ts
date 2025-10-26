@@ -1,10 +1,10 @@
 import { ConfigDTO } from '@V1/Types/AppTypes';
 
 import { translations } from '@V1/Translations/index';
-import { FileSystemService } from '@V1/GlobalServices/FileSystemService';
-import { PathService } from '@V1/FileServices/PathService';
-import ShareService from '@V1/Services/ShareService';
-import ProjectService from '@V1/Services/ProjectService';
+import { ShareService } from '@V1/Services_Core/ShareService';
+import { FileSystemService } from '@V1/Services_Core/FileSystemService';
+import { path } from '@V1/Globals/Path'
+import { ProjectService } from '@V1/Services/ProjectService';
 
 import { Docx } from './Docx';
 import { ZipService } from './Zip';
@@ -63,15 +63,15 @@ export default class DOCX_Module {
       
       o.feedback('Creating DOCX file');
       await ZipService.zipPathContents({
-        sourcePath: PathService.getDir().TEMP(),
-        outputPath: PathService.getDir().TEMP(),
+        sourcePath: path.getDir().TEMP(),
+        outputPath: path.getDir().TEMP(),
         filename: `${o.fileName}.docx`,
         feedback: (message) => {},
       })
 
       o.feedback('Preparing to share document');
       await ShareService.share({
-        directory: `${PathService.getDir().TEMP()}/${o.fileName}.docx`,
+        directory: `${path.getDir().TEMP()}/${o.fileName}.docx`,
       })
 
       o.onFinish()

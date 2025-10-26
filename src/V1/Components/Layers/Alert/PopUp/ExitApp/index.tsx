@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
-import ThemeService from '@V1/Services/ThemeService';
 
 import { Text } from '@V1/Text/index';
 import { LC } from '@V1/Layers/Alert/__LC__';

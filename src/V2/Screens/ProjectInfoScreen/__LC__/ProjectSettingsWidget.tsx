@@ -6,10 +6,10 @@ import { deepCopy } from '@V2/Globals/DeepCopy';
 import { GPSInputData, ProjectSettings, StringInputData } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { useTimeout } from '@V2/Hooks/index';
-import ProjectService from '@V2/Services/ProjectService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
-import CacheService from '@V2/Services/CacheService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ProjectService } from '@V2/Services/ProjectService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
 
 import { Text } from '@V2/Text/index';
 import { Layout } from '@V2/Layout/index';

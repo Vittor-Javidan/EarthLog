@@ -6,10 +6,10 @@ import { CredentialDTO } from '@V2/Types/AppTypes';
 import { StringInputData } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { useTimeout } from '@V2/Hooks/index';
-import CredentialService from '@V2/Services/CredentialService';
-import ConfigService from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
-import ThemeService from '@V2/Services/ThemeService';
 
 import { Layout } from '@V2/Layout/index';
 import { WidgetInput } from '@V2/WidgetInput/index';

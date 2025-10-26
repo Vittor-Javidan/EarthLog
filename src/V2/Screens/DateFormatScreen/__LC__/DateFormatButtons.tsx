@@ -2,8 +2,8 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { DateFormat, DateFormatsArray } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Button } from '@V2/Button/index';
 

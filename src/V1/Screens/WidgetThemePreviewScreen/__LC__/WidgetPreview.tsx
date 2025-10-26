@@ -3,8 +3,8 @@ import { View } from 'react-native';
 
 import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 import { Layout } from '@V1/Layout/index';

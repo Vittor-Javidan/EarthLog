@@ -1,8 +1,8 @@
 import { ConfigDTO } from '@V1/Types/AppTypes';
 import { GPS_DTO } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import ProjectService from '@V1/Services/ProjectService';
-import ExportService from '@V1/Services/ExportService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { ExportService } from '@V1/Services/ExportService';
 
 export default class CSV_Module {
 

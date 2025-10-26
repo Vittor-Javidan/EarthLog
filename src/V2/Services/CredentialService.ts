@@ -1,8 +1,8 @@
 import { CredentialDTO } from '@V2/Types/AppTypes';
-import { FOLDER_Credentials } from './FileSystemService';
-import IDService from './IDService';
+import { IDService } from '@V2/Services_Core/IDService';
+import { FOLDER_Credentials } from '@V2/Services_Files/AppFolders';
 
-export default class CredentialService {
+export class CredentialService {
 
   static allCredentials: CredentialDTO[] = [];
 

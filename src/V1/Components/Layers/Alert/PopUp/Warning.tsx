@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, memo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 import { AlertAPI } from '@V1/Layers/API/Alert';
-import ThemeService from '@V1/Services/ThemeService';
 
 import { Button } from '@V1/Button/index';
 import { Text } from '@V1/Text/index';

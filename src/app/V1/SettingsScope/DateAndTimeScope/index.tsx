@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { DateFormatScreen } from '@V1/Screens/DateFormatScreen';

@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
 
 import { navigate } from '@V1/Globals/NavigationControler';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Layout } from '@V1/Layout/index';
 import { Button } from '@V1/Button/index';

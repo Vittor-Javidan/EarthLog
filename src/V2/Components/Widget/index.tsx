@@ -6,12 +6,12 @@ import { ThemeNames_Widgets } from '@V2/Types/AppTypes';
 import { GPS_DTO, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { useTimeout } from '@V2/Hooks/index';
-import ProjectService from '@V2/Services/ProjectService';
-import ConfigService from '@V2/Services/ConfigService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ProjectService } from '@V2/Services/ProjectService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
+import { MediaService } from '@V2/Services/MediaService';
 import { AlertAPI } from '@V2/Layers/API/Alert';
-import ThemeService from '@V2/Services/ThemeService';
-import CacheService from '@V2/Services/CacheService';
-import MediaService from '@V2/Services/MediaService';
 
 import { Animation } from '@V2/Animation/index';
 import { Navbar } from './Navbar';
