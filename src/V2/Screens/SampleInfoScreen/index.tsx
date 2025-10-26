@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { Dimensions } from 'react-native';
 
 import { GPS_DTO } from '@V2/Types/ProjectTypes';
 
@@ -18,6 +19,7 @@ export const SampleInfoScreen = memo((props: {
         contentContainerStyle={{
           paddingTop: 55,
           paddingHorizontal: 5,
+          paddingBottom: Dimensions.get('window').height - 240,
         }}
       >
         <LC.SampleSettings

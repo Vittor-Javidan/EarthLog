@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- sample info not having enough bottom padding
 - fix <GPSInput /> manual display icons (Manual button, cancel and confirm buttons)
 - <PictureInput /> Carousel not dragging
 - Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
