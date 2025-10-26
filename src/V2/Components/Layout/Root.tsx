@@ -11,7 +11,7 @@ import ThemeService from '@V2/Services/ThemeService';
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';
-import { AlertLayer } from '@V2/Alert/index';
+import { AlertLayer } from '@V2/Layers/Alert';
 import { CameraLayer } from '@V2/Layers/Camera/index';
 import { CameraPreviewLayer } from '@V2/Layers/CameraPreview';
 

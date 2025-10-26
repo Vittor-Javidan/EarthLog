@@ -1,7 +1,6 @@
 # Expo camera
 
 ## refactoring:
-- Move AlertLayer to Layer Folders
 - Create a new service folder called "GlobalServices"
 - All file system calls are now syncronous. Fix the unecessary async calls
 - clean all redudant styles on all JSX components
@@ -12,7 +11,6 @@
 - Make the Config being saved as a files, instead of using local storage
 
 ## features:
-+ implement a new DOCX export, with images
 - implement a new folder location to save exported documents, and allow their sharing
 - implement an export of all images into a zip file
 - implement a way to incentivize the users to update the app

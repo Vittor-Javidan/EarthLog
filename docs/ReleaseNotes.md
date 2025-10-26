@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Camera Picture Preview
+# [1,2] Refactoring: AlertLayer
 
-- Added Zoom to preview
-- Preview now can be dragged
-- Enable <PictureInput /> to use the preview layer to already saved pictures
+- Alert layer moved to Layer folders

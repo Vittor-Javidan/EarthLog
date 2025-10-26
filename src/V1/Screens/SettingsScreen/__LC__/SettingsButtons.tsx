@@ -7,7 +7,7 @@ import HapticsService from '@V1/Services/HapticsService';
 import ConfigService from '@V1/Services/ConfigService';
 import ThemeService from '@V1/Services/ThemeService';
 import CacheService from '@V1/Services/CacheService';
-import AlertService from '@V1/Services/AlertService';
+import { AlertAPI } from '@V1/Layers/API/Alert';
 
 import { Button } from '@V1/Button/index';
 
@@ -77,7 +77,7 @@ export const SettingsButtons = memo(() => {
 });
 
 async function whipeAllData() {
-  await AlertService.handleAlert(true,
+  await AlertAPI.handleAlert(true,
     {
       question: 'Want to whipe database?',
       type: 'warning',

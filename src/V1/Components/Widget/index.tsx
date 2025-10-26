@@ -8,7 +8,7 @@ import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
 import ProjectService from '@V1/Services/ProjectService';
 import ConfigService from '@V1/Services/ConfigService';
-import AlertService from '@V1/Services/AlertService';
+import { AlertAPI } from '@V1/Layers/API/Alert';
 import ThemeService from '@V1/Services/ThemeService';
 import CacheService from '@V1/Services/CacheService';
 import MediaService from '@V1/Services/MediaService';
@@ -141,7 +141,7 @@ export const Widget = memo((props: {
   }, []);
 
   const onInputDelete = useCallback(async (id_input: string) => {
-    await AlertService.handleAlert(true, {
+    await AlertAPI.handleAlert(true, {
       type: 'warning',
       question: R['This will delete any info or media related to this field. This action is permanent and cannot be undone.'],
     }, async () => {
@@ -163,7 +163,7 @@ export const Widget = memo((props: {
   }, [widgetData]);
 
   const onWidgetDelete = useCallback(() => {
-    AlertService.handleAlert(true, {
+    AlertAPI.handleAlert(true, {
       question: R['This will delete any info or media related to this wiget. This action is permanent and cannot be undone.'],
       type: 'warning',
     },() => props.onDeleteWidget());

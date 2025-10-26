@@ -5,7 +5,7 @@ import { deepCopy } from '@V1/Globals/DeepCopy';
 import { OptionsInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import ConfigService from '@V1/Services/ConfigService';
-import AlertService from '@V1/Services/AlertService';
+import { AlertAPI } from '@V1/Layers/API/Alert';
 import IDService from '@V1/Services/IDService';
 
 import { LC } from '../__LC__';
@@ -72,7 +72,7 @@ export const OptionsInput = memo((props: {
   }, [asyncSave]);
 
   const onOptionDelete = useCallback((index: number) => {
-    AlertService.handleAlert(true, {
+    AlertAPI.handleAlert(true, {
       question: R['Confirm to delete this option'],
       type: 'warning',
     }, () => {

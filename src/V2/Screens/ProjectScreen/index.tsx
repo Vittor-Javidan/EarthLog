@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { SampleSettings } from '@V2/Types/ProjectTypes';
 import CacheService from '@V2/Services/CacheService';
-import AlertService from '@V2/Services/AlertService';
+import { AlertAPI } from '@V2/Layers/API/Alert';
 
 import { Animation } from '@V2/Animation/index';
 import { Layout } from '@V2/Layout/index';
@@ -18,7 +18,7 @@ export const ProjectScreen = memo((props: {
   const [samples, setSamples] = useState<SampleSettings[]>(CacheService.allSamples);
 
   const onCreateSample = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await AlertAPI.handleAlert(true, {
       type: 'sample creation',
       id_project: id_project,
       sampleNumber: samples.length + 1,
@@ -27,7 +27,7 @@ export const ProjectScreen = memo((props: {
   }, [props.sampleAlias_Singular, samples]);
 
   const onUploadProject = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await AlertAPI.handleAlert(true, {
       type: 'upload projects',
       id_project: id_project,
     }, () => {});
