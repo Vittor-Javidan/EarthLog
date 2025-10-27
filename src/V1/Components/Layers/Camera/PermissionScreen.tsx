@@ -4,8 +4,8 @@ import { View } from 'react-native';
 import { PermissionResponse } from 'expo-camera';
 
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 import { Button } from '@V1/Button/index';

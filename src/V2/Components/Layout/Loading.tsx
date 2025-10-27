@@ -1,8 +1,8 @@
 import React, { useMemo, memo } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 export const Loading = memo(() => {
 

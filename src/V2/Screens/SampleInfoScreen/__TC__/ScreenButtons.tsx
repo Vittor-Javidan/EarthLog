@@ -2,11 +2,11 @@ import React, { useState, useMemo, memo, useCallback } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V2/Globals/NavigationControler';
-import ProjectService from '@V2/Services/ProjectService';
-import ConfigService from '@V2/Services/ConfigService';
-import CacheService from '@V2/Services/CacheService';
-import ThemeService from '@V2/Services/ThemeService';
-import MediaService from '@V2/Services/MediaService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ProjectService } from '@V2/Services/ProjectService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
+import { MediaService } from '@V2/Services/MediaService';
 
 import { Layout } from '@V2/Layout/index';
 import { Button } from '@V2/Button/index';

@@ -5,9 +5,9 @@ import { WidgetTheme } from '@V1/Types/ProjectTypes';
 
 import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 import { Animation } from '@V1/Animation/index';

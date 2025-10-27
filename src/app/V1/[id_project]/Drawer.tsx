@@ -3,8 +3,8 @@ import React, { useMemo, memo } from 'react';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Button } from '@V1/Button/index';
 

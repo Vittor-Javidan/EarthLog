@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback, useRef } from 'react';
 import { TextInput } from 'react-native';
 
 import { useTimeout } from '@V1/Hooks/index';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
 
 import { LC } from '../__LC__';
 

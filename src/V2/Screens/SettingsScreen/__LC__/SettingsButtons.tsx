@@ -2,12 +2,12 @@ import React, { memo, useMemo } from 'react';
 
 import { navigate } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
-import { FOLDER_App } from '@V2/Services/FileSystemService';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
-import CacheService from '@V2/Services/CacheService';
-import AlertService from '@V2/Services/AlertService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { FOLDER_App } from '@V2/Services_Files/AppFolders';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { CacheService } from '@V2/Services/CacheService';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Button } from '@V2/Button/index';
 
@@ -77,7 +77,7 @@ export const SettingsButtons = memo(() => {
 });
 
 async function whipeAllData() {
-  await AlertService.handleAlert(true,
+  await PopUpAPI.handleAlert(true,
     {
       question: 'Want to whipe database?',
       type: 'warning',

@@ -6,8 +6,8 @@ import { Orientation, lockAsync, OrientationLock, addOrientationChangeListener, 
 import { CameraPictureMode } from '@V1/Types/AppTypes';
 import { CameraLayerAPI } from '@V1/Layers/API/Camera';
 import { useCameraPreviewLayer } from '@V1/Layers/API/CameraPreview';
-import MediaService from '@V1/Services/MediaService';
-import IDService from '@V1/Services/IDService';
+import { IDService } from '@V1/Services_Core/IDService';
+import { MediaService } from '@V1/Services/MediaService';
 
 import { Button } from '@V1/Button/index';
 import { Text } from '@V1/Text/index';

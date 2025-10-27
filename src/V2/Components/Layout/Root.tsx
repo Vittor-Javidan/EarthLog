@@ -4,14 +4,14 @@ import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 
 import { APP_VERSION } from '@V2/Globals/Version';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';
-import { AlertLayer } from '@V2/Alert/index';
+import { PopUpLayer } from '@V2/Layers/PopUp';
 import { CameraLayer } from '@V2/Layers/Camera/index';
 import { CameraPreviewLayer } from '@V2/Layers/CameraPreview';
 
@@ -26,7 +26,7 @@ export const Root = memo((props: {
 }) => {
   return (<>
     <StatusBar style="auto" />
-    <AlertLayer />
+    <PopUpLayer />
     <CameraLayer />
     <CameraPreviewLayer />
     <AppLayer

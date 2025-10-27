@@ -4,7 +4,7 @@ import { Loading } from '@V2/Types/AppTypes';
 import { navigate } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
-import ConfigService from '@V2/Services/ConfigService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Layout } from '@V2/Layout/index';
 import { FileExploreScreen } from '@V2/Screens/FileExplore';

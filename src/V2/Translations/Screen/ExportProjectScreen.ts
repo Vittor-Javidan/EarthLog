@@ -2,16 +2,16 @@ import { LanguageTag } from '@V2/Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, {
   'DOCX': string
-  'CSV': string
+  'CSV (GPS)': string
 }>
 
 export const R_Screen_ExportProject: TranslationDTO = {
   'en-US': {
     'DOCX': 'DOCX',
-    'CSV': 'CSV',
+    'CSV (GPS)': 'CSV (GPS)',
   },
   'pt-BR': {
     'DOCX': 'DOCX',
-    'CSV': 'CSV',
+    'CSV (GPS)': 'CSV (GPS)',
   },
 };

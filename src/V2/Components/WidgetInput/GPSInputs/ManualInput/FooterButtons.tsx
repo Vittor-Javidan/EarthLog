@@ -2,7 +2,7 @@ import React, { useState, memo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { WidgetTheme } from '@V2/Types/ProjectTypes';
-import HapticsService from '@V2/Services/HapticsService';
+import { HapticsService } from '@V2/Services/HapticsService';
 
 import { Icon } from '@V2/Icon/index';
 
@@ -20,11 +20,13 @@ export const FooterButtons = memo((props: {
     >
       <FooterButton
         iconName="close"
+        iconSize={40}
         theme={props.theme}
         onPress={() => props.onCancel()}
       />
       <FooterButton
         iconName="save"
+        iconSize={28}
         onPress={() => props.onSave()}
         theme={props.theme}
       />
@@ -34,6 +36,7 @@ export const FooterButtons = memo((props: {
 
 const FooterButton = memo((props: {
   iconName: 'close' | 'save'
+  iconSize: number
   theme: WidgetTheme
   onPress: () => void
 }) => {
@@ -69,6 +72,7 @@ const FooterButton = memo((props: {
       }}
     >
       <Icon
+        fontSize={props.iconSize}
         iconName={props.iconName}
         color={pressed ? backgroundColor : props.theme.font}
       />

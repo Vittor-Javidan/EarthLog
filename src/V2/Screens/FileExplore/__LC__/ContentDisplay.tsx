@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
 import { Pressable, View } from "react-native";
 
-import ConfigService from "@V2/Services/ConfigService";
-import ThemeService from "@V2/Services/ThemeService";
-import { FileType } from "@V2/FileServices/FileExploreService";
+import { FileType } from "@V2/Services_Files/FileExploreService";
+import { ConfigService } from "@V2/Services/ConfigService";
+import { ThemeService } from "@V2/Services_Core/ThemeService";
 
 import { Text } from '@V2/Text/index';
 import { Icon } from "@V2/Icon/index";

@@ -4,9 +4,9 @@ import { useLocalSearchParams } from 'expo-router';
 import { navigate } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import CacheService from '@V1/Services/CacheService';
-import AlertService from '@V1/Services/AlertService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { CacheService } from '@V1/Services/CacheService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Layout } from '@V1/Layout/index';
 import { ProjectScreen } from '@V1/Screens/ProjectScreen';
@@ -37,7 +37,7 @@ export default function ProjectScope() {
 
   const onDownloadAllPictures = useCallback(async () => {
     const allMissingPictures = CacheService.identifyMissingPictures({ id_project });
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'download pictures',
       id_project: id_project,
       picturesIDs: allMissingPictures,

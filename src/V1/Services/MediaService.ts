@@ -1,8 +1,8 @@
 import { InputData, WidgetData } from '@V1/Types/ProjectTypes';
-import DatabaseService from './DatabaseService';
-import ShareService from './ShareService';
+import { ShareService } from '@V1/Services_Core/ShareService';
+import { DatabaseService } from './DatabaseService';
 
-export default class MediaService {
+export class MediaService {
 
   // ===============================================================================================
   // MEDIA

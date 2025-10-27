@@ -4,9 +4,9 @@ import { View } from 'react-native';
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import GPSService, { GPSWatcherService } from '@V1/Services/GPSService';
-import ConfigService from '@V1/Services/ConfigService';
-import AlertService from '@V1/Services/AlertService';
+import { GPSService, GPSWatcherService } from '@V1/Services_Core/GPSService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
 import { ManualInput } from './ManualInput';
@@ -70,7 +70,7 @@ export const GPSInput = memo((props: {
   }, [asyncSave]);
 
   const toogleCoordinate = useCallback(async (checked: boolean, inputData: GPSInputData) => {
-    await AlertService.handleAlert(checked === false && inputData.value.coordinates !== undefined, {
+    await PopUpAPI.handleAlert(checked === false && inputData.value.coordinates !== undefined, {
       type: 'warning',
       question: R['This will delete current saved coordinate. Confirm to proceed.'],
     }, () => {
@@ -86,7 +86,7 @@ export const GPSInput = memo((props: {
   }, [asyncSave]);
 
   const toogleAltitude = useCallback(async (checked: boolean, inputData: GPSInputData) => {
-    await AlertService.handleAlert(checked === false && inputData.value.altitude !== undefined, {
+    await PopUpAPI.handleAlert(checked === false && inputData.value.altitude !== undefined, {
       question: R['This will delete current saved altitude. Confirm to proceed.'],
       type: 'warning',
     }, () => {
@@ -102,7 +102,7 @@ export const GPSInput = memo((props: {
   }, [asyncSave]);
 
   const startGPS = useCallback(async (noGPSData: boolean, inputData: GPSInputData) => {
-    await AlertService.handleAlert(noGPSData === false, {
+    await PopUpAPI.handleAlert(noGPSData === false, {
       type: 'warning',
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, async () => {

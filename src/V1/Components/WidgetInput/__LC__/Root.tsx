@@ -3,9 +3,9 @@ import { LayoutChangeEvent, StyleProp, TextInput, View, ViewStyle } from 'react-
 
 import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Animation } from '@V1/Animation/index';
 import { NavbarIconButton } from './NavbarIconButtons';

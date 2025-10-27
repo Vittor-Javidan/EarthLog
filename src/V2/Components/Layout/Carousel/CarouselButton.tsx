@@ -1,9 +1,9 @@
 import React, {  useMemo, memo, useCallback } from 'react';
 import { StyleProp, ViewStyle, Pressable } from 'react-native';
 
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Text } from '@V2/Text/index';
 import { Icon, IconName } from '@V2/Icon/index';

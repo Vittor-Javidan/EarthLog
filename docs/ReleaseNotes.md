@@ -1,7 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Camera Picture Preview
+# [1,2] Fix: <PictureInput />
 
-- Added Zoom to preview
-- Preview now can be dragged
-- Enable <PictureInput /> to use the preview layer to already saved pictures
+- Now the carousel can be draged sideways to change pictures

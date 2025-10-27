@@ -1,8 +1,8 @@
 # Known bugs (From High to Low Priority)
 
-- <PictureInput /> Carousel not dragging
+- Add a '#' on the first line of the csv export to signal a comment inside the file
+- Remove the 'Bare ' prefix inside the app, to allow flexibility for those who gonna configure their own token
 - Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
-- Having to click twice on project download all images to actually start downloading the images
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.
@@ -11,3 +11,4 @@
 - Logo rendering too small on Splash Screen
 - <AlertLayer /> closing when an error occur during docx export
 - horizontal camera not fiting the whole screen (Happens on development. In production seens ok. Please report if you have this issue as well)
+- Find a way to create a animation during widget height changing

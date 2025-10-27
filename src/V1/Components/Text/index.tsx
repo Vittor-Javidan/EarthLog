@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Text as ReactNative_Text, StyleProp, TextStyle } from 'react-native';
 
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
 
 export const Text = memo((props: {
   h1?: boolean

@@ -1,10 +1,10 @@
 import { ConfigDTO } from '@V1/Types/AppTypes';
-import { FOLDER_Config } from './FileSystemService';
-import DateTimeService from './DateTimeService';
-import LanguageService from './LanguageService';
-import ThemeService from './ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { LanguageService } from '@V1/Services_Core/LanguageService';
+import { FOLDER_Config } from '@V1/Services_Files/AppFolders';
+import { DateTimeService } from '@V1/Services_Core/DateTimeService';
 
-export default class ConfigService {
+export class ConfigService {
 
   static deviceLanguage = LanguageService.getDeviceLanguage();
   static config: ConfigDTO = {
@@ -35,15 +35,14 @@ export default class ConfigService {
 
     const { config } = o;
     const { App, Widget } = ThemeService.themeNamesArray;
-    const deviceLanguage = LanguageService.getDeviceLanguage();
-
+    
     const verifiedConfigDTO: ConfigDTO = {
-      appTheme:              App.includes(config.appTheme) ? config.appTheme : 'Dark',
-      widgetTheme:           Widget.includes(config.widgetTheme) ? config.widgetTheme : 'Light',
-      language:              config.language   ?? deviceLanguage,
-      dateFormat:            config.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
-      timeFormat:            config.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
-      onlyWarningVibrations: config.onlyWarningVibrations ?? true,
+      language:              config.language                     ?? this.config.language,
+      dateFormat:            config.dateFormat                   ?? this.config.dateFormat,
+      timeFormat:            config.timeFormat                   ?? this.config.timeFormat,
+      appTheme:              !App.includes(config.appTheme)       ? this.config.appTheme              : config.appTheme,
+      widgetTheme:           !Widget.includes(config.widgetTheme) ? this.config.widgetTheme           : config.widgetTheme,
+      onlyWarningVibrations: config.onlyWarningVibrations        ?? this.config.onlyWarningVibrations,
     };
     return verifiedConfigDTO;
   }

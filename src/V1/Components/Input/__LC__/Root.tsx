@@ -1,7 +1,7 @@
 import React, { ReactNode, memo } from 'react';
 import { View } from 'react-native';
 
-import FontService from '@V1/Services/FontService';
+import { FontService } from '@V1/Services_Core/FontService';
 
 import { Text } from '@V1/Text/index';
 

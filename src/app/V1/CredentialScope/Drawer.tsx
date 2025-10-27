@@ -2,8 +2,8 @@ import React, { memo, useMemo } from 'react';
 import { Linking } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Button } from '@V1/Button/index';
 

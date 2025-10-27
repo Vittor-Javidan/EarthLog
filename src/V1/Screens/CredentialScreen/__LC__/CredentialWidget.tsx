@@ -6,10 +6,10 @@ import { CredentialDTO } from '@V1/Types/AppTypes';
 import { StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
-import CredentialService from '@V1/Services/CredentialService';
-import ConfigService from '@V1/Services/ConfigService';
-import AlertService from '@V1/Services/AlertService';
-import ThemeService from '@V1/Services/ThemeService';
+import { CredentialService } from '@V1/Services/CredentialService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Layout } from '@V1/Layout/index';
 import { WidgetInput } from '@V1/WidgetInput/index';
@@ -59,7 +59,7 @@ export const CredentialWidget = memo((props: {
   }, []);
 
   const onDeleteCredential = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to delete this credential.'],
     }, () => props.onCredentialDelete());

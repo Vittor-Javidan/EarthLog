@@ -3,8 +3,8 @@ import React, { useMemo, memo } from 'react';
 import { navigate } from '@V2/Globals/NavigationControler';
 import { ProjectSettings } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Button } from '@V2/Button/index';
 
@@ -22,7 +22,7 @@ const Drawer = memo((props: {
     {props.projectSettings.rules.allowProjectExport && (
       <Button.TextWithIcon
         title={R['Export project']}
-        iconName="arrow-redo-outline"
+        iconName="arrow-redo"
         theme={{
           font:              theme.font,
           background:        theme.background,
@@ -34,7 +34,7 @@ const Drawer = memo((props: {
     )}
     <Button.TextWithIcon
       title={R['Download all pictures']}
-      iconName="image-outline"
+      iconName="image"
       theme={{
         font:              theme.font,
         background:        theme.background,

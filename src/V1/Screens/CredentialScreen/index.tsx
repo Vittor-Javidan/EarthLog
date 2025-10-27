@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import { Dimensions } from 'react-native';
 
 import { CredentialDTO } from '@V1/Types/AppTypes';
-import CredentialService from '@V1/Services/CredentialService';
+import { CredentialService } from '@V1/Services/CredentialService';
 
 import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';

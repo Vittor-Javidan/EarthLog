@@ -4,9 +4,9 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V1/Globals/NavigationControler';
 import { WidgetData } from '@V1/Types/ProjectTypes';
-import ProjectService from '@V1/Services/ProjectService';
-import CacheService from '@V1/Services/CacheService';
-import MediaService from '@V1/Services/MediaService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { CacheService } from '@V1/Services/CacheService';
+import { MediaService } from '@V1/Services/MediaService';
 
 import { Layout } from '@V1/Layout/index';
 import { TC } from './__TC__';

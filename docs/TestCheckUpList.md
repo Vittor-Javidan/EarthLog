@@ -30,7 +30,7 @@
 - Can use the carousel
 - Can create widget templates
 - Can delete project
-- Can export project on DOCX format
+- Can export project on DOCX format with Images
 - Can export project coordinates on CSV format
 - Can download All Images from server?
 

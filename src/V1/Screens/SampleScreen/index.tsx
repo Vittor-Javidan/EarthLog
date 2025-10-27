@@ -3,10 +3,10 @@ import { Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { GPS_DTO, WidgetData } from '@V1/Types/ProjectTypes';
-import ProjectService from '@V1/Services/ProjectService';
-import MediaService from '@V1/Services/MediaService';
-import CacheService from '@V1/Services/CacheService';
-import AlertService from '@V1/Services/AlertService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { MediaService } from '@V1/Services/MediaService';
+import { CacheService } from '@V1/Services/CacheService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';
@@ -60,7 +60,7 @@ export const SampleDataScreens = memo((props: {
   }, [sampleWidgets]);
 
   const onCopyTemplateWidget = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'template widget copy',
       id_project: id_project,
       id_sample: id_sample,

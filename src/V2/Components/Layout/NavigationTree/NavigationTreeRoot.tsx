@@ -2,8 +2,8 @@ import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import ConfigService from '@V2/Services/ConfigService';
-import ThemeService from '@V2/Services/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
 
 export const NavigationTreeRoot = memo((props: {
   iconButtons: React.JSX.Element[]

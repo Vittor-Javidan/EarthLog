@@ -2,8 +2,8 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Animation } from '@V1/Animation/index';
 import { Button } from '@V1/Button/index';
@@ -34,17 +34,6 @@ export const VibrationOptionsScreen = memo(() => {
           style={{ gap: 1 }}
         >
           <Button.TextWithIcon
-            title={R['Default']}
-            iconName="alert-circle"
-            theme={{
-              font:              onlyWarnings === false ? theme.background : theme.font_Button,
-              font_active:       onlyWarnings === false ? theme.confirm    : theme.font_active,
-              background:        onlyWarnings === false ? theme.confirm    : theme.background_Button,
-              background_active: onlyWarnings === false ? theme.background : theme.background_active,
-            }}
-            onPress={() => onOptionSelected(false)}
-          />
-          <Button.TextWithIcon
             title={R['Only warnings']}
             iconName="alert-circle"
             theme={{
@@ -54,6 +43,17 @@ export const VibrationOptionsScreen = memo(() => {
               background_active: onlyWarnings === true ? theme.background : theme.background_active,
             }}
             onPress={() => onOptionSelected(true)}
+          />
+          <Button.TextWithIcon
+            title={R['All Clicks']}
+            iconName="alert-circle"
+            theme={{
+              font:              onlyWarnings === false ? theme.background : theme.font_Button,
+              font_active:       onlyWarnings === false ? theme.confirm    : theme.font_active,
+              background:        onlyWarnings === false ? theme.confirm    : theme.background_Button,
+              background_active: onlyWarnings === false ? theme.background : theme.background_active,
+            }}
+            onPress={() => onOptionSelected(false)}
           />
         </View>
       </Animation.SlideFromLeft>

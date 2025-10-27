@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
-import HapticsService from '@V1/Services/HapticsService';
+import { HapticsService } from '@V1/Services/HapticsService';
 
 export function useBackPress(
   onPress: () => void,

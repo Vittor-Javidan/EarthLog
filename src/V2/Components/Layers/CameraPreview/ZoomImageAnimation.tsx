@@ -31,7 +31,6 @@ export const ZoomableImage = memo((props: {
 
   const pinchGesture = Gesture.Pinch()
   .onUpdate((event) => {
-    console.log(isPinching)
     setIsPinching(true)
     if (event.numberOfPointers === 2) {
       let newScale = savedScale.current * event.scale;
@@ -60,7 +59,6 @@ export const ZoomableImage = memo((props: {
   const panGesture = Gesture.Pan()
   .onUpdate((event) => {
     if (!isPinching && event.numberOfPointers === 1) {
-      console.log('pan')
       let newX = savedTranslate.current.x + event.translationX / savedScale.current;
       let newY = savedTranslate.current.y + event.translationY / savedScale.current;
       translateX.setValue(newX);

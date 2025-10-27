@@ -1,18 +1,10 @@
 # Expo camera
 
 ## refactoring:
-- Move AlertLayer to Layer Folders
-- Create a new service folder called "GlobalServices"
-- All file system calls are now syncronous. Fix the unecessary async calls
-- clean all redudant styles on all JSX components
-- Rename AlertService to PopUpService
-- Rename Default vibration to "all clicks"
-- Rename CSV export to "CSV (all coordinates)"
-- Change the Services folder architecture to something more specialized for the app development
-- Make the Config being saved as a files, instead of using local storage
 
 ## features:
-+ implement a new DOCX export, with images
+- Add a gps snapshot button on <GPSInput />, for those who just want to want click, in case accuracy is not that important
+- Add a loading indicator for file explore when an item is clicked
 - implement a new folder location to save exported documents, and allow their sharing
 - implement an export of all images into a zip file
 - implement a way to incentivize the users to update the app

@@ -5,11 +5,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { useBackPress } from '@V1/Hooks/index';
-import CredentialService from '@V1/Services/CredentialService';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
-import AlertService from '@V1/Services/AlertService';
-import CacheService from '@V1/Services/CacheService';
+import { CredentialService } from '@V1/Services/CredentialService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
+import { CacheService } from '@V1/Services/CacheService';
 
 import { Layout } from '@V1/Layout/index';
 import { HomeScreen } from '@V1/Screens/HomeScreen';
@@ -24,7 +24,7 @@ export default function HomeScope() {
   const [state, setState] = useState<Loading>('Loading');
 
   const exitMessage = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'exit app',
     }, () => BackHandler.exitApp());
   }, []);

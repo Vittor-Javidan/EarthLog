@@ -1,7 +1,7 @@
 import React, { ReactNode, memo, useMemo } from 'react';
 import { View } from 'react-native';
 
-import ConfigService from '@V1/Services/ConfigService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Text } from '@V1/Text/index';
 import { translations } from '@V1/Translations/index';

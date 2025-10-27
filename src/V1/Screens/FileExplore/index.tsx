@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 import { navigate } from '@V1/Globals/NavigationControler';
-import { FileExploreService, FileType } from '@V1/FileServices/FileExploreService';
+import { FileExploreService, FileType } from '@V1/Services_Files/FileExploreService';
 
 import { Layout } from '@V1/Layout/index';
 import { LC } from './__LC__';

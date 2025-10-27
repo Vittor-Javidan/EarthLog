@@ -1,7 +1,7 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
-import { FileSystemService } from '@V1/GlobalServices/FileSystemService';
-import { PathService } from '@V1/FileServices/PathService';
+import { path } from '@V1/Globals/Path'
+import { FileSystemService } from '@V1/Services_Core/FileSystemService';
 
 type TextProps = {
   text: string;
@@ -17,12 +17,12 @@ type TextProps = {
 */
 export class Docx {
 
-  static baseDirectory =  PathService.getDir().TEMP();
+  static baseDirectory =  path.getDir().TEMP();
   static documentImageCounter = 0;
   static imageFilePath: string = "";
 
   static setImageFilePath(id_project: string) {
-    this.imageFilePath = PathService.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
+    this.imageFilePath = path.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
   }
 
   static createWordFolder() {
@@ -258,16 +258,11 @@ export class Docx {
 
     const { id_picture } =  o;
     const fileId = "rId" + id_picture;
-    console.log('Generating image for document:', id_picture);
-    const { width, height } = await ImageManipulator.manipulate(`${PathService.getDir().TEMP()}/word/media/${id_picture}.jpg`).renderAsync();
-    console.log('Original image dimensions:', width, height);
+    const { width, height } = await ImageManipulator.manipulate(`${path.getDir().TEMP()}/word/media/${id_picture}.jpg`).renderAsync();
     const proportion = height / width;
     const MAX_WIDTH_EMU = 5391150
     const cx = MAX_WIDTH_EMU;
     const cy = Math.round(cx * proportion);
-
-    console.log(`width: ${width}; height: ${height}`);
-    console.log(`cx: ${cx}; cy: ${cy}`);
 
     this.documentImageCounter++;
 

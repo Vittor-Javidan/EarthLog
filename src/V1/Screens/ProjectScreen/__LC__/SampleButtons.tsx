@@ -2,8 +2,8 @@ import React, { memo, useMemo } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V1/Globals/NavigationControler';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Button } from '@V1/Button/index';
 import { SampleSettings } from '@V1/Types/ProjectTypes';

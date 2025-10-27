@@ -4,9 +4,9 @@ import { View } from 'react-native';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { OptionsInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import ConfigService from '@V2/Services/ConfigService';
-import AlertService from '@V2/Services/AlertService';
-import IDService from '@V2/Services/IDService';
+import { IDService } from '@V2/Services_Core/IDService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
 import { AllOptions } from './AllOptions';
@@ -72,7 +72,7 @@ export const OptionsInput = memo((props: {
   }, [asyncSave]);
 
   const onOptionDelete = useCallback((index: number) => {
-    AlertService.handleAlert(true, {
+    PopUpAPI.handleAlert(true, {
       question: R['Confirm to delete this option'],
       type: 'warning',
     }, () => {

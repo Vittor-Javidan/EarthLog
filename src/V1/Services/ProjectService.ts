@@ -1,8 +1,8 @@
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO, SyncData } from '@V1/Types/ProjectTypes';
-import DatabaseService from './DatabaseService';
-import IDService from './IDService';
+import { IDService } from '@V1/Services_Core/IDService';
+import { DatabaseService } from './DatabaseService';
 
-export default class ProjectService {
+export class ProjectService {
 
   // ===============================================================================================
   // DATA CREATION METHODS

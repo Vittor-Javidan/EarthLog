@@ -3,8 +3,8 @@ import { Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 import { WidgetData } from '@V1/Types/ProjectTypes';
-import ProjectService from '@V1/Services/ProjectService';
-import CacheService from '@V1/Services/CacheService';
+import { ProjectService } from '@V1/Services/ProjectService';
+import { CacheService } from '@V1/Services/CacheService';
 
 import { Layout } from '@V1/Layout/index';
 import { TC } from './__TC__';

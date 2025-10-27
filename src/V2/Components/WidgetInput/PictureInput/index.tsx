@@ -4,11 +4,11 @@ import { View } from 'react-native';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-import DateTimeService from '@V2/Services/DateTimeService';
-import ConfigService from '@V2/Services/ConfigService';
-import AlertService from '@V2/Services/AlertService';
-import MediaService from '@V2/Services/MediaService';
-import CacheService from '@V2/Services/CacheService';
+import { DateTimeService } from '@V2/Services_Core/DateTimeService';
+import { ConfigService } from '@V2/Services/ConfigService';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { MediaService } from '@V2/Services/MediaService';
+import { CacheService } from '@V2/Services/CacheService';
 import { useCameraLayer } from '@V2/Layers/API/Camera';
 
 import { LC } from '../__LC__';
@@ -87,7 +87,7 @@ export const PictureInput = memo((props: {
   }, [inputData, allMissingPictures]);
 
   const onPictureDelete = useCallback((index: number) => {
-    AlertService.handleAlert(true, {
+    PopUpAPI.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
@@ -112,7 +112,7 @@ export const PictureInput = memo((props: {
   const onDownloadMissingPicture = useCallback(async (id_picture?: string) => {
     const picturesIDs = inputData.value.map(pictureData => pictureData.id_picture);
     const inputMissingPictures = allMissingPictures.filter(id => picturesIDs.includes(id));
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'download pictures',
       id_project: id_project,
       picturesIDs: id_picture ? [ id_picture ] : inputMissingPictures,

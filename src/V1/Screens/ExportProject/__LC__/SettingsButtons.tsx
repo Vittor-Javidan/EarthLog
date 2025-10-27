@@ -4,9 +4,9 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { navigate } from '@V1/Globals/NavigationControler';
 import { translations } from '@V1/Translations/index';
-import ConfigService from '@V1/Services/ConfigService';
-import ThemeService from '@V1/Services/ThemeService';
-import AlertService from '@V1/Services/AlertService';
+import { ThemeService } from '@V1/Services_Core/ThemeService';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Button } from '@V1/Button/index';
 
@@ -18,14 +18,14 @@ export const AvailableExportFormatButtons = memo(() => {
   const R      = useMemo(() => translations.screen.exportProject[config.language], []);
 
   const onDocxSelected = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'export project (DOCX)',
       id_project: id_project,
     }, () => navigate('PROJECT SCOPE', id_project));
   }, []);
 
   const onCSVSelected = useCallback(async () => {
-    await AlertService.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'export project (CSV)',
       id_project: id_project,
     }, () => navigate('PROJECT SCOPE', id_project));
@@ -47,7 +47,7 @@ export const AvailableExportFormatButtons = memo(() => {
         }}
       />
       <Button.TextWithIcon
-        title={R['CSV']}
+        title={R['CSV (GPS)']}
         iconName="document-text"
         onPress={async () => await onCSVSelected()}
         theme={{

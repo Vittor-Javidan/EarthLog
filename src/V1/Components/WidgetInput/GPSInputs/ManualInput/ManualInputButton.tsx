@@ -3,8 +3,8 @@ import { Pressable } from 'react-native';
 
 import { WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import HapticsService from '@V1/Services/HapticsService';
-import ConfigService from '@V1/Services/ConfigService';
+import { HapticsService } from '@V1/Services/HapticsService';
+import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
@@ -49,13 +49,14 @@ export const ManualInputButton = memo((props: {
 		>
       <Text
 				style={{
-					fontSize: 200,
+          fontSize: 18,
           color: pressed ? props.theme.font : props.theme.background,
 				}}
 			>
 				{R['Manual']}
 			</Text>
       <Icon
+        fontSize={18}
         iconName="pencil-sharp"
         color={pressed ? props.theme.font : props.theme.background}
       />

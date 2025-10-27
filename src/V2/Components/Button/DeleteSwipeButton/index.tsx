@@ -3,8 +3,8 @@ import { View, Dimensions, Animated, PanResponder } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { translations } from '@V2/Translations/index';
-import HapticsService from '@V2/Services/HapticsService';
-import ConfigService from '@V2/Services/ConfigService';
+import { HapticsService } from '@V2/Services/HapticsService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';

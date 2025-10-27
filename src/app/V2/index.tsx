@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 
 import { navigate } from '@V2/Globals/NavigationControler';
-import CoreService from '@V2/Services/CoreService';
+import { AppService } from '@V2/Services/CoreService';
 
-export default function Home_LTS_VERSION_2() {
+export default function Home_LTS_VERSION_1() {
 
   useEffect(() => {
     initApp();
@@ -13,6 +13,6 @@ export default function Home_LTS_VERSION_2() {
 }
 
 async function initApp() {
-  await CoreService.initApp();
+  await AppService.initApp();
   navigate('HOME SCOPE');
 }

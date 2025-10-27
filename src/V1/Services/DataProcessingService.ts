@@ -1,9 +1,9 @@
 import { ConfigDTO, CredentialDTO } from '@V1/Types/AppTypes';
 import { InputData, ProjectDTO, Status, SyncData } from '@V1/Types/ProjectTypes';
-import DateTimeService from './DateTimeService';
-import IDService from './IDService';
+import { DateTimeService } from '@V1/Services_Core/DateTimeService';
+import { IDService } from '@V1/Services_Core/IDService';
 
-export default class DataProcessingService {
+export class DataProcessingService {
 
   static processProject_AfterDownload(o: {
     projectDTO: ProjectDTO,

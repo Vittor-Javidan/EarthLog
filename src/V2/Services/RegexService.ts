@@ -1,6 +1,6 @@
 import { RegexRules } from '@V2/Types/AppTypes';
 
-export default class RegexService {
+export class RegexService {
 
   static rule: RegexRules = {
     'noSpaces':        /\s/,
