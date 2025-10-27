@@ -1,5 +1,6 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Refactoring: <ExportProjectScreen />
+# [1,2] Refactoring: <VibrationOptionsScreen />
 
-- export CSV button renamed from 'CSV' to 'CSV (GPS)'
+- Button 'Default' renamed to 'All clicks'
+- Button sort changed
