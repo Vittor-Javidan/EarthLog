@@ -101,7 +101,6 @@ export const PicturesCarousel = memo((props: {
         <Pressable
           onPress={() => {
             setShowPreview(true)
-            console.log('image clicked')
           }}
           style={{ flex: 1 }}
         >

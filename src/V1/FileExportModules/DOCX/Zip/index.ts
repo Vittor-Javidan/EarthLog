@@ -18,39 +18,30 @@ export class ZipService {
     sourcePath: string;
     outputPath: string;
     filename: string;
-    feedback: (msg: string) => void;
   }) {
     const { sourcePath, outputPath } = o;
 
-    o.feedback('Creating output file stream...');
-    console.log('Creating output file stream...');
     const outputFile = new File(`${outputPath}/${o.filename}`);
     const writable = outputFile.writableStream();
     const writer = writable.getWriter();
 
-    o.feedback('Initializing ZIP streaming...');
-    console.log('Initializing ZIP streaming...');
     const zip = new Zip(async (err, data, final) => {
       if (err) throw err;
       if (data && data.length > 0) {
         await writer.write(data);
       }
       if (final) {
-        o.feedback('Finalizing ZIP file...');
         await writer.close();
       }
     });
 
-    o.feedback('Adding files to ZIP...');
     await this.addFilesRecursive({
       zip,
       currentPath: sourcePath,
       basePath: sourcePath,
       fileName: o.filename,
-      feedback: (message) => o.feedback(message),
     });
 
-    o.feedback('Closing ZIP...');
     zip.end(); // signals completion
   }
 
@@ -62,7 +53,6 @@ export class ZipService {
     currentPath: string;
     basePath: string;
     fileName: string;
-    feedback: (msg: string) => void;
   }) {
     const { zip, currentPath, basePath, fileName } = o;
     const dir = new Directory(currentPath);
@@ -74,15 +64,12 @@ export class ZipService {
 
       // Skip the output ZIP file itself
       if (item.name === fileName || itemPath.endsWith(`/${fileName}`)) {
-        console.log(`Skipping output ZIP file: ${itemPath}`);
         continue;
       }
 
-      console.log(`Processing item: ${itemPath}`);
       if (item instanceof File) {
         let relative = itemPath.replace(basePath + '/', '');
         if (relative === 'Content_Types.xml') relative = '[Content_Types].xml';
-        o.feedback(`Adding file: ${relative}`);
 
         const file = new File(itemPath);
         const stream = file.readableStream();

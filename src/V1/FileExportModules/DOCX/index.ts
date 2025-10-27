@@ -66,7 +66,6 @@ export default class DOCX_Module {
         sourcePath: path.getDir().TEMP(),
         outputPath: path.getDir().TEMP(),
         filename: `${o.fileName}.docx`,
-        feedback: (message) => {},
       })
 
       o.feedback('Preparing to share document');

@@ -258,16 +258,11 @@ export class Docx {
 
     const { id_picture } =  o;
     const fileId = "rId" + id_picture;
-    console.log('Generating image for document:', id_picture);
     const { width, height } = await ImageManipulator.manipulate(`${path.getDir().TEMP()}/word/media/${id_picture}.jpg`).renderAsync();
-    console.log('Original image dimensions:', width, height);
     const proportion = height / width;
     const MAX_WIDTH_EMU = 5391150
     const cx = MAX_WIDTH_EMU;
     const cy = Math.round(cx * proportion);
-
-    console.log(`width: ${width}; height: ${height}`);
-    console.log(`cx: ${cx}; cy: ${cy}`);
 
     this.documentImageCounter++;
 
