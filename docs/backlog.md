@@ -2,11 +2,9 @@
 
 ## refactoring:
 - All file system calls are now syncronous. Fix the unecessary async calls
-- Rename AlertLayer to PopUpLayer
 - Rename Default vibration to "all clicks"
 - Rename CSV export to "CSV (all coordinates)"
 - Make the Config being saved as a files, instead of using local storage
-- clean all redudant styles on all JSX components
 
 ## features:
 - Add a gps snapshot button on <GPSInput />, for those who just want to want click, in case accuracy is not that important

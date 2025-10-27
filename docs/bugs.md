@@ -2,7 +2,6 @@
 
 - <PictureInput /> Carousel not dragging
 - Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
-- Having to click twice on project download all images to actually start downloading the images
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.
