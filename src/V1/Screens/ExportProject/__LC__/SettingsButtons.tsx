@@ -47,7 +47,7 @@ export const AvailableExportFormatButtons = memo(() => {
         }}
       />
       <Button.TextWithIcon
-        title={R['CSV']}
+        title={R['CSV (GPS)']}
         iconName="document-text"
         onPress={async () => await onCSVSelected()}
         theme={{

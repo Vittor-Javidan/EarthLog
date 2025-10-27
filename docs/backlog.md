@@ -3,7 +3,6 @@
 ## refactoring:
 - All file system calls are now syncronous. Fix the unecessary async calls
 - Rename Default vibration to "all clicks"
-- Rename CSV export to "CSV (all coordinates)"
 - Make the Config being saved as a files, instead of using local storage
 
 ## features:
