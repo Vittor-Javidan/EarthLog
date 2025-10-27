@@ -1,8 +1,11 @@
+import { VERSION } from "@V1/Globals/Version"
+
 // =================================================================================================
 // project TYPES
 // =================================================================================================
 
 export type Status = 'uploaded' | 'modified' | 'new'
+export type DownloadedProjectStatus = 'uploaded' | 'new'
 export type UploadEntry = {
   dateUTM: string
   date: string
@@ -19,6 +22,11 @@ export type SyncData = {
   pictures:         Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>
 }
 
+export type DownloadedProjectDTO = {
+  project: ProjectDTO,
+  projectStatus: DownloadedProjectStatus
+}
+
 export type ProjectDTO = {
   projectSettings: ProjectSettings
   projectWidgets: WidgetData[]
@@ -33,8 +41,7 @@ export type SampleDTO = {
 
 export type ProjectSettings = {
   id_project: string
-  lts_version?: 1
-  status: Status
+  lts_version?: typeof VERSION
   name: string
   sampleAlias: {
     singular: string

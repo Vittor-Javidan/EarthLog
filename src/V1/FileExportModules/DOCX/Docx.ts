@@ -19,10 +19,18 @@ export class Docx {
 
   static baseDirectory =  path.getDir().TEMP();
   static documentImageCounter = 0;
-  static imageFilePath: string = "";
+  static allImagesFilePath: string = "";
+  static imageFiles: string[] = [];
 
   static setImageFilePath(id_project: string) {
-    this.imageFilePath = path.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
+    this.allImagesFilePath = path.getDir().PROJECTS.PROJECT.MEDIA.PICTURES(id_project);
+  }
+
+  /**
+   * @WARNING Requires `setImageFilePath` to be called first
+   */
+  static listImageFiles() {
+    this.imageFiles = Docx_Utils.listImageFiles(Docx.allImagesFilePath);
   }
 
   static createWordFolder() {
@@ -87,9 +95,12 @@ export class Docx {
     })
   }
 
+  /**
+   * @WARNING Requires `setImageFilePath` to be called first
+   * @WARNING Requires `listImageFiles` to be called first
+   */
   static createRelationshipFile() {
-    const imageFiles = Docx_Utils.listImageFiles(this.imageFilePath);
-    const imageRelationships = imageFiles.map((fileName) => {
+    const imageRelationships = this.imageFiles.map((fileName) => {
       return `<Relationship Id="rId${fileName.slice(0, -4)}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/${fileName}"/>`
     })
     FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/_rels` });
@@ -105,15 +116,18 @@ export class Docx {
     })
   }
 
+  /**
+   * @WARNING Requires `setImageFilePath` to be called first
+   * @WARNING Requires `listImageFiles` to be called first
+   */
   static async copyImageFilesToMediaFolder(o: {
     imageQuality: 'High' | 'Medium' | 'Low'
   }) {
     const { imageQuality } = o;
-    const imageFiles = Docx_Utils.listImageFiles(this.imageFilePath);
     FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/media` });
-    for (const fileName of imageFiles) {
+    for (const fileName of this.imageFiles) {
 
-      const originalFilePath = `${this.imageFilePath}/${fileName}`;
+      const originalFilePath = `${this.allImagesFilePath}/${fileName}`;
       const context = ImageManipulator.manipulate(originalFilePath)
 
       switch (imageQuality) {
@@ -155,7 +169,8 @@ export class Docx {
 
   static finish(): void {
     this.documentImageCounter = 0;
-    this.imageFilePath = "";
+    this.allImagesFilePath = "";
+    this.imageFiles = [];
   }
 
   // ======================================================================================

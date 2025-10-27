@@ -5,6 +5,7 @@ import { VERSION } from '@V2/Globals/Version';
 // =================================================================================================
 
 export type Status = 'uploaded' | 'modified' | 'new'
+export type DownloadedProjectStatus = 'uploaded' | 'new'
 export type UploadEntry = {
   dateUTM: string
   date: string
@@ -19,6 +20,11 @@ export type SyncData = {
   samples:          Record<string, Status | 'deleted'>
   widgets_Samples:  Record<string, Record<string, Status | 'deleted'>>
   pictures:         Record<string, Exclude<Status, 'modified'> | 'deleted' | 'on cloud'>
+}
+
+export type DownloadedProjectDTO = {
+  project: ProjectDTO,
+  projectStatus: DownloadedProjectStatus
 }
 
 export type ProjectDTO = {
@@ -36,7 +42,6 @@ export type SampleDTO = {
 export type ProjectSettings = {
   id_project: string
   lts_version: typeof VERSION
-  status: Status
   name: string
   sampleAlias: {
     singular: string

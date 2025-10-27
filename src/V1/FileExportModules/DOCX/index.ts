@@ -26,10 +26,15 @@ export default class DOCX_Module {
 
     try {
 
+      /*
+        This is low level coding logics. All steps must be followed in order.
+      */
+
       o.feedback(`Quality selected: ${o.imageQuality}`);
       o.feedback('Resetting temporary directory');
       FileSystemService.resetTempDirectory();
       Docx.setImageFilePath(o.id_project);
+      Docx.listImageFiles();
 
       o.feedback('Creating Word folder');
       Docx.createWordFolder();

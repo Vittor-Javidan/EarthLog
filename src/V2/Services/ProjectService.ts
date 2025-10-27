@@ -33,7 +33,6 @@ export class ProjectService {
       projectSettings: {
         id_project: id_project,
         lts_version: VERSION,
-        status: 'new',
         name: name ?? '',
         gps: {},
         sampleAlias: {

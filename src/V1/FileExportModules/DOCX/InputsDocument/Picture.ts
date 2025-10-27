@@ -25,6 +25,8 @@ export async function InputDocument_Picture(o: {
     ]),
   );
 
+  const picturesIdsOnDevice = Docx.imageFiles.map(fileName => fileName.slice(0, -4)); // remove .jpg
+
   for (let i = 0; i < inputData.value.length; i++) {
 
     const { id_picture, description, dateAndTime } = inputData.value[i];
@@ -40,7 +42,24 @@ export async function InputDocument_Picture(o: {
           color: '000000',
         })
       ]),
-      await Docx.image({ id_picture }),
+    );
+
+    if (picturesIdsOnDevice.includes(id_picture)) {
+      document.push(await Docx.image({ id_picture }))
+    } else {
+      console.log('Picture not found on device:', id_picture);
+      document.push(
+        Docx.paragraph([
+          Docx.text({
+            text: R['Picture not available on device. Try download from cloud.'],
+            fontSize: 12,
+            color: 'FF0000',
+          })
+        ]),
+      );
+    }
+
+    document.push(
       Docx.paragraph([
         Docx.text({
           text: `${R['Description']}: `,
@@ -53,7 +72,7 @@ export async function InputDocument_Picture(o: {
           color: isDescriptionEmpty ? 'FF0000' : '000000',
         })
       ]),
-    );
+    )
 
     if (!isLast) {
       document.push(

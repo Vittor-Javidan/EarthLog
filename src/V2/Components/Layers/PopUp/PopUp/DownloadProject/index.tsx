@@ -53,8 +53,8 @@ export const DownloadProjects = memo((props: {
     await downloadAPI.getAvailableProjects({
       signal: controller.signal,
       onSuccess: (projects) => {
-        const projects_ltsVersion1 = projects.filter(project => (project?.lts_version === VERSION || project?.lts_version === undefined));
-        setAllProjects(projects_ltsVersion1);
+        const validProjects = projects.filter(project => project.lts_version === VERSION);
+        setAllProjects(validProjects);
         setFeedbacks(prev => [ ...prev, RShared['Done!']]);
         setTimeout(() => {
           setShow(prev => ({ ...prev,
