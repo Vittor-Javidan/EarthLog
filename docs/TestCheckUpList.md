@@ -23,6 +23,7 @@
 
 ## Home Screen
 - Can Download Projects
+- Can Download only the correct LTS Version
 
 ## Project Screen
 - Can upload Project

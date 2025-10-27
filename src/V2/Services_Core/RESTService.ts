@@ -1,5 +1,5 @@
 import { CredentialDTO } from '@V2/Types/AppTypes';
-import { ProjectDTO, ProjectSettings, SyncData } from '@V2/Types/ProjectTypes';
+import { DownloadedProjectDTO, ProjectDTO, ProjectSettings, SyncData } from '@V2/Types/ProjectTypes';
 
 export class RESTService {
 
@@ -93,7 +93,7 @@ export class RESTService {
     accessToken: string
     signal: AbortSignal
     id_project: string
-  }): Promise<ProjectDTO> {
+  }): Promise<DownloadedProjectDTO> {
 
     const response = await fetch(this.credential.rootURL + this.endpoints.PROJECT + `/${o.id_project}`, {
       signal: o.signal,
@@ -112,7 +112,7 @@ export class RESTService {
       );
     }
 
-    const body = await response.json();
+    const body = await response.json() as DownloadedProjectDTO;
     if (!body.project) {
       throw Error(
         'Download was successful, but the project is undefined.' +
@@ -122,8 +122,17 @@ export class RESTService {
         `\n{ ..., "project: ${body.project}" }`
       );
     }
+    if (!body.projectStatus) {
+      throw Error(
+        'Download was successful, but the projectStatus is undefined.' +
+        '\nMethod: GET' +
+        '\nEndpoint: /project' + `/${o.id_project}` +
+        '\nStatus: ' + response.status +
+        `\n{ ..., "projectStatus: ${body.projectStatus}" }`
+      );
+    }
 
-    return body.project;
+    return body;
   }
 
   async postProject(o: {

@@ -97,9 +97,9 @@ export class DownloadService {
         o.feedback('Downloading project. ID:' + ` ${id_project}`);
         const downloadedProjectDTO = await this.restAPI.getProject({ accessToken: this.accessToken, id_project, signal });
 
-        o.feedback('Processing project:' + ` ${downloadedProjectDTO.projectSettings.name}`);
+        o.feedback('Processing project:' + ` ${downloadedProjectDTO.project.projectSettings.name}`);
         const { projectDTO, syncData } = DataProcessingService.processProject_AfterDownload({
-          projectDTO: downloadedProjectDTO,
+          downloadedProject: downloadedProjectDTO,
           feedback: (feedbackMessage) => o.feedback(feedbackMessage),
         });
         const { projectSettings } = projectDTO;

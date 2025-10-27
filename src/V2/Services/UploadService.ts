@@ -72,10 +72,11 @@ export class UploadService {
 
       // UPLOAD PROJECT ==============
       o.feedback('Uploading project');
-      projectSettings.status === 'new'
+      syncData.project === 'new'
       ? await this.restAPI.postProject({ signal, accessToken: this.accessToken, projectDTO, syncData })
       : await this.restAPI.updateProject({ signal, accessToken: this.accessToken, projectDTO, syncData });
 
+      // AFTER UPLOAD ==================
       o.feedback('Updating project locally');
       await ProjectService.updateProject({
         projectSettings,
@@ -90,7 +91,7 @@ export class UploadService {
 
       o.feedback('Project sync...');
       DataProcessingService.processProject_AfterUpload({
-        projectDTO, syncData,
+        syncData: syncData,
         feedback: (feedbackMessage) => o.feedback(feedbackMessage),
       });
       await ProjectService.updateSyncData({
