@@ -46,17 +46,25 @@ export const PicturesCarousel = memo((props: {
 
   const AllImages = props.pictures.map(pictureData => {
     return !props.missingPictures.includes(pictureData.id_picture) ? (
-      <Image
-        key={pictureData.id_picture}
-        source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
-        resizeMode="cover"
-        style={{
-          flex: 1,
-          alignSelf: 'center',
-          height: dimensions.width,
-          width: dimensions.width,
+      <Pressable
+        onPress={() => {
+          setShowPreview(true)
         }}
-      />
+        style={{ flex: 1 }}
+        key={`Pressable-${pictureData.id_picture}`}
+      >
+        <Image
+          key={pictureData.id_picture}
+          source={{ uri: MediaService.getPictureUri(props.id_project, pictureData.id_picture)}}
+          resizeMode="cover"
+          style={{
+            flex: 1,
+            alignSelf: 'center',
+            height: dimensions.width,
+            width: dimensions.width,
+          }}
+        />
+      </Pressable>
     ) : (
       <View
         key={pictureData.id_picture}
@@ -98,24 +106,19 @@ export const PicturesCarousel = memo((props: {
       }}
     >
       {dimensions.height > 0 && (<>
-        <Pressable
-          onPress={() => {
-            setShowPreview(true)
+        <PagerView
+          initialPage={pictureIndex}
+          ref={pageRef}
+          onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
+          style={{
+            flex: 1,
           }}
-          style={{ flex: 1 }}
+
+          //We need a key to allow <Pressable /> to work when a deletion occurs
+          key={props.pictures.map(p => p.id_picture).join('-')}
         >
-          <PagerView
-            key={props.pictures.map(p => p.id_picture).join('-')} //We need a key to allow <Pressable /> to work when a deletion occurs
-            initialPage={pictureIndex}
-            ref={pageRef}
-            onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
-            style={{
-              flex: 1,
-            }}
-          >
-            {AllImages}
-          </PagerView>
-        </Pressable>
+          {AllImages}
+        </PagerView>
         {props.pictures[pictureIndex] !== undefined && (
           <InfoDisplay
             id_picture={props.pictures[pictureIndex].id_picture}

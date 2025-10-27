@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Refactoring: ConfigService
+# [1,2] Fix: <PictureInput />
 
-- Simplified dto verification
+- Now the carousel can be draged sideways to change pictures
