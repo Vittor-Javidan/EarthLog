@@ -20,7 +20,7 @@ export class FOLDER_App {
   }
 
   static async deleteFolder(): Promise<void> {
-    FileSystemService.delete({ directory: this.APP_ROOT_FOLDER() });
+    FileSystemService.deleteDirectory({ directory: this.APP_ROOT_FOLDER() });
   }
 }
 
@@ -55,7 +55,7 @@ export class FOLDER_Temp {
     directory: string
   }): Promise<void> {
     const { directory } = o;
-    FileSystemService.delete({ directory });
+    FileSystemService.deleteFile({ directory });
   }
 }
 
@@ -206,7 +206,7 @@ export class FOLDER_SyncData {
     id_project: string
   }): Promise<void> {
     const { id_project } = o;
-    FileSystemService.delete({ directory: this.SYNC_DATA_FILE_PATH(id_project) });
+    FileSystemService.deleteFile({ directory: this.SYNC_DATA_FILE_PATH(id_project) });
   }
 }
 
@@ -278,7 +278,7 @@ export class FOLDER_Projects {
   }): Promise<void> {
     const { id_project } = o;
     await this.removeProjectID({ id_project });
-    FileSystemService.delete({ directory: this.PROJECT_FOLDER(id_project) });
+    FileSystemService.deleteDirectory({ directory: this.PROJECT_FOLDER(id_project) });
   }
 
   private static async getAllProjectsIDs(): Promise<string[]> {
@@ -383,7 +383,7 @@ export class FOLDER_ProjectWidgets {
     const { id_project, widgetData } = o;
     const { id_widget } = widgetData;
     await this.removeWidgetID({ id_project, id_widget});
-    FileSystemService.delete({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_widget) });
+    FileSystemService.deleteFile({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_widget) });
   }
 
   private static async getAllWidgetsIDs(o: {
@@ -493,7 +493,7 @@ export class FOLDER_TemplateWidgets {
     const { id_project, widgetData } = o;
     const { id_widget } = widgetData;
     await this.removeWidgetID({ id_project, id_widget});
-    FileSystemService.delete({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_widget) });
+    FileSystemService.deleteFile({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_widget) });
   }
 
   private static async getAllWidgetsIDs(o: {
@@ -607,7 +607,7 @@ export class FOLDER_Samples {
     const { id_project, sampleSettings } = o;
     const { id_sample } = sampleSettings;
     await this.removeSampleID({ id_project, id_sample });
-    FileSystemService.delete({ directory: this.SAMPLE_FOLDER(id_project, id_sample) });
+    FileSystemService.deleteDirectory({ directory: this.SAMPLE_FOLDER(id_project, id_sample) });
   }
 
   private static async getAllSamplesIDs(o: {
@@ -723,7 +723,7 @@ export class FOLDER_SampleWidgets {
     const { id_project, id_sample, widgetData } = o;
     const { id_widget } = widgetData;
     await this.removeWidgetID({ id_project, id_sample, id_widget});
-    FileSystemService.delete({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_sample, id_widget) });
+    FileSystemService.deleteFile({ directory: this.WIDGET_DATA_FILE_PATH(id_project, id_sample, id_widget) });
   }
 
   private static async getAllWidgetsIDs(o: {
@@ -802,7 +802,8 @@ export class FOLDER_Media {
     id_picture: string
   }): Promise<string | null> {
     const { id_project, id_picture } = o;
-    return FileSystemService.readFile({ directory: `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg`, encoding: 'base64' });
+    const PICTURE_FILE_PATH = `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg`;
+    return FileSystemService.readFile({ directory: PICTURE_FILE_PATH, encoding: 'base64' });
   }
 
   static async createPictureFromURI(o: {
@@ -826,7 +827,8 @@ export class FOLDER_Media {
     base64Data: string
   }): Promise<void> {
     const { id_project, id_picture, base64Data } = o;
-    FileSystemService.writeFile({ directory: `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg`, data: base64Data, encoding: 'base64'});
+    const PICTURE_FILE_PATH = `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg`;
+    FileSystemService.writeFile({ directory: PICTURE_FILE_PATH, data: base64Data, encoding: 'base64'});
   }
 
   static async deletePicture(o: {
@@ -834,6 +836,7 @@ export class FOLDER_Media {
     id_picture: string
   }): Promise<void> {
     const { id_project, id_picture } = o;
-    FileSystemService.delete({ directory: `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg` });
+    const PICTURE_FILE_PATH = `${this.PICTURE_FOLDER(id_project)}/${id_picture}.jpg`;
+    FileSystemService.deleteFile({ directory: PICTURE_FILE_PATH });
   }
 }

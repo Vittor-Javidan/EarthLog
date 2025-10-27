@@ -71,11 +71,25 @@ export class FileSystemService {
   }
 
   /**
-   * Deletes a directory recusively if exists. If a file is specified on the delete path, only the
-   * file will be deleted.
-   * @param directory directory, with file name included or not.
+   * Deletes a file if exists.
+   * @param directory File directory path.
    */
-  static delete(o: {
+  static deleteFile(o: {
+    directory: string
+  }): void {
+    const { directory } = o;
+    const file = new File(directory)
+    if (file.exists) {
+      file.delete();
+    }
+  }
+
+  /**
+   * Deletes a directory recusively if exists.
+   * @param directory folder directory path.
+   * @Warning If a file is specified on the delete path, nothing will be deleted.
+   */
+  static deleteDirectory(o: {
     directory: string
   }): void {
     const { directory } = o;
@@ -98,7 +112,7 @@ export class FileSystemService {
   }
 
   static resetTempDirectory(): void {
-    FileSystemService.delete({ directory: path.getDir().TEMP() });
+    FileSystemService.deleteDirectory({ directory: path.getDir().TEMP() });
     FileSystemService.createDirectory({ directory: path.getDir().TEMP() });
   }
 }
