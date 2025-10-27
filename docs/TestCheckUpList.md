@@ -55,6 +55,17 @@
 - Preview can zoomed
 - Show both save and cancel buttons
 
+## Sync
+
+- Show green cloud when uploaded
+- Show yellow cloud when:
+  - change project settings
+  - change sample settings
+  - change template widget data
+  - change project widget data
+  - change sample widget data
+  - sync data show "deleted" on deleted pictures from uploaded projects
+
 ## Inputs
 
 - Picture Input
