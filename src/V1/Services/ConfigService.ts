@@ -35,15 +35,14 @@ export class ConfigService {
 
     const { config } = o;
     const { App, Widget } = ThemeService.themeNamesArray;
-    const deviceLanguage = LanguageService.getDeviceLanguage();
-
+    
     const verifiedConfigDTO: ConfigDTO = {
-      appTheme:              App.includes(config.appTheme) ? config.appTheme : 'Dark',
-      widgetTheme:           Widget.includes(config.widgetTheme) ? config.widgetTheme : 'Light',
-      language:              config.language   ?? deviceLanguage,
-      dateFormat:            config.dateFormat ?? DateTimeService.DateFormatByTag(deviceLanguage),
-      timeFormat:            config.timeFormat ?? DateTimeService.TimeFormatByTag(deviceLanguage),
-      onlyWarningVibrations: config.onlyWarningVibrations ?? true,
+      language:              config.language                     ?? this.config.language,
+      dateFormat:            config.dateFormat                   ?? this.config.dateFormat,
+      timeFormat:            config.timeFormat                   ?? this.config.timeFormat,
+      appTheme:              !App.includes(config.appTheme)       ? this.config.appTheme              : config.appTheme,
+      widgetTheme:           !Widget.includes(config.widgetTheme) ? this.config.widgetTheme           : config.widgetTheme,
+      onlyWarningVibrations: config.onlyWarningVibrations        ?? this.config.onlyWarningVibrations,
     };
     return verifiedConfigDTO;
   }

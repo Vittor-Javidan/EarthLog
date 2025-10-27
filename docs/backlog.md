@@ -1,7 +1,6 @@
 # Expo camera
 
 ## refactoring:
-- Make the Config being saved as a files, instead of using local storage
 
 ## features:
 - Add a gps snapshot button on <GPSInput />, for those who just want to want click, in case accuracy is not that important
