@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
-import { AlertAPI } from '@V1/Layers/API/Alert';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { ConfigService } from '@V1/Services/ConfigService';
 
 import { ManualInputButton } from './ManualInputButton';
@@ -22,7 +22,7 @@ export const ManualInput = memo((props: {
   const [error    , setError    ] = useState<boolean>(false);
 
   const onSave = useCallback(async (newGPSData: GPS_DTO) => {
-    await AlertAPI.handleAlert(props.noGPSData, {
+    await PopUpAPI.handleAlert(props.noGPSData, {
       type: 'warning',
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, () => {

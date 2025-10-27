@@ -6,7 +6,7 @@ import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Typ
 import { translations } from '@V1/Translations/index';
 import { DateTimeService } from '@V1/Services_Core/DateTimeService';
 import { ConfigService } from '@V1/Services/ConfigService';
-import { AlertAPI } from '@V1/Layers/API/Alert';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { MediaService } from '@V1/Services/MediaService';
 import { CacheService } from '@V1/Services/CacheService';
 import { useCameraLayer } from '@V1/Layers/API/Camera';
@@ -87,7 +87,7 @@ export const PictureInput = memo((props: {
   }, [inputData, allMissingPictures]);
 
   const onPictureDelete = useCallback((index: number) => {
-    AlertAPI.handleAlert(true, {
+    PopUpAPI.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to permanently delete this picture. This action cannot be undone.'],
     }, async () => {
@@ -112,7 +112,7 @@ export const PictureInput = memo((props: {
   const onDownloadMissingPicture = useCallback(async (id_picture?: string) => {
     const picturesIDs = inputData.value.map(pictureData => pictureData.id_picture);
     const inputMissingPictures = allMissingPictures.filter(id => picturesIDs.includes(id));
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'download pictures',
       id_project: id_project,
       picturesIDs: id_picture ? [ id_picture ] : inputMissingPictures,

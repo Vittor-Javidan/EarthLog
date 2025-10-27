@@ -11,7 +11,7 @@ import { ConfigService } from '@V1/Services/ConfigService';
 import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 import { Animation } from '@V1/Animation/index';
-import { AlertLayer } from '@V1/Layers/Alert';
+import { PopUpLayer } from '@V1/Layers/PopUp';
 import { CameraLayer } from '@V1/Layers/Camera/index';
 import { CameraPreviewLayer } from '@V1/Layers/CameraPreview';
 
@@ -26,7 +26,7 @@ export const Root = memo((props: {
 }) => {
   return (<>
     <StatusBar style="auto" />
-    <AlertLayer />
+    <PopUpLayer />
     <CameraLayer />
     <CameraPreviewLayer />
     <AppLayer

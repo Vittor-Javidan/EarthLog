@@ -8,7 +8,7 @@ import { useBackPress } from '@V2/Hooks/index';
 import { CredentialService } from '@V2/Services/CredentialService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 import { CacheService } from '@V2/Services/CacheService';
 
 import { Layout } from '@V2/Layout/index';
@@ -24,7 +24,7 @@ export default function HomeScope() {
   const [state, setState] = useState<Loading>('Loading');
 
   const exitMessage = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'exit app',
     }, () => BackHandler.exitApp());
   }, []);

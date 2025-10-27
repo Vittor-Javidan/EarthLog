@@ -6,7 +6,7 @@ import { GPS_DTO, WidgetData } from '@V2/Types/ProjectTypes';
 import { ProjectService } from '@V2/Services/ProjectService';
 import { MediaService } from '@V2/Services/MediaService';
 import { CacheService } from '@V2/Services/CacheService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Animation } from '@V2/Animation/index';
 import { Layout } from '@V2/Layout/index';
@@ -60,7 +60,7 @@ export const SampleDataScreens = memo((props: {
   }, [sampleWidgets]);
 
   const onCopyTemplateWidget = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'template widget copy',
       id_project: id_project,
       id_sample: id_sample,

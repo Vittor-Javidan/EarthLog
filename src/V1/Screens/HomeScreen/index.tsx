@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { ProjectSettings } from '@V1/Types/ProjectTypes';
 import { CacheService } from '@V1/Services/CacheService';
-import { AlertAPI } from '@V1/Layers/API/Alert';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Animation } from '@V1/Animation/index';
 import { Layout } from '@V1/Layout/index';
@@ -16,13 +16,13 @@ export const HomeScreen = memo(() => {
   const [projects, setProject]  = useState<ProjectSettings[]>(CacheService.allProjects);
 
   const onCreateProject = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'project creation',
     }, () => setProject(CacheService.allProjects));
   }, []);
 
   const onDownloadProjects = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'download projects',
     }, () => setProject(CacheService.allProjects));
   }, []);

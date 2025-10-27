@@ -9,7 +9,7 @@ import { useTimeout } from '@V2/Hooks/index';
 import { CredentialService } from '@V2/Services/CredentialService';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Layout } from '@V2/Layout/index';
 import { WidgetInput } from '@V2/WidgetInput/index';
@@ -59,7 +59,7 @@ export const CredentialWidget = memo((props: {
   }, []);
 
   const onDeleteCredential = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'warning',
       question: R['Confirm to delete this credential.'],
     }, () => props.onCredentialDelete());

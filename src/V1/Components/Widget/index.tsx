@@ -11,7 +11,7 @@ import { ProjectService } from '@V1/Services/ProjectService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { CacheService } from '@V1/Services/CacheService';
 import { MediaService } from '@V1/Services/MediaService';
-import { AlertAPI } from '@V1/Layers/API/Alert';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { Animation } from '@V1/Animation/index';
 import { Navbar } from './Navbar';
@@ -141,7 +141,7 @@ export const Widget = memo((props: {
   }, []);
 
   const onInputDelete = useCallback(async (id_input: string) => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'warning',
       question: R['This will delete any info or media related to this field. This action is permanent and cannot be undone.'],
     }, async () => {
@@ -163,7 +163,7 @@ export const Widget = memo((props: {
   }, [widgetData]);
 
   const onWidgetDelete = useCallback(() => {
-    AlertAPI.handleAlert(true, {
+    PopUpAPI.handleAlert(true, {
       question: R['This will delete any info or media related to this wiget. This action is permanent and cannot be undone.'],
       type: 'warning',
     },() => props.onDeleteWidget());

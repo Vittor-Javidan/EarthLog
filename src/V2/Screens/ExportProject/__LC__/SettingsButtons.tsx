@@ -6,7 +6,7 @@ import { navigate } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Button } from '@V2/Button/index';
 
@@ -18,14 +18,14 @@ export const AvailableExportFormatButtons = memo(() => {
   const R      = useMemo(() => translations.screen.exportProject[config.language], []);
 
   const onDocxSelected = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'export project (DOCX)',
       id_project: id_project,
     }, () => navigate('PROJECT SCOPE', id_project));
   }, []);
 
   const onCSVSelected = useCallback(async () => {
-    await AlertAPI.handleAlert(true, {
+    await PopUpAPI.handleAlert(true, {
       type: 'export project (CSV)',
       id_project: id_project,
     }, () => navigate('PROJECT SCOPE', id_project));

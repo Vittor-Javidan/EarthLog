@@ -7,7 +7,7 @@ import { FOLDER_App } from '@V2/Services_Files/AppFolders';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { CacheService } from '@V2/Services/CacheService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Button } from '@V2/Button/index';
 
@@ -77,7 +77,7 @@ export const SettingsButtons = memo(() => {
 });
 
 async function whipeAllData() {
-  await AlertAPI.handleAlert(true,
+  await PopUpAPI.handleAlert(true,
     {
       question: 'Want to whipe database?',
       type: 'warning',

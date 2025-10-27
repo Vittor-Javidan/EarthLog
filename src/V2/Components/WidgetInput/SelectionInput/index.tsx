@@ -6,7 +6,7 @@ import { SelectionInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectT
 import { translations } from '@V2/Translations/index';
 import { IDService } from '@V2/Services_Core/IDService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { AlertAPI } from '@V2/Layers/API/Alert';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
 import { AllSelectionOptions } from './AllSelectionOptions';
@@ -72,7 +72,7 @@ export const SelectionInput = memo((props: {
   }, [asyncSave]);
 
   const onOptionDelete = useCallback((index: number) => {
-    AlertAPI.handleAlert(true, {
+    PopUpAPI.handleAlert(true, {
       question: R['Confirm to delete this option'],
       type: 'warning',
     }, () => {
