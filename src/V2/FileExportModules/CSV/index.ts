@@ -18,6 +18,7 @@ export default class CSV_Module {
 
     o.feedback('Mounting document');
     let document =
+      '# ' +
       this.stringToCSVText(R['Source'])                    + ',' +
       this.stringToCSVText(R['Widget name'])               + ',' +
       this.stringToCSVText(R['Label'])                     + ',' +

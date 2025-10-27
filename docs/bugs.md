@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- Add a '#' on the first line of the csv export to signal a comment inside the file
 - Remove the 'Bare ' prefix inside the app, to allow flexibility for those who gonna configure their own token
 - Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
 - App Not uploading images when you upload the project to a second server

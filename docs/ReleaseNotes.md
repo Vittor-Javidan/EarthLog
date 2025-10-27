@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Fix: <PictureInput />
+# [1,2] Fix: CSV_Module
 
-- Now the carousel can be draged sideways to change pictures
+- Now first line has a '# ', to allow third parties validations to remove the label if necessary
