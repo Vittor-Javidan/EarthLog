@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Fix: RESTService
+# [1,2] Fix: DOCX_Module
 
-- Removed the 'Bearer ' prefix from received access token during auth process, to allow the server to decide what implementation it wants
+- Now allows the docx to be exported even if there is missing pictures

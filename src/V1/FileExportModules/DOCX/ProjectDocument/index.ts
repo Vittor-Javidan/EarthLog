@@ -7,6 +7,10 @@ import { translations } from '@V1/Translations/index';
 import { document_ProjectWidgets } from '../ProjectWidgetsDocument';
 import { document_AllSamples } from '../AllSamplesDocument';
 
+/**
+ * @WARNING Requires `Docx.setImageFilePath` to be called first due to Image on `InputDocument_Picture` file reading
+ * @WARNING Requires `Docx.listImageFiles` to be called first due to Image on `InputDocument_Picture` file reading
+ */
 export async function document_Project(o: {
   config: ConfigDTO,
   projectDTO: ProjectDTO,

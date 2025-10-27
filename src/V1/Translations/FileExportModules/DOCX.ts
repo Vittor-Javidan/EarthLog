@@ -11,6 +11,7 @@ type TranslationDTO = Record<LanguageTag, {
   'Altitude:': string
   'Picture': string
   'Description': string
+  'Picture not available on device. Try download from cloud.': string
 }>
 
 export const R_FileExportModules_DOCX: TranslationDTO = {
@@ -25,6 +26,7 @@ export const R_FileExportModules_DOCX: TranslationDTO = {
     'Altitude:': 'Altitude:',
     'Picture': 'Picture',
     'Description': 'Description',
+    'Picture not available on device. Try download from cloud.': 'Picture not available on device. Try download from cloud.'
   },
   'pt-BR': {
     'Project info': 'Informações do projeto',
@@ -37,5 +39,6 @@ export const R_FileExportModules_DOCX: TranslationDTO = {
     'Altitude:': 'Altitude:',
     'Picture': 'Foto',
     'Description': 'Descrição',
+    'Picture not available on device. Try download from cloud.': 'Foto não disponível no dispositivo. Tente baixar da nuvem.'
   },
 };

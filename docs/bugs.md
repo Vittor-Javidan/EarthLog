@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- Infinite docx file build when trying to create a project the has images unavailables (uploaded on server, but not present in the app)
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.
