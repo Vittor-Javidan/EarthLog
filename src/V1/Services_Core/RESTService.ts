@@ -62,7 +62,7 @@ export class RESTService {
       signal: o.signal,
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
       },
     });
 
@@ -99,7 +99,7 @@ export class RESTService {
       signal: o.signal,
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
       },
     });
 
@@ -137,7 +137,7 @@ export class RESTService {
       signal: o.signal,
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -168,7 +168,7 @@ export class RESTService {
       signal: o.signal,
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -198,7 +198,7 @@ export class RESTService {
       signal: o.signal,
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
       },
     });
 
@@ -238,7 +238,7 @@ export class RESTService {
       signal: o.signal,
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${o.accessToken}`,
+        'Authorization': `${o.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

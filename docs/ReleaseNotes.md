@@ -1,5 +1,5 @@
 // Before any commit, use the command line: npx tsc --noEmit
 
-# [1,2] Fix: CSV_Module
+# [1,2] Fix: RESTService
 
-- Now first line has a '# ', to allow third parties validations to remove the label if necessary
+- Removed the 'Bearer ' prefix from received access token during auth process, to allow the server to decide what implementation it wants
