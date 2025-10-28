@@ -4,6 +4,8 @@
 - Remove Export Service
 
 ## features:
+- Add a new project rule to allow the project to be oploaded only to a given url
+- Add a new project rule to not allow user to reset the sync data
 - Add a new project rule to just send the sync data once during upload, to optimize upload velocity for large projects with hundred of images.
 - Add a gps snapshot button on <GPSInput />, for those who just want to want click, in case accuracy is not that important
 - Add a loading indicator for file explore when an item is clicked

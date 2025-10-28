@@ -38,6 +38,10 @@ export const LIGHT: AppTheme = {
       font_active: '#AAA',
       background: '#AAA',
       background_active: '#222',
+      font_wrong: '#222',
+      background_wrong: '#F55',
+      font_confirm: '#222',
+      background_confirm: '#2F2',
     },
     carousel: {
       background: '#222',

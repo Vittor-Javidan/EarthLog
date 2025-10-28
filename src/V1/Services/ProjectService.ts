@@ -430,6 +430,12 @@ export class ProjectService {
     }
   }
 
+  static async resetSyncData(o: {
+    id_project: string
+  }): Promise<void> {
+    await DatabaseService.resetSyncData({ id_project: o.id_project });
+  }
+
 
 
 

@@ -61,12 +61,13 @@ export const TextWithIcon = memo((props: {
         style={{
           height: 45,
           paddingVertical: 5,
+          justifyContent: 'center',
         }}
       >
         <Icon
           iconName={props.iconName}
           color={pressed ? props.theme.font_active : props.theme.font}
-          fontSize={26}
+          fontSize={30}
         />
       </View>
 		</Pressable>

@@ -43,16 +43,16 @@ const ThemButton = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.themes.widget[config.language], []);
-  const theme = ThemeService.appThemes[config.appTheme].component;
+  const theme = ThemeService.appThemes[config.appTheme].layout.drawerButton;
 
   return (
     <Button.TextWithIcon
       title={R[props.themeName]}
       theme={{
-        font:              props.isSelected ? theme.background : theme.font_Button,
-        font_active:       props.isSelected ? theme.confirm    : theme.font_active,
-        background:        props.isSelected ? theme.confirm    : theme.background_Button,
-        background_active: props.isSelected ? theme.background : theme.background_active,
+        font:              props.isSelected ? theme.font_confirm       : theme.font,
+        font_active:       props.isSelected ? theme.background_confirm : theme.font_active,
+        background:        props.isSelected ? theme.background_confirm : theme.background,
+        background_active: props.isSelected ? theme.font_confirm       : theme.background_active,
       }}
       iconName="color-palette"
       onPress={() => props.onPress()}

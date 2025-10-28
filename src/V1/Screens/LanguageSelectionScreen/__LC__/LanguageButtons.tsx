@@ -40,7 +40,7 @@ const LanguageButton = memo((props: {
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.screen.LanguageSelection, []);
 
   return (
@@ -48,10 +48,10 @@ const LanguageButton = memo((props: {
       title={R[props.languageTag]}
       iconName="language"
       theme={{
-        font:              props.isSelected ? theme.background : theme.font_Button,
-        font_active:       props.isSelected ? theme.confirm    : theme.font_active,
-        background:        props.isSelected ? theme.confirm    : theme.background_Button,
-        background_active: props.isSelected ? theme.background : theme.background_active,
+        font:              props.isSelected ? theme.font_confirm        : theme.font,
+        font_active:       props.isSelected ? theme.background_confirm  : theme.font_active,
+        background:        props.isSelected ? theme.background_confirm  : theme.background,
+        background_active: props.isSelected ? theme.font_confirm        : theme.background_active,
       }}
       onPress={() => props.onPress()}
     />

@@ -9,7 +9,7 @@ import VersionManager from '@VersionManager';
 export const SettingsButtons = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
 
   return (<>
     <Button.TextWithIcon
@@ -17,9 +17,9 @@ export const SettingsButtons = memo(() => {
       iconName="shuffle"
       onPress={async () => VersionManager.switchVersion('V2')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />
@@ -28,9 +28,9 @@ export const SettingsButtons = memo(() => {
       iconName="shuffle"
       onPress={async () => VersionManager.switchVersion('V1')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />

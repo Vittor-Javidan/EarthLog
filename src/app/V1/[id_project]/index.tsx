@@ -15,6 +15,7 @@ import { ProjectInfoScreen } from '@V1/Screens/ProjectInfoScreen';
 
 import NavigationTree from './NavigationTree';
 import Drawer from './Drawer';
+import { ProjectService } from '@V1/Services/ProjectService';
 
 type UpdatedAlias = {
   plural: null | string
@@ -47,6 +48,17 @@ export default function ProjectScope() {
     });
   }, []);
 
+  const onResetSyncData = useCallback(async () => {
+    await PopUpAPI.handleAlert(true, {
+      type: 'warning',
+      question: R['Are you sure you want to reset all sync data? The process is irreversible. Only reset this in case you want to re-upload the entire project again to a new server.'],
+    }, async () => {
+      await ProjectService.resetSyncData({ id_project });
+      await CacheService.loadAllSyncData();
+      refresh(prev => !prev);
+    });
+  }, []);
+
   useEffect(() => {
     FetchData(id_project, () => setState('Loaded'));
   }, []);
@@ -60,7 +72,9 @@ export default function ProjectScope() {
       drawerChildren={
         <Drawer
           projectSettings={projectSettings}
+          onExportProject={() => navigate('EXPORT PROJECT SCOPE', id_project)}
           onDownloadAllPictures={() => onDownloadAllPictures()}
+          onResetSyncData={() => onResetSyncData()}
         />
       }
     >

@@ -1,5 +1,6 @@
 # Known bugs (From High to Low Priority)
 
+- Add a ScrollLayer on widget layer preview
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.
