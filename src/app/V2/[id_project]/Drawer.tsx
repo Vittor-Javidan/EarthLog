@@ -43,17 +43,19 @@ const Drawer = memo((props: {
       }}
       onPress={() => props.onDownloadAllPictures()}
     />
-    <Button.TextWithIcon
-      title={R['Reset sync data']}
-      iconName="cloud-refresh-variant"
-      theme={{
-        font:              theme.font_wrong,
-        font_active:       theme.background_wrong,
-        background:        theme.background_wrong,
-        background_active: theme.font_wrong,
-      }}
-      onPress={() => props.onResetSyncData()}
-    />
+    {props.projectSettings.rules.enableResetSyncData && (
+      <Button.TextWithIcon
+        title={R['Reset sync data']}
+        iconName="cloud-refresh-variant"
+        theme={{
+          font:              theme.font_wrong,
+          font_active:       theme.background_wrong,
+          background:        theme.background_wrong,
+          background_active: theme.font_wrong,
+        }}
+        onPress={() => props.onResetSyncData()}
+      />
+    )}
   </>);
 });
 

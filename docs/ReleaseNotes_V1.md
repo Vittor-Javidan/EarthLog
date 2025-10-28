@@ -1,3 +1,9 @@
+# ✅ 1.10.75
+
+- New project rule added:
+  - `enableResetSyncData: boolean`
+
+
 # ✅ 1.10.74
 
 - Added a reset sync data button

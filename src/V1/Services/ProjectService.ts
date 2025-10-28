@@ -48,6 +48,7 @@ export class ProjectService {
           showCreateWidgetButton_Template: true,
           showSampleCreationButton: true,
           addGPSToNewSamples: true,
+          enableResetSyncData: true,
         },
       },
       projectWidgets: [],

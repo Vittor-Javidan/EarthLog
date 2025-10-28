@@ -243,6 +243,7 @@ export type ProjectRules = {
   showSampleCreationButton?: boolean
   addGPSToNewSamples?: boolean
   deleteAfterUpload?: boolean
+  enableResetSyncData?: boolean
 }
 
 export type SampleRules = {
