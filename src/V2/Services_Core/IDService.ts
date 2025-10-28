@@ -44,6 +44,12 @@ export class IDService {
     }
     if (input.type === 'selection') {
       for (let j = 0; j < input.value.options.length; j++) {
+        if (input.value.id_selected === input.value.options[j].id) {
+          const newID = this.generateUuidV4();
+          input.value.id_selected = newID;
+          input.value.options[j].id = newID;
+          continue;
+        }
         input.value.options[j].id = this.generateUuidV4();
       }
       return;

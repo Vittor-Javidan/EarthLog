@@ -1,3 +1,9 @@
+# ✅ 1.10.79
+
+- Fix:
+  - <SelectionInput /> data values not being copied from widget templates 
+
+
 # ✅ 1.10.78
 
 - Fix:
