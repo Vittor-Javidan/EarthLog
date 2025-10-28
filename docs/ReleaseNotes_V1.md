@@ -1,6 +1,12 @@
 # ✅ 1.10.75
 
 - New project rule added:
+  - `sendSyncDataOnlyOnce: boolean`
+
+
+# ✅ 1.10.75
+
+- New project rule added:
   - `enableResetSyncData: boolean`
 
 
@@ -21,4 +27,4 @@
 
 # ✅ 1.10.72
 
-- Small refactory to add `lts_version` propertie inside `projectSettings` only whe the propertie is actually missing during uploa
+- Small refactory to add `lts_version` propertie inside `projectSettings` only whe the propertie is actually missing during upload

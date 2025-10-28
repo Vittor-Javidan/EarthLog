@@ -1,3 +1,9 @@
+# ✅ 2.0.63
+
+- New project rule added:
+  - `sendSyncDataOnlyOnce: boolean`
+
+
 # ✅ 2.0.62
 
 - New project rule added:
