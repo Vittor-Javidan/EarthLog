@@ -1,3 +1,9 @@
+# ✅ 2.0.65
+
+- Fix:
+  - Preview Theme Widget Screen not scrooling
+
+
 # ✅ 2.0.64
 
 - New project rule added:

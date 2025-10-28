@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- Add a ScrollLayer on widget layer preview
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.
@@ -10,3 +9,5 @@
 - <AlertLayer /> closing when an error occur during docx export
 - horizontal camera not fiting the whole screen (Happens on development. In production seens ok. Please report if you have this issue as well)
 - Find a way to create a animation during widget height changing
+
+- Investigate if screen buttons needs to be pressed twice on production
