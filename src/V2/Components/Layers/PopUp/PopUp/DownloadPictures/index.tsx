@@ -4,6 +4,7 @@ import { CredentialDTO } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { DownloadService } from '@V2/Services/DownloadService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '@V2/Layers/PopUp/__LC__';
@@ -65,6 +66,7 @@ export const DownloadPictures = memo((props: {
       <LC.CredentialsDisplay
         title={'Download picture from?'}
         showDisplay={show.credentialsDisplay}
+        credentials={CredentialService.allCredentials}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
       <LC.ErrorDisplay

@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { Dimensions } from 'react-native';
 
 import { ThemeNames_Widgets } from '@V2/Types/AppTypes';
 
@@ -17,7 +18,7 @@ export const WidgetThemePreviewScreen = memo((props: {
         contentContainerStyle={{
           paddingHorizontal: 5,
           paddingTop: 55,
-          paddingBottom: 10,
+          paddingBottom: Dimensions.get('window').height - 240,
           gap: 1,
         }}
       >

@@ -115,7 +115,10 @@ export class UploadService {
           }
 
           o.feedback('Uploading picture of ID: ' + id_picture);
-          await this.restAPI.postPicture({ accessToken: this.accessToken, syncData, id_picture, base64Data, id_project, signal });
+          await this.restAPI.postPicture({ id_picture, base64Data, id_project, signal,
+            accessToken: this.accessToken,
+            syncData: projectSettings.rules.sendSyncDataOnlyOnce ? null : syncData,
+          });
 
           o.feedback('Picture sync...');
           syncData.pictures[id_picture] = 'uploaded';
@@ -132,7 +135,6 @@ export class UploadService {
       }
 
       // AFTER MEDIA UPLOAD =========================================
-      const { rules } = projectSettings;
 
       // Remove deleted pictures from Sync Data after all pictures have been uploaded
       for (let id_picture in syncData.pictures) {
@@ -153,7 +155,7 @@ export class UploadService {
 
       // Project rule deleteAfterUpload
       const isAllPicturesUploaded = !Object.values(syncData.pictures).includes('new');
-      if (rules.deleteAfterUpload === true && isAllPicturesUploaded) {
+      if (projectSettings.rules.deleteAfterUpload === true && isAllPicturesUploaded) {
         o.feedback('Deleting project');
         await ProjectService.deleteProject({ id_project,
           onSuccess: async () => {

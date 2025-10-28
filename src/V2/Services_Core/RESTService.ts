@@ -240,7 +240,7 @@ export class RESTService {
     id_project: string
     id_picture: string
     base64Data: string
-    syncData: SyncData
+    syncData: SyncData | null
   }): Promise<void> {
 
     const response = await fetch(this.credential.rootURL + this.endpoints.IMAGE + `/${o.id_project}`, {

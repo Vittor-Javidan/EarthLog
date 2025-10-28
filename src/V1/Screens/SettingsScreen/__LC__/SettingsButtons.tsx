@@ -14,7 +14,7 @@ import { Button } from '@V1/Button/index';
 export const SettingsButtons = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
-  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.screen.settings[config.language], []);
 
   return (<>
@@ -23,9 +23,9 @@ export const SettingsButtons = memo(() => {
       iconName="language"
       onPress={() => navigate('LANGUAGE SELECTION SCOPE')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />
@@ -34,9 +34,9 @@ export const SettingsButtons = memo(() => {
       iconName="time"
       onPress={() => navigate('TIME AND DATE SCOPE')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />
@@ -45,9 +45,9 @@ export const SettingsButtons = memo(() => {
       iconName="color-palette"
       onPress={() => navigate('THEME SCOPE')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />
@@ -56,9 +56,9 @@ export const SettingsButtons = memo(() => {
       iconName="alert-circle"
       onPress={() => navigate('VIBRATION OPTIONS SCOPE')}
       theme={{
-        font:              theme.font_Button,
+        font:              theme.font,
         font_active:       theme.font_active,
-        background:        theme.background_Button,
+        background:        theme.background,
         background_active: theme.background_active,
       }}
     />
@@ -67,10 +67,10 @@ export const SettingsButtons = memo(() => {
       iconName="trash-outline"
       onPress={async () => await whipeAllData()}
       theme={{
-        font:              theme.background,
-        background:        theme.wrong,
-        font_active:       theme.wrong,
-        background_active: theme.background_active,
+        font:              theme.font_wrong,
+        background:        theme.background_wrong,
+        font_active:       theme.background_wrong,
+        background_active: theme.font_wrong,
       }}
     />
   </>);

@@ -57,6 +57,10 @@ export type AppTheme = {
       background: string
       font_active: string
       background_active: string
+      font_wrong: string
+      background_wrong: string
+      font_confirm: string
+      background_confirm: string
     }
     carousel: {
       background: string

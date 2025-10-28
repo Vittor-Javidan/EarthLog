@@ -73,7 +73,10 @@
 ## Inputs
 
 - Picture Input
-  - Can delete last picture
+  - Shows image after taking first picture
+  - Shows no image after having no picture
+  - Keeps on picture one if first picture is deleted
+  - Keeps on last picture if last picture is deleted
   - Can Preview picture
   - Can Preview other pictures after a deletion
   - Preview shows only cancel button
