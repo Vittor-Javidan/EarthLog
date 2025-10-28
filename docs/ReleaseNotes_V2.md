@@ -1,3 +1,8 @@
+# ✅ 2.0.69
+
+- Fixed a UI bug where widgets could flick if you change wich display you were using
+
+
 # ✅ 2.0.68
 
 - Now in case DOCX export fails, the summary of the error will be displayed
