@@ -1,6 +1,5 @@
 # Known bugs (From High to Low Priority)
 
-- remove "deleted" sync status for images after a succesfull project upload
 - App Not uploading images when you upload the project to a second server
 - Selection input values on templates not being copied
 - Sync Files not being deleted when project is deleted.

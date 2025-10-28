@@ -131,10 +131,28 @@ export class UploadService {
         }
       }
 
-      // AFTER UPLOAD =========================================
+      // AFTER MEDIA UPLOAD =========================================
       const { rules } = projectSettings;
-      const isAllPicturesUploaded = !Object.values(syncData.pictures).includes('new');
 
+      // Remove deleted pictures from Sync Data after all pictures have been uploaded
+      for (let id_picture in syncData.pictures) {
+        if (syncData.pictures[id_picture] === 'deleted') {
+          o.feedback('Cleaning unnecessary deleted picture entries...');
+          delete syncData.pictures[id_picture]
+        }
+      }
+      await ProjectService.updateSyncData({
+        syncData,
+        onSuccess: () => {
+          CacheService.updateCache_SyncData({ syncData });
+        },
+        onError: (errorMessage) => {
+          throw Error(errorMessage);
+        },
+      });
+
+      // Project rule deleteAfterUpload
+      const isAllPicturesUploaded = !Object.values(syncData.pictures).includes('new');
       if (rules.deleteAfterUpload === true && isAllPicturesUploaded) {
         o.feedback('Deleting project');
         await ProjectService.deleteProject({ id_project,
