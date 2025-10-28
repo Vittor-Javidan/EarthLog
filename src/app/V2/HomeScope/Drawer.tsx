@@ -79,7 +79,7 @@ const Drawer = memo(() => {
         background:        theme.background,
         background_active: theme.background_active,
       }}
-      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLog/blob/ResetSyncData/docs/ReleaseNotes_V2.md')}
+      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLog/blob/main/docs/ReleaseNotes_V2.md')}
     />
     <Button.TextWithIcon
       title={R['Privacy Policy']}
