@@ -1,3 +1,16 @@
+# ✅ 1.10.80
+
+- UI Changes:
+  - <PictureInput /> download all picture buttons icon changed
+
+- Fix:
+  - Share button does not show anymore for pictures that are missing
+
+- Refactoring:
+  - <PictureInput /> picture index removed from the carousel to the main component.
+    - It seens both picture data and index must stay in the same scope to avoid desync errors
+
+
 # ✅ 1.10.79
 
 - Fix:

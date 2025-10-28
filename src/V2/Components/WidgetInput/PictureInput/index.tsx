@@ -29,12 +29,13 @@ export const PictureInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const id_project                                 = useMemo(() => props.widgetScope.id_project, []);
-  const config                                     = useMemo(() => ConfigService.config, []);
-  const R                                          = useMemo(() => translations.widgetInput.picture[config.language], []);
-  const [inputData         , setInputData        ] = useState<PictureInputData>(deepCopy(props.inputData));
-  const [allMissingPictures, setAllMissingìctures] = useState<string[]>(CacheService.identifyMissingPictures({ id_project }));
-  const [show              , setShow             ] = useState({
+  const id_project                                  = useMemo(() => props.widgetScope.id_project, []);
+  const config                                      = useMemo(() => ConfigService.config, []);
+  const R                                           = useMemo(() => translations.widgetInput.picture[config.language], []);
+  const [inputData         , setInputData         ] = useState<PictureInputData>(deepCopy(props.inputData));
+  const [allMissingPictures, setAllMissingPìctures] = useState<string[]>(CacheService.identifyMissingPictures({ id_project }));
+  const [pictureIndex      , setPictureIndex      ] = useState<number | null>(inputData.value.length > 0 ? 0 : null);
+  const [show              , setShow              ] = useState({
     camera: false,
   });
 
@@ -71,11 +72,12 @@ export const PictureInput = memo((props: {
     }]};
     asyncSave(newData);
     setInputData(newData);
+    setPictureIndex(newData.value.length - 1);
     if (
       newData.picturesAmountLimit !== undefined &&
       newData.picturesAmountLimit === newData.value.length
     ) {
-      setShow(prev => ({ ...prev, camera: false}));
+      setShow(prev => ({ ...prev, camera: false }));
     }
   }, [asyncSave, inputData]);
 
@@ -98,7 +100,13 @@ export const PictureInput = memo((props: {
         id_media: newData.value.splice(index, 1)[0].id_picture,
       });
       asyncSave(newData);
-      setInputData(newData);
+      setInputData(deepCopy(newData));
+      setPictureIndex(prev => {
+        if (prev === null) return null;
+        if (newData.value.length === 0) return null;
+        if (prev - 1 < 0) return 0;
+        return prev - 1;
+      })
     });
   }, [asyncSave, inputData]);
 
@@ -118,7 +126,7 @@ export const PictureInput = memo((props: {
       picturesIDs: id_picture ? [ id_picture ] : inputMissingPictures,
     }, async () => {
       await CacheService.loadAllSyncData();
-      setAllMissingìctures(CacheService.identifyMissingPictures({ id_project }));
+      setAllMissingPìctures(CacheService.identifyMissingPictures({ id_project }));
     });
   }, [inputData, allMissingPictures]);
 
@@ -176,17 +184,21 @@ export const PictureInput = memo((props: {
             theme={props.theme}
           />
         )}
-        <PicturesCarousel
-          id_project={id_project}
-          pictures={inputData.value}
-          missingPictures={allMissingPictures}
-          onPictureDelete={(index) => onPictureDelete(index)}
-          onPictureShare={(index) => onPictureShare(index)}
-          onDescriptionChange={(text, index) => onDescriptionChange(text, index)}
-          onDownloadMissingPicture={(id_picture) => onDownloadMissingPicture(id_picture)}
-          onDownloadAllMissingPictures={() => onDownloadMissingPicture()}
-          theme={props.theme}
-        />
+        {(inputData.value.length > 0 && pictureIndex !== null) && (
+          <PicturesCarousel
+            id_project={id_project}
+            pictures={inputData.value}
+            missingPictures={allMissingPictures}
+            selectedPictureIndex={pictureIndex}
+            onPageChange={(pictureIndex) => setPictureIndex(pictureIndex)}
+            onPictureDelete={(index) => onPictureDelete(index)}
+            onPictureShare={(index) => onPictureShare(index)}
+            onDescriptionChange={(text, index) => onDescriptionChange(text, index)}
+            onDownloadMissingPicture={(id_picture) => onDownloadMissingPicture(id_picture)}
+            onDownloadAllMissingPictures={() => onDownloadMissingPicture()}
+            theme={props.theme}
+          />
+        )}
         <OpenCameraButton
           onPress={() => openCamera()}
           theme={props.theme}

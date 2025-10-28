@@ -34,7 +34,7 @@ const Drawer = memo((props: {
     )}
     <Button.TextWithIcon
       title={R['Download all pictures']}
-      iconName="image"
+      iconName="cloud-download-outline"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,
