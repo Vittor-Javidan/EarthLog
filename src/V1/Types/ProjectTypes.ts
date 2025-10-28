@@ -245,6 +245,7 @@ export type ProjectRules = {
   deleteAfterUpload?: boolean
   enableResetSyncData?: boolean
   sendSyncDataOnlyOnce?: boolean
+  uploadToURL?: string
 }
 
 export type SampleRules = {

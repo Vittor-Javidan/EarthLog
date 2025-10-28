@@ -3,7 +3,6 @@ import { Pressable, View } from 'react-native';
 
 import { CredentialDTO } from '@V1/Types/AppTypes';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
-import { CredentialService } from '@V1/Services/CredentialService';
 import { HapticsService } from '@V1/Services/HapticsService';
 import { ConfigService } from '@V1/Services/ConfigService';
 
@@ -13,13 +12,14 @@ import { Text } from '@V1/Text/index';
 export const CredentialsDisplay = memo((props: {
   title: string
   showDisplay: boolean
+  credentials: CredentialDTO[]
   onCredentialChoose: (credential: CredentialDTO) => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
-  const AllCredentialButtons = CredentialService.allCredentials.map(credential => (
+  const AllCredentialButtons = props.credentials.map(credential => (
     <CredentialButton
       key={credential.credential_id}
       credential={credential}

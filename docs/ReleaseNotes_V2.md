@@ -1,3 +1,9 @@
+# ✅ 2.0.64
+
+- New project rule added:
+  - `uploadToURL: string`
+
+
 # ✅ 2.0.63
 
 - New project rule added:

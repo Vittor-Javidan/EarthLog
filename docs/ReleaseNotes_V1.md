@@ -1,4 +1,10 @@
-# ✅ 1.10.75
+# ✅ 1.10.77
+
+- New project rule added:
+  - `uploadToURL: string`
+
+
+# ✅ 1.10.76
 
 - New project rule added:
   - `sendSyncDataOnlyOnce: boolean`

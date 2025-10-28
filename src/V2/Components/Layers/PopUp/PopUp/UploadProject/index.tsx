@@ -4,6 +4,8 @@ import { CredentialDTO } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { UploadService } from '@V2/Services/UploadService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
+import { CacheService } from '@V2/Services/CacheService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '@V2/Layers/PopUp/__LC__';
@@ -26,6 +28,12 @@ export const UploadProjects = memo((props: {
     loadingDisplay: false,
     errorDisplay: false,
   });
+  const [credentials, _] = useState<CredentialDTO[]>(() => {
+    const projectSettings = CacheService.getProjectFromCache({ id_project: props.id_project })
+    return projectSettings.rules.uploadToURL
+    ? CredentialService.allCredentials.filter(credential => projectSettings.rules.uploadToURL === credential.rootURL )
+    : CredentialService.allCredentials
+  })
 
   const onCancel = useCallback(() => {
     props.closeModal();
@@ -65,6 +73,7 @@ export const UploadProjects = memo((props: {
       <LC.CredentialsDisplay
         title={R['Upload this project to?']}
         showDisplay={show.credentialsDisplay}
+        credentials={credentials}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
       <LC.ErrorDisplay

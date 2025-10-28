@@ -6,6 +6,7 @@ import { ProjectSettings } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { DownloadService } from '@V2/Services/DownloadService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { CredentialService } from '@V2/Services/CredentialService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '@V2/Layers/PopUp/__LC__';
@@ -118,6 +119,7 @@ export const DownloadProjects = memo((props: {
       <LC.CredentialsDisplay
         title={R['Download new projects from?']}
         showDisplay={show.credentialDisplay}
+        credentials={CredentialService.allCredentials}
         onCredentialChoose={async (credential) => await onCredentialChoose(credential)}
       />
       <LC.ErrorDisplay
