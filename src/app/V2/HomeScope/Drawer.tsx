@@ -71,6 +71,17 @@ const Drawer = memo(() => {
       onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLog')}
     />
     <Button.TextWithIcon
+      title={R['Release Notes']}
+      iconName="new-releases"
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => Linking.openURL('https://github.com/Vittor-Javidan/EarthLog/blob/ResetSyncData/docs/ReleaseNotes_V2.md')}
+    />
+    <Button.TextWithIcon
       title={R['Privacy Policy']}
       iconName="shield-outline"
       theme={{

@@ -1,3 +1,8 @@
+# ✅ 1.11.0
+
+- New button added on <HomeScope /> menu: "Release Notes", to allow users to see what changed easier
+
+
 # ✅ 1.10.82
 
 - Fixed a UI bug where widgets could flick if you change wich display you were using

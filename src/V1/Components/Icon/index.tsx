@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export const Icon = memo((props: {
@@ -12,6 +13,7 @@ export const Icon = memo((props: {
 }) => {
   switch (props.iconName) {
     case 'file'                  : return <AntDesign              name="file"                  size={props.fontSize} color={props.color} style={props.style} />
+    case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
     case 'code-json'             : return <MaterialCommunityIcons name="code-json"             size={props.fontSize} color={props.color} style={props.style} />
     case 'folder-home'           : return <MaterialCommunityIcons name="folder-home"           size={props.fontSize} color={props.color} style={props.style} />
     case 'cloud-refresh-variant' : return <MaterialCommunityIcons name="cloud-refresh-variant" size={props.fontSize} color={props.color} style={props.style} />
@@ -20,6 +22,9 @@ export const Icon = memo((props: {
 });
 
 export type IconName = (
+
+  // MaterialIcons
+  'new-releases' |
 
   // AntDesign names
   'file' |
