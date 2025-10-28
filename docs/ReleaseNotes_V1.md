@@ -1,3 +1,9 @@
+# ✅ 1.10.81
+
+- Now in case DOCX export fails, the summary of the error will be displayed
+- Added translations strings for DOCX feedback
+
+
 # ✅ 1.10.80
 
 - UI Changes:

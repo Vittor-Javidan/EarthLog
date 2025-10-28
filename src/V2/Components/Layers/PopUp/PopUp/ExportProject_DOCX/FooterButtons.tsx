@@ -7,8 +7,9 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { Button } from '@V2/Button/index';
 
 export const FooterButtons = memo((props: {
+  showConfirmButton: boolean
+  showCancelButton: boolean
   isNameEmpty: boolean
-  showButtons: boolean
   showConfirmErrorButton: boolean
   onCancel: () => void
   onConfirm: () => void
@@ -18,7 +19,7 @@ export const FooterButtons = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
 
-  return props.showButtons ? (
+  return (
     <View
       style={{
         flexDirection: 'row',
@@ -26,7 +27,7 @@ export const FooterButtons = memo((props: {
         gap: 10,
       }}
     >
-      {props.showConfirmErrorButton ? (<>
+      {props.showConfirmErrorButton && (<>
         <Button.Icon
           iconName={'checkmark-done-sharp'}
           onPress={() => props.onConfirmError()}
@@ -45,7 +46,8 @@ export const FooterButtons = memo((props: {
             borderRadius: 10,
           }}
         />
-      </>): (<>
+      </>)}
+      {props.showCancelButton && (
         <Button.Icon
           iconName="close"
           onPress={() => props.onCancel()}
@@ -64,6 +66,8 @@ export const FooterButtons = memo((props: {
             borderRadius: 10,
           }}
         />
+      )}
+      {props.showConfirmButton && (
         <Button.Icon
           iconName={props.isNameEmpty ? 'lock-closed-sharp' : 'checkmark-done-sharp'}
           onPress={() => props.onConfirm()}
@@ -82,7 +86,7 @@ export const FooterButtons = memo((props: {
             borderRadius: 10,
           }}
         />
-      </>)}
+      )}
     </View>
-  ) : <></>;
+  );
 });
