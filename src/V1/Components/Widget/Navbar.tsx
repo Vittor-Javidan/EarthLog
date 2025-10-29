@@ -9,7 +9,6 @@ import { SaveFeedback } from './SaveFeedback';
 
 export const Navbar = memo((props: {
   saved: boolean
-  editInputs: boolean
   isTemplate: boolean
   display: WidgetDisplay
   rules: WidgetRules
@@ -26,7 +25,7 @@ export const Navbar = memo((props: {
     onPress: () => void
   }[] = [{
     iconName: 'pencil-sharp',
-    selected: props.display === 'data display' && !props.editInputs,
+    selected: props.display === 'data display',
     onPress: () => props.onPress_DataDisplayButton(),
   }];
 
@@ -36,7 +35,7 @@ export const Navbar = memo((props: {
   ) {
     buttonsData.push({
       iconName: 'options-outline',
-      selected: props.display === 'data display' && props.editInputs,
+      selected: props.display === 'edit input display',
       onPress: () => props.onPress_EditButton(),
     });
   }

@@ -19,44 +19,43 @@ export default class DOCX_Module {
     config: ConfigDTO,
     feedback: (message: string) => void
     onFinish: () => void
-    onError: () => void
+    onError: (message: string) => void
   }) {
 
-    const RS = translations.component.alert.shared[o.config.language];
+    const R = translations.FileExportModules.docx[o.config.language];
 
     try {
-
       /*
         This is low level coding logics. All steps must be followed in order.
       */
 
-      o.feedback(`Quality selected: ${o.imageQuality}`);
-      o.feedback('Resetting temporary directory');
+      o.feedback(R['Quality selected: '] + o.imageQuality);
+      o.feedback(R['Resetting temporary directory']);
       FileSystemService.resetTempDirectory();
       Docx.setImageFilePath(o.id_project);
       Docx.listImageFiles();
 
-      o.feedback('Creating Word folder');
+      o.feedback(R['Creating Word folder']);
       Docx.createWordFolder();
 
-      o.feedback('Creating content types file');
+      o.feedback(R['Creating content types file']);
       Docx.createContentTypesFile();
 
-      o.feedback('Creating relationship folder');
+      o.feedback(R['Creating relationship folder']);
       Docx.createRelationshipFolder();
 
       o.feedback('Creating web settings file');
       Docx.createwebSettingsFile();
 
-      o.feedback('Creating relationship file');
+      o.feedback(R['Creating relationship file']);
       Docx.createRelationshipFile();
 
-      o.feedback('Copying image files');
+      o.feedback(R['Copying image files']);
       await Docx.copyImageFilesToMediaFolder({
         imageQuality: o.imageQuality
       })
 
-      o.feedback('Creating document content');
+      o.feedback(R['Creating document content']);
       Docx.createDocumentFile(
         await document_Project({
           config: o.config,
@@ -66,14 +65,14 @@ export default class DOCX_Module {
 
       Docx.finish()
       
-      o.feedback('Creating DOCX file');
+      o.feedback(R['Creating DOCX file']);
       await ZipService.zipPathContents({
         sourcePath: path.getDir().TEMP(),
         outputPath: path.getDir().TEMP(),
         filename: `${o.fileName}.docx`,
       })
 
-      o.feedback('Preparing to share document');
+      o.feedback(R['Preparing to share document']);
       await ShareService.share({
         directory: `${path.getDir().TEMP()}/${o.fileName}.docx`,
       })
@@ -82,11 +81,9 @@ export default class DOCX_Module {
 
     } catch (error) {
       FileSystemService.resetTempDirectory();
-      o.feedback(error instanceof Error ? error.message : JSON.stringify(error));
-      o.feedback('Error building DOCX project export');
-      o.feedback('Try reducing image quality');
-      o.feedback(RS['Error!'])
-      o.onError();
+      let erroMessage = R['Try reducing export image quality. error: ']
+      erroMessage += error instanceof Error ? error.message : JSON.stringify(error)
+      o.onError(erroMessage); 
     }
   }
 }

@@ -13,7 +13,7 @@ import { TC } from './__TC__';
 export const VibrationOptionsScreen = memo(() => {
 
   const config                          = useMemo(() => ConfigService.config, []);
-  const theme                           = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const theme                           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R                               = useMemo(() => translations.screen.vibrationOptions[config.language], []);
   const [onlyWarnings, setOnlyWarnings] = useState<boolean>(config.onlyWarningVibrations);
 
@@ -37,10 +37,10 @@ export const VibrationOptionsScreen = memo(() => {
             title={R['Only warnings']}
             iconName="alert-circle"
             theme={{
-              font:              onlyWarnings === true ? theme.background : theme.font_Button,
-              font_active:       onlyWarnings === true ? theme.confirm    : theme.font_active,
-              background:        onlyWarnings === true ? theme.confirm    : theme.background_Button,
-              background_active: onlyWarnings === true ? theme.background : theme.background_active,
+              font:              onlyWarnings === true ? theme.font_confirm         : theme.font,
+              font_active:       onlyWarnings === true ? theme.background_confirm   : theme.font_active,
+              background:        onlyWarnings === true ? theme.background_confirm   : theme.background,
+              background_active: onlyWarnings === true ? theme.font_confirm         : theme.background_active,
             }}
             onPress={() => onOptionSelected(true)}
           />
@@ -48,10 +48,10 @@ export const VibrationOptionsScreen = memo(() => {
             title={R['All Clicks']}
             iconName="alert-circle"
             theme={{
-              font:              onlyWarnings === false ? theme.background : theme.font_Button,
-              font_active:       onlyWarnings === false ? theme.confirm    : theme.font_active,
-              background:        onlyWarnings === false ? theme.confirm    : theme.background_Button,
-              background_active: onlyWarnings === false ? theme.background : theme.background_active,
+              font:              onlyWarnings === false ? theme.font_confirm        : theme.font,
+              font_active:       onlyWarnings === false ? theme.background_confirm  : theme.font_active,
+              background:        onlyWarnings === false ? theme.background_confirm  : theme.background,
+              background_active: onlyWarnings === false ? theme.font_confirm        : theme.background_active,
             }}
             onPress={() => onOptionSelected(false)}
           />

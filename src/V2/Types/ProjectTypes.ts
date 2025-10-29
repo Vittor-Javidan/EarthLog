@@ -90,7 +90,7 @@ export type WidgetScope = {
   id_sample: string
 }
 
-export type WidgetDisplay = 'data display' | 'theme display' | 'new input display'
+export type WidgetDisplay = 'data display' | 'edit input display' | 'theme display' | 'new input display'
 
 export type WidgetTheme = {
   font: string
@@ -243,6 +243,9 @@ export type ProjectRules = {
   showSampleCreationButton?: boolean
   addGPSToNewSamples?: boolean
   deleteAfterUpload?: boolean
+  enableResetSyncData?: boolean
+  sendSyncDataOnlyOnce?: boolean
+  uploadToURL?: string
 }
 
 export type SampleRules = {

@@ -33,7 +33,6 @@ export const Widget = memo((props: {
   const defaultTheme                   = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
   const [_         , startTransitions] = useTransition();
   const [widgetData, setWidgetData   ] = useState<WidgetData>(deepCopy(props.widgetData));
-  const [editInputs, setEditInputs   ] = useState<boolean>(false);
   const [saved     , setSaved        ] = useState<boolean>(true);
   const [display   , setDisplay      ] = useState<WidgetDisplay>(widgetData.inputs.length <= 0 ? 'new input display' : 'data display');
   const widgetTheme                    = useMemo<WidgetTheme>(() => ({
@@ -56,26 +55,6 @@ export const Widget = memo((props: {
     });
   }, [display]);
 
-  const togleEditDisplay = useCallback(() => {
-    selectDisplay('data display');
-    setEditInputs(true);
-  }, [selectDisplay]);
-
-  const togleDataDisplay = useCallback(() => {
-    selectDisplay('data display');
-    setEditInputs(false);
-  }, [selectDisplay]);
-
-  const togleThemeDisplay = useCallback(() => {
-    selectDisplay('theme display');
-    setEditInputs(false);
-  }, [selectDisplay]);
-
-  const togleNewInputDisplay = useCallback(() => {
-    selectDisplay('new input display');
-    setEditInputs(false);
-  }, [selectDisplay]);
-
   const onLabelChange = useCallback((label: string) => {
     setSaved(false);
     setWidgetData(prev => ({ ...prev, widgetName: label }));
@@ -95,8 +74,8 @@ export const Widget = memo((props: {
       ...prev,
       inputs: [...prev.inputs, inputData],
     }));
-    togleNewInputDisplay();
-  }, [togleNewInputDisplay]);
+    selectDisplay('data display');
+  }, []);
 
   const updateInput = useCallback((inputData: InputData) => {
     setSaved(false);
@@ -191,11 +170,10 @@ export const Widget = memo((props: {
         saved={saved}
         isTemplate={props.widgetScope.type === 'template'}
         display={display}
-        editInputs={editInputs}
-        onPress_DataDisplayButton={() => togleDataDisplay()}
-        onPress_EditButton={() => togleEditDisplay()}
-        onPress_ThemeButton={() => togleThemeDisplay()}
-        onPress_NewInputButton={() => togleNewInputDisplay()}
+        onPress_DataDisplayButton={() => setDisplay('data display')}
+        onPress_EditButton={() => setDisplay('edit input display')}
+        onPress_ThemeButton={() => setDisplay('theme display')}
+        onPress_NewInputButton={() => setDisplay('new input display')}
         rules={widgetData.rules}
         theme={widgetTheme}
       />
@@ -217,11 +195,11 @@ export const Widget = memo((props: {
             onLabelChange={(label) => onLabelChange(label)}
             theme={widgetTheme}
           />
-          {display === 'data display' && (<>
+          {(display === 'data display' || display === 'edit input display') && (<>
             <DataDisplay
               widgetScope={props.widgetScope}
               inputs={widgetData.inputs}
-              editInputs={editInputs}
+              editInputs={display === 'edit input display'}
               referenceGPSData={props.referenceGPSData}
               onSave={(inputData) => updateInput(inputData)}
               onInputDelete={async (id_input) => await onInputDelete(id_input)}
@@ -245,7 +223,7 @@ export const Widget = memo((props: {
           )}
         </View>
         <Footer
-          editInputs={editInputs}
+          editInputs={display === 'edit input display'}
           isTemplate={props.widgetScope.type === 'template'}
           addToNewSamples={widgetData.addToNewSamples ?? false}
           onChangeCheckbox={(checked) => onAddToNewSamplesChange(checked)}

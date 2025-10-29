@@ -38,6 +38,10 @@ export const DARK_HIGH_CONTRAST: AppTheme = {
       font_active: '#FAFAFA',
       background: '#FAFAFA',
       background_active: '#333',
+      font_wrong: '#333',
+      background_wrong: '#F55',
+      font_confirm: '#333',
+      background_confirm: '#5F5',
     },
     carousel: {
       background: '#333',

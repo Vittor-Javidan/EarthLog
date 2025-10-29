@@ -16,6 +16,7 @@ import { useCameraPreviewLayer } from '@V1/Layers/API/CameraPreview';
 export const PicturesCarousel = memo((props: {
   id_project: string
   pictures: PictureData[]
+  selectedPictureIndex: number
   missingPictures: string[]
   theme: WidgetTheme
   onPictureShare: (index:number) => void
@@ -23,13 +24,14 @@ export const PicturesCarousel = memo((props: {
   onDescriptionChange: (text: string, index: number) => void
   onDownloadMissingPicture: (id_picture: string) => void
   onDownloadAllMissingPictures: () => void
+  onPageChange: (pictureIndex: number) => void
 }) => {
 
+  const { selectedPictureIndex } = props;
   const pageRef                             = useRef<PagerView | null>(null);
   const config                              = useMemo(() => ConfigService.config, []);
   const R                                   = useMemo(() => translations.widgetInput.picture[config.language], []);
   const [dimensions    , setDimensions    ] = useState<LayoutRectangle>({ width: 0, height: 0, x: 0, y: 0});
-  const [pictureIndex  , setPictureIndex  ] = useState<number>(0);
   const [showPreview   , setShowPreview   ] = useState<boolean>(false);
 
   const scrollRight = useCallback((currentIndex: number) => {
@@ -91,11 +93,12 @@ export const PicturesCarousel = memo((props: {
     );
   });
 
+  const pictureUri = MediaService.getPictureUri(props.id_project, props.pictures[props.selectedPictureIndex].id_picture)
   useCameraPreviewLayer({
     showSaveButton: false,
     onClosePreview: () => setShowPreview(false),
     onSavePicture: () => {},
-  }, [MediaService.getPictureUri(props.id_project, props.pictures[pictureIndex]?.id_picture ?? null), showPreview])
+  }, [pictureUri, showPreview])
 
   return props.pictures.length > 0 ? (<>
     <View
@@ -107,9 +110,9 @@ export const PicturesCarousel = memo((props: {
     >
       {dimensions.height > 0 && (<>
         <PagerView
-          initialPage={pictureIndex}
+          initialPage={selectedPictureIndex}
           ref={pageRef}
-          onPageSelected={page => setPictureIndex(page.nativeEvent.position)}
+          onPageSelected={page => props.onPageChange(page.nativeEvent.position)}
           style={{
             flex: 1,
           }}
@@ -119,26 +122,26 @@ export const PicturesCarousel = memo((props: {
         >
           {AllImages}
         </PagerView>
-        {props.pictures[pictureIndex] !== undefined && (
-          <InfoDisplay
-            id_picture={props.pictures[pictureIndex].id_picture}
-            selectedPicture={pictureIndex + 1}
-            pictureAmount={props.pictures.length}
-          />
-        )}
+        <InfoDisplay
+          id_picture={props.pictures[selectedPictureIndex].id_picture}
+          selectedPicture={selectedPictureIndex + 1}
+          pictureAmount={props.pictures.length}
+        />
         <CarouselButtons
+          currentPictureId={props.pictures[selectedPictureIndex].id_picture}
+          missingPictures={props.missingPictures}
           isPictureMissing={props.missingPictures.length > 0}
-          isFirstPicture={pictureIndex === 0}
-          isLastPicture={pictureIndex === props.pictures.length - 1}
-          onScrollLeft={() => scrollLeft(pictureIndex)}
-          onScrollRight={() => scrollRight(pictureIndex)}
-          onPictureShare={() => props.onPictureShare(pictureIndex)}
-          onPictureDelete={() => props.onPictureDelete(pictureIndex)}
+          isFirstPicture={selectedPictureIndex === 0}
+          isLastPicture={selectedPictureIndex === props.pictures.length - 1}
+          onScrollLeft={() => scrollLeft(selectedPictureIndex)}
+          onScrollRight={() => scrollRight(selectedPictureIndex)}
+          onPictureShare={() => props.onPictureShare(selectedPictureIndex)}
+          onPictureDelete={() => props.onPictureDelete(selectedPictureIndex)}
           onDownloadAllMissingPictures={() => props.onDownloadAllMissingPictures()}
         />
       </>)}
     </View>
-    {props.pictures[pictureIndex] !== undefined && (
+    {props.pictures[selectedPictureIndex] !== undefined && (
       <Animation.FadeOut
         duration={300}
       >
@@ -148,15 +151,15 @@ export const PicturesCarousel = memo((props: {
             color: props.theme.font,
           }}
         >
-          {`${R['Picture']} ${pictureIndex + 1}: `}
+          {`${R['Picture']} ${selectedPictureIndex + 1}: `}
         </Text>
         <TextInput
-          value={props.pictures[pictureIndex].description}
+          value={props.pictures[selectedPictureIndex].description}
           placeholder={R['Write here the picture caption']}
           placeholderTextColor={props.theme.font_placeholder}
           textAlignVertical="top"
           multiline={true}
-          onChangeText={(text) => props.onDescriptionChange(text, pictureIndex)}
+          onChangeText={(text) => props.onDescriptionChange(text, selectedPictureIndex)}
           style={{
             alignSelf: 'center',
             width: dimensions.width,
@@ -219,6 +222,8 @@ const InfoDisplay = memo((props: {
 });
 
 const CarouselButtons = memo((props: {
+  currentPictureId: string
+  missingPictures: string[]
   isPictureMissing: boolean
   isFirstPicture: boolean
   isLastPicture: boolean
@@ -228,6 +233,7 @@ const CarouselButtons = memo((props: {
   onPictureDelete: () => void
   onDownloadAllMissingPictures: () => void
 }) => {
+  const isPictureAvailable = !props.missingPictures.includes(props.currentPictureId);
   return (<>
     {!props.isFirstPicture && (
       <View
@@ -248,6 +254,8 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          shadow
+          shadowColor={'#000'}
           iconSize={60}
           style={{
             backgroundColor: undefined,
@@ -276,6 +284,8 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          shadow
+          shadowColor={'#000'}
           iconSize={60}
           style={{
             backgroundColor: undefined,
@@ -290,14 +300,14 @@ const CarouselButtons = memo((props: {
         flexDirection: 'row',
         position: 'absolute',
         justifyContent: 'flex-end',
-        bottom: 10,
+        bottom: 0,
         paddingRight: 5,
         width: '100%',
       }}
     >
       {props.isPictureMissing && (
         <Button.Icon
-          iconName="download-outline"
+          iconName="cloud-download-outline"
           onPress={() => props.onDownloadAllMissingPictures()}
           theme={{
             font: '#FFF',
@@ -305,6 +315,8 @@ const CarouselButtons = memo((props: {
             background: '#666',
             background_active: '#222',
           }}
+          shadow
+          shadowColor={'#000'}
           iconSize={40}
           style={{
             backgroundColor: undefined,
@@ -314,23 +326,29 @@ const CarouselButtons = memo((props: {
           }}
         />
       )}
-      <Button.Icon
-        iconName="share-outline"
-        onPress={() => props.onPictureShare()}
-        theme={{
-          font: '#FFF',
-          font_active: '#666',
-          background: '#666',
-          background_active: '#222',
-        }}
-        iconSize={40}
-        style={{
-          backgroundColor: undefined,
-          paddingHorizontal: 10,
-          paddingVertical: 0,
-          opacity: 0.5,
-        }}
-      />
+      {isPictureAvailable && (
+        <Button.Icon
+          iconName="share-outline"
+          onPress={() => props.onPictureShare()}
+          theme={{
+            font: '#FFF',
+            font_active: '#666',
+            background: '#666',
+            background_active: '#222',
+          }}
+          shadow
+          shadowColor={'#000'}
+          iconSize={40}
+          style={{
+            backgroundColor: undefined,
+            paddingLeft: 10,
+            paddingRight: 0,
+            paddingTop: 0,
+            paddingBottom: 10,
+            opacity: 0.5,
+          }}
+        />
+      )}
       <Button.Icon
         iconName="trash"
         onPress={() => props.onPictureDelete()}
@@ -340,11 +358,15 @@ const CarouselButtons = memo((props: {
           background: '#666',
           background_active: '#222',
         }}
+        shadow
+        shadowColor={'#000'}
         iconSize={40}
         style={{
           backgroundColor: undefined,
-          paddingHorizontal: 0,
-          paddingVertical: 0,
+          paddingRight: 0,
+          paddingLeft: 5,
+          paddingTop: 0,
+          paddingBottom: 10,
           opacity: 0.5,
         }}
       />

@@ -391,9 +391,24 @@ export class DatabaseService {
     const { syncData } = o;
     await FOLDER_SyncData.update({ syncData });
   }
+
+  static async resetSyncData(o: {
+    id_project: string
+  }): Promise<void> {
+    await Sync.projectReset({ id_project: o.id_project });
+  }
 }
 
 class Sync {
+
+  static async projectReset(o: {
+    id_project: string
+  }): Promise<void> {
+    const { id_project } = o;
+    const syncData = await FOLDER_SyncData.get({ id_project });
+    DefineSyncStatus.projectReset(syncData);
+    await FOLDER_SyncData.update({ syncData });
+  }
 
   static async project(o: {
     operation: 'updating',
@@ -488,6 +503,64 @@ class Sync {
 }
 
 class DefineSyncStatus {
+
+  static projectReset(syncData: SyncData): void {
+
+    // project
+    syncData.project = 'new'
+
+    // widgets_Project
+    for (let id_widget in syncData.widgets_Project) {
+      if (syncData.widgets_Project[id_widget] !== 'deleted') {
+        syncData.widgets_Project[id_widget] = 'new';
+      }
+      if (syncData.widgets_Project[id_widget] === 'deleted') {
+        delete syncData.widgets_Project[id_widget];
+      }
+    }
+
+    // widgets_Template
+    for (let id_widget in syncData.widgets_Template) {
+      if (syncData.widgets_Template[id_widget] !== 'deleted') {
+        syncData.widgets_Template[id_widget] = 'new';
+      }
+      if (syncData.widgets_Template[id_widget] === 'deleted') {
+        delete syncData.widgets_Template[id_widget];
+      }
+    }
+
+    for (let id_sample in syncData.samples) {
+
+      // sample
+      if (syncData.samples[id_sample] !== 'deleted') {
+        syncData.samples[id_sample] = 'new';
+      }
+      if (syncData.samples[id_sample] === 'deleted') {
+        delete syncData.samples[id_sample];
+      }
+
+      // widgets_Samples
+      for (let id_widget in syncData.widgets_Samples[id_sample]) {
+        if (syncData.widgets_Samples[id_sample][id_widget] !== 'deleted') {
+          syncData.widgets_Samples[id_sample][id_widget] = 'new';
+        }
+        if (syncData.widgets_Samples[id_sample][id_widget] === 'deleted') {
+          delete syncData.widgets_Samples[id_sample][id_widget];
+        }
+      }
+
+    }
+
+    // pictures
+    for (let id_picture in syncData.pictures) {
+      if (syncData.pictures[id_picture] !== 'deleted') {
+        syncData.pictures[id_picture] = 'new';
+      }
+      if (syncData.pictures[id_picture] === 'deleted') {
+        delete syncData.pictures[id_picture];
+      }
+    }
+  }
 
   static project(o: {
     syncData: SyncData

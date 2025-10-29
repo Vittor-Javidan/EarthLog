@@ -25,7 +25,9 @@ export class DataProcessingService {
 
     // Only for V1
     // There is a chance for exist projects without lts_version
-    o.projectDTO.projectSettings.lts_version = VERSION;
+    if (!o.projectDTO.projectSettings.lts_version) {
+      o.projectDTO.projectSettings.lts_version = VERSION;
+    }
     // =============================================
 
     this.job_AddUploadDateAndTimeEntry(o);

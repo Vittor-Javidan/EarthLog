@@ -20,15 +20,15 @@ export const ExportProject_DOCX = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const RS     = useMemo(() => translations.component.alert.shared[config.language], []);
-  const [imageQuality, setImageQuality] = useState<'High' | 'Medium' | 'Low'>('High');
-  const [fileName , setFileName ] = useState<string>('');
-  const [feedbacks, setFeedbacks] = useState<string[]>([]);
-  const [show     , setShow     ] = useState({
+  const [error        , setError       ] = useState<string | null>(null);
+  const [imageQuality , setImageQuality] = useState<'High' | 'Medium' | 'Low'>('High');
+  const [fileName     , setFileName    ] = useState<string>('');
+  const [feedbacks    , setFeedbacks   ] = useState<string[]>([]);
+  const [show         , setShow        ] = useState({
     showInput: true,
     feedbackDisplay: false,
-    showFooterButtons: true,
     showQualityButtons: true,
-    hasError: false,
+    isExporting: false,
     finished: false,
   });
 
@@ -53,8 +53,8 @@ export const ExportProject_DOCX = memo((props: {
     setShow(prev => ({ ...prev,
       feedbackDisplay: true,
       showInput: false,
-      showFooterButtons: false,
       showQualityButtons: false,
+      isExporting: true,
     }));
 
     await DOCX_Module.buildAndShare_Project({
@@ -62,12 +62,19 @@ export const ExportProject_DOCX = memo((props: {
       id_project,
       fileName,
       imageQuality,
+      onFinish: () => {
+        setShow(prev => ({ ...prev,
+          finished: true,
+        }));
+        setFeedbacks(prev => [ ...prev, RS['Done!']]);
+        PopUpAPI.runAcceptCallback();
+      },
+      onError: (errorMessage) => {
+        setError(errorMessage);
+        setFeedbacks(prev => [ ...prev, RS['Error!']]);
+      },
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
-      onFinish: () => setShow(prev => ({ ...prev, finished: true })),
-      onError: () => setShow(prev => ({ ...prev, hasError: true })),
     });
-
-    PopUpAPI.runAcceptCallback();
 
   }, [fileName]);
 
@@ -94,6 +101,10 @@ export const ExportProject_DOCX = memo((props: {
           autoFocus
         />
       )}
+      <LC.ErrorDisplay
+        showDisplay={error !== null}
+        error={error}
+      />
       <LC.FeedbackDisplay
         showDisplay={show.feedbackDisplay}
         feedbackMessage={feedbacks}
@@ -105,8 +116,9 @@ export const ExportProject_DOCX = memo((props: {
       />
       <FooterButtons
         isNameEmpty={fileName === ''}
-        showButtons={show.showFooterButtons}
-        showConfirmErrorButton={show.hasError}
+        showCancelButton={show.isExporting === false}
+        showConfirmButton={show.isExporting === false}
+        showConfirmErrorButton={error !== null}
         onCancel={() => props.closeModal()}
         onConfirm={async () => await onExport()}
         onConfirmError={() => props.closeModal()}

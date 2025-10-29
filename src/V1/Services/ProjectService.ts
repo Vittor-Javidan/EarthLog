@@ -48,6 +48,8 @@ export class ProjectService {
           showCreateWidgetButton_Template: true,
           showSampleCreationButton: true,
           addGPSToNewSamples: true,
+          enableResetSyncData: true,
+          sendSyncDataOnlyOnce: true,
         },
       },
       projectWidgets: [],
@@ -428,6 +430,12 @@ export class ProjectService {
         o.onError(error.message);
       }
     }
+  }
+
+  static async resetSyncData(o: {
+    id_project: string
+  }): Promise<void> {
+    await DatabaseService.resetSyncData({ id_project: o.id_project });
   }
 
 

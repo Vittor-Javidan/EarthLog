@@ -66,10 +66,17 @@
   - change sample widget data
   - sync data show "deleted" on deleted pictures from uploaded projects
 
+## After Succefull Upload
+- Does sync data delete an entry of a picture that was uploaded in the past, but deleted in the client and project got uploaded again?
+- Does project rule `deleteAfterUpload` still work?
+
 ## Inputs
 
 - Picture Input
-  - Can delete last picture
+  - Shows image after taking first picture
+  - Shows no image after having no picture
+  - Keeps on picture one if first picture is deleted
+  - Keeps on last picture if last picture is deleted
   - Can Preview picture
   - Can Preview other pictures after a deletion
   - Preview shows only cancel button
