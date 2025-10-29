@@ -1,6 +1,7 @@
 # ✅ 2.1.1
 
 - Fixed Screen Title being too small on the lastest android versions
+- Fixed cancel button icon of <DeleteSwipeButton /> being outside the button
 
 
 # ✅ 2.1.0
