@@ -47,7 +47,8 @@ export const ExportProject_CSV = memo((props: {
       showFooterButtons: false,
     }));
 
-    await CSV_Module.buildAndShare_Project_AllCoordinates({ config, id_project, fileName,
+    const { language } = config
+    await CSV_Module.buildAndShare_Project_AllCoordinates({ language, id_project, fileName,
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
     });
 
