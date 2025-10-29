@@ -2,6 +2,8 @@
 
 - Fixed Screen Title being too small on the lastest android versions
 - Fixed cancel button icon of <DeleteSwipeButton /> being outside the button
+- Fixed screen buttons not being clickable after change screens by clicking in the screen carousel.
+  - React Native animations does not allow interaction on buttons while the animation is happening. The spring animation was changed for a timing animation, removing the bounce.
 
 
 # ✅ 1.11.0
