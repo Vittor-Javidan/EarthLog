@@ -1,3 +1,11 @@
+# ✅ 2.1.1
+
+- Fixed Screen Title being too small on the lastest android versions
+- Fixed cancel button icon of <DeleteSwipeButton /> being outside the button
+- Fixed screen buttons not being clickable after change screens by clicking in the screen carousel.
+  - React Native animations does not allow interaction on buttons while the animation is happening. The spring animation was changed for a timing animation, removing the bounce.
+
+
 # ✅ 2.1.0
 
 - New button added on <HomeScope /> menu: "Release Notes", to allow users to see what changed easier

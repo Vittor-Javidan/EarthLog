@@ -1,5 +1,5 @@
 import React, { ReactNode, useMemo, useEffect, memo } from 'react';
-import { Dimensions, Animated } from 'react-native';
+import { Dimensions, Animated, Easing } from 'react-native';
 
 function createOffsets(amount: number, screenWidth: number): number[] {
   const offsets = [];
@@ -21,11 +21,11 @@ export const CarouselAnimation = memo((props: {
   const leftOffset              = useMemo(() => new Animated.Value(0), []);
 
   useEffect(() => {
-    Animated.spring(leftOffset, {
+    Animated.timing(leftOffset, {
       toValue: OFFSETS[props.selectedScreen - 1],
       useNativeDriver: true,
-      stiffness: 500,
-      damping: 30,
+      easing: Easing.out(Easing.cubic),
+      duration: 200,
     }).start();
   }, [props.selectedScreen]);
 

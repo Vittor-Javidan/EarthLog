@@ -45,17 +45,17 @@ export const CancelButton = memo((props: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: 100,
-        height: 30,
         borderRadius: 15,
         paddingVertical: 0,
         paddingLeft: 10,
         paddingRight: 6,
+        gap: 10,
       }}
     >
       <Text
         style={{
           fontFamily: FontService.FONT_FAMILY.p,
+          fontSize: 18,
           color: pressed ? props.theme.background : props.theme.font,
         }}
       >
@@ -63,6 +63,7 @@ export const CancelButton = memo((props: {
       </Text>
       <Icon
         iconName="close"
+        fontSize={20}
         color={pressed ? props.theme.background : props.theme.font}
       />
     </Pressable>
