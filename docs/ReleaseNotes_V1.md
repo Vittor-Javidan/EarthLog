@@ -1,3 +1,9 @@
+# ✅ 1.11.2
+
+- Codebase:
+ - Removed ExportService
+
+
 # ✅ 1.11.1
 
 - Fixed Screen Title being too small on the lastest android versions
