@@ -1,3 +1,8 @@
+# ✅ 1.11.1
+
+- Fixed Screen Title being too small on the lastest android versions
+
+
 # ✅ 1.11.0
 
 - New button added on <HomeScope /> menu: "Release Notes", to allow users to see what changed easier
