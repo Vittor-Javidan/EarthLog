@@ -4,10 +4,8 @@
 
 ## features:
 
-- Add a gps snapshot button on <GPSInput />, for those who just want to want click, in case accuracy is not that important
 - implement a new folder location to save exported documents, and allow their sharing
 - implement an export of all images into a zip file
-- implement a way to incentivize the users to update the app
 - implement quality camera options
 - implement flah auto option
 - implement compassUI and compass input (Geologic and Normal)
