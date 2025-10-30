@@ -1,7 +1,11 @@
 # ✅ 2.1.2
 
+- New:
+  - <GPSInput />: Added a option to get current position in one click
+    - is meant to be used when accuracy is not that important, since this mechaninc is the classic one click acquision GPS, and it just throw the first coordinate found by the GPS phone device.
+
 - Codebase:
- - Removed ExportService
+  - Removed ExportService
 
 
 # ✅ 2.1.1

@@ -14,6 +14,7 @@ import { CheckboxOptions } from './CheckboxOptions';
 import { DataDisplay } from './DataDisplay';
 import { LoadingFeedback } from './LoadingFeedback';
 import { RealTimeAccuracy } from './RealTimeAccuracy';
+import { DeleteDataButton } from './DeleteDataButton';
 
 export const GPSInput = memo((props: {
   inputData: GPSInputData
@@ -40,9 +41,11 @@ export const GPSInput = memo((props: {
   });
   const [features   , setFeatures       ] = useState<GPSFeaturesDTO>({
     editMode: false,
-    gpsON: false,
+    gpsTracking: false,
     enableCoordinate: true,
     enableAltitude: true,
+    gettingCurrentPosition: false,
+    isManualInputOpen: false,
   });
 
   const noGPSData = Object.keys(inputData.value).length <= 0;
@@ -67,6 +70,7 @@ export const GPSInput = memo((props: {
     gpsWatcher.setGpsData(deepCopy(gpsData));
     asyncSave(newData);
     setInputData(newData);
+    setFeatures(prev => ({ ...prev, isManualInputOpen: false, editMode: false }));
   }, [asyncSave]);
 
   const toogleCoordinate = useCallback(async (checked: boolean, inputData: GPSInputData) => {
@@ -106,7 +110,7 @@ export const GPSInput = memo((props: {
       type: 'warning',
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, async () => {
-      setFeatures(prev => ({ ...prev, gpsON: true }));
+      setFeatures(prev => ({ ...prev, gpsTracking: true }));
       await gpsWatcher.watchPositionAsync(
         (gpsData) => {
           const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
@@ -120,8 +124,37 @@ export const GPSInput = memo((props: {
 
   const stopGPS = useCallback(() => {
     gpsWatcher.stopWatcher();
-    setFeatures(prev => ({ ...prev, gpsON: false, editMode: false }));
+    setFeatures(prev => ({ ...prev, gpsTracking: false, editMode: false }));
   }, []);
+
+  const onDeleteData = useCallback(async (noGPSData: boolean, inputData: GPSInputData) => {
+    await PopUpAPI.handleAlert(noGPSData === false, {
+      type: 'warning',
+      question: R['This will delete current saved coordinate. Confirm to proceed.'],
+    }, () => {
+      const newData: GPSInputData = { ...inputData };
+      if (newData.value.altitude)    { delete newData.value.altitude;    }
+      if (newData.value.coordinates) { delete newData.value.coordinates; }
+      asyncSave(newData);
+      setInputData(newData)
+      setFeatures(prev => ({ ...prev, editMode: false }));
+    });
+  }, [asyncSave])
+
+  const onGPS_Snapshot = useCallback(async (noGPSData: boolean, inputData: GPSInputData) => {
+    await PopUpAPI.handleAlert(noGPSData === false, {
+      type: 'warning',
+      question: R['This will overwrite current gps data. Confirm to proceed.'],
+    }, async () => {
+      setFeatures(prev => ({ ...prev, gettingCurrentPosition: true }));
+      await gpsWatcher.getCurrentPosition((gpsData) => {
+        const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
+        asyncSave(newData);
+        setInputData(newData);
+        setFeatures(prev => ({ ...prev, gettingCurrentPosition: false }));
+      });
+    });
+  }, [asyncSave]);
 
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher(); };
@@ -164,8 +197,9 @@ export const GPSInput = memo((props: {
           locked={inputData.lockedData}
           theme={props.theme}
           onPress_EditButton={() => setFeatures(prev => ({ ...prev, editMode: !prev.editMode }))}
-          onPress_PlayButton={async () => await startGPS(noGPSData, inputData)}
           onPress_StopButton={() => stopGPS()}
+          onPress_PlayButton={async () => await startGPS(noGPSData, inputData)}
+          onPress_GPS_SnapshotButton={async () => await onGPS_Snapshot(noGPSData, inputData)}
         />
       }
     >
@@ -200,12 +234,27 @@ export const GPSInput = memo((props: {
           theme={props.theme}
         />
         {features.editMode === true && (
-          <ManualInput
-            noGPSData={noGPSData === false}
-            features={features}
-            onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
-            theme={props.theme}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 10,
+            }}
+          >
+            <ManualInput
+              noGPSData={noGPSData === false}
+              features={features}
+              onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
+              onOpen={() => setFeatures(prev => ({ ...prev, isManualInputOpen: true }))}
+              onClose={() => setFeatures(prev => ({ ...prev, isManualInputOpen: false }))}
+              theme={props.theme}
+            />
+            {features.isManualInputOpen === false && (
+              <DeleteDataButton
+                theme={props.theme}
+                onPress={async () => await onDeleteData(noGPSData, inputData)}
+              /> 
+            )}
+          </View>
         )}
       </View>
     </LC.Root>
@@ -219,13 +268,24 @@ const IconButtons = memo((props: {
   onPress_EditButton: () => void
   onPress_PlayButton: () => void
   onPress_StopButton: () => void
+  onPress_GPS_SnapshotButton: () => void
 }) => {
 
-  const showPlayButton = props.features.gpsON === false;
-  const showStopButton = props.features.gpsON === true;
+  const { locked } = props;
+  const { gpsTracking, gettingCurrentPosition, editMode } = props.features;
+  const [blinking, setBlinking] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      gettingCurrentPosition === true
+      ? setBlinking(prev => !prev)
+      : setBlinking(false);
+    }, 250);
+    return () => clearInterval(interval);
+  }, [gettingCurrentPosition]);
 
   return (<>
-    {props.locked && (
+    {locked && (
       <LC.NavbarIconButton
         iconName="lock-closed-sharp"
         onPress={() => {}}
@@ -235,33 +295,49 @@ const IconButtons = memo((props: {
         }}
       />
     )}
-    {!props.locked && (<>
-      <LC.NavbarIconButton
-        iconName={'options-outline'}
-        onPress={() => props.onPress_EditButton()}
-        selected={props.features.editMode}
-        theme={props.theme}
-      />
-      {showPlayButton && (
+    {!locked && (<>
+      {!gpsTracking && !gettingCurrentPosition && (<>
         <LC.NavbarIconButton
-          iconName="play"
-          onPress={() => props.onPress_PlayButton()}
-          theme={{
-            font: props.theme.confirm,
-            background: props.theme.background,
-          }}
+          iconName={'options-outline'}
+          onPress={() => props.onPress_EditButton()}
+          selected={editMode}
+          theme={props.theme}
         />
-      )}
-      {showStopButton && (
-        <LC.NavbarIconButton
-          iconName="stop"
-          onPress={() => props.onPress_StopButton()}
-          theme={{
-            font: props.theme.wrong,
-            background: props.theme.background,
-          }}
-        />
-      )}
+      </>)}
+      {!editMode && (<>
+        {!gpsTracking && (<>
+          <LC.NavbarIconButton
+            iconName={'crosshairs-gps'}
+            onPress={() => gettingCurrentPosition ? () => {}  : props.onPress_GPS_SnapshotButton()}
+            theme={{
+              font: blinking ? props.theme.confirm : props.theme.font,
+              background: props.theme.background,
+            }}
+          />
+        </>)}
+        {!gettingCurrentPosition && (<>
+          {!gpsTracking && (
+            <LC.NavbarIconButton
+              iconName="play"
+              onPress={() => props.onPress_PlayButton()}
+              theme={{
+                font: props.theme.confirm,
+                background: props.theme.background,
+              }}
+            />
+          )}
+          {gpsTracking && (
+            <LC.NavbarIconButton
+              iconName="stop"
+              onPress={() => props.onPress_StopButton()}
+              theme={{
+                font: props.theme.wrong,
+                background: props.theme.background,
+              }}
+            />
+          )}
+        </>)}
+      </>)}
     </>)}
   </>);
 });

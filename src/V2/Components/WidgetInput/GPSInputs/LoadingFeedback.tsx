@@ -21,7 +21,7 @@ export const LoadingFeedback = memo((props: {
     props.features.enableAltitude   === false
   ;
 
-  if (props.features.gpsON === false) {
+  if (props.features.gpsTracking === false) {
     return <></>;
   }
 

@@ -21,7 +21,7 @@ export const RealTimeAccuracy = memo((props: {
     props.features.enableAltitude === false
   ;
 
-  if (props.features.gpsON === false || nothingEnable) {
+  if (props.features.gpsTracking === false || nothingEnable) {
     return <></>;
   }
 

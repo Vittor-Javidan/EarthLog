@@ -223,9 +223,11 @@ export type GPSAccuracyDTO = {
 }
 export type GPSFeaturesDTO = {
   editMode: boolean
-  gpsON: boolean
+  gpsTracking: boolean
   enableCoordinate: boolean
   enableAltitude: boolean
+  gettingCurrentPosition: boolean
+  isManualInputOpen: boolean
 }
 
 // =================================================================================================
