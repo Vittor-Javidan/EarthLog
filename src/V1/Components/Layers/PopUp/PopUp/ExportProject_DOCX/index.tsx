@@ -77,7 +77,7 @@ export const ExportProject_DOCX = memo((props: {
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
     });
 
-  }, [fileName]);
+  }, [fileName, imageQuality]);
 
   useEffect(() => {
     if (show.finished) {
