@@ -4,7 +4,6 @@
 
 ## features:
 
-- implement a new folder location to save exported documents, and allow their sharing
 - implement an export of all images into a zip file
 - implement quality camera options
 - implement flah auto option
