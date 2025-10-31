@@ -14,6 +14,8 @@ export const ManualInput = memo((props: {
   features: GPSFeaturesDTO
   theme: WidgetTheme
   onConfirm: (gpsData: GPS_DTO) => void
+  onClose: () => void
+  onOpen: () => void
 }) => {
 
   const config                    = useMemo(() => ConfigService.config, []);
@@ -33,11 +35,13 @@ export const ManualInput = memo((props: {
   }, [props.noGPSData, props.onConfirm]);
 
   const openManualInput = useCallback(() => {
+    props.onOpen();
     setError(false);
     setShowInput(true);
   }, []);
 
   const closeManualInput = useCallback(() => {
+    props.onClose();
     setError(false);
     setShowInput(false);
   }, []);
@@ -45,6 +49,7 @@ export const ManualInput = memo((props: {
   return (
     <View
       style={{
+        flex: 1,
         borderRadius: 10,
         paddingBottom: showInput ? 10 : 0,
         gap: 10,

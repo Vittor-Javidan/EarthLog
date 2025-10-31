@@ -16,6 +16,18 @@ const Drawer = memo(() => {
 
   return (<>
     <Button.TextWithIcon
+      title={R['Exported Files']}
+      iconName="file-export"
+      onPress={() => navigate('EXPORTED FILES SCOPE')}
+      iconSize={25}
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+    />
+    <Button.TextWithIcon
       title={R['Credentials']}
       iconName="card-outline"
       onPress={() => navigate('CREDENTIAL SCOPE')}

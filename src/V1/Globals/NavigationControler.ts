@@ -10,6 +10,7 @@ class AppRoutes {
   static HOME_SCOPE           = `/${LTS_VERSION}/HomeScope`;
   static CREDENTIALS_SCOPE    = `/${LTS_VERSION}/CredentialScope`;
   static FILE_EXPLORE_SCOPE   = `/${LTS_VERSION}/FileExploreScope`;
+  static EXPORTED_FILES_SCOPE = `/${LTS_VERSION}/ExportedFilesScope`;
 
   static SETTINGS_SCOPE               = `/${LTS_VERSION}/SettingsScope`;
   static SS_LANGUAGE_SELECTION_SCOPE  = `${this.SETTINGS_SCOPE}/LanguageSelectionScope`;
@@ -34,6 +35,7 @@ type ScreenName = (
   'CREDENTIAL SCOPE'                                  |
   'HOME SCOPE'                                        |
   'FILE EXPLORE SCOPE'                                |
+  'EXPORTED FILES SCOPE'                              |
   'PROJECT SCOPE'                                     |
     'SAMPLE SCOPE'                                    |
     'EXPORT PROJECT SCOPE'
@@ -57,6 +59,7 @@ export function navigate(
     case 'CREDENTIAL SCOPE':         router.navigate(AppRoutes.CREDENTIALS_SCOPE);           break;
     case 'HOME SCOPE':               router.navigate(AppRoutes.HOME_SCOPE);                  break;
     case 'FILE EXPLORE SCOPE':       router.navigate(AppRoutes.FILE_EXPLORE_SCOPE);          break;
+    case 'EXPORTED FILES SCOPE':     router.navigate(AppRoutes.EXPORTED_FILES_SCOPE);        break;
     case 'PROJECT SCOPE': {
 
       if (id_project === undefined) {

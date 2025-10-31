@@ -3,11 +3,9 @@ import { ConfigDTO } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { ShareService } from '@V1/Services_Core/ShareService';
 import { FileSystemService } from '@V1/Services_Core/FileSystemService';
-import { path } from '@V1/Globals/Path'
 import { ProjectService } from '@V1/Services/ProjectService';
 
 import { Docx } from './Docx';
-import { ZipService } from './Zip';
 import { document_Project } from './ProjectDocument';
 
 export default class DOCX_Module {
@@ -63,24 +61,21 @@ export default class DOCX_Module {
         })
       );
 
-      Docx.finish()
-      
       o.feedback(R['Creating DOCX file']);
-      await ZipService.zipPathContents({
-        sourcePath: path.getDir().TEMP(),
-        outputPath: path.getDir().TEMP(),
-        filename: `${o.fileName}.docx`,
-      })
+      const directory = await Docx.createDocxFile({
+        fileName: o.fileName
+      });
+
+      Docx.finish()
 
       o.feedback(R['Preparing to share document']);
-      await ShareService.share({
-        directory: `${path.getDir().TEMP()}/${o.fileName}.docx`,
-      })
+      await ShareService.share({ directory })
 
       o.onFinish()
 
     } catch (error) {
       FileSystemService.resetTempDirectory();
+      Docx.finish()
       let erroMessage = R['Try reducing export image quality. error: ']
       erroMessage += error instanceof Error ? error.message : JSON.stringify(error)
       o.onError(erroMessage); 

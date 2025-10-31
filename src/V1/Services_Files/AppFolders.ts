@@ -15,12 +15,26 @@ export class FOLDER_App {
       FOLDER_Credentials.init(),
       FOLDER_SyncData.init(),
       FOLDER_Projects.init(),
+      FOLDER_ExportedFiles.init(),
     ];
     await Promise.all(promises);
   }
 
   static async deleteFolder(): Promise<void> {
     FileSystemService.deleteDirectory({ directory: this.APP_ROOT_FOLDER() });
+  }
+}
+
+export class FOLDER_ExportedFiles {
+  private static EXPORTED_FILES_FOLDER = () => path.getDir().EXPORTED_FILES();
+
+  static async init(): Promise<void> {
+    try {
+      FileSystemService.createDirectory({ directory: this.EXPORTED_FILES_FOLDER() });
+    } catch (e) {
+      alert('App folder do not exist.');
+      throw Error('App folder do not exist.');
+    }
   }
 }
 
@@ -35,27 +49,6 @@ export class FOLDER_Temp {
       alert('App folder do not exist.');
       throw Error('App folder do not exist.');
     }
-  }
-
-  /**
-   * @returns directory of created file
-   */
-  static async createFile(o: {
-    filename: string,
-    data: string,
-    encoding: 'base64' | 'utf8'
-  }): Promise<string> {
-    const { filename, data, encoding } = o;
-    const directory = `${this.TEMP_FOLDER()}/${filename}`;
-    FileSystemService.writeFile({ directory, data, encoding });
-    return directory;
-  }
-
-  static async deleteFile(o: {
-    directory: string
-  }): Promise<void> {
-    const { directory } = o;
-    FileSystemService.deleteFile({ directory });
   }
 }
 

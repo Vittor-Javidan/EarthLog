@@ -81,6 +81,42 @@ export class GPSWatcherService {
     this.gpsData = gpsData;
   }
 
+  async getCurrentPosition(
+    callback: (gpsData: GPS_DTO) => void,
+  ) {
+    await GPSService.getPermission(async () => {
+
+      const gpsData: GPS_DTO = {};
+      const coordinates = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.BestForNavigation,
+      })
+
+      if (
+        coordinates.coords.latitude &&
+        coordinates.coords.longitude &&
+        coordinates.coords.accuracy
+      ) {
+        gpsData.coordinates = {
+          lat: coordinates.coords.latitude,
+          long: coordinates.coords.longitude,
+          accuracy: Number(coordinates.coords.accuracy.toFixed(2)),
+        }
+      }
+
+      if (
+        coordinates.coords.altitude &&
+        coordinates.coords.altitudeAccuracy
+      ) {
+        gpsData.altitude = {
+          value: Number(coordinates.coords.altitude.toFixed(2)), 
+          accuracy: Number(coordinates.coords.altitudeAccuracy.toFixed(2)),
+        }
+      }
+
+      callback(gpsData)
+    });
+  }
+
   async watchPositionAsync(
     callback: (gpsData: GPS_DTO) => void,
     accuracy: (accuracy: GPSAccuracyDTO) => void,

@@ -1,3 +1,20 @@
+# ✅ 1.12.0
+
+- New:
+  - Exported files screen
+    - Now every file exported is saved inside the device, allowig users to export the same file many time as need, without the need to build those files from scratch.
+
+
+# ✅ 1.11.2
+
+- New:
+  - <GPSInput />: Added a option to get current position in one click
+    - is meant to be used when accuracy is not that important, since this mechaninc is the classic one click acquision GPS, and it just throw the first coordinate found by the GPS phone device.
+
+- Codebase:
+  - Removed ExportService
+
+
 # ✅ 1.11.1
 
 - Fixed Screen Title being too small on the lastest android versions
