@@ -1,4 +1,5 @@
 import { LanguageTag } from '@V2/Types/AppTypes';
+import { ShareService } from '@V2/Services_Core/ShareService';
 import { ProjectService } from '@V2/Services/ProjectService';
 import { Csv } from './CSV';
 import { GPS_CSV } from './GPS';
@@ -34,8 +35,10 @@ export default class CSV_Module {
       })
     })
 
+    o.feedback('Creating CSV file');
+    const directory = Csv.createCSVFile({ fileName, data });
+
     o.feedback('Sharing document');
-    Csv.createCSVFile({ fileName, data });
-    await Csv.shareFile({ fileName });
+    await ShareService.share({ directory });
   }
 }

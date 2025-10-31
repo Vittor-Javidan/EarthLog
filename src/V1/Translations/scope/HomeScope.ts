@@ -11,6 +11,7 @@ type TranslationDTO = Record<LanguageTag, {
   'GitHub': string
   'File Explorer': string
   'Release Notes': string
+  'Exported Files': string
 }>
 
 export const R_Scope_Home: TranslationDTO = {
@@ -25,6 +26,7 @@ export const R_Scope_Home: TranslationDTO = {
     'GitHub': 'GitHub',
     'File Explorer': 'File Explorer',
     'Release Notes': 'Release Notes',
+    'Exported Files': 'Exported Files',
   },
   'pt-BR': {
     'Home screen': 'Tela inicial',
@@ -36,6 +38,7 @@ export const R_Scope_Home: TranslationDTO = {
     'Change version': 'Mudar versão',
     'GitHub': 'GitHub',
     'File Explorer': 'Explorador de Arquivos',
-    'Release Notes': 'Release Notes',
+    'Release Notes': 'Notas de Lançamento',
+    'Exported Files': 'Arquivos Exportados',
   },
 };

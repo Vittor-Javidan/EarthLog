@@ -9,6 +9,7 @@ export const path = {
       CONFIG                 : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/Config`,
       CREDENTIALS            : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/Credentials`,
       TEMP                   : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/TemporaryFiles`,
+      EXPORTED_FILES         : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/ExportedFiles`,
       SYNC_DATA              : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/SyncData`,
       PROJECTS: {
         ROOT                 : (                                     ) => `${this.APP_ROOT_PATH}/${LTS_VERSION}/Projects`,

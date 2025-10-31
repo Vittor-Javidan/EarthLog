@@ -2,6 +2,7 @@ import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
 import { path } from '@V1/Globals/Path'
 import { FileSystemService } from '@V1/Services_Core/FileSystemService';
+import { ZipService } from './Zip';
 
 type TextProps = {
   text: string;
@@ -18,6 +19,7 @@ type TextProps = {
 export class Docx {
 
   static baseDirectory =  path.getDir().TEMP();
+  static exportDirectory =  path.getDir().EXPORTED_FILES();
   static documentImageCounter = 0;
   static allImagesFilePath: string = "";
   static imageFiles: string[] = [];
@@ -165,6 +167,20 @@ export class Docx {
       encoding: 'utf8',
       data: this.document(paragraphs),
     })
+  }
+
+  static async createDocxFile(o: { fileName: string }): Promise<string> {
+    const newFileName = FileSystemService.handleDuplicatedFileNames({
+      fileName: o.fileName,
+      extension: 'docx',
+      directory: this.exportDirectory,
+    });
+    await ZipService.zipPathContents({
+      sourcePath: this.baseDirectory,
+      outputPath: this.exportDirectory,
+      filename: `${newFileName}.docx`,
+    })
+    return `${this.exportDirectory}/${newFileName}.docx`;
   }
 
   static finish(): void {
