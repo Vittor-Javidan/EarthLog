@@ -1,25 +1,30 @@
 import { path } from "@V1/Globals/Path";
 import { FileSystemService } from "@V1/Services_Core/FileSystemService";
-import { ShareService } from '@V1/Services_Core/ShareService';
 
 export class Csv {
-  static baseDirectory =  path.getDir().TEMP();
 
-  static async createCSVFile(o: {
-    fileName: string,
-    data: string,
-  }) {
+  static exportDirectory =  path.getDir().EXPORTED_FILES();
+
+  static createCSVFile(o: {
+    fileName: string;
+    data: string;
+    number?: number;
+  }): string {
+
+    const { data, fileName } = o;
+    const extension = 'csv';
+    const newFileName = FileSystemService.handleDuplicatedFileNames({
+      fileName, extension,
+      directory: this.exportDirectory,
+    });
+
+    const directory = `${this.exportDirectory}/${newFileName}.csv`;
     FileSystemService.writeFile({
-      data: o.data,
-      directory: `${this.baseDirectory}/${o.fileName}.csv`,
-      encoding: 'utf8',
-    })
-  }
+      data, directory,
+      encoding: "utf8",
+    });
 
-  static async shareFile(o: {
-    fileName: string,
-  }): Promise<void> {
-    await ShareService.share({ directory: `${this.baseDirectory}/${o.fileName}.csv` });
+    return directory;
   }
 
   static csvString(text: string): string {

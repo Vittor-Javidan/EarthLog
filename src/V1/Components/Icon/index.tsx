@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -13,6 +14,9 @@ export const Icon = memo((props: {
 }) => {
   switch (props.iconName) {
     case 'file'                  : return <AntDesign              name="file"                  size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-word'             : return <AntDesign              name="file-word"             size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-csv'              : return <FontAwesome5           name="file-csv"              size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-export'           : return <FontAwesome5           name="file-export"           size={props.fontSize} color={props.color} style={props.style} />
     case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
     case 'code-json'             : return <MaterialCommunityIcons name="code-json"             size={props.fontSize} color={props.color} style={props.style} />
     case 'folder-home'           : return <MaterialCommunityIcons name="folder-home"           size={props.fontSize} color={props.color} style={props.style} />
@@ -24,11 +28,14 @@ export const Icon = memo((props: {
 
 export type IconName = (
 
+  // FontAwesome5
+  'file-export' | 'file-csv' |
+
   // MaterialIcons
   'new-releases' |
 
   // AntDesign names
-  'file' |
+  'file' | 'file-word' |
 
   // MaterialCommunityIcons names
   'code-json' | 'folder-home' | 'cloud-refresh-variant' | 'crosshairs-gps' |

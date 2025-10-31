@@ -17,6 +17,7 @@ export const TextWithIcon = memo((props: {
 	title: string
   iconName: IconName
   theme: ButtonTheme
+  iconSize?: number
   style?: StyleProp<ViewStyle>
 	onPress: () => void
 }) => {
@@ -67,7 +68,7 @@ export const TextWithIcon = memo((props: {
         <Icon
           iconName={props.iconName}
           color={pressed ? props.theme.font_active : props.theme.font}
-          fontSize={30}
+          fontSize={props.iconSize || 30}
         />
       </View>
 		</Pressable>

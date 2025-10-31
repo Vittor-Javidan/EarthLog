@@ -3,6 +3,36 @@ import { path } from '@V2/Globals/Path'
 
 export class FileSystemService {
 
+  static fileExist(o: {
+    directory: string
+  }): boolean {
+    const { directory } = o;
+    const file = new File(directory);
+    return file.exists;
+  }
+
+  /**
+   * Return a new valid name for situations where you don't want to overwrite existing files.
+  */
+  static handleDuplicatedFileNames(o: {
+    fileName: string;
+    extension: string;
+    directory: string;
+    number?: number;
+  }): string {
+    const { fileName, extension, directory } = o;
+    const number = o.number ?? 0;
+    const nameWithNumber = number > 0 ? `${fileName}(${number})` : fileName;
+    const newDirectory = `${directory}/${nameWithNumber}.${extension}`;
+    if (this.fileExist({ directory: newDirectory })) {
+      return this.handleDuplicatedFileNames({
+        fileName, directory, extension,
+        number: number + 1,
+      });
+    }
+    return nameWithNumber;
+  }
+
   /**
    * Creates a new directory if not exist.
    * @param directory directory path

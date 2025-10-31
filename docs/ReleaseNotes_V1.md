@@ -1,3 +1,10 @@
+# ✅ 1.12.0
+
+- New:
+  - Exported files screen
+    - Now every file exported is saved inside the device, allowig users to export the same file many time as need, without the need to build those files from scratch.
+
+
 # ✅ 1.11.2
 
 - New:
