@@ -19,9 +19,10 @@ export const ContentButtons = memo((props: {
     let iconName: IconName;
 
     switch (extension) {
-      case 'docx': iconName = 'file-word'; break;
-      case 'csv' : iconName = 'file-csv';  break;
-      default    : iconName = 'file';      break;
+      case 'docx': iconName = 'file-word' ; break;
+      case 'csv' : iconName = 'file-csv'  ; break;
+      case 'zip' : iconName = 'file-zip'  ; break;
+      default    : iconName = 'file'      ; break;
     }
 
     return (
@@ -57,12 +58,14 @@ const File = memo((props: {
   switch (props.extensionIcon) {
     case 'file-word': paddingLeft = 20; break;
     case 'file-csv' : paddingLeft = 24; break;
+    case 'file-zip' : paddingLeft = 20; break;
     default         : paddingLeft = 20; break;
   }
 
   switch (props.extensionIcon) {
     case 'file-word': paddingRight = 0; break;
     case 'file-csv' : paddingRight = 5; break;
+    case 'file-zip' : paddingRight = 0; break;
     default         : paddingRight = 0; break;
   }
 

@@ -15,6 +15,7 @@ export const Icon = memo((props: {
   switch (props.iconName) {
     case 'file'                  : return <AntDesign              name="file"                  size={props.fontSize} color={props.color} style={props.style} />
     case 'file-word'             : return <AntDesign              name="file-word"             size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-zip'              : return <AntDesign              name="file-zip"              size={props.fontSize} color={props.color} style={props.style} />
     case 'file-csv'              : return <FontAwesome5           name="file-csv"              size={props.fontSize} color={props.color} style={props.style} />
     case 'file-export'           : return <FontAwesome5           name="file-export"           size={props.fontSize} color={props.color} style={props.style} />
     case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
@@ -35,7 +36,7 @@ export type IconName = (
   'new-releases' |
 
   // AntDesign names
-  'file' | 'file-word' |
+  'file' | 'file-word' | 'file-zip' |
 
   // MaterialCommunityIcons names
   'code-json' | 'folder-home' | 'cloud-refresh-variant' | 'crosshairs-gps' |

@@ -1,8 +1,9 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
 import { path } from '@V2/Globals/Path'
+import { ImageQuality } from '@V1/Types/AppTypes';
 import { FileSystemService } from '@V2/Services_Core/FileSystemService';
-import { ZipService } from './Zip';
+import { ZipService } from '../Core/Zip'
 
 type TextProps = {
   text: string;
@@ -123,7 +124,7 @@ export class Docx {
    * @WARNING Requires `listImageFiles` to be called first
    */
   static async copyImageFilesToMediaFolder(o: {
-    imageQuality: 'High' | 'Medium' | 'Low'
+    imageQuality: Exclude<ImageQuality, 'no compress'>
   }) {
     const { imageQuality } = o;
     FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/media` });
@@ -178,7 +179,7 @@ export class Docx {
     await ZipService.zipPathContents({
       sourcePath: this.baseDirectory,
       outputPath: this.exportDirectory,
-      filename: `${newFileName}.docx`,
+      fileName: `${newFileName}.docx`,
     })
     return `${this.exportDirectory}/${newFileName}.docx`;
   }

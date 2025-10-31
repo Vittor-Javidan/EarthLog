@@ -1,3 +1,15 @@
+# ✅ 1.13.1
+
+- Codebase fix:
+  - Added imageQuality as a dependency on `onExport` ExportProject_DOCX module.
+
+
+# ✅ 1.13.0
+
+- New:
+  - Zip and Export all project images
+
+
 # ✅ 1.12.0
 
 - New:

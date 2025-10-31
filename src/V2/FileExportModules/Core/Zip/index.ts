@@ -1,5 +1,8 @@
 import { Directory, File } from 'expo-file-system';
 import { Zip, ZipDeflate } from 'fflate';
+import { sleep } from '@V2/Globals/Sleep';
+import { LanguageTag } from '@V2/Types/AppTypes';
+import { translations } from '@V2/Translations/index';
 
 /**
  * I created this class after a lot debugging with ChatGPT.
@@ -17,11 +20,13 @@ export class ZipService {
   static async zipPathContents(o: {
     sourcePath: string;
     outputPath: string;
-    filename: string;
+    fileName: string;
+    language?: LanguageTag;
+    enableFeedback?: boolean;
+    feedback?: (message: string) => void
   }) {
-    const { sourcePath, outputPath } = o;
-
-    const outputFile = new File(`${outputPath}/${o.filename}`);
+    const { sourcePath, outputPath, language, fileName, enableFeedback, feedback } = o;
+    const outputFile = new File(`${outputPath}/${o.fileName}`);
     const writable = outputFile.writableStream();
     const writer = writable.getWriter();
 
@@ -36,10 +41,9 @@ export class ZipService {
     });
 
     await this.addFilesRecursive({
-      zip,
+      zip, fileName, language, enableFeedback, feedback,
       currentPath: sourcePath,
       basePath: sourcePath,
-      fileName: o.filename,
     });
 
     zip.end(); // signals completion
@@ -53,6 +57,9 @@ export class ZipService {
     currentPath: string;
     basePath: string;
     fileName: string;
+    language?: LanguageTag
+    enableFeedback?: boolean;
+    feedback?: (message: string) => void
   }) {
     const { zip, currentPath, basePath, fileName } = o;
     const dir = new Directory(currentPath);
@@ -74,6 +81,12 @@ export class ZipService {
         const file = new File(itemPath);
         const stream = file.readableStream();
         const reader = stream.getReader();
+
+        if (o.enableFeedback && o.feedback && o.language) {
+          const R = translations.FileExportModules.core[o.language]
+          o.feedback(R['Adding file to zip: ${file.name}'](file.name));
+          await sleep(10);
+        }
 
         const deflater = new ZipDeflate(relative);
         zip.add(deflater);
