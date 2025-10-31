@@ -117,7 +117,7 @@ export type ConfigDTO = {
 export type ModalConfig = {
   type: 'exit app' | 'project creation' | 'download projects'
 } | {
-  type: 'upload projects' | 'export project (DOCX)' | 'export project (CSV)'
+  type: 'upload projects' | 'export project (DOCX)' | 'export project (CSV)' | 'export project (ZIP IMAGES)'
   id_project: string
 } | {
   type: 'sample creation'
@@ -137,6 +137,7 @@ export type ModalConfig = {
   picturesIDs: string[]
 }
 
+export type ImageQuality = 'no compress' | 'High' | 'Medium' | 'Low'
 export type CameraLayerConfig = CameraPictureMode
 export type CameraPictureMode = {
   id_project: string

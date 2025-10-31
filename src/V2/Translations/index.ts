@@ -8,6 +8,8 @@ import { R_Screen_Settings } from './Screen/SettingsScreen';
 import { R_FileExportModules_Shared } from './FileExportModules/__Shared__';
 import { R_FileExportModules_CSV } from './FileExportModules/CSV';
 import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
+import { R_FileExportModules_ZIP_IMAGES } from './FileExportModules/ZIP_IMAGES';
+import { R_FileExportModules_core } from './FileExportModules/core';
 import { R_Scope_Credential } from './scope/CredentialScope';
 import { R_Scope_Home } from './scope/HomeScope';
 import { R_Scope_Language } from './scope/LanguageSelectionScope';
@@ -57,6 +59,8 @@ export const translations = {
     share:                    R_FileExportModules_Shared,
     csv:                      R_FileExportModules_CSV,
     docx:                     R_FileExportModules_DOCX,
+    zipImages:                R_FileExportModules_ZIP_IMAGES,
+    core:                     R_FileExportModules_core,
   },
   scope: {
     home:                     R_Scope_Home,

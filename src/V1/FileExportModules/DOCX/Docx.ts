@@ -2,7 +2,7 @@ import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
 import { path } from '@V1/Globals/Path'
 import { FileSystemService } from '@V1/Services_Core/FileSystemService';
-import { ZipService } from './Zip';
+import { ZipService } from '../Core/Zip'
 
 type TextProps = {
   text: string;
@@ -178,7 +178,7 @@ export class Docx {
     await ZipService.zipPathContents({
       sourcePath: this.baseDirectory,
       outputPath: this.exportDirectory,
-      filename: `${newFileName}.docx`,
+      fileName: `${newFileName}.docx`,
     })
     return `${this.exportDirectory}/${newFileName}.docx`;
   }

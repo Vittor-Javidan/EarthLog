@@ -1,3 +1,9 @@
+# ✅ 1.13.0
+
+- New:
+  - Zip and Export all project images
+
+
 # ✅ 1.12.0
 
 - New:

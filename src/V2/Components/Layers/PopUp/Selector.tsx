@@ -11,6 +11,7 @@ import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
 import { ExportProject_DOCX } from './PopUp/ExportProject_DOCX';
 import { ExportProject_CSV } from './PopUp/ExportProject_CSV';
+import { ExportProject_ZIP_IMAGES } from './PopUp/ExportProject_ZIP_IMAGES';
 import { DownloadPictures } from './PopUp/DownloadPictures';
 
 export const PopUpSelector = memo((props: {
@@ -76,6 +77,12 @@ export const PopUpSelector = memo((props: {
       <DownloadPictures
         id_project={props.config.id_project}
         picturesIDs={props.config.picturesIDs}
+        closeModal={() => props.closeModal()}
+      />
+    );
+    case 'export project (ZIP IMAGES)': return (
+      <ExportProject_ZIP_IMAGES
+        id_project={props.config.id_project}
         closeModal={() => props.closeModal()}
       />
     );
