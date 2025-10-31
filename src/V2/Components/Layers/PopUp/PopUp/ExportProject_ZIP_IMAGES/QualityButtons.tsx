@@ -1,17 +1,17 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { ImageQuality } from '@V1/Types/AppTypes';
-import { ThemeService } from '@V1/Services_Core/ThemeService';
-import { ConfigService } from '@V1/Services/ConfigService';
+import { ThemeService } from '@V2/Services_Core/ThemeService';
+import { ConfigService } from '@V2/Services/ConfigService';
 
-import { Text } from '@V1/Text/index';
-import { Button } from '@V1/Button/index';
+import { Text } from '@V2/Text/index';
+import { Button } from '@V2/Button/index';
+import { ImageQuality } from '@V2/Types/AppTypes';
 
 export const QualityButtons = memo((props: {
-  selectedQuality: Exclude<ImageQuality, 'no compress'>
+  selectedQuality: ImageQuality
   showButtons: boolean
-  onSelectQuality: (quality: Exclude<ImageQuality, 'no compress'>) => void
+  onSelectQuality: (quality: ImageQuality) => void
 }) => {
   return props.showButtons ? (<>
     <View
@@ -28,6 +28,11 @@ export const QualityButtons = memo((props: {
       >
         Quality:
       </Text>
+      <QualityButton
+        label="no compress (Could take several minutes)"
+        value={props.selectedQuality === 'no compress' ? true : false}
+        onChange={() => props.onSelectQuality('no compress')}
+      />
       <QualityButton
         label="High"
         value={props.selectedQuality === 'High' ? true : false}

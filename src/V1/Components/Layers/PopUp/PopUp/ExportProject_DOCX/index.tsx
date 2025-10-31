@@ -1,5 +1,6 @@
 import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 
+import { ImageQuality } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
@@ -21,7 +22,7 @@ export const ExportProject_DOCX = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const RS     = useMemo(() => translations.component.alert.shared[config.language], []);
   const [error        , setError       ] = useState<string | null>(null);
-  const [imageQuality , setImageQuality] = useState<'High' | 'Medium' | 'Low'>('High');
+  const [imageQuality , setImageQuality] = useState<Exclude<ImageQuality, 'no compress'>>('High');
   const [fileName     , setFileName    ] = useState<string>('');
   const [feedbacks    , setFeedbacks   ] = useState<string[]>([]);
   const [show         , setShow        ] = useState({
@@ -37,7 +38,7 @@ export const ExportProject_DOCX = memo((props: {
     setFileName(sanitized);
   }, []);
 
-  const onQualityChange = useCallback((quality: 'High' | 'Medium' | 'Low') => {
+  const onQualityChange = useCallback((quality: Exclude<ImageQuality, 'no compress'>) => {
     setImageQuality(quality);
   }, [imageQuality]);
 
@@ -76,7 +77,7 @@ export const ExportProject_DOCX = memo((props: {
       feedback: (feedbackMessage) => setFeedbacks(prev => ([ ...prev, feedbackMessage])),
     });
 
-  }, [fileName]);
+  }, [fileName, imageQuality]);
 
   useEffect(() => {
     if (show.finished) {

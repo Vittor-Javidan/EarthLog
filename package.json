@@ -1,6 +1,6 @@
 {
   "name": "fielddatacollector",
-  "version": "2.2.0",
+  "version": "2.3.1",
   "scripts": {
     "tsc": "tsc --noemit",
     "dev": "expo start",

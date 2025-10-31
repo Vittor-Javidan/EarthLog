@@ -31,6 +31,13 @@ export const AvailableExportFormatButtons = memo(() => {
     }, () => navigate('PROJECT SCOPE', id_project));
   }, []);
 
+  const onZIPImagesSelected = useCallback(async () => {
+    await PopUpAPI.handleAlert(true, {
+      type: 'export project (ZIP IMAGES)',
+      id_project: id_project,
+    }, () => navigate('PROJECT SCOPE', id_project));
+  }, []);
+
   return (
     <View
       style={{ gap: 1 }}
@@ -50,6 +57,17 @@ export const AvailableExportFormatButtons = memo(() => {
         title={R['CSV (GPS)']}
         iconName="document-text"
         onPress={async () => await onCSVSelected()}
+        theme={{
+          font:              theme.font_Button,
+          font_active:       theme.font_active,
+          background:        theme.background_Button,
+          background_active: theme.background_active,
+        }}
+      />
+      <Button.TextWithIcon
+        title={R['ZIP (IMAGES)']}
+        iconName="file-zip"
+        onPress={async () => await onZIPImagesSelected()}
         theme={{
           font:              theme.font_Button,
           font_active:       theme.font_active,

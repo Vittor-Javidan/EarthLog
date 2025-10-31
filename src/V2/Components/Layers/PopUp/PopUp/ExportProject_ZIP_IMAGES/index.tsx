@@ -1,19 +1,21 @@
-import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 
-import { ImageQuality } from '@V2/Types/AppTypes';
-import { translations } from '@V2/Translations/index';
-import { ThemeService } from '@V2/Services_Core/ThemeService';
-import { ConfigService } from '@V2/Services/ConfigService';
-import { RegexService } from '@V2/Services/RegexService';
-import DOCX_Module from '@V2/FileExportModules/DOCX';
-import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { ImageQuality } from "@V2/Types/AppTypes";
+import { translations } from "@V2/Translations/index";
+import { ConfigService } from "@V2/Services/ConfigService";
+import { ThemeService } from "@V2/Services_Core/ThemeService";
+import { RegexService } from "@V2/Services/RegexService";
+import { ZIP_IMAGES_Module } from "@V2/FileExportModules/ZIP_ALL_IMAGES";
+import { PopUpAPI } from "@V2/Layers/API/PopUp";
 
-import { Input } from '@V2/Input/index';
-import { LC } from '@V2/Layers/PopUp/__LC__';
-import { FooterButtons } from './FooterButtons';
-import { QualityButtons } from './QualityButtons';
+import { LC } from "@V2/Layers/PopUp/__LC__";
+import { Input } from "@V2/Input/index";
+import { QualityButtons } from "./QualityButtons";
+import { FooterButtons } from "./FooterButtons";
+import { sleep } from "@V2/Globals/Sleep";
 
-export const ExportProject_DOCX = memo((props: {
+
+export const ExportProject_ZIP_IMAGES = memo((props: {
   id_project: string
   closeModal: () => void
 }) => {
@@ -22,7 +24,7 @@ export const ExportProject_DOCX = memo((props: {
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.modalPopUp, []);
   const RS     = useMemo(() => translations.component.alert.shared[config.language], []);
   const [error        , setError       ] = useState<string | null>(null);
-  const [imageQuality , setImageQuality] = useState<Exclude<ImageQuality, 'no compress'>>('High');
+  const [imageQuality , setImageQuality] = useState<ImageQuality>('High');
   const [fileName     , setFileName    ] = useState<string>('');
   const [feedbacks    , setFeedbacks   ] = useState<string[]>([]);
   const [show         , setShow        ] = useState({
@@ -38,7 +40,7 @@ export const ExportProject_DOCX = memo((props: {
     setFileName(sanitized);
   }, []);
 
-  const onQualityChange = useCallback((quality: Exclude<ImageQuality, 'no compress'>) => {
+  const onQualityChange = useCallback((quality: ImageQuality) => {
     setImageQuality(quality);
   }, [imageQuality]);
 
@@ -58,8 +60,13 @@ export const ExportProject_DOCX = memo((props: {
       isExporting: true,
     }));
 
-    await DOCX_Module.buildAndShare_Project({
-      config,
+    if (imageQuality === 'no compress') {
+      // Give some time to the feedback display to update
+      await sleep(10);
+    }
+
+    await ZIP_IMAGES_Module.buildAndShare_ProjectImages({
+      language: config.language,
       id_project,
       fileName,
       imageQuality,
@@ -126,4 +133,4 @@ export const ExportProject_DOCX = memo((props: {
       />
     </LC.PopUp>
   );
-});
+})
