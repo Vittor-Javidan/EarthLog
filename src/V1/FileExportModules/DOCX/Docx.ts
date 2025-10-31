@@ -1,6 +1,7 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
 import { path } from '@V1/Globals/Path'
+import { ImageQuality } from '@V1/Types/AppTypes';
 import { FileSystemService } from '@V1/Services_Core/FileSystemService';
 import { ZipService } from '../Core/Zip'
 
@@ -123,7 +124,7 @@ export class Docx {
    * @WARNING Requires `listImageFiles` to be called first
    */
   static async copyImageFilesToMediaFolder(o: {
-    imageQuality: 'High' | 'Medium' | 'Low'
+    imageQuality: Exclude<ImageQuality, 'no compress'>
   }) {
     const { imageQuality } = o;
     FileSystemService.createDirectory({ directory: `${this.baseDirectory}/word/media` });

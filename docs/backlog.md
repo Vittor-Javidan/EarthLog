@@ -2,8 +2,6 @@
 
 ## refactoring:
 
-- Implement the new type ImageQuality on Docx export pop
-
 ## features:
 
 - implement quality camera options

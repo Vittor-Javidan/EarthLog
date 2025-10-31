@@ -1,4 +1,4 @@
-import { ConfigDTO } from '@V2/Types/AppTypes';
+import { ConfigDTO, ImageQuality } from '@V2/Types/AppTypes';
 
 import { translations } from '@V2/Translations/index';
 import { ShareService } from '@V2/Services_Core/ShareService';
@@ -13,7 +13,7 @@ export default class DOCX_Module {
   static async buildAndShare_Project(o: {
     id_project: string,
     fileName: string,
-    imageQuality: 'High' | 'Medium' | 'Low',
+    imageQuality: Exclude<ImageQuality, 'no compress'>,
     config: ConfigDTO,
     feedback: (message: string) => void
     onFinish: () => void
