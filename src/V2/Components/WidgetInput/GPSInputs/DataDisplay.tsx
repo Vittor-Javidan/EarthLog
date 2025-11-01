@@ -11,15 +11,18 @@ export const DataDisplay = memo((props: {
   theme: WidgetTheme
 }) => {
 
+  const { inputData, features, theme } = props;
+  const { coordinates, altitude } = inputData.value;
+
   const showStaticDisplay =
-    props.inputData.value.coordinates !== undefined ||
-    props.inputData.value.altitude    !== undefined
+    coordinates !== undefined ||
+    altitude    !== undefined
   ;
 
   const showNothing =
-    props.features.editMode   === false     &&
-    props.inputData.value.coordinates === undefined &&
-    props.inputData.value.altitude    === undefined
+    features.editMode === false     &&
+    coordinates       === undefined &&
+    altitude          === undefined
   ;
 
   if (showNothing) {
@@ -29,26 +32,26 @@ export const DataDisplay = memo((props: {
   return (<>
     {showStaticDisplay && (
       <View>
-        {props.inputData.value.coordinates !== undefined && <>
+        {coordinates !== undefined && <>
           <DataInfo
             title="Latitude"
-            value={props.inputData.value.coordinates.lat}
-            precision={props.inputData.value.coordinates.accuracy}
-            theme={props.theme}
+            value={coordinates.lat}
+            precision={coordinates.accuracy}
+            theme={theme}
           />
           <DataInfo
             title="Longitude"
-            value={props.inputData.value.coordinates.long}
-            precision={props.inputData.value.coordinates.accuracy}
-            theme={props.theme}
+            value={coordinates.long}
+            precision={coordinates.accuracy}
+            theme={theme}
           />
         </>}
-        {props.inputData.value.altitude !== undefined && <>
+        {altitude !== undefined && <>
           <DataInfo
             title="Altitude"
-            value={props.inputData.value.altitude.value}
-            precision={props.inputData.value.altitude.accuracy}
-            theme={props.theme}
+            value={altitude.value}
+            precision={altitude.accuracy}
+            theme={theme}
           />
         </>}
       </View>

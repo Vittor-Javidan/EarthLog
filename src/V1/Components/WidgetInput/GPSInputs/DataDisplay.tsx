@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { View } from 'react-native';
 
 import { GPSFeaturesDTO, GPSInputData, WidgetTheme } from '@V1/Types/ProjectTypes';
+import { gpsTutorialCoodinateMask } from '@V1/Globals/GPSTutorial';
 
 import { Text } from '@V1/Text/index';
 
@@ -11,44 +12,58 @@ export const DataDisplay = memo((props: {
   theme: WidgetTheme
 }) => {
 
+  const { inputData, features, theme } = props;
+  const { coordinates, altitude } = inputData.value;
+
   const showStaticDisplay =
-    props.inputData.value.coordinates !== undefined ||
-    props.inputData.value.altitude    !== undefined
+    coordinates !== undefined ||
+    altitude    !== undefined
   ;
 
   const showNothing =
-    props.features.editMode   === false     &&
-    props.inputData.value.coordinates === undefined &&
-    props.inputData.value.altitude    === undefined
+    features.editMode === false     &&
+    coordinates       === undefined &&
+    altitude          === undefined
   ;
 
   if (showNothing) {
     return <></>;
   }
 
+  /*
+    Tutorial Mode
+    This is a simple way to hide my real GPS data while I'm recording tutorial videos
+    It adds a small random number to the latitude, longitude and altitude values.
+
+    NEVER COMMIT WITH TUTORIAL MODE ENABLED!!!!!!
+  */
+  const random = gpsTutorialCoodinateMask();
+  const TUTORIAL_MODE = false;
+  // ================================================================================
+
   return (<>
     {showStaticDisplay && (
       <View>
-        {props.inputData.value.coordinates !== undefined && <>
+        {coordinates !== undefined && <>
           <DataInfo
             title="Latitude"
-            value={props.inputData.value.coordinates.lat}
-            precision={props.inputData.value.coordinates.accuracy}
-            theme={props.theme}
+            value={TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat}
+            precision={coordinates.accuracy}
+            theme={theme}
           />
           <DataInfo
             title="Longitude"
-            value={props.inputData.value.coordinates.long}
-            precision={props.inputData.value.coordinates.accuracy}
-            theme={props.theme}
+            value={TUTORIAL_MODE ? coordinates.long + random : coordinates.long}
+            precision={coordinates.accuracy}
+            theme={theme}
           />
         </>}
-        {props.inputData.value.altitude !== undefined && <>
+        {altitude !== undefined && <>
           <DataInfo
             title="Altitude"
-            value={props.inputData.value.altitude.value}
-            precision={props.inputData.value.altitude.accuracy}
-            theme={props.theme}
+            value={altitude.value}
+            precision={altitude.accuracy}
+            theme={theme}
           />
         </>}
       </View>
