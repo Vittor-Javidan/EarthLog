@@ -18,6 +18,7 @@ export const Icon = memo((props: {
     case 'file-zip'              : return <AntDesign              name="file-zip"              size={props.fontSize} color={props.color} style={props.style} />
     case 'file-csv'              : return <FontAwesome5           name="file-csv"              size={props.fontSize} color={props.color} style={props.style} />
     case 'file-export'           : return <FontAwesome5           name="file-export"           size={props.fontSize} color={props.color} style={props.style} />
+    case 'map-marked'            : return <FontAwesome5           name="map-marked"            size={props.fontSize} color={props.color} style={props.style} />
     case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
     case 'code-json'             : return <MaterialCommunityIcons name="code-json"             size={props.fontSize} color={props.color} style={props.style} />
     case 'folder-home'           : return <MaterialCommunityIcons name="folder-home"           size={props.fontSize} color={props.color} style={props.style} />
@@ -30,7 +31,7 @@ export const Icon = memo((props: {
 export type IconName = (
 
   // FontAwesome5
-  'file-export' | 'file-csv' |
+  'file-export' | 'file-csv' | 'map-marked' |
 
   // MaterialIcons
   'new-releases' |

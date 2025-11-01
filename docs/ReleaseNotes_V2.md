@@ -1,3 +1,9 @@
+# ✅ 2.3.3
+
+- New:
+  - Added a button to open GPSInput coordinates on google map
+
+
 # ✅ 2.3.2
 
 - New:
