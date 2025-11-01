@@ -1,3 +1,9 @@
+# ✅ 1.13.2
+
+- New:
+  - GPS Input now blinks during GPS acquisition, to visual alert users the GPS still open.
+
+
 # ✅ 1.13.1
 
 - Codebase fix:

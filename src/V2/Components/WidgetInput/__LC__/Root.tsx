@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, memo, useCallback, useMemo } from 'react';
+import React, { ReactNode, useState, memo, useCallback, useMemo, useEffect } from 'react';
 import { LayoutChangeEvent, StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
 import { WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -19,6 +19,7 @@ export const InputRoot = memo((props: {
   widgetRules: WidgetRules
   theme: WidgetTheme
   iconButtons: React.JSX.Element
+  blink?: boolean
   children: ReactNode
   style?: StyleProp<ViewStyle>
   onLabelChange: (label: string) => void
@@ -28,10 +29,20 @@ export const InputRoot = memo((props: {
 }) => {
 
   const [inputTopPadding, setInputTopPadding] = useState<number | null>(null);
+  const [blinking, setBlinking] = useState<boolean>(false);
 
   const onLayout = useCallback((event: LayoutChangeEvent) => {
     setInputTopPadding(Math.round(event.nativeEvent.layout.height - 17));
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      props.blink === true
+      ? setBlinking(prev => !prev)
+      : setBlinking(false);
+    }, 250);
+    return () => clearInterval(interval);
+  }, [props.blink]);
 
   return (
     <Animation.FadeOut
@@ -54,6 +65,7 @@ export const InputRoot = memo((props: {
       >
         <InputLabel
           label={props.label}
+          blink={props.blink ? blinking : false}
           editable={!props.lockedLabel}
           onLabelChange={(label) => props.onLabelChange(label)}
           theme={props.theme}
@@ -86,7 +98,7 @@ export const InputRoot = memo((props: {
           paddingHorizontal: 10,
           gap: 10,
           backgroundColor: props.theme.background,
-          borderColor: props.theme.font,
+          borderColor: blinking ? props.theme.confirm : props.theme.font,
           borderWidth: 3,
           borderRadius: 10,
         }, props.style]}
@@ -101,6 +113,7 @@ const InputLabel = memo((props: {
   label: string
   editable: boolean
   theme: WidgetTheme
+  blink: boolean
   onLabelChange: (label: string) => void
   onLayout: (event: LayoutChangeEvent) => void
 }) => {
@@ -135,7 +148,7 @@ const InputLabel = memo((props: {
           paddingHorizontal: 5,
           width: 225,
           borderWidth: 3,
-          borderColor: props.theme.font,
+          borderColor: props.blink ? props.theme.confirm : props.theme.font,
         }}
         value={props.label}
         placeholder={isLabelEmpty ? R['Input name'] : ''}
