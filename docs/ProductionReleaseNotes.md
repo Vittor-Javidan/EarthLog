@@ -1,8 +1,6 @@
 <en-US>
-  - New export option: Zip (Images)
-    - Allows users to export their images if they want a zip file with all pictures of the project
+  - Added GPS visual feedback when GPS is on
 </en-US>
 <pt-BR>
-  - Nova opção de exportação: Zip (Imagens)
-    - Permite que usuários exportem as suas imagens se quiserem um arquivo com todas as imagens do projeto
+  - Adicionado feedback visual para quando o GPS for ligado
 </pt-BR>

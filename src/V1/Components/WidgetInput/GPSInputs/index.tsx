@@ -184,6 +184,7 @@ export const GPSInput = memo((props: {
       editWidget={props.editWidget}
       isFirstInput={props.isFirstInput}
       isLastInput={props.isLastInput}
+      blink={features.gpsTracking === true || features.gettingCurrentPosition === true}
       onLabelChange={(label) => onLabelChange(label, inputData)}
       onInputDelete={() => props.onInputDelete()}
       onInputMoveUp={() => props.onInputMoveUp()}
