@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -156,6 +156,13 @@ export const GPSInput = memo((props: {
     });
   }, [asyncSave]);
 
+  const onMapOpen = useCallback((inputData: GPSInputData) => {
+    const { coordinates } = inputData.value;
+    if (coordinates) {
+      Linking.openURL(`https://www.google.com/maps?q=${coordinates.lat},${coordinates.long}`);
+    }
+  }, []);
+
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher(); };
   }, []);
@@ -224,6 +231,7 @@ export const GPSInput = memo((props: {
           inputData={inputData}
           features={features}
           theme={props.theme}
+          onMapPress={() => onMapOpen(inputData)}
         />
         <RealTimeAccuracy
           accuracy={accuracy}
