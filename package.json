@@ -41,6 +41,8 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-iap": "^14.4.37",
+    "react-native-nitro-modules": "^0.31.4",
     "react-native-pager-view": "6.9.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",

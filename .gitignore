@@ -20,6 +20,9 @@ web-build
 # Custom
 assets/background
 
+# Android Files
+android
+
 # LocalBuilds
 *.aab
 *.apk

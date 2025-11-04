@@ -2,7 +2,7 @@
   "expo": {
     "name": "Field Data Collector",
     "slug": "field-data-collector",
-    "version": "2.3.4",
+    "version": "2.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.vittorjavidan.fielddatacollector",
-      "versionCode": 21,
+      "versionCode": 22,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
