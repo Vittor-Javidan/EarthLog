@@ -70,7 +70,15 @@
 - Does sync data delete an entry of a picture that was uploaded in the past, but deleted in the client and project got uploaded again?
 - Does project rule `deleteAfterUpload` still work?
 
+## Widget
+  - Can add all input types
+  - Can save modified data
+
 ## Inputs
+
+- GPSInput
+  - Can get GPS data (all functionalities)
+  - Coordenates can access google maps
 
 - Picture Input
   - Shows image after taking first picture

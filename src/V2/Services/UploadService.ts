@@ -1,4 +1,3 @@
-import { navigate } from '@V2/Globals/NavigationControler';
 import { ErrorCodes } from '@V2/Globals/ErrorsCodes';
 import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
 
@@ -33,6 +32,7 @@ export class UploadService {
     signal: AbortSignal
     id_project: string
     onSuccess: () => void
+    onProjectDeletion: () => void
     onError: (errorMessage: string) => void
     feedback: (message: string) => void
   }): Promise<void> {
@@ -160,7 +160,7 @@ export class UploadService {
         await ProjectService.deleteProject({ id_project,
           onSuccess: async () => {
             await CacheService.deleteLastOpenProject();
-            navigate('HOME SCOPE');
+            o.onProjectDeletion();
           },
           onError: (errorMessage) => {
             throw Error(errorMessage);

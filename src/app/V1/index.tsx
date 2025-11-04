@@ -1,18 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 
-import { navigate } from '@V1/Globals/NavigationControler';
-import { AppService } from '@V1/Services/CoreService';
+import { AppService } from '@V1/Services/AppService';
 
-export default function Home_LTS_VERSION_1() {
+import { CameraPreviewLayer } from '@V1/Layers/CameraPreview';
+import { CameraLayer } from '@V1/Layers/Camera';
+import { PopUpLayer } from '@V1/Layers/PopUp';
+import { ScopeController } from '@V1/Scopes/controller';
+import { MapLayer } from '@V1/Layers/Map';
+import DevTools from '@DevTools';
+
+export default function LTS_VERSION_1() {
+
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    initApp();
+    initApp(() => setInitialized(true));
   }, []);
 
-  return <></>;
+  DevTools.useLog('LTS_VERSION_1 rendered.');
+
+  return (<>
+    {initialized && (<>
+      <StatusBar style="auto" />
+      <PopUpLayer />
+      <CameraLayer />
+      <CameraPreviewLayer />
+      <MapLayer />
+      <ScopeController />
+    </>)}
+  </>);
 }
 
-async function initApp() {
+async function initApp(onInitialized: () => void) {
   await AppService.initApp();
-  navigate('HOME SCOPE');
+  onInitialized();
 }

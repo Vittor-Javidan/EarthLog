@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import DevTools from "@DevTools";
 import { GPSFeaturesDTO, GPSInputData, WidgetTheme } from '@V1/Types/ProjectTypes';
-import { gpsTutorialCoodinateMask } from '@V1/Globals/GPSTutorial';
 
 import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
@@ -32,17 +32,7 @@ export const DataDisplay = memo((props: {
     return <></>;
   }
 
-  /*
-    Tutorial Mode
-    This is a simple way to hide my real GPS data while I'm recording tutorial videos
-    It adds a small random number to the latitude, longitude and altitude values.
-
-    NEVER COMMIT WITH TUTORIAL MODE ENABLED!!!!!!
-  */
-  const random = gpsTutorialCoodinateMask();
-  const TUTORIAL_MODE = false;
-  // ================================================================================
-
+  const random = DevTools.gpsTutorialCoodinateMask();
   return (<>
     {showStaticDisplay && (
       <View
@@ -60,13 +50,13 @@ export const DataDisplay = memo((props: {
           {coordinates !== undefined && <>
             <DataInfo
               title="Latitude"
-              value={TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat}
+              value={DevTools.TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat}
               precision={coordinates.accuracy}
               theme={theme}
             />
             <DataInfo
               title="Longitude"
-              value={TUTORIAL_MODE ? coordinates.long + random : coordinates.long}
+              value={DevTools.TUTORIAL_MODE ? coordinates.long + random : coordinates.long}
               precision={coordinates.accuracy}
               theme={theme}
             />

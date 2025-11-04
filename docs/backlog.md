@@ -1,5 +1,7 @@
 # features:
 
+- Add a blockDeletion sample rule
+
 - Add a required boolean option on all inputs (If this option is true, the project will not be allowed to be uploaded to any server until the input is fullfilled)
 
 - Regex validation on Text Input (to simplify server business logic on serverside). (If required is setted true, and exists a regex, the project will not allowed to be uploaded until the regex validate the data)
@@ -31,3 +33,5 @@
 - implement flah auto option
 
 # refactoring:
+
+- Utilize the Home Icon for every screen that is using arrow back to go to HomeScope

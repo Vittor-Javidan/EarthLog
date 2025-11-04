@@ -1,7 +1,13 @@
-# ✅ 1.13.3
+# ✅ 1.14.0
 
 - New:
+  - MapLayer
   - Added a button to open GPSInput coordinates on google map
+
+- Codebase:
+  - Routes architecture changed
+    - Created a folder called scopes
+      - All Screens for each scope are now inside their respective scope parents
 
 
 # ✅ 1.13.2

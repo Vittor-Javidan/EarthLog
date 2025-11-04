@@ -3,8 +3,8 @@
   "version": "2.3.4",
   "scripts": {
     "tsc": "tsc --noemit",
-    "dev": "expo start",
-    "go": "expo start --go",
+    "dev": "expo start -c",
+    "go": "expo start --go -c",
     "build:apk": "eas build --platform android --local",
     "build:aab": "eas build --profile production-playstore --platform android --local",
     "build:dev": "eas build --profile development --platform android --local",

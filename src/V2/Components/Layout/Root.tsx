@@ -1,6 +1,5 @@
 import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 
 import { APP_VERSION } from '@V2/Globals/Version';
@@ -11,9 +10,6 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';
-import { PopUpLayer } from '@V2/Layers/PopUp';
-import { CameraLayer } from '@V2/Layers/Camera/index';
-import { CameraPreviewLayer } from '@V2/Layers/CameraPreview';
 
 const NAVBAR_HEIGHT = 90;
 
@@ -25,10 +21,6 @@ export const Root = memo((props: {
   navigationTree: React.JSX.Element
 }) => {
   return (<>
-    <StatusBar style="auto" />
-    <PopUpLayer />
-    <CameraLayer />
-    <CameraPreviewLayer />
     <AppLayer
       title={props.title}
       subtitle={props.subtitle}
