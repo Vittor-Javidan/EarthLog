@@ -1,5 +1,5 @@
 import NetworkManager from '@NetworkManager';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   initConnection,
   endConnection,
@@ -58,12 +58,19 @@ export function useConnectStore(o: {
 export function useFetchSubscriptions(o: {
   subscriptions: (subscriptions: AppSubscriptions) => void,
   onError: (errorMessage: string) => void,
-}) {
-  const { connected } = useIAP();
+},  deps: [refresher: boolean]) {
+
+  const [refresher] = deps;
+  const {connected} = useIAP();
+
   useEffect(() => {
-    if (connected) {
-      fetchProducts({ skus: [MAP_PLAN_SKU, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3], type: 'subs' })
-      .then((subscriptions) => {
+    fetch();
+  }, [connected, refresher]);
+
+  async function fetch() {
+    try {
+      if (connected) {
+        const subscriptions = await fetchProducts({ skus: [MAP_PLAN_SKU, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3], type: 'subs' })
         if (subscriptions !== null) {
           const allSubscriptions = subscriptions as ProductSubscriptionAndroid[]
           const mapSubscriptions = allSubscriptions.filter(sub => sub.id === MAP_PLAN_SKU)
@@ -74,14 +81,18 @@ export function useFetchSubscriptions(o: {
           // To make sure higher tiers come last
           o.subscriptions({ mapSubscriptions, sponsorSubscriptions: [...sponsorT1, ...sponsorT2, ...sponsorT3] });
         }
-      })
-      .catch((error) => {
+      };
+    } catch (error) {
+      console.log(error)
+      if (error instanceof Error) {
         error?.message
         ? o.onError(`Could not fetch subscriptions: ${error.message}`)
         : o.onError('Could not fetch subscriptions');
-      });
-    };
-  }, [connected]);
+      } else {
+        o.onError('Could not fetch subscriptions');
+      }
+    }
+  }
 }
 
 export class SubscriptionManager {

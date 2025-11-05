@@ -119,7 +119,7 @@ export const SponsorSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {'A simple subscription to support the development of the app. Map access is included.'}
+            {'A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!'}
           </Text>
         </View>
         <Icon

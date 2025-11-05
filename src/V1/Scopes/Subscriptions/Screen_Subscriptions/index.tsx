@@ -15,6 +15,7 @@ export const Screen_Subscriptions = memo((props: {
 }) => {
 
   const [subscriptions, setSubscriptions] = useState<AppSubscriptions>({ mapSubscriptions: [], sponsorSubscriptions: [] });
+  const [tryAgain     , setTryAgain     ] = useState<boolean>(false);
 
   useIAP({
     onPurchaseSuccess: async (purchase) => {
@@ -31,7 +32,7 @@ export const Screen_Subscriptions = memo((props: {
     await SubscriptionManager.buySubscription({
       id_subscription: 'map', offerToken,
       onSuccess: () => { },
-      onError: (errorMessage: string) => alert(errorMessage),
+      onError: (errorMessage) => alert(errorMessage),
     })
   }, []);
 
@@ -42,14 +43,14 @@ export const Screen_Subscriptions = memo((props: {
     await SubscriptionManager.buySubscription({
       id_subscription: o.id, offerToken: o.offerToken,
       onSuccess: () => { },
-      onError: (errorMessage: string) => alert(errorMessage),
+      onError: (errorMessage) => alert(errorMessage),
     })
   }, []);
 
   useFetchSubscriptions({
     subscriptions: (subscriptions) => setSubscriptions(subscriptions),
-    onError: (errorMessage: string) => alert(errorMessage),
-  })
+    onError: (errorMessage) => setTryAgain(prev => !prev),
+  }, [tryAgain]);
 
   return (
     <Layout.Screen
