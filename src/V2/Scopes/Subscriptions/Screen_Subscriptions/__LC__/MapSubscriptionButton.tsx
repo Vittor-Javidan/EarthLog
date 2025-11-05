@@ -70,7 +70,7 @@ export const MapSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {'Map Access'}
+            {R['Map Access']}
           </Text>
           <Text p
             style={{
@@ -80,7 +80,7 @@ export const MapSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {`${subscription?.displayPrice}/month • Auto-renews monthly`}
+            {R['${price}/month • Auto-renews monthly'](subscription.displayPrice)}
           </Text>
           <Text p
             style={{
@@ -90,7 +90,7 @@ export const MapSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {'Enable the map inside the app'}
+            {R['Enable the map inside the app']}
           </Text>
         </View>
         <Icon
@@ -112,7 +112,7 @@ export const MapSubscriptionsButton = memo((props: {
             flexWrap: 'wrap',
           }}
         >
-          {'This app does not display ads or sell essential features. However, accessing the interactive map uses paid map services. This small subscription simply covers the map usage costs, keeping the app sustainable.'}
+          {R['This app does not display ads or sell essential features. However, accessing the interactive map uses paid map services. This small subscription simply covers the map usage costs, keeping the app sustainable.']}
         </Text>
         <Text p
           style={{
@@ -122,7 +122,7 @@ export const MapSubscriptionsButton = memo((props: {
             flexWrap: 'wrap',
           }}
         >
-          {'You can still view your coordinates on Google Maps for free — each GPS entry includes an external link to open it there.'}
+          {R['You can still view your coordinates on Google Maps for free — each GPS entry includes a button to open it on google maps.']}
         </Text>
       </View>
     </Pressable>
@@ -148,7 +148,7 @@ export const MapSubscriptionsButton = memo((props: {
           flexWrap: 'wrap',
         }}
       >
-        {'Map Access Granted'}
+        {R['Map Access Granted']}
       </Text>
     </View>
   );

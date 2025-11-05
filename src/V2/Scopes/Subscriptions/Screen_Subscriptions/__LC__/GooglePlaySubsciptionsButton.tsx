@@ -52,7 +52,7 @@ export const GooglePlaySubscriptionsButton = memo(() => {
           flexWrap: 'wrap',
         }}
       >
-        {'Play Store Subscriptions'}
+        {R['Play Store Subscriptions']}
       </Text>
       <Icon
         color={pressed ? theme.font_active : theme.font}

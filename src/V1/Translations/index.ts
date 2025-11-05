@@ -22,6 +22,7 @@ import { R_Scope_VersionChange } from './scope/VersionChangeScope';
 import { R_Scope_Sample } from './scope/SampleScope';
 import { R_Scope_FileExplore } from './scope/FileExplore';
 import { R_Scope_ExportedFiles } from './scope/ExportedFiles';
+import { R_Scope_Subscriptions } from './scope/SubscriptionsScope';
 import { R_Scope_Theme } from './scope/ThemeScope';
 import { R_Screen_WidgetThemePreview } from './Screen/WidgetThemePreview';
 import { R_Screen_DateFormat } from './Screen/DateFormatScreen';
@@ -77,6 +78,7 @@ export const translations = {
     vibrationOptions:         R_Scope_VibrationOptions,
     fileExplore:              R_Scope_FileExplore,
     exportedFiles:            R_Scope_ExportedFiles,
+    subscriptions:            R_Scope_Subscriptions,
   },
   screen: {
     home:                     R_Screen_Home,

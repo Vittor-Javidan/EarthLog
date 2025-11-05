@@ -99,7 +99,7 @@ export const SponsorSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {'Sponsor the App'}
+            {R['Sponsor the App']}
           </Text>
           <Text p
             style={{
@@ -109,7 +109,7 @@ export const SponsorSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {`${price}/month • Auto-renews monthly`}
+            {R['${price}/month • Auto-renews monthly'](price)}
           </Text>
           <Text p
             style={{
@@ -119,7 +119,7 @@ export const SponsorSubscriptionsButton = memo((props: {
               flexWrap: 'wrap',
             }}
           >
-            {'A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!'}
+            {R['A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!']}
           </Text>
         </View>
         <Icon
@@ -136,17 +136,17 @@ export const SponsorSubscriptionsButton = memo((props: {
         }}
       >
         <TierButton
-          label="Tier 1"
+          label={R['Tier 1']}
           value={selectedTier === 1}
           onChange={() => setSelectedTier(1)}
         />
         <TierButton
-          label="Tier 2"
+          label={R['Tier 2']}
           value={selectedTier === 2}
           onChange={() => setSelectedTier(2)}
         />
         <TierButton
-          label="Tier 3"
+          label={R['Tier 3']}
           value={selectedTier === 3}
           onChange={() => setSelectedTier(3)}
         />
@@ -199,6 +199,7 @@ const TierButton = memo((props: {
 const SponsoredCard = memo(() => {
 
   const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.screen.subscriptions[config.language], []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
 
   let sponsorColor
@@ -234,7 +235,7 @@ const SponsoredCard = memo(() => {
           flexWrap: 'wrap',
         }}
       >
-        {'You aready sponsoring the app. Thank you for your support!'}
+        {R['You aready sponsoring the app. Thank you for your support!']}
       </Text>
       <Icon
         color={sponsorColor}
