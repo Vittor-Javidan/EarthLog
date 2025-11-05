@@ -13,6 +13,7 @@ export const Drawer = memo((props: {
   onSettingsPress: () => void
   onFileExplorerPress: () => void
   onChangeVersionPress: () => void
+  onSubscriptionsPress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -20,6 +21,18 @@ export const Drawer = memo((props: {
   const R      = useMemo(() => translations.scope.home[config.language], []);
 
   return (<>
+    <Button.TextWithIcon
+      title={'Subscriptions'}
+      iconName="money-check-alt"
+      iconSize={24}
+      theme={{
+        font:              theme.font,
+        font_active:       theme.font_active,
+        background:        theme.background,
+        background_active: theme.background_active,
+      }}
+      onPress={() => props.onSubscriptionsPress()}
+    />
     <Button.TextWithIcon
       title={R['Exported Files']}
       iconName="file-export"

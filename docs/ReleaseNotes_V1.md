@@ -3,6 +3,8 @@
 - New:
   - MapLayer
   - Added a button to open GPSInput coordinates on google map
+  - Added map access subscriptions
+  - Added sponsorship subscriptions
 
 - Codebase:
   - Routes architecture changed

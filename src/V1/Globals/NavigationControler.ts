@@ -10,7 +10,8 @@ export type Scope = {
     'CREDENTIAL SCOPE'                         |
     'HOME SCOPE'                               |
     'FILE EXPLORE SCOPE'                       |
-    'EXPORTED FILES SCOPE'
+    'EXPORTED FILES SCOPE'                     |
+    'SUBSCRIPTIONS SCOPE'
   )
 } | {
   scope: 'PROJECT SCOPE' | 'EXPORT PROJECT SCOPE'

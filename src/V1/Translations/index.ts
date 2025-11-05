@@ -30,6 +30,7 @@ import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
 import { R_Screen_VibrationOptions } from './Screen/VibrationOptionsScreen';
 import { R_Screen_FileExplore } from './Screen/FileExplore'
 import { R_Screen_ExportedFiles } from './Screen/ExportedFiles';
+import { R_Screen_Subscriptions } from './Screen/SubscriptionsScreen';
 import { R_Alert_CreateProject } from './component/Alert/CreateProject';
 import { R_Alert_CreateSample } from './component/Alert/CreateSample';
 import { R_Alert_ExitApp } from './component/Alert/ExitApp';
@@ -91,6 +92,7 @@ export const translations = {
     vibrationOptions:         R_Screen_VibrationOptions,
     fileExplore:              R_Screen_FileExplore,
     exportedFiles:            R_Screen_ExportedFiles,
+    subscriptions:            R_Screen_Subscriptions,
   },
   component: {
     alert: {

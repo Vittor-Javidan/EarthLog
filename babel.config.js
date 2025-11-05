@@ -11,6 +11,7 @@ module.exports = function (api) {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
 
+          '@SubscriptionManager':  './src/SubscriptionManager.ts',
           '@VersionManager':       './src/VersionManager.ts',
           '@NetworkManager':       './src/NetworkManager.ts',
           '@DevTools':             './src/DevTools.ts',

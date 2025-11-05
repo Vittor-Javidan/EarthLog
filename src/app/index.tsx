@@ -3,7 +3,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts, FiraCode_300Light, FiraCode_400Regular, FiraCode_500Medium, FiraCode_600SemiBold, FiraCode_700Bold } from '@expo-google-fonts/fira-code';
 
 import VersionManager from '@VersionManager';
-import NetworkManager from '@NetworkManager';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,15 +28,9 @@ function useLoadResources(o: {onFinish: () => void}) {
   });
 
   useEffect(() => {
-    NetworkManager.hasInternetConection().then(connected => {
-      if (!connected) {
-        o.onFinish();
-        return;
-      }
-      if (isFontLoaded) {
-        o.onFinish();
-      }
-    });
+    if (isFontLoaded) {
+      o.onFinish();
+    }
   }, [isFontLoaded]);
 }
 

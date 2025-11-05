@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
 
+      "@SubscriptionManager":    [ "src/SubscriptionManager.ts"      ],
       "@VersionManager":         [ "src/VersionManager.ts"           ],
       "@NetworkManager":         [ "src/NetworkManager.ts"           ],
       "@DevTools":               [ "src/DevTools.ts"                 ],

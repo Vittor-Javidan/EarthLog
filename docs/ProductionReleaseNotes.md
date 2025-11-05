@@ -1,6 +1,10 @@
 <en-US>
-  - Added GPS visual feedback when GPS is on
+  - Added Map
+  - added map access subscription
+  - added sponsor subscriptions
 </en-US>
 <pt-BR>
-  - Adicionado feedback visual para quando o GPS for ligado
+  - Adicionado Mapa
+  - Adicionado subscrição de acesso ao mapa
+  - Adicionado subscrições de patricínio
 </pt-BR>

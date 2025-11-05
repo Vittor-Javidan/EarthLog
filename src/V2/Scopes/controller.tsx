@@ -1,28 +1,33 @@
 import { memo, useCallback, useState } from "react";
 
 import { Scope } from "@V2/Globals/NavigationControler";
-import { TestScope } from "@V2/Scopes/Test";
+import { TestScope } from "./Test";
 
-import { HomeScope } from "@V2/Scopes/Home";
-import { CredentialScope } from "@V2/Scopes/Credential";
-import { FileExploreScope } from "@V2/Scopes/FileExplore";
-import { VersionChangeScope } from "@V2/Scopes/VersionChange";
-import { ExportedFilesScope } from "@V2/Scopes/ExportedFiles";
+import { HomeScope } from "./Home";
+import { CredentialScope } from "./Credential";
+import { FileExploreScope } from "./FileExplore";
+import { VersionChangeScope } from "./VersionChange";
+import { ExportedFilesScope } from "./ExportedFiles";
+import { SubscriptionsScope } from "./Subscriptions";
 
-import { SettingsScope } from "@V2/Scopes/SettingsScope";
-import { ThemeScope } from "@V2/Scopes/Theme";
-import { DateAndTimeScope } from "@V2/Scopes/DateAndTime";
-import { LanguageSelectionScope } from "@V2/Scopes/LanguageSelection";
+import { SettingsScope } from "./SettingsScope";
+import { ThemeScope } from "./Theme";
+import { DateAndTimeScope } from "./DateAndTime";
+import { LanguageSelectionScope } from "./LanguageSelection";
 
-import { ProjectScope } from "@V2/Scopes/Project";
-import { SampleScope } from "@V2/Scopes/Sample";
-import { ExportProjectScope } from "@V2/Scopes/ExportProject";
-import { VibrationsOptionsScope } from "@V2/Scopes/VibrationsOptions";
+import { ProjectScope } from "./Project";
+import { SampleScope } from "./Sample";
+import { ExportProjectScope } from "./ExportProject";
+import { VibrationsOptionsScope } from "./VibrationsOptions";
+
+import { ControllerAPI } from "./API/Controller";
 
 export const ScopeController = memo(() => {
 
   const [currentRoute, setCurrentRoute] = useState<Scope>({ scope: 'HOME SCOPE' });
-  
+
+  ControllerAPI.registerScopeSetter(setCurrentRoute);
+
   const onScopeChange = useCallback((newRoute: Scope) => {
     setCurrentRoute(newRoute);
   }, []);
@@ -34,6 +39,7 @@ export const ScopeController = memo(() => {
     {currentRoute.scope === 'VERSION CHANGE SCOPE'     && (<VersionChangeScope     onScopeChange={onScopeChange}/>)}
     {currentRoute.scope === 'FILE EXPLORE SCOPE'       && (<FileExploreScope       onScopeChange={onScopeChange}/>)}
     {currentRoute.scope === 'EXPORTED FILES SCOPE'     && (<ExportedFilesScope     onScopeChange={onScopeChange}/>)}
+    {currentRoute.scope === 'SUBSCRIPTIONS SCOPE'      && (<SubscriptionsScope     onScopeChange={onScopeChange}/>)}
 
     {currentRoute.scope === 'SETTINGS SCOPE'           && (<SettingsScope          onScopeChange={onScopeChange}/>)}
     {currentRoute.scope === 'LANGUAGE SELECTION SCOPE' && (<LanguageSelectionScope onScopeChange={onScopeChange}/>)}

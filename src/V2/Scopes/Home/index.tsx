@@ -54,6 +54,7 @@ export const HomeScope = memo((props: {
           onSettingsPress={() => props.onScopeChange({ scope: 'SETTINGS SCOPE' })}
           onFileExplorerPress={() => props.onScopeChange({ scope: 'FILE EXPLORE SCOPE' })}
           onChangeVersionPress={() => props.onScopeChange({ scope: 'VERSION CHANGE SCOPE' })}
+          onSubscriptionsPress={() => props.onScopeChange({ scope: 'SUBSCRIPTIONS SCOPE' })}
         />
       }
       navigationTree={<NavigationTree />}

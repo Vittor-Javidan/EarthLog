@@ -10,7 +10,7 @@ import { ScopeController } from '@V2/Scopes/controller';
 import { MapLayer } from '@V2/Layers/Map';
 import DevTools from '@DevTools';
 
-export default function Home_LTS_VERSION_2() {
+export default function LTS_VERSION_2() {
 
   const [initialized, setInitialized] = useState(false);
 

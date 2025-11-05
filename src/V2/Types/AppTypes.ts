@@ -51,6 +51,9 @@ export type AppTheme = {
       font: string
       background: string
       border: string
+      confirm: string
+      wrong: string
+      warning: string
     }
     drawerButton: {
       font: string

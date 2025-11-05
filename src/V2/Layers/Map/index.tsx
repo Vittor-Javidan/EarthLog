@@ -4,7 +4,9 @@ import { GoogleMaps, } from 'expo-maps';
 import { GoogleMapsMapType, GoogleMapsMarker } from "expo-maps/build/google/GoogleMaps.types";
 
 import DevTools from "@DevTools";
+import { SubscriptionManager } from "@SubscriptionManager";
 import { GPSWatcherService } from "@V2/Services_Core/GPSService";
+import { ControllerAPI } from "@V2/Scopes/API/Controller";
 
 import { Icon } from "@V2/Icon/index";
 import { MapAnimation } from "./Animation";
@@ -18,8 +20,12 @@ export const MapLayer = memo(() => {
   const [enableMap,       setEnableMap      ] = useState<boolean>(false);
 
   const onMapOpen = useCallback(() => {
-    setShowMap(prev => !prev)
-    setEnableMap(true);
+    if (SubscriptionManager.getStatus().isMapEnabled) {
+      setShowMap(prev => !prev)
+      setEnableMap(true);
+    } else {
+      ControllerAPI.changeScope({ scope: 'SUBSCRIPTIONS SCOPE' });
+    }
   }, [])
   
   useEffect(() => {
@@ -54,7 +60,7 @@ export const MapLayer = memo(() => {
         zIndex: 20,
         height: Dimensions.get('screen').height,
         width: Dimensions.get('screen').width,
-        backgroundColor: 'red',
+        backgroundColor: '#000',
       }}
     >
       <Map
