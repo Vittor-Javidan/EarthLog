@@ -1,7 +1,6 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Dimensions, Pressable, StyleProp, ViewStyle } from "react-native"
-import { GoogleMaps, } from 'expo-maps';
-import { GoogleMapsMapType, GoogleMapsMarker } from "expo-maps/build/google/GoogleMaps.types";
+import MapView, { MapMarker, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import DevTools from "@DevTools";
 import { SubscriptionManager } from "@SubscriptionManager";
@@ -10,14 +9,20 @@ import { ControllerAPI } from "@V2/Scopes/API/Controller";
 
 import { Icon } from "@V2/Icon/index";
 import { MapAnimation } from "./Animation";
+import { GPS_DTO } from "@V1/Types/ProjectTypes";
+
+type GooglePinColors =
+'red' | 'tomato' | 'orange' | 'yellow' | 'gold' | 'wheat' |
+'linen' | 'green' | 'blue' | 'teal' | 'purple' | 'indigo'
 
 export const MapLayer = memo(() => {
 
   const gpsWatcher = useMemo(() => new GPSWatcherService({}), [])
-  const [currentPosition, setCurrentPosition] = useState<GoogleMapsMarker | undefined>(undefined);
-  const [markers  ,       setMarkers        ] = useState<GoogleMapsMarker[]>([])
-  const [showMap  ,       setShowMap        ] = useState<boolean>(false);
-  const [enableMap,       setEnableMap      ] = useState<boolean>(false);
+  const [mapRef         , setMapRef         ] = useState<React.RefObject<MapView | null> | null>(null);
+  const [currentPosition, setCurrentPosition] = useState<GPS_DTO | null>(null);
+  const [markers        , setMarkers        ] = useState<MapMarker[]>([])
+  const [showMap        , setShowMap        ] = useState<boolean>(false);
+  const [enableMap      , setEnableMap      ] = useState<boolean>(false);
 
   const onMapOpen = useCallback(() => {
     if (SubscriptionManager.getStatus().isMapEnabled) {
@@ -35,12 +40,8 @@ export const MapLayer = memo(() => {
         if (position?.coordinates) {
           const latitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.lat + random : position?.coordinates?.lat;
           const longitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.long + random : position?.coordinates?.long;
-          setCurrentPosition({
-            coordinates: {
-              latitude,
-              longitude
-            }
-          })
+          const accuracy = position?.coordinates?.accuracy;
+          setCurrentPosition({ coordinates: { lat: latitude, long: longitude, accuracy: accuracy } });
         }
       })
     }
@@ -49,6 +50,23 @@ export const MapLayer = memo(() => {
   useEffect(() => {
     return () => { gpsWatcher.stopWatcher(); };
   }, []);
+
+  useEffect(() => {
+    if (
+      mapRef !== null &&
+      currentPosition &&
+      currentPosition.coordinates &&
+      mapRef.current
+    ) {
+      mapRef.current.animateCamera({
+        center: {
+          latitude: currentPosition.coordinates.lat,
+          longitude: currentPosition.coordinates.long,
+        },
+        zoom: 15,
+      });
+    }
+  }, [currentPosition, mapRef]);
 
   return (<>
     <MapAnimation
@@ -64,10 +82,26 @@ export const MapLayer = memo(() => {
       }}
     >
       <Map
+        currentPosition={currentPosition}
         enableMap={enableMap}
-        markers={currentPosition ? [currentPosition, ...markers] : markers}
         style={{ flex: 1 }}
-      />
+        onLoad={(mapRef) => setMapRef(mapRef)}
+      >
+        {(
+          currentPosition !== null &&
+          currentPosition.coordinates
+        ) && (
+          <Marker
+            key={`${Math.random()}${currentPosition.coordinates.lat},${currentPosition.coordinates.long}`}
+            coordinate={{
+              latitude: currentPosition.coordinates.lat,
+              longitude: currentPosition.coordinates.long,
+            }}
+            pinColor="red"
+            title="You are here"
+          />
+        )}
+      </Map>
     </MapAnimation>
     <MapButton
       onPress={() => onMapOpen()}
@@ -76,30 +110,39 @@ export const MapLayer = memo(() => {
 })
 
 const Map = memo((props: {
+  currentPosition: GPS_DTO | null
   enableMap: boolean
-  markers: GoogleMapsMarker[]
   style?: StyleProp<ViewStyle>
+  children?: React.ReactNode
+  onLoad: (mapRef: React.RefObject<MapView | null>) => void
 }) => {
+
+  const mapRef = useRef<MapView | null>(null);
+
   return props.enableMap ? (
-    <GoogleMaps.View
-      properties={{
-        mapType: GoogleMapsMapType.SATELLITE
-      }}
-      uiSettings={{
-        zoomControlsEnabled: false,
-        compassEnabled: true,
-      }}
+    <MapView
+      ref={mapRef}
+      provider={PROVIDER_GOOGLE}
+      mapType="satellite"
+      zoomEnabled
+      showsCompass
       style={props.style}
-      onMapLoaded={() => console.log("Map Loaded")}
-      cameraPosition={{
-        coordinates: {
-          latitude: props.markers[0]?.coordinates?.latitude,
-          longitude: props.markers[0]?.coordinates?.longitude
-        },
-        zoom: 16,
+      onMapLoaded={() => {
+        console.log('Map loaded');
+        props.onLoad(mapRef);
       }}
-      markers={props.markers}
-    />
+      initialRegion={(
+        props.currentPosition !== null &&
+        props.currentPosition.coordinates
+      ) ? {
+        latitude: props.currentPosition.coordinates.lat,
+        longitude: props.currentPosition.coordinates.long,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      } : undefined}
+    >
+      {props.children}
+    </MapView>
   ) : <></>;
 });
 
