@@ -8,7 +8,6 @@ import { CameraLayer } from '@V2/Layers/Camera';
 import { PopUpLayer } from '@V2/Layers/PopUp';
 import { ScopeController } from '@V2/Scopes/controller';
 import { MapLayer } from '@V2/Layers/Map';
-import DevTools from '@DevTools';
 
 export default function LTS_VERSION_2() {
 
@@ -17,8 +16,6 @@ export default function LTS_VERSION_2() {
   useEffect(() => {
     initApp(() => setInitialized(true));
   }, []);
-
-  DevTools.useLog('LTS_VERSION_2 rendered.');
 
   return (<>
     {initialized && (<>

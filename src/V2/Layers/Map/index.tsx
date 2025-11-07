@@ -1,72 +1,81 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Dimensions, Pressable, StyleProp, ViewStyle } from "react-native"
-import MapView, { MapMarker, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import React, { memo, useCallback, useState } from "react"
+import { Dimensions } from "react-native"
+import MapView, { Circle, Marker } from 'react-native-maps';
+import Constants from 'expo-constants';
 
-import DevTools from "@DevTools";
 import { SubscriptionManager } from "@SubscriptionManager";
-import { GPSWatcherService } from "@V2/Services_Core/GPSService";
+import { CoordinateDTO } from "@V2/Types/ProjectTypes";
 import { ControllerAPI } from "@V2/Scopes/API/Controller";
+import { useFirstPosition, useFollowUserLocation } from "./Hooks";
+import { MapAPI, MapScope, MarkerData } from "../API/Map";
 
-import { Icon } from "@V2/Icon/index";
 import { MapAnimation } from "./Animation";
-import { GPS_DTO } from "@V1/Types/ProjectTypes";
-
-type GooglePinColors =
-'red' | 'tomato' | 'orange' | 'yellow' | 'gold' | 'wheat' |
-'linen' | 'green' | 'blue' | 'teal' | 'purple' | 'indigo'
+import { Map } from "./Map";
+import { Button_Map } from "./Buttons/MapButton";
+import { Button_CurrentPosition } from "./Buttons/CurrentPosition";
+import { DataDisplay } from "./DataDisplay";
 
 export const MapLayer = memo(() => {
 
-  const gpsWatcher = useMemo(() => new GPSWatcherService({}), [])
-  const [mapRef         , setMapRef         ] = useState<React.RefObject<MapView | null> | null>(null);
-  const [currentPosition, setCurrentPosition] = useState<GPS_DTO | null>(null);
-  const [markers        , setMarkers        ] = useState<MapMarker[]>([])
-  const [showMap        , setShowMap        ] = useState<boolean>(false);
-  const [enableMap      , setEnableMap      ] = useState<boolean>(false);
+  const [mapRef           ,setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
+  const [showMap          ,setShowMap          ] = useState<boolean>(false);
+  const [firstLoad        ,setFirstLoad        ] = useState<boolean>(false);
+  const [showIndicator    ,setShowIndicator    ] = useState<boolean>(true);
+  const [followUser       ,setFollowUser       ] = useState<boolean>(false);
+  const [lastKnownLocation,setLastKnownLocation] = useState<CoordinateDTO | null>(null);
+  const [scope            ,setScope            ] = useState<MapScope>({ type: 'navigation' });
+
+  const [markerData       ,setMarkerData       ] = useState<MarkerData[]>([]);
+
+  MapAPI.registerScopeSetter(setScope);
+  MapAPI.registerMarkersDataSetter(setMarkerData);
 
   const onMapOpen = useCallback(() => {
     if (SubscriptionManager.getStatus().isMapEnabled) {
+      if (showMap) {
+        setFollowUser(false);
+      }
       setShowMap(prev => !prev)
-      setEnableMap(true);
+      setFirstLoad(true);
     } else {
       ControllerAPI.changeScope({ scope: 'SUBSCRIPTIONS SCOPE' });
     }
-  }, [])
-  
-  useEffect(() => {
-    if (enableMap) {
-      const random = DevTools.gpsTutorialCoodinateMask();
-      gpsWatcher.getCurrentPosition((position) => {
-        if (position?.coordinates) {
-          const latitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.lat + random : position?.coordinates?.lat;
-          const longitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.long + random : position?.coordinates?.long;
-          const accuracy = position?.coordinates?.accuracy;
-          setCurrentPosition({ coordinates: { lat: latitude, long: longitude, accuracy: accuracy } });
-        }
-      })
-    }
-  }, [showMap, enableMap])
+  }, [showMap])
 
-  useEffect(() => {
-    return () => { gpsWatcher.stopWatcher(); };
-  }, []);
-
-  useEffect(() => {
-    if (
-      mapRef !== null &&
-      currentPosition &&
-      currentPosition.coordinates &&
-      mapRef.current
-    ) {
+  const goToCoordinate = useCallback((latitude: number, longitude: number) => {
+    if (mapRef !== null && mapRef.current) {
       mapRef.current.animateCamera({
         center: {
-          latitude: currentPosition.coordinates.lat,
-          longitude: currentPosition.coordinates.long,
+          latitude: latitude,
+          longitude: longitude,
         },
-        zoom: 15,
+        zoom: 20,
       });
+      setShowIndicator(false);
     }
-  }, [currentPosition, mapRef]);
+  }, [mapRef])
+
+  const followUserLocation = useCallback(() => {
+    if (!followUser) {
+      setShowIndicator(true);
+    }
+    setFollowUser(prev => !prev);
+  }, [followUser])
+
+  useFirstPosition({
+    showMap: showMap,
+    onPositionReceived: (position) => {
+      goToCoordinate(position.lat, position.long);
+      setLastKnownLocation(position);
+    }
+  }, [mapRef]);
+
+  useFollowUserLocation({
+    onCoordinateUpdate: (position) => {
+      goToCoordinate(position.lat, position.long);
+      setLastKnownLocation(position);
+    }
+  }, [followUser]);
 
   return (<>
     <MapAnimation
@@ -76,105 +85,91 @@ export const MapLayer = memo(() => {
         top: 0,
         left: 0,
         zIndex: 20,
-        height: Dimensions.get('screen').height,
-        width: Dimensions.get('screen').width,
+        height: Dimensions.get('window').height + Constants.statusBarHeight,
+        width: Dimensions.get('window').width,
         backgroundColor: '#000',
       }}
     >
+      {(scope.type === 'project' || scope.type === 'sample') && (
+        <DataDisplay
+          scope={scope}
+          showMap={showMap}
+          isFirstLoad={firstLoad}
+          onMarkerUpdate={(markerData) => setMarkerData([...markerData])}          
+        />
+      )}
       <Map
-        currentPosition={currentPosition}
-        enableMap={enableMap}
+        firstLoad={firstLoad}
+        followUser={followUser}
         style={{ flex: 1 }}
         onLoad={(mapRef) => setMapRef(mapRef)}
       >
-        {(
-          currentPosition !== null &&
-          currentPosition.coordinates
-        ) && (
-          <Marker
-            key={`${Math.random()}${currentPosition.coordinates.lat},${currentPosition.coordinates.long}`}
-            coordinate={{
-              latitude: currentPosition.coordinates.lat,
-              longitude: currentPosition.coordinates.long,
-            }}
-            pinColor="red"
-            title="You are here"
-          />
-        )}
+        <Marker_LastKnownLocation
+          lastKnownLocation={lastKnownLocation}
+          isFollowingUser={followUser}
+          coordinate={lastKnownLocation!}
+        />
+        <Markers markerData={markerData} />
       </Map>
+      <Button_CurrentPosition
+        followUser={followUser}
+        onPress={() => followUserLocation()}
+        showIndicator={mapRef === null || showIndicator}
+      />
     </MapAnimation>
-    <MapButton
+    <Button_Map
       onPress={() => onMapOpen()}
     />
   </>);
 })
 
-const Map = memo((props: {
-  currentPosition: GPS_DTO | null
-  enableMap: boolean
-  style?: StyleProp<ViewStyle>
-  children?: React.ReactNode
-  onLoad: (mapRef: React.RefObject<MapView | null>) => void
+const Marker_LastKnownLocation = memo((props: {
+  lastKnownLocation: CoordinateDTO | null
+  isFollowingUser: boolean
+  coordinate: CoordinateDTO
 }) => {
 
-  const mapRef = useRef<MapView | null>(null);
+  if (!props.lastKnownLocation || props.isFollowingUser) {
+    return null;
+  }
 
-  return props.enableMap ? (
-    <MapView
-      ref={mapRef}
-      provider={PROVIDER_GOOGLE}
-      mapType="satellite"
-      zoomEnabled
-      showsCompass
-      style={props.style}
-      onMapLoaded={() => {
-        console.log('Map loaded');
-        props.onLoad(mapRef);
+  return (<>
+    <Marker
+      coordinate={{
+        latitude: props.coordinate.lat,
+        longitude: props.coordinate.long,
       }}
-      initialRegion={(
-        props.currentPosition !== null &&
-        props.currentPosition.coordinates
-      ) ? {
-        latitude: props.currentPosition.coordinates.lat,
-        longitude: props.currentPosition.coordinates.long,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      } : undefined}
-    >
-      {props.children}
-    </MapView>
-  ) : <></>;
-});
+      title="Your last known location"
+      pinColor="red"
+    />
+  </>);
+})
 
-export const MapButton = memo((props: {
-  onPress: () => void
+const Markers = memo((props: {
+  markerData: MarkerData[]
 }) => {
-
-  const [pressed, setPressed] = useState<boolean>(false);
-  const BOTTOM = 90
-
-  return (
-    <Pressable
-      onPress={() => props.onPress()}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      style={{
-        position: 'absolute',
-        right: 0,
-        bottom: BOTTOM,
-        zIndex: 21,
-        backgroundColor: pressed ? 'red' : 'white',
-        height: 60,
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-        justifyContent: 'center',
-      }}
-    >
-      <Icon
-        iconName="map"
-        color={pressed ? "white" : "red"}
-        fontSize={30}
+  return (<>
+    {props.markerData.map((marker) => (<>
+      <Marker
+        key={`${Math.random()}${marker.id_marker}`}
+        coordinate={{
+          latitude: marker.coordinates.latitude,
+          longitude: marker.coordinates.longitude,
+        }}
+        title={marker.title}
+        pinColor={marker.pinColor}
       />
-    </Pressable>
-  );
-});
+      <Circle
+        key={`${Math.random()}${marker.id_marker}`}
+        center={{
+          latitude: marker.coordinates.latitude,
+          longitude: marker.coordinates.longitude,
+        }}
+        radius={marker.coordinates.accuracy}
+        strokeColor={marker.pinColor}
+        fillColor={'rgba(0,0,0,0.1)'}
+        strokeWidth={3}
+      />
+    </>))}
+  </>);
+})

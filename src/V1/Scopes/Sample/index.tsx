@@ -7,6 +7,7 @@ import { GPS_DTO } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { CacheService } from '@V1/Services/CacheService';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { Layout } from '@V1/Layout/index';
 import { Screen_SampleData } from './Screen_SampleData';
@@ -91,5 +92,6 @@ async function fetchWidgets(
     CacheService.loadAllWidgets_Template({ id_project }),
   ];
   await Promise.all(promises);
+  MapAPI.changeScope({ type: 'sample', id_project, id_sample });
   whenLoaded();
 }

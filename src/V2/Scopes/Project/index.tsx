@@ -7,6 +7,7 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { CacheService } from '@V2/Services/CacheService';
 import { ProjectService } from '@V2/Services/ProjectService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { MapAPI } from '@V2/Layers/API/Map';
 
 import { Layout } from '@V2/Layout/index';
 import { Screen_AllSamples } from './Screen_AllSamples';
@@ -144,5 +145,6 @@ async function FetchData(
     ];
     await Promise.all(promises);
   }
+  MapAPI.changeScope({ type: 'project', id_project });
   whenLoaded();
 }

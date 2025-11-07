@@ -11,6 +11,7 @@ import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { CacheService } from '@V2/Services/CacheService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { MapAPI } from '@V2/Layers/API/Map';
 
 import { Layout } from '@V2/Layout/index';
 import { Screen_Home } from './Screen_Home';
@@ -78,5 +79,6 @@ async function fetchProject(whenLoaded: () => void) {
     CredentialService.loadAllCredentials(),
   ];
   await Promise.all(promises);
+  MapAPI.changeScope({ type: 'navigation' });
   whenLoaded();
 }

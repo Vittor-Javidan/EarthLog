@@ -1,4 +1,5 @@
 import { memo, useCallback, useState } from "react";
+import { Dimensions } from "react-native";
 import { finishTransaction, useIAP } from "react-native-iap";
 
 import { sleep } from "@V2/Globals/Sleep";
@@ -67,6 +68,7 @@ export const Screen_Subscriptions = memo((props: {
           contentContainerStyle={{
             paddingTop: 10,
             paddingHorizontal: 10,
+            paddingBottom: Dimensions.get('window').height - 240,
             gap: 10,
           }}
         >

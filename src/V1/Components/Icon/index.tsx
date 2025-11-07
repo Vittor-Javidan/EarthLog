@@ -21,6 +21,7 @@ export const Icon = memo((props: {
     case 'map-marked'            : return <FontAwesome5           name="map-marked"            size={props.fontSize} color={props.color} style={props.style} />
     case 'money-check-alt'       : return <FontAwesome5           name="money-check-alt"       size={props.fontSize} color={props.color} style={props.style} />
     case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
+    case 'gps-off'               : return <MaterialIcons          name="gps-off"               size={props.fontSize} color={props.color} style={props.style} />
     case 'code-json'             : return <MaterialCommunityIcons name="code-json"             size={props.fontSize} color={props.color} style={props.style} />
     case 'folder-home'           : return <MaterialCommunityIcons name="folder-home"           size={props.fontSize} color={props.color} style={props.style} />
     case 'cloud-refresh-variant' : return <MaterialCommunityIcons name="cloud-refresh-variant" size={props.fontSize} color={props.color} style={props.style} />
@@ -36,7 +37,7 @@ export type IconName = (
   'file-export' | 'file-csv' | 'map-marked' | 'money-check-alt' |
 
   // MaterialIcons
-  'new-releases' |
+  'new-releases' | 'gps-off' |
 
   // AntDesign names
   'file' | 'file-word' | 'file-zip' |
