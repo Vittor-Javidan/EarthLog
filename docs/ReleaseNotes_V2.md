@@ -1,3 +1,21 @@
+# ✅ 2.4.0
+
+- New:
+  - MapLayer
+  - Added a button to open GPSInput coordinates on google map
+  - Added map access subscriptions
+  - Added sponsorship subscriptions
+  - All coordinates shows as markers inside the map
+    - If you are on project screen, when opening the map, all coordinates inside the project will be shown
+    - If you are on sample screen, when opening the map, only the coordinates of the sample will be shown
+    - If you are on Home Screen, when opening the map, no coordinate will be shown other than the user last know location
+
+- Codebase:
+  - Routes architecture changed
+    - Created a folder called scopes
+      - All Screens for each scope are now inside their respective scope parents
+
+
 # ✅ 2.3.3
 
 - New:

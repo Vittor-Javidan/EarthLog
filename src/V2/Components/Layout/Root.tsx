@@ -1,8 +1,8 @@
-import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
+import React, { ReactNode, useState, useMemo, memo, useCallback, useEffect } from 'react';
 import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 
+import { SubscriptionManager } from '@SubscriptionManager';
 import { APP_VERSION } from '@V2/Globals/Version';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { HapticsService } from '@V2/Services/HapticsService';
@@ -11,9 +11,6 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';
-import { PopUpLayer } from '@V2/Layers/PopUp';
-import { CameraLayer } from '@V2/Layers/Camera/index';
-import { CameraPreviewLayer } from '@V2/Layers/CameraPreview';
 
 const NAVBAR_HEIGHT = 90;
 
@@ -25,10 +22,6 @@ export const Root = memo((props: {
   navigationTree: React.JSX.Element
 }) => {
   return (<>
-    <StatusBar style="auto" />
-    <PopUpLayer />
-    <CameraLayer />
-    <CameraPreviewLayer />
     <AppLayer
       title={props.title}
       subtitle={props.subtitle}
@@ -198,8 +191,27 @@ const Drawer = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
+  const [sponsorTier , setSponsorTier ] = useState<number>(SubscriptionManager.getStatus().sponsorship);
+  const [isMapEnabled, setIsMapEnabled] = useState<boolean>(SubscriptionManager.getStatus().isMapEnabled);
 
   const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
+
+  let sponsorColor
+  switch (sponsorTier) {
+    case 1: sponsorColor = theme.wrong; break;   // Supporter
+    case 2: sponsorColor = theme.warning; break; // Gold
+    case 3: sponsorColor = theme.confirm; break; // Emerald
+    default: sponsorColor = theme.wrong; break;  // Supporter
+  }
+
+  useEffect(() => {
+    SubscriptionManager.getActiveSubscriptions({
+      onSuccess: (status) => {
+        setSponsorTier(status.sponsorship);
+        setIsMapEnabled(status.isMapEnabled);
+      }
+    });
+  }, []);
 
   return showDrawer ? (<>
     <Animation.Drawer
@@ -222,7 +234,10 @@ const Drawer = memo((props: {
         onPress={() => props.onPress_Background()}
         style={{
           flexDirection: 'row',
+          alignItems: 'center',
           justifyContent: 'flex-end',
+          padding: 8,
+          gap: 10,
         }}
       >
         <Text p
@@ -230,11 +245,24 @@ const Drawer = memo((props: {
             color: theme.font,
             textAlign: 'right',
             fontSize: 10,
-            padding: 8,
           }}
         >
           {'v: ' + APP_VERSION}
         </Text>
+        {sponsorTier > 0 && (
+          <Icon
+            color={sponsorColor}
+            iconName={'heart'}
+            fontSize={20}
+          />
+        )}
+        {isMapEnabled && (
+          <Icon
+            color={theme.wrong}
+            iconName={'map'}
+            fontSize={20}
+          />
+        )}
       </Pressable>
     </Animation.Drawer>
   </>) : <></>;

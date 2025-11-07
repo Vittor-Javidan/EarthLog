@@ -22,6 +22,7 @@ import { R_Scope_VersionChange } from './scope/VersionChangeScope';
 import { R_Scope_Sample } from './scope/SampleScope';
 import { R_Scope_FileExplore } from './scope/FileExplore';
 import { R_Scope_ExportedFiles } from './scope/ExportedFiles';
+import { R_Scope_Subscriptions } from './scope/SubscriptionsScope';
 import { R_Scope_Theme } from './scope/ThemeScope';
 import { R_Screen_WidgetThemePreview } from './Screen/WidgetThemePreview';
 import { R_Screen_DateFormat } from './Screen/DateFormatScreen';
@@ -30,6 +31,7 @@ import { R_Screen_ExportProject } from './Screen/ExportProjectScreen';
 import { R_Screen_VibrationOptions } from './Screen/VibrationOptionsScreen';
 import { R_Screen_FileExplore } from './Screen/FileExplore'
 import { R_Screen_ExportedFiles } from './Screen/ExportedFiles';
+import { R_Screen_Subscriptions } from './Screen/SubscriptionsScreen';
 import { R_Alert_CreateProject } from './component/Alert/CreateProject';
 import { R_Alert_CreateSample } from './component/Alert/CreateSample';
 import { R_Alert_ExitApp } from './component/Alert/ExitApp';
@@ -76,6 +78,7 @@ export const translations = {
     vibrationOptions:         R_Scope_VibrationOptions,
     fileExplore:              R_Scope_FileExplore,
     exportedFiles:            R_Scope_ExportedFiles,
+    subscriptions:            R_Scope_Subscriptions,
   },
   screen: {
     home:                     R_Screen_Home,
@@ -91,6 +94,7 @@ export const translations = {
     vibrationOptions:         R_Screen_VibrationOptions,
     fileExplore:              R_Screen_FileExplore,
     exportedFiles:            R_Screen_ExportedFiles,
+    subscriptions:            R_Screen_Subscriptions,
   },
   component: {
     alert: {

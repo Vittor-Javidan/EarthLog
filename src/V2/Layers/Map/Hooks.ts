@@ -1,0 +1,92 @@
+import { useEffect, useMemo, useState } from "react";
+import MapView from "react-native-maps";
+
+import DevTools from "@DevTools";
+import { SubscriptionManager } from "@SubscriptionManager";
+import { CoordinateDTO, ProjectDTO } from "@V2/Types/ProjectTypes";
+import { GPSWatcherService } from "@V2/Services_Core/GPSService";
+import { ProjectService } from "@V2/Services/ProjectService";
+
+export function useBuildProject(o: {
+  id_project: string
+  onProjectBuilt: (projectDTO: ProjectDTO) => void
+}, deps: [showMap: boolean]) {
+
+  const [showMap] = deps
+
+  useEffect(() => {
+    if (
+      SubscriptionManager.getStatus().isMapEnabled && 
+      (showMap)
+    ) {
+      /**
+       * We wait the map animation opening to not stutter the UI,
+       * since this will markers renders when map opens.
+      */
+      setTimeout(() => {
+        ProjectService.buildProjectDTO({
+          id_project: o.id_project,
+          feedback: (message) => {}
+        }).then((dto) => {
+          o.onProjectBuilt(dto);
+        });
+      }, 200);
+    }
+  }, deps);
+}
+
+export function useFirstPosition(o: {
+  showMap: boolean
+  onPositionReceived: (position: CoordinateDTO) => void
+}, deps: [mapRef: React.RefObject<MapView | null> | null]) {
+
+  const gpsWatcher = useMemo(() => new GPSWatcherService({}), [])
+  const [firstLoad, setFirstLoad] = useState<boolean>(true);
+  const [mapRef] = deps
+
+  useEffect(() => {
+    if (
+      o.showMap &&
+      mapRef !== null &&
+      mapRef.current &&
+      firstLoad
+    ) {
+      const random = DevTools.gpsTutorialCoodinateMask();
+      gpsWatcher.getCurrentPosition((position) => {
+        if (position?.coordinates) {
+          const latitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.lat + random : position?.coordinates?.lat;
+          const longitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.long + random : position?.coordinates?.long;
+          const accuracy = position?.coordinates?.accuracy;
+          o.onPositionReceived({ lat: latitude, long: longitude, accuracy: accuracy });
+        }
+        setFirstLoad(false);
+      })
+    }
+    return () => { gpsWatcher.stopWatcher(); }
+  }, deps);
+}
+
+export function useFollowUserLocation(o: {
+  onCoordinateUpdate: (position: CoordinateDTO) => void
+}, deps: [followUser: boolean]) {
+  const [followUser] = deps
+  const gpsWatcher = useMemo(() => new GPSWatcherService({}), [])
+  useEffect(() => {
+    if (followUser) {
+      gpsWatcher.watchPositionWithNoFiltering(
+        (position) => {
+          if (position?.coordinates) {
+            o.onCoordinateUpdate({
+              lat: position.coordinates?.lat,
+              long: position.coordinates?.long,
+              accuracy: position.coordinates?.accuracy,
+            })
+          }
+        },
+      )
+    } else {
+      gpsWatcher.stopWatcher()
+    }
+    return () => { gpsWatcher.stopWatcher(); }
+  }, deps)
+}

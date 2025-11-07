@@ -47,7 +47,6 @@ export async function InputDocument_Picture(o: {
     if (picturesIdsOnDevice.includes(id_picture)) {
       document.push(await Docx.image({ id_picture }))
     } else {
-      console.log('Picture not found on device:', id_picture);
       document.push(
         Docx.paragraph([
           Docx.text({

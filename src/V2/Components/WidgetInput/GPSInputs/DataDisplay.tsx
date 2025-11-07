@@ -1,9 +1,10 @@
 import React, { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
+import DevTools from "@DevTools";
 import { GPSFeaturesDTO, GPSInputData, WidgetTheme } from '@V2/Types/ProjectTypes';
 
-import { Icon } from '@V1/Icon/index';
+import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 
 export const DataDisplay = memo((props: {
@@ -31,6 +32,7 @@ export const DataDisplay = memo((props: {
     return <></>;
   }
 
+  const random = DevTools.gpsTutorialCoodinateMask();
   return (<>
     {showStaticDisplay && (
       <View
@@ -48,13 +50,13 @@ export const DataDisplay = memo((props: {
           {coordinates !== undefined && <>
             <DataInfo
               title="Latitude"
-              value={coordinates.lat}
+              value={DevTools.TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat}
               precision={coordinates.accuracy}
               theme={theme}
             />
             <DataInfo
               title="Longitude"
-              value={coordinates.long}
+              value={DevTools.TUTORIAL_MODE ? coordinates.long + random : coordinates.long}
               precision={coordinates.accuracy}
               theme={theme}
             />

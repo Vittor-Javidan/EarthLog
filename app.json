@@ -2,7 +2,7 @@
   "expo": {
     "name": "Field Data Collector",
     "slug": "field-data-collector",
-    "version": "2.3.2",
+    "version": "2.4.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,11 +20,16 @@
     },
     "android": {
       "package": "com.vittorjavidan.fielddatacollector",
-      "versionCode": 19,
+      "versionCode": 23,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#00122a"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCEgCnCZM5a2iyk2O8sr4iMaVT4Ulq9LX4"
+        }
       }
     },
     "scheme": "myapp",
@@ -38,6 +43,8 @@
       }
     },
     "plugins": [
+      "expo-font",
+      "expo-router",
       "expo-localization",
       [
         "expo-location",
@@ -64,9 +71,7 @@
             "usesCleartextTraffic": true
           }
         }
-      ],
-      "expo-font",
-      "expo-router"
+      ]
     ],
     "owner": "vittorjavidan"
   }
