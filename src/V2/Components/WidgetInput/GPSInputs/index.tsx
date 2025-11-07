@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { Linking, View } from 'react-native';
 
+import DevTools from "@DevTools";
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
@@ -159,7 +160,10 @@ export const GPSInput = memo((props: {
   const onMapOpen = useCallback((inputData: GPSInputData) => {
     const { coordinates } = inputData.value;
     if (coordinates) {
-      Linking.openURL(`https://www.google.com/maps?q=${coordinates.lat},${coordinates.long}`);
+      const random = DevTools.gpsTutorialCoodinateMask();
+      const latitude = DevTools.TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat;
+      const longitude = DevTools.TUTORIAL_MODE ? coordinates.long + random : coordinates.long;
+      Linking.openURL(`https://www.google.com/maps?q=${latitude},${longitude}`);
     }
   }, []);
 

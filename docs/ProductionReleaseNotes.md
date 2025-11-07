@@ -1,6 +1,12 @@
 <en-US>
-  - Added GPS visual feedback when GPS is on
+  - Added Map
+  - Added map access subscription
+  - Added sponsor subscriptions
+  - Now GPS coordinates automatically show as markers when opening the map
 </en-US>
 <pt-BR>
-  - Adicionado feedback visual para quando o GPS for ligado
+  - Adicionado Mapa
+  - Adicionado subscrição de acesso ao mapa
+  - Adicionado subscrições de patricínio
+  - Agora as coordenadas de GPS aparecem automaticamente como marcadores ao abrir o mapa
 </pt-BR>

@@ -51,6 +51,9 @@ export type AppTheme = {
       font: string
       background: string
       border: string
+      confirm: string
+      wrong: string
+      warning: string
     }
     drawerButton: {
       font: string
@@ -117,7 +120,7 @@ export type ConfigDTO = {
 export type ModalConfig = {
   type: 'exit app' | 'project creation' | 'download projects'
 } | {
-  type: 'upload projects' | 'export project (DOCX)' | 'export project (CSV)' | 'export project (ZIP IMAGES)'
+  type: 'export project (DOCX)' | 'export project (CSV)' | 'export project (ZIP IMAGES)'
   id_project: string
 } | {
   type: 'sample creation'
@@ -135,6 +138,10 @@ export type ModalConfig = {
   type: 'download pictures'
   id_project: string
   picturesIDs: string[]
+} | {
+  type: 'upload projects'
+  id_project: string
+  onProjectDeletion: () => void
 }
 
 export type ImageQuality = 'no compress' | 'High' | 'Medium' | 'Low'

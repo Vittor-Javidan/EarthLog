@@ -32,6 +32,9 @@ export const LIGHT: AppTheme = {
       font: '#222',
       background: '#F4F4F4',
       border: '#000',
+      confirm: '#2F2',
+      wrong: '#F55',
+      warning: '#FF5',
     },
     drawerButton: {
       font: '#222',

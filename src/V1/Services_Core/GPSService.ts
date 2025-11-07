@@ -144,6 +144,21 @@ export class GPSWatcherService {
     });
   }
 
+  async watchPositionWithNoFiltering(
+    callback: (gpsData: GPS_DTO) => void,
+  ) {
+    this.androidSubscription = await Location.watchPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
+      timeInterval: 500,
+    }, (coordinates) => callback({
+      coordinates: {
+        lat: coordinates.coords.latitude,
+        long: coordinates.coords.longitude,
+        accuracy: coordinates.coords.accuracy ?? 999,
+      },
+    }));
+  }
+
   stopWatcher() {
     if (this.androidSubscription !== null) {
       this.androidSubscription.remove();
