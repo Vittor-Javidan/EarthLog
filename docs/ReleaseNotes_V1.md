@@ -1,3 +1,8 @@
+# ✅ 1.14.1
+- Map UI fix
+  - No more UI behind Android buttons
+
+
 # ✅ 1.14.0
 
 - New:

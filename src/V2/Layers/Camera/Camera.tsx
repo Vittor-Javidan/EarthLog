@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { CameraView, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import { Orientation, lockAsync, OrientationLock, addOrientationChangeListener, getOrientationAsync } from 'expo-screen-orientation';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { CameraPictureMode } from '@V2/Types/AppTypes';
 import { CameraLayerAPI } from '@V2/Layers/API/Camera';
@@ -145,12 +146,13 @@ const PicturesCounter = memo((props: {
   onChangeFlashMode: () => void
   onChangeCameraType: () => void
 }) => {
+  const { bottom } = useSafeAreaInsets();
   return (
     <View
       style={{
         position: 'absolute',
         alignItems: 'center',
-        bottom: 20,
+        bottom: 10 + bottom,
         gap: 10,
         opacity: 0.5,
         width: '100%',
@@ -179,19 +181,15 @@ const CloseButton = memo((props: {
   orientation: Orientation
   onPress: () => void
 }) => {
-
-  const TOP = props.orientation === Orientation.PORTRAIT_UP ? 30 : 15;
-  const LEFT = props.orientation === Orientation.PORTRAIT_UP ? 20 : 50;
-
+  const { top, right } = useSafeAreaInsets()
   return (
     <View
       style={{
         position: 'absolute',
-        top: TOP,
-        right: LEFT,
+        top: top,
+        right: right + 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        gap: 10,
         opacity: 0.5,
       }}
     >
@@ -223,13 +221,11 @@ const CameraFooterButtons = memo((props: {
   flashButtonPress: () => void
   changeCameraTypePress: () => void
 }) => {
-  const BOTTOM = props.orientation === Orientation.PORTRAIT_UP ? 40 : 0;
   return (
     <View
       style={{
         flexDirection: 'row',
         gap: 20,
-        paddingBottom: BOTTOM,
       }}
     >
       <Button.Icon
