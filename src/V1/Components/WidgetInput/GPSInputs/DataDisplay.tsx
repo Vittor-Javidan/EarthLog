@@ -129,8 +129,8 @@ const MapButton = memo((props: {
       }}
     >
       <Icon
-        iconName='map-marked'
-        fontSize={20}
+        iconName='google-maps'
+        fontSize={40}
         color={pressed ? props.theme.font : props.theme.background}
       />
     </Pressable>

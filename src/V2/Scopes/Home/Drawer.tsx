@@ -23,8 +23,7 @@ export const Drawer = memo((props: {
   return (<>
     <Button.TextWithIcon
       title={'Subscriptions'}
-      iconName="money-check-alt"
-      iconSize={24}
+      iconName="logo-google-playstore"
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,
@@ -37,7 +36,7 @@ export const Drawer = memo((props: {
       title={R['Exported Files']}
       iconName="file-export"
       onPress={() => props.onExportedFilesPress()}
-      iconSize={25}
+      iconSize={34}
       theme={{
         font:              theme.font,
         font_active:       theme.font_active,
