@@ -19,7 +19,7 @@ export default function LTS_VERSION_2() {
 
   return (<>
     {initialized && (<>
-      <StatusBar style="auto" />
+      <StatusBar hidden={false} style={'dark'} />
       <PopUpLayer />
       <CameraLayer />
       <CameraPreviewLayer />

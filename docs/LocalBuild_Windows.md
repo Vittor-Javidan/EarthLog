@@ -8,14 +8,10 @@
     - Install JAVA and Android SDK
     - Install EAS Cli
 
-# WSL CLean Uninstall
+# Ubunt Clean install:
 
-full docs: https://gist.github.com/4wk-/889b26043f519259ab60386ca13ba91b
 - In powershell, List all installed distros: `wsl -l -v`
-- Destroy distros: `wsl --unregister Ubuntu`
-- In Settings > Apps > Apps & Features: Search for ubuntu and linux, and unistall all results
-- Reboot PC
-- If the linux fodler still showing on Home folder, search for `Turn Windows features on or off`, and enable `Windows Subsystem for linux`, reboot your pc, disable `Windows Subsystem for linux` again, and reboot the pc again.
+- Destroy distros: `wsl --unregister <ubuntu-name>`
 
 # WSL Instalation
 
@@ -23,48 +19,111 @@ full docs: https://gist.github.com/4wk-/889b26043f519259ab60386ca13ba91b
 - run `wsl --install` on powershell
 - Reboot PC
 
-# Node Instalation
+# Installing Local Build Enviroment (Expo SDK 54 Image):
 
-full docs: https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl
-- install curl: `sudo apt-get install curl`
-- install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash`
-- close and reopen the WSL terminal
-- install last node lts version: `nvm install --lts`
+We always try to replicate the latest ubuntu image Expo uses for online builds.
 
-# JAVA and Android SDK
+Usually, all it needs is the list bellow, and everything else missing, expo tends to install on the fly during a new build (And that's why is good to do this process again from time to time):
 
-full docs: https://medium.com/@pierre.viara/install-java-on-windows-10-linux-subsystem-875f1f286ee8
-full docs: https://halimsamy.com/wsl-for-developers-installing-the-android-sdk
+- ubuntu 24.04
+- Node.js 20.19.4
+- Java 17 and Latest Android SDK
 
-- run `sudo apt update`
-- install gradle: `sudo apt install openjdk-17-jdk gradle`
-- manually add JAVA_HOME variable on `home/[linux user]/.bashrc` by copying and paste the line:
+### On powershell (as administrator):
+- `wsl --install -d Ubuntu-24.04`
+
+### On WSL terminal (as administrator):
+
+- 1: Update the system
 ```
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-```
-
-- Install android command line tool:
-```
-cd ~ # Make sure you are at home!
-curl https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -o /tmp/cmd-tools.zip
-mkdir -p android/cmdline-tools
-unzip -q -d android/cmdline-tools /tmp/cmd-tools.zip
-mv android/cmdline-tools/cmdline-tools android/cmdline-tools/latest
-rm /tmp/cmd-tools.zip # delete the zip file (optional)
-
+sudo apt update && sudo apt upgrade -y
+sudo apt autoremove -y
 ```
 
-- manually add Setup the enviroments variables on `home/[linux user]/.bashrc` by copying and paste the line:
+- 2: Basic build tools:
 ```
-export ANDROID_HOME=$HOME/android
-export ANDROID_SDK_ROOT=${ANDROID_HOME}
-export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${PATH}
+sudo apt install git wget unzip zip curl -y
 ```
 
-- install sdkmanager: `sudo apt install google-android-cmdline-tools-13.0-installer` or latest
-- Close and reopen terminal, and accept the lincenses: `yes | sdkmanager --licenses`
-- update sdkmanager: `sdkmanager --update`
+- 3: Install node:
+```
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+```
 
-# EAS CLI
+- 4: Install JDK 17:
+```
+sudo apt install openjdk-17-jdk -y
+```
 
-- install eas cli: `npm install --global eas-cli`
+- 5: JDK Eviroment variables:
+```
+echo 'export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64' >> ~/.bashrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+```
+
+- 6: Create Android SDK folder & install command-line tools
+  - Check on official android page wich command line is the [lastest](https://developer.android.com/studio?utm_source=chatgpt.com)
+  - Usually you can find this as `Command line tools only` close to the page footer
+```
+mkdir -p ~/Android/Sdk/cmdline-tools
+cd ~/Android/Sdk/cmdline-tools
+# Download the latest command-line tools (Linux)
+wget https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip
+unzip commandlinetools-linux-13114758_latest.zip
+mv cmdline-tools latest
+rm commandlinetools-linux-13114758_latest.zip
+```
+
+- 7: Set Android SDK environment variables
+```
+echo 'export ANDROID_SDK_ROOT=$HOME/Android/Sdk' >> ~/.bashrc
+echo 'export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+- 8: Update Android SDK manager and install base components
+```
+sdkmanager --update
+sdkmanager "platform-tools" "cmdline-tools;latest"
+```
+
+- 9: Detect the latest Android SDK build-tools and platform
+```
+LATEST_BUILD_TOOLS=$(sdkmanager --list | grep "build-tools;" | tail -n 1 | awk '{print $1}')
+LATEST_PLATFORM=$(sdkmanager --list | grep "platforms;android-" | tail -n 1 | awk '{print $1}')
+```
+
+- 10: Install the latest Android SDK build-tools
+```
+sdkmanager "$LATEST_BUILD_TOOLS" "$LATEST_PLATFORM"
+```
+
+- 11: Accept Android SDK licenses
+```
+yes | sdkmanager --licenses
+```
+
+- 12: Install EAS:
+```
+sudo npm install -g eas-cli
+```
+
+- 13: Login to EAS:
+```
+eas login
+```
+
+- 14: Open WSL on your repo directory, and add it as safe:
+```
+git config --global --add safe.directory '*'
+```
+
+- 15: Run build (choose one):
+```
+npm run build:dev
+npm run build:apk
+npm run build:aab
+```

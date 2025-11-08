@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useMemo, memo, useCallback, useEffect } from 'react';
-import { View, StyleProp, ViewStyle, Pressable } from 'react-native';
-import Constants from 'expo-constants';
+import { View, Pressable, Dimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { SubscriptionManager } from '@SubscriptionManager';
 import { APP_VERSION } from '@V1/Globals/Version';
@@ -12,7 +12,8 @@ import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 import { Animation } from '@V1/Animation/index';
 
-const NAVBAR_HEIGHT = 90;
+const NAVBAR_HEIGHT = 60;
+const NAVIGATION_TREE_HEIGHT = 20
 
 export const Root = memo((props: {
   title: string
@@ -41,23 +42,25 @@ const AppLayer = memo((props: {
   children: ReactNode
 }) => {
 
+  const { top, bottom } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
   const [drawerDimensions, setDrawerDimensions] = useState({ width: 0, height: 0, x: 0, y: 0 });
   const [showDrawer      , setShowDrawer      ] = useState<boolean>(false);
+
+  const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT
 
   return (<>
     <Navbar
       title={props.title}
       subtitle={props.subtitle}
       onMenuButtonPress={() => setShowDrawer(prev => !prev)}
-      style={{ height: NAVBAR_HEIGHT }}
     />
     {props.navigationTree}
     <View
       onLayout={(event) => setDrawerDimensions(event.nativeEvent.layout)}
       style={{
-        flex: 1,
+        height: HEIGHT,
         backgroundColor: theme.background,
       }}
     >
@@ -76,26 +79,27 @@ const AppLayer = memo((props: {
 const Navbar = memo((props: {
   title: string
   subtitle: string
-  style: StyleProp<ViewStyle>
   onMenuButtonPress: () => void | undefined
 }) => {
 
+  const { top } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.navbar, []);
 
   return (<>
     <View
-      style={[props.style, {
+      style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: theme.background,
-        paddingTop: Constants.statusBarHeight,
-      }]}
+        paddingTop: top,
+        height: NAVBAR_HEIGHT + top,
+      }}
     >
       <View
         style={{
           flex: 8,
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           paddingLeft: 15,
         }}
       >
@@ -175,7 +179,7 @@ const MenuButton = memo((props: {
         <Icon
           iconName="menu"
           color={pressed ? props.theme.font_active : props.theme.font}
-          fontSize={NAVBAR_HEIGHT - Constants.statusBarHeight}
+          fontSize={NAVBAR_HEIGHT}
         />
       </Pressable>
     </View>
@@ -189,6 +193,7 @@ const Drawer = memo((props: {
   onPress_Background: () => void
 }) => {
 
+  const { top, bottom } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
   const [sponsorTier , setSponsorTier ] = useState<number>(SubscriptionManager.getStatus().sponsorship);
@@ -213,6 +218,9 @@ const Drawer = memo((props: {
     });
   }, []);
 
+  const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
+  const TOP = top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT;
+
   return showDrawer ? (<>
     <Animation.Drawer
       show={props.show}
@@ -221,9 +229,9 @@ const Drawer = memo((props: {
         position: 'absolute',
         borderColor: theme.border,
         backgroundColor: theme.background,
-        height: props.dimensions.height,
+        height: HEIGHT,
         width: props.dimensions.width,
-        bottom: 0,
+        top: TOP,
         left: 0,
         borderRightWidth: 2,
         zIndex: 2,

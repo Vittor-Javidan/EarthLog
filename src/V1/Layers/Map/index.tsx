@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from "react"
 import { Dimensions } from "react-native"
 import MapView, { Circle, Marker } from 'react-native-maps';
-import Constants from 'expo-constants';
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { SubscriptionManager } from "@SubscriptionManager";
 import { CoordinateDTO } from "@V1/Types/ProjectTypes";
@@ -17,6 +17,7 @@ import { DataDisplay } from "./DataDisplay";
 
 export const MapLayer = memo(() => {
 
+  const { top, bottom} = useSafeAreaInsets();
   const [mapRef           ,setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
   const [showMap          ,setShowMap          ] = useState<boolean>(false);
   const [firstLoad        ,setFirstLoad        ] = useState<boolean>(false);
@@ -82,11 +83,11 @@ export const MapLayer = memo(() => {
       show={showMap}
       style={{
         position: 'absolute',
-        top: 0,
+        top: top,
         left: 0,
         zIndex: 20,
-        height: Dimensions.get('window').height + Constants.statusBarHeight,
-        width: Dimensions.get('window').width,
+        height: Dimensions.get('screen').height - top - bottom,
+        width: Dimensions.get('screen').width,
         backgroundColor: '#000',
       }}
     >

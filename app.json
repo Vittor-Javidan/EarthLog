@@ -20,7 +20,7 @@
     },
     "android": {
       "package": "com.vittorjavidan.fielddatacollector",
-      "versionCode": 23,
+      "versionCode": 24,
       "backgroundColor": "#000000",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
