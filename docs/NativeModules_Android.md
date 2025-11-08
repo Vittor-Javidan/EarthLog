@@ -17,7 +17,7 @@ copy and paste:
 copy and paste:
 ```
 dependencies {
-    // react-native-iap
+// react-native-iap
     implementation 'com.android.billingclient:billing:6.0.0'
 }
 ```
