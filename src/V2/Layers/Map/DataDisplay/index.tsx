@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
 
+import { MarkerData, ProjectMapScope, SampleMapScope } from "@V2/Types/AppTypes";
 import { ProjectDTO } from "@V2/Types/ProjectTypes";
-import { MarkerData, ProjectMapScope, SampleMapScope } from "../../API/Map";
 import { useBuildProject } from "../Hooks";
 import { MapScope_Project } from "./ProjectDisplay";
 import { MapScope_Sample } from "./SampleDisplay";

@@ -1,7 +1,10 @@
+# ✅ 1.14.2
+
+- Added new markers to maps
+
 # ✅ 1.14.1
 - Map UI fix
   - No more UI behind Android buttons
-
 
 # ✅ 1.14.0
 

@@ -1,11 +1,11 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import Constants from "expo-constants";
-;
+
+import { MarkerData, ProjectMapScope } from "@V1/Types/AppTypes";
 import { ProjectDTO } from "@V1/Types/ProjectTypes";
 import { ConfigService } from "@V1/Services/ConfigService";
 import { ThemeService } from "@V1/Services_Core/ThemeService";
-import { MarkerData, ProjectMapScope } from "@V1/Layers/API/Map";
 
 import { Text } from "@V1/Text/index";
 import { MapService } from "@V1/Services/MapService";

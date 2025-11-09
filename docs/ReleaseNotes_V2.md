@@ -1,3 +1,8 @@
+# ✅ 2.4.2
+
+- Added new markers to maps
+
+
 # ✅ 2.4.1
 - Map UI fix
   - No more UI behind Android buttons

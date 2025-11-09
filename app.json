@@ -46,6 +46,7 @@
       "expo-font",
       "expo-router",
       "expo-localization",
+      "expo-asset",
       [
         "expo-location",
         {

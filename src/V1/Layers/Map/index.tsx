@@ -1,13 +1,15 @@
 import React, { memo, useCallback, useState } from "react"
-import { Dimensions } from "react-native"
+import { Dimensions, View } from "react-native"
 import MapView, { Circle, Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { AssetManager } from "@AssetManager";
 import { SubscriptionManager } from "@SubscriptionManager";
+import { MapScope, MarkerData } from "@V1/Types/AppTypes";
 import { CoordinateDTO } from "@V1/Types/ProjectTypes";
 import { ControllerAPI } from "@V1/Scopes/API/Controller";
 import { useFirstPosition, useFollowUserLocation } from "./Hooks";
-import { MapAPI, MapScope, MarkerData } from "../API/Map";
+import { MapAPI } from "../API/Map";
 
 import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
@@ -134,43 +136,66 @@ const Marker_LastKnownLocation = memo((props: {
     return null;
   }
 
-  return (<>
-    <Marker
-      coordinate={{
-        latitude: props.coordinate.lat,
-        longitude: props.coordinate.long,
-      }}
-      title="Your last known location"
-      pinColor="red"
-    />
-  </>);
+  return (
+    <View key={`lastKnownLocation`}>
+      <Marker
+        coordinate={{
+          latitude: props.coordinate.lat,
+          longitude: props.coordinate.long,
+        }}
+        title="Your last known location"
+        zIndex={0}
+        description=""
+        image={{
+          uri: AssetManager.getMarkerImage('USER_LAST_KNOWN_LOCATION'),
+          scale: 1,
+        }}
+      />
+      <Circle
+        center={{
+          latitude: props.coordinate.lat,
+          longitude: props.coordinate.long,
+        }}
+        radius={props.coordinate.accuracy}
+        strokeColor="red"
+        fillColor={'rgba(0,0,0,0.1)'}
+        strokeWidth={3}
+      />
+    </View>
+  );
 })
 
 const Markers = memo((props: {
   markerData: MarkerData[]
 }) => {
   return (<>
-    {props.markerData.map((marker) => (<>
-      <Marker
-        key={`${Math.random()}${marker.id_marker}`}
-        coordinate={{
-          latitude: marker.coordinates.latitude,
-          longitude: marker.coordinates.longitude,
-        }}
-        title={marker.title}
-        pinColor={marker.pinColor}
-      />
-      <Circle
-        key={`${Math.random()}${marker.id_marker}`}
-        center={{
-          latitude: marker.coordinates.latitude,
-          longitude: marker.coordinates.longitude,
-        }}
-        radius={marker.coordinates.accuracy}
-        strokeColor={marker.pinColor}
-        fillColor={'rgba(0,0,0,0.1)'}
-        strokeWidth={3}
-      />
-    </>))}
+    {props.markerData.map((marker) => (
+      <View key={marker.id_marker}>
+        <Marker
+          coordinate={{
+            latitude: marker.coordinates.latitude,
+            longitude: marker.coordinates.longitude,
+          }}
+          title={marker.title}
+          pinColor={marker.pinColor}
+          zIndex={marker.zIndex}
+          description={marker.description}
+          image={{
+            uri: AssetManager.getMarkerImage(marker.image),
+            scale: 1,
+          }}
+        />
+        <Circle
+          center={{
+            latitude: marker.coordinates.latitude,
+            longitude: marker.coordinates.longitude,
+          }}
+          radius={marker.coordinates.accuracy}
+          strokeColor={marker.pinColor}
+          fillColor={'rgba(0,0,0,0.1)'}
+          strokeWidth={3}
+        />
+      </View>
+    ))}
   </>);
 })
