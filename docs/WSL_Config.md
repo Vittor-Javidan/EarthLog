@@ -55,10 +55,6 @@ It’s highly recommended to keep your WSL distro on an NVMe drive.
 When I was using a SATA SSD, my builds took 20–30 minutes — and sometimes didn’t even finish.
 After moving my distro to my NVMe drive (which isn’t my main drive but is the fastest), builds now complete in about 7 minutes.
 
-OBS:
-  - My repo lives inside my WSL distro, which makes the dependency install and build process more reliable and faster.
-  - If you trying to build from a repo that lives on Windows, it can make the process slower.
-
 # 🧩 Why This Matters
 
 Without a `.wslconfig` file, WSL can use all your system resources —
