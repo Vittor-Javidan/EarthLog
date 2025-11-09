@@ -3,7 +3,16 @@
 npx expo prebuild
 ```
 
-# 2 react-native-iap:
+# 2 Prebuild config:
+
+## android/gradle.properties:
+Change `org.gradle.jvmargs` and `-XX:MaxMetaspaceSize` values (2:1 proportion):
+```
+org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=1024m
+```
+
+
+# 3 react-native-iap:
 
 ## android/app/src/main/AndroidManifest.xml
 
