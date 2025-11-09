@@ -13,20 +13,20 @@ export const Icon = memo((props: {
   style?: StyleProp<TextStyle>
 }) => {
   switch (props.iconName) {
-    case 'file'                  : return <AntDesign              name="file"                  size={props.fontSize} color={props.color} style={props.style} />
-    case 'file-word'             : return <AntDesign              name="file-word"             size={props.fontSize} color={props.color} style={props.style} />
-    case 'file-zip'              : return <AntDesign              name="file-zip"              size={props.fontSize} color={props.color} style={props.style} />
-    case 'page-csv'              : return <Foundation             name="page-csv"              size={props.fontSize} color={props.color} style={props.style} />
-    case 'new-releases'          : return <MaterialIcons          name="new-releases"          size={props.fontSize} color={props.color} style={props.style} />
-    case 'gps-off'               : return <MaterialIcons          name="gps-off"               size={props.fontSize} color={props.color} style={props.style} />
-    case 'file-export'           : return <MaterialCommunityIcons name="file-export"           size={props.fontSize} color={props.color} style={props.style} />
-    case 'google-maps'           : return <MaterialCommunityIcons name="google-maps"           size={props.fontSize} color={props.color} style={props.style} />
-    case 'code-json'             : return <MaterialCommunityIcons name="code-json"             size={props.fontSize} color={props.color} style={props.style} />
-    case 'folder-home'           : return <MaterialCommunityIcons name="folder-home"           size={props.fontSize} color={props.color} style={props.style} />
-    case 'cloud-refresh-variant' : return <MaterialCommunityIcons name="cloud-refresh-variant" size={props.fontSize} color={props.color} style={props.style} />
-    case 'crosshairs-gps'        : return <MaterialCommunityIcons name="crosshairs-gps"        size={props.fontSize} color={props.color} style={props.style} />
-    case 'hand-heart'            : return <MaterialCommunityIcons name="hand-heart"            size={props.fontSize} color={props.color} style={props.style} />
-    default                      : return <Ionicons               name={props.iconName}        size={props.fontSize} color={props.color} style={props.style} />
+    case 'file'                  : return <AntDesign              name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-word'             : return <AntDesign              name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-zip'              : return <AntDesign              name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'page-csv'              : return <Foundation             name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'new-releases'          : return <MaterialIcons          name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'gps-off'               : return <MaterialIcons          name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'file-export'           : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'google-maps'           : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'code-json'             : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'folder-home'           : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'cloud-refresh-variant' : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'crosshairs-gps'        : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'hand-heart'            : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    default                      : return <Ionicons               name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
   }
 });
 
