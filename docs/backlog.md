@@ -1,7 +1,5 @@
 # features:
 
-- make the manual GPS input add the current gps data of the input as initial value
-
 - Tutorial Mode:
     - 1. Add tutorial mode for displayed coordinates inside the map.
     - 2. Add a button to turn on/off tutorial mode in app
