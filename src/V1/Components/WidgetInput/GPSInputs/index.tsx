@@ -162,9 +162,8 @@ export const GPSInput = memo((props: {
   const onMapOpen = useCallback((inputData: GPSInputData) => {
     const { coordinates } = inputData.value;
     if (coordinates) {
-      const random = DevTools.gpsTutorialCoodinateMask();
-      const latitude = DevTools.TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat;
-      const longitude = DevTools.TUTORIAL_MODE ? coordinates.long + random : coordinates.long;
+      const latitude  = DevTools.TUTORIAL_MODE ? coordinates.lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : coordinates.lat;
+      const longitude = DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long;
       Linking.openURL(`https://www.google.com/maps?q=${latitude},${longitude}`);
     }
   }, []);

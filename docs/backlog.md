@@ -1,9 +1,5 @@
 # features:
 
-- Tutorial Mode:
-    - 1. Add tutorial mode for displayed coordinates inside the map.
-    - 2. Add a button to turn on/off tutorial mode in app
-
 - Automatic reference coordinates:
     - 1. Make the reference coordinate of samples automativ, to collect gps data if the GPS is empty, when the user opens the sample
     - 2. Add a switch to turn on/off this feature on project settings widget

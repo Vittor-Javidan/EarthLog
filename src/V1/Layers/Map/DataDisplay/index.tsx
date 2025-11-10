@@ -9,7 +9,6 @@ import { MapScope_Sample } from "./SampleDisplay";
 export const DataDisplay = memo((props: {
   scope: SampleMapScope | ProjectMapScope
   showMap: boolean
-  isFirstLoad: boolean
   onMarkerUpdate: (markerData: MarkerData[]) => void
 }) => {
 

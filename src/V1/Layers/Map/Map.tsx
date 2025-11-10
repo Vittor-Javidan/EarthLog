@@ -4,21 +4,21 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import DevTools from "@DevTools";
 
 export const Map = memo((props: {
-  firstLoad: boolean
+  loadMap: boolean
   followUser: boolean
   style: StyleProp<ViewStyle>
   children?: React.ReactNode
   onLoad: (mapRef: React.RefObject<MapView | null>) => void
 }) => {
   const mapRef = useRef<MapView | null>(null);
-  return props.firstLoad ? (
+  return props.loadMap ? (
     <MapView
       ref={mapRef}
       provider={PROVIDER_GOOGLE}
       mapType="satellite"
       zoomEnabled
       showsCompass
-      showsUserLocation={props.followUser}
+      showsUserLocation={DevTools.TUTORIAL_MODE ? false : props.followUser}
       showsMyLocationButton={false}
       style={props.style}
       onMapLoaded={() => {

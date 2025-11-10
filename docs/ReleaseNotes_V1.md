@@ -3,6 +3,8 @@
 - new:
   - Added new markers to maps
   - Now <GPSInput /> shows current coordinates when manual input is open
+  - Tutorial Mode
+    - If enabled, all coordinates are masked with a random number. Made for record or streaming purpose.
 
 - bug fix:
   - <MapLayer />: Infinite button loading when pressing the button to acquire the current position, when closing the map before getting the coordinate.

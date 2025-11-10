@@ -2,20 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import { MapScope, MarkerData } from "@V1/Types/AppTypes";
 
 export class MapAPI {
-  static registerMapVisibilitySetter(setShowMap: Dispatch<SetStateAction<boolean>>) {
-    throw new Error("Method not implemented.");
-  }
 
-  private static scopeSetter: React.Dispatch<React.SetStateAction<MapScope>> | null = null;
-  private static markersDataSetter: React.Dispatch<React.SetStateAction<MarkerData[]>> | null = null;
+  private static scopeSetter:        Dispatch<SetStateAction<MapScope>> | null     = null;
+  private static markersDataSetter:  Dispatch<SetStateAction<MarkerData[]>> | null = null;
+  private static tutorialModeSetter: Dispatch<SetStateAction<boolean>> | null      = null;
 
-  static registerScopeSetter(setter: React.Dispatch<React.SetStateAction<MapScope>>) {
-    this.scopeSetter = setter;
-  }
-
-  static registerMarkersDataSetter(setter: React.Dispatch<React.SetStateAction<MarkerData[]>>) {
-    this.markersDataSetter = setter;
-  }
+  static registerScopeSetter(setter: Dispatch<SetStateAction<MapScope>>)           { this.scopeSetter = setter;        }
+  static registerMarkersDataSetter(setter: Dispatch<SetStateAction<MarkerData[]>>) { this.markersDataSetter = setter;  }
+  static registerTutorialModeSetter(setter: Dispatch<SetStateAction<boolean>>)     { this.tutorialModeSetter = setter; }
 
   static changeScope(newScope: MapScope) {
     if (
@@ -26,6 +20,12 @@ export class MapAPI {
         this.markersDataSetter([]);
       }
       this.scopeSetter(newScope);
+    }
+  }
+
+  static toggleTutorialMode() {
+    if (this.tutorialModeSetter !== null) {
+      this.tutorialModeSetter(prev => !prev);
     }
   }
 }

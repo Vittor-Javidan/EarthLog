@@ -19,6 +19,7 @@ export const Icon = memo((props: {
     case 'page-csv'              : return <Foundation             name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
     case 'new-releases'          : return <MaterialIcons          name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
     case 'gps-off'               : return <MaterialIcons          name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
+    case 'menu-book'             : return <MaterialIcons          name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
     case 'file-export'           : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
     case 'google-maps'           : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
     case 'code-json'             : return <MaterialCommunityIcons name={props.iconName} size={props.fontSize} color={props.color} style={props.style} />
@@ -36,7 +37,7 @@ export type IconName = (
   'page-csv' |
 
   // MaterialIcons
-  'new-releases' | 'gps-off' |
+  'new-releases' | 'gps-off' | 'menu-book' |
 
   // AntDesign names
   'file' | 'file-word' | 'file-zip' |

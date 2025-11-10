@@ -3,6 +3,7 @@ import { Dimensions, View } from "react-native"
 import MapView, { Circle, Marker } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import DevTools, { useMapTutorial_LastKnownLocation } from "@DevTools";
 import { AssetManager } from "@AssetManager";
 import { SubscriptionManager } from "@SubscriptionManager";
 import { MapScope, MarkerData } from "@V1/Types/AppTypes";
@@ -22,16 +23,18 @@ export const MapLayer = memo(() => {
   const { top, bottom} = useSafeAreaInsets();
   const [mapRef           ,setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
   const [showMap          ,setShowMap          ] = useState<boolean>(false);
-  const [firstLoad        ,setFirstLoad        ] = useState<boolean>(false);
+  const [isMapNeveOpen    ,setIsMapNeverOpen   ] = useState<boolean>(true);
   const [showIndicator    ,setShowIndicator    ] = useState<boolean>(true);
   const [followUser       ,setFollowUser       ] = useState<boolean>(false);
   const [lastKnownLocation,setLastKnownLocation] = useState<CoordinateDTO | null>(null);
   const [scope            ,setScope            ] = useState<MapScope>({ type: 'navigation' });
 
+  const [tutorialMode     ,setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
   const [markerData       ,setMarkerData       ] = useState<MarkerData[]>([]);
 
   MapAPI.registerScopeSetter(setScope);
   MapAPI.registerMarkersDataSetter(setMarkerData);
+  MapAPI.registerTutorialModeSetter(setTutorialMode);
 
   const toggleMap = useCallback((showMap: boolean) => {
     showMap ? onMapClose() : onMapOpen();
@@ -40,7 +43,7 @@ export const MapLayer = memo(() => {
   const onMapOpen = useCallback(() => {
     if (SubscriptionManager.getStatus().isMapEnabled) {
       setShowMap(prev => !prev)
-      setFirstLoad(true);
+      setIsMapNeverOpen(false);
     } else {
       ControllerAPI.changeScope({ scope: 'SUBSCRIPTIONS SCOPE' });
     }
@@ -52,19 +55,6 @@ export const MapLayer = memo(() => {
     setShowMap(false);
   }, [])
 
-  const goToCoordinate = useCallback((latitude: number, longitude: number) => {
-    if (mapRef !== null && mapRef.current) {
-      mapRef.current.animateCamera({
-        center: {
-          latitude: latitude,
-          longitude: longitude,
-        },
-        zoom: 20,
-      });
-      setShowIndicator(false);
-    }
-  }, [mapRef])
-
   const followUserLocation = useCallback(() => {
     if (!followUser) {
       setShowIndicator(true);
@@ -72,20 +62,67 @@ export const MapLayer = memo(() => {
     setFollowUser(prev => !prev);
   }, [followUser])
 
+  const goToCoordinate = useCallback((latitude: number, longitude: number) => {
+    if (mapRef !== null && mapRef.current) {
+      mapRef.current.animateCamera({
+        center: { latitude, longitude },
+        zoom: 20,
+      });
+      setShowIndicator(false);
+    }
+  }, [mapRef])
+
   useFirstPosition({
     showMap: showMap,
     onPositionReceived: (position) => {
-      goToCoordinate(position.lat, position.long);
-      setLastKnownLocation(position);
+      const { lat, long } = position
+      const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
+      const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
+      goToCoordinate(newLatitude, newLongitude);
+      setLastKnownLocation({
+        lat: newLatitude,
+        long: newLongitude,
+        accuracy: position.accuracy,
+      });
     }
   }, [mapRef]);
 
   useFollowUserLocation({
     onCoordinateUpdate: (position) => {
-      goToCoordinate(position.lat, position.long);
-      setLastKnownLocation(position);
+      const { lat, long } = position
+      const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
+      const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
+      goToCoordinate(newLatitude, newLongitude);
+      setLastKnownLocation({
+        lat: newLatitude,
+        long: newLongitude,
+        accuracy: position.accuracy,
+      });
     }
   }, [followUser]);
+
+  useMapTutorial_LastKnownLocation({
+    onTutorialModeOn: () => {
+      setLastKnownLocation(prev => {
+        if (prev === null) return null;
+        return {
+          lat: prev.lat   + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE,
+          long: prev.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE,
+          accuracy: prev.accuracy,
+        };
+      });
+    },
+    onTutorialModeOff: () => {
+      setLastKnownLocation(prev => {
+        if (prev === null) return null;
+        return {
+          lat: prev.lat   - DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE,
+          long: prev.long - DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE,
+          accuracy: prev.accuracy,
+        };
+      });
+    }
+  }, [tutorialMode, isMapNeveOpen]);
 
   return (<>
     <MapAnimation
@@ -104,22 +141,25 @@ export const MapLayer = memo(() => {
         <DataDisplay
           scope={scope}
           showMap={showMap}
-          isFirstLoad={firstLoad}
           onMarkerUpdate={(markerData) => setMarkerData([...markerData])}          
         />
       )}
       <Map
-        firstLoad={firstLoad}
+        loadMap={isMapNeveOpen === false}
         followUser={followUser}
         style={{ flex: 1 }}
         onLoad={(mapRef) => setMapRef(mapRef)}
       >
         <Marker_LastKnownLocation
+          tutorialMode={tutorialMode}
           lastKnownLocation={lastKnownLocation}
           isFollowingUser={followUser}
           coordinate={lastKnownLocation!}
         />
-        <Markers markerData={markerData} />
+        <Markers
+          tutorialMode={tutorialMode}
+          markerData={markerData}
+        />
       </Map>
       <Button_CurrentPosition
         followUser={followUser}
@@ -134,6 +174,7 @@ export const MapLayer = memo(() => {
 })
 
 const Marker_LastKnownLocation = memo((props: {
+  tutorialMode: boolean
   lastKnownLocation: CoordinateDTO | null
   isFollowingUser: boolean
   coordinate: CoordinateDTO
@@ -146,6 +187,7 @@ const Marker_LastKnownLocation = memo((props: {
   return (
     <View key={`lastKnownLocation`}>
       <Marker
+        key={`${props.tutorialMode ? Math.random() : ''}`}
         coordinate={{
           latitude: props.coordinate.lat,
           longitude: props.coordinate.long,
@@ -173,36 +215,38 @@ const Marker_LastKnownLocation = memo((props: {
 })
 
 const Markers = memo((props: {
+  tutorialMode: boolean
   markerData: MarkerData[]
 }) => {
   return (<>
-    {props.markerData.map((marker) => (
-      <View key={marker.id_marker}>
-        <Marker
-          coordinate={{
-            latitude: marker.coordinates.latitude,
-            longitude: marker.coordinates.longitude,
-          }}
-          title={marker.title}
-          pinColor={marker.pinColor}
-          zIndex={marker.zIndex}
-          description={marker.description}
-          image={{
-            uri: AssetManager.getMarkerImage(marker.image),
-            scale: 1,
-          }}
-        />
-        <Circle
-          center={{
-            latitude: marker.coordinates.latitude,
-            longitude: marker.coordinates.longitude,
-          }}
-          radius={marker.coordinates.accuracy}
-          strokeColor={marker.pinColor}
-          fillColor={'rgba(0,0,0,0.1)'}
-          strokeWidth={3}
-        />
-      </View>
-    ))}
+    {props.markerData.map((marker) => {
+
+      const latitude  = props.tutorialMode ? marker.coordinates.latitude  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : marker.coordinates.latitude;
+      const longitude = props.tutorialMode ? marker.coordinates.longitude + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : marker.coordinates.longitude;
+
+      return (
+        <View key={marker.id_marker}>
+          <Marker
+            key={`${props.tutorialMode ? Math.random() : ''}-${marker.id_marker}`}
+            coordinate={{ latitude, longitude }}
+            title={marker.title}
+            pinColor={marker.pinColor}
+            zIndex={marker.zIndex}
+            description={marker.description}
+            image={{
+              uri: AssetManager.getMarkerImage(marker.image),
+              scale: 1,
+            }}
+          />
+          <Circle
+            center={{ latitude, longitude }}
+            radius={marker.coordinates.accuracy}
+            strokeColor={marker.pinColor}
+            fillColor={'rgba(0,0,0,0.1)'}
+            strokeWidth={3}
+          />
+        </View>
+      )
+    })}
   </>);
 })

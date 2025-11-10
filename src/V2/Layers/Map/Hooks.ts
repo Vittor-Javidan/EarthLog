@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import MapView from "react-native-maps";
 
-import DevTools from "@DevTools";
 import { SubscriptionManager } from "@SubscriptionManager";
 import { CoordinateDTO, ProjectDTO } from "@V2/Types/ProjectTypes";
 import { GPSWatcherService } from "@V2/Services_Core/GPSService";
@@ -51,13 +50,13 @@ export function useFirstPosition(o: {
       mapRef.current &&
       firstLoad
     ) {
-      const random = DevTools.gpsTutorialCoodinateMask();
       gpsWatcher.getCurrentPosition((position) => {
         if (position?.coordinates) {
-          const latitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.lat + random : position?.coordinates?.lat;
-          const longitude = DevTools.TUTORIAL_MODE ? position?.coordinates?.long + random : position?.coordinates?.long;
-          const accuracy = position?.coordinates?.accuracy;
-          o.onPositionReceived({ lat: latitude, long: longitude, accuracy: accuracy });
+          o.onPositionReceived({
+            lat: position.coordinates.lat,
+            long: position.coordinates.long,
+            accuracy: position.coordinates.accuracy
+          });
         }
         setFirstLoad(false);
       })
