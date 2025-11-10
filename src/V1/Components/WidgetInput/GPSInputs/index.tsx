@@ -150,6 +150,8 @@ export const GPSInput = memo((props: {
       setFeatures(prev => ({ ...prev, gettingCurrentPosition: true }));
       await gpsWatcher.getCurrentPosition((gpsData) => {
         const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
+        if (!features.enableAltitude)   { newData.value.altitude    && delete newData.value.altitude    }
+        if (!features.enableCoordinate) { newData.value.coordinates && delete newData.value.coordinates }
         asyncSave(newData);
         setInputData(newData);
         setFeatures(prev => ({ ...prev, gettingCurrentPosition: false }));

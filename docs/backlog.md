@@ -34,6 +34,7 @@
 
 - Regex validation on Text Input (to simplify server business logic on serverside). (If required is setted true, and exists a regex, the project will not allowed to be uploaded until the regex validate the data)
 
+- Add a rule to on GPSInput to chose between: 'altitude only', 'coordinate onyly', 'coordinate and altitude', where the user cannot change this.
 
 - Phone Input
 
