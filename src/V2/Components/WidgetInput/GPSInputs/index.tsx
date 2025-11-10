@@ -254,7 +254,7 @@ export const GPSInput = memo((props: {
             }}
           >
             <ManualInput
-              noGPSData={noGPSData === false}
+              gpsData={inputData.value}
               features={features}
               onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
               onOpen={() => setFeatures(prev => ({ ...prev, isManualInputOpen: true }))}

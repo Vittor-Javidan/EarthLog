@@ -81,10 +81,6 @@
 
 ## Inputs
 
-- GPSInput
-  - Can get GPS data (all functionalities)
-  - Coordenates can access google maps
-
 - Picture Input
   - Shows image after taking first picture
   - Shows no image after having no picture

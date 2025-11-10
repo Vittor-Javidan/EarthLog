@@ -2,6 +2,7 @@
 
 - new:
   - Added new markers to maps
+  - Now <GPSInput /> shows current coordinates when manual input is open
 
 - bug fix:
   - <MapLayer />: Infinite button loading when pressing the button to acquire the current position, when closing the map before getting the coordinate.

@@ -54,3 +54,4 @@
 - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
 - Add `HapticsService.vibrate` for all buttons missing vibrations
 - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope
+- Reorganize the checkup list into files

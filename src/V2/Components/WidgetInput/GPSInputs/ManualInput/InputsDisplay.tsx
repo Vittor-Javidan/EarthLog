@@ -21,6 +21,7 @@ type TempAltitude = {
 }
 
 export const InputsDisplay = memo((props: {
+  gpsData: GPS_DTO
   features: GPSFeaturesDTO
   theme: WidgetTheme
   onSave: (gpsData: GPS_DTO) => void
@@ -31,14 +32,16 @@ export const InputsDisplay = memo((props: {
   const config                            = useMemo(() => ConfigService.config, []);
   const R                                 = useMemo(() => translations.widgetInput.gps[config.language], []);
   const [errorMessage,  setErrorMessage ] = useState<string>('');
+
   const [coordinates,   setCoordinates  ] = useState<TempCoordinates>({
-    latitude: '',
-    longitude: '',
-    accuracy: '',
+    latitude: props.gpsData.coordinates ? String(props.gpsData.coordinates.lat) : '',
+    longitude: props.gpsData.coordinates ? String(props.gpsData.coordinates.long) : '',
+    accuracy: props.gpsData.coordinates ? String(props.gpsData.coordinates.accuracy) : '',
   });
+
   const [altitude,      setAltitude     ] = useState<TempAltitude>({
-    value: '',
-    accuracy: '',
+    value: props.gpsData.altitude ? String(props.gpsData.altitude.value) : '',
+    accuracy: props.gpsData.altitude ? String(props.gpsData.altitude.accuracy) : '',
   });
 
   const checkMissingInfo = useCallback((whenOk: () => void) => {
