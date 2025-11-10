@@ -1,3 +1,5 @@
+import { MapAssets } from "@AssetManager";
+
 export type Loading = 'Loaded' | 'Loading';
 
 export const languageTags   = ['en-US', 'pt-BR'] as const;
@@ -115,6 +117,7 @@ export type ConfigDTO = {
   dateFormat: DateFormat
   timeFormat: TimeFormat
   onlyWarningVibrations: boolean
+  automaticSampleGPSReference: boolean
 }
 
 export type ModalConfig = {
@@ -167,4 +170,41 @@ export type CredentialDTO = {
   user: string
   password: string
   rootURL: string
+}
+
+// --------------------------------- Map Types ---------------------------------
+
+export const googleMapsPinColor = [
+  'red', 'blue', 'green', 'orange', 'yellow', 'aqua', 'purple'
+] as const;
+
+export type GoogleMapsPinColor = (typeof googleMapsPinColor)[number];
+
+export type ProjectMapScope = {
+  type: "project";
+  id_project: string;
+};
+
+export type SampleMapScope = {
+  type: "sample";
+  id_project: string;
+  id_sample: string;
+};
+
+export type MapScope = {
+  type: 'navigation' | 'gpsAcquisition'
+} | ProjectMapScope | SampleMapScope;
+
+export type MarkerData = {
+  title: string
+  id_marker: string
+  pinColor: GoogleMapsPinColor
+  image: MapAssets
+  description: string
+  zIndex: number
+  coordinates: {
+    latitude: number,
+    longitude: number,
+    accuracy: number,
+  }
 }

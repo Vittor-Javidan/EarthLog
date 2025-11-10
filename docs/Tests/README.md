@@ -1,0 +1,2 @@
+# Why there is no automated test?
+- I will automate these test when I find a test framework that can test native modules without being black box. If I don't find, I will probalby create my own implementation in the future.

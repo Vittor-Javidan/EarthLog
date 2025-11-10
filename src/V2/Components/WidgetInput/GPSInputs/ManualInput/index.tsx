@@ -10,7 +10,7 @@ import { ManualInputButton } from './ManualInputButton';
 import { InputsDisplay } from './InputsDisplay';
 
 export const ManualInput = memo((props: {
-  noGPSData: boolean
+  gpsData: GPS_DTO
   features: GPSFeaturesDTO
   theme: WidgetTheme
   onConfirm: (gpsData: GPS_DTO) => void
@@ -23,16 +23,21 @@ export const ManualInput = memo((props: {
   const [showInput, setShowInput] = useState<boolean>(false);
   const [error    , setError    ] = useState<boolean>(false);
 
-  const onSave = useCallback(async (newGPSData: GPS_DTO) => {
-    await PopUpAPI.handleAlert(props.noGPSData, {
+  const noGPSData = Object.keys(props.gpsData).length <= 0;
+
+  const onSave = useCallback(async (o: {
+    newGPSData: GPS_DTO
+    triggerAlert: boolean
+  }) => {
+    await PopUpAPI.handleAlert(o.triggerAlert, {
       type: 'warning',
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, () => {
       setShowInput(false);
       setError(false);
-      props.onConfirm(newGPSData);
+      props.onConfirm(o.newGPSData);
     });
-  }, [props.noGPSData, props.onConfirm]);
+  }, [props.onConfirm]);
 
   const openManualInput = useCallback(() => {
     props.onOpen();
@@ -65,8 +70,9 @@ export const ManualInput = memo((props: {
       )}
       {showInput && (
         <InputsDisplay
+          gpsData={props.gpsData}
           features={props.features}
-          onSave={async (newGPSData) => await onSave(newGPSData)}
+          onSave={async (newGPSData) => await onSave({ newGPSData, triggerAlert: noGPSData === false })}
           onCancel={() => closeManualInput()}
           onError={() => setError(true)}
           theme={props.theme}

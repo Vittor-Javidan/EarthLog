@@ -1,11 +1,10 @@
-# Some parts of this tutorial is deprecated
-
 - You can follow this tutorial, but you may require help from ChatGPT to figure out the errors if you receive any.
 - The important is:
   - Have WSL or any other linux enviroment
   - Inside the linux enviroment:
     - Install Node
-    - Install JAVA and Android SDK
+    - Install JAVA
+    - Install Android SDK
     - Install EAS Cli
 
 # Ubunt Clean install:
@@ -19,7 +18,7 @@
 - run `wsl --install` on powershell
 - Reboot PC
 
-# Installing Local Build Enviroment (Expo SDK 54 Image):
+# Installing Local Build Enviroment (Expo SDK 54):
 
 We always try to replicate the latest ubuntu image Expo uses for online builds.
 
@@ -27,7 +26,8 @@ Usually, all it needs is the list bellow, and everything else missing, expo tend
 
 - ubuntu 24.04
 - Node.js 20.19.4
-- Java 17 and Latest Android SDK
+- Java 17
+- Latest Android SDK
 
 ### On powershell (as administrator):
 - `wsl --install -d Ubuntu-24.04`
@@ -116,14 +116,4 @@ sudo npm install -g eas-cli
 eas login
 ```
 
-- 14: Open WSL on your repo directory, and add it as safe:
-```
-git config --global --add safe.directory '*'
-```
-
-- 15: Run build (choose one):
-```
-npm run build:dev
-npm run build:apk
-npm run build:aab
-```
+- 14: Clone any expo repo with dev client, and try a local build adding a `--local` flag

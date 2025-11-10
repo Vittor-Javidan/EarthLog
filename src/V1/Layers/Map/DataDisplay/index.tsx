@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from "react";
 
+import { MarkerData, ProjectMapScope, SampleMapScope } from "@V1/Types/AppTypes";
 import { ProjectDTO } from "@V1/Types/ProjectTypes";
-import { MarkerData, ProjectMapScope, SampleMapScope } from "../../API/Map";
 import { useBuildProject } from "../Hooks";
 import { MapScope_Project } from "./ProjectDisplay";
 import { MapScope_Sample } from "./SampleDisplay";
@@ -9,7 +9,6 @@ import { MapScope_Sample } from "./SampleDisplay";
 export const DataDisplay = memo((props: {
   scope: SampleMapScope | ProjectMapScope
   showMap: boolean
-  isFirstLoad: boolean
   onMarkerUpdate: (markerData: MarkerData[]) => void
 }) => {
 

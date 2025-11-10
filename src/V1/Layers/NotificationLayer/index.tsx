@@ -1,0 +1,56 @@
+import { memo, useEffect, useMemo, useState } from "react";
+import { View } from "react-native";
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { Z_INDEX } from "@V1/Globals/zIndex";
+import { ConfigService } from "@V1/Services/ConfigService";
+import { ThemeService } from "@V1/Services_Core/ThemeService";
+import { NotificationAPI, NotificationIcons } from "../API/Notification";
+
+import { Icon } from "@V1/Icon/index";
+
+export const NotificationLayer = memo(() => {
+
+  const { bottom } = useSafeAreaInsets();
+  const config     = useMemo(() => ConfigService.config, []);
+  const theme      = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const [blinking, setBlinking] = useState<boolean>(false);
+
+  const [icons, setIcons] = useState<NotificationIcons>({
+    gpsAcquisition: false,
+  })
+
+  NotificationAPI.registerIconSetter(setIcons);
+  
+  useEffect(() => {
+    const anythingActive = Object.keys(icons).length > 0;
+    const interval = setInterval(() => {
+      anythingActive === true
+      ? setBlinking(prev => !prev)
+      : setBlinking(false);
+    }, 250);
+    return () => clearInterval(interval);
+  }, [icons]);
+  
+
+  return blinking ? (
+    <View
+      style={{
+        position: 'absolute',
+        bottom: bottom,
+        right: 0,
+        zIndex: Z_INDEX.NOTIFICATION_LAYER,
+        backgroundColor: theme.confirm,
+        borderTopLeftRadius: 3,
+      }}
+    >
+      {icons.gpsAcquisition && (
+        <Icon
+          iconName="crosshairs-gps"
+          fontSize={20}
+          color={theme.background}
+        />
+      )}
+    </View>
+  ) : <></>;
+});

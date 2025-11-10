@@ -55,6 +55,11 @@
 - Preview can zoomed
 - Show both save and cancel buttons
 
+## Map
+- Goes to user position on first load?
+- Updates the coordinates every time the map is open?
+- Does the indicator stops when closing the during current position acquision?
+
 ## Sync
 
 - Show green cloud when uploaded
@@ -75,10 +80,6 @@
   - Can save modified data
 
 ## Inputs
-
-- GPSInput
-  - Can get GPS data (all functionalities)
-  - Coordenates can access google maps
 
 - Picture Input
   - Shows image after taking first picture

@@ -20,7 +20,7 @@ export const ContentButtons = memo((props: {
 
     switch (extension) {
       case 'docx': iconName = 'file-word' ; break;
-      case 'csv' : iconName = 'file-csv'  ; break;
+      case 'csv' : iconName = 'page-csv'  ; break;
       case 'zip' : iconName = 'file-zip'  ; break;
       default    : iconName = 'file'      ; break;
     }
@@ -54,19 +54,27 @@ const File = memo((props: {
 
   let paddingLeft;
   let paddingRight;
+  let fontSize;
 
   switch (props.extensionIcon) {
     case 'file-word': paddingLeft = 20; break;
-    case 'file-csv' : paddingLeft = 24; break;
+    case 'page-csv' : paddingLeft = 24; break;
     case 'file-zip' : paddingLeft = 20; break;
     default         : paddingLeft = 20; break;
   }
 
   switch (props.extensionIcon) {
     case 'file-word': paddingRight = 0; break;
-    case 'file-csv' : paddingRight = 5; break;
+    case 'page-csv' : paddingRight = 5; break;
     case 'file-zip' : paddingRight = 0; break;
     default         : paddingRight = 0; break;
+  }
+
+  switch (props.extensionIcon) {
+    case 'file-word': fontSize = 40; break;
+    case 'page-csv' : fontSize = 48; break;
+    case 'file-zip' : fontSize = 40; break;
+    default         : fontSize = 40; break;
   }
 
   const backgroundColor = pressed ? theme.background_active : theme.background;
@@ -94,7 +102,7 @@ const File = memo((props: {
       >
         <Icon
           iconName={props.extensionIcon}
-          fontSize={40}
+          fontSize={fontSize}
           color={isDeletePressed ? theme.background : theme.font}
           style={{
             paddingLeft: paddingLeft,

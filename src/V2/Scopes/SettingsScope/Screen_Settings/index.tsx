@@ -1,11 +1,13 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
+import DevTools from '@DevTools';
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { AppService } from '@V2/Services/AppService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { Button } from '@V2/Button/index';
 import { Animation } from '@V2/Animation/index';
@@ -24,23 +26,42 @@ export const Screen_Settings = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.screen.settings[config.language], []);
+  const [tutorialMode          , setTutorialMode          ] = useState<boolean>(DevTools.TUTORIAL_MODE);
+  const [autoSampleGPSReference, setAutoSampleGPSReference] = useState<boolean>(ConfigService.config.automaticSampleGPSReference);
 
-  // ====================================================
-  /** @WARNING This will whipe `ALL DATA` from the app */
-  const onWhipeAllData = useCallback(async () => {     //
-    await PopUpAPI.handleAlert(true,                   //
-      {                                                //
-        question: 'Want to whipe database?',           //
-        type: 'warning',                               //
-      },                                               //
-      async () => {                                    //
-        HapticsService.vibrate('success');             //
-        await AppService.whipeAllData();               //
-        props.onPress_WhipedAllData();                 //
-      }                                                //
-    );                                                 //
-  }, []);                                              //
-  // ====================================================
+  const toggleAutoSampleReferenceCoordinates = useCallback(async () => {
+    ConfigService.config.automaticSampleGPSReference = !ConfigService.config.automaticSampleGPSReference;
+    await ConfigService.saveConfig();
+    setAutoSampleGPSReference(prev => !prev);
+  }, []);
+
+  const toggleTutorialMode = useCallback(async () => {
+    await PopUpAPI.handleAlert(tutorialMode === false, {
+      question: R['By enabling this, every single coordinate will be masked randomly. Use this if you are recording a video, streaming, or sharing your screen.'],
+      type: 'warning',
+    }, () => {
+      DevTools.toggleTutorialMode();
+      MapAPI.toggleTutorialMode();
+      setTutorialMode(prev => !prev);
+    });
+  }, [tutorialMode]);
+
+  // ========================================================================
+  /** @WARNING This will whipe `ALL DATA` from the app                     */
+  const onWhipeAllData = useCallback(async () => {                         //
+    await PopUpAPI.handleAlert(true,                                       //
+      {                                                                    //
+        question: R['Want to whipe all your data? This is irreversible.'], //
+        type: 'warning',                                                   //
+      },                                                                   //
+      async () => {                                                        //
+        HapticsService.vibrate('success');                                 //
+        await AppService.whipeAllData();                                   //
+        props.onPress_WhipedAllData();                                     //
+      }                                                                    //
+    );                                                                     //
+  }, []);                                                                  //
+  // ========================================================================
 
   return (
     <Layout.Screen
@@ -56,6 +77,17 @@ export const Screen_Settings = memo((props: {
         <Layout.ScrollView
           contentContainerStyle={{ gap: 1 }}
         >
+          <Button.TextWithIcon
+            title={R['Auto Sample GPS Acquisition']}
+            iconName="crosshairs-gps"
+            onPress={async () => await toggleAutoSampleReferenceCoordinates()}
+            theme={{
+              font:              autoSampleGPSReference ? theme.font_confirm       : theme.font,
+              font_active:       autoSampleGPSReference ? theme.background_confirm : theme.font_active,
+              background:        autoSampleGPSReference ? theme.background_confirm : theme.background,
+              background_active: autoSampleGPSReference ? theme.font_confirm       : theme.background_active,
+            }}
+          />
           <Button.TextWithIcon
             title={R['Language']}
             iconName="language"
@@ -98,6 +130,17 @@ export const Screen_Settings = memo((props: {
               font_active:       theme.font_active,
               background:        theme.background,
               background_active: theme.background_active,
+            }}
+          />
+          <Button.TextWithIcon
+            title={R['Tutorial Mode']}
+            iconName="menu-book"
+            onPress={() => toggleTutorialMode()}
+            theme={{
+              font:              tutorialMode ? theme.font_confirm       : theme.font,
+              font_active:       tutorialMode ? theme.background_confirm : theme.font_active,
+              background:        tutorialMode ? theme.background_confirm : theme.background,
+              background_active: tutorialMode ? theme.font_confirm       : theme.background_active,
             }}
           />
           <Button.TextWithIcon

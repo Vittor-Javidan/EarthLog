@@ -60,7 +60,7 @@ export const Screen_ExportProject = memo((props: {
           >
             <Button.TextWithIcon
               title={R['DOCX']}
-              iconName="document-text"
+              iconName="file-word"
               onPress={async () => await onDocxSelected()}
               theme={{
                 font:              theme.font_Button,
@@ -71,8 +71,12 @@ export const Screen_ExportProject = memo((props: {
             />
             <Button.TextWithIcon
               title={R['CSV (GPS)']}
-              iconName="document-text"
+              iconName="page-csv"
               onPress={async () => await onCSVSelected()}
+              iconSize={40}
+              style={{
+                paddingRight: 13,
+              }}
               theme={{
                 font:              theme.font_Button,
                 font_active:       theme.font_active,

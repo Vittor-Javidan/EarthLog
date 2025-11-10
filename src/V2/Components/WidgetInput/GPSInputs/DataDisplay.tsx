@@ -32,7 +32,6 @@ export const DataDisplay = memo((props: {
     return <></>;
   }
 
-  const random = DevTools.gpsTutorialCoodinateMask();
   return (<>
     {showStaticDisplay && (
       <View
@@ -50,13 +49,13 @@ export const DataDisplay = memo((props: {
           {coordinates !== undefined && <>
             <DataInfo
               title="Latitude"
-              value={DevTools.TUTORIAL_MODE ? coordinates.lat + random : coordinates.lat}
+              value={DevTools.TUTORIAL_MODE ? coordinates.lat + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : coordinates.lat}
               precision={coordinates.accuracy}
               theme={theme}
             />
             <DataInfo
               title="Longitude"
-              value={DevTools.TUTORIAL_MODE ? coordinates.long + random : coordinates.long}
+              value={DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long}
               precision={coordinates.accuracy}
               theme={theme}
             />
@@ -129,8 +128,8 @@ const MapButton = memo((props: {
       }}
     >
       <Icon
-        iconName='map-marked'
-        fontSize={20}
+        iconName='google-maps'
+        fontSize={40}
         color={pressed ? props.theme.font : props.theme.background}
       />
     </Pressable>

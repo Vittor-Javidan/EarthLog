@@ -1,18 +1,19 @@
-import { MarkerData } from "@V2/Layers/API/Map";
+
+import { MarkerData } from "@V2/Types/AppTypes";
 import { GPS_DTO, ProjectDTO, SampleDTO } from "@V2/Types/ProjectTypes"
 
 /** `key` id_input */
-export type MapGPSData_Widget = Record<string, GPS_DTO>;
-export type MapGPSData_Sample = {
+export type MapGPSFilter_Widget = Record<string, GPS_DTO>;
+export type MapGPSFilter_Sample = {
   sampleGPS: GPS_DTO
   widgets: {
-    [id_input: string]: MapGPSData_Widget
+    [id_input: string]: MapGPSFilter_Widget
   }
 }
-export type MapGPSData_Project = {
+export type MapGPSFilter_Project = {
   projectGPS: GPS_DTO
   samples: {
-    [id_sample: string]: MapGPSData_Sample
+    [id_sample: string]: MapGPSFilter_Sample
   }
 }
 
@@ -28,13 +29,16 @@ export class MapService {
     ) {
       markerData.push({
         id_marker: ProjectDTO.projectSettings.id_project,
-        title: `Project: ${ProjectDTO.projectSettings.name}`,
+        title: ProjectDTO.projectSettings.name,
         coordinates: {
           latitude: ProjectDTO.projectSettings.gps.coordinates.lat,
           longitude: ProjectDTO.projectSettings.gps.coordinates.long,
           accuracy: ProjectDTO.projectSettings.gps.coordinates.accuracy,
         },
         pinColor: "purple",
+        image: 'INFO_PROJECT',
+        zIndex: 1,
+        description: "Project reference coordinate"
       });
     }
 
@@ -58,13 +62,16 @@ export class MapService {
     ) {
       markerData.push({
         id_marker: sampleDTO.sampleSettings.id_sample,
-        title: `Sample: ${sampleDTO.sampleSettings.name}`,
+        title: sampleDTO.sampleSettings.name,
         coordinates: {
           latitude: sampleDTO.sampleSettings.gps.coordinates.lat,
           longitude: sampleDTO.sampleSettings.gps.coordinates.long,
           accuracy: sampleDTO.sampleSettings.gps.coordinates.accuracy,
         },
         pinColor: "blue",
+        image: 'INFO_SAMPLE',
+        zIndex: 2,
+        description: "Sample reference coordinate"
       });
     }
 
@@ -76,13 +83,16 @@ export class MapService {
         ) {
           markerData.push({
             id_marker: input.id_input,
-            title: `${widget.widgetName}: ${input.label}`,
+            title: sampleDTO.sampleSettings.name,
             coordinates: {
               latitude: input.value.coordinates.lat,
               longitude: input.value.coordinates.long,
               accuracy: input.value.coordinates.accuracy,
             },
             pinColor: "orange",
+            image: 'SATELLITE_INPUT',
+            zIndex: 3,
+            description: `${widget.widgetName}: ${input.label}`
           });
         }
       });

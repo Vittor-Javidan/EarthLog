@@ -15,7 +15,7 @@ export const NavigationTree = memo((props : {
         />,
         <Layout.NavigationTree.Button
           key="treeIcon_2"
-          iconName="money-check-alt"
+          iconName="logo-google-playstore"
           onPress={() => {}}
         />,
       ]}

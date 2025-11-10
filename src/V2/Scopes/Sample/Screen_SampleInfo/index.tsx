@@ -147,14 +147,15 @@ export const Screen_SampleInfo = memo((props: {
                 <WidgetInput.GPS
                   inputData={{
                     id_input: '',
-                    label: 'GPS',
+                    label: R['Reference Coordinates'],
                     value: sampleSettings.gps,
                     type: 'gps',
                     lockedLabel: true,
                     lockedData: !sampleSettings.rules.allowGPSChange,
                   }}
-                  onSave={(inputData) => onSaveGPS(inputData)}
                   referenceGPSData={undefined}
+                  automaticGPSAcquisition={config.automaticSampleGPSReference}
+                  onSave={(inputData) => onSaveGPS(inputData)}
                   theme={theme}
                   {...unusedProps}
                 />

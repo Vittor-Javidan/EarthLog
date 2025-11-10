@@ -125,7 +125,7 @@ export const ProjectSettingsWidget = memo((props: {
             <WidgetInput.GPS
               inputData={{
                 id_input: '',
-                label: 'GPS',
+                label: R['Reference Coordinates'],
                 value: projectSettings.gps,
                 type: 'gps',
                 lockedLabel: true,
