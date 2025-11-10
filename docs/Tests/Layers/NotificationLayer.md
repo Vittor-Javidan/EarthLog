@@ -1,0 +1,4 @@
+- Does show notification icon when acquiring GPS data by 1 click?
+- Does show notification icon when acquiring GPS data by pressing play button?
+- Does stop showing notification when GPS data is acquired?
+- Does stop showing notification when closing screen?

@@ -8,6 +8,7 @@ import { CameraLayer } from '@V2/Layers/Camera';
 import { PopUpLayer } from '@V2/Layers/PopUp';
 import { ScopeController } from '@V2/Scopes/controller';
 import { MapLayer } from '@V2/Layers/Map';
+import { NotificationLayer } from '@V2/Layers/NotificationLayer';
 
 export default function LTS_VERSION_2() {
 
@@ -24,6 +25,7 @@ export default function LTS_VERSION_2() {
       <CameraLayer />
       <CameraPreviewLayer />
       <MapLayer />
+      <NotificationLayer />
       <ScopeController />
     </>)}
   </>);

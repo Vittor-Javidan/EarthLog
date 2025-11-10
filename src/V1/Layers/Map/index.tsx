@@ -153,7 +153,6 @@ export const MapLayer = memo(() => {
         <Marker_LastKnownLocation
           tutorialMode={tutorialMode}
           lastKnownLocation={lastKnownLocation}
-          isFollowingUser={followUser}
           coordinate={lastKnownLocation!}
         />
         <Markers
@@ -176,11 +175,10 @@ export const MapLayer = memo(() => {
 const Marker_LastKnownLocation = memo((props: {
   tutorialMode: boolean
   lastKnownLocation: CoordinateDTO | null
-  isFollowingUser: boolean
   coordinate: CoordinateDTO
 }) => {
 
-  if (!props.lastKnownLocation || props.isFollowingUser) {
+  if (!props.lastKnownLocation) {
     return null;
   }
 

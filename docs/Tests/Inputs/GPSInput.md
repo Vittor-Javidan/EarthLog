@@ -15,3 +15,7 @@
 - Does GPS turns off when screen is closed?
 - Does manual input shows current GPS data?
 - Does google map button works?
+
+- Does acquire GPS data automatic when entering sample screen only?
+  - project GPS cannot be triggered
+  - Widget GPS cannot be triggered

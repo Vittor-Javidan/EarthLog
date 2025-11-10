@@ -1,9 +1,5 @@
 # features:
 
-- Automatic reference coordinates:
-    - 1. Make the reference coordinate of samples automativ, to collect gps data if the GPS is empty, when the user opens the sample
-    - 2. Add a switch to turn on/off this feature on project settings widget
-
 - Project and Sample reference GPS:
     - 1. Rename the input label from `GPS` to `Reference Coordinates`
     - 2. Remove the minimum distance trigger to show the distance from the reference coordinates.
@@ -46,6 +42,7 @@
 
 # refactoring:
 
+- Add all major zIndez inside the gloal zIndex file
 - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
 - Add `HapticsService.vibrate` for all buttons missing vibrations
 - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope

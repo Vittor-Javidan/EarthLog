@@ -5,10 +5,12 @@
   - Now <GPSInput /> shows current coordinates when manual input is open
   - Tutorial Mode
     - If enabled, all coordinates are masked with a random number. Made for record or streaming purpose.
+  - Automatic reference coordinates
 
 - bug fix:
   - <MapLayer />: Infinite button loading when pressing the button to acquire the current position, when closing the map before getting the coordinate.
   - GPS data not respecting the Altitude/Coordinate checkbox when pressing one click position acquisition
+
 
 # ✅ 1.14.1
 - Map UI fix

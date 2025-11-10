@@ -1,6 +1,7 @@
 import { LanguageTag } from '@V2/Types/AppTypes';
 
 export type TranslationDTO = Record<LanguageTag, {
+  'Auto Sample GPS Acquisition': string
   'Language': string
   'Date and time': string
   'Themes': string
@@ -13,6 +14,7 @@ export type TranslationDTO = Record<LanguageTag, {
 
 export const R_Screen_Settings: TranslationDTO = {
   'en-US': {
+    'Auto Sample GPS Acquisition': 'Auto Sample GPS Acquisition',
     'Language': 'Language',
     'Date and time': 'Date and time',
     'Themes': 'Themes',
@@ -23,6 +25,7 @@ export const R_Screen_Settings: TranslationDTO = {
     'Want to whipe all your data? This is irreversible.': 'Want to whipe all your data? This is irreversible.',
   },
   'pt-BR': {
+    'Auto Sample GPS Acquisition': 'Aquisição Automática de GPS em amostras',
     'Language': 'Idioma',
     'Date and time': 'Data e hora',
     'Themes': 'Temas',

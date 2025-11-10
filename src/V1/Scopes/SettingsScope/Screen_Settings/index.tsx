@@ -26,7 +26,14 @@ export const Screen_Settings = memo((props: {
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawerButton, []);
   const R      = useMemo(() => translations.screen.settings[config.language], []);
-  const [tutorialMode, setTutorialMode] = useState<boolean>(DevTools.TUTORIAL_MODE);
+  const [tutorialMode          , setTutorialMode          ] = useState<boolean>(DevTools.TUTORIAL_MODE);
+  const [autoSampleGPSReference, setAutoSampleGPSReference] = useState<boolean>(ConfigService.config.automaticSampleGPSReference);
+
+  const toggleAutoSampleReferenceCoordinates = useCallback(async () => {
+    ConfigService.config.automaticSampleGPSReference = !ConfigService.config.automaticSampleGPSReference;
+    await ConfigService.saveConfig();
+    setAutoSampleGPSReference(prev => !prev);
+  }, []);
 
   const toggleTutorialMode = useCallback(async () => {
     await PopUpAPI.handleAlert(tutorialMode === false, {
@@ -70,6 +77,17 @@ export const Screen_Settings = memo((props: {
         <Layout.ScrollView
           contentContainerStyle={{ gap: 1 }}
         >
+          <Button.TextWithIcon
+            title={R['Auto Sample GPS Acquisition']}
+            iconName="crosshairs-gps"
+            onPress={async () => await toggleAutoSampleReferenceCoordinates()}
+            theme={{
+              font:              autoSampleGPSReference ? theme.font_confirm       : theme.font,
+              font_active:       autoSampleGPSReference ? theme.background_confirm : theme.font_active,
+              background:        autoSampleGPSReference ? theme.background_confirm : theme.background,
+              background_active: autoSampleGPSReference ? theme.font_confirm       : theme.background_active,
+            }}
+          />
           <Button.TextWithIcon
             title={R['Language']}
             iconName="language"

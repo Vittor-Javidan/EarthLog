@@ -153,8 +153,9 @@ export const Screen_SampleInfo = memo((props: {
                     lockedLabel: true,
                     lockedData: !sampleSettings.rules.allowGPSChange,
                   }}
-                  onSave={(inputData) => onSaveGPS(inputData)}
                   referenceGPSData={undefined}
+                  automaticGPSAcquisition={config.automaticSampleGPSReference}
+                  onSave={(inputData) => onSaveGPS(inputData)}
                   theme={theme}
                   {...unusedProps}
                 />

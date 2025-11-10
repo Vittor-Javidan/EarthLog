@@ -8,6 +8,7 @@ import { translations } from '@V2/Translations/index';
 import { GPSService, GPSWatcherService } from '@V2/Services_Core/GPSService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
+import { NotificationAPI } from '@V2/Layers/API/Notification';
 
 import { LC } from '../__LC__';
 import { ManualInput } from './ManualInput';
@@ -25,6 +26,7 @@ export const GPSInput = memo((props: {
   referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
   theme: WidgetTheme
+  automaticGPSAcquisition?: boolean
   onSave: (inputData: GPSInputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
@@ -112,6 +114,7 @@ export const GPSInput = memo((props: {
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, async () => {
       setFeatures(prev => ({ ...prev, gpsTracking: true }));
+      NotificationAPI.setGPSAcquisitionIcon(true);
       await gpsWatcher.watchPositionAsync(
         (gpsData) => {
           const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
@@ -126,6 +129,7 @@ export const GPSInput = memo((props: {
   const stopGPS = useCallback(() => {
     gpsWatcher.stopWatcher();
     setFeatures(prev => ({ ...prev, gpsTracking: false, editMode: false }));
+    NotificationAPI.setGPSAcquisitionIcon(false);
   }, []);
 
   const onDeleteData = useCallback(async (noGPSData: boolean, inputData: GPSInputData) => {
@@ -148,6 +152,7 @@ export const GPSInput = memo((props: {
       question: R['This will overwrite current gps data. Confirm to proceed.'],
     }, async () => {
       setFeatures(prev => ({ ...prev, gettingCurrentPosition: true }));
+      NotificationAPI.setGPSAcquisitionIcon(true);
       await gpsWatcher.getCurrentPosition((gpsData) => {
         const newData: GPSInputData = { ...inputData, value: deepCopy(gpsData)};
         if (!features.enableAltitude)   { newData.value.altitude    && delete newData.value.altitude    }
@@ -155,6 +160,7 @@ export const GPSInput = memo((props: {
         asyncSave(newData);
         setInputData(newData);
         setFeatures(prev => ({ ...prev, gettingCurrentPosition: false }));
+        NotificationAPI.setGPSAcquisitionIcon(false);
       });
     });
   }, [asyncSave]);
@@ -169,7 +175,10 @@ export const GPSInput = memo((props: {
   }, []);
 
   useEffect(() => {
-    return () => { gpsWatcher.stopWatcher(); };
+    return () => {
+      gpsWatcher.stopWatcher();
+      NotificationAPI.setGPSAcquisitionIcon(false);
+    };
   }, []);
 
   useEffect(() => {
@@ -187,6 +196,16 @@ export const GPSInput = memo((props: {
       })
     );
   }, [props.referenceGPSData, inputData]);
+
+  useEffect(() => {
+    if (
+      config.automaticSampleGPSReference === true &&
+      props.automaticGPSAcquisition === true &&
+      noGPSData
+    ) {
+      onGPS_Snapshot(noGPSData, inputData);
+    }
+  }, [])
 
   return (<>
     <LC.Root
