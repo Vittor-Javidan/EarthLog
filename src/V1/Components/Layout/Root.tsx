@@ -2,6 +2,7 @@ import React, { ReactNode, useState, useMemo, memo, useCallback, useEffect } fro
 import { View, Pressable, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import DevTools from '@DevTools';
 import { SubscriptionManager } from '@SubscriptionManager';
 import { APP_VERSION } from '@V1/Globals/Version';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
@@ -268,6 +269,13 @@ const Drawer = memo((props: {
           <Icon
             color={theme.wrong}
             iconName={'map'}
+            fontSize={20}
+          />
+        )}
+        {DevTools.TUTORIAL_MODE && (
+          <Icon
+            color={theme.confirm}
+            iconName={'menu-book'}
             fontSize={20}
           />
         )}
