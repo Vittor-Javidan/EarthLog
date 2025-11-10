@@ -147,7 +147,7 @@ export const Screen_SampleInfo = memo((props: {
                 <WidgetInput.GPS
                   inputData={{
                     id_input: '',
-                    label: 'GPS',
+                    label: R['Reference Coordinates'],
                     value: sampleSettings.gps,
                     type: 'gps',
                     lockedLabel: true,

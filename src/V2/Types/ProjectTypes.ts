@@ -107,7 +107,6 @@ export type WidgetTheme = {
 // =================================================================================================
 
 export type InputAlertMessage = {
-  gpsDistanceAlertMessage?: string
   templatePictureScope?: string
 }
 export type InputData = (

@@ -1,10 +1,5 @@
 # features:
 
-- Project and Sample reference GPS:
-    - 1. Rename the input label from `GPS` to `Reference Coordinates`
-    - 2. Remove the minimum distance trigger to show the distance from the reference coordinates.
-    - 3. Make the reference coordinate green if up to 30 meters, yellow if up to 100 meters, and red above 100 meters.
-
 - Poligon input:
     - 1. If the poligon has one point, it must be represented as a normal GPS coordinate on the map, with the accuracy radius.
     - 2. If the poligon has two points, it must be represented as a line on the map,  with the accuracy radius on both extremes.

@@ -19,3 +19,8 @@
 - Does acquire GPS data automatic when entering sample screen only?
   - project GPS cannot be triggered
   - Widget GPS cannot be triggered
+
+- Does Reference coordinate updates in real time?
+- Is Reference distance green when bellow 30 metter?
+- Is Reference distance yellow when bellow 100 metter?
+- Is Reference ddistance red when above 100 metters? 

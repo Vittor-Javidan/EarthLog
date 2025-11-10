@@ -6,6 +6,8 @@
   - Tutorial Mode
     - If enabled, all coordinates are masked with a random number. Made for record or streaming purpose.
   - Automatic reference coordinates
+  - Project and Sample reference GPS:
+    - Reference coordinate is green when bellow 30 meters, yellow bellow 100 meters, and red above 100 meters.
 
 - bug fix:
   - <MapLayer />: Infinite button loading when pressing the button to acquire the current position, when closing the map before getting the coordinate.

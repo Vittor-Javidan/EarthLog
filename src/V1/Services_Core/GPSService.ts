@@ -10,41 +10,33 @@ export class GPSService {
     }
   }
 
-  static checkReferenceCoordinateDifference(
+  static checkReferenceCoordinateDifference(o: {
     reference: GPS_DTO | undefined,
-    compareTo: GPS_DTO | undefined,
-    onTresholdRespected: () => void,
-    onTresholdbreak: (distance: number) => void
-  ) {
+    compareTo: GPS_DTO
+    onDiferenceCalulated: (diferenceInMeters: number) => void,
+    onCoordinatesUnavailable: () => void,
+  }) {
 
-    if (
-      compareTo === undefined ||
-      reference === undefined
-    ) {
-      onTresholdRespected();
+    if (o.reference === undefined) {
+      o.onCoordinatesUnavailable();
       return;
     }
 
-    if (
-      reference.coordinates === undefined ||
-      compareTo.coordinates === undefined
-    ) {
-      onTresholdRespected();
+    if (o.reference.coordinates === undefined || o.compareTo.coordinates === undefined) {
+      o.onCoordinatesUnavailable();
       return;
     }
 
     const METERS_PER_DEGREE = 111_321;
-    const MAX_DEGREE_DIFERENCE: number = 0.000_300_0; // 0.000_010_0 ~ 1.1 meters
 
-    const latitudeDegreesDifference = Math.abs(Math.abs(reference.coordinates.lat) - Math.abs(compareTo.coordinates.lat));
-    const longitudeDegreesDifference = Math.abs(Math.abs(reference.coordinates.long) - Math.abs(compareTo.coordinates.long));
-    const thresholdAlert = latitudeDegreesDifference > MAX_DEGREE_DIFERENCE || longitudeDegreesDifference > MAX_DEGREE_DIFERENCE;
+    const latitudeDegreesDifference = Math.abs(Math.abs(o.reference.coordinates.lat) - Math.abs(o.compareTo.coordinates.lat));
+    const longitudeDegreesDifference = Math.abs(Math.abs(o.reference.coordinates.long) - Math.abs(o.compareTo.coordinates.long));
 
     const latitudeMetersDiference = METERS_PER_DEGREE * latitudeDegreesDifference;
     const longitudeMetersDiference = METERS_PER_DEGREE * longitudeDegreesDifference;
     const hypotenuse = Math.sqrt((Math.pow(latitudeMetersDiference, 2) + Math.pow(longitudeMetersDiference, 2)));
 
-    thresholdAlert ? onTresholdbreak(Number(hypotenuse.toFixed(2))) : onTresholdRespected();
+    o.onDiferenceCalulated(Number(hypotenuse.toFixed(2)));
   }
 }
 

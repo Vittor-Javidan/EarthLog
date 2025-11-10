@@ -3,7 +3,7 @@ import { Linking, View } from 'react-native';
 
 import DevTools from "@DevTools";
 import { deepCopy } from '@V1/Globals/DeepCopy';
-import { GPSInputData, InputAlertMessage, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
+import { GPSInputData, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { GPSService, GPSWatcherService } from '@V1/Services_Core/GPSService';
 import { ConfigService } from '@V1/Services/ConfigService';
@@ -17,6 +17,7 @@ import { DataDisplay } from './DataDisplay';
 import { LoadingFeedback } from './LoadingFeedback';
 import { RealTimeAccuracy } from './RealTimeAccuracy';
 import { DeleteDataButton } from './DeleteDataButton';
+import { ReferenceDistance } from './ReferenceDistance';
 
 export const GPSInput = memo((props: {
   inputData: GPSInputData
@@ -33,16 +34,17 @@ export const GPSInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const config                            = useMemo(() => ConfigService.config, []);
-  const R                                 = useMemo(() => translations.widgetInput.gps[config.language], []);
-  const gpsWatcher                        = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
-  const [inputData    , setInputData    ] = useState<GPSInputData>(deepCopy(props.inputData));
-  const [alertMessages, setAlertMessages] = useState<InputAlertMessage>({});
-  const [accuracy     , setAccuracy     ] = useState<GPSAccuracyDTO>({
+  const config     = useMemo(() => ConfigService.config, []);
+  const R          = useMemo(() => translations.widgetInput.gps[config.language], []);
+  const gpsWatcher = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
+  const [inputData        , setInputData        ] = useState<GPSInputData>(deepCopy(props.inputData));
+  const [referenceDistance, setReferenceDistance] = useState<number | null>(null);
+  const [accuracy         , setAccuracy         ] = useState<GPSAccuracyDTO>({
     coordinate: null,
     altitude: null,
   });
-  const [features   , setFeatures       ] = useState<GPSFeaturesDTO>({
+
+  const [features, setFeatures] = useState<GPSFeaturesDTO>({
     editMode: false,
     gpsTracking: false,
     enableCoordinate: true,
@@ -182,19 +184,12 @@ export const GPSInput = memo((props: {
   }, []);
 
   useEffect(() => {
-    GPSService.checkReferenceCoordinateDifference(props.referenceGPSData, inputData.value,
-      () => {
-        if (alertMessages.gpsDistanceAlertMessage) {
-          setAlertMessages(prev => {
-            delete prev.gpsDistanceAlertMessage;
-            return { ...prev };
-          });
-        }
-      },
-      (distance) => setAlertMessages({
-        gpsDistanceAlertMessage: R['* Reference distance: '] + `${distance}m`,
-      })
-    );
+    GPSService.checkReferenceCoordinateDifference({
+      reference: props.referenceGPSData,
+      compareTo: inputData.value,
+      onCoordinatesUnavailable: () => setReferenceDistance(null),
+      onDiferenceCalulated: (distance) => setReferenceDistance(distance)
+    })
   }, [props.referenceGPSData, inputData]);
 
   useEffect(() => {
@@ -241,8 +236,8 @@ export const GPSInput = memo((props: {
           gap: 10,
         }}
       >
-        <LC.AlertMessages
-          alertMessages={alertMessages}
+        <ReferenceDistance
+          referenceDistance={referenceDistance}
           theme={props.theme}
         />
         <CheckboxOptions
