@@ -1,6 +1,10 @@
 # ✅ 1.14.2
 
-- Added new markers to maps
+- new:
+  - Added new markers to maps
+
+- bug fix:
+  - <MapLayer />: Infinite button loading when pressing the button to acquire the current position, when closing the map before getting the coordinate.
 
 # ✅ 1.14.1
 - Map UI fix

@@ -33,17 +33,24 @@ export const MapLayer = memo(() => {
   MapAPI.registerScopeSetter(setScope);
   MapAPI.registerMarkersDataSetter(setMarkerData);
 
+  const toggleMap = useCallback((showMap: boolean) => {
+    showMap ? onMapClose() : onMapOpen();
+  }, [])
+
   const onMapOpen = useCallback(() => {
     if (SubscriptionManager.getStatus().isMapEnabled) {
-      if (showMap) {
-        setFollowUser(false);
-      }
       setShowMap(prev => !prev)
       setFirstLoad(true);
     } else {
       ControllerAPI.changeScope({ scope: 'SUBSCRIPTIONS SCOPE' });
     }
-  }, [showMap])
+  }, [])
+
+  const onMapClose = useCallback(() => {
+    setFollowUser(false);
+    setShowIndicator(false);
+    setShowMap(false);
+  }, [])
 
   const goToCoordinate = useCallback((latitude: number, longitude: number) => {
     if (mapRef !== null && mapRef.current) {
@@ -121,7 +128,7 @@ export const MapLayer = memo(() => {
       />
     </MapAnimation>
     <Button_Map
-      onPress={() => onMapOpen()}
+      onPress={() => toggleMap(showMap)}
     />
   </>);
 })

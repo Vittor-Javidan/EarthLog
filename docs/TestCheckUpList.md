@@ -55,6 +55,11 @@
 - Preview can zoomed
 - Show both save and cancel buttons
 
+## Map
+- Goes to user position on first load?
+- Updates the coordinates every time the map is open?
+- Does the indicator stops when closing the during current position acquision?
+
 ## Sync
 
 - Show green cloud when uploaded
