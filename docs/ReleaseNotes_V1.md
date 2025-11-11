@@ -1,3 +1,9 @@
+# ✅ 1.15.0
+
+- new:
+  - Added compass
+
+
 # ✅ 1.14.2
 
 - new:

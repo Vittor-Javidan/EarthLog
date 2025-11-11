@@ -1,0 +1,2 @@
+- Does compass declination updates reading in real time?
+- Does compass button opens the compass?

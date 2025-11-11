@@ -15,6 +15,7 @@ export class ConfigService {
     widgetTheme:  'Light',
     onlyWarningVibrations: true,
     automaticSampleGPSReference: true,
+    compassDeclination: 0,
   };
 
   static async loadConfig(): Promise<void> {
@@ -45,6 +46,7 @@ export class ConfigService {
       widgetTheme:           !Widget.includes(config.widgetTheme)       ? this.config.widgetTheme           : config.widgetTheme,
       onlyWarningVibrations: config.onlyWarningVibrations              ?? this.config.onlyWarningVibrations,
       automaticSampleGPSReference: config.automaticSampleGPSReference  ?? this.config.automaticSampleGPSReference,
+      compassDeclination:          config.compassDeclination           ?? this.config.compassDeclination,
     };
     return verifiedConfigDTO;
   }

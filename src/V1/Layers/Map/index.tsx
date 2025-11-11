@@ -14,7 +14,6 @@ import { MapAPI } from "../API/Map";
 
 import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
-import { Button_Map } from "./Buttons/MapButton";
 import { Button_CurrentPosition } from "./Buttons/CurrentPosition";
 import { DataDisplay } from "./DataDisplay";
 
@@ -35,10 +34,9 @@ export const MapLayer = memo(() => {
   MapAPI.registerScopeSetter(setScope);
   MapAPI.registerMarkersDataSetter(setMarkerData);
   MapAPI.registerTutorialModeSetter(setTutorialMode);
-
-  const toggleMap = useCallback((showMap: boolean) => {
+  MapAPI.registerToggleMapCallback(() => {
     showMap ? onMapClose() : onMapOpen();
-  }, [])
+  });
 
   const onMapOpen = useCallback(() => {
     if (SubscriptionManager.getStatus().isMapEnabled) {
@@ -166,9 +164,6 @@ export const MapLayer = memo(() => {
         showIndicator={mapRef === null || showIndicator}
       />
     </MapAnimation>
-    <Button_Map
-      onPress={() => toggleMap(showMap)}
-    />
   </>);
 })
 

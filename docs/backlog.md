@@ -1,6 +1,6 @@
 # features:
 
-- implement compassUI (Magnetometer)
+- Make the compass consider 3 axis, instead of just 2
 - implement geologic compass (Magnetometer for direction, gyroscope for inclination)
 - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
 

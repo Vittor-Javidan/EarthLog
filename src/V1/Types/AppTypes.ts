@@ -118,6 +118,7 @@ export type ConfigDTO = {
   timeFormat: TimeFormat
   onlyWarningVibrations: boolean
   automaticSampleGPSReference: boolean
+  compassDeclination: number
 }
 
 export type ModalConfig = {
