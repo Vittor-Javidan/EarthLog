@@ -1,8 +1,11 @@
 # features:
 
-- Make the compass consider 3 axis, instead of just 2
-- implement geologic compass (Magnetometer for direction, gyroscope for inclination)
-- implement compass compass manual fine ajustment system (to reduce device manetometer drift)
+- Compass:
+    - Make the compass consider 3 axis, instead of just 2
+    - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
+    - implement geologic compass (Magnetometer for direction, gyroscope for inclination)
+    - implement compass input
+    - implement stereogram display
 
 - Poligon input:
     - 1. If the poligon has one point, it must be represented as a normal GPS coordinate on the map, with the accuracy radius.
