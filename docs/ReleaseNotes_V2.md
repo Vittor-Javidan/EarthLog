@@ -2,6 +2,7 @@
 
 - new:
   - Added compass
+  - Added a guiding system to help user keep the compass on horizontal through vibrations
 
 
 # ✅ 2.4.2

@@ -1,11 +1,13 @@
 # features:
 
 - Compass:
-    - Make the compass consider 3 axis, instead of just 2
+    - implement Z axis on acellerometer, to detect when the phone is perfectly sideways
     - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
     - implement geologic compass (Magnetometer for direction, gyroscope for inclination)
     - implement compass input
     - implement stereogram display
+
+- Add a Credits Screen, with all libraries, open source creators and users that helped directly or indirectly for the project to be possible
 
 - Poligon input:
     - 1. If the poligon has one point, it must be represented as a normal GPS coordinate on the map, with the accuracy radius.

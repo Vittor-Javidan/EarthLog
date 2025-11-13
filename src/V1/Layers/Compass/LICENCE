@@ -5,7 +5,7 @@ https://github.com/rahulhaque/compass-react-native-expo
 Copyright (c) 2018 rahulhaque  
 Licensed under the MIT License.
 
-Parts of the device code logic for detecting the north heading direction and compass images are based on or adapted from this source.
+Parts of the device code logic for detecting the north heading direction are based on, inspired or adapted from this source.
 
 
 

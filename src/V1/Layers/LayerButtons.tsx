@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Z_INDEX } from "@V1/Globals/zIndex";
-import { CompassAPI } from "./API/Compass";
+import { useCompassLayer } from "./API/Compass";
 import { MapAPI } from "./API/Map";
 
 import { Icon } from "@V1/Icon/index";
@@ -27,10 +27,19 @@ export const LayerButtons = memo(() => {
 });
 
 const CompassButton = memo(() => {
-  const [pressed, setPressed] = useState<boolean>(false);
+
+  const [pressed    , setPressed    ] = useState<boolean>(false);
+  const [openCompass, setOpenCompass] = useState<boolean>(false);
+
+  useCompassLayer({
+    config: { type: 'default' },
+    onMeasurementTake: (heading, dip) => {},
+    onCompassClose: () => setOpenCompass(false),
+  }, [openCompass]);
+
   return (
     <Pressable
-      onPress={() => CompassAPI.toggleCompass()}
+      onPress={() => setOpenCompass(true)}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
       style={{

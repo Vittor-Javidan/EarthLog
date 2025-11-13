@@ -2,9 +2,10 @@ import React, { memo, useEffect, useRef } from "react";
 import { Animated, Dimensions, Easing, Image, View } from "react-native";
 import { AssetManager } from "@AssetManager";
 
-import { Text } from "@V1/Text/index";
+import { Text } from "@V2/Text/index";
 
-export const CompassType_Default = memo((props: {
+export const Display_Compass = memo((props: {
+  isHorizontal: boolean,
   heading: number,
 }) => {
 
@@ -12,7 +13,7 @@ export const CompassType_Default = memo((props: {
   const rotation = useRef(new Animated.Value(0)).current;
   const rotate = rotation.interpolate({
     inputRange: [0, 360],
-    outputRange: ["0deg", "-360deg"], // negative to rotate the compass correctly
+    outputRange: ["0deg", "-360deg"],
   });
 
   useEffect(() => {
@@ -51,6 +52,13 @@ export const CompassType_Default = memo((props: {
           resizeMode: "contain",
         }}
       />
+      <View
+        style={{
+          borderRadius: (width) / 2,
+          borderColor: props.isHorizontal ? 'green' : undefined,
+          borderWidth: 8,
+        }}
+      >
       <Animated.Image
         key={'default_compass'}
         source={{ uri: AssetManager.getCompassImage('COMPASS_BG') }}
@@ -63,6 +71,7 @@ export const CompassType_Default = memo((props: {
           transform: [{ rotate }],
         }}
       />
+      </View>
     </View>
   );
 });
