@@ -1,3 +1,12 @@
+# ✅ 2.5.1
+
+- New:
+  - Bubble Level compass: Now uses 2 acceleromenter axis to compute pitch and roll, improving stability and precision.
+
+- fix:
+  - Bubble Level compass: Fixed jumpy animation when crossing the 0/360 degrees boundary, and being unstable at 90 degrees pitch.
+
+
 # ✅ 2.5.0
 
 - new:

@@ -15,51 +15,49 @@ export const Display_BubbleLevel = memo((props: {
 }) => {
   const { pitch, roll, z, dipThreshold } = props;
   const { width } = Dimensions.get("screen");
+  const prevRotation = useRef(0);
+  const isMaxDip = Math.abs(z) < dipThreshold;
 
   // animation state
   const rotation = useRef(new Animated.Value(0)).current;
   const rotate = rotation.interpolate({
-    inputRange: [-360, 360],
-    outputRange: ["-360deg", "360deg"],
-    extrapolate: "clamp",
+    inputRange: [-720, 720],
+    outputRange: ["-720deg", "720deg"],
   });
 
-  const smoothPitch = useRef(pitch);
-  const lastPitch = useRef(pitch);
-  const isMaxDip = Math.abs(z) < dipThreshold;
+  // We use the most stable spring from accelerometer to determine the pitch angle to display.
+  const pitchComplementaryAngle = 90 - Math.abs(roll);
+  let newPitch
+  switch (true) {
+    case                 pitch >  60:  newPitch =   pitchComplementaryAngle              ; break;
+    case pitch <= 60  && pitch >  30 : newPitch =  (pitch + pitchComplementaryAngle) / 2 ; break;
+    case pitch <= 30  && pitch > -30:  newPitch =   pitch                                ; break;
+    case pitch <= -30 && pitch > -60:  newPitch =  (pitch - pitchComplementaryAngle) / 2 ; break;
+    case                 pitch <= -60: newPitch =  -pitchComplementaryAngle              ; break;
+    default: newPitch =  pitch;
+  }
 
   useEffect(() => {
-    // --- smooth pitch (low-pass filter) ---
-    const alpha = 0.15; // smoothing strength (0.1–0.3 works well)
-    smoothPitch.current =
-      smoothPitch.current + alpha * (pitch - smoothPitch.current);
 
-    // --- debounce small changes ---
-    if (Math.abs(smoothPitch.current - lastPitch.current) < 0.3) return;
-    lastPitch.current = smoothPitch.current;
-
-    // --- avoid 90° singularity ---
-    const clamped = Math.min(89.9, Math.max(-89.9, smoothPitch.current));
-
-    const toValue = roll < 0 ? (90 - clamped) : -(90 - clamped);
+    // Garantee smooth rotation animation when crossing the 0/360 degrees boundary
+    const targetRotation = roll < 0 ? (90 - newPitch) : -(90 - newPitch);
+    let delta = targetRotation - prevRotation.current;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    const nextRotation = prevRotation.current + delta;
+    prevRotation.current = nextRotation;
 
     Animated.timing(rotation, {
-      toValue,
+      toValue: nextRotation,
       duration: 250,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
     }).start();
   }, [pitch, roll]);
 
-  useConfirmThreshold(
-    {
-      onConfirm: () =>
-        Vibration.notificationAsync(
-          Vibration.NotificationFeedbackType.Success
-        ),
-    },
-    [isMaxDip]
-  );
+  useConfirmThreshold({
+    onConfirm: () => Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success),
+  },[isMaxDip]);
 
   return (
     <View 
@@ -69,7 +67,7 @@ export const Display_BubbleLevel = memo((props: {
       }}
     >
       <Text style={{ color: "#fff", fontSize: 30 }}>
-        {`${Math.abs(pitch).toFixed(2)}°`}
+        {`${Math.abs(newPitch).toFixed(2)}°`}
       </Text>
       <View
         style={{
@@ -117,6 +115,7 @@ export const Display_BubbleLevel = memo((props: {
               position: "absolute",
               width: width - 80,
               height: width - 80,
+              paddingBottom: 100,
               justifyContent: "center",
               alignItems: "center",
               transform: [{ rotate }],
