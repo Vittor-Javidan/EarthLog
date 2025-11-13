@@ -1,0 +1,64 @@
+import { AssetManager } from "@AssetManager";
+import { memo, useEffect, useRef } from "react";
+import { Animated, Easing, Pressable, StyleProp, View, ViewStyle } from "react-native";
+
+import { Text } from "@V1/Text/index";
+
+export const MiniDisplay_BubbleLevel = memo((props: {
+  pitch: number,
+  roll: number,
+  style?: StyleProp<ViewStyle>
+  onPress: () => void,
+}) => {
+
+  const { pitch, roll } = props;
+  const rotation = useRef(new Animated.Value(0)).current;
+  const rotate = rotation.interpolate({
+    inputRange: [-360, 360],
+    outputRange: ["360deg", "-360deg"],
+  });
+
+  useEffect(() => { 
+    Animated.timing(rotation, {
+      toValue: roll < 0 ? -(90 - pitch) : (90 - pitch),
+      duration: 300,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+  }, [pitch]);
+
+  return (
+    <Pressable
+      onPressIn={() => props.onPress()}
+      style={props.style}
+    >
+      <View>
+        <Animated.Image
+          key={'bubble_level_compass_mini'}
+          source={{ uri: AssetManager.getCompassImage('COMPASS_BUBBLE_LEVEL_MINI') }}
+          style={{
+            height: 100,
+            width: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            resizeMode: "contain",
+            transform: [{ rotate }],
+          }}
+        />
+        <Animated.View
+          style={{
+            position: "absolute",
+            width: 100,
+            height: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate }],
+            paddingTop: 20,
+          }}
+        >
+          <Text style={{ color: "#fff", fontSize: 24 }}>{`${Math.abs(pitch).toFixed(2)}°`}</Text>
+        </Animated.View>
+      </View>
+    </Pressable>
+  )
+});

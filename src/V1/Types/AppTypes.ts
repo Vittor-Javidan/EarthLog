@@ -118,6 +118,7 @@ export type ConfigDTO = {
   timeFormat: TimeFormat
   onlyWarningVibrations: boolean
   automaticSampleGPSReference: boolean
+  compassDeclination: number
 }
 
 export type ModalConfig = {
@@ -147,15 +148,6 @@ export type ModalConfig = {
   onProjectDeletion: () => void
 }
 
-export type ImageQuality = 'no compress' | 'High' | 'Medium' | 'Low'
-export type CameraLayerConfig = CameraPictureMode
-export type CameraPictureMode = {
-  id_project: string
-  mode: 'photo'
-  picturesAmount: number
-  picturesLimit?: number
-}
-
 export type RegexRules = {
   'noSpaces':        RegExp
   'noSpecialLetter': RegExp
@@ -170,6 +162,17 @@ export type CredentialDTO = {
   user: string
   password: string
   rootURL: string
+}
+
+export type ImageQuality = 'no compress' | 'High' | 'Medium' | 'Low'
+
+// --------------------------------- Camera Types ------------------------------
+export type CameraLayerConfig = CameraPictureMode
+export type CameraPictureMode = {
+  id_project: string
+  mode: 'photo'
+  picturesAmount: number
+  picturesLimit?: number
 }
 
 // --------------------------------- Map Types ---------------------------------
@@ -208,3 +211,10 @@ export type MarkerData = {
     accuracy: number,
   }
 }
+
+// --------------------------------- Compass Types -----------------------------
+
+export type DefaultCompassConfig = {
+  type: 'default'
+}
+export type CompassLayerConfig = DefaultCompassConfig

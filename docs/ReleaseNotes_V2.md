@@ -1,3 +1,11 @@
+# ✅ 2.5.0
+
+- new:
+  - Added compass
+  - Added a guiding system to help user keep the compass on horizontal through vibrations
+  - Added bubble compass, to measure surfaces angles
+
+
 # ✅ 2.4.2
 
 - new:

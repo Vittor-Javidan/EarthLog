@@ -1,5 +1,12 @@
 # features:
 
+- Compass:
+    - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
+    - implement compass input
+    - implement stereogram display
+
+- Add a Credits Screen, with all libraries, open source creators and users that helped directly or indirectly for the project to be possible
+
 - Poligon input:
     - 1. If the poligon has one point, it must be represented as a normal GPS coordinate on the map, with the accuracy radius.
     - 2. If the poligon has two points, it must be represented as a line on the map,  with the accuracy radius on both extremes.
@@ -24,8 +31,6 @@
 - Phone Input
 
 - Date Input
-
-- implement compassUI and compass input (Geologic and Normal)
 
 - implement a new type of project that don't have samples
 

@@ -7,8 +7,10 @@ import { CameraPreviewLayer } from '@V1/Layers/CameraPreview';
 import { CameraLayer } from '@V1/Layers/Camera';
 import { PopUpLayer } from '@V1/Layers/PopUp';
 import { ScopeController } from '@V1/Scopes/controller';
+import { CompassLayer } from '@V1/Layers/Compass';
 import { MapLayer } from '@V1/Layers/Map';
 import { NotificationLayer } from '@V1/Layers/NotificationLayer';
+import { LayerButtons } from '@V1/Layers/LayerButtons';
 
 export default function LTS_VERSION_1() {
 
@@ -24,8 +26,10 @@ export default function LTS_VERSION_1() {
       <PopUpLayer />
       <CameraLayer />
       <CameraPreviewLayer />
+      <CompassLayer />
       <MapLayer />
       <NotificationLayer />
+      <LayerButtons />
       <ScopeController />
     </>)}
   </>);
