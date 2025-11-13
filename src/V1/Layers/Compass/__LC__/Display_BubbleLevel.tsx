@@ -1,8 +1,10 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo, useEffect, useMemo, useRef } from "react";
 import { Animated, Dimensions, Easing, View, Image } from "react-native";
 import * as Vibration from "expo-haptics";
 
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V1/Translations/index";
+import { ConfigService } from "@V1/Services/ConfigService";
 import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V1/Text/index";
@@ -15,6 +17,8 @@ export const Display_BubbleLevel = memo((props: {
 }) => {
   const { pitch, roll, z, dipThreshold } = props;
   const { width } = Dimensions.get("screen");
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.compass[config.language], []);
   const prevRotation = useRef(0);
   const isMaxDip = Math.abs(z) < dipThreshold;
 
@@ -108,22 +112,38 @@ export const Display_BubbleLevel = memo((props: {
             transform: [{ rotate }],
           }}
         />
-
-        {isMaxDip && (
-          <Animated.View
-            style={{
-              position: "absolute",
-              width: width - 80,
-              height: width - 80,
-              paddingBottom: 100,
-              justifyContent: "center",
-              alignItems: "center",
-              transform: [{ rotate }],
-            }}
-          >
-            <Text style={{ color: "#0f0", fontSize: 24 }}>Max Dip!!!</Text>
-          </Animated.View>
-        )}
+        <Animated.View
+          style={{
+            position: "absolute",
+            width: width - 80,
+            height: width - 80,
+            paddingBottom: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate }],
+          }}
+        >
+          {isMaxDip ? (
+            <Text 
+              style={{
+                fontSize: 24,
+                color: "#0f0",
+              }}
+            >
+              {R['Max Dip!!!']}
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#f00",
+                maxWidth: width - 200,
+              }}
+            >
+              {R['Place the phone’s side on a surface at 90°, then rotate its base without losing contact']}
+            </Text>
+          )}
+        </Animated.View>
       </View>
     </View>
   );

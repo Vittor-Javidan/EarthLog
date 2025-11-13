@@ -1,4 +1,4 @@
-import { LanguageTag } from '@V1/Types/AppTypes';
+import { LanguageTag } from '@V2/Types/AppTypes';
 
 export type TranslationDTO = Record<LanguageTag, {
   'Play Store Subscriptions': string

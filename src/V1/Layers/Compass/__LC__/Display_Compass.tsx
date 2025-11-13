@@ -1,8 +1,10 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo, useEffect, useMemo, useRef } from "react";
 import { Animated, Dimensions, Easing, Image, View } from "react-native";
 import * as Vibration from 'expo-haptics'
 
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V1/Translations/index";
+import { ConfigService } from "@V1/Services/ConfigService";
 import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V1/Text/index";
@@ -16,6 +18,8 @@ export const Display_Compass = memo((props: {
 
   const { heading, pitch, roll, horizontalThreshold } = props;
   const { width } = Dimensions.get('screen');
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.compass[config.language], []);
   const rotation = useRef(new Animated.Value(0)).current;
   const rotate = rotation.interpolate({
     inputRange: [0, 360],
@@ -74,20 +78,19 @@ export const Display_Compass = memo((props: {
           borderRightColor:  roll  < -horizontalThreshold ? '#f00' : undefined,
         }}
       >
-      <View>
-        <Animated.Image
-          key={'default_compass'}
-          source={{ uri: AssetManager.getCompassImage('COMPASS_BG') }}
-          style={{
-            height: width - 80,
-            width: width - 80,
-            justifyContent: "center",
-            alignItems: "center",
-            resizeMode: "contain",
-            transform: [{ rotate }],
-          }}
-        />
-        {isHorizontal && (
+        <View>
+          <Animated.Image
+            key={'default_compass'}
+            source={{ uri: AssetManager.getCompassImage('COMPASS_BG') }}
+            style={{
+              height: width - 80,
+              width: width - 80,
+              justifyContent: "center",
+              alignItems: "center",
+              resizeMode: "contain",
+              transform: [{ rotate }],
+            }}
+          />
           <View
             style={{
               position: 'absolute',
@@ -97,17 +100,28 @@ export const Display_Compass = memo((props: {
               alignItems: "center",
             }}
           >
-            <Text
-              style={{
-                color: '#0f0',
-                fontSize: 24,
-              }}
-            >
-              {'Horizontal!!!'}
-            </Text>
+            {isHorizontal ? (
+              <Text
+                style={{
+                  color: '#0f0',
+                  fontSize: 24,
+                }}
+              >
+                {R['Horizontal!!!']}
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: "#f00",
+                  maxWidth: width - 250,
+                }}
+              >
+                {R['Keep the device on horizontal']}
+              </Text>
+            )}
           </View>
-        )}
-      </View>
+        </View>
       </View>
     </View>
   );

@@ -7,7 +7,7 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { AppService } from '@V2/Services/AppService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
-import { MapAPI } from '@V1/Layers/API/Map';
+import { MapAPI } from '@V2/Layers/API/Map';
 
 import { Button } from '@V2/Button/index';
 import { Animation } from '@V2/Animation/index';

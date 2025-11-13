@@ -1,9 +1,9 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
-import Constants from "expo-constants";
 
 import { MarkerData, ProjectMapScope } from "@V2/Types/AppTypes";
 import { ProjectDTO } from "@V2/Types/ProjectTypes";
+import { translations } from "@V2/Translations/index";
 import { ConfigService } from "@V2/Services/ConfigService";
 import { ThemeService } from "@V2/Services_Core/ThemeService";
 
@@ -20,6 +20,7 @@ export const MapScope_Project = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
   const [sampleFilter, setSampleFilter] = useState<Record<string, boolean>>(props.initialSampleFilter);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export const MapScope_Project = memo((props: {
     <View
       style={{
         position: 'absolute',
-        top: Constants.statusBarHeight + 10,
+        top: 10,
         right: 10,
         zIndex: 21,
         backgroundColor: theme.background,
@@ -41,7 +42,7 @@ export const MapScope_Project = memo((props: {
       <Text p
         style={{color: theme.font}}
       >
-        {'Looking into project: '}
+        {R['Looking into project:']}
       </Text>
       <Text p
         style={{color: theme.font}}
