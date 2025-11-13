@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useMemo } from "react"
 import { View } from "react-native"
-import Constants from "expo-constants"
 
 import { MarkerData, SampleMapScope } from "@V1/Types/AppTypes"
 import { SampleDTO } from "@V1/Types/ProjectTypes"
-import { ConfigService } from "@V1/Services/ConfigService"
+import { translations } from "@V1/Translations/index"
 import { ThemeService } from "@V1/Services_Core/ThemeService"
+import { ConfigService } from "@V1/Services/ConfigService"
 import { MapService } from "@V1/Services/MapService"
 
 import { Text } from "@V1/Text/index"
@@ -19,6 +19,7 @@ export const MapScope_Sample = memo((props: {
 
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].component, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
 
   useEffect(() => {
     props.onMarkerUpdated(MapService.getGPSMarkerData_Sample(props.sampleDTO))
@@ -28,7 +29,7 @@ export const MapScope_Sample = memo((props: {
     <View
       style={{
         position: 'absolute',
-        top: Constants.statusBarHeight + 10,
+        top: 10,
         right: 10,
         zIndex: 21,
         backgroundColor: theme.background,
@@ -39,7 +40,7 @@ export const MapScope_Sample = memo((props: {
       <Text p
         style={{color: theme.font}}
       >
-        {'Looking into sample: '}
+        {R['Looking into sample:']}
       </Text>
       <Text p
         style={{color: theme.font}}

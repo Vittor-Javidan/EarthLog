@@ -2,7 +2,7 @@ import { AssetManager } from "@AssetManager";
 import { memo, useEffect, useRef } from "react";
 import { Animated, Easing, Pressable, StyleProp, View, ViewStyle } from "react-native";
 
-import { Text } from "@V1/Text/index";
+import { Text } from "@V2/Text/index";
 
 export const MiniDisplay_BubbleLevel = memo((props: {
   pitch: number,

@@ -10,6 +10,8 @@ import { R_FileExportModules_CSV } from './FileExportModules/CSV';
 import { R_FileExportModules_DOCX } from './FileExportModules/DOCX';
 import { R_FileExportModules_ZIP_IMAGES } from './FileExportModules/ZIP_IMAGES';
 import { R_FileExportModules_core } from './FileExportModules/core';
+import { R_Layer_Compass } from './Layers/compass';
+import { R_Layer_Map } from './Layers/map';
 import { R_Scope_Credential } from './scope/CredentialScope';
 import { R_Scope_Home } from './scope/HomeScope';
 import { R_Scope_Language } from './scope/LanguageSelectionScope';
@@ -63,6 +65,10 @@ export const translations = {
     docx:                     R_FileExportModules_DOCX,
     zipImages:                R_FileExportModules_ZIP_IMAGES,
     core:                     R_FileExportModules_core,
+  },
+  layers: {
+    compass:                  R_Layer_Compass,
+    map:                      R_Layer_Map,
   },
   scope: {
     home:                     R_Scope_Home,

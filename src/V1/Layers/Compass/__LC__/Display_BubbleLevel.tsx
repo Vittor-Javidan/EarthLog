@@ -1,8 +1,10 @@
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo, useEffect, useMemo, useRef } from "react";
 import { Animated, Dimensions, Easing, View, Image } from "react-native";
 import * as Vibration from "expo-haptics";
 
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V1/Translations/index";
+import { ConfigService } from "@V1/Services/ConfigService";
 import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V1/Text/index";
@@ -15,37 +17,42 @@ export const Display_BubbleLevel = memo((props: {
 }) => {
   const { pitch, roll, z, dipThreshold } = props;
   const { width } = Dimensions.get("screen");
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.compass[config.language], []);
+  const prevRotation = useRef(0);
+  const isMaxDip = Math.abs(z) < dipThreshold;
 
   // animation state
   const rotation = useRef(new Animated.Value(0)).current;
   const rotate = rotation.interpolate({
-    inputRange: [-360, 360],
-    outputRange: ["-360deg", "360deg"],
-    extrapolate: "clamp",
+    inputRange: [-720, 720],
+    outputRange: ["-720deg", "720deg"],
   });
 
-  const smoothPitch = useRef(pitch);
-  const lastPitch = useRef(pitch);
-  const isMaxDip = Math.abs(z) < dipThreshold;
+  // We use the most stable spring from accelerometer to determine the pitch angle to display.
+  const pitchComplementaryAngle = 90 - Math.abs(roll);
+  let newPitch
+  switch (true) {
+    case                 pitch >  60:  newPitch =   pitchComplementaryAngle              ; break;
+    case pitch <= 60  && pitch >  30 : newPitch =  (pitch + pitchComplementaryAngle) / 2 ; break;
+    case pitch <= 30  && pitch > -30:  newPitch =   pitch                                ; break;
+    case pitch <= -30 && pitch > -60:  newPitch =  (pitch - pitchComplementaryAngle) / 2 ; break;
+    case                 pitch <= -60: newPitch =  -pitchComplementaryAngle              ; break;
+    default: newPitch =  pitch;
+  }
 
   useEffect(() => {
 
-    // --- smooth pitch (low-pass filter) ---
-    const alpha = 0.15; // smoothing strength (0.1–0.3 works well)
-    smoothPitch.current =
-      smoothPitch.current + alpha * (pitch - smoothPitch.current);
-
-    // --- debounce small changes ---
-    if (Math.abs(smoothPitch.current - lastPitch.current) < 0.3) return;
-    lastPitch.current = smoothPitch.current;
-
-    // --- avoid 90° singularity ---
-    const clamped = Math.min(89.9, Math.max(-89.9, smoothPitch.current));
-
-    const toValue = roll < 0 ? (90 - clamped) : -(90 - clamped);
+    // Garantee smooth rotation animation when crossing the 0/360 degrees boundary
+    const targetRotation = roll < 0 ? (90 - newPitch) : -(90 - newPitch);
+    let delta = targetRotation - prevRotation.current;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    const nextRotation = prevRotation.current + delta;
+    prevRotation.current = nextRotation;
 
     Animated.timing(rotation, {
-      toValue,
+      toValue: nextRotation,
       duration: 250,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
@@ -64,7 +71,7 @@ export const Display_BubbleLevel = memo((props: {
       }}
     >
       <Text style={{ color: "#fff", fontSize: 30 }}>
-        {`${Math.abs(pitch).toFixed(2)}°`}
+        {`${Math.abs(newPitch).toFixed(2)}°`}
       </Text>
       <View
         style={{
@@ -105,21 +112,38 @@ export const Display_BubbleLevel = memo((props: {
             transform: [{ rotate }],
           }}
         />
-
-        {isMaxDip && (
-          <Animated.View
-            style={{
-              position: "absolute",
-              width: width - 80,
-              height: width - 80,
-              justifyContent: "center",
-              alignItems: "center",
-              transform: [{ rotate }],
-            }}
-          >
-            <Text style={{ color: "#0f0", fontSize: 24 }}>Max Dip!!!</Text>
-          </Animated.View>
-        )}
+        <Animated.View
+          style={{
+            position: "absolute",
+            width: width - 80,
+            height: width - 80,
+            paddingBottom: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate }],
+          }}
+        >
+          {isMaxDip ? (
+            <Text 
+              style={{
+                fontSize: 24,
+                color: "#0f0",
+              }}
+            >
+              {R['Max Dip!!!']}
+            </Text>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#f00",
+                maxWidth: width - 200,
+              }}
+            >
+              {R['Place the phone’s side on a surface at 90°, then rotate its base without losing contact']}
+            </Text>
+          )}
+        </Animated.View>
       </View>
     </View>
   );

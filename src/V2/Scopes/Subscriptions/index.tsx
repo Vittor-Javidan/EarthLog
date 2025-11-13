@@ -3,8 +3,8 @@ import React, { memo, useMemo, useState } from "react";
 import { useConnectStore } from "@SubscriptionManager";
 import { Loading } from "@V2/Types/AppTypes";
 import { Scope } from "@V2/Globals/NavigationControler";
-import { translations } from "@V1/Translations/index";
-import { ConfigService } from "@V1/Services/ConfigService";
+import { translations } from "@V2/Translations/index";
+import { ConfigService } from "@V2/Services/ConfigService";
 import { useBackPress } from "@V2/Hooks/index";
 
 import { Layout } from "@V2/Layout/index";
