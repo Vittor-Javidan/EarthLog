@@ -1,12 +1,19 @@
 import { Asset } from "expo-asset";
 
 export type MapAssets = 'SATELLITE_INPUT' | 'INFO_SAMPLE' | 'INFO_PROJECT' | 'USER_LAST_KNOWN_LOCATION'
-export type CompassAssets = 'COMPASS_BG' | 'COMPASS_POINTER';
+export type CompassAssets = (
+  'COMPASS_BG'           | 'COMPASS_POINTER'           | 'COMPASS_BG_MINI'           |
+  'COMPASS_BUBBLE_LEVEL' | 'COMPASS_BUBBLE_LEVEL_GRID' | 'COMPASS_BUBBLE_LEVEL_MINI'
+)
 export class AssetManager {
 
   private static COMPASS: {
     COMPASS_BG: Asset,
+    COMPASS_BG_MINI: Asset,
     COMPASS_POINTER: Asset,
+    COMPASS_BUBBLE_LEVEL: Asset,
+    COMPASS_BUBBLE_LEVEL_MINI: Asset,
+    COMPASS_BUBBLE_LEVEL_GRID: Asset,
   }
   private static MARKERS: {
     SATELLITE_INPUT: Asset,
@@ -24,9 +31,12 @@ export class AssetManager {
     const userLastKnownLocation = Asset.fromModule(require('@Assets/marker_user_last_known_location.png'));
 
     // COMPASS
-    const compass_bg      = Asset.fromModule(require('@Assets/compass.png'));
-    const compass_pointer = Asset.fromModule(require('@Assets/compass_pointer.png'));
-
+    const compass_bg                = Asset.fromModule(require('@Assets/compass.png'));
+    const compass_bg_mini           = Asset.fromModule(require('@Assets/compass_mini.png'));
+    const compass_pointer           = Asset.fromModule(require('@Assets/compass_pointer.png'));
+    const compass_bubble_level      = Asset.fromModule(require('@Assets/compass_bubble_level.png'));
+    const compass_bubble_level_mini = Asset.fromModule(require('@Assets/compass_bubble_level_mini.png'));
+    const compass_bubble_level_grid = Asset.fromModule(require('@Assets/compass_bubble_level_grid.png'));
 
     this.MARKERS = {
       SATELLITE_INPUT:          await satelliteInput.downloadAsync(),
@@ -36,8 +46,12 @@ export class AssetManager {
     }
 
     this.COMPASS = {
-      COMPASS_BG:      await compass_bg.downloadAsync(),
-      COMPASS_POINTER: await compass_pointer.downloadAsync(),
+      COMPASS_BG:                await compass_bg.downloadAsync(),
+      COMPASS_BG_MINI:           await compass_bg_mini.downloadAsync(),
+      COMPASS_POINTER:           await compass_pointer.downloadAsync(),
+      COMPASS_BUBBLE_LEVEL:      await compass_bubble_level.downloadAsync(),
+      COMPASS_BUBBLE_LEVEL_MINI: await compass_bubble_level_mini.downloadAsync(),
+      COMPASS_BUBBLE_LEVEL_GRID: await compass_bubble_level_grid.downloadAsync(),
     }
   }
 
@@ -52,8 +66,12 @@ export class AssetManager {
 
   static getCompassImage(type: CompassAssets): string {
     switch (type) {
-      case 'COMPASS_BG':      return AssetManager.COMPASS.COMPASS_BG.localUri as string;
-      case 'COMPASS_POINTER': return AssetManager.COMPASS.COMPASS_POINTER.localUri as string;
+      case 'COMPASS_BG':                return AssetManager.COMPASS.COMPASS_BG.localUri as string;
+      case 'COMPASS_BG_MINI':           return AssetManager.COMPASS.COMPASS_BG_MINI.localUri as string;
+      case 'COMPASS_POINTER':           return AssetManager.COMPASS.COMPASS_POINTER.localUri as string;
+      case 'COMPASS_BUBBLE_LEVEL':      return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL.localUri as string;
+      case 'COMPASS_BUBBLE_LEVEL_MINI': return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL_MINI.localUri as string;
+      case 'COMPASS_BUBBLE_LEVEL_GRID': return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL_GRID.localUri as string;
     }
   }
 }

@@ -1,9 +1,7 @@
 # features:
 
 - Compass:
-    - implement Z axis on acellerometer, to detect when the phone is perfectly sideways
     - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
-    - implement geologic compass (Magnetometer for direction, gyroscope for inclination)
     - implement compass input
     - implement stereogram display
 

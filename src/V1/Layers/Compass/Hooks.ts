@@ -1,3 +1,4 @@
+import { useInterval } from "@V1/Hooks/index";
 import { useMagnetometer } from "@V1/Sensors/Magnetometer";
 import { MagnetometerMeasurement } from "expo-sensors";
 import { useCallback, useEffect, useState } from "react";
@@ -60,4 +61,15 @@ export function useCompass(o: {
       })
     },
   }, [declination, o.phoneOffset]);
+}
+
+export function useConfirmThreshold(o: {
+  onConfirm: () => void,
+}, deps: [trigger: boolean]) {
+  const [trigger] = deps;
+  useInterval(() => {
+    if (trigger) {
+      o.onConfirm();
+    }
+  }, [trigger], 100);
 }

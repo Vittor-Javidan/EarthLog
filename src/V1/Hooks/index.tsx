@@ -33,3 +33,16 @@ export function useTimeout(
     return () => clearInterval(timer);
   }, deps);
 }
+
+export function useInterval(
+  execute: () => void,
+  deps: React.DependencyList,
+  interval: number,
+) {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      execute();
+    }, interval);
+    return () => clearInterval(timer);
+  }, deps);
+}
