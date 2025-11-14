@@ -1,7 +1,7 @@
+import { useCallback } from "react";
+import { MagnetometerMeasurement } from "expo-sensors";
 import { useInterval } from "@V1/Hooks/index";
 import { useMagnetometer } from "@V1/Sensors/Magnetometer";
-import { MagnetometerMeasurement } from "expo-sensors";
-import { useCallback, useEffect, useState } from "react";
 
 type PhoneOffset = 'PORTRAIT_OFFSET';
 
@@ -11,7 +11,6 @@ export function useCompass(o: {
 }, deps: [declination: number]) {
 
   const [declination] = deps;
-  const [lastValues    ,setLastValues    ] = useState<number[]>([]);
 
   const calculateNorth = useCallback((
     measure: MagnetometerMeasurement,
@@ -45,20 +44,10 @@ export function useCompass(o: {
 
   }, [o.phoneOffset])
 
-  useEffect(() => {
-    if (lastValues.length === 0) return;
-    const avg = lastValues.reduce((a, b) => a + b, 0) / lastValues.length;
-    o.onUpdate(avg);
-  }, [lastValues, declination]);
-
   useMagnetometer({
     onUpdate: (measure) => {
       const angle = calculateNorth(measure, declination, o.phoneOffset);
-      setLastValues(prev => {
-        const lastValues = [...prev, angle];
-        if (lastValues.length > 20) { lastValues.shift() }
-        return lastValues;
-      })
+      o.onUpdate(angle);
     },
   }, [declination, o.phoneOffset]);
 }

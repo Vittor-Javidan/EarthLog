@@ -28,7 +28,7 @@ export const CompassLayer = memo(() => {
       style={{ flex: 1 }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {compassConfig.type === 'default' && (<Compass_Default config={compassConfig} />)}
+        {compassConfig.type === 'default' && (<Compass_Default />)}
       </GestureHandlerRootView>
     </ReactNative_Modal>
   )

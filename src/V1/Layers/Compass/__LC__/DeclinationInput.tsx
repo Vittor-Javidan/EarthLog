@@ -1,5 +1,7 @@
-import  React, { memo, useState } from "react";
+import  React, { memo, useMemo, useState } from "react";
 import { View, TextInput } from "react-native";
+import { ConfigService } from "@V1/Services/ConfigService";
+import { translations } from "@V1/Translations/index";
 import { Text } from "@V1/Text/index";
 
 export const DeclinationInput = memo((props: {
@@ -7,6 +9,8 @@ export const DeclinationInput = memo((props: {
   onDeclinationChange: (declination: number) => void
 }) => {
 
+  const config = useMemo(() => ConfigService.config, [])
+  const R      = useMemo(() => translations.layers.compass[config.language], []);
   const [declination, setDeclination] = useState<string>(props.value.toString());
 
   const onDeclinationChange = (text: string) => {
@@ -60,7 +64,7 @@ export const DeclinationInput = memo((props: {
           color: '#fff',
         }}
       >
-        {`Declination`}
+        {R['Declination']}
       </Text>
       <TextInput
         style={{

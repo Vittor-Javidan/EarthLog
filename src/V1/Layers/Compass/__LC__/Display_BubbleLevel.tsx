@@ -112,38 +112,28 @@ export const Display_BubbleLevel = memo((props: {
             transform: [{ rotate }],
           }}
         />
-        <Animated.View
-          style={{
-            position: "absolute",
-            width: width - 80,
-            height: width - 80,
-            paddingBottom: 100,
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [{ rotate }],
-          }}
-        >
-          {isMaxDip ? (
-            <Text 
-              style={{
-                fontSize: 24,
-                color: "#0f0",
-              }}
-            >
-              {R['Max Dip!!!']}
-            </Text>
-          ) : (
-            <Text
-              style={{
-                fontSize: 12,
-                color: "#f00",
-                maxWidth: width - 200,
-              }}
-            >
-              {R['Place the phone’s side on a surface at 90°, then rotate its base without losing contact']}
-            </Text>
-          )}
-        </Animated.View>
+        {isMaxDip && (
+          <Animated.View
+            style={{
+              position: "absolute",
+              width: width - 80,
+              height: width - 80,
+              paddingBottom: 100,
+              justifyContent: "center",
+              alignItems: "center",
+              transform: [{ rotate }],
+            }}
+          >
+              <Text 
+                style={{
+                  fontSize: 24,
+                  color: "#0f0",
+                }}
+              >
+                {R['Max Dip!!!']}
+              </Text>
+          </Animated.View>
+        )}
       </View>
     </View>
   );

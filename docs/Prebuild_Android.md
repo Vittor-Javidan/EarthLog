@@ -5,12 +5,11 @@ npx expo prebuild
 
 # 2 Prebuild config:
 
-## android/gradle.properties:
-Change `org.gradle.jvmargs` and `-XX:MaxMetaspaceSize` values (2:1 proportion):
+## android/app/src/main/AndroidManifest.xml:
+remove from manifest the Health Permission:
 ```
-org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=1024m
+<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" tools:node="remove"/>
 ```
-
 
 # 3 react-native-iap:
 

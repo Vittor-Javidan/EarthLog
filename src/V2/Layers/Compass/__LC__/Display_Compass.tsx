@@ -20,6 +20,8 @@ export const Display_Compass = memo((props: {
   const { width } = Dimensions.get('screen');
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.layers.compass[config.language], []);
+  const headingHistory = useRef<number[]>([]);
+  const prevHeading = useRef(0);
   const rotation = useRef(new Animated.Value(0)).current;
   const rotate = rotation.interpolate({
     inputRange: [0, 360],
@@ -29,9 +31,25 @@ export const Display_Compass = memo((props: {
   const isHorizontal = (Math.abs(pitch) < horizontalThreshold && Math.abs(roll) < horizontalThreshold);
 
   useEffect(() => {
+
+    let delta = heading - prevHeading.current;
+    if (delta > 180)  delta -= 360;
+    if (delta < -180) delta += 360;
+    const unwrapped = prevHeading.current + delta;
+    prevHeading.current = unwrapped;
+
+    // --- keep last 10 unwrapped values ---
+    headingHistory.current.push(unwrapped);
+    if (headingHistory.current.length > 10)
+      headingHistory.current.shift();
+
+    // --- compute smoothed average of unwrapped values ---
+    const sum = headingHistory.current.reduce((a, b) => a + b, 0);
+    const avgUnwrapped = sum / headingHistory.current.length;
+
     Animated.timing(rotation, {
-      toValue: heading,
-      duration: 300,
+      toValue: avgUnwrapped,
+      duration: 500,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
     }).start();
@@ -91,16 +109,16 @@ export const Display_Compass = memo((props: {
               transform: [{ rotate }],
             }}
           />
-          <View
-            style={{
-              position: 'absolute',
-              width: width - 80,
-              height: width - 80,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {isHorizontal ? (
+          {isHorizontal && (
+            <View
+              style={{
+                position: 'absolute',
+                width: width - 80,
+                height: width - 80,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
                   color: '#0f0',
@@ -109,18 +127,8 @@ export const Display_Compass = memo((props: {
               >
                 {R['Horizontal!!!']}
               </Text>
-            ) : (
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: "#f00",
-                  maxWidth: width - 250,
-                }}
-              >
-                {R['Keep the device on horizontal']}
-              </Text>
-            )}
-          </View>
+            </View>
+          )}
         </View>
       </View>
     </View>
