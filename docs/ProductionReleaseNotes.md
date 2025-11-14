@@ -1,8 +1,8 @@
 <en-US>
   - New:
-    - Compass with Bubble Level
+    - Bubble Level Tutorial
 </en-US>
 <pt-BR>
   - Novo:
-    - Bússola com Nível de bolha
+    - Tutorial do Nível de Bolha
 </pt-BR>

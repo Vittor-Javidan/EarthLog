@@ -12,6 +12,7 @@ import { R_FileExportModules_ZIP_IMAGES } from './FileExportModules/ZIP_IMAGES';
 import { R_FileExportModules_core } from './FileExportModules/core';
 import { R_Layer_Compass } from './Layers/compass';
 import { R_Layer_Map } from './Layers/map';
+import { R_Layer_Tutorial } from './Layers/tutorial';
 import { R_Scope_Credential } from './scope/CredentialScope';
 import { R_Scope_Home } from './scope/HomeScope';
 import { R_Scope_Language } from './scope/LanguageSelectionScope';
@@ -69,6 +70,7 @@ export const translations = {
   layers: {
     compass:                  R_Layer_Compass,
     map:                      R_Layer_Map,
+    tutorial:                 R_Layer_Tutorial,
   },
   scope: {
     home:                     R_Scope_Home,

@@ -1,3 +1,9 @@
+# ✅ 2.5.2
+
+- New:
+  - Bubble Level Compass: Added a small tutorial teaching how to use the bubble level compass.
+
+
 # ✅ 2.5.1
 
 - New:

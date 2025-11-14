@@ -5,6 +5,9 @@ export type CompassAssets = (
   'COMPASS_BG'           | 'COMPASS_POINTER'           | 'COMPASS_BG_MINI'           |
   'COMPASS_BUBBLE_LEVEL' | 'COMPASS_BUBBLE_LEVEL_GRID' | 'COMPASS_BUBBLE_LEVEL_MINI'
 )
+
+export type TutorialAssets = 'TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE' | 'TUTORIAL_BUBBLE_LEVEL_BASE_ROTATION'
+
 export class AssetManager {
 
   private static COMPASS: {
@@ -20,6 +23,10 @@ export class AssetManager {
     INFO_SAMPLE: Asset,
     INFO_PROJECT: Asset,
     USER_LAST_KNOWN_LOCATION: Asset,
+  }
+  private static TUTORIAL: {
+    TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE: Asset,
+    TUTORIAL_BUBBLE_LEVEL_BASE_ROTATION: Asset,
   }
 
   static async loadAssetsAsync() {
@@ -38,6 +45,10 @@ export class AssetManager {
     const compass_bubble_level_mini = Asset.fromModule(require('@Assets/compass_bubble_level_mini.png'));
     const compass_bubble_level_grid = Asset.fromModule(require('@Assets/compass_bubble_level_grid.png'));
 
+    // TUTORIAL
+    const tutorial_bubble_level_surface_angle = Asset.fromModule(require('@Assets/tutorial_bubble_level_surface_angle.png'));
+    const tutorial_bubble_level_base_rotation = Asset.fromModule(require('@Assets/tutorial_bubble_level_base_rotation.png'));
+
     this.MARKERS = {
       SATELLITE_INPUT:          await satelliteInput.downloadAsync(),
       INFO_SAMPLE:              await infoSample.downloadAsync(),
@@ -52,6 +63,11 @@ export class AssetManager {
       COMPASS_BUBBLE_LEVEL:      await compass_bubble_level.downloadAsync(),
       COMPASS_BUBBLE_LEVEL_MINI: await compass_bubble_level_mini.downloadAsync(),
       COMPASS_BUBBLE_LEVEL_GRID: await compass_bubble_level_grid.downloadAsync(),
+    }
+
+    this.TUTORIAL = {
+      TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE: await tutorial_bubble_level_surface_angle.downloadAsync(),
+      TUTORIAL_BUBBLE_LEVEL_BASE_ROTATION: await tutorial_bubble_level_base_rotation.downloadAsync(),
     }
   }
 
@@ -72,6 +88,13 @@ export class AssetManager {
       case 'COMPASS_BUBBLE_LEVEL':      return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL.localUri as string;
       case 'COMPASS_BUBBLE_LEVEL_MINI': return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL_MINI.localUri as string;
       case 'COMPASS_BUBBLE_LEVEL_GRID': return AssetManager.COMPASS.COMPASS_BUBBLE_LEVEL_GRID.localUri as string;
+    }
+  }
+
+  static getTutorialImage(type: TutorialAssets): string {
+    switch (type) {
+      case 'TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE': return AssetManager.TUTORIAL.TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE.localUri as string;
+      case 'TUTORIAL_BUBBLE_LEVEL_BASE_ROTATION': return AssetManager.TUTORIAL.TUTORIAL_BUBBLE_LEVEL_BASE_ROTATION.localUri as string;
     }
   }
 }

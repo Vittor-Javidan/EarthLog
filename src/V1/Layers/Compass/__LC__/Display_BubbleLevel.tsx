@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useMemo, useRef } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Animated, Dimensions, Easing, View, Image } from "react-native";
 import * as Vibration from "expo-haptics";
 
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V1/Translations/index";
 import { ConfigService } from "@V1/Services/ConfigService";
+import { useTutorialLayer } from "@V1/Layers/API/Tutorial";
 import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V1/Text/index";
@@ -16,10 +17,11 @@ export const Display_BubbleLevel = memo((props: {
   dipThreshold: number;
 }) => {
   const { pitch, roll, z, dipThreshold } = props;
-  const { width } = Dimensions.get("screen");
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.layers.compass[config.language], []);
-  const prevRotation = useRef(0);
+  const { width }                        = Dimensions.get("screen");
+  const config                           = useMemo(() => ConfigService.config, []);
+  const R                                = useMemo(() => translations.layers.compass[config.language], []);
+  const [showTutorial, setShowTutorial]  = useState(ConfigService.config.tutorial_bubbleLevel);
+  const prevRotation                     = useRef(0);
   const isMaxDip = Math.abs(z) < dipThreshold;
 
   // animation state
@@ -62,6 +64,11 @@ export const Display_BubbleLevel = memo((props: {
   useConfirmThreshold({
     onConfirm: () => Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success),
   },[isMaxDip]);
+
+  useTutorialLayer({
+    config: "BUBBLE LEVEL COMPASS",
+    onClose: () => setShowTutorial(false),
+  }, [showTutorial]);
 
   return (
     <View 

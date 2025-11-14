@@ -119,6 +119,7 @@ export type ConfigDTO = {
   onlyWarningVibrations: boolean
   automaticSampleGPSReference: boolean
   compassDeclination: number
+  tutorial_bubbleLevel: boolean
 }
 
 export type ModalConfig = {
@@ -218,3 +219,7 @@ export type DefaultCompassConfig = {
   type: 'default'
 }
 export type CompassLayerConfig = DefaultCompassConfig
+
+// --------------------------------- Tutorial Types ----------------------------
+
+export type TutorialType = 'BUBBLE LEVEL COMPASS'
