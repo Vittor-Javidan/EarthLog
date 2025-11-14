@@ -1,7 +1,6 @@
 # features:
 
 - Compass:
-    - implement compass compass manual fine ajustment system (to reduce device manetometer drift)
     - implement compass input
     - implement stereogram display
 
