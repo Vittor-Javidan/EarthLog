@@ -11,7 +11,6 @@ export function useCompassLayer(
 ) {
   const [openCompass] = deps;
   useEffect(() => {
-    console.log("useCompassLayer effect triggered");
     CompassAPI.configCompass(o.config);
     CompassAPI.onMeasurementTakeCallback(o.onMeasurementTake);
     CompassAPI.onCompassCloseCallback(o.onCompassClose);
