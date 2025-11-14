@@ -3,15 +3,7 @@
 npx expo prebuild
 ```
 
-# 2 Prebuild config:
-
-## android/app/src/main/AndroidManifest.xml:
-remove from manifest the Health Permission:
-```
-<uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" tools:node="remove"/>
-```
-
-# 3 react-native-iap:
+# 2 react-native-iap:
 
 ## android/app/src/main/AndroidManifest.xml
 
