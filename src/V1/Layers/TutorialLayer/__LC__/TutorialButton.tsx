@@ -13,7 +13,6 @@ export const TutorialButton = memo((props: {
         backgroundColor: '#fff',
         padding: 10,
         borderRadius: 8,
-        width: 100,
         justifyContent: 'center',
         alignItems: 'center',
       }}

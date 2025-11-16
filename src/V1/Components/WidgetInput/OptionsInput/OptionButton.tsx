@@ -44,6 +44,7 @@ export const OptionButton = memo((props: {
       {props.editMode ? (
         <Button.Icon
           iconName="trash-outline"
+          iconSize={25}
           onPress={() => props.onOptionDelete()}
           theme={{
             font:              props.theme.wrong,
@@ -52,8 +53,8 @@ export const OptionButton = memo((props: {
             background_active: props.theme.wrong,
           }}
           style={{
-            height: 25,
-            width: 25,
+            height: 30,
+            width: 30,
             paddingHorizontal: 0,
             paddingVertical: 0,
             borderRadius: 6,

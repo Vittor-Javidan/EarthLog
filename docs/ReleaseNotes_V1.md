@@ -8,6 +8,8 @@
     - Added measurements on DOCX export
   - Bubble Level Compass:
     - Added a small tutorial teaching how to use the bubble level compass.
+  - Bug fix:
+    - Many components going outside the screen on newest android versions.
 
 
 # ✅ 1.15.1

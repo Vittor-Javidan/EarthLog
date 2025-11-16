@@ -141,8 +141,6 @@ const Input_Measurement = memo((props: {
   onDipChange: (text: number) => void;
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.widgetInput.compass[config.language], []);
   const [heading ,setHeading] = useState<string>(props.heading);
   const [dip     ,setDip    ] = useState<string>(props.dip);
   const [invalidHeading ,setInvalidHeading ] = useState<boolean>(false);
@@ -176,7 +174,8 @@ const Input_Measurement = memo((props: {
 
     let valid = RegexService.rule['dip'].test(text);
     text = text.replace(',', '.');
-    
+    text = text.replace(' ', '');
+
     const number = Number(text);
     switch (true) {
       case isNaN(number):               valid = false; break;
@@ -204,15 +203,6 @@ const Input_Measurement = memo((props: {
         borderRadius: 20,
       }}
     >
-      <Text
-        style={{
-          fontSize: 14,
-          fontWeight: 'bold',
-          color: props.theme.font,
-        }}
-      >
-        {R['H']}
-      </Text>
       <TextInput
         editable={(props.allowMeasurementDataChange ?? false) && (!props.lockedData)}
         style={{
@@ -249,15 +239,6 @@ const Input_Measurement = memo((props: {
         keyboardType="numeric"
         onChangeText={(text) => onDipChange(text)}
       />
-      <Text
-        style={{
-          fontSize: 14,
-          fontWeight: 'bold',
-          color: props.theme.font,
-        }}
-      >
-        {R['D']}
-      </Text>
     </View>
   )
 })

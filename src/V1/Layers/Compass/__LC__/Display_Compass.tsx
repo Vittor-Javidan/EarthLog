@@ -126,22 +126,6 @@ export const Display_Compass = memo((props: {
           top: -40,
         }}
       >
-        <Heading
-          heading={trueHeading}
-          style={{
-            position: 'absolute',
-            right: -70
-          }}
-        />
-        {isCalculatingAvg && (
-          <ActivityIndicator
-            size="large"
-            style={{
-              position: "absolute",
-              right: -110,
-            }}
-          />
-        )}
         <Pointer />
       </View>
       <Animated.Image
@@ -156,16 +140,29 @@ export const Display_Compass = memo((props: {
           transform: [{ rotate }],
         }}
       />
-      {isHorizontal && (
-        <View
-          style={{
-            position: 'absolute',
-            width: width - 80,
-            height: width - 80,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+      <View
+        style={{
+          position: 'absolute',
+          width: width - 80,
+          height: width - 80,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {isCalculatingAvg && (
+          <ActivityIndicator
+            size="large"
+            style={{
+              position: "absolute",
+              alignSelf: "center",
+              bottom: width/2,
+            }}
+          />
+        )}
+        <Heading
+          heading={trueHeading}
+        />
+        {isHorizontal && (
           <Text
             style={{
               color: '#0f0',
@@ -174,8 +171,8 @@ export const Display_Compass = memo((props: {
           >
             {R['Horizontal!!!']}
           </Text>
-        </View>
-      )}
+        )}
+      </View>
     </Pressable>
   );
 });
