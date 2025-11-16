@@ -1,3 +1,15 @@
+# ✅ 2.5.2
+
+- New:
+  - Compass Input
+    - Added translations
+    - Added new compass type dedicated for measurements
+    - Added CSV export for compass measurements
+    - Added measurements on DOCX export
+  - Bubble Level Compass:
+    - Added a small tutorial teaching how to use the bubble level compass.
+
+
 # ✅ 2.5.1
 
 - New:

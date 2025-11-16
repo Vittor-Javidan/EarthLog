@@ -16,6 +16,8 @@ export class ConfigService {
     onlyWarningVibrations: true,
     automaticSampleGPSReference: true,
     compassDeclination: 0,
+    compassAverageMeasurements: 10,
+    tutorial_bubbleLevel: true,
   };
 
   static async loadConfig(): Promise<void> {
@@ -28,6 +30,10 @@ export class ConfigService {
 
   static async saveConfig(): Promise<void> {
     await FOLDER_Config.update({ config: this.config });
+  }
+
+  static resetTutorials(): void {
+    this.config.tutorial_bubbleLevel = true;
   }
 
   /** Garantees migration when local storage config data is outdated */
@@ -47,6 +53,8 @@ export class ConfigService {
       onlyWarningVibrations:       config.onlyWarningVibrations        ?? this.config.onlyWarningVibrations,
       automaticSampleGPSReference: config.automaticSampleGPSReference  ?? this.config.automaticSampleGPSReference,
       compassDeclination:          config.compassDeclination           ?? this.config.compassDeclination,
+      compassAverageMeasurements:  config.compassAverageMeasurements   ?? this.config.compassAverageMeasurements,
+      tutorial_bubbleLevel:        config.tutorial_bubbleLevel         ?? this.config.tutorial_bubbleLevel,
     };
     return verifiedConfigDTO;
   }

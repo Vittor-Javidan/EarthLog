@@ -10,6 +10,7 @@ import { ScopeController } from '@V1/Scopes/controller';
 import { CompassLayer } from '@V1/Layers/Compass';
 import { MapLayer } from '@V1/Layers/Map';
 import { NotificationLayer } from '@V1/Layers/NotificationLayer';
+import { TutorialLayer } from '@V1/Layers/TutorialLayer';
 import { LayerButtons } from '@V1/Layers/LayerButtons';
 
 export default function LTS_VERSION_1() {
@@ -29,6 +30,7 @@ export default function LTS_VERSION_1() {
       <CompassLayer />
       <MapLayer />
       <NotificationLayer />
+      <TutorialLayer />
       <LayerButtons />
       <ScopeController />
     </>)}

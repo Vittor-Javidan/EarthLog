@@ -1,0 +1,5 @@
+- Can open compass
+- Does compass update when saving multiple measurements
+- Can delete measurements
+- Can Change measurement label
+- Can change heading and dip values

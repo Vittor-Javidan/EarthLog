@@ -6,11 +6,12 @@ import { CompassLayerConfig } from "@V2/Types/AppTypes";
 import { CompassAPI } from "../API/Compass";
 
 import { Compass_Default } from "./CompassTypes/Compass_Default";
+import { Compass_Measurement } from "./CompassTypes/Compass_Measurement";
 
 export const CompassLayer = memo(() => {
 
   const [showCompass  , setShowCompass  ] = useState<boolean>(false);
-  const [compassConfig, setCompassConfig] = useState<CompassLayerConfig | any>(null);
+  const [compassConfig, setCompassConfig] = useState<CompassLayerConfig | null>(null);
 
   CompassAPI.registerShowCompassSetter(setShowCompass);
   CompassAPI.registerCompassConfigSetter(setCompassConfig);
@@ -28,7 +29,8 @@ export const CompassLayer = memo(() => {
       style={{ flex: 1 }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {compassConfig.type === 'default' && (<Compass_Default />)}
+        {compassConfig.mode === 'default'     && (<Compass_Default />)}
+        {compassConfig.mode === 'measurement' && (<Compass_Measurement />)}
       </GestureHandlerRootView>
     </ReactNative_Modal>
   )

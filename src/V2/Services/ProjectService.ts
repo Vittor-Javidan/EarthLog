@@ -1,7 +1,7 @@
+import { VERSION } from '@V2/Globals/Version';
 import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO, SyncData } from '@V2/Types/ProjectTypes';
 import { IDService } from '@V2/Services_Core/IDService';
 import { DatabaseService } from './DatabaseService';
-import { VERSION } from '@V2/Globals/Version';
 
 export class ProjectService {
 
@@ -149,6 +149,17 @@ export class ProjectService {
         type: 'picture',
         value: [],
       };
+      case 'compass': return {
+        id_input: IDService.generateUuidV4(),
+        label: '',
+        type: 'compass',
+        value: [],
+        lastUsedMarkerIcon: 'SURFACE_1',
+        showAddMeasurementButton: true,
+        allowMeasurementLabelChange: true,
+        allowMeasurementDataChange: true,
+        allowMeasurementDeletion: true,
+      }
     }
   }
 

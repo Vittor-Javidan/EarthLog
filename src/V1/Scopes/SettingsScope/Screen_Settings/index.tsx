@@ -34,6 +34,16 @@ export const Screen_Settings = memo((props: {
     await ConfigService.saveConfig();
     setAutoSampleGPSReference(prev => !prev);
   }, []);
+  
+  const resetAllTutorials = useCallback(async () => {
+    await PopUpAPI.handleAlert(true, {
+      question: 'Do you want to reset all tutorials? They will be shown again as if you were using the app for the first time.',
+      type: 'warning',
+    }, async() => {
+      ConfigService.resetTutorials();
+      await ConfigService.saveConfig();
+    });
+  }, []);
 
   const toggleTutorialMode = useCallback(async () => {
     await PopUpAPI.handleAlert(tutorialMode === false, {
@@ -125,6 +135,17 @@ export const Screen_Settings = memo((props: {
             title={R['Vibration']}
             iconName="alert-circle"
             onPress={() => props.onPress_Vibration()}
+            theme={{
+              font:              theme.font,
+              font_active:       theme.font_active,
+              background:        theme.background,
+              background_active: theme.background_active,
+            }}
+          />
+          <Button.TextWithIcon
+            title={R['Reset All Tutorials']}
+            iconName="refresh-circle"
+            onPress={() => resetAllTutorials()}
             theme={{
               font:              theme.font,
               font_active:       theme.font_active,

@@ -1,7 +1,6 @@
-import { AssetManager } from "@AssetManager";
 import { memo, useEffect, useRef } from "react";
-import { Animated, Easing, Pressable, StyleProp, View, ViewStyle } from "react-native";
-
+import { Animated, Easing, Pressable, StyleProp, ViewStyle } from "react-native";
+import { AssetManager } from "@AssetManager";
 import { Text } from "@V2/Text/index";
 
 export const MiniDisplay_BubbleLevel = memo((props: {
@@ -30,35 +29,36 @@ export const MiniDisplay_BubbleLevel = memo((props: {
   return (
     <Pressable
       onPressIn={() => props.onPress()}
-      style={props.style}
+      style={[{
+        backgroundColor: '#000',
+        borderRadius: 50,
+      }, props.style]}
     >
-      <View>
-        <Animated.Image
-          key={'bubble_level_compass_mini'}
-          source={{ uri: AssetManager.getCompassImage('COMPASS_BUBBLE_LEVEL_MINI') }}
-          style={{
-            height: 100,
-            width: 100,
-            justifyContent: "center",
-            alignItems: "center",
-            resizeMode: "contain",
-            transform: [{ rotate }],
-          }}
-        />
-        <Animated.View
-          style={{
-            position: "absolute",
-            width: 100,
-            height: 100,
-            justifyContent: "center",
-            alignItems: "center",
-            transform: [{ rotate }],
-            paddingTop: 20,
-          }}
-        >
-          <Text style={{ color: "#fff", fontSize: 24 }}>{`${Math.abs(pitch).toFixed(2)}°`}</Text>
-        </Animated.View>
-      </View>
+      <Animated.Image
+        key={'bubble_level_compass_mini'}
+        source={{ uri: AssetManager.getCompassImage('COMPASS_BUBBLE_LEVEL_MINI') }}
+        style={{
+          height: 100,
+          width: 100,
+          justifyContent: "center",
+          alignItems: "center",
+          resizeMode: "contain",
+          transform: [{ rotate }],
+        }}
+      />
+      <Animated.View
+        style={{
+          position: "absolute",
+          width: 100,
+          height: 100,
+          justifyContent: "center",
+          alignItems: "center",
+          transform: [{ rotate }],
+          paddingTop: 20,
+        }}
+      >
+        <Text style={{ color: "#fff", fontSize: 24 }}>{`${Math.abs(pitch).toFixed(2)}°`}</Text>
+      </Animated.View>
     </Pressable>
   )
 });

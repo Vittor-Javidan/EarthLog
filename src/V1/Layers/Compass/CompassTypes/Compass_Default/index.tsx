@@ -48,16 +48,27 @@ export const Compass_Default = memo(() => {
         marginTop: top,
         height: height - top - bottom,
         width: width,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: '#000',
-        paddingBottom: 80,
       }}
     >
-      <LC.DeclinationInput
-        value={declination}
-        onDeclinationChange={(number) => setDeclination(number)}
-      />
+
+      {/* HEADER */}
+      <View
+        style={{
+          paddingTop: 10,
+          paddingHorizontal: 10,
+          gap: 5,
+        }}
+      >
+        <LC.Input.Declination
+          declination={declination}
+          onDeclinationChange={setDeclination}
+        />
+      </View>
+
+      {/* BODY */}
       {compass === 'COMPASS' && (<>
         <View>
           <LC.Display.Compass
@@ -65,6 +76,9 @@ export const Compass_Default = memo(() => {
             pitch={pitch}
             roll={roll}
             horizontalThreshold={HORIZONTAL_DEGREES_THRESHOLD}
+            measuredAverage={0}
+            disableAverage={true}
+            onCalculatedAvg={() => {}}
           />
           <LC.Display.MiniBubbleLevel
             pitch={pitch}
@@ -73,7 +87,7 @@ export const Compass_Default = memo(() => {
             style={{
               position: 'absolute',
               right: 0,
-              bottom: -70,
+              bottom: 0,
             }}
           />
         </View>
@@ -85,6 +99,9 @@ export const Compass_Default = memo(() => {
             roll={roll}
             z={z}
             dipThreshold={DIP_DEGREES_THRESHOLD}
+            measuredAverage={0}
+            disableAverage={true}
+            onCalculatedAvg={() => {}}
           />
           <LC.Display.MiniCompass
             heading={heading}
@@ -92,11 +109,16 @@ export const Compass_Default = memo(() => {
             style={{
               position: 'absolute',
               right: 0,
-              bottom: -70,
+              bottom: 0,
             }}
           />
         </View>
+
       </>)}
+
+      {/* FOOTER */}
+      <View>
+      </View>
     </View>
   )
 })

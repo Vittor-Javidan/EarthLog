@@ -12,6 +12,7 @@ import { R_FileExportModules_ZIP_IMAGES } from './FileExportModules/ZIP_IMAGES';
 import { R_FileExportModules_core } from './FileExportModules/core';
 import { R_Layer_Compass } from './Layers/compass';
 import { R_Layer_Map } from './Layers/map';
+import { R_Layer_Tutorial } from './Layers/tutorial';
 import { R_Scope_Credential } from './scope/CredentialScope';
 import { R_Scope_Home } from './scope/HomeScope';
 import { R_Scope_Language } from './scope/LanguageSelectionScope';
@@ -48,10 +49,11 @@ import { R_Widget_Root } from './Widget/Root';
 import { R_Input_Boolean } from './widgetInput/BooleanInput';
 import { R_Input_GPS } from './widgetInput/GPSInput';
 import { R_Input_String } from './widgetInput/StringInput';
+import { R_Input_Compass } from './widgetInput/CompassInput';
 import { R_Input_Options } from './widgetInput/OptionsInput';
+import { R_Input_Selection } from './widgetInput/SelectionInput';
 import { R_Input_Picture } from './widgetInput/PictureInput';
 import { R_Input_Root } from './widgetInput/Root';
-import { R_Input_Selection } from './widgetInput/SelectionInput';
 import { R_Themes_App } from './Themes/AppThemes';
 import { R_Themes_Widget } from './Themes/WidgetThemes';
 
@@ -69,6 +71,7 @@ export const translations = {
   layers: {
     compass:                  R_Layer_Compass,
     map:                      R_Layer_Map,
+    tutorial:                 R_Layer_Tutorial,
   },
   scope: {
     home:                     R_Scope_Home,
@@ -124,6 +127,7 @@ export const translations = {
   widgetInput: {
     boolean:                  R_Input_Boolean,
     string:                   R_Input_String,
+    compass:                  R_Input_Compass,
     options:                  R_Input_Options,
     selection:                R_Input_Selection,
     picture:                  R_Input_Picture,

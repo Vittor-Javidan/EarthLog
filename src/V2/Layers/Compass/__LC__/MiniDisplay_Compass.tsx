@@ -1,6 +1,6 @@
-import { AssetManager } from "@AssetManager";
 import { memo, useEffect, useRef } from "react";
 import { Animated, Easing, Pressable, StyleProp, ViewStyle } from "react-native";
+import { AssetManager } from "@AssetManager";
 
 export const MiniDisplay_Compass = memo((props: {
   heading: number,
@@ -27,7 +27,10 @@ export const MiniDisplay_Compass = memo((props: {
   return (
     <Pressable
       onPressIn={() => props.onPress()}
-      style={props.style}
+      style={[{
+        backgroundColor: '#000',
+        borderRadius: 50,
+      }, props.style]}
     >
       <Animated.Image
         key={'default_compass_mini'}

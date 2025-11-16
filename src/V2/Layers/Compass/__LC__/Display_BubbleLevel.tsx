@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useMemo, useRef } from "react";
-import { Animated, Dimensions, Easing, View, Image } from "react-native";
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Animated, Dimensions, Easing, Image, TextStyle, Pressable, ActivityIndicator, View } from "react-native";
 import * as Vibration from "expo-haptics";
 
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V2/Translations/index";
 import { ConfigService } from "@V2/Services/ConfigService";
+import { useTutorialLayer } from "@V2/Layers/API/Tutorial";
 import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V2/Text/index";
@@ -14,12 +15,19 @@ export const Display_BubbleLevel = memo((props: {
   roll: number;
   z: number;
   dipThreshold: number;
+  measuredAverage: number;
+  disableAverage: boolean;
+  onCalculatedAvg: (dip: number) => void;
 }) => {
-  const { pitch, roll, z, dipThreshold } = props;
-  const { width } = Dimensions.get("screen");
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.layers.compass[config.language], []);
-  const prevRotation = useRef(0);
+  const { pitch, roll, z, dipThreshold, measuredAverage, disableAverage } = props;
+  const { width }          = Dimensions.get("screen");
+  const config             = useMemo(() => ConfigService.config, []);
+  const R                  = useMemo(() => translations.layers.compass[config.language], []);
+  const dipHistory         = useRef<number[]>([]);
+  const normalizedRotation = useRef(0);
+
+  const [showTutorial    , setShowTutorial    ] = useState(ConfigService.config.tutorial_bubbleLevel);
+  const [isCalculatingAvg, setIsCalculatingAvg] = useState(false);
   const isMaxDip = Math.abs(z) < dipThreshold;
 
   // animation state
@@ -31,28 +39,62 @@ export const Display_BubbleLevel = memo((props: {
 
   // We use the most stable spring from accelerometer to determine the pitch angle to display.
   const pitchComplementaryAngle = 90 - Math.abs(roll);
-  let newPitch
+  let trueDip
   switch (true) {
-    case                 pitch >  60:  newPitch =   pitchComplementaryAngle              ; break;
-    case pitch <= 60  && pitch >  30 : newPitch =  (pitch + pitchComplementaryAngle) / 2 ; break;
-    case pitch <= 30  && pitch > -30:  newPitch =   pitch                                ; break;
-    case pitch <= -30 && pitch > -60:  newPitch =  (pitch - pitchComplementaryAngle) / 2 ; break;
-    case                 pitch <= -60: newPitch =  -pitchComplementaryAngle              ; break;
-    default: newPitch =  pitch;
+    case                pitch >   60:  trueDip =   pitchComplementaryAngle              ; break;
+    case pitch <= 60 && pitch >   30:  trueDip =  (pitch + pitchComplementaryAngle) / 2 ; break;
+    case pitch <= 30 && pitch >  -30:  trueDip =   pitch                                ; break;
+    case pitch <=-30 && pitch >  -60:  trueDip =  (pitch - pitchComplementaryAngle) / 2 ; break;
+    case                pitch <= -60:  trueDip =  -pitchComplementaryAngle              ; break;
+    default: trueDip =  pitch;
   }
 
-  useEffect(() => {
+  const onBubbleLevelPress = useCallback(() => {
+    if (disableAverage) return;
+    dipHistory.current = [];
+    setIsCalculatingAvg(true);
+  }, [disableAverage])
 
+  useEffect(() => {
+    // Reset pitch history when measuredAverage changes
+    dipHistory.current = [];
+  }, [measuredAverage]);
+
+  useEffect(() => {
+    // Calculate dip average
+    if (
+      isCalculatingAvg &&
+      dipHistory.current.length >= measuredAverage
+    ) {
+      const sum = dipHistory.current.reduce((a, b) => a + b, 0);
+      const avg = sum / dipHistory.current.length;
+      setIsCalculatingAvg(false);
+      props.onCalculatedAvg(Math.abs(avg));
+    }
+  }, [pitch, roll, measuredAverage, isCalculatingAvg]);
+
+  useEffect(() => {
+    // Collect pitch values for averaging
+    if (isCalculatingAvg) {
+      dipHistory.current.push(trueDip);
+      if (dipHistory.current.length > measuredAverage) {
+        dipHistory.current.shift();
+      }
+    }
+  }, [pitch, roll, measuredAverage, isCalculatingAvg]);
+
+  useEffect(() => {
     // Garantee smooth rotation animation when crossing the 0/360 degrees boundary
-    const targetRotation = roll < 0 ? (90 - newPitch) : -(90 - newPitch);
-    let delta = targetRotation - prevRotation.current;
+    const targetRotation = roll < 0 ? (90 - trueDip) : -(90 - trueDip);
+    let delta = targetRotation - normalizedRotation.current;
     if (delta > 180) delta -= 360;
     if (delta < -180) delta += 360;
-    const nextRotation = prevRotation.current + delta;
-    prevRotation.current = nextRotation;
+    normalizedRotation.current = normalizedRotation.current + delta;
+  }, [pitch, roll])
 
+  useEffect(() => {
     Animated.timing(rotation, {
-      toValue: nextRotation,
+      toValue: normalizedRotation.current,
       duration: 250,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
@@ -63,78 +105,109 @@ export const Display_BubbleLevel = memo((props: {
     onConfirm: () => Vibration.notificationAsync(Vibration.NotificationFeedbackType.Success),
   },[isMaxDip]);
 
+  useTutorialLayer({
+    config: "BUBBLE LEVEL COMPASS",
+    onClose: () => setShowTutorial(false),
+  }, [showTutorial]);
+
   return (
-    <View 
+    <Pressable
+      onPressIn={onBubbleLevelPress}
       style={{
+        borderRadius: width / 2,
+        borderColor: isMaxDip ? "#0f0" : undefined,
+        borderWidth: 8,
+        height: width - 64,
+        width: width - 64,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
-      <Text style={{ color: "#fff", fontSize: 30 }}>
-        {`${Math.abs(newPitch).toFixed(2)}°`}
-      </Text>
       <View
         style={{
-          borderRadius: width / 2,
-          borderColor: isMaxDip ? "#0f0" : undefined,
-          borderWidth: 8,
-          height: width - 64,
-          width: width - 64,
-          justifyContent: "center",
-          alignItems: "center",
+          position: "absolute",
+          top: -40,
         }}
       >
-        {/* grid image */}
-        <Image
-          key={"bubble_level_grid"}
-          source={{
-            uri: AssetManager.getCompassImage("COMPASS_BUBBLE_LEVEL_GRID"),
-          }}
-          style={{
-            position: "absolute",
-            height: width - 80,
-            width: width - 80,
-            resizeMode: "contain",
-          }}
+        <Angle
+          angle={trueDip}
         />
-
-        {/* rotating bubble image */}
-        <Animated.Image
-          key={"bubble_level_compass"}
-          source={{
-            uri: AssetManager.getCompassImage("COMPASS_BUBBLE_LEVEL"),
-          }}
-          style={{
-            position: "absolute",
-            height: width - 80,
-            width: width - 80,
-            resizeMode: "contain",
-            transform: [{ rotate }],
-          }}
-        />
-        {isMaxDip && (
-          <Animated.View
+        {isCalculatingAvg && (
+          <ActivityIndicator
+            size="large"
             style={{
               position: "absolute",
-              width: width - 80,
-              height: width - 80,
-              paddingBottom: 100,
-              justifyContent: "center",
-              alignItems: "center",
-              transform: [{ rotate }],
+              right: -40,
             }}
-          >
-              <Text 
-                style={{
-                  fontSize: 24,
-                  color: "#0f0",
-                }}
-              >
-                {R['Max Dip!!!']}
-              </Text>
-          </Animated.View>
+          />
         )}
       </View>
-    </View>
+      {/* grid image */}
+      <Image
+        key={"bubble_level_grid"}
+        source={{
+          uri: AssetManager.getCompassImage("COMPASS_BUBBLE_LEVEL_GRID"),
+        }}
+        style={{
+          position: "absolute",
+          height: width - 80,
+          width: width - 80,
+          resizeMode: "contain",
+        }}
+      />
+
+      {/* rotating bubble image */}
+      <Animated.Image
+        key={"bubble_level_compass"}
+        source={{
+          uri: AssetManager.getCompassImage("COMPASS_BUBBLE_LEVEL"),
+        }}
+        style={{
+          position: "absolute",
+          height: width - 80,
+          width: width - 80,
+          resizeMode: "contain",
+          transform: [{ rotate }],
+        }}
+      />
+      {isMaxDip && (
+        <Animated.View
+          style={{
+            position: "absolute",
+            width: width - 80,
+            height: width - 80,
+            paddingBottom: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            transform: [{ rotate }],
+          }}
+        >
+            <Text 
+              style={{
+                fontSize: 24,
+                color: "#0f0",
+              }}
+            >
+              {R['Max Dip!!!']}
+            </Text>
+        </Animated.View>
+      )}
+    </Pressable>
   );
+});
+
+const Angle = memo((props: {
+  angle: number
+  style?: TextStyle
+}) => {
+  return (
+    <Text
+      style={[{
+        color: '#fff',
+        fontSize: 24,
+      }, props.style]}
+    >
+      {`${Math.abs(props.angle).toFixed(2)}°`}
+    </Text>
+  )
 });

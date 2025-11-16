@@ -8,6 +8,7 @@ import { GPSInput } from './GPSInputs';
 import { OptionsInput } from './OptionsInput';
 import { SelectionInput } from './SelectionInput';
 import { PictureInput } from './PictureInput';
+import { CompassInput } from './CompassInput';
 
 export const InputSelector = memo((props: {
   widgetScope: WidgetScope
@@ -111,5 +112,19 @@ export const InputSelector = memo((props: {
         theme={props.widgetTheme}
       />
     );
+    case 'compass': return (
+      <CompassInput
+        inputData={props.inputData}
+        editWidget={props.editWidget}
+        isFirstInput={props.isFirstInput}
+        isLastInput={props.isLastInput}
+        onSave={props.onSave}
+        onInputDelete={props.onInputDelete}
+        onInputMoveUp={props.onInputMoveUp}
+        onInputMoveDow={props.onInputMoveDow}
+        widgetRules={props.widgetRules}
+        theme={props.widgetTheme}
+      />
+    )
   }
 });
