@@ -7,7 +7,7 @@ export const MapAnimation = memo((props: {
   style?: StyleProp<ViewStyle>
 }) => {
 
-  const { width }  = useMemo(() => Dimensions.get('window'), []);
+  const { width }  = useMemo(() => Dimensions.get('screen'), []);
   const leftOffset = useMemo(() => new Animated.Value(-width), []);
 
   useEffect(() => {

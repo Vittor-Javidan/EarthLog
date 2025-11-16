@@ -7,7 +7,7 @@ export const Screen = memo((props: {
   style?: StyleProp<ViewStyle>
 }) => {
 
-  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('screen'), []);
 
   return (<>
     <View

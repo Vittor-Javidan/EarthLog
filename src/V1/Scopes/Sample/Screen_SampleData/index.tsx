@@ -86,7 +86,7 @@ export const Screen_SampleData = memo((props: {
           contentContainerStyle={{
             paddingTop: 55,
             paddingHorizontal: 5,
-            paddingBottom: Dimensions.get('window').height - 240,
+            paddingBottom: Dimensions.get('screen').height - 240,
             gap: 10,
           }}
         >

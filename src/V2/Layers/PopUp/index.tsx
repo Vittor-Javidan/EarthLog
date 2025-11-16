@@ -7,7 +7,7 @@ import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { PopUpSelector } from './Selector';
 
-const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
+const {width: WIDTH, height: HEIGHT} = Dimensions.get('screen');
 
 export const PopUpLayer = memo(() => {
 

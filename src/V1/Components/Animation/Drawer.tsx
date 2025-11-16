@@ -8,7 +8,7 @@ export const DrawerAnimation = memo((props: {
   contentContainerStyle?: StyleProp<ViewStyle>
 }) => {
 
-  const { width }  = useMemo(() => Dimensions.get('window'), []);
+  const { width }  = useMemo(() => Dimensions.get('screen'), []);
   const leftOffset = useMemo(() => new Animated.Value(-width), []);
 
   useEffect(() => {

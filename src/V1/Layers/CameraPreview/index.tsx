@@ -34,6 +34,7 @@ export const CameraPreviewLayer = memo(() => {
       animationType="fade"
       statusBarTranslucent
       backdropColor={'#000'}
+      style={{ flex: 1 }}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         {pictureUri ? (<>

@@ -81,7 +81,7 @@ const CarouselButtonsRoot = memo((props: {
   }
 }) => {
 
-  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('screen'), []);
 
   return (
     <View

@@ -7,7 +7,7 @@ import { PopUpAPI } from '@V1/Layers/API/PopUp';
 
 import { PopUpSelector } from './Selector';
 
-const {width: WIDTH, height: HEIGHT} = Dimensions.get('window');
+const {width: WIDTH, height: HEIGHT} = Dimensions.get('screen');
 
 export const PopUpLayer = memo(() => {
 
@@ -24,10 +24,7 @@ export const PopUpLayer = memo(() => {
     <ReactNative_Modal
       visible={showModal}
       animationType="fade"
-      style={{
-        width: WIDTH,
-        height: HEIGHT,
-      }}
+      style={{ flex: 1 }}
       statusBarTranslucent={true}
       transparent
     >

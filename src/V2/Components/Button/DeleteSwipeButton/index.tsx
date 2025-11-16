@@ -27,7 +27,7 @@ export const DeleteSwipeButton = memo((props: {
 
   const config                                = useMemo(() => ConfigService.config, []);
   const R                                     = useMemo(() => translations.component.button[config.language], []);
-  const { width: WIDTH }                      = useMemo(() => Dimensions.get('window'), []);
+  const { width: WIDTH }                      = useMemo(() => Dimensions.get('screen'), []);
   const COMPENSATE_MARGIN                     = useMemo(() => props.compensateMargin ?? 0, []);
   const PADDING                               = useMemo(() => 10, []);
   const CIRCLE_RADIUS                         = useMemo(() => props.buttonRadius ?? 35, []);

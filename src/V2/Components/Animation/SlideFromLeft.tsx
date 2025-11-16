@@ -5,7 +5,7 @@ export const SlideFromLeft = memo((props: {
   duration: number;
   children: ReactNode;
 }) => {
-  const { width }                           = Dimensions.get('window');
+  const { width }                           = Dimensions.get('screen');
   const leftOffset                          = useMemo(() => new Animated.Value(-width), []);
   const [startAnimation, setStartAnimation] = useState<boolean>(false);
 

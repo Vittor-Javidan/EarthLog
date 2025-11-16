@@ -68,7 +68,7 @@ export const Screen_Subscriptions = memo((props: {
           contentContainerStyle={{
             paddingTop: 10,
             paddingHorizontal: 10,
-            paddingBottom: Dimensions.get('window').height - 240,
+            paddingBottom: Dimensions.get('screen').height - 240,
             gap: 10,
           }}
         >

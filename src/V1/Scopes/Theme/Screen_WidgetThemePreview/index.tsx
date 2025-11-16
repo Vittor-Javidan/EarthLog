@@ -26,7 +26,7 @@ export const Screen_WidgetThemePreview = memo((props: {
         contentContainerStyle={{
           paddingHorizontal: 5,
           paddingTop: 55,
-          paddingBottom: Dimensions.get('window').height - 240,
+          paddingBottom: Dimensions.get('screen').height - 240,
           gap: 1,
         }}
       >

@@ -15,7 +15,7 @@ export const CarouselAnimation = memo((props: {
   children: ReactNode
 }) => {
 
-  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('window'), []);
+  const { width: SCREEN_WIDTH } = useMemo(() => Dimensions.get('screen'), []);
   const CAROUSEL_WIDTH          = useMemo(() => props.screensAmount * SCREEN_WIDTH, []);
   const OFFSETS                 = useMemo(() => createOffsets(props.screensAmount, SCREEN_WIDTH), []);
   const leftOffset              = useMemo(() => new Animated.Value(0), []);

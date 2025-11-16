@@ -55,7 +55,7 @@ export const Screen_CredentialSelection = memo((props: {
           contentContainerStyle={{
             paddingTop: 10,
             paddingHorizontal: 5,
-            paddingBottom: Dimensions.get('window').height - 410,
+            paddingBottom: Dimensions.get('screen').height - 410,
             gap: 10,
           }}
         >

@@ -72,7 +72,7 @@ export const Screen_TemplateWidgets = memo((props: {
         contentContainerStyle={{
           paddingTop: 55,
           paddingHorizontal: 5,
-          paddingBottom: Dimensions.get('window').height - 280,
+          paddingBottom: Dimensions.get('screen').height - 280,
           gap: 10,
         }}
       >
