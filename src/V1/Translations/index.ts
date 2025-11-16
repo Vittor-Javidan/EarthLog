@@ -49,10 +49,11 @@ import { R_Widget_Root } from './Widget/Root';
 import { R_Input_Boolean } from './widgetInput/BooleanInput';
 import { R_Input_GPS } from './widgetInput/GPSInput';
 import { R_Input_String } from './widgetInput/StringInput';
+import { R_Input_Compass } from './widgetInput/CompassInput';
 import { R_Input_Options } from './widgetInput/OptionsInput';
+import { R_Input_Selection } from './widgetInput/SelectionInput';
 import { R_Input_Picture } from './widgetInput/PictureInput';
 import { R_Input_Root } from './widgetInput/Root';
-import { R_Input_Selection } from './widgetInput/SelectionInput';
 import { R_Themes_App } from './Themes/AppThemes';
 import { R_Themes_Widget } from './Themes/WidgetThemes';
 
@@ -126,6 +127,7 @@ export const translations = {
   widgetInput: {
     boolean:                  R_Input_Boolean,
     string:                   R_Input_String,
+    compass:                  R_Input_Compass,
     options:                  R_Input_Options,
     selection:                R_Input_Selection,
     picture:                  R_Input_Picture,

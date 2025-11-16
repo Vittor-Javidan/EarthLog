@@ -10,7 +10,8 @@ import { TemplateWidgetCopy } from './PopUp/TemplateWidgetCopy';
 import { DownloadProjects } from './PopUp/DownloadProject';
 import { UploadProjects } from './PopUp/UploadProject';
 import { ExportProject_DOCX } from './PopUp/ExportProject_DOCX';
-import { ExportProject_CSV } from './PopUp/ExportProject_CSV';
+import { ExportProject_GPS_CSV } from './PopUp/ExportProject_CSV_GPS';
+import { ExportProject_Measurements_CSV } from './PopUp/ExportProject_CSV_Compass';
 import { ExportProject_ZIP_IMAGES } from './PopUp/ExportProject_ZIP_IMAGES';
 import { DownloadPictures } from './PopUp/DownloadPictures';
 
@@ -67,12 +68,18 @@ export const PopUpSelector = memo((props: {
         closeModal={() => props.closeModal()}
       />
     );
-    case 'export project (CSV)': return (
-      <ExportProject_CSV
+    case 'export project GPS (CSV)': return (
+      <ExportProject_GPS_CSV
         id_project={props.config.id_project}
         closeModal={() => props.closeModal()}
       />
     );
+    case 'export project compass measurements (CSV)': return (
+      <ExportProject_Measurements_CSV
+        id_project={props.config.id_project}
+        closeModal={() => props.closeModal()}
+      />
+    )
     case 'download pictures': return (
       <DownloadPictures
         id_project={props.config.id_project}

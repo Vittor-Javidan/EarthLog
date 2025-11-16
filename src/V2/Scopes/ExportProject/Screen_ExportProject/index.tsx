@@ -29,9 +29,16 @@ export const Screen_ExportProject = memo((props: {
     }, () => props.onFihish());
   }, []);
 
-  const onCSVSelected = useCallback(async () => {
+  const onCSVSelected_GPS = useCallback(async () => {
     await PopUpAPI.handleAlert(true, {
-      type: 'export project (CSV)',
+      type: 'export project GPS (CSV)',
+      id_project: id_project,
+    }, () => props.onFihish());
+  }, []);
+
+  const onCSVSelected_Measurements = useCallback(async () => {
+    await PopUpAPI.handleAlert(true, {
+      type: 'export project compass measurements (CSV)',
       id_project: id_project,
     }, () => props.onFihish());
   }, []);
@@ -72,7 +79,7 @@ export const Screen_ExportProject = memo((props: {
             <Button.TextWithIcon
               title={R['CSV (GPS)']}
               iconName="page-csv"
-              onPress={async () => await onCSVSelected()}
+              onPress={async () => await onCSVSelected_GPS()}
               iconSize={40}
               style={{
                 paddingRight: 13,
@@ -85,7 +92,22 @@ export const Screen_ExportProject = memo((props: {
               }}
             />
             <Button.TextWithIcon
-              title={R['ZIP (IMAGES)']}
+              title={R['CSV (Compass Measurements)']}
+              iconName="page-csv"
+              onPress={async () => await onCSVSelected_Measurements()}
+              iconSize={40}
+              style={{
+                paddingRight: 13,
+              }}
+              theme={{
+                font:              theme.font_Button,
+                font_active:       theme.font_active,
+                background:        theme.background_Button,
+                background_active: theme.background_active,
+              }}
+            />
+            <Button.TextWithIcon
+              title={R['ZIP (Picture)']}
               iconName="file-zip"
               onPress={async () => await onZIPImagesSelected()}
               theme={{

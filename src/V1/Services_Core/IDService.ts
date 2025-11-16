@@ -36,6 +36,12 @@ export class IDService {
 
   static changeIDsByReference_Input(input: InputData): void {
     input.id_input = this.generateUuidV4();
+    if (input.type === 'compass') {
+      for (let j = 0; j < input.value.length; j++) {
+        input.value[j].id = this.generateUuidV4();
+      }
+      return;
+    }
     if (input.type === 'options') {
       for (let j = 0; j < input.value.length; j++) {
         input.value[j].id = this.generateUuidV4();

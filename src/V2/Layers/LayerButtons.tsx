@@ -32,10 +32,10 @@ const CompassButton = memo(() => {
   const [openCompass, setOpenCompass] = useState<boolean>(false);
 
   useCompassLayer({
-    config: { type: 'default' },
+    config: { mode: 'default' },
     onMeasurementTake: (heading, dip) => {},
     onCompassClose: () => setOpenCompass(false),
-  }, [openCompass]);
+  }, [openCompass, undefined]);
 
   return (
     <Pressable

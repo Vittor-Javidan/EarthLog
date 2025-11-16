@@ -1,3 +1,4 @@
+import { MapAssets } from "@AssetManager"
 import { VERSION } from '@V2/Globals/Version';
 
 // =================================================================================================
@@ -115,9 +116,10 @@ export type InputData = (
   GPSInputData       |
   OptionsInputData   |
   SelectionInputData |
-  PictureInputData
+  PictureInputData   |
+  CompassInputData
 )
-export const InputTypesArray = ['boolean', 'string', 'gps', 'options', 'selection', 'picture'] as const;
+export const InputTypesArray = ['boolean', 'string', 'gps', 'options', 'selection', 'picture', 'compass'] as const;
 export type InputTypes = (typeof InputTypesArray)[number];
 
 // ============================
@@ -227,6 +229,29 @@ export type GPSFeaturesDTO = {
   enableAltitude: boolean
   gettingCurrentPosition: boolean
   isManualInputOpen: boolean
+}
+
+// ============================
+export type CompassInputData = {
+  id_input: string
+  label: string
+  type: 'compass'
+  value: CompassMeasurementDTO[]
+  lastUsedMarkerIcon: MapAssets
+  lockedLabel?: boolean
+  lockedData?: boolean
+  showAddMeasurementButton?: boolean
+  allowMeasurementLabelChange?: boolean
+  allowMeasurementDataChange?: boolean
+  allowMeasurementDeletion?: boolean
+}
+export type CompassMeasurementDTO = {
+  id: string
+  label: string
+  heading: number
+  dip: number
+  markerIcon: MapAssets
+  coordinates?: CoordinateDTO
 }
 
 // =================================================================================================

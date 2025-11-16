@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { CompassLayerConfig } from "@V2/Types/AppTypes";
+import { CompassInputData } from "@V2/Types/ProjectTypes";
 
 export function useCompassLayer(
   o: {
@@ -7,9 +8,9 @@ export function useCompassLayer(
     onMeasurementTake: (heading: number, dip: number) => void,
     onCompassClose: () => void,
   },
-  deps: [openCompass: boolean]
+  deps: [openCompass: boolean, inputData: CompassInputData | undefined]
 ) {
-  const [openCompass] = deps;
+  const [openCompass, inputData] = deps;
   useEffect(() => {
     CompassAPI.configCompass(o.config);
     CompassAPI.onMeasurementTakeCallback(o.onMeasurementTake);
@@ -17,7 +18,7 @@ export function useCompassLayer(
     if (openCompass) {
       CompassAPI.openCompass();
     }
-  }, [openCompass]);
+  }, [openCompass, inputData]);
 }
 
 export class CompassAPI {

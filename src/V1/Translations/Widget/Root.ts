@@ -30,6 +30,7 @@ export const R_Widget_Root: TranslationDTO = {
     'selection': 'Selection',
     'gps': 'GPS',
     'picture': 'Picture',
+    'compass': 'Compass',
   },
   'pt-BR': {
     'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.': 'Isso irá apagar qualquer informação ou mídia relacionada a esse widget. Essa ação é permanente e não pode ser desfeita.',
@@ -48,5 +49,6 @@ export const R_Widget_Root: TranslationDTO = {
     'selection': 'Seleção',
     'gps': 'GPS',
     'picture': 'Foto',
+    'compass': 'Bússola',
   },
 };

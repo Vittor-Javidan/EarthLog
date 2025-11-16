@@ -119,13 +119,14 @@ export type ConfigDTO = {
   onlyWarningVibrations: boolean
   automaticSampleGPSReference: boolean
   compassDeclination: number
+  compassAverageMeasurements: number
   tutorial_bubbleLevel: boolean
 }
 
 export type ModalConfig = {
   type: 'exit app' | 'project creation' | 'download projects'
 } | {
-  type: 'export project (DOCX)' | 'export project (CSV)' | 'export project (ZIP IMAGES)'
+  type: 'export project (DOCX)' | 'export project (ZIP IMAGES)' | 'export project GPS (CSV)' | 'export project compass measurements (CSV)'
   id_project: string
 } | {
   type: 'sample creation'
@@ -155,6 +156,10 @@ export type RegexRules = {
   'id':              RegExp
   'hexColor':        RegExp
   'fileName':        RegExp
+  'declination':     RegExp
+  'measurementAvg':  RegExp
+  'heading':         RegExp
+  'dip':             RegExp
 }
 
 export type CredentialDTO = {
@@ -215,9 +220,7 @@ export type MarkerData = {
 
 // --------------------------------- Compass Types -----------------------------
 
-export type DefaultCompassConfig = {
-  type: 'default'
-}
+export type DefaultCompassConfig = { mode: 'default' | 'measurement' }
 export type CompassLayerConfig = DefaultCompassConfig
 
 // --------------------------------- Tutorial Types ----------------------------

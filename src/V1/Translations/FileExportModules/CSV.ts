@@ -1,6 +1,14 @@
 import { LanguageTag } from '@V1/Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, {
+  'Building project data': string
+  'Mounting header': string
+  'Mounting project coordinates': string
+  'Mounting samples coordinates': string
+  'Mounting project measurements': string
+  'Mounting samples measurements': string
+  'Creating CSV file': string
+  'Sharing document': string
   'Source': string
   'Widget name': string
   'Label': string
@@ -17,6 +25,14 @@ type TranslationDTO = Record<LanguageTag, {
 
 export const R_FileExportModules_CSV: TranslationDTO = {
   'en-US': {
+    'Building project data': 'Building project data',
+    'Mounting header': 'Mounting header',
+    'Mounting project coordinates': 'Mounting project coordinates',
+    'Mounting samples coordinates': 'Mounting samples coordinates',
+    'Mounting project measurements': 'Mounting project measurements',
+    'Mounting samples measurements': 'Mounting samples measurements',
+    'Creating CSV file': 'Creating CSV file',
+    'Sharing document': 'Sharing document',
     'Source': 'From',
     'Widget name': 'Widget name',
     'Label': 'Label',
@@ -31,6 +47,14 @@ export const R_FileExportModules_CSV: TranslationDTO = {
     'GPS': 'GPS',
   },
   'pt-BR': {
+    'Building project data': 'Montando dados do projeto',
+    'Mounting header': 'Montando cabeçalho',
+    'Mounting project coordinates': 'Montando coordenadas do projeto',
+    'Mounting samples coordinates': 'Montando coordenadas das amostras',
+    'Mounting project measurements': 'Montando medições do projeto',
+    'Mounting samples measurements': 'Montando medições das amostras',
+    'Creating CSV file': 'Criando arquivo CSV',
+    'Sharing document': 'Compartilhando documento',
     'Source': 'Fonte',
     'Widget name': 'Nome do widget',
     'Label': 'Etiqueta',

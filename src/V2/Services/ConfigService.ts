@@ -16,6 +16,7 @@ export class ConfigService {
     onlyWarningVibrations: true,
     automaticSampleGPSReference: true,
     compassDeclination: 0,
+    compassAverageMeasurements: 10,
     tutorial_bubbleLevel: true,
   };
 
@@ -44,14 +45,15 @@ export class ConfigService {
     const { App, Widget } = ThemeService.themeNamesArray;
     
     const verifiedConfigDTO: ConfigDTO = {
-      language:              config.language                           ?? this.config.language,
-      dateFormat:            config.dateFormat                         ?? this.config.dateFormat,
-      timeFormat:            config.timeFormat                         ?? this.config.timeFormat,
-      appTheme:              !App.includes(config.appTheme)             ? this.config.appTheme              : config.appTheme,
-      widgetTheme:           !Widget.includes(config.widgetTheme)       ? this.config.widgetTheme           : config.widgetTheme,
-      onlyWarningVibrations: config.onlyWarningVibrations              ?? this.config.onlyWarningVibrations,
+      language:                    config.language                     ?? this.config.language,
+      dateFormat:                  config.dateFormat                   ?? this.config.dateFormat,
+      timeFormat:                  config.timeFormat                   ?? this.config.timeFormat,
+      appTheme:                    !App.includes(config.appTheme)       ? this.config.appTheme              : config.appTheme,
+      widgetTheme:                 !Widget.includes(config.widgetTheme) ? this.config.widgetTheme           : config.widgetTheme,
+      onlyWarningVibrations:       config.onlyWarningVibrations        ?? this.config.onlyWarningVibrations,
       automaticSampleGPSReference: config.automaticSampleGPSReference  ?? this.config.automaticSampleGPSReference,
       compassDeclination:          config.compassDeclination           ?? this.config.compassDeclination,
+      compassAverageMeasurements:  config.compassAverageMeasurements   ?? this.config.compassAverageMeasurements,
       tutorial_bubbleLevel:        config.tutorial_bubbleLevel         ?? this.config.tutorial_bubbleLevel,
     };
     return verifiedConfigDTO;
