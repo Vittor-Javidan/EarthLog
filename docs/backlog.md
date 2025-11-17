@@ -1,5 +1,8 @@
 # features:
 
+- Feedback:
+    - implement a loading indicator during subscription page plans loading
+
 - Compass:
     - implement stereogram display
 
