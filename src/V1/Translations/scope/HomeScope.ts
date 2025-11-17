@@ -12,6 +12,7 @@ type TranslationDTO = Record<LanguageTag, {
   'File Explorer': string
   'Release Notes': string
   'Exported Files': string
+  'Subscriptions': string
 }>
 
 export const R_Scope_Home: TranslationDTO = {
@@ -27,6 +28,7 @@ export const R_Scope_Home: TranslationDTO = {
     'File Explorer': 'File Explorer',
     'Release Notes': 'Release Notes',
     'Exported Files': 'Exported Files',
+    'Subscriptions': 'Subscriptions',
   },
   'pt-BR': {
     'Home screen': 'Tela inicial',
@@ -40,5 +42,6 @@ export const R_Scope_Home: TranslationDTO = {
     'File Explorer': 'Explorador de Arquivos',
     'Release Notes': 'Notas de Lançamento',
     'Exported Files': 'Arquivos Exportados',
+    'Subscriptions': 'Assinaturas',
   },
 };

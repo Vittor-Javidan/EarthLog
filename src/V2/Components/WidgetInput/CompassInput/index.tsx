@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import { MarkerAssets } from '@AssetManager';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { translations } from '@V2/Translations/index';
 import { CompassInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
@@ -70,6 +71,14 @@ export const CompassInput = memo((props: {
   const onMeasurementDipChange = useCallback((newDip: number, index: number) => {
     const newData: CompassInputData = { ...inputData }
     newData.value[index].dip = newDip;
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
+
+  const onMeasurementMarkerPress = useCallback((mapMarker: MarkerAssets, index: number) => {
+    const newData: CompassInputData = { ...inputData }
+    newData.lastUsedMarkerIcon = mapMarker;
+    newData.value[index].markerIcon = mapMarker;
     asyncSave(newData);
     setInputData(newData);
   }, [asyncSave, inputData]);
@@ -152,6 +161,7 @@ export const CompassInput = memo((props: {
           theme={props.theme}
           onMeasurementLabelChange={onMeasurementLabelChange}
           onMeasurementHeadingChange={onMeasurementHeadingChange}
+          onMeasurementMarkerPress={onMeasurementMarkerPress}
           onMeasurementDipChange={onMeasurementDipChange}
           onMeasurementDelete={onMeasurementDelete}
         />

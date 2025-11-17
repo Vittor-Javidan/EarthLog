@@ -22,7 +22,7 @@ export const Drawer = memo((props: {
 
   return (<>
     <Button.TextWithIcon
-      title={'Subscriptions'}
+      title={R['Subscriptions']}
       iconName="logo-google-playstore"
       theme={{
         font:              theme.font,

@@ -1,3 +1,13 @@
+# ✅ 1.15.3
+- New:
+  - Map Markers Selection Layer
+    - Now markers can be selected from <CompassInput />
+    - Added new colors for markers
+
+- Fix:
+  - Home Drawer translation: Subscription button was not translated
+
+
 # ✅ 1.15.2
 
 - New:
