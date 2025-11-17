@@ -9,6 +9,7 @@ import { PopUpLayer } from '@V1/Layers/PopUp';
 import { ScopeController } from '@V1/Scopes/controller';
 import { CompassLayer } from '@V1/Layers/Compass';
 import { MapLayer } from '@V1/Layers/Map';
+import { Map_MarkeSelectionLayer } from '@V1/Layers/Map_MarkeSelection';
 import { NotificationLayer } from '@V1/Layers/NotificationLayer';
 import { TutorialLayer } from '@V1/Layers/TutorialLayer';
 import { LayerButtons } from '@V1/Layers/LayerButtons';
@@ -29,6 +30,7 @@ export default function LTS_VERSION_1() {
       <CameraPreviewLayer />
       <CompassLayer />
       <MapLayer />
+      <Map_MarkeSelectionLayer />
       <NotificationLayer />
       <TutorialLayer />
       <LayerButtons />

@@ -1,4 +1,4 @@
-import { MapAssets } from "@AssetManager"
+import { MarkerAssets } from "@AssetManager"
 import { VERSION } from '@V2/Globals/Version';
 
 // =================================================================================================
@@ -237,7 +237,7 @@ export type CompassInputData = {
   label: string
   type: 'compass'
   value: CompassMeasurementDTO[]
-  lastUsedMarkerIcon: MapAssets
+  lastUsedMarkerIcon: MarkerAssets
   lockedLabel?: boolean
   lockedData?: boolean
   showAddMeasurementButton?: boolean
@@ -250,7 +250,7 @@ export type CompassMeasurementDTO = {
   label: string
   heading: number
   dip: number
-  markerIcon: MapAssets
+  markerIcon: MarkerAssets
   coordinates?: CoordinateDTO
 }
 

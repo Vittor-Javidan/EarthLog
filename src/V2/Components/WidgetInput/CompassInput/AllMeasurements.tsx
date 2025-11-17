@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { MarkerAssets } from "@AssetManager";
 import { CompassMeasurementDTO, WidgetTheme } from "@V2/Types/ProjectTypes";
 import { Measurement } from "./Measurement";
 
@@ -12,6 +13,7 @@ export const AllMeasurements = memo((props: {
   theme: WidgetTheme
   onMeasurementHeadingChange: (newHeading: number, index: number) => void
   onMeasurementDipChange: (newDip: number, index: number) => void
+  onMeasurementMarkerPress: (mapMarker: MarkerAssets, index: number) => void
   onMeasurementLabelChange: (newLabel: string, index: number) => void
   onMeasurementDelete: (index: number) => void
 }) => {
@@ -27,6 +29,7 @@ export const AllMeasurements = memo((props: {
       theme={props.theme}
       onHeadingChange={(newHeading) => props.onMeasurementHeadingChange(newHeading, index)}
       onDipChange={(newDip) => props.onMeasurementDipChange(newDip, index)}
+      onMarkerChange={(mapMarker) => props.onMeasurementMarkerPress(mapMarker, index)}
       onMeasurementLabelChange={(newLabel) => props.onMeasurementLabelChange(newLabel, index)}
       onMeasurementDelete={() => props.onMeasurementDelete(index)}
     />

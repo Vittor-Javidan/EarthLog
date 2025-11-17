@@ -1,8 +1,6 @@
 # features:
 
 - Compass:
-    - Implement marker icon change layerÇ
-        - Allow measurements to change their marker on <CompassInput />
     - implement stereogram display
 
 - Notification Layer:
@@ -16,6 +14,7 @@
     - Project Area reference
 
 - Map:
+    - implement a markers placement on map for <Pictures /> and <Measurements />
     - Implement filters to hide or show samples on Map Project Scope
 
 - Server Rules:
