@@ -1,12 +1,8 @@
 <en-US>
   - New:
-    - Bubble Level Tutorial
-    - New Compass Input
-    - New CSV export for compass measurements
+    - Compass Measurements Icon Selection
 </en-US>
 <pt-BR>
   - Novo:
-    - Tutorial do Nível de Bolha
-    - Novo input de Bússola
-    - Novo exportação CSV para medições da bússola
+    - Seleção de Ícone de Medidas da Bússola
 </pt-BR>
