@@ -16,15 +16,9 @@ I'm not entirely sure if anyone can create a dev build using their own EAS accou
 
 Since this project was not initially meant to be open source, some guidance might be missing or incorrect. Please let me know if you encounter any issues in the repository's issues section so that I can address them.
 
-# Download a Dev Build APK
-
-Dev builds available for download: [Dev Build APKs](https://drive.google.com/drive/folders/1aOryZwBQTGlB-6MSTYQdALV58tawYyYD?usp=sharing)
-
 # Guidelines for contribute
 
-If you intend to enhance this project, please ensure that your contributions are based on the latest LTS versions.
-
-Pull requests that modify older LTS versions will not be approved. This policy is in place to maintain stability and data integrity for users already relying on the application for their company or job.
+Pull requests that modify already used data types on older LTS versions will not be approved, to keep the app stability. The beta version was made for those. This policy is in place to maintain stability and data integrity for users already relying on the application for their company or job.
 
 Your commit message must come in the format of `[LTS Version Number] <Your Commit message>`.
 
