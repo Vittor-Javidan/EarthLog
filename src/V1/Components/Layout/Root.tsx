@@ -3,7 +3,7 @@ import { View, Pressable, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools from '@DevTools';
-import { SubscriptionManager } from '@SubscriptionManager';
+import { SubscriptionManager, useSubscriptionChecker } from '@SubscriptionManager';
 import { APP_VERSION } from '@V1/Globals/Version';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { HapticsService } from '@V1/Services/HapticsService';
@@ -70,7 +70,6 @@ const AppLayer = memo((props: {
     <Drawer
       show={showDrawer}
       dimensions={drawerDimensions}
-      onPress_Background={() => setShowDrawer(false)}
     >
       {props.drawerChildren}
     </Drawer>
@@ -191,34 +190,13 @@ const Drawer = memo((props: {
   show: boolean
   dimensions: { width: number; height: number }
   children: ReactNode
-  onPress_Background: () => void
 }) => {
 
   const { top, bottom } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
-  const [sponsorTier , setSponsorTier ] = useState<number>(SubscriptionManager.getStatus().sponsorship);
-  const [isMapEnabled, setIsMapEnabled] = useState<boolean>(SubscriptionManager.getStatus().isMapEnabled);
 
   const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
-
-  let sponsorColor
-  switch (sponsorTier) {
-    case 1: sponsorColor = theme.wrong; break;   // Supporter
-    case 2: sponsorColor = theme.warning; break; // Gold
-    case 3: sponsorColor = theme.confirm; break; // Emerald
-    default: sponsorColor = theme.wrong; break;  // Supporter
-  }
-
-  useEffect(() => {
-    SubscriptionManager.getActiveSubscriptions({
-      onSuccess: (status) => {
-        setSponsorTier(status.sponsorship);
-        setIsMapEnabled(status.isMapEnabled);
-      }
-    });
-  }, []);
-
   const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
   const TOP = top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT;
 
@@ -239,47 +217,72 @@ const Drawer = memo((props: {
       }}
     >
       {props.children}
-      <Pressable
-        onPress={() => props.onPress_Background()}
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          padding: 8,
-          gap: 10,
-        }}
-      >
-        <Text p
-          style={{
-            color: theme.font,
-            textAlign: 'right',
-            fontSize: 10,
-          }}
-        >
-          {'v: ' + APP_VERSION}
-        </Text>
-        {sponsorTier > 0 && (
-          <Icon
-            color={sponsorColor}
-            iconName={'heart'}
-            fontSize={20}
-          />
-        )}
-        {isMapEnabled && (
-          <Icon
-            color={theme.wrong}
-            iconName={'map'}
-            fontSize={20}
-          />
-        )}
-        {DevTools.TUTORIAL_MODE && (
-          <Icon
-            color={theme.confirm}
-            iconName={'menu-book'}
-            fontSize={20}
-          />
-        )}
-      </Pressable>
+      <AppStateChecker />
     </Animation.Drawer>
   </>) : <></>;
+});
+
+const AppStateChecker = memo(() => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
+
+  const [sponsorTier , setSponsorTier ] = useState<number>(SubscriptionManager.getStatus().sponsorship);
+  const [isMapEnabled, setIsMapEnabled] = useState<boolean>(SubscriptionManager.getStatus().isMapEnabled);
+
+  let sponsorColor
+  switch (sponsorTier) {
+    case 1: sponsorColor = theme.wrong; break;   // Supporter
+    case 2: sponsorColor = theme.warning; break; // Gold
+    case 3: sponsorColor = theme.confirm; break; // Emerald
+    default: sponsorColor = theme.wrong; break;  // Supporter
+  }
+
+  useSubscriptionChecker({
+    onSponsorshipLoaded: (tier) => setSponsorTier(tier),
+    onMapStatusLoaded: (isEnabled) => setIsMapEnabled(isEnabled),
+  });
+
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: 8,
+        gap: 10,
+      }}
+    >
+      <Text p
+        style={{
+          color: theme.font,
+          textAlign: 'right',
+          fontSize: 10,
+        }}
+      >
+        {'v: ' + APP_VERSION}
+      </Text>
+      {sponsorTier > 0 && (
+        <Icon
+          color={sponsorColor}
+          iconName={'heart'}
+          fontSize={20}
+        />
+      )}
+      {isMapEnabled && (
+        <Icon
+          color={theme.wrong}
+          iconName={'map'}
+          fontSize={20}
+        />
+      )}
+      {DevTools.TUTORIAL_MODE && (
+        <Icon
+          color={theme.confirm}
+          iconName={'menu-book'}
+          fontSize={20}
+        />
+      )}
+    </View>
+  )
 });

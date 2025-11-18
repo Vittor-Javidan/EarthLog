@@ -1,4 +1,10 @@
 # ✅ 1.15.4
+- New:
+  - Map Tutorial
+
+- Fix:
+  - Subcription screen not having a loading indicator while connecting to Play Store
+  - Subscription icon card no proper aligned
 
 
 # ✅ 1.15.3

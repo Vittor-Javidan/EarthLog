@@ -1,5 +1,5 @@
 import NetworkManager from '@NetworkManager';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   initConnection,
   endConnection,
@@ -27,6 +27,42 @@ export const SKU_IDs = [
   SPONSOR_T3
 ] as const;
 export type SKU_IDs = typeof MAP_PLAN_SKU | typeof SPONSOR_T1 | typeof SPONSOR_T2 | typeof SPONSOR_T3;
+
+export function useSubscriptionChecker(o: {
+  onSponsorshipLoaded: (tier: SponsorTier) => void,
+  onMapStatusLoaded: (isEnabled: boolean) => void,
+}) {
+
+  const [sponsorTier , setSponsorTier ] = useState<SponsorTier>(SubscriptionManager.getStatus().sponsorship);
+  const [isMapEnabled, setIsMapEnabled] = useState<boolean>(SubscriptionManager.getStatus().isMapEnabled);
+
+  useEffect(() => {
+
+    // Every time the scopes changes, all components are unmounted and mounted again.
+    // So this effect will run again every time the user goes to subscriptions scope.
+    //
+    // It does not detect subscription expirations while the app is open.
+    // But howerver, we give the user the ability to keep the features as a grace period,
+    // until the app process is restarted by the android system automaticly or by the user itself. This is to avoid bad user experience while they are using the app.
+    // And we never know when the user is on urgent need of the map feature or the gravity of their current situation.
+
+    if (SubscriptionManager.didCheck) {
+      o.onSponsorshipLoaded(sponsorTier);
+      o.onMapStatusLoaded(isMapEnabled);
+    } else {
+      console.log('Checking subscriptions...');
+      SubscriptionManager.getActiveSubscriptions({
+        onSuccess: (status) => {
+          SubscriptionManager.didCheck = true;
+          setSponsorTier(status.sponsorship);
+          setIsMapEnabled(status.isMapEnabled);
+          o.onSponsorshipLoaded(status.sponsorship);
+          o.onMapStatusLoaded(status.isMapEnabled);
+        }
+      });
+    }
+  }, []);
+}
 
 export function useConnectStore(o: {
   onConnection: () => void,
@@ -99,6 +135,7 @@ export class SubscriptionManager {
 
   private static sponsorTier: SponsorTier = 0;
   private static isMapEnabled: boolean = false;
+  static didCheck: boolean = false;
 
   static getStatus(): {
     sponsorship: SponsorTier
@@ -110,10 +147,14 @@ export class SubscriptionManager {
     };
   }
 
+  /**
+   * @Warning This connects and disconnects from the store every time it is called.
+   * Avoid calling it on subscriptions scope.
+   */
   static async getActiveSubscriptions(o: {
     onSuccess: (o: {
       isMapEnabled: boolean
-      sponsorship: number,
+      sponsorship: SponsorTier,
     }) => void,
   }) {
 

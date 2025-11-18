@@ -18,6 +18,7 @@ export class ConfigService {
     compassDeclination: 0,
     compassAverageMeasurements: 10,
     tutorial_bubbleLevel: true,
+    tutorial_map: true,
   };
 
   static async loadConfig(): Promise<void> {
@@ -34,6 +35,7 @@ export class ConfigService {
 
   static resetTutorials(): void {
     this.config.tutorial_bubbleLevel = true;
+    this.config.tutorial_map = true;
   }
 
   /** Garantees migration when local storage config data is outdated */
@@ -55,6 +57,7 @@ export class ConfigService {
       compassDeclination:          config.compassDeclination           ?? this.config.compassDeclination,
       compassAverageMeasurements:  config.compassAverageMeasurements   ?? this.config.compassAverageMeasurements,
       tutorial_bubbleLevel:        config.tutorial_bubbleLevel         ?? this.config.tutorial_bubbleLevel,
+      tutorial_map:                config.tutorial_map                 ?? this.config.tutorial_map,
     };
     return verifiedConfigDTO;
   }

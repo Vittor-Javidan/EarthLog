@@ -1,9 +1,9 @@
 import { memo, useCallback, useState } from "react";
-import { Dimensions } from "react-native";
+import { ActivityIndicator, Dimensions } from "react-native";
 import { finishTransaction, useIAP } from "react-native-iap";
 
-import { sleep } from "@V1/Globals/Sleep";
 import { AppSubscriptions, SKU_IDs, SubscriptionManager, useFetchSubscriptions } from "@SubscriptionManager";
+import { sleep } from "@V1/Globals/Sleep";
 
 import { Animation } from "@V1/Animation/index";
 import { Layout } from "@V1/Layout/index";
@@ -24,6 +24,7 @@ export const Screen_Subscriptions = memo((props: {
         purchase,
         isConsumable: false,
       })
+      SubscriptionManager.didCheck = false;
       await sleep(50)
       props.onPurchaseSuccess();
     }
@@ -79,11 +80,15 @@ export const Screen_Subscriptions = memo((props: {
               onBuySubscription={async (offerToken) => await onBuyMapSubscription(offerToken)}
             />
           )}
-          {subscriptions.sponsorSubscriptions.length === 3 && (
+          {subscriptions.sponsorSubscriptions.length >= 3 && (
             <LC.SponsorSubscriptionsButton
               sponsorSubscription={subscriptions.sponsorSubscriptions}
               onBuySubscription={async (offer) => await onBuySponsorSubscription(offer)}
             />
+          )}
+          {(subscriptions.mapSubscriptions.length <= 0 ||
+            subscriptions.sponsorSubscriptions.length < 3) && (
+              <ActivityIndicator size="large"/>
           )}
         </Layout.ScrollView>
       </Animation.SlideFromLeft>

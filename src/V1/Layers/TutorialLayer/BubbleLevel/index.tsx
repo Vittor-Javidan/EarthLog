@@ -1,6 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Image, View, Dimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V1/Translations/index";
@@ -13,8 +12,7 @@ export const Tutorial_BubbleLevel = memo((o: {
   onFinish: () => void;
 }) => {
 
-  const {top, bottom}    = useSafeAreaInsets();
-  const {width, height } = Dimensions.get("screen");
+  const { width } = Dimensions.get("screen");
   const config           = useMemo(() => ConfigService.config, []);
   const R                = useMemo(() => translations.layers.tutorial[config.language], []);
   const [dontShowTutorialAgain, setDontShowTutorialAgain] = useState(!ConfigService.config.tutorial_bubbleLevel);
@@ -27,16 +25,7 @@ export const Tutorial_BubbleLevel = memo((o: {
   }, [dontShowTutorialAgain])
 
   return (
-    <View
-      style={{
-        marginTop: top,
-        height: height - top - bottom,
-        width: width,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
-      }}
-    >
+    <LC.TutorialScreen>
       {step === 1 && (<>
         <Image
           source={{ uri: AssetManager.getTutorialImage("TUTORIAL_BUBBLE_LEVEL_SURFACE_ANGLE") }}
@@ -92,6 +81,6 @@ export const Tutorial_BubbleLevel = memo((o: {
           <LC.TutorialButton label={R['Finish']} onPress={() => o.onFinish()} />
         </View>
       </>)}
-    </View>
+    </LC.TutorialScreen>
   )
 })

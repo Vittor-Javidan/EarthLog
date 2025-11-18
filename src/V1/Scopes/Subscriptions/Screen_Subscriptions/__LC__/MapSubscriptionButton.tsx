@@ -46,22 +46,17 @@ export const MapSubscriptionsButton = memo((props: {
         paddingLeft: 10,
         paddingRight: 10,
         elevation: 3,
-        gap: 20,
+        gap: 10,
       }}
     >
       <View
         style={{
-          flex: 1,
           flexDirection: 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'flex-start',
         }}
       >
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
+        <View>
           <Text h2
             style={{
               color: pressed ? theme.font_active : theme.font,
@@ -78,19 +73,21 @@ export const MapSubscriptionsButton = memo((props: {
               textAlign: 'left',
               flexShrink: 1,
               flexWrap: 'wrap',
+              fontWeight: 'bold',
             }}
           >
-            {R['${price}/month • Auto-renews monthly'](subscription.displayPrice)}
+            {R['${price}/month'](subscription.displayPrice)}
           </Text>
           <Text p
             style={{
-              color: pressed ? theme.font_active : theme.font,
+              color: pressed ? theme.background : theme.font,
               textAlign: 'left',
               flexShrink: 1,
               flexWrap: 'wrap',
+              fontWeight: 'bold',
             }}
           >
-            {R['Enable the map inside the app']}
+            {R['Auto-renews monthly']}
           </Text>
         </View>
         <Icon
@@ -104,6 +101,16 @@ export const MapSubscriptionsButton = memo((props: {
           gap: 5,
         }}
       >
+        <Text p
+          style={{
+            color: pressed ? theme.font_active : theme.font,
+            textAlign: 'left',
+            flexShrink: 1,
+            flexWrap: 'wrap',
+          }}
+        >
+          {R['Enable the map inside the app']}
+        </Text>
         <Text p
           style={{
             color: pressed ? theme.font_active : theme.font,

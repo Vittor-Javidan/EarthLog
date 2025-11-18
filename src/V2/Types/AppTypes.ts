@@ -121,6 +121,7 @@ export type ConfigDTO = {
   compassDeclination: number
   compassAverageMeasurements: number
   tutorial_bubbleLevel: boolean
+  tutorial_map: boolean
 }
 
 export type ModalConfig = {
@@ -225,4 +226,4 @@ export type CompassLayerConfig = DefaultCompassConfig
 
 // --------------------------------- Tutorial Types ----------------------------
 
-export type TutorialType = 'BUBBLE LEVEL COMPASS'
+export type TutorialType = 'BUBBLE LEVEL COMPASS' | 'MAP'

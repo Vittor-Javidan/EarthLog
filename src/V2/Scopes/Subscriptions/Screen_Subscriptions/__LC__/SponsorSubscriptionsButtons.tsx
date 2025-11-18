@@ -80,53 +80,62 @@ export const SponsorSubscriptionsButton = memo((props: {
         onPressOut={() => setPressed(false)}
         onPress={() => onPress()}
         style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          gap: 10,
         }}
       >
         <View
           style={{
-            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
           }}
         >
-          <Text h2
-            style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {R['Sponsor the App']}
-          </Text>
-          <Text p
-            style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {R['${price}/month • Auto-renews monthly'](price)}
-          </Text>
-          <Text p
-            style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {R['A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!']}
-          </Text>
+          <View>
+            <Text h2
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+              }}
+            >
+              {R['Sponsor the App']}
+            </Text>
+            <Text p
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+                fontWeight: 'bold',
+              }}
+            >
+              {R['${price}/month'](price)}
+            </Text>
+            <Text p
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+                flexShrink: 1,
+                flexWrap: 'wrap',
+                fontWeight: 'bold',
+              }}
+            >
+              {R['Auto-renews monthly']}
+            </Text>
+          </View>
+          <Icon
+            color={pressed ? theme.background : sponsorColor}
+            iconName="hand-heart"
+            fontSize={50}
+          />
         </View>
-        <Icon
-          color={pressed ? theme.background : sponsorColor}
-          iconName="hand-heart"
-          fontSize={50}
-        />
+        <Text p
+          style={{
+            color: pressed ? theme.background : theme.font,
+            textAlign: 'left',
+            flexShrink: 1,
+            flexWrap: 'wrap',
+          }}
+        >
+          {R['A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!']}
+        </Text>
       </Pressable>
       <View
         style={{
