@@ -1,3 +1,13 @@
+# refactoring:
+
+- low Priority:
+    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
+    - Add all major zIndez inside the gloal zIndex file
+    - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
+    - Add `HapticsService.vibrate` for all buttons missing vibrations
+    - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope
+    - Reorganize the checkup list into files
+
 # features:
 
 - Compass:
@@ -45,13 +55,3 @@
 - Project Type:
     - implement a new type of project that just have one sample
         - instead loading the sample list, it will load all sample widgets directly
-
-# refactoring:
-
-- low Priority:
-    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
-    - Add all major zIndez inside the gloal zIndex file
-    - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
-    - Add `HapticsService.vibrate` for all buttons missing vibrations
-    - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope
-    - Reorganize the checkup list into files
