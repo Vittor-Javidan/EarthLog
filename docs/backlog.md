@@ -5,17 +5,12 @@
     - Add all major zIndez inside the gloal zIndex file
     - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
     - Add `HapticsService.vibrate` for all buttons missing vibrations
-    - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope
     - Reorganize the checkup list into files
 
 # features:
 
 - Compass:
     - implement stereogram display
-
-- Notification Layer:
-    - add a saving status
-    - add a loading assets status
 
 - Screens:
     - Add a Credits Screen, with all libraries, open source creators and users that helped directly or indirectly for the project to be possible
