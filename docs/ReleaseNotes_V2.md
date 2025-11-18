@@ -1,6 +1,7 @@
 # ✅ 2.5.4
 - New:
   - Map Tutorial
+  - Now layer buttons hide when menu opens
 
 - Fix:
   - Subcription screen not having a loading indicator while connecting to Play Store

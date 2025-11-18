@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useMemo, memo, useCallback, useEffect } from 'react';
+import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
 import { View, Pressable, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -8,6 +8,7 @@ import { APP_VERSION } from '@V2/Globals/Version';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { useLayerButtons } from '@V2/Layers/API/LayerButtons';
 
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
@@ -50,6 +51,8 @@ const AppLayer = memo((props: {
   const [showDrawer      , setShowDrawer      ] = useState<boolean>(false);
 
   const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT
+
+  useLayerButtons([!showDrawer]);
 
   return (<>
     <Navbar
