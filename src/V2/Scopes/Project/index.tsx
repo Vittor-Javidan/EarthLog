@@ -31,9 +31,14 @@ export const ProjectScope = memo((props: {
   const R                                           = useMemo(() => translations.scope.project[config.language], []);
   const projectSettings                             = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const [state             , setState             ] = useState<Loading>('Loading');
+  const [showDrawer        , setShowDrawer        ] = useState<boolean>(false);
   const [updatedName       , setUpdatedName       ] = useState<string | null>(null);
   const [refresher         , refresh              ] = useState<boolean>(true);
   const [updatedSampleAlias, setUpdatedSampleAlias] = useState<UpdatedAlias>({ plural: null, singular: null });
+
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
 
   const onDownloadAllPictures = useCallback(async () => {
     const allMissingPictures = CacheService.identifyMissingPictures({ id_project });
@@ -58,6 +63,14 @@ export const ProjectScope = memo((props: {
     });
   }, []);
 
+  const onBackPress = useCallback(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'HOME SCOPE' });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
+
   useEffect(() => {
     FetchData(id_project, () => {
       setState('Loaded');
@@ -72,6 +85,8 @@ export const ProjectScope = memo((props: {
       key={`${refresher}`}
       title={R['Project']}
       subtitle={updatedName ?? projectSettings.name}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}
@@ -85,12 +100,19 @@ export const ProjectScope = memo((props: {
           onResetSyncData={() => onResetSyncData()}
         />
       }
+      menuIcon="folder"
+      menuIconStyle={{
+        paddingBottom: 5,
+        paddingRight: 17,
+        paddingLeft: 3,
+      }}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.Carousel
-          onBackPress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}
+          isDrawerOpen={showDrawer}
+          onBackPress={onBackPress}
           buttonData={[{
             title: sampleAlias_Plural !== '' ? sampleAlias_Plural : R['Samples'],
           },{

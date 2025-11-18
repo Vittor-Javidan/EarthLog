@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Scope } from '@V2/Globals/NavigationControler';
 import { Loading } from '@V2/Types/AppTypes';
@@ -6,6 +6,7 @@ import { useBackPress } from '@V2/Hooks/index';
 import { translations } from '@V2/Translations/index';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { CacheService } from '@V2/Services/CacheService';
+import { MapAPI } from '@V2/Layers/API/Map';
 
 import { Layout } from '@V2/Layout/index';
 import { Screen_ExportProject } from './Screen_ExportProject';
@@ -20,9 +21,21 @@ export const ExportProjectScope = memo((props: {
   const config            = useMemo(() => ConfigService.config, []);
   const R                 = useMemo(() => translations.scope.exportProject[config.language], []);
   const projectSettings   = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
-  const [state, setState] = useState<Loading>('Loading');
+  const [state     , setState     ] = useState<Loading>('Loading');
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
-  useBackPress(() => props.onScopeChange({ scope: 'PROJECT SCOPE', id_project }), []);
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  useBackPress(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'PROJECT SCOPE', id_project });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
+
   useEffect(() => {
     setState('Loaded');
   }, []);
@@ -31,7 +44,8 @@ export const ExportProjectScope = memo((props: {
     <Layout.Root
       title={R['Export project']}
       subtitle={projectSettings.name}
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}

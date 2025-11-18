@@ -1,6 +1,5 @@
 export type Scope = {
   scope: (
-    'TEST SCOPE'                               |
     'VERSION CHANGE SCOPE'                     |
     'SETTINGS SCOPE'                           |
       'LANGUAGE SELECTION SCOPE'               |

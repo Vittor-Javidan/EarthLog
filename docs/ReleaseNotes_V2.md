@@ -2,6 +2,9 @@
 - New:
   - Map Tutorial
   - Now layer buttons hide when menu opens
+  - Layout improvements:
+    - Now android back buttons close menus when they are open
+    - Menus now have a small icon to indicate wich menu they are
 
 - Fix:
   - Subcription screen not having a loading indicator while connecting to Play Store

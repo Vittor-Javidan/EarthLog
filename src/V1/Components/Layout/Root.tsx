@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
-import { View, Pressable, Dimensions } from 'react-native';
+import { View, Pressable, Dimensions, TextStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools from '@DevTools';
@@ -10,7 +10,7 @@ import { HapticsService } from '@V1/Services/HapticsService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { useLayerButtons } from '@V1/Layers/API/LayerButtons';
 
-import { Icon } from '@V1/Icon/index';
+import { Icon, IconName } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 import { Animation } from '@V1/Animation/index';
 
@@ -20,49 +20,35 @@ const NAVIGATION_TREE_HEIGHT = 20
 export const Root = memo((props: {
   title: string
   subtitle: string
-  children: ReactNode
-  drawerChildren: React.JSX.Element
+  showDrawer: boolean
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
   navigationTree: React.JSX.Element
-}) => {
-  return (<>
-    <AppLayer
-      title={props.title}
-      subtitle={props.subtitle}
-      navigationTree={props.navigationTree}
-      drawerChildren={props.drawerChildren}
-    >
-      {props.children}
-    </AppLayer>
-  </>);
-});
-
-const AppLayer = memo((props: {
-  title: string
-  subtitle: string
-  navigationTree: React.JSX.Element
-  drawerChildren: React.JSX.Element
+  drawerChildren?: React.JSX.Element
   children: ReactNode
+  onMenuButtonPress(): void
 }) => {
 
   const { top, bottom } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
-  const [drawerDimensions, setDrawerDimensions] = useState({ width: 0, height: 0, x: 0, y: 0 });
-  const [showDrawer      , setShowDrawer      ] = useState<boolean>(false);
 
   const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT
+  const menuExist = props.drawerChildren !== undefined;
 
-  useLayerButtons([!showDrawer]);
+  useLayerButtons([!props.showDrawer]);
 
   return (<>
     <Navbar
       title={props.title}
       subtitle={props.subtitle}
-      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+      menuIcon={props.menuIcon}
+      menuExist={menuExist}
+      onMenuButtonPress={props.onMenuButtonPress}
+      menuIconStyle={props.menuIconStyle}
     />
     {props.navigationTree}
     <View
-      onLayout={(event) => setDrawerDimensions(event.nativeEvent.layout)}
       style={{
         height: HEIGHT,
         backgroundColor: theme.background,
@@ -71,8 +57,7 @@ const AppLayer = memo((props: {
       {props.children}
     </View>
     <Drawer
-      show={showDrawer}
-      dimensions={drawerDimensions}
+      show={props.showDrawer}
     >
       {props.drawerChildren}
     </Drawer>
@@ -82,6 +67,9 @@ const AppLayer = memo((props: {
 const Navbar = memo((props: {
   title: string
   subtitle: string
+  menuExist: boolean
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
   onMenuButtonPress: () => void | undefined
 }) => {
 
@@ -128,22 +116,28 @@ const Navbar = memo((props: {
           </Text>
         )}
       </View>
-      <MenuButton
-        onPress={props.onMenuButtonPress}
-        theme={theme}
-      />
+      {props.menuExist && (
+        <MenuButton
+          menuIcon={props.menuIcon}
+          onPress={props.onMenuButtonPress}
+          menuIconStyle={props.menuIconStyle}
+          theme={theme}
+        />
+      )}
     </View>
   </>);
 });
 
 const MenuButton = memo((props: {
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
+  onPress: () => void
   theme: {
     font: string,
     font_active: string,
     background: string,
     background_active: string,
   }
-  onPress: () => void
 }) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -184,6 +178,19 @@ const MenuButton = memo((props: {
           color={pressed ? props.theme.font_active : props.theme.font}
           fontSize={NAVBAR_HEIGHT}
         />
+        {props.menuIcon && (
+          <Icon
+            iconName={props.menuIcon}
+            color={pressed ? props.theme.font_active : props.theme.font}
+            fontSize={15}
+            style={[{
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              backgroundColor: pressed ? props.theme.background_active : props.theme.background,
+            }, props.menuIconStyle]}
+          />
+        )}
       </Pressable>
     </View>
   );
@@ -191,19 +198,18 @@ const MenuButton = memo((props: {
 
 const Drawer = memo((props: {
   show: boolean
-  dimensions: { width: number; height: number }
   children: ReactNode
 }) => {
 
   const { top, bottom } = useSafeAreaInsets();
+  const { height, width   } =  Dimensions.get('screen')
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
 
-  const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
-  const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
+  const HEIGHT = height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
   const TOP = top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT;
 
-  return showDrawer ? (<>
+  return (<>
     <Animation.Drawer
       show={props.show}
       contentContainerStyle={{ gap: 1 }}
@@ -212,7 +218,7 @@ const Drawer = memo((props: {
         borderColor: theme.border,
         backgroundColor: theme.background,
         height: HEIGHT,
-        width: props.dimensions.width,
+        width: width,
         top: TOP,
         left: 0,
         borderRightWidth: 2,
@@ -222,7 +228,7 @@ const Drawer = memo((props: {
       {props.children}
       <AppStateChecker />
     </Animation.Drawer>
-  </>) : <></>;
+  </>);
 });
 
 const AppStateChecker = memo(() => {

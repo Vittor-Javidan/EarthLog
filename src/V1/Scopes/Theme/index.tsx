@@ -1,9 +1,10 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Scope } from '@V1/Globals/NavigationControler';
 import { Loading, ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { ConfigService } from '@V1/Services/ConfigService';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { Layout } from '@V1/Layout/index';
 import { Screen_AppTheme } from './Screen_AppTheme';
@@ -18,8 +19,21 @@ export const ThemeScope = memo((props: {
   const config                                = useMemo(() => ConfigService.config, []);
   const R                                     = useMemo(() => translations.scope.theme[config.language], []);
   const [state              , setState      ] = useState<Loading>('Loading');
+  const [showDrawer         , setShowDrawer ] = useState<boolean>(false);
   const [rootRefresher      , refresh       ] = useState<boolean>(true);
   const [selectedWidgetTheme, setWidgetTheme] = useState<ThemeNames_Widgets>(config.widgetTheme);
+
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  const onBackPress = useCallback(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'SETTINGS SCOPE' });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
 
   useEffect(() => {
     setState('Loaded');
@@ -27,22 +41,24 @@ export const ThemeScope = memo((props: {
 
   return (
     <Layout.Root
+      key={'Refresher:' + rootRefresher}
       title={R['Themes']}
       subtitle=""
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}
           onSettingsPress={() => props.onScopeChange({ scope: 'SETTINGS SCOPE' })}
-        />}
-      
-      key={'Refresher:' + rootRefresher}
+        />
+      }
     >
       {state === 'Loading' ? (
         <Layout.Loading />
       ) : (
         <Layout.Carousel
-          onBackPress={(() => props.onScopeChange({ scope: 'SETTINGS SCOPE' }))}
+          isDrawerOpen={showDrawer}
+          onBackPress={onBackPress}
           buttonData={[{
             title: R['App'],
           }, {

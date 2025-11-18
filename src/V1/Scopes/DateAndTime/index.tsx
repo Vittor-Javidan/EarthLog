@@ -1,9 +1,10 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Scope } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { ConfigService } from '@V1/Services/ConfigService';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { Layout } from '@V1/Layout/index';
 import { Screen_DateFormat } from './Screen_DateFormat';
@@ -16,7 +17,20 @@ export const DateAndTimeScope = memo((props: {
 
   const config            = useMemo(() => ConfigService.config, []);
   const R                 = useMemo(() => translations.scope.dateAndTime[config.language], []);
-  const [state, setState] = useState<Loading>('Loading');
+  const [state     , setState     ] = useState<Loading>('Loading');
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
+
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  const onBackPress = useCallback(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'SETTINGS SCOPE' });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
 
   useEffect(() => {
     setState('Loaded');
@@ -26,7 +40,8 @@ export const DateAndTimeScope = memo((props: {
     <Layout.Root
       title={R['Date and time']}
       subtitle=""
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}
@@ -38,7 +53,8 @@ export const DateAndTimeScope = memo((props: {
         <Layout.Loading />
       ) : (
         <Layout.Carousel
-          onBackPress={(() => props.onScopeChange({ scope: 'HOME SCOPE' }))}
+          isDrawerOpen={showDrawer}
+          onBackPress={onBackPress}
           buttonData={[{
             title: '',
             iconName: 'calendar',

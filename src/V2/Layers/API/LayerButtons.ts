@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 export function useLayerButtons(deps: [openLayer: boolean]) {
   const [openLayer] = deps;
   useEffect(() => {
-    console.log("LayerButtonsAPI called with", openLayer);
     openLayer
     ? LayerButtonsAPI.openLayer()
     : LayerButtonsAPI.closeLayer();

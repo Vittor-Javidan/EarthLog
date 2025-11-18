@@ -6,14 +6,14 @@ import { ShareService } from '@V2/Services_Core/ShareService';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ExportedFilesService } from '@V2/Services_Files/ExportedFilesService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { Layout } from '@V2/Layout/index';
-import { PopUpAPI } from '@V2/Layers/API/PopUp';
 import { TC } from './__TC__';
 import { ContentButtons } from './__LC__/ContentButtons';
 
 export const Screen_ExportedFiles = memo((props: {
-  onScreenButton_ArrowBack: () => void
+  onScreenButton_Home: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -45,7 +45,7 @@ export const Screen_ExportedFiles = memo((props: {
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
-          onArrowBackPress={() => props.onScreenButton_ArrowBack()}
+          onHomePress={() => props.onScreenButton_Home()}
         /> 
       }
     >

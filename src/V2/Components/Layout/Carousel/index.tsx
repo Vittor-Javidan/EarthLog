@@ -4,6 +4,7 @@ import { View, Dimensions } from 'react-native';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { useBackPress } from '@V2/Hooks/index';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { IconName } from '@V2/Icon/index';
 import { CarouselButton } from './CarouselButton';
@@ -15,6 +16,7 @@ type buttonData = {
 }
 
 export const Carousel = memo((props: {
+  isDrawerOpen: boolean
   buttonData: buttonData[]
   screens: React.JSX.Element[]
   onBackPress: () => void
@@ -48,8 +50,16 @@ export const Carousel = memo((props: {
   });
 
   useBackPress(() => {
-    selectedScreen !== 1 ? onChangeScreen(1) : props.onBackPress();
-  }, [selectedScreen]);
+    if (
+      MapAPI.isMapOpen ||
+      props.isDrawerOpen ||
+      selectedScreen === 1
+    ) {
+      props.onBackPress()
+      return;
+    }
+    onChangeScreen(1);
+  }, [MapAPI.isMapOpen, selectedScreen, props.isDrawerOpen]);
 
   return (
     <View

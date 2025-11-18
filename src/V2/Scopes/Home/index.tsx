@@ -24,13 +24,29 @@ export const HomeScope = memo((props: {
 
   const config            = useMemo(() => ConfigService.config, []);
   const R                 = useMemo(() => translations.scope.home[config.language], []);
-  const [state, setState] = useState<Loading>('Loading');
+  const [state     , setState     ] = useState<Loading>('Loading');
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
+
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
 
   const exitMessage = useCallback(async () => {
     await PopUpAPI.handleAlert(true, {
       type: 'exit app',
     }, () => BackHandler.exitApp());
   }, []);
+
+  useBackPress(async () => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: {
+        await exitMessage();
+        HapticsService.vibrate('warning');
+      }
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
 
   useEffect(() => {
     fetchProject(() => {
@@ -39,15 +55,13 @@ export const HomeScope = memo((props: {
     });
   }, []);
 
-  useBackPress(async () => {
-    await exitMessage();
-    HapticsService.vibrate('warning');
-  }, []);
-
   return (
     <Layout.Root
       title={R['Home screen']}
       subtitle="Beta"
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
+      navigationTree={<NavigationTree />}
       drawerChildren={
         <Drawer
           onExportedFilesPress={() => props.onScopeChange({ scope: 'EXPORTED FILES SCOPE'})}
@@ -58,7 +72,6 @@ export const HomeScope = memo((props: {
           onSubscriptionsPress={() => props.onScopeChange({ scope: 'SUBSCRIPTIONS SCOPE' })}
         />
       }
-      navigationTree={<NavigationTree />}
     >
       {state === 'Loading' ? (
         <Layout.Loading />
