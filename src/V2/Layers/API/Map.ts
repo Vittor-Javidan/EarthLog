@@ -3,6 +3,8 @@ import { MapScope, MarkerData } from "@V2/Types/AppTypes";
 
 export class MapAPI {
 
+  static isMapOpen: boolean = false;
+
   private static scopeSetter:           Dispatch<SetStateAction<MapScope>> | null     = null;
   private static markersDataSetter:     Dispatch<SetStateAction<MarkerData[]>> | null = null;
   private static tutorialModeSetter:    Dispatch<SetStateAction<boolean>> | null      = null;
@@ -34,6 +36,7 @@ export class MapAPI {
   static toggleMap() {
     if (this.toggleShowMapCallback !== null) {
       this.toggleShowMapCallback();
+      this.isMapOpen = !this.isMapOpen;
     }
   }
 }

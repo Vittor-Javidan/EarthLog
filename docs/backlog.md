@@ -1,14 +1,16 @@
-# features:
+# refactoring:
 
-- Feedback:
-    - implement a loading indicator during subscription page plans loading
+- low Priority:
+    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
+    - Add all major zIndez inside the gloal zIndex file
+    - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
+    - Add `HapticsService.vibrate` for all buttons missing vibrations
+    - Reorganize the checkup list into files
+
+# features:
 
 - Compass:
     - implement stereogram display
-
-- Notification Layer:
-    - add a saving status
-    - add a loading assets status
 
 - Screens:
     - Add a Credits Screen, with all libraries, open source creators and users that helped directly or indirectly for the project to be possible
@@ -48,22 +50,3 @@
 - Project Type:
     - implement a new type of project that just have one sample
         - instead loading the sample list, it will load all sample widgets directly
-
-# refactoring:
-
-- high Priority:
-    - instead loading all assets before the app start, start loading them when the home scope is loaded, to keep the app start time low.
-        - create a global boolean on the AssetService to know if all assets are loaded or not
-            - Map can only be started when all assets are loaded
-            - Input markers icons can only be loaded when all assets are loaded
-    - Change all `() => {}` inline functions inside onCallback components where sensors lives (due constant refresh values)
-        - On the newest versions of react, This makes the reference changes on every render, causing unnecessary re-renders on child components. Probably causing the app to consume unecessary resources.
-        - The app is already too much optimized, but this will help keep the performance sanitized
-
-- low Priority:
-    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
-    - Add all major zIndez inside the gloal zIndex file
-    - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
-    - Add `HapticsService.vibrate` for all buttons missing vibrations
-    - Utilize the Home Icon for every screen that is using arrow back to go to HomeScope
-    - Reorganize the checkup list into files

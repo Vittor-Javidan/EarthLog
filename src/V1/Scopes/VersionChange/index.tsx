@@ -1,10 +1,11 @@
-import React, { memo, useEffect, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Scope } from '@V1/Globals/NavigationControler';
 import { Loading } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { useBackPress } from '@V1/Hooks/index';
 import { ConfigService } from '@V1/Services/ConfigService';
+import { MapAPI } from '@V1/Layers/API/Map';
 
 import { Layout } from '@V1/Layout/index';
 import { Screen_VersionChange } from './Screen_VersionChange';
@@ -16,9 +17,21 @@ export const VersionChangeScope = memo((props: {
 
   const config            = useMemo(() => ConfigService.config, []);
   const R                 = useMemo(() => translations.scope.versionChange[config.language], []);
-  const [state, setState] = useState<Loading>('Loading');
+  const [state     , setState     ] = useState<Loading>('Loading');
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
-  useBackPress(() => props.onScopeChange({ scope: 'HOME SCOPE' }), []);
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  useBackPress(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'HOME SCOPE' });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
+
   useEffect(() => {
     setState('Loaded');
   }, []);
@@ -27,7 +40,8 @@ export const VersionChangeScope = memo((props: {
     <Layout.Root
       title={R['Available versions']}
       subtitle="LTS V1"
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}

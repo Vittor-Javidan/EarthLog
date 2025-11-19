@@ -1,7 +1,6 @@
 import { memo, useCallback, useState } from "react";
 
 import { Scope } from "@V2/Globals/NavigationControler";
-import { TestScope } from "./Test";
 
 import { HomeScope } from "./Home";
 import { CredentialScope } from "./Credential";
@@ -33,7 +32,6 @@ export const ScopeController = memo(() => {
   }, []);
 
   return (<>
-    {currentRoute.scope === 'TEST SCOPE'               && (<TestScope />)}
     {currentRoute.scope === 'HOME SCOPE'               && (<HomeScope              onScopeChange={onScopeChange}/>)}
     {currentRoute.scope === 'CREDENTIAL SCOPE'         && (<CredentialScope        onScopeChange={onScopeChange}/>)}
     {currentRoute.scope === 'VERSION CHANGE SCOPE'     && (<VersionChangeScope     onScopeChange={onScopeChange}/>)}

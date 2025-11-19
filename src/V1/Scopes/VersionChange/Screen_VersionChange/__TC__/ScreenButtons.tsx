@@ -17,7 +17,7 @@ export const ScreenButtons = memo((props: {
     <Layout.ScreenButtons
       buttons={
         <Button.RoundedIcon
-          iconName="arrow-back"
+          iconName="home"
           showPlusSign={false}
           buttonDiameter={60}
           onPress={() => props.onHomePress()}

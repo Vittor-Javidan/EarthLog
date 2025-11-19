@@ -1,28 +1,44 @@
-import { memo, useState } from "react";
-import { Pressable, View } from "react-native";
+import { memo, useEffect, useMemo, useState } from "react";
+import { Animated, Pressable } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Z_INDEX } from "@V1/Globals/zIndex";
 import { useCompassLayer } from "./API/Compass";
 import { MapAPI } from "./API/Map";
+import { LayerButtonsAPI } from "./API/LayerButtons";
 
 import { Icon } from "@V1/Icon/index";
 
 export const LayerButtons = memo(() => {
-  const { bottom } = useSafeAreaInsets();
+
+  const { bottom }  = useSafeAreaInsets();
+  const rightOffset = useMemo(() => new Animated.Value(0), []);
+  const [showLayer, setShowLayer] = useState<boolean>(true);
+
+  LayerButtonsAPI.registerShowLayerSetter(setShowLayer);
+
+  useEffect(() => {
+    Animated.timing(rightOffset, {
+      toValue: showLayer ? 0 : 100,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [showLayer]);
+
   return (
-    <View
+    <Animated.View
       style={{
         position: 'absolute',
         right: 0,
         bottom: bottom + 90,
         zIndex: Z_INDEX.LAYER_BUTTONS,
         gap: 2,
+        transform: [{ translateX: rightOffset }],
       }}
     >
       <CompassButton />
       <MapButton />
-    </View>
+    </Animated.View>
   );
 });
 

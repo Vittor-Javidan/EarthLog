@@ -10,7 +10,7 @@ import { TC } from './__TC__';
 import { LC } from './__LC__';
 
 export const Screen_CredentialSelection = memo((props: {
-  onScreenButton_ArrowBack: () => void
+  onScreenButton_Home: () => void
 }) => {
 
   const [credentials, setCredentials] = useState<CredentialDTO[]>(CredentialService.allCredentials);
@@ -44,7 +44,7 @@ export const Screen_CredentialSelection = memo((props: {
       screenButtons={
         <TC.ScreenButtons
           onCreateCredential={onCreateCredential}
-          onArrowBackPress={() => props.onScreenButton_ArrowBack()}
+          onHomePress={() => props.onScreenButton_Home()}
         />
       }
     >

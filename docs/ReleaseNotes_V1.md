@@ -1,3 +1,16 @@
+# ✅ 1.15.4
+- New:
+  - Map Tutorial
+  - Now layer buttons hide when menu opens
+  - Layout improvements:
+    - Now android back buttons close menus when they are open
+    - Menus now have a small icon to indicate wich menu they are
+
+- Fix:
+  - Subcription screen not having a loading indicator while connecting to Play Store
+  - Subscription icon card no proper aligned
+
+
 # ✅ 1.15.3
 - New:
   - Map Markers Selection Layer

@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 
 import { Loading } from '@V2/Types/AppTypes';
 import { Scope } from '@V2/Globals/NavigationControler';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { MapAPI } from '@V2/Layers/API/Map';
 
 import { Layout } from '@V2/Layout/index';
 import { Screen_ExportedFiles } from './Screen_ExportedFiles';
@@ -16,9 +17,21 @@ export const ExportedFilesScope = memo((props: {
 
   const config            = useMemo(() => ConfigService.config, []);
   const R                 = useMemo(() => translations.scope.exportedFiles[config.language], []);
-  const [state, setState] = useState<Loading>('Loading');
+  const [state     , setState     ] = useState<Loading>('Loading');
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
 
-  useBackPress(() => props.onScopeChange({ scope: 'HOME SCOPE'}), []);
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  useBackPress(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'HOME SCOPE' });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
+
   useEffect(() => {
     setState('Loaded');
   }, []);
@@ -27,7 +40,8 @@ export const ExportedFilesScope = memo((props: {
     <Layout.Root
       title={R['Exported Files']}
       subtitle=""
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE'})}
@@ -38,7 +52,7 @@ export const ExportedFilesScope = memo((props: {
         <Layout.Loading />
       ) : (
         <Screen_ExportedFiles
-          onScreenButton_ArrowBack={() => props.onScopeChange({ scope: 'HOME SCOPE'})}
+          onScreenButton_Home={() => props.onScopeChange({ scope: 'HOME SCOPE'})}
         />
       )}
     </Layout.Root>

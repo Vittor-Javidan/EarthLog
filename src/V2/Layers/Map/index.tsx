@@ -8,8 +8,10 @@ import { AssetManager } from "@AssetManager";
 import { SubscriptionManager } from "@SubscriptionManager";
 import { MapScope, MarkerData } from "@V2/Types/AppTypes";
 import { CoordinateDTO } from "@V2/Types/ProjectTypes";
+import { ConfigService } from "@V2/Services/ConfigService";
 import { ControllerAPI } from "@V2/Scopes/API/Controller";
 import { useFirstPosition, useFollowUserLocation } from "./Hooks";
+import { useTutorialLayer } from "../API/Tutorial";
 import { MapAPI } from "../API/Map";
 
 import { MapAnimation } from "./Animation";
@@ -28,6 +30,7 @@ export const MapLayer = memo(() => {
   const [lastKnownLocation,setLastKnownLocation] = useState<CoordinateDTO | null>(null);
   const [scope            ,setScope            ] = useState<MapScope>({ type: 'navigation' });
 
+  const [showTutorial     ,setShowTutorial     ] = useState(ConfigService.config.tutorial_map);
   const [tutorialMode     ,setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
   const [markerData       ,setMarkerData       ] = useState<MarkerData[]>([]);
 
@@ -121,6 +124,11 @@ export const MapLayer = memo(() => {
       });
     }
   }, [tutorialMode, isMapNeveOpen]);
+
+  useTutorialLayer({
+    config: "MAP",
+    onClose: () => setShowTutorial(false),
+  }, [(showTutorial && showMap)]);
 
   return (<>
     <MapAnimation

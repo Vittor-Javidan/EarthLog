@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, memo } from 'react';
+import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { Scope } from '@V1/Globals/NavigationControler';
@@ -26,10 +26,23 @@ export const SampleScope = memo((props: {
   const projectSettings                  = useMemo(() => CacheService.getProjectFromCache({ id_project }), []);
   const sampleSettings                   = useMemo(() => CacheService.getSampleFromCache({ id_sample }), []);
   const [state       , setState        ] = useState<Loading>('Loading');
+  const [showDrawer  , setShowDrawer   ] = useState<boolean>(false);
   const [updatedName , setUpdatedName  ] = useState<string | null>(null);
   const [referenceGPS, setReferenceGPS ] = useState<GPS_DTO | undefined>(sampleSettings.gps !== undefined ? deepCopy(sampleSettings.gps) : undefined);
 
   const sampleAlias = projectSettings.sampleAlias.singular === '' ? R['Sample'] : projectSettings.sampleAlias.singular;
+
+  const onMenuButtonPress = useCallback(() => {
+    setShowDrawer(prev => !prev);
+  }, []);
+
+  const onBackPress = useCallback(() => {
+    switch (true) {
+      case MapAPI.isMapOpen: MapAPI.toggleMap(); break;
+      case showDrawer: setShowDrawer(false); break;
+      default: props.onScopeChange({ scope: 'PROJECT SCOPE', id_project });
+    }
+  }, [MapAPI.isMapOpen, showDrawer]);
 
   useEffect(() => {
     fetchWidgets(id_project, id_sample, () => setState('Loaded'));
@@ -39,7 +52,8 @@ export const SampleScope = memo((props: {
     <Layout.Root
       title={sampleAlias}
       subtitle={updatedName ?? sampleSettings.name}
-      drawerChildren={<></>}
+      showDrawer={showDrawer}
+      onMenuButtonPress={onMenuButtonPress}
       navigationTree={
         <NavigationTree
           onHomePress={() => props.onScopeChange({ scope: 'HOME SCOPE' })}
@@ -51,7 +65,8 @@ export const SampleScope = memo((props: {
         <Layout.Loading />
       ) : (
         <Layout.Carousel
-          onBackPress={() => props.onScopeChange({ scope: 'PROJECT SCOPE', id_project })}
+          isDrawerOpen={showDrawer}
+          onBackPress={onBackPress}
           buttonData={[{
             title: 'Data',
           }, {

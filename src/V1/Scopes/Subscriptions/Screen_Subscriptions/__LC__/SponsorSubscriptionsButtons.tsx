@@ -2,6 +2,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
 import { ProductSubscriptionAndroid } from "react-native-iap";
 
+import { SKU_IDs, SubscriptionManager } from "@SubscriptionManager";
 import { translations } from "@V1/Translations/index";
 import { ThemeService } from "@V1/Services_Core/ThemeService";
 import { ConfigService } from "@V1/Services/ConfigService";
@@ -10,7 +11,6 @@ import { HapticsService } from "@V1/Services/HapticsService";
 import { Icon } from "@V1/Icon/index";
 import { Text } from "@V1/Text/index";
 import { Button } from "@V1/Button/index";
-import { SKU_IDs, SubscriptionManager } from "@SubscriptionManager";
 
 export const SponsorSubscriptionsButton = memo((props: {
   sponsorSubscription: ProductSubscriptionAndroid[];
@@ -69,8 +69,7 @@ export const SponsorSubscriptionsButton = memo((props: {
         borderRadius: 10,
         backgroundColor: pressed ? sponsorColor : theme.background,
         paddingVertical: 5,
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingHorizontal: 10,
         elevation: 3,
         gap: 10,
       }}
@@ -80,53 +79,75 @@ export const SponsorSubscriptionsButton = memo((props: {
         onPressOut={() => setPressed(false)}
         onPress={() => onPress()}
         style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          gap: 10,
         }}
       >
         <View
           style={{
-            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            paddingRight: 60,
           }}
         >
-          <Text h2
+          <View>
+            <Text h2
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+              }}
+            >
+              {R['Sponsor the App']}
+            </Text>
+            <Text p
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+                fontWeight: 'bold',
+              }}
+            >
+              {R['${price}/month'](price)}
+            </Text>
+            <Text p
+              style={{
+                color: pressed ? theme.background : theme.font,
+                textAlign: 'left',
+                flexShrink: 1,
+                flexWrap: 'wrap',
+                fontWeight: 'bold',
+              }}
+            >
+              {R['Auto-renews monthly']}
+            </Text>
+          </View>
+
+          {/* UI BUG
+            For some reason this Icon is pushed outside the card when the text is too long.
+            So I add some padding to the right of the parent View to compensate, and made the
+            icon below absolute for now.
+          */}
+          <Icon
+            color={pressed ? theme.background : sponsorColor}
+            iconName="hand-heart"
+            fontSize={50}
             style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
+              position: 'absolute',
+              right: 0,
+              top: 0,
             }}
-          >
-            {R['Sponsor the App']}
-          </Text>
-          <Text p
-            style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {R['${price}/month • Auto-renews monthly'](price)}
-          </Text>
-          <Text p
-            style={{
-              color: pressed ? theme.background : theme.font,
-              textAlign: 'left',
-              flexShrink: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {R['A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!']}
-          </Text>
+          />
+
         </View>
-        <Icon
-          color={pressed ? theme.background : sponsorColor}
-          iconName="hand-heart"
-          fontSize={50}
-        />
+        <Text p
+          style={{
+            color: pressed ? theme.background : theme.font,
+            textAlign: 'left',
+            flexShrink: 1,
+            flexWrap: 'wrap',
+          }}
+        >
+          {R['A simple subscription to support the development of the app. Map access is included. After buying this, remember to cancel your map subscription if you had one!']}
+        </Text>
       </Pressable>
       <View
         style={{

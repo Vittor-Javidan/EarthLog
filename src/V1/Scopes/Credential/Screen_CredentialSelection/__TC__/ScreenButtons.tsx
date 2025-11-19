@@ -8,7 +8,7 @@ import { Layout } from '@V1/Layout/index';
 
 export const ScreenButtons = memo((props: {
   onCreateCredential: () => void
-  onArrowBackPress: () => void
+  onHomePress: () => void
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
@@ -18,10 +18,10 @@ export const ScreenButtons = memo((props: {
     <Layout.ScreenButtons
       buttons={<>
         <Button.RoundedIcon
-          iconName="arrow-back"
+          iconName="home"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => props.onArrowBackPress()}
+          onPress={() => props.onHomePress()}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,

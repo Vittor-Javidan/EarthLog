@@ -1,15 +1,16 @@
-import React, { ReactNode, useState, useMemo, memo, useCallback, useEffect } from 'react';
-import { View, Pressable, Dimensions } from 'react-native';
+import React, { ReactNode, useState, useMemo, memo, useCallback } from 'react';
+import { View, Pressable, Dimensions, TextStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools from '@DevTools';
-import { SubscriptionManager } from '@SubscriptionManager';
+import { SubscriptionManager, useSubscriptionChecker } from '@SubscriptionManager';
 import { APP_VERSION } from '@V2/Globals/Version';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
+import { useLayerButtons } from '@V2/Layers/API/LayerButtons';
 
-import { Icon } from '@V2/Icon/index';
+import { Icon, IconName } from '@V1/Icon/index';
 import { Text } from '@V2/Text/index';
 import { Animation } from '@V2/Animation/index';
 
@@ -19,47 +20,35 @@ const NAVIGATION_TREE_HEIGHT = 20
 export const Root = memo((props: {
   title: string
   subtitle: string
-  children: ReactNode
-  drawerChildren: React.JSX.Element
+  showDrawer: boolean
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
   navigationTree: React.JSX.Element
-}) => {
-  return (<>
-    <AppLayer
-      title={props.title}
-      subtitle={props.subtitle}
-      navigationTree={props.navigationTree}
-      drawerChildren={props.drawerChildren}
-    >
-      {props.children}
-    </AppLayer>
-  </>);
-});
-
-const AppLayer = memo((props: {
-  title: string
-  subtitle: string
-  navigationTree: React.JSX.Element
-  drawerChildren: React.JSX.Element
+  drawerChildren?: React.JSX.Element
   children: ReactNode
+  onMenuButtonPress(): void
 }) => {
 
   const { top, bottom } = useSafeAreaInsets();
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.root, []);
-  const [drawerDimensions, setDrawerDimensions] = useState({ width: 0, height: 0, x: 0, y: 0 });
-  const [showDrawer      , setShowDrawer      ] = useState<boolean>(false);
 
   const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT
+  const menuExist = props.drawerChildren !== undefined;
+
+  useLayerButtons([!props.showDrawer]);
 
   return (<>
     <Navbar
       title={props.title}
       subtitle={props.subtitle}
-      onMenuButtonPress={() => setShowDrawer(prev => !prev)}
+      menuIcon={props.menuIcon}
+      menuExist={menuExist}
+      onMenuButtonPress={props.onMenuButtonPress}
+      menuIconStyle={props.menuIconStyle}
     />
     {props.navigationTree}
     <View
-      onLayout={(event) => setDrawerDimensions(event.nativeEvent.layout)}
       style={{
         height: HEIGHT,
         backgroundColor: theme.background,
@@ -68,9 +57,7 @@ const AppLayer = memo((props: {
       {props.children}
     </View>
     <Drawer
-      show={showDrawer}
-      dimensions={drawerDimensions}
-      onPress_Background={() => setShowDrawer(false)}
+      show={props.showDrawer}
     >
       {props.drawerChildren}
     </Drawer>
@@ -80,6 +67,9 @@ const AppLayer = memo((props: {
 const Navbar = memo((props: {
   title: string
   subtitle: string
+  menuExist: boolean
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
   onMenuButtonPress: () => void | undefined
 }) => {
 
@@ -126,22 +116,28 @@ const Navbar = memo((props: {
           </Text>
         )}
       </View>
-      <MenuButton
-        onPress={props.onMenuButtonPress}
-        theme={theme}
-      />
+      {props.menuExist && (
+        <MenuButton
+          menuIcon={props.menuIcon}
+          onPress={props.onMenuButtonPress}
+          menuIconStyle={props.menuIconStyle}
+          theme={theme}
+        />
+      )}
     </View>
   </>);
 });
 
 const MenuButton = memo((props: {
+  menuIcon?: IconName
+  menuIconStyle?: TextStyle
+  onPress: () => void
   theme: {
     font: string,
     font_active: string,
     background: string,
     background_active: string,
   }
-  onPress: () => void
 }) => {
 
   const [pressed, setPressed] = useState<boolean>(false);
@@ -182,6 +178,19 @@ const MenuButton = memo((props: {
           color={pressed ? props.theme.font_active : props.theme.font}
           fontSize={NAVBAR_HEIGHT}
         />
+        {props.menuIcon && (
+          <Icon
+            iconName={props.menuIcon}
+            color={pressed ? props.theme.font_active : props.theme.font}
+            fontSize={15}
+            style={[{
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              backgroundColor: pressed ? props.theme.background_active : props.theme.background,
+            }, props.menuIconStyle]}
+          />
+        )}
       </Pressable>
     </View>
   );
@@ -189,18 +198,46 @@ const MenuButton = memo((props: {
 
 const Drawer = memo((props: {
   show: boolean
-  dimensions: { width: number; height: number }
   children: ReactNode
-  onPress_Background: () => void
 }) => {
 
   const { top, bottom } = useSafeAreaInsets();
+  const { height, width   } =  Dimensions.get('screen')
   const config = useMemo(() => ConfigService.config, []);
   const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
+
+  const HEIGHT = height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
+  const TOP = top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT;
+
+  return (<>
+    <Animation.Drawer
+      show={props.show}
+      contentContainerStyle={{ gap: 1 }}
+      style={{
+        position: 'absolute',
+        borderColor: theme.border,
+        backgroundColor: theme.background,
+        height: HEIGHT,
+        width: width,
+        top: TOP,
+        left: 0,
+        borderRightWidth: 2,
+        zIndex: 2,
+      }}
+    >
+      {props.children}
+      <AppStateChecker />
+    </Animation.Drawer>
+  </>);
+});
+
+const AppStateChecker = memo(() => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.drawer, []);
+
   const [sponsorTier , setSponsorTier ] = useState<number>(SubscriptionManager.getStatus().sponsorship);
   const [isMapEnabled, setIsMapEnabled] = useState<boolean>(SubscriptionManager.getStatus().isMapEnabled);
-
-  const showDrawer = props.dimensions.height > 0 && props.dimensions.width > 0;
 
   let sponsorColor
   switch (sponsorTier) {
@@ -210,76 +247,51 @@ const Drawer = memo((props: {
     default: sponsorColor = theme.wrong; break;  // Supporter
   }
 
-  useEffect(() => {
-    SubscriptionManager.getActiveSubscriptions({
-      onSuccess: (status) => {
-        setSponsorTier(status.sponsorship);
-        setIsMapEnabled(status.isMapEnabled);
-      }
-    });
-  }, []);
+  useSubscriptionChecker({
+    onSponsorshipLoaded: (tier) => setSponsorTier(tier),
+    onMapStatusLoaded: (isEnabled) => setIsMapEnabled(isEnabled),
+  });
 
-  const HEIGHT = Dimensions.get('screen').height - NAVBAR_HEIGHT - top - bottom - NAVIGATION_TREE_HEIGHT;
-    const TOP = top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT;
-
-  return showDrawer ? (<>
-    <Animation.Drawer
-      show={props.show}
-      contentContainerStyle={{ gap: 1 }}
+  return (
+    <View
       style={{
-        position: 'absolute',
-        borderColor: theme.border,
-        backgroundColor: theme.background,
-        height: HEIGHT,
-        width: props.dimensions.width,
-        top: top + NAVBAR_HEIGHT + NAVIGATION_TREE_HEIGHT,
-        left: 0,
-        borderRightWidth: 2,
-        zIndex: 2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: 8,
+        gap: 10,
       }}
     >
-      {props.children}
-      <Pressable
-        onPress={() => props.onPress_Background()}
+      <Text p
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          padding: 8,
-          gap: 10,
+          color: theme.font,
+          textAlign: 'right',
+          fontSize: 10,
         }}
       >
-        <Text p
-          style={{
-            color: theme.font,
-            textAlign: 'right',
-            fontSize: 10,
-          }}
-        >
-          {'v: ' + APP_VERSION}
-        </Text>
-        {sponsorTier > 0 && (
-          <Icon
-            color={sponsorColor}
-            iconName={'heart'}
-            fontSize={20}
-          />
-        )}
-        {isMapEnabled && (
-          <Icon
-            color={theme.wrong}
-            iconName={'map'}
-            fontSize={20}
-          />
-        )}
-        {DevTools.TUTORIAL_MODE && (
-          <Icon
-            color={theme.confirm}
-            iconName={'menu-book'}
-            fontSize={20}
-          />
-        )}
-      </Pressable>
-    </Animation.Drawer>
-  </>) : <></>;
+        {'v: ' + APP_VERSION}
+      </Text>
+      {sponsorTier > 0 && (
+        <Icon
+          color={sponsorColor}
+          iconName={'heart'}
+          fontSize={20}
+        />
+      )}
+      {isMapEnabled && (
+        <Icon
+          color={theme.wrong}
+          iconName={'map'}
+          fontSize={20}
+        />
+      )}
+      {DevTools.TUTORIAL_MODE && (
+        <Icon
+          color={theme.confirm}
+          iconName={'menu-book'}
+          fontSize={20}
+        />
+      )}
+    </View>
+  )
 });
