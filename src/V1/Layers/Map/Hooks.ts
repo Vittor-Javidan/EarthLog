@@ -1,37 +1,36 @@
 import { useEffect, useMemo, useState } from "react";
 import MapView from "react-native-maps";
 
-import { SubscriptionManager } from "@SubscriptionManager";
 import { CoordinateDTO, ProjectDTO } from "@V1/Types/ProjectTypes";
 import { GPSWatcherService } from "@V1/Services_Core/GPSService";
 import { ProjectService } from "@V1/Services/ProjectService";
+import { MapScope } from "@V1/Types/AppTypes";
 
 export function useBuildProject(o: {
   id_project: string
+  scope: MapScope
+  showMap: boolean
+  onStartBuilding: () => void
   onProjectBuilt: (projectDTO: ProjectDTO) => void
-}, deps: [showMap: boolean]) {
-
-  const [showMap] = deps
-
+}) {
   useEffect(() => {
-    if (
-      SubscriptionManager.getStatus().isMapEnabled && 
-      (showMap)
-    ) {
+    if (o.showMap) {
       /**
        * We wait the map animation opening to not stutter the UI,
        * since this will markers renders when map opens.
       */
+      const id_project = o.id_project;
+      o.onStartBuilding();
       setTimeout(() => {
         ProjectService.buildProjectDTO({
-          id_project: o.id_project,
+          id_project: id_project,
           feedback: (message) => {}
         }).then((dto) => {
           o.onProjectBuilt(dto);
         });
       }, 200);
     }
-  }, deps);
+  }, [o.showMap, o.id_project, o.scope]);
 }
 
 export function useFirstPosition(o: {

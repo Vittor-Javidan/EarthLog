@@ -1,0 +1,49 @@
+import { memo, useState } from "react";
+
+import { ProjectMapScope, SampleMapScope } from "@V1/Types/AppTypes";
+import { ProjectDTO } from "@V1/Types/ProjectTypes";
+import { useBuildProject } from "./Hooks";
+import { Markers } from "./Markers";
+
+export const MarkersDisplay = memo((props: {
+  scope: ProjectMapScope | SampleMapScope
+  showMap: boolean
+}) => {
+
+  const [projectDTO, setProjectDTO] = useState<ProjectDTO | null>(null);
+
+  useBuildProject({
+    id_project: props.scope.id_project,
+    scope: props.scope,
+    showMap: props.showMap,
+    onStartBuilding: () => setProjectDTO(null),
+    onProjectBuilt: (projectDTO) => {
+      setProjectDTO(projectDTO);
+    }
+  });
+
+  if (projectDTO === null) {
+    return <></>
+  }
+
+  if (props.scope.type === 'project' && projectDTO !== null) {
+    return (
+      <Markers.Project
+        scope={props.scope}
+        projectDTO={projectDTO}
+      />
+    )
+  }
+
+  if (props.scope.type === 'sample' && projectDTO !== null) {
+    const scope = props.scope;
+    const sampleDTO = projectDTO.samples.find(sample => sample.sampleSettings.id_sample === scope.id_sample);
+    return sampleDTO ? (
+      <Markers.Sample
+        sampleDTO={sampleDTO}
+      />
+    ) : <></>;
+  }
+
+  return <></>
+})

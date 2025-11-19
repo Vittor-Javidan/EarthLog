@@ -203,22 +203,8 @@ export type SampleMapScope = {
 };
 
 export type MapScope = {
-  type: 'navigation' | 'gpsAcquisition'
+  type: 'navigation'
 } | ProjectMapScope | SampleMapScope;
-
-export type MarkerData = {
-  title: string
-  id_marker: string
-  pinColor: GoogleMapsPinColor
-  image: MapAssets
-  description: string
-  zIndex: number
-  coordinates: {
-    latitude: number,
-    longitude: number,
-    accuracy: number,
-  }
-}
 
 // --------------------------------- Compass Types -----------------------------
 
