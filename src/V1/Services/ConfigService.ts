@@ -17,7 +17,7 @@ export class ConfigService {
     onlyWarningVibrations: true,
     automaticSampleGPSReference: true,
     compassDeclination: 0,
-    compassAverageMeasurements: 10,
+    compassAverageMeasurements: 1,
     tutorialMode: false,
     tutorial_bubbleLevel: true,
     tutorial_map: true,
