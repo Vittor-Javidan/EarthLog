@@ -1,8 +1,8 @@
 <en-US>
   - New:
-    - Compass Measurements Icon Selection
+    - Layout Improved
 </en-US>
 <pt-BR>
   - Novo:
-    - Seleção de Ícone de Medidas da Bússola
+    - Layout Melhorado
 </pt-BR>
