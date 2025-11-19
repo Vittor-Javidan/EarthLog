@@ -120,6 +120,7 @@ export type ConfigDTO = {
   automaticSampleGPSReference: boolean
   compassDeclination: number
   compassAverageMeasurements: number
+  tutorialMode: boolean
   tutorial_bubbleLevel: boolean
   tutorial_map: boolean
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 /**
  * Hook to visualy updated in real time last known location when tutorial mode is toggled.

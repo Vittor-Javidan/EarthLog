@@ -18,6 +18,7 @@ export const NotificationLayer = memo(() => {
 
   const [icons, setIcons] = useState<NotificationIcons>({
     gpsAcquisition: false,
+    tutorialMode: ConfigService.config.tutorialMode,
   })
 
   NotificationAPI.registerIconSetter(setIcons);
@@ -37,6 +38,7 @@ export const NotificationLayer = memo(() => {
     <View
       style={{
         position: 'absolute',
+        flexDirection: 'row',
         bottom: bottom,
         right: 0,
         zIndex: Z_INDEX.NOTIFICATION_LAYER,
@@ -47,6 +49,13 @@ export const NotificationLayer = memo(() => {
       {icons.gpsAcquisition && (
         <Icon
           iconName="crosshairs-gps"
+          fontSize={20}
+          color={theme.background}
+        />
+      )}
+      {icons.tutorialMode && (
+        <Icon
+          iconName="menu-book"
           fontSize={20}
           color={theme.background}
         />

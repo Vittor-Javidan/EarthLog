@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
  
 export type NotificationIcons = {
   gpsAcquisition: boolean;
+  tutorialMode: boolean;
 }
 export class NotificationAPI {
 
@@ -12,6 +13,12 @@ export class NotificationAPI {
   static setGPSAcquisitionIcon(visible: boolean) {
     if (this.iconSetter !== null) {
       this.iconSetter((prev) => ({ ...prev, gpsAcquisition: visible }));
+    }
+  }
+
+  static setTutorialModeIcon(visible: boolean) {
+    if (this.iconSetter !== null) {
+      this.iconSetter((prev) => ({ ...prev, tutorialMode: visible }));
     }
   }
 }
