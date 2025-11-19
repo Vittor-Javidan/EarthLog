@@ -1,7 +1,7 @@
 # refactoring:
 
 - low Priority:
-    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
+    - increase the button size for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
     - Add all major zIndez inside the gloal zIndex file
     - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
     - Add `HapticsService.vibrate` for all buttons missing vibrations
