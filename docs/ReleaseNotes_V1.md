@@ -1,4 +1,6 @@
 # ✅ 1.15.6
+- Fix:
+  - Compass input pin button showing on template widgets
 
 
 # ✅ 1.15.5

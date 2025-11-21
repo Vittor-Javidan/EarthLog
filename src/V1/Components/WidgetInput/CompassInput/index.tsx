@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { MarkerAssets } from '@AssetManager';
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { translations } from '@V1/Translations/index';
-import { CompassInputData, CoordinateDTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
+import { CompassInputData, CoordinateDTO, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { IDService } from '@V1/Services_Core/IDService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { PopUpAPI } from '@V1/Layers/API/PopUp';
@@ -20,6 +20,7 @@ import { AllMeasurements } from './AllMeasurements';
  * USE THIS TO START FASTER A NEW INPUT DEVELOPMENT
  */
 export const CompassInput = memo((props: {
+  widgetScope: WidgetScope
   inputData: CompassInputData
   editWidget: boolean
   isFirstInput: boolean
@@ -199,6 +200,7 @@ export const CompassInput = memo((props: {
         }}
       >
         <AllMeasurements
+          widgetScope={props.widgetScope}
           measurements={inputData.value}
           lockedData={inputData.lockedData}
           allowMeasurementLabelChange={inputData.allowMeasurementLabelChange}

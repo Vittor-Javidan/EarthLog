@@ -8,9 +8,12 @@ import { Icon } from "@V1/Icon/index";
 
 export const SetMapMarkerPositionButton = memo((props: {
   isPinned: boolean
+  show: boolean
   onPress: () => void
   theme: WidgetTheme
 }) => {
+
+  if (!props.show) { return <></>; }
 
   const [pressed, setPressed] = useState(false);
 
