@@ -1,16 +1,17 @@
-import { memo } from "react"
-import { Circle, Marker } from "react-native-maps"
+import { memo, useCallback } from "react"
+import { Circle, Marker, MarkerPressEvent } from "react-native-maps"
 
-import { AssetManager } from "@AssetManager"
 import DevTools from "@DevTools"
+import { AssetManager } from "@AssetManager"
 import { MapScope } from "@V2/Types/AppTypes"
-import { ProjectDTO, ProjectSettings } from "@V2/Types/ProjectTypes"
+import { CompassMeasurementDTO, ProjectDTO, ProjectSettings } from "@V2/Types/ProjectTypes"
 import { Markers_Sample } from "./Sample"
 import { Markers_Widget } from "./Widget"
 
 export const Markers_Project = memo((props: {
   projectDTO: ProjectDTO
   scope: MapScope
+  openMeasurement: CompassMeasurementDTO | null
 }) => {
   const { projectDTO } = props
   return (<>
@@ -21,12 +22,14 @@ export const Markers_Project = memo((props: {
       <Markers_Widget
         key={widget.id_widget}
         widgetData={widget}
+        openMeasurement={props.openMeasurement}
       />
     ))}
     {props.projectDTO.samples.map((sample) => (
       <Markers_Sample
         key={sample.sampleSettings.id_sample}
         sampleDTO={sample}
+        openMeasurement={props.openMeasurement}
       />
     ))}
   </>)
@@ -50,10 +53,15 @@ const Marker_ProjectSettings = memo((props: {
   const longitude = DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long;
   const accuracy = coordinates.accuracy;
 
+  const onPress = useCallback((e: MarkerPressEvent) => {
+    e.stopPropagation();
+  }, []);
+
   return (<>
     <Marker
       title={projectSettings.name}
       coordinate={{ latitude, longitude }}
+      onPress={onPress}
       image={{
         uri: AssetManager.getMarkerImage('INFO_PROJECT'),
         scale: 1,

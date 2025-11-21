@@ -8,7 +8,7 @@ export const MapLabel = memo((props: {
 }) => {
   switch (props.scope.type) {
     case 'project': return ( <MapLabel_Project scope={props.scope}/> )
-    case 'sample': return ( <MapLabel_Sample scope={props.scope}/> )
+    case 'sample':  return ( <MapLabel_Sample  scope={props.scope}/> )
     case 'navigation': return <></>
   }
 })

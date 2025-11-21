@@ -41,7 +41,7 @@ export const NotificationLayer = memo(() => {
         flexDirection: 'row',
         bottom: bottom,
         right: 0,
-        zIndex: Z_INDEX.NOTIFICATION_LAYER,
+        zIndex: Z_INDEX.LAYER_NOTIFICATION,
         backgroundColor: theme.confirm,
         borderTopLeftRadius: 3,
       }}

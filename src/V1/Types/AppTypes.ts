@@ -1,5 +1,3 @@
-import { MapAssets } from "@AssetManager";
-
 export type Loading = 'Loaded' | 'Loading';
 
 export const languageTags   = ['en-US', 'pt-BR'] as const;
@@ -191,6 +189,10 @@ export const googleMapsPinColor = [
 
 export type GoogleMapsPinColor = (typeof googleMapsPinColor)[number];
 
+export type NavigationMapScope = {
+  type: 'navigation'
+}
+
 export type ProjectMapScope = {
   type: "project";
   id_project: string;
@@ -202,9 +204,9 @@ export type SampleMapScope = {
   id_sample: string;
 };
 
-export type MapScope = {
-  type: 'navigation'
-} | ProjectMapScope | SampleMapScope;
+export type MapScope = (
+  NavigationMapScope | ProjectMapScope | SampleMapScope
+)
 
 // --------------------------------- Compass Types -----------------------------
 

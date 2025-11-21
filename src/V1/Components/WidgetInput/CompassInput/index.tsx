@@ -4,11 +4,12 @@ import { View } from 'react-native';
 import { MarkerAssets } from '@AssetManager';
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { translations } from '@V1/Translations/index';
-import { CompassInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
+import { CompassInputData, CoordinateDTO, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { IDService } from '@V1/Services_Core/IDService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { useCompassLayer } from '@V1/Layers/API/Compass';
+import { useMap_SetMarker } from '@V1/Layers/API/Map';
 
 import { LC } from '../__LC__';
 import { AddMeasurementButton } from './AddMeasurentButton';
@@ -31,12 +32,14 @@ export const CompassInput = memo((props: {
   onInputMoveDow: () => void
 }) => {
 
-  const config                    = useMemo(() => ConfigService.config, []);
-  const R                         = useMemo(() => translations.widgetInput.compass[config.language], []);
-  const [inputData, setInputData] = useState<CompassInputData>(deepCopy(props.inputData));
-  const [editMode , setEditMode ] = useState<boolean>(false);
-  const [show     , setShow     ] = useState({
-    compass: false
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.widgetInput.compass[config.language], []);
+  const [inputData           , setInputData           ] = useState<CompassInputData>(deepCopy(props.inputData));
+  const [editMode            , setEditMode            ] = useState<boolean>(false);
+  const [openMeasurementIndex, setOpenMeasurementIndex] = useState<number | null>(null);
+  const [show, setShow] = useState({
+    compass: false,
+    map: false,
   })
 
   /**
@@ -75,12 +78,33 @@ export const CompassInput = memo((props: {
     setInputData(newData);
   }, [asyncSave, inputData]);
 
+  const onMeasurementMarkerPositionChange = useCallback((newPosition: CoordinateDTO, index: number) => {
+    const newData: CompassInputData = { ...inputData }
+    newData.value[index].coordinates = newPosition;
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
+
+  const onMeasurementMarkerPositioDelete = useCallback((index: number) => {
+    const newData: CompassInputData = { ...inputData }
+    if (newData.value[index].coordinates) {
+      delete newData.value[index].coordinates;
+    }
+    asyncSave(newData);
+    setInputData(newData);
+  }, [asyncSave, inputData]);
+
   const onMeasurementMarkerPress = useCallback((mapMarker: MarkerAssets, index: number) => {
     const newData: CompassInputData = { ...inputData }
     newData.lastUsedMarkerIcon = mapMarker;
     newData.value[index].markerIcon = mapMarker;
     asyncSave(newData);
     setInputData(newData);
+  }, [asyncSave, inputData]);
+
+  const onMeasurementMarkerPositionPress = useCallback((index: number) => {
+    setOpenMeasurementIndex(index);
+    setShow(prev => ({ ...prev, map: true }));
   }, [asyncSave, inputData]);
 
   const onMeasurementDelete = useCallback((index: number) => {
@@ -118,6 +142,29 @@ export const CompassInput = memo((props: {
     onMeasurementTake: async (heading, dip) => await addMeasurement(heading, dip),
     onCompassClose: () => setShow(prev => ({ ...prev, compass: false })),
   }, [show.compass, inputData]);
+
+  useMap_SetMarker({
+    openMap: show.map,
+    measurement: openMeasurementIndex !== null ? inputData.value[openMeasurementIndex] : null,
+    onCloseMap: () => {
+      setShow(prev => ({ ...prev, map: false }));
+      setOpenMeasurementIndex(null);
+    },
+    onRegionChangeCallback: (coordinates: CoordinateDTO | undefined) => {
+      if (coordinates && openMeasurementIndex !== null) {
+        onMeasurementMarkerPositionChange({
+          lat: coordinates.lat,
+          long: coordinates.long,
+          accuracy: coordinates.accuracy,
+        }, openMeasurementIndex);
+        return
+      }
+      if (openMeasurementIndex !== null) {
+        onMeasurementMarkerPositioDelete(openMeasurementIndex);
+        return
+      }
+    },
+  });
 
   return (
     <LC.Root
@@ -161,8 +208,9 @@ export const CompassInput = memo((props: {
           theme={props.theme}
           onMeasurementLabelChange={onMeasurementLabelChange}
           onMeasurementHeadingChange={onMeasurementHeadingChange}
-          onMeasurementMarkerPress={onMeasurementMarkerPress}
           onMeasurementDipChange={onMeasurementDipChange}
+          onMeasurementMarkerPress={onMeasurementMarkerPress}
+          onMeasurementMarkerPositionPress={onMeasurementMarkerPositionPress}
           onMeasurementDelete={onMeasurementDelete}
         />
         <AddMeasurementButton
