@@ -1,8 +1,6 @@
 <en-US>
-  - New:
-    - Layout Improved
+  You can now pin measurements inside the map
 </en-US>
 <pt-BR>
-  - Novo:
-    - Layout Melhorado
+  Você agora pode fixar medições dentro do mapa
 </pt-BR>
