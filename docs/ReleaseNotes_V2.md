@@ -1,3 +1,6 @@
+# ✅ 2.5.6
+
+
 # ✅ 2.5.5
 - New:
   - Measures can now be pinned inside the map
