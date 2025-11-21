@@ -1,6 +1,7 @@
 # ✅ 1.15.6
 - Fix:
   - Compass input pin button showing on template widgets
+  - Map not going to markers position when pressing the pin button from Compass Input
 
 
 # ✅ 1.15.5

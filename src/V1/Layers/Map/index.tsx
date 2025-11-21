@@ -68,7 +68,18 @@ export const MapLayer = memo(() => {
         });
       MapAPI.toggleMap(false);
     })
-  }, [openMeasurement])
+  }, [openMeasurement, backupCoordinate, didMeasurementChanged])
+
+  const onMeasurementOpen = useCallback((coordinate: CoordinateDTO) => {
+    const { lat, long } = coordinate;
+    const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
+    const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
+    setGoToCoordinate({
+      lat: newLatitude,
+      long: newLongitude,
+      accuracy: 0,
+    });
+  }, [tutorialMode]);
 
   const updateMeasurementCoordinates = useCallback(() => {
     if (centerRegion === null) return;
@@ -108,13 +119,26 @@ export const MapLayer = memo(() => {
       }
       default: {
         newMeasurement.coordinates = { ...backupCoordinate };
-        setGoToCoordinate({ ...backupCoordinate });
+        const { lat, long } = backupCoordinate;
+        const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
+        const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
+        setGoToCoordinate({ lat: newLatitude, long: newLongitude, accuracy: 0 });
       }
     }
     setOpenMeasurement(newMeasurement);
-  }, [openMeasurement, backupCoordinate])
+  }, [openMeasurement, backupCoordinate, tutorialMode])
 
   // Map Callbacks ------------------------------------------------------------------------------
+
+  const onRegionChangeComplete = useCallback((region: Region) => {
+    const newRegion: Region = {
+      latitude: tutorialMode ? region.latitude - DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : region.latitude,
+      longitude: tutorialMode ? region.longitude - DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : region.longitude,
+      latitudeDelta: tutorialMode ? region.latitudeDelta - DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : region.latitudeDelta,
+      longitudeDelta: tutorialMode ? region.longitudeDelta - DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : region.longitudeDelta,
+    };
+    setCenterRegion(newRegion);
+  }, [tutorialMode]);
 
   const followUserLocation = useCallback(() => {
     if (!followUser) {
@@ -189,7 +213,7 @@ export const MapLayer = memo(() => {
     openMeasurement: openMeasurement,
     scope: scope,
     showMap: show.map,
-    onGoToCoordinate: (coordinate) => setGoToCoordinate(coordinate),
+    onGoToCoordinate: onMeasurementOpen,
   })
 
   useTutorialLayer({
@@ -259,7 +283,7 @@ export const MapLayer = memo(() => {
         followUser={followUser}
         style={{ flex: 1 }}
         onLoad={(mapRef) => setMapRef(mapRef)}
-        onRegionChangeComplete={setCenterRegion}
+        onRegionChangeComplete={onRegionChangeComplete}
         onMapPress={onMapPress}
       >
         <Markers.LastKnownLocation
