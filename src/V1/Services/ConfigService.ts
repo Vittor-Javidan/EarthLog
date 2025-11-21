@@ -1,3 +1,4 @@
+import DevTools from '@DevTools';
 import { ConfigDTO } from '@V1/Types/AppTypes';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { LanguageService } from '@V1/Services_Core/LanguageService';
@@ -16,7 +17,8 @@ export class ConfigService {
     onlyWarningVibrations: true,
     automaticSampleGPSReference: true,
     compassDeclination: 0,
-    compassAverageMeasurements: 10,
+    compassAverageMeasurements: 1,
+    tutorialMode: false,
     tutorial_bubbleLevel: true,
     tutorial_map: true,
   };
@@ -26,6 +28,7 @@ export class ConfigService {
     if (config) {
       const verifiedConfig = this.verifyConfigDTOIntegrity({ config });
       this.config = verifiedConfig;
+      DevTools.TUTORIAL_MODE = this.config.tutorialMode;
     }
   }
 
@@ -56,6 +59,7 @@ export class ConfigService {
       automaticSampleGPSReference: config.automaticSampleGPSReference  ?? this.config.automaticSampleGPSReference,
       compassDeclination:          config.compassDeclination           ?? this.config.compassDeclination,
       compassAverageMeasurements:  config.compassAverageMeasurements   ?? this.config.compassAverageMeasurements,
+      tutorialMode:                config.tutorialMode                 ?? this.config.tutorialMode,
       tutorial_bubbleLevel:        config.tutorial_bubbleLevel         ?? this.config.tutorial_bubbleLevel,
       tutorial_map:                config.tutorial_map                 ?? this.config.tutorial_map,
     };

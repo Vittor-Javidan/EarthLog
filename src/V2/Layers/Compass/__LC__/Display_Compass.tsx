@@ -9,6 +9,8 @@ import { useConfirmThreshold } from "../Hooks";
 
 import { Text } from "@V2/Text/index";
 
+const AVG_OFFSET = 360;
+
 export const Display_Compass = memo((props: {
   heading: number,
   pitch: number,
@@ -23,7 +25,7 @@ export const Display_Compass = memo((props: {
   const { width }          = Dimensions.get('screen');
   const config             = useMemo(() => ConfigService.config, []);
   const R                  = useMemo(() => translations.layers.compass[config.language], []);
-  const rawHeadingHistory     = useRef<number[]>([]);
+  const headingHistory     = useRef<number[]>([]);
   const rawHeading         = useRef(0);
   const [isCalculatingAvg, setIsCalculatingAvg] = useState(false);
   const [trueHeading     , setTrueHeading     ] = useState(heading);
@@ -39,40 +41,43 @@ export const Display_Compass = memo((props: {
 
   const onCompassPress = useCallback(() => {
     if (disableAverage) return;
-    rawHeadingHistory.current = [];
+    headingHistory.current = [];
     setIsCalculatingAvg(true);
   }, [disableAverage])
 
   useEffect(() => {
     // Reset heading history when measuredAverage changes
-    rawHeadingHistory.current = [];
+    headingHistory.current = [];
   }, [measuredAverage]);
 
   useEffect(() => {
     // Calculate heading average
     if (
       isCalculatingAvg &&
-      rawHeadingHistory.current.length >= measuredAverage
+      headingHistory.current.length >= measuredAverage
     ) {
-      const sum = rawHeadingHistory.current.reduce((a, b) => a + b, 0);
-      const avg = Math.abs(sum / rawHeadingHistory.current.length);
-      switch (true) {
-        case avg < 0:    props.onCalculatedAvg(avg + 360); break;
-        case avg >= 360: props.onCalculatedAvg(avg - 360); break;
-        default:         props.onCalculatedAvg(avg)      ; break;
-      }
+      const sum = headingHistory.current.reduce((a, b) => a + b, 0);
+      let avg = sum / headingHistory.current.length;
+      avg -= AVG_OFFSET; // Remove the offset added during collection
       setIsCalculatingAvg(false);
+      props.onCalculatedAvg(avg)
     }
   }, [heading, measuredAverage, isCalculatingAvg]);
 
   useEffect(() => {
     // Collect heading values for averaging
     if (isCalculatingAvg){
-      rawHeadingHistory.current.push(rawHeading.current);
-      if (rawHeadingHistory.current.length > measuredAverage) {
-        rawHeadingHistory.current.shift();
+      const tempHeading = trueHeading + AVG_OFFSET; // Add an offset to avoid doing Math with negative numbers
+      switch (true) {
+        case headingHistory.current.length === 0:            headingHistory.current.push(tempHeading)      ; break;
+        case headingHistory.current[0] - tempHeading >  180: headingHistory.current.push(tempHeading + 360); break;
+        case headingHistory.current[0] - tempHeading < -180: headingHistory.current.push(tempHeading - 360); break;
+        default:                                             headingHistory.current.push(tempHeading)      ; break;
       }
-    }
+      if (headingHistory.current.length > measuredAverage) {
+        headingHistory.current.shift();
+      }
+    } 
   }, [heading, measuredAverage, isCalculatingAvg]);
 
   useEffect(() => {

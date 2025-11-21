@@ -1,7 +1,7 @@
 # refactoring:
 
 - low Priority:
-    - increase the button sice for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
+    - increase the button size for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
     - Add all major zIndez inside the gloal zIndex file
     - Remove all double `HapticsService.vibrate`. And leave this only on `onPressIn` events
     - Add `HapticsService.vibrate` for all buttons missing vibrations
@@ -30,6 +30,9 @@
     - Add a rule to on GPSInput to chose between: 'altitude only', 'coordinate onyly', 'coordinate and altitude', where the user cannot change this.
 
 - Inputs:
+    - Marker Input:
+        - A simple imput that allow the user to place a marker on the map with a desccription, to register points of interest.
+        - Need to specialize markers into distinct categories (eg: measurement, urban structures, usefull icons) for better data organization.
     - Poligon input:
         - 1. If the poligon has one point, it must be represented as a normal GPS coordinate on the map, with the accuracy radius.
         - 2. If the poligon has two points, it must be represented as a line on the map,  with the accuracy radius on both extremes.

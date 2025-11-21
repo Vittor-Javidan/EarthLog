@@ -4,8 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Z_INDEX } from "@V2/Globals/zIndex";
 import { useCompassLayer } from "./API/Compass";
-import { MapAPI } from "./API/Map";
 import { LayerButtonsAPI } from "./API/LayerButtons";
+import { MapAPI } from "./API/Map";
 
 import { Icon } from "@V2/Icon/index";
 
@@ -30,7 +30,7 @@ export const LayerButtons = memo(() => {
       style={{
         position: 'absolute',
         right: 0,
-        bottom: bottom + 90,
+        bottom: bottom + 130,
         zIndex: Z_INDEX.LAYER_BUTTONS,
         gap: 2,
         transform: [{ translateX: rightOffset }],

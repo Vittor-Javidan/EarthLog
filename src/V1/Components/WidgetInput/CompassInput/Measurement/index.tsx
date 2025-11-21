@@ -8,6 +8,7 @@ import { Button } from "@V1/Button/index";
 import { MarkerButton } from "./MarkerButton";
 import { ItemLabel } from "./ItemLabel";
 import { Input_Measurement } from "./Input_Measurement";
+import { SetMapMarkerPositionButton } from "./SetMapMarkerPositionButton";
 
 export const Measurement = memo((props: {
   measurement: CompassMeasurementDTO
@@ -22,10 +23,10 @@ export const Measurement = memo((props: {
   onMarkerChange: (mapMarker: MarkerAssets) => void
   onMeasurementLabelChange: (newLabel: string) => void
   onMeasurementDelete: () => void
+  onMarkerPositionPress: () => void
 }) => {
 
   const {
-    id,
     dip,
     heading,
     markerIcon,
@@ -48,38 +49,38 @@ export const Measurement = memo((props: {
         gap: 10
       }}
     >
-        {(
-          props.editMode &&
-          props.allowMeasurementDeletion &&
-          !props.lockedData
-        ) ? (
-          <Button.Icon
-            iconName="trash-outline"
-            iconSize={40}
-            onPress={() => props.onMeasurementDelete()}
-            theme={{
-              font:              props.theme.wrong,
-              font_active:       props.theme.background,
-              background:        props.theme.background,
-              background_active: props.theme.wrong,
-            }}
-            style={{
-              height: 60,
-              width: 60,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-              borderRadius: 6,
-            }}
-          />
-        ) : (
-          <MarkerButton
-            markerIcon={markerIcon}
-            imageHeading={imageHeading}
-            lockedData={props.lockedData}
-            onMarkerChange={props.onMarkerChange}
-            theme={props.theme}
-          />
-        )}
+      {(
+        props.editMode &&
+        props.allowMeasurementDeletion &&
+        !props.lockedData
+      ) ? (
+        <Button.Icon
+          iconName="trash-outline"
+          iconSize={40}
+          onPress={() => props.onMeasurementDelete()}
+          theme={{
+            font:              props.theme.wrong,
+            font_active:       props.theme.background,
+            background:        props.theme.background,
+            background_active: props.theme.wrong,
+          }}
+          style={{
+            height: 60,
+            width: 60,
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+            borderRadius: 6,
+          }}
+        />
+      ) : (
+        <MarkerButton
+          markerIcon={markerIcon}
+          imageHeading={imageHeading}
+          lockedData={props.lockedData}
+          onMarkerChange={props.onMarkerChange}
+          theme={props.theme}
+        />
+      )}
       <View
         style={{
           flex: 1,
@@ -104,7 +105,11 @@ export const Measurement = memo((props: {
           theme={props.theme}
         />
       </View>
-
+      <SetMapMarkerPositionButton
+        isPinned={coordinates !== undefined}
+        onPress={props.onMarkerPositionPress}
+        theme={props.theme}
+      />
     </View>
   )
 });

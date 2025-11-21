@@ -6,6 +6,7 @@ import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { HapticsService } from '@V1/Services/HapticsService';
 import { AppService } from '@V1/Services/AppService';
+import { NotificationAPI } from '@V1/Layers/API/Notification';
 import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { MapAPI } from '@V1/Layers/API/Map';
 
@@ -52,6 +53,9 @@ export const Screen_Settings = memo((props: {
     }, () => {
       DevTools.toggleTutorialMode();
       MapAPI.toggleTutorialMode();
+      ConfigService.config.tutorialMode = !tutorialMode;
+      ConfigService.saveConfig();
+      NotificationAPI.setTutorialModeIcon(!tutorialMode);
       setTutorialMode(prev => !prev);
     });
   }, [tutorialMode]);

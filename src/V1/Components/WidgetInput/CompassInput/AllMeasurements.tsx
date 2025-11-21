@@ -14,6 +14,7 @@ export const AllMeasurements = memo((props: {
   onMeasurementHeadingChange: (newHeading: number, index: number) => void
   onMeasurementDipChange: (newDip: number, index: number) => void
   onMeasurementMarkerPress: (mapMarker: MarkerAssets, index: number) => void
+  onMeasurementMarkerPositionPress: (index: number) => void
   onMeasurementLabelChange: (newLabel: string, index: number) => void
   onMeasurementDelete: (index: number) => void
 }) => {
@@ -30,6 +31,7 @@ export const AllMeasurements = memo((props: {
       onHeadingChange={(newHeading) => props.onMeasurementHeadingChange(newHeading, index)}
       onDipChange={(newDip) => props.onMeasurementDipChange(newDip, index)}
       onMarkerChange={(mapMarker) => props.onMeasurementMarkerPress(mapMarker, index)}
+      onMarkerPositionPress={() => props.onMeasurementMarkerPositionPress(index)}
       onMeasurementLabelChange={(newLabel) => props.onMeasurementLabelChange(newLabel, index)}
       onMeasurementDelete={() => props.onMeasurementDelete(index)}
     />

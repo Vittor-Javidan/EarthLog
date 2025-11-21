@@ -1,3 +1,19 @@
+# ✅ 2.5.5
+- New:
+  - Measures can now be pinned inside the map
+  - When tutorial mode is anabled, now it shows a notification on the bottom right corner of the screen, to remind users tutorial mode is on.
+  - Tutorial mode now can persists.
+
+- Critical Fix:
+  - Sometimes compass avg calculations were incorrect.
+
+- fix:
+  - Map Layer openning instead of closing when pressing the android back button sometimes.
+
+- Codebase:
+  - Map markers refactored, to allow the implementation of future features, like measurement map markers and poligons drawing on map.
+
+
 # ✅ 2.5.4
 - New:
   - Map Tutorial
