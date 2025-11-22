@@ -8,10 +8,15 @@ import { CompassInputData, CompassMeasurementDTO, GPSInputData, WidgetData } fro
 export const Markers_Widget = memo((props: {
   widgetData: WidgetData
   openMeasurement: CompassMeasurementDTO | null
+  showMarkers_GPSInput: boolean
+  showMarkers_CompassMeasurement: boolean
 }) => {
   return (<>
     {props.widgetData.inputs.map((input) => {
-      if (input.type === 'gps') {
+      if (
+        input.type === 'gps' &&
+        props.showMarkers_GPSInput
+      ) {
         return (
           <Marker_GPSInput
             key={input.id_input}
@@ -19,7 +24,10 @@ export const Markers_Widget = memo((props: {
           />
         )
       }
-      if (input.type === 'compass') {
+      if (
+        input.type === 'compass' &&
+        props.showMarkers_CompassMeasurement
+      ) {
         return (
           <Marker_CompassInput
             key={input.id_input}

@@ -12,10 +12,15 @@ export const Markers_Project = memo((props: {
   projectDTO: ProjectDTO
   scope: MapScope
   openMeasurement: CompassMeasurementDTO | null
+  showMarker_ProjectInfo: boolean
+  showMarkers_SampleInfo: boolean
+  showMarkers_GPSInput: boolean
+  showMarkers_CompassMeasurement: boolean
 }) => {
   const { projectDTO } = props
   return (<>
     <Marker_ProjectSettings
+      show={props.showMarker_ProjectInfo}
       projectSettings={props.projectDTO.projectSettings}
     />
     {projectDTO.projectWidgets.map((widget) => (
@@ -23,6 +28,8 @@ export const Markers_Project = memo((props: {
         key={widget.id_widget}
         widgetData={widget}
         openMeasurement={props.openMeasurement}
+        showMarkers_GPSInput={props.showMarkers_GPSInput}
+        showMarkers_CompassMeasurement={props.showMarkers_CompassMeasurement}
       />
     ))}
     {props.projectDTO.samples.map((sample) => (
@@ -30,18 +37,23 @@ export const Markers_Project = memo((props: {
         key={sample.sampleSettings.id_sample}
         sampleDTO={sample}
         openMeasurement={props.openMeasurement}
+        showMarkers_SampleInfo={props.showMarkers_SampleInfo}
+        showMarkers_GPSInput={props.showMarkers_GPSInput}
+        showMarkers_CompassMeasurement={props.showMarkers_CompassMeasurement}
       />
     ))}
   </>)
 })
 
 const Marker_ProjectSettings = memo((props: {
+  show: boolean
   projectSettings: ProjectSettings
 }) => {
 
-  const { projectSettings } = props
+  const { projectSettings, show } = props
 
   if (
+    !show ||
     projectSettings.gps === undefined ||
     projectSettings.gps.coordinates === undefined
   ) {

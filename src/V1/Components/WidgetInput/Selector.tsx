@@ -114,6 +114,7 @@ export const InputSelector = memo((props: {
     );
     case 'compass': return (
       <CompassInput
+        widgetScope={props.widgetScope}
         inputData={props.inputData}
         editWidget={props.editWidget}
         isFirstInput={props.isFirstInput}

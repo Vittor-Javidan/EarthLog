@@ -3,15 +3,15 @@ import { StatusBar } from 'expo-status-bar';
 
 import { AppService } from '@V2/Services/AppService';
 
-import { CameraPreviewLayer } from '@V2/Layers/CameraPreview';
-import { CameraLayer } from '@V2/Layers/Camera';
-import { PopUpLayer } from '@V2/Layers/PopUp';
+import { Layer_CameraPreview } from '@V2/Layers/CameraPreview';
+import { Layer_Camera } from '@V2/Layers/Camera';
+import { Layer_PopUp } from '@V2/Layers/PopUp';
 import { ScopeController } from '@V2/Scopes/controller';
-import { CompassLayer } from '@V2/Layers/Compass';
-import { MapLayer } from '@V2/Layers/Map';
-import { Map_MarkeSelectionLayer } from '@V2/Layers/Map_MarkeSelection';
-import { NotificationLayer } from '@V2/Layers/NotificationLayer';
-import { TutorialLayer } from '@V2/Layers/TutorialLayer';
+import { Layer_Compass } from '@V2/Layers/Compass';
+import { Layer_Map } from '@V2/Layers/Map';
+import { Layer_MapMarkerSelection } from '@V2/Layers/Map_MarkeSelection';
+import { Layer_Notification } from '@V2/Layers/NotificationLayer';
+import { Layer_Tutorial } from '@V2/Layers/TutorialLayer';
 import { LayerButtons } from '@V2/Layers/LayerButtons';
 
 export default function LTS_VERSION_2() {
@@ -25,14 +25,14 @@ export default function LTS_VERSION_2() {
   return (<>
     {initialized && (<>
       <StatusBar hidden={false} style={'dark'} />
-      <PopUpLayer />
-      <CameraLayer />
-      <CameraPreviewLayer />
-      <CompassLayer />
-      <MapLayer />
-      <Map_MarkeSelectionLayer />
-      <NotificationLayer />
-      <TutorialLayer />
+      <Layer_PopUp />
+      <Layer_Camera />
+      <Layer_CameraPreview />
+      <Layer_Compass />
+      <Layer_Map />
+      <Layer_MapMarkerSelection />
+      <Layer_Notification />
+      <Layer_Tutorial />
       <LayerButtons />
       <ScopeController />
     </>)}

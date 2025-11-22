@@ -11,7 +11,7 @@ import { ConfigService } from '@V2/Services/ConfigService';
 import { Camera } from './Camera';
 import { PermissionScreen } from './PermissionScreen';
 
-export const CameraLayer = memo(() => {
+export const Layer_Camera = memo(() => {
 
   const [permission     , requestPermission ] = useCameraPermissions();
   const [showCamera     , setShowCamera     ] = useState<boolean>(false);

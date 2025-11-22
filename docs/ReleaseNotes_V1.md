@@ -1,3 +1,12 @@
+# ✅ 1.15.6
+- New:
+  - Now markers can be filtered by type, project or sample inside the map
+
+- Fix:
+  - Compass input pin button showing on template widgets
+  - Map not going to markers position when pressing the pin button from Compass Input
+
+
 # ✅ 1.15.5
 - New:
   - Measures can now be pinned inside the map

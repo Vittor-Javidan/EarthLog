@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from "react";
 import { View } from "react-native";
 
 import { MarkerAssets } from "@AssetManager";
-import { CompassMeasurementDTO, WidgetTheme } from "@V1/Types/ProjectTypes";
+import { CompassMeasurementDTO, WidgetScope, WidgetTheme } from "@V1/Types/ProjectTypes";
 
 import { Button } from "@V1/Button/index";
 import { MarkerButton } from "./MarkerButton";
@@ -11,6 +11,7 @@ import { Input_Measurement } from "./Input_Measurement";
 import { SetMapMarkerPositionButton } from "./SetMapMarkerPositionButton";
 
 export const Measurement = memo((props: {
+  widgetScope: WidgetScope
   measurement: CompassMeasurementDTO
   lockedData: boolean | undefined
   allowMeasurementLabelChange: boolean | undefined
@@ -106,6 +107,7 @@ export const Measurement = memo((props: {
         />
       </View>
       <SetMapMarkerPositionButton
+        show={props.widgetScope.type !== 'template'}
         isPinned={coordinates !== undefined}
         onPress={props.onMarkerPositionPress}
         theme={props.theme}

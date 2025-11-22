@@ -1,9 +1,10 @@
 import React, { memo } from "react";
 import { MarkerAssets } from "@AssetManager";
-import { CompassMeasurementDTO, WidgetTheme } from "@V2/Types/ProjectTypes";
+import { CompassMeasurementDTO, WidgetScope, WidgetTheme } from "@V2/Types/ProjectTypes";
 import { Measurement } from "./Measurement";
 
 export const AllMeasurements = memo((props: {
+  widgetScope: WidgetScope
   measurements: CompassMeasurementDTO[]
   lockedData: boolean | undefined
   editMode: boolean
@@ -21,6 +22,7 @@ export const AllMeasurements = memo((props: {
   const AllMeasurementItems = props.measurements.map((measurement, index) => (
     <Measurement
       key={measurement.id}
+      widgetScope={props.widgetScope}
       measurement={measurement}
       lockedData={props.lockedData}
       allowMeasurementLabelChange={props.allowMeasurementLabelChange}

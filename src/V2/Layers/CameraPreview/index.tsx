@@ -9,7 +9,7 @@ import { CameraPreviewLayerAPI } from '../API/CameraPreview';
 import { PreviewButtons } from './PreviewButtons';
 import { ZoomableImage } from './ZoomImageAnimation';
 
-export const CameraPreviewLayer = memo(() => {
+export const Layer_CameraPreview = memo(() => {
 
   const [pictureUri     , setPictureUri     ] = useState<string | null>(null);
   const [showSaveButton , setShowSaveButton ] = useState<boolean>(false)

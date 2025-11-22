@@ -9,10 +9,14 @@ import { Markers_Widget } from "./Widget"
 export const Markers_Sample = memo((props: {
   sampleDTO: SampleDTO
   openMeasurement: CompassMeasurementDTO | null
+  showMarkers_SampleInfo: boolean
+  showMarkers_GPSInput: boolean
+  showMarkers_CompassMeasurement: boolean
 }) => { 
   return (<>
     <Marker_SampleSettings
       key={props.sampleDTO.sampleSettings.id_sample}
+      show={props.showMarkers_SampleInfo}
       sampleSettings={props.sampleDTO.sampleSettings}
     />
     {props.sampleDTO.sampleWidgets.map((widget) => (
@@ -20,17 +24,21 @@ export const Markers_Sample = memo((props: {
         key={widget.id_widget}
         widgetData={widget}
         openMeasurement={props.openMeasurement}
+        showMarkers_GPSInput={props.showMarkers_GPSInput}
+        showMarkers_CompassMeasurement={props.showMarkers_CompassMeasurement}
       />
     ))}
   </>)
 })
 
 const Marker_SampleSettings = memo((props: {
+  show: boolean
   sampleSettings: SampleSettings
 }) => {
-  const { sampleSettings } = props
+  const { sampleSettings, show } = props
 
   if (
+    !show ||
     sampleSettings.gps === undefined ||
     sampleSettings.gps.coordinates === undefined
   ) {

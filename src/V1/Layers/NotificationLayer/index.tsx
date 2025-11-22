@@ -9,7 +9,7 @@ import { NotificationAPI, NotificationIcons } from "../API/Notification";
 
 import { Icon } from "@V1/Icon/index";
 
-export const NotificationLayer = memo(() => {
+export const Layer_Notification = memo(() => {
 
   const { bottom } = useSafeAreaInsets();
   const config     = useMemo(() => ConfigService.config, []);

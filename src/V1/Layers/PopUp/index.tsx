@@ -9,7 +9,7 @@ import { PopUpSelector } from './Selector';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('screen');
 
-export const PopUpLayer = memo(() => {
+export const Layer_PopUp = memo(() => {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalConfig, setModalConfig] = useState<ModalConfig>({
