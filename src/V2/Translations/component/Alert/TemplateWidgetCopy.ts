@@ -1,14 +1,14 @@
 import { LanguageTag } from '@V2/Types/AppTypes';
 
 type TranslationDTO = Record<LanguageTag, {
-  'Your widgets:': string
+  'Your Forms:': string
 }>
 
 export const R_Alert_TemplateWidgetCopy: TranslationDTO = {
   'en-US': {
-    'Your widgets:': 'Your widgets:',
+    'Your Forms:': 'Your Forms:',
   },
   'pt-BR': {
-    'Your widgets:': 'Seus widgets:',
+    'Your Forms:': 'Seus Formulários:',
   },
 };

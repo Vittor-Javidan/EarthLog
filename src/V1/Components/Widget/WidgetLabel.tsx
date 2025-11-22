@@ -44,7 +44,7 @@ export const WidgetLabel = memo((props: {
           minHeight: 34,
           width: '90%',
         }}
-        placeholder={R['Widget name']}
+        placeholder={R['Form Name']}
         placeholderTextColor={focused ? props.theme.background : props.theme.font_placeholder}
         value={props.label}
         onChangeText={(text) => props.onLabelChange(text)}

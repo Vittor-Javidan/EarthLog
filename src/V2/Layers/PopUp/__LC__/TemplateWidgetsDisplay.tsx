@@ -49,7 +49,7 @@ export const TemplateWidgetCopyDisplay = memo((props: {
           color: theme.font,
         }}
       >
-        {R['Your widgets:']}
+        {R['Your Forms:']}
       </Text>
     </View>
     <ScrollView
