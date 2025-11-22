@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react"
+import { memo, useCallback } from "react"
 import { Marker, MarkerPressEvent } from "react-native-maps";
 
 import DevTools from "@DevTools";
@@ -12,8 +12,8 @@ export const DynamicMeasureMarker = memo((props: {
 }) => {
 
   const { markerIcon, heading, label, dip, id, coordinates } = props.openMeasurement;
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.layers.map[config.language], []);
+  const config = ConfigService.config
+  const R      = translations.layers.map[config.language]
 
   if (coordinates === undefined) {
     return <></>;

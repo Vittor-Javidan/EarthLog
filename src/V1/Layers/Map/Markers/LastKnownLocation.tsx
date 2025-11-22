@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { View } from "react-native";
 import { Circle, Marker } from "react-native-maps";
 
@@ -12,8 +12,8 @@ export const Marker_LastKnownLocation = memo((props: {
   lastKnownLocation: CoordinateDTO | null
 }) => {
 
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.layers.map[config.language], []);
+  const config = ConfigService.config
+  const R      = translations.layers.map[config.language];
 
   if (!props.lastKnownLocation) {
     return null;

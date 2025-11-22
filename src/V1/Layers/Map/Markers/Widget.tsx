@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
 import { Circle, Marker, MarkerPressEvent } from "react-native-maps";
 
 import DevTools from "@DevTools";
@@ -111,8 +111,8 @@ const Marker_Measurement = memo((props: {
 }) => {
 
   const { coordinates, markerIcon, heading, label, dip } = props.measurement;
-  const config = useMemo(() => ConfigService.config, []);
-  const R      = useMemo(() => translations.layers.map[config.language], []);
+  const config = ConfigService.config;
+  const R      = translations.layers.map[config.language];
 
   if (coordinates === undefined) {
     return <></>;
