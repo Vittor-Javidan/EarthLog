@@ -1,6 +1,7 @@
 # ✅ 2.5.7
 - New:
   - Widgets are now called Forms on the UI
+  - Map translations improved
 
 
 # ✅ 2.5.6
