@@ -4,7 +4,7 @@ import MapView, { Region } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools, { useMapTutorial_LastKnownLocation } from "@DevTools";
-import { MapScope } from "@V2/Types/AppTypes";
+import { MapMarkerFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
 import { CompassMeasurementDTO, CoordinateDTO } from "@V2/Types/ProjectTypes";
 import { ConfigService } from "@V2/Services/ConfigService";
 import { useTutorialLayer } from "../API/Tutorial";
@@ -17,9 +17,10 @@ import { Map } from "./Map";
 import { MapLabel } from "./MapLabel";
 import { Markers } from "./Markers";
 import { MarkersDisplay } from "./MarkersDisplay";
+import { MarkerFilter } from "./Filter";
 import { UI } from "./UI";
 
-export const MapLayer = memo(() => {
+export const Layer_Map = memo(() => {
 
   const { top, bottom} = useSafeAreaInsets();
   const [mapRef           , setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
@@ -30,26 +31,32 @@ export const MapLayer = memo(() => {
   const [goToCoordinate   , setGoToCoordinate   ] = useState<CoordinateDTO | undefined>(undefined);
   const [centerRegion     , setCenterRegion     ] = useState<Region | null>(null);
   const [tutorialMode     , setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
+  const [markerFilter     , setMarkerFilter     ] = useState<MapMarkerFilter>({
+    projectInfo: true,
+    sampleInfo: true,
+    gpsInput: true,
+    compassMeasurement: true,
+  })
+  const [show, setShow] = useState<MapShowSetter>({
+    map: false,
+    indicator: false,
+    tutorial: ConfigService.config.tutorial_map,
+    pinUI_Measurement: false,
+    defaultUI: true,
+    filter: false,
+  })
+  MapAPI.scopeSetter        = setScope;
+  MapAPI.tutorialModeSetter = setTutorialMode;
+  MapAPI.markerFilterSetter = setMarkerFilter;
+  MapAPI.showSetter         = setShow;
 
   // Measurement States
   const [backupCoordinate     , setBackupCoordinate     ] = useState<CoordinateDTO | undefined>(undefined);
   const [openMeasurement      , setOpenMeasurement      ] = useState<CompassMeasurementDTO | null>(null);
   const [didMeasurementChanged, setDidMeasurementChanged] = useState<boolean>(false);
-
-  const [show, setShow] = useState({
-    map: false,
-    indicator: false,
-    tutorial: ConfigService.config.tutorial_map,
-    pinUI_Measurement: false,
-    defaultUI: true
-  })
-
-  MapAPI.registerShowSetter(setShow);
-  MapAPI.registerScopeSetter(setScope);
-  MapAPI.registerTutorialModeSetter(setTutorialMode);
-  MapAPI.registerBackupCoordinateSetter(setBackupCoordinate);
-  MapAPI.registerOpenMeasurementSetter(setOpenMeasurement);
-  MapAPI.registerDidMeasurementChangedSetter(setDidMeasurementChanged);
+  MapAPI.backupCoordinateSetter      = setBackupCoordinate;
+  MapAPI.openMeasurementSetter       = setOpenMeasurement;
+  MapAPI.didMeasurementChangedSetter = setDidMeasurementChanged;
 
   // Measurement Pin UI Callbacks ------------------------------------------------------------
 
@@ -140,6 +147,11 @@ export const MapLayer = memo(() => {
     setCenterRegion(newRegion);
   }, [tutorialMode]);
 
+  const onFilterPress = useCallback(() => {
+    console.log("Filter Pressed")
+    setShow(prev => ({ ...prev, filter: true }));
+  }, [])
+
   const followUserLocation = useCallback(() => {
     if (!followUser) {
       setShow(prev => ({ ...prev, indicator: true }));
@@ -156,6 +168,26 @@ export const MapLayer = memo(() => {
       updateMeasurementCoordinates();
     }
   }, [updateMeasurementCoordinates])
+
+  const onFilterChange_marker_projectInfo = useCallback((newValue: boolean) => {
+    setMarkerFilter(prev => ({ ...prev, projectInfo: newValue }));
+  }, []);
+
+  const onFilterChange_markers_sampleInfo = useCallback((newValue: boolean) => {
+    setMarkerFilter(prev => ({ ...prev, sampleInfo: newValue }));
+  }, []);
+
+  const onFilterChange_markers_gpsInput = useCallback((newValue: boolean) => {
+    setMarkerFilter(prev => ({ ...prev, gpsInput: newValue }));
+  }, []);
+
+  const onFilterChange_markers_compassMeasurement = useCallback((newValue: boolean) => {
+    setMarkerFilter(prev => ({ ...prev, compassMeasurement: newValue }));
+  }, []);
+
+  const onFilterClose = useCallback(() => {
+    setShow(prev => ({ ...prev, filter: false }));
+  }, []);
 
   useEffect(() => {
     if (// detects changes in goToCoordinate to move the map camera
@@ -249,6 +281,7 @@ export const MapLayer = memo(() => {
       show={show.map}
       style={{
         position: 'absolute',
+        justifyContent: 'center',
         top: top,
         left: 0,
         zIndex: 20,
@@ -273,11 +306,21 @@ export const MapLayer = memo(() => {
         show={show.defaultUI}
         followUser={followUser}
         showCurrentPositionIndicator={mapRef === null || show.indicator}
+        onFilterPress={onFilterPress}
         onCurrentPosition={followUserLocation}
       />
 
       {/* Base Map Components */}
       <MapLabel scope={scope} />
+      <MarkerFilter
+        filter={markerFilter}
+        onClose={onFilterClose}
+        show={show.filter}
+        onFilterChange_marker_projectInfo={onFilterChange_marker_projectInfo}
+        onFilterChange_markers_sampleInfo={onFilterChange_markers_sampleInfo}
+        onFilterChange_markers_gpsInput={onFilterChange_markers_gpsInput}
+        onFilterChange_markers_compassMeasurement={onFilterChange_markers_compassMeasurement}
+      />
       <Map
         loadMap={isMapNeverOpen === false}
         followUser={followUser}
@@ -299,6 +342,10 @@ export const MapLayer = memo(() => {
           <MarkersDisplay
             scope={scope}
             showMap={show.map}
+            showMarker_ProjectInfo={markerFilter.projectInfo}
+            showMarkers_SampleInfo={markerFilter.sampleInfo}
+            showMarkers_GPSInput={markerFilter.gpsInput}
+            showMarkers_CompassMeasurement={markerFilter.compassMeasurement}
             openMeasurement={openMeasurement}
           />
         )}

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { SubscriptionManager } from "@SubscriptionManager";
-import { MapScope } from "@V1/Types/AppTypes";
+import { MapMarkerFilter, MapScope, MapShowSetter } from "@V1/Types/AppTypes";
 import { ControllerAPI } from "@V1/Scopes/API/Controller";
 import { CompassMeasurementDTO, CoordinateDTO } from "@V1/Types/ProjectTypes";
 
@@ -13,48 +13,30 @@ export function useMap_SetMarker(o: {
   const { openMap, measurement } = o;
   useEffect(() => {
     if (o.openMap) {
-      MapAPI.registerOnRegionChangeCallback(o.onRegionChangeCallback);
-      MapAPI.registerOnCloseMapCallback(o.onCloseMap);
+      MapAPI.onRegionChangeCallback = o.onRegionChangeCallback;
+      MapAPI.onCloseMapCallback     = o.onCloseMap;
       MapAPI.configOpenMeasurement(measurement);
       MapAPI.toggleMap(true);
       MapAPI.showPinUI_Measurement(true);
     }
   }, [openMap]);
 }
-
-type ShowSetter = {
-  map: boolean;
-  indicator: boolean;
-  tutorial: boolean;
-  pinUI_Measurement: boolean;
-  defaultUI: boolean;
-}
-
 export class MapAPI {
 
   static isMapOpen: boolean = false;
 
-  private static scopeSetter:                 Dispatch<SetStateAction<MapScope>> | null                     = null;
-  private static tutorialModeSetter:          Dispatch<SetStateAction<boolean>> | null                      = null;
-  private static backupCoordinateSetter:      Dispatch<SetStateAction<CoordinateDTO | undefined>> | null    = null;
-  private static openMeasurementSetter:       Dispatch<SetStateAction<CompassMeasurementDTO | null>> | null = null;
-  private static didMeasurementChangedSetter: Dispatch<SetStateAction<boolean>> | null                 = null;
-  private static showSetter:                  Dispatch<SetStateAction<ShowSetter>> | null                   = null;
-
-  private static onRegionChangeCallback: ((region: CoordinateDTO | undefined) => void) | null = null;
-  private static onCloseMapCallback:     (() => void) | null                                          = null;
-
   /* Setters from Map Layer */
-  static registerScopeSetter(setter: Dispatch<SetStateAction<MapScope>>)                               { this.scopeSetter = setter;            }
-  static registerTutorialModeSetter(setter: Dispatch<SetStateAction<boolean>>)                         { this.tutorialModeSetter = setter;     }
-  static registerBackupCoordinateSetter(setter: Dispatch<SetStateAction<CoordinateDTO | undefined>>)   { this.backupCoordinateSetter = setter; }
-  static registerOpenMeasurementSetter(setter: Dispatch<SetStateAction<CompassMeasurementDTO | null>>) { this.openMeasurementSetter = setter;  }
-  static registerDidMeasurementChangedSetter(setter: Dispatch<SetStateAction<boolean>>)                { this.didMeasurementChangedSetter = setter; }
-  static registerShowSetter(setter: Dispatch<SetStateAction<ShowSetter>>)                              { this.showSetter = setter;             }
+  static scopeSetter:                 Dispatch<SetStateAction<MapScope>> | null                     = null;
+  static tutorialModeSetter:          Dispatch<SetStateAction<boolean>> | null                      = null;
+  static markerFilterSetter:          Dispatch<SetStateAction<MapMarkerFilter>> | null              = null;
+  static showSetter:                  Dispatch<SetStateAction<MapShowSetter>> | null                = null;
+  static backupCoordinateSetter:      Dispatch<SetStateAction<CoordinateDTO | undefined>> | null    = null;
+  static openMeasurementSetter:       Dispatch<SetStateAction<CompassMeasurementDTO | null>> | null = null;
+  static didMeasurementChangedSetter: Dispatch<SetStateAction<boolean>> | null                      = null;
 
   /* Callbacks from App Layer */
-  static registerOnRegionChangeCallback(callback: (region: CoordinateDTO | undefined) => void) { this.onRegionChangeCallback = callback; }
-  static registerOnCloseMapCallback(callback: () => void)                                              { this.onCloseMapCallback = callback;     }
+  static onRegionChangeCallback: ((region: CoordinateDTO | undefined) => void) | null = null;
+  static onCloseMapCallback:     (() => void) | null                                  = null;
 
   // Manipulation Methods ------------------------------------------------------------
 
@@ -105,10 +87,18 @@ export class MapAPI {
 
   static showPinUI_Measurement(show: boolean) {
     if (
+      SubscriptionManager.getStatus().isMapEnabled &&
+      this.markerFilterSetter &&
       this.showSetter &&
       this.didMeasurementChangedSetter
     ) {
       this.didMeasurementChangedSetter(false);
+      this.markerFilterSetter(prev => ({ ...prev,
+        projectInfo: true,
+        sampleInfo: true,
+        gpsInput: true,
+        compassMeasurement: true,
+      }));
       this.showSetter(prev => ({ ...prev,
         pinUI_Measurement: show,
         defaultUI: !show,
@@ -118,6 +108,7 @@ export class MapAPI {
 
   static configOpenMeasurement(measurement: CompassMeasurementDTO | null) {
     if (
+      SubscriptionManager.getStatus().isMapEnabled &&
       this.openMeasurementSetter &&
       this.backupCoordinateSetter
     ) {

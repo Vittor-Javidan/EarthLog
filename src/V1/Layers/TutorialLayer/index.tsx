@@ -7,7 +7,7 @@ import { TutorialAPI } from "../API/Tutorial";
 import { Tutorial_BubbleLevel } from "./BubbleLevel";
 import { Tutorial_Map } from "./Map";
 
-export const TutorialLayer = memo(() => {
+export const Layer_Tutorial = memo(() => {
 
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [tutorialType, setTutorialType] = useState<TutorialType | null>(null);
@@ -29,7 +29,7 @@ export const TutorialLayer = memo(() => {
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         {tutorialType === "BUBBLE LEVEL COMPASS" && (<Tutorial_BubbleLevel onFinish={() => TutorialAPI.closeTutorial()}/>)}
-        {tutorialType === "MAP" && (<Tutorial_Map onFinish={() => TutorialAPI.closeTutorial()}/>)}
+        {tutorialType === "MAP"                  && (<Tutorial_Map         onFinish={() => TutorialAPI.closeTutorial()}/>)}
       </GestureHandlerRootView>
     </ReactNative_Modal>
   )

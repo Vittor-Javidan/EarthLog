@@ -8,7 +8,7 @@ import { CompassAPI } from "../API/Compass";
 import { Compass_Default } from "./CompassTypes/Compass_Default";
 import { Compass_Measurement } from "./CompassTypes/Compass_Measurement";
 
-export const CompassLayer = memo(() => {
+export const Layer_Compass = memo(() => {
 
   const [showCompass  , setShowCompass  ] = useState<boolean>(false);
   const [compassConfig, setCompassConfig] = useState<CompassLayerConfig | null>(null);

@@ -208,6 +208,23 @@ export type MapScope = (
   NavigationMapScope | ProjectMapScope | SampleMapScope
 )
 
+export type MapShowSetter = {
+  map: boolean;
+  indicator: boolean;
+  tutorial: boolean;
+  pinUI_Measurement: boolean;
+  defaultUI: boolean;
+  filter: boolean;
+}
+
+export type MapMarkerFilter = {
+  projectInfo: boolean,
+  sampleInfo: boolean,
+  gpsInput: boolean,
+  compassMeasurement: boolean,
+}
+
+
 // --------------------------------- Compass Types -----------------------------
 
 export type DefaultCompassConfig = { mode: 'default' | 'measurement' }

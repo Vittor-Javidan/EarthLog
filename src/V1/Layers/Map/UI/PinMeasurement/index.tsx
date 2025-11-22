@@ -25,17 +25,6 @@ export const MeasurementPinUI = memo((props: {
     <View
       style={{
         position: 'absolute',
-        flexDirection: 'row',
-        zIndex: Z_INDEX.LAYER_MAP + 1,
-        bottom: 40,
-        right: 10,
-        gap: 10,
-      }}
-    >
-    </View>
-    <View
-      style={{
-        position: 'absolute',
         zIndex: Z_INDEX.LAYER_MAP + 1,
         bottom: 40,
         left: 10,

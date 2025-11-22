@@ -4,7 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Map_MarkerSelectionAPI } from "../API/Map_MarkerSelection";
 import { MarkerSelection } from "./MarkerSelection";
 
-export const Map_MarkeSelectionLayer = memo(() => {
+export const Layer_MapMarkerSelection = memo(() => {
 
   const [showLayer, setShowLayer] = useState<boolean>(false);
 
