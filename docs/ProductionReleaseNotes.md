@@ -1,6 +1,8 @@
 <en-US>
-  New Map Marker Filter
+  - Widgets are now called Forms
+  - Map translations improved
 </en-US>
 <pt-BR>
-  Novo filtro de marcadores no mapa
+  - Widgets agora são chamados de Formulários
+  - Traduções do mapa melhoradas
 </pt-BR>

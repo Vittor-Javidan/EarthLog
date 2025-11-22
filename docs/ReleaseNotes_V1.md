@@ -1,3 +1,9 @@
+# ✅ 1.15.7
+- New:
+  - Widgets are now called Forms on the UI
+  - Map translations improved
+
+
 # ✅ 1.15.6
 - New:
   - Now markers can be filtered by type, project or sample inside the map

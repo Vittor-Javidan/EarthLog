@@ -1,14 +1,19 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { View } from "react-native";
 import { Circle, Marker } from "react-native-maps";
 
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V2/Translations/index";
 import { CoordinateDTO } from "@V2/Types/ProjectTypes";
+import { ConfigService } from "@V2/Services/ConfigService";
 
 export const Marker_LastKnownLocation = memo((props: {
   tutorialMode: boolean
   lastKnownLocation: CoordinateDTO | null
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
 
   if (!props.lastKnownLocation) {
     return null;
@@ -22,7 +27,7 @@ export const Marker_LastKnownLocation = memo((props: {
           latitude: props.lastKnownLocation.lat,
           longitude: props.lastKnownLocation.long,
         }}
-        title="Your last known location"
+        title={R['Your last location']}
         zIndex={0}
         description=""
         image={{

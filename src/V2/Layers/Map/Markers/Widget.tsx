@@ -1,9 +1,11 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { Circle, Marker, MarkerPressEvent } from "react-native-maps";
 
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V2/Translations/index";
 import { CompassInputData, CompassMeasurementDTO, GPSInputData, WidgetData } from "@V2/Types/ProjectTypes";
+import { ConfigService } from "@V2/Services/ConfigService";
 
 export const Markers_Widget = memo((props: {
   widgetData: WidgetData
@@ -109,6 +111,8 @@ const Marker_Measurement = memo((props: {
 }) => {
 
   const { coordinates, markerIcon, heading, label, dip } = props.measurement;
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
 
   if (coordinates === undefined) {
     return <></>;
@@ -125,8 +129,8 @@ const Marker_Measurement = memo((props: {
     <Marker
       key={props.measurement.id}
       coordinate={{ latitude, longitude }} 
-      title={label === '' ? 'No label' : label}
-      description={`Heading: ${heading}° / Dip: ${dip}°`}
+      title={label === '' ? R['No label'] : label}
+      description={R['Heading: ${heading}° / Dip: ${dip}°'](heading, dip)}
       rotation={heading}
       onPress={onPress}
       image={{

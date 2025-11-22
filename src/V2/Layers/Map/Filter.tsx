@@ -1,9 +1,11 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 
 import { Z_INDEX } from "@V2/Globals/zIndex";
+import { translations } from "@V2/Translations/index";
 import { MapMarkerFilter } from "@V2/Types/AppTypes";
 import { HapticsService } from "@V2/Services/HapticsService";
+import { ConfigService } from "@V2/Services/ConfigService";
 
 import { Icon } from "@V2/Icon/index";
 import { Button } from "@V2/Button/index";
@@ -18,6 +20,9 @@ export const MarkerFilter = memo((props: {
   onFilterChange_markers_gpsInput: (newValue: boolean) => void,
   onFilterChange_markers_compassMeasurement: (newValue: boolean) => void,
 }) => {
+
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], [])
 
   return props.show ? (
     <View
@@ -37,7 +42,7 @@ export const MarkerFilter = memo((props: {
           paddingLeft: 10,
         }}
       >
-        <Text h2>{'Filter'}</Text>
+        <Text h2>{R['Filter']}</Text>
         <CloseButton
           onPress={props.onClose}
         />
@@ -51,22 +56,22 @@ export const MarkerFilter = memo((props: {
         }}
       >
         <FilterOption
-          label="Project Info Markers"
+          label={R['Project Info']}
           value={props.filter.projectInfo}
           onChange={props.onFilterChange_marker_projectInfo}
         />
         <FilterOption
-          label="Sample Info Markers"
+          label={R['Sample Info']}
           value={props.filter.sampleInfo}
           onChange={props.onFilterChange_markers_sampleInfo}
         />
         <FilterOption
-          label="GPS Input Markers"
+          label={R['GPS']}
           value={props.filter.gpsInput}
           onChange={props.onFilterChange_markers_gpsInput}
         />
         <FilterOption
-          label="Compass Measurement Markers"
+          label={R['Compass Measurements']}
           value={props.filter.compassMeasurement}
           onChange={props.onFilterChange_markers_compassMeasurement}
         />
