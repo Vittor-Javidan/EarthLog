@@ -1,15 +1,19 @@
-import { memo, useCallback } from "react"
+import { memo, useCallback, useMemo } from "react"
 import { Marker, MarkerPressEvent } from "react-native-maps";
 
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
+import { translations } from "@V1/Translations/index";
 import { CompassMeasurementDTO } from "@V1/Types/ProjectTypes";
+import { ConfigService } from "@V1/Services/ConfigService";
 
 export const DynamicMeasureMarker = memo((props: {
   openMeasurement: CompassMeasurementDTO
 }) => {
 
   const { markerIcon, heading, label, dip, id, coordinates } = props.openMeasurement;
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
 
   if (coordinates === undefined) {
     return <></>;
@@ -25,10 +29,10 @@ export const DynamicMeasureMarker = memo((props: {
   return (
     <Marker
       key={id}
-      title={label}
+      title={label === '' ? R['No label'] : label}
       coordinate={{ latitude, longitude }} 
       rotation={heading}
-      description={`Heading: ${heading}° / Dip: ${dip}°`}
+      description={R['Heading: ${heading}° / Dip: ${dip}°'](heading, dip)}
       onPress={onPress}
       image={{
         uri: AssetManager.getMarkerImage(markerIcon),
