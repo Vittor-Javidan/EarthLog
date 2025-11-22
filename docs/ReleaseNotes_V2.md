@@ -1,3 +1,9 @@
+# ✅ 2.5.8
+- Critical Fix:
+  - Map markers crashing the app when coordinates are add for the first time.
+  - Map markers crashing the app when deleting their existing coordinates.
+
+
 # ✅ 2.5.7
 - New:
   - Widgets are now called Forms on the UI
