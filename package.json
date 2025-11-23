@@ -5,7 +5,7 @@
     "tsc": "tsc --noemit",
     "dev": "expo start -c",
     "go": "expo start --go -c",
-    "prebuild": "expo prebuild",
+    "prebuild": "expo prebuild --clean --no-install",
     "build:apk": "eas build --platform android --local",
     "build:aab": "eas build --profile production-playstore --platform android --local",
     "build:dev": "eas build --profile development --platform android --local",
