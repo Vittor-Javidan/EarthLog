@@ -3,7 +3,7 @@ import { Circle, Marker, MarkerPressEvent } from "react-native-maps"
 
 import DevTools from "@DevTools"
 import { AssetManager } from "@AssetManager"
-import { MapScope } from "@V1/Types/AppTypes"
+import { MapMarkerFilter, MapScope } from "@V1/Types/AppTypes"
 import { CompassMeasurementDTO, ProjectDTO, ProjectSettings } from "@V1/Types/ProjectTypes"
 import { Markers_Sample } from "./Sample"
 import { Markers_Widget } from "./Widget"
@@ -12,15 +12,12 @@ export const Markers_Project = memo((props: {
   projectDTO: ProjectDTO
   scope: MapScope
   openMeasurement: CompassMeasurementDTO | null
-  showMarker_ProjectInfo: boolean
-  showMarkers_SampleInfo: boolean
-  showMarkers_GPSInput: boolean
-  showMarkers_CompassMeasurement: boolean
+  filter: MapMarkerFilter
 }) => {
   const { projectDTO } = props
   return (<>
     <Marker_ProjectSettings
-      show={props.showMarker_ProjectInfo}
+      show={props.filter.projectInfo}
       projectSettings={props.projectDTO.projectSettings}
     />
     {projectDTO.projectWidgets.map((widget) => (
@@ -28,8 +25,7 @@ export const Markers_Project = memo((props: {
         key={widget.id_widget}
         widgetData={widget}
         openMeasurement={props.openMeasurement}
-        showMarkers_GPSInput={props.showMarkers_GPSInput}
-        showMarkers_CompassMeasurement={props.showMarkers_CompassMeasurement}
+        filter={props.filter}
       />
     ))}
     {props.projectDTO.samples.map((sample) => (
@@ -37,9 +33,7 @@ export const Markers_Project = memo((props: {
         key={sample.sampleSettings.id_sample}
         sampleDTO={sample}
         openMeasurement={props.openMeasurement}
-        showMarkers_SampleInfo={props.showMarkers_SampleInfo}
-        showMarkers_GPSInput={props.showMarkers_GPSInput}
-        showMarkers_CompassMeasurement={props.showMarkers_CompassMeasurement}
+        filter={props.filter}
       />
     ))}
   </>)

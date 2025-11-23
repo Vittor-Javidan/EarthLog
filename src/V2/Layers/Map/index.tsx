@@ -358,11 +358,8 @@ export const Layer_Map = memo(() => {
           <MarkersDisplay
             scope={scope}
             showMap={show.map}
-            showMarker_ProjectInfo={markerFilter.projectInfo}
-            showMarkers_SampleInfo={markerFilter.sampleInfo}
-            showMarkers_GPSInput={markerFilter.gpsInput}
-            showMarkers_CompassMeasurement={markerFilter.compassMeasurement}
             openMeasurement={openMeasurement}
+            filter={markerFilter}
           />
         )}
       </Map>
