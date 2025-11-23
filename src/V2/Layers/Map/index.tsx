@@ -14,7 +14,6 @@ import { useFirstPosition, useFollowUserLocation, useOpenMeasurementLocation } f
 
 import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
-import { MapLabel } from "./MapLabel";
 import { Markers } from "./Markers";
 import { MarkersDisplay } from "./MarkersDisplay";
 import { MarkerFilter } from "./Filter";
@@ -294,6 +293,7 @@ export const Layer_Map = memo(() => {
       {/* UIs */}
       <UI.PinMeasurement
         show={show.pinUI_Measurement}
+        scope={scope}
         followUser={followUser}
         showCurrentPositionIndicator={mapRef === null || show.indicator}
         onReset={resetMeasurementCoordinates}
@@ -304,6 +304,7 @@ export const Layer_Map = memo(() => {
       />
       <UI.Default
         show={show.defaultUI}
+        scope={scope}
         followUser={followUser}
         showCurrentPositionIndicator={mapRef === null || show.indicator}
         onFilterPress={onFilterPress}
@@ -311,7 +312,6 @@ export const Layer_Map = memo(() => {
       />
 
       {/* Base Map Components */}
-      <MapLabel scope={scope} />
       <MarkerFilter
         filter={markerFilter}
         onClose={onFilterClose}

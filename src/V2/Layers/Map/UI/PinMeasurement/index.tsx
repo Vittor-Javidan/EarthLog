@@ -2,11 +2,13 @@ import { memo } from "react";
 import { View } from "react-native";
 
 import { Z_INDEX } from "@V2/Globals/zIndex";
+import { MapScope } from "@V2/Types/AppTypes";
 import { LC } from "../../__LC__";
 import { MapButton } from "../../Buttons";
 
 export const MeasurementPinUI = memo((props: {
   show: boolean;
+  scope: MapScope
   followUser: boolean;
   showCurrentPositionIndicator: boolean;
   onReset: () => void;
@@ -19,6 +21,7 @@ export const MeasurementPinUI = memo((props: {
   const { show } = props;
 
   return show ? (<>
+    <LC.MapLabel scope={props.scope} />
     <LC.MapCrosshair
       show={show}
     />
