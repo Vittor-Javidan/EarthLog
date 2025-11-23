@@ -3,7 +3,7 @@ import { Circle, Marker, MarkerPressEvent } from "react-native-maps"
 
 import DevTools from "@DevTools"
 import { AssetManager } from "@AssetManager"
-import { MapMarkerFilter, MapScope } from "@V1/Types/AppTypes"
+import { MapFilter, MapScope } from "@V1/Types/AppTypes"
 import { CompassMeasurementDTO, ProjectDTO, ProjectSettings } from "@V1/Types/ProjectTypes"
 import { Markers_Sample } from "./Sample"
 import { Markers_Widget } from "./Widget"
@@ -12,7 +12,7 @@ export const Markers_Project = memo((props: {
   projectDTO: ProjectDTO
   scope: MapScope
   openMeasurement: CompassMeasurementDTO | null
-  filter: MapMarkerFilter
+  filter: MapFilter
 }) => {
   const { projectDTO } = props
   return (<>

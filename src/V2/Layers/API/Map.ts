@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { SubscriptionManager } from "@SubscriptionManager";
-import { MapMarkerFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
+import { MapFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
 import { ControllerAPI } from "@V2/Scopes/API/Controller";
 import { CompassMeasurementDTO, CoordinateDTO } from "@V2/Types/ProjectTypes";
 
@@ -29,7 +29,7 @@ export class MapAPI {
   /* Setters from Map Layer */
   static scopeSetter:                 Dispatch<SetStateAction<MapScope>> | null                     = null;
   static tutorialModeSetter:          Dispatch<SetStateAction<boolean>> | null                      = null;
-  static markerFilterSetter:          Dispatch<SetStateAction<MapMarkerFilter>> | null              = null;
+  static filterSetter:                Dispatch<SetStateAction<MapFilter>> | null              = null;
   static showSetter:                  Dispatch<SetStateAction<MapShowSetter>> | null                = null;
   static backupCoordinateSetter:      Dispatch<SetStateAction<CoordinateDTO | undefined>> | null    = null;
   static openMeasurementSetter:       Dispatch<SetStateAction<CompassMeasurementDTO | null>> | null = null;
@@ -89,12 +89,12 @@ export class MapAPI {
   static showPinUI_Measurement(show: boolean) {
     if (
       SubscriptionManager.getStatus().isMapEnabled &&
-      this.markerFilterSetter &&
+      this.filterSetter &&
       this.showSetter &&
       this.didMeasurementChangedSetter
     ) {
       this.didMeasurementChangedSetter(false);
-      this.markerFilterSetter(prev => ({ ...prev,
+      this.filterSetter(prev => ({ ...prev,
         projectInfo: true,
         sampleInfo: true,
         gpsInput: true,

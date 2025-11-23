@@ -4,7 +4,7 @@ import MapView, { Region } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools, { useMapTutorial_LastKnownLocation } from "@DevTools";
-import { MapMarkerFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
+import { MapFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
 import { CompassMeasurementDTO, CoordinateDTO } from "@V2/Types/ProjectTypes";
 import { ConfigService } from "@V2/Services/ConfigService";
 import { useTutorialLayer } from "../API/Tutorial";
@@ -16,7 +16,6 @@ import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
 import { Markers } from "./Markers";
 import { MarkersDisplay } from "./MarkersDisplay";
-import { MarkerFilter } from "./Filter";
 import { UI } from "./UI";
 
 export const Layer_Map = memo(() => {
@@ -30,7 +29,7 @@ export const Layer_Map = memo(() => {
   const [goToCoordinate   , setGoToCoordinate   ] = useState<CoordinateDTO | undefined>(undefined);
   const [centerRegion     , setCenterRegion     ] = useState<Region | null>(null);
   const [tutorialMode     , setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
-  const [markerFilter     , setMarkerFilter     ] = useState<MapMarkerFilter>({
+  const [filter           , setFilter           ] = useState<MapFilter>({
     projectInfo: true,
     sampleInfo: true,
     gpsInput: true,
@@ -42,11 +41,10 @@ export const Layer_Map = memo(() => {
     tutorial: ConfigService.config.tutorial_map,
     pinUI_Measurement: false,
     defaultUI: true,
-    filter: false,
   })
   MapAPI.scopeSetter        = setScope;
   MapAPI.tutorialModeSetter = setTutorialMode;
-  MapAPI.markerFilterSetter = setMarkerFilter;
+  MapAPI.filterSetter       = setFilter;
   MapAPI.showSetter         = setShow;
 
   // Measurement States
@@ -146,11 +144,6 @@ export const Layer_Map = memo(() => {
     setCenterRegion(newRegion);
   }, [tutorialMode]);
 
-  const onFilterPress = useCallback(() => {
-    console.log("Filter Pressed")
-    setShow(prev => ({ ...prev, filter: true }));
-  }, [])
-
   const followUserLocation = useCallback(() => {
     if (!followUser) {
       setShow(prev => ({ ...prev, indicator: true }));
@@ -167,26 +160,6 @@ export const Layer_Map = memo(() => {
       updateMeasurementCoordinates();
     }
   }, [updateMeasurementCoordinates])
-
-  const onFilterChange_marker_projectInfo = useCallback((newValue: boolean) => {
-    setMarkerFilter(prev => ({ ...prev, projectInfo: newValue }));
-  }, []);
-
-  const onFilterChange_markers_sampleInfo = useCallback((newValue: boolean) => {
-    setMarkerFilter(prev => ({ ...prev, sampleInfo: newValue }));
-  }, []);
-
-  const onFilterChange_markers_gpsInput = useCallback((newValue: boolean) => {
-    setMarkerFilter(prev => ({ ...prev, gpsInput: newValue }));
-  }, []);
-
-  const onFilterChange_markers_compassMeasurement = useCallback((newValue: boolean) => {
-    setMarkerFilter(prev => ({ ...prev, compassMeasurement: newValue }));
-  }, []);
-
-  const onFilterClose = useCallback(() => {
-    setShow(prev => ({ ...prev, filter: false }));
-  }, []);
 
   useEffect(() => {
     if (// detects changes in goToCoordinate to move the map camera
@@ -305,22 +278,14 @@ export const Layer_Map = memo(() => {
       <UI.Default
         show={show.defaultUI}
         scope={scope}
+        filter={filter}
         followUser={followUser}
         showCurrentPositionIndicator={mapRef === null || show.indicator}
-        onFilterPress={onFilterPress}
         onCurrentPosition={followUserLocation}
+        onFilterChange={setFilter}
       />
 
       {/* Base Map Components */}
-      <MarkerFilter
-        filter={markerFilter}
-        onClose={onFilterClose}
-        show={show.filter}
-        onFilterChange_marker_projectInfo={onFilterChange_marker_projectInfo}
-        onFilterChange_markers_sampleInfo={onFilterChange_markers_sampleInfo}
-        onFilterChange_markers_gpsInput={onFilterChange_markers_gpsInput}
-        onFilterChange_markers_compassMeasurement={onFilterChange_markers_compassMeasurement}
-      />
       <Map
         loadMap={isMapNeverOpen === false}
         followUser={followUser}
@@ -359,11 +324,10 @@ export const Layer_Map = memo(() => {
             scope={scope}
             showMap={show.map}
             openMeasurement={openMeasurement}
-            filter={markerFilter}
+            filter={filter}
           />
         )}
       </Map>
-
     </MapAnimation>
   </>);
 })

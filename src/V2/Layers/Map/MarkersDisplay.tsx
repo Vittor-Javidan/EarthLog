@@ -1,6 +1,6 @@
 import { memo, useState } from "react";
 
-import { MapMarkerFilter, MapScope, NavigationMapScope } from "@V2/Types/AppTypes";
+import { MapFilter, MapScope, NavigationMapScope } from "@V2/Types/AppTypes";
 import { CompassMeasurementDTO, ProjectDTO } from "@V2/Types/ProjectTypes";
 import { useBuildProject } from "./Hooks";
 import { Markers } from "./Markers";
@@ -9,7 +9,7 @@ export const MarkersDisplay = memo((props: {
   scope: Exclude<MapScope, NavigationMapScope>
   showMap: boolean
   openMeasurement: CompassMeasurementDTO | null
-  filter: MapMarkerFilter
+  filter: MapFilter
 }) => {
 
   const [projectDTO, setProjectDTO] = useState<ProjectDTO | null>(null);

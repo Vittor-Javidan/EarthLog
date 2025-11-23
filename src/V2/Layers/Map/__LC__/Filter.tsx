@@ -1,9 +1,8 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 
-import { Z_INDEX } from "@V2/Globals/zIndex";
 import { translations } from "@V2/Translations/index";
-import { MapMarkerFilter } from "@V2/Types/AppTypes";
+import { MapFilter } from "@V2/Types/AppTypes";
 import { HapticsService } from "@V2/Services/HapticsService";
 import { ConfigService } from "@V2/Services/ConfigService";
 
@@ -11,28 +10,34 @@ import { Icon } from "@V2/Icon/index";
 import { Button } from "@V2/Button/index";
 import { Text } from "@V2/Text/index";
 
-export const MarkerFilter = memo((props: {
+export const Filter = memo((props: {
   show: boolean,
-  filter: MapMarkerFilter,
+  filter: MapFilter,
+  style?: ViewStyle
   onClose: () => void,
-  onFilterChange_marker_projectInfo: (newValue: boolean) => void,
-  onFilterChange_markers_sampleInfo: (newValue: boolean) => void,
-  onFilterChange_markers_gpsInput: (newValue: boolean) => void,
-  onFilterChange_markers_compassMeasurement: (newValue: boolean) => void,
+  onFilterChange: (filter: MapFilter) => void;
 }) => {
 
   const config = useMemo(() => ConfigService.config, []);
   const R      = useMemo(() => translations.layers.map[config.language], [])
 
+  const onFilterChange = useCallback((options: 'projectInfo' | 'sampleInfo' | 'gpsInput' | 'compassMeasurement') => {
+    const newFilter = { ...props.filter };
+    switch (options) {
+      case 'projectInfo':        newFilter.projectInfo        = !newFilter.projectInfo; break;
+      case 'sampleInfo':         newFilter.sampleInfo         = !newFilter.sampleInfo; break;
+      case 'gpsInput':           newFilter.gpsInput           = !newFilter.gpsInput; break;
+      case 'compassMeasurement': newFilter.compassMeasurement = !newFilter.compassMeasurement; break;
+    }
+    props.onFilterChange(newFilter);
+  }, [props.filter, props.onFilterChange]);
+
   return props.show ? (
     <View
-      style={{
-        position: 'absolute',
-        zIndex: Z_INDEX.LAYER_MAP + 1,
-        alignSelf: 'center',
+      style={[{
         backgroundColor: '#fff',
         borderRadius: 10,
-      }}
+      }, props.style]}
     >
       <View
         style={{
@@ -58,22 +63,22 @@ export const MarkerFilter = memo((props: {
         <FilterOption
           label={R['Project Info']}
           value={props.filter.projectInfo}
-          onChange={props.onFilterChange_marker_projectInfo}
+          onChange={() => onFilterChange('projectInfo')}
         />
         <FilterOption
           label={R['Sample Info']}
           value={props.filter.sampleInfo}
-          onChange={props.onFilterChange_markers_sampleInfo}
+          onChange={() => onFilterChange('sampleInfo')}
         />
         <FilterOption
           label={R['GPS']}
           value={props.filter.gpsInput}
-          onChange={props.onFilterChange_markers_gpsInput}
+          onChange={() => onFilterChange('gpsInput')}
         />
         <FilterOption
           label={R['Compass Measurements']}
           value={props.filter.compassMeasurement}
-          onChange={props.onFilterChange_markers_compassMeasurement}
+          onChange={() => onFilterChange('compassMeasurement')}
         />
       </View>
     </View>

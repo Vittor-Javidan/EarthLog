@@ -214,10 +214,9 @@ export type MapShowSetter = {
   tutorial: boolean;
   pinUI_Measurement: boolean;
   defaultUI: boolean;
-  filter: boolean;
 }
 
-export type MapMarkerFilter = {
+export type MapFilter = {
   projectInfo: boolean,
   sampleInfo: boolean,
   gpsInput: boolean,

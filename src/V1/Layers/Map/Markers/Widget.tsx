@@ -4,14 +4,14 @@ import { Circle, Marker, MarkerPressEvent } from "react-native-maps";
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V1/Translations/index";
-import { MapMarkerFilter } from "@V1/Types/AppTypes";
+import { MapFilter } from "@V1/Types/AppTypes";
 import { CompassInputData, CompassMeasurementDTO, GPSInputData, WidgetData } from "@V1/Types/ProjectTypes";
 import { ConfigService } from "@V1/Services/ConfigService";
 
 export const Markers_Widget = memo((props: {
   widgetData: WidgetData
   openMeasurement: CompassMeasurementDTO | null
-  filter: MapMarkerFilter
+  filter: MapFilter
 }) => {
   return (<>
     {props.widgetData.inputs.map((input) => {
