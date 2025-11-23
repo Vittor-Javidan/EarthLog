@@ -1,3 +1,6 @@
+# ✅ 2.5.9
+
+
 # ✅ 2.5.8
 - Critical Fix:
   - Map markers crashing the app when coordinates are add for the first time.
