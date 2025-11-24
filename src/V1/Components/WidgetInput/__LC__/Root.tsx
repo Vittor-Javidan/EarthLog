@@ -1,7 +1,11 @@
 import React, { ReactNode, useState, memo, useCallback, useMemo, useEffect } from 'react';
 import { LayoutChangeEvent, StyleProp, TextInput, View, ViewStyle } from 'react-native';
 
-import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  WidgetRules,
+  WidgetTheme
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { FontService } from '@V1/Services_Core/FontService';
 import { HapticsService } from '@V1/Services/HapticsService';

@@ -1,7 +1,11 @@
 import { Directory, File } from 'expo-file-system';
 import { Zip, ZipDeflate } from 'fflate';
+
+import {
+  LanguageTag
+} from '@V1/Types';
+
 import { sleep } from '@V1/Globals/Sleep';
-import { LanguageTag } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 
 /**

@@ -1,8 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  SelectionInputData
+} from '@V1/Types';
 
-import { ConfigDTO } from '@V1/Types/AppTypes';
-import { SelectionInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
+import { Docx } from '../Docx';
 
 export function InputDocument_Selection(o: {
   config: ConfigDTO

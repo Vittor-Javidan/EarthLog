@@ -1,10 +1,12 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';
 

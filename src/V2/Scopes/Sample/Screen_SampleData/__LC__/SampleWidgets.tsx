@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, WidgetData } from '@V2/Types/ProjectTypes';
+import {
+  GPS_DTO,
+  WidgetData
+} from '@V2/Types';
 
 import { Widget } from '@V2/Widget/index';
 

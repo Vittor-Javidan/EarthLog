@@ -1,7 +1,11 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Dimensions } from 'react-native';
 
-import { ProjectSettings, WidgetData } from '@V1/Types/ProjectTypes';
+import {
+  ProjectSettings,
+  WidgetData
+} from '@V1/Types';
+
 import { ProjectService } from '@V1/Services/ProjectService';
 import { CacheService } from '@V1/Services/CacheService';
 import { MediaService } from '@V1/Services/MediaService';

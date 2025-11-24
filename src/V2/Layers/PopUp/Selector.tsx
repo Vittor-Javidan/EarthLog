@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 
-import { ModalConfig } from '@V2/Types/AppTypes';
+import {
+  ModalConfig
+} from '@V2/Types';
 
 import { Warning } from './PopUp/Warning';
 import { ExitApp } from './PopUp/ExitApp';

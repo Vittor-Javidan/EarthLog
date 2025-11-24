@@ -1,5 +1,11 @@
 import uuid from 'react-native-uuid';
-import { InputData, ProjectDTO, SampleDTO, WidgetData } from '@V1/Types/ProjectTypes';
+
+import {
+  InputData,
+  ProjectDTO,
+  SampleDTO,
+  WidgetData
+} from '@V1/Types';
 
 export class IDService {
 

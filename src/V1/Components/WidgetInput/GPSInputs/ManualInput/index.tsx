@@ -1,11 +1,15 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { GPSFeaturesDTO, GPS_DTO, WidgetTheme } from '@V1/Types/ProjectTypes';
-import { translations } from '@V1/Translations/index';
-import { PopUpAPI } from '@V1/Layers/API/PopUp';
-import { ConfigService } from '@V1/Services/ConfigService';
+import {
+  GPSFeaturesDTO,
+  GPS_DTO,
+  WidgetTheme
+} from '@V1/Types';
 
+import { translations } from '@V1/Translations/index';
+import { ConfigService } from '@V1/Services/ConfigService';
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { ManualInputButton } from './ManualInputButton';
 import { InputsDisplay } from './InputsDisplay';
 

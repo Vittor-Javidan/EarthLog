@@ -2,8 +2,11 @@ import React, { useState, useMemo, useEffect, useCallback, memo } from 'react';
 import { BackHandler } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
+import {
+  Loading
+} from '@V2/Types';
+
 import { Scope } from '@V2/Globals/NavigationControler';
-import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
 import { CredentialService } from '@V2/Services/CredentialService';

@@ -1,4 +1,7 @@
-import { CredentialDTO } from '@V1/Types/AppTypes';
+import {
+  CredentialDTO
+} from '@V1/Types';
+
 import { IDService } from '@V1/Services_Core/IDService';
 import { FOLDER_Credentials } from '@V1/Services_Files/AppFolders';
 

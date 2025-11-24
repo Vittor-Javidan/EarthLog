@@ -1,8 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  GPSInputData
+} from '@V2/Types';
 
-import { ConfigDTO } from '@V2/Types/AppTypes';
-import { GPSInputData } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
+import { Docx } from '../Docx';
 
 export function InputDocument_GPS(o: {
   config: ConfigDTO

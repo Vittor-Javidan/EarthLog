@@ -1,11 +1,18 @@
 import { memo, useCallback } from "react";
 import { Circle, Marker, MarkerPressEvent } from "react-native-maps";
 
+import {
+  CompassInputData,
+  CompassMeasurementDTO,
+  GPSInputData,
+  OpenEntity,
+  MapFilter,
+  WidgetData
+} from "@V1/Types";
+
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V1/Translations/index";
-import { MapFilter, OpenEntity } from "@V1/Types/AppTypes";
-import { CompassInputData, CompassMeasurementDTO, GPSInputData, WidgetData } from "@V1/Types/ProjectTypes";
 import { ConfigService } from "@V1/Services/ConfigService";
 
 export const Markers_Widget = memo((props: {

@@ -1,9 +1,13 @@
 import React, { memo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import DevTools from "@DevTools";
-import { GPSFeaturesDTO, GPSInputData, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  GPSFeaturesDTO,
+  GPSInputData,
+  WidgetTheme
+} from '@V2/Types';
 
+import DevTools from "@DevTools";
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 

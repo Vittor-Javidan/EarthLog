@@ -1,9 +1,11 @@
 import React, { useState, memo, useCallback } from 'react';
 import { View, TextInput } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
-import { FontService } from '@V2/Services_Core/FontService';
+import {
+  WidgetTheme
+} from '@V2/Types';
 
+import { FontService } from '@V2/Services_Core/FontService';
 import { Text } from '@V2/Text/index';
 
 export const TextInput_GPS = memo((props: {
@@ -15,8 +17,8 @@ export const TextInput_GPS = memo((props: {
   onChangeText: (value: string) => void
 }) => {
 
-  const [value,         setValue        ] = useState<string>(props.value);
-  const [invalidValue,  setInvalidValue ] = useState<boolean>(false);
+  const [value,        setValue       ] = useState<string>(props.value);
+  const [invalidValue, setInvalidValue] = useState<boolean>(false);
 
   const onChange = useCallback((text: string) => {
 

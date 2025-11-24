@@ -1,8 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
+import {
+  WidgetData
+} from '@V2/Types';
+
 import { deepCopy } from '@V2/Globals/DeepCopy';
-import { WidgetData } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { HapticsService } from '@V2/Services/HapticsService';

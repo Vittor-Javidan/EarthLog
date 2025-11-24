@@ -1,6 +1,12 @@
+import {
+  ProjectSettings,
+  SampleSettings,
+  SyncData,
+  WidgetData
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { LTS_VERSION } from '@V1/Globals/Version';
-import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V1/Types/ProjectTypes';
 import { LocalStorageService } from '@V1/Services_Core/LocalStorageService';
 import { DatabaseService } from './DatabaseService';
 

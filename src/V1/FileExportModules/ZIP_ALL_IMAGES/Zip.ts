@@ -1,7 +1,10 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
+import {
+  LanguageTag
+} from '@V1/Types';
+
 import { path } from "@V1/Globals/Path";
-import { LanguageTag } from '@V1/Types/AppTypes';
 import { FileSystemService } from "@V1/Services_Core/FileSystemService";
 import { ZipService } from '../Core/Zip';
 

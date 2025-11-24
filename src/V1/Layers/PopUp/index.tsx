@@ -2,9 +2,11 @@ import React, { useState, memo } from 'react';
 import { View, Modal as ReactNative_Modal, Dimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { ModalConfig } from '@V1/Types/AppTypes';
-import { PopUpAPI } from '@V1/Layers/API/PopUp';
+import {
+  ModalConfig
+} from '@V1/Types';
 
+import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { PopUpSelector } from './Selector';
 
 const {width: WIDTH, height: HEIGHT} = Dimensions.get('screen');

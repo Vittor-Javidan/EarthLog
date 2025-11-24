@@ -1,4 +1,7 @@
-import { ConfigDTO, ImageQuality } from '@V2/Types/AppTypes';
+import {
+  ConfigDTO,
+  ImageQuality
+} from '@V2/Types';
 
 import { translations } from '@V2/Translations/index';
 import { ShareService } from '@V2/Services_Core/ShareService';

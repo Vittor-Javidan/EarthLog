@@ -1,10 +1,13 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Dimensions } from 'react-native';
 
-import { ProjectRules, WidgetData } from '@V2/Types/ProjectTypes';
+import {
+  ProjectRules,
+  WidgetData
+} from '@V2/Types';
+
 import { ProjectService } from '@V2/Services/ProjectService';
 import { CacheService } from '@V2/Services/CacheService';
-
 import { Layout } from '@V2/Layout/index';
 import { Widget } from '@V2/Widget/index';
 import { TC } from './__TC__';

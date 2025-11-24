@@ -1,6 +1,13 @@
+import {
+  ConfigDTO,
+  CredentialDTO,
+  ProjectSettings,
+  SampleSettings,
+  SyncData,
+  WidgetData
+} from '@V2/Types';
+
 import { path } from '@V2/Globals/Path'
-import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
-import { ProjectSettings, SampleSettings, SyncData, WidgetData } from '@V2/Types/ProjectTypes';
 import { FileSystemService } from '@V2/Services_Core/FileSystemService';
 
 export class FOLDER_App {

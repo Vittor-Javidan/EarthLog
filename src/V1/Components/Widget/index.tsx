@@ -1,9 +1,17 @@
 import React, { useMemo, useState, memo, useCallback, useTransition } from 'react';
 import { View } from 'react-native';
 
+import {
+  GPS_DTO,
+  InputData,
+  ThemeNames_Widgets,
+  WidgetData,
+  WidgetDisplay,
+  WidgetScope,
+  WidgetTheme
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
-import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
-import { GPS_DTO, InputData, WidgetData, WidgetDisplay, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';

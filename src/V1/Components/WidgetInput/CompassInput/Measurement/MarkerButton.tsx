@@ -1,10 +1,12 @@
 import React, { memo, useCallback, useState } from "react";
 import { Image, Pressable } from "react-native";
 
-import { AssetManager, MarkerAssets } from "@AssetManager";
-import { WidgetTheme } from "@V1/Types/ProjectTypes";
-import { HapticsService } from "@V2/Services/HapticsService";
+import {
+  WidgetTheme
+} from "@V1/Types";
 
+import { AssetManager, MarkerAssets } from "@AssetManager";
+import { HapticsService } from "@V2/Services/HapticsService";
 import { useMap_MarkerSelectionLayer } from "@V1/Layers/API/Map_MarkerSelection";
 
 export const MarkerButton = memo((props: {

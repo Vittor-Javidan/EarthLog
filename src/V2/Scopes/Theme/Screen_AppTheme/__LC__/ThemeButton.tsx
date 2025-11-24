@@ -1,6 +1,9 @@
 import React, { memo, useMemo } from 'react';
 
-import { ThemeNames_APP } from '@V2/Types/AppTypes';
+import {
+  ThemeNames_APP
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';

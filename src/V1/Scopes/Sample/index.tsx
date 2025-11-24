@@ -1,9 +1,12 @@
 import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 
+import {
+  Loading,
+  GPS_DTO
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
 import { Scope } from '@V1/Globals/NavigationControler';
-import { Loading } from '@V1/Types/AppTypes';
-import { GPS_DTO } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { CacheService } from '@V1/Services/CacheService';

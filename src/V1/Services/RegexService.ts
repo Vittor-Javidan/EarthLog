@@ -1,4 +1,6 @@
-import { RegexRules } from '@V1/Types/AppTypes';
+import {
+  RegexRules
+} from '@V1/Types';
 
 export class RegexService {
 

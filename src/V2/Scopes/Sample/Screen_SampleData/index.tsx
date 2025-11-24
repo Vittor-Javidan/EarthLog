@@ -1,7 +1,11 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Dimensions } from 'react-native';
 
-import { GPS_DTO, WidgetData } from '@V2/Types/ProjectTypes';
+import {
+  GPS_DTO,
+  WidgetData
+} from '@V2/Types';
+
 import { ProjectService } from '@V2/Services/ProjectService';
 import { MediaService } from '@V2/Services/MediaService';
 import { CacheService } from '@V2/Services/CacheService';

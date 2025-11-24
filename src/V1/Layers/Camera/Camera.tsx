@@ -4,7 +4,10 @@ import { CameraView, CameraCapturedPicture, CameraType, FlashMode } from 'expo-c
 import { Orientation, lockAsync, OrientationLock, addOrientationChangeListener, getOrientationAsync } from 'expo-screen-orientation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { CameraPictureMode } from '@V1/Types/AppTypes';
+import {
+  CameraPictureMode
+} from '@V1/Types';
+
 import { CameraLayerAPI } from '@V1/Layers/API/Camera';
 import { useCameraPreviewLayer } from '@V1/Layers/API/CameraPreview';
 import { IDService } from '@V1/Services_Core/IDService';

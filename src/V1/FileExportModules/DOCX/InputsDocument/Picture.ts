@@ -1,8 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  PictureInputData
+} from '@V1/Types';
 
-import { ConfigDTO } from '@V1/Types/AppTypes';
-import { PictureInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
+import { Docx } from '../Docx';
 
 export async function InputDocument_Picture(o: {
   config: ConfigDTO

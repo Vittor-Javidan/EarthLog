@@ -1,8 +1,12 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
+import {
+  LanguageTag,
+  languageTags
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
-import { LanguageTag, languageTags } from '@V1/Types/AppTypes';
 import { ConfigService } from '@V1/Services/ConfigService';
 
 import { Animation } from '@V1/Animation/index';

@@ -1,11 +1,14 @@
 import React, { useMemo, memo } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
-import { GPSFeaturesDTO, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  GPSFeaturesDTO,
+  WidgetTheme
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { FontService } from '@V1/Services_Core/FontService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Text } from '@V1/Text/index';
 
 export const LoadingFeedback = memo((props: {

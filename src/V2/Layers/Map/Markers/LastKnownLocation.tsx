@@ -2,9 +2,12 @@ import { memo } from "react";
 import { View } from "react-native";
 import { Circle, Marker } from "react-native-maps";
 
+import {
+  CoordinateDTO
+} from "@V2/Types";
+
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V2/Translations/index";
-import { CoordinateDTO } from "@V2/Types/ProjectTypes";
 import { ConfigService } from "@V2/Services/ConfigService";
 
 export const Marker_LastKnownLocation = memo((props: {

@@ -1,8 +1,13 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import { View } from 'react-native';
 
+import {
+  GPSInputData,
+  ProjectSettings,
+  StringInputData
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
-import { GPSInputData, ProjectSettings, StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { useTimeout } from '@V1/Hooks/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
@@ -21,10 +26,12 @@ export const ProjectSettingsWidget = memo((props: {
   onSampleAliasChange_Singular: (newAliasName: string) => void
 }) => {
 
-  const config         = useMemo(() => ConfigService.config, []);
-  const theme          = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R              = useMemo(() => translations.screen.projectInfo[config.language], []);
-  const unusedProps    = useMemo(() => ({
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R      = useMemo(() => translations.screen.projectInfo[config.language], []);
+  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(deepCopy(props.projectSettings));
+  const [saved          , setSaved          ] = useState<boolean>(true);
+  const unusedProps = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,
     isLastInput:    false,
@@ -33,8 +40,6 @@ export const ProjectSettingsWidget = memo((props: {
     onInputMoveUp:  () => {},
     widgetRules:    {},
   }), []);
-  const [projectSettings, setProjectSettings] = useState<ProjectSettings>(deepCopy(props.projectSettings));
-  const [saved,           setSaved          ] = useState<boolean>(true);
 
   const onSaveName = useCallback((inputData: StringInputData) => {
     setSaved(false);

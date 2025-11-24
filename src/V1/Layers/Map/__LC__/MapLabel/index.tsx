@@ -1,5 +1,9 @@
 import { memo } from "react";
-import { MapScope } from "@V1/Types/AppTypes";
+
+import {
+  MapScope
+} from "@V1/Types";
+
 import { MapLabel_Project } from "./ProjectDisplay";
 import { MapLabel_Sample } from "./SampleDisplay";
 

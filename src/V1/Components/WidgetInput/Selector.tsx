@@ -1,6 +1,12 @@
 import React, { memo } from 'react';
 
-import { GPS_DTO, InputData, WidgetRules, WidgetScope, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  GPS_DTO,
+  InputData,
+  WidgetRules,
+  WidgetScope,
+  WidgetTheme
+} from '@V1/Types';
 
 import { StringInput } from './StringInput';
 import { BooleanInput } from './BooleanInput';

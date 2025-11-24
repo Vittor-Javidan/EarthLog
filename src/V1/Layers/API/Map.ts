@@ -1,7 +1,15 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
+
+import {
+  CompassMeasurementDTO,
+  CoordinateDTO,
+  MapFilter,
+  MapScope,
+  MapShowSetter,
+  OpenEntity
+} from "@V1/Types";
+
 import { SubscriptionManager } from "@SubscriptionManager";
-import { MapFilter, MapScope, MapShowSetter, OpenEntity } from "@V1/Types/AppTypes";
-import { CompassMeasurementDTO, CoordinateDTO } from "@V1/Types/ProjectTypes";
 import { ControllerAPI } from "@V1/Scopes/API/Controller";
 
 export function useMap_SetMarker(o: {

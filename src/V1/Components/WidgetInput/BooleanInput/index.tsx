@@ -1,8 +1,13 @@
 import React, { useState, useMemo, memo, useCallback } from 'react';
 import { View, Switch } from 'react-native';
 
+import {
+  BooleanInputData,
+  WidgetRules,
+  WidgetTheme
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
-import { BooleanInputData, WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { HapticsService } from '@V1/Services/HapticsService';
 import { ConfigService } from '@V1/Services/ConfigService';

@@ -1,6 +1,21 @@
-import { ProjectSettings, SyncData, SampleSettings, WidgetData, InputData } from '@V2/Types/ProjectTypes';
+import {
+  ProjectSettings,
+  SyncData,
+  SampleSettings,
+  WidgetData,
+  InputData
+} from '@V2/Types';
+
 import { IDService } from '@V2/Services_Core/IDService';
-import { FOLDER_Media, FOLDER_ProjectWidgets, FOLDER_Projects, FOLDER_SampleWidgets, FOLDER_Samples, FOLDER_SyncData, FOLDER_TemplateWidgets } from '@V2/Services_Files/AppFolders';
+import {
+  FOLDER_Media,
+  FOLDER_ProjectWidgets,
+  FOLDER_Projects,
+  FOLDER_SampleWidgets,
+  FOLDER_Samples,
+  FOLDER_SyncData,
+  FOLDER_TemplateWidgets
+} from '@V2/Services_Files/AppFolders';
 
 export class DatabaseService {
 

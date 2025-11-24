@@ -1,8 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { ThemeNames_Widgets, ThemeNamesArray_Widgets } from '@V2/Types/AppTypes';
+
+import {
+  ThemeNames_Widgets,
+  ThemeNamesArray_Widgets
+} from '@V2/Types';
 
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Layout } from '@V2/Layout/index';
 import { LC } from './__LC__';
 

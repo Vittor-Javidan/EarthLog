@@ -1,4 +1,6 @@
-import { AppTheme } from '@V2/Types/AppTypes';
+import {
+  AppTheme
+} from '@V2/Types';
 
 export const DARK_HIGH_CONTRAST: AppTheme = {
   layout: {

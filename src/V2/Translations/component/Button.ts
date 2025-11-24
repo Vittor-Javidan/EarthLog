@@ -1,4 +1,6 @@
-import { LanguageTag } from '@V2/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V2/Types';
 
 type TranslationDTO = Record<LanguageTag, {
   'Release to confirm': string

@@ -1,7 +1,10 @@
 import React, { useState, memo, useMemo, useCallback } from 'react';
 import { View } from 'react-native';
 
-import { ProjectSettings } from '@V2/Types/ProjectTypes';
+import {
+  ProjectSettings
+} from '@V2/Types';
+
 import { CacheService } from '@V2/Services/CacheService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
 

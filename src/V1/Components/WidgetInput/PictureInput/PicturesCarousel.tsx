@@ -2,7 +2,11 @@ import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { View, Image, LayoutRectangle, TextInput, Pressable } from 'react-native';
 import PagerView from 'react-native-pager-view';
 
-import { PictureData, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  PictureData,
+  WidgetTheme
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { FontService } from '@V1/Services_Core/FontService';
 import { MediaService } from '@V1/Services/MediaService';

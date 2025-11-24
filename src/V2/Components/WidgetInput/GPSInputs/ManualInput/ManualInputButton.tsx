@@ -1,11 +1,13 @@
 import React, { useMemo, useState, memo, useCallback } from 'react';
 import { Pressable } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 

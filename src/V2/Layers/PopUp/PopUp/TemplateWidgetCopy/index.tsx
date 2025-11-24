@@ -1,6 +1,9 @@
 import React, { memo, useCallback } from 'react';
 
-import { WidgetData } from '@V2/Types/ProjectTypes';
+import {
+  WidgetData
+} from '@V2/Types';
+
 import { IDService } from '@V2/Services_Core/IDService';
 import { ProjectService } from '@V2/Services/ProjectService';
 import { CacheService } from '@V2/Services/CacheService';

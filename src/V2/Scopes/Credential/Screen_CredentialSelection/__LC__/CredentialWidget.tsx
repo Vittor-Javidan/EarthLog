@@ -1,9 +1,12 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import {
+  CredentialDTO,
+  StringInputData
+} from '@V2/Types';
+
 import { deepCopy } from '@V2/Globals/DeepCopy';
-import { CredentialDTO } from '@V2/Types/AppTypes';
-import { StringInputData } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { useTimeout } from '@V2/Hooks/index';
 import { CredentialService } from '@V2/Services/CredentialService';
@@ -22,10 +25,13 @@ export const CredentialWidget = memo((props: {
   onCredentialDelete: () => void
 }) => {
 
-  const config                                    = useMemo(() => ConfigService.config, []);
-  const theme                                     = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
-  const R                                         = useMemo(() => translations.screen.credential[config.language], []);
-  const unusedProps                               = useMemo(() => ({
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.widgetThemes[config.widgetTheme], []);
+  const R      = useMemo(() => translations.screen.credential[config.language], []);
+  const [credential       , setCredential       ] = useState<CredentialDTO>(deepCopy(props.credential));
+  const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
+  const [saved            , setSaved            ] = useState<boolean>(true);
+  const unusedProps = useMemo(() => ({
     editWidget:     false,
     isFirstInput:   false,
     isLastInput:    false,
@@ -34,9 +40,6 @@ export const CredentialWidget = memo((props: {
     onInputMoveUp:  () => {},
     widgetRules:    {},
   }), []);
-  const [credential       , setCredential       ] = useState<CredentialDTO>(deepCopy(props.credential));
-  const [showSensitiveInfo, setShowSensitiveInfo] = useState<boolean>(false);
-  const [saved            , setSaved            ] = useState<boolean>(true);
 
   const onLabelChange = useCallback((newLabel: string) => {
     setCredential(prev => ({ ...prev, name: newLabel}));

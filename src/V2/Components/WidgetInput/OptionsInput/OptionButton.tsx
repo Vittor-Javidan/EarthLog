@@ -1,13 +1,15 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
+
+import { translations } from '@V2/Translations/index';
 import { FontService } from '@V2/Services_Core/FontService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Button } from '@V2/Button/index';
-import { translations } from '@V2/Translations/index';
 
 export const OptionButton = memo((props: {
   label: string

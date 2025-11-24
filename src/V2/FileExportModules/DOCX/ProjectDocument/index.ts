@@ -1,9 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  ProjectDTO
+} from '@V2/Types';
 
-import { ConfigDTO } from '@V2/Types/AppTypes';
-import { ProjectDTO } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
-
+import { Docx } from '../Docx';
 import { document_ProjectWidgets } from '../ProjectWidgetsDocument';
 import { document_AllSamples } from '../AllSamplesDocument';
 

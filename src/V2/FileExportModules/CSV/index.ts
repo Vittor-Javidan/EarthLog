@@ -1,4 +1,7 @@
-import { LanguageTag } from '@V2/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ShareService } from '@V2/Services_Core/ShareService';
 import { ProjectService } from '@V2/Services/ProjectService';

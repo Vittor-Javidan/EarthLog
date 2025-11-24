@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
-import { CameraLayerConfig, CameraPictureMode } from '@V1/Types/AppTypes';
-import { PictureInputData, WidgetScope } from '@V1/Types/ProjectTypes';
+
+import {
+  CameraLayerConfig,
+  CameraPictureMode,
+  PictureInputData,
+  WidgetScope
+} from '@V1/Types';
 
 /**
  * Custom hook that allows `<PictureInput />` to control `<CameraLayer />`.

@@ -1,9 +1,11 @@
 import { memo, useCallback, useState } from "react";
 import { Pressable } from "react-native";
 
-import { WidgetTheme } from "@V1/Types/ProjectTypes";
-import { HapticsService } from "@V1/Services/HapticsService";
+import {
+  WidgetTheme
+} from "@V1/Types";
 
+import { HapticsService } from "@V1/Services/HapticsService";
 import { Icon } from "@V1/Icon/index";
 
 export const SetMapMarkerPositionButton = memo((props: {

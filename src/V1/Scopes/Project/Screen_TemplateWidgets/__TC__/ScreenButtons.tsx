@@ -1,9 +1,11 @@
 import React, { memo, useMemo } from 'react';
 
-import { ProjectRules } from '@V1/Types/ProjectTypes';
+import {
+  ProjectRules
+} from '@V1/Types';
+
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Button } from '@V1/Button/index';
 import { Layout } from '@V1/Layout/index';
 
@@ -13,8 +15,8 @@ export const ScreenButtons = memo((props: {
 }) => {
 
   const { projectRules } = props
-  const config          = useMemo(() => ConfigService.config, []);
-  const theme           = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
+  const config = useMemo(() => ConfigService.config, []);
+  const theme  = useMemo(() => ThemeService.appThemes[config.appTheme].layout.screenButtons, []);
 
   return (
     <Layout.ScreenButtons

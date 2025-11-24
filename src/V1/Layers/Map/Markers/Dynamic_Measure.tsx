@@ -1,10 +1,13 @@
 import { memo, useCallback } from "react"
 import { Marker, MarkerPressEvent } from "react-native-maps";
 
+import {
+  CompassMeasurementDTO
+} from "@V1/Types";
+
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V1/Translations/index";
-import { CompassMeasurementDTO } from "@V1/Types/ProjectTypes";
 import { ConfigService } from "@V1/Services/ConfigService";
 
 export const Dynamic_Measure = memo((props: {

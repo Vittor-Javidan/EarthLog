@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
-import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { FontService } from '@V1/Services_Core/FontService';
 import { HapticsService } from '@V1/Services/HapticsService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Button } from '@V1/Button/index';
 
 export const SelectionOptionButton = memo((props: {

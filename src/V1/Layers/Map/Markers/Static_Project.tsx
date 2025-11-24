@@ -1,7 +1,12 @@
 import { memo, useEffect, useState } from "react";
 
-import { MapFilter, OpenEntity, ProjectMapScope } from "@V1/Types/AppTypes";
-import { ProjectDTO } from "@V1/Types/ProjectTypes";
+import {
+  MapFilter,
+  OpenEntity,
+  ProjectMapScope,
+  ProjectDTO
+} from "@V1/Types";
+
 import { ProjectService } from "@V1/Services/ProjectService";
 import { Markers_Project } from "./Project";
 

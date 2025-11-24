@@ -1,8 +1,13 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import {
+  OptionsInputData,
+  WidgetRules,
+  WidgetTheme
+} from '@V2/Types';
+
 import { deepCopy } from '@V2/Globals/DeepCopy';
-import { OptionsInputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { IDService } from '@V2/Services_Core/IDService';
 import { ConfigService } from '@V2/Services/ConfigService';

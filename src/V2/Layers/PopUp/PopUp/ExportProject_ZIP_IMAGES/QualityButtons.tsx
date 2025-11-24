@@ -1,12 +1,14 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
+import {
+  ImageQuality
+} from '@V2/Types';
+
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Text } from '@V2/Text/index';
 import { Button } from '@V2/Button/index';
-import { ImageQuality } from '@V2/Types/AppTypes';
 
 export const QualityButtons = memo((props: {
   selectedQuality: ImageQuality

@@ -1,5 +1,8 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { TutorialType } from "@V2/Types/AppTypes";
+
+import {
+  TutorialType
+} from "@V2/Types";
 
 export function useTutorialLayer(o: {
   config: TutorialType,

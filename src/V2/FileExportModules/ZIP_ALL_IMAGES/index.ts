@@ -1,9 +1,12 @@
-import { LanguageTag } from "@V2/Types/AppTypes"
-import { ZipImages } from "./Zip"
+import {
+  LanguageTag
+} from "@V2/Types"
+
+import { sleep } from "@V2/Globals/Sleep"
+import { translations } from "@V2/Translations/index"
 import { FileSystemService } from "@V2/Services_Core/FileSystemService"
 import { ShareService } from "@V2/Services_Core/ShareService"
-import { translations } from "@V2/Translations/index"
-import { sleep } from "@V2/Globals/Sleep"
+import { ZipImages } from "./Zip"
 
 export class ZIP_IMAGES_Module {
 

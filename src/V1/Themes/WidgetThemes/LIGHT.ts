@@ -1,4 +1,6 @@
-import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V1/Types';
 
 export const LIGHT: WidgetTheme = {
   font:             '#444',

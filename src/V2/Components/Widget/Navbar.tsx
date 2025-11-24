@@ -1,7 +1,11 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetDisplay, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetDisplay,
+  WidgetRules,
+  WidgetTheme
+} from '@V2/Types';
 
 import { IconName } from '@V2/Icon/index';
 import { NavbarIconButton } from './NavbarIconButtons';

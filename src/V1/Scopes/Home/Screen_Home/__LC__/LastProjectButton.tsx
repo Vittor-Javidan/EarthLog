@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { ProjectSettings } from '@V1/Types/ProjectTypes';
+import {
+  ProjectSettings
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { HapticsService } from '@V1/Services/HapticsService';

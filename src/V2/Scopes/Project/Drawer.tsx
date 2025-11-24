@@ -1,10 +1,12 @@
 import React, { useMemo, memo } from 'react';
 
-import { ProjectSettings } from '@V2/Types/ProjectTypes';
+import {
+  ProjectSettings
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Button } from '@V2/Button/index';
 
 export const Drawer = memo((props: {

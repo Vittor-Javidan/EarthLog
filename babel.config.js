@@ -17,11 +17,11 @@ module.exports = function (api) {
           '@VersionManager':       './src/VersionManager.ts',
           '@NetworkManager':       './src/NetworkManager.ts',
           '@DevTools':             './src/DevTools.ts',
-
+          
           // LTS VERSION 2
+          '@V2/Types':             './src/V2/Types.ts',
           '@V2/FileExportModules': './src/V2/FileExportModules',
           '@V2/Themes':            './src/V2/Themes',
-          '@V2/Types':             './src/V2/Types',
           '@V2/Globals':           './src/V2/Globals',
           '@V2/Translations':      './src/V2/Translations',
           '@V2/Services':          './src/V2/Services',
@@ -41,9 +41,9 @@ module.exports = function (api) {
           '@V2/WidgetInput':       './src/V2/Components/WidgetInput',
 
           // LTS VERSION 1
+          '@V1/Types':             './src/V1/Types.ts',
           '@V1/FileExportModules': './src/V1/FileExportModules',
           '@V1/Themes':            './src/V1/Themes',
-          '@V1/Types':             './src/V1/Types',
           '@V1/Globals':           './src/V1/Globals',
           '@V1/Translations':      './src/V1/Translations',
           '@V1/Services':          './src/V1/Services',

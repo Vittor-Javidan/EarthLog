@@ -1,8 +1,9 @@
+import {
+  ConfigDTO,
+  ProjectDTO
+} from '@V2/Types';
+
 import { Docx } from '../Docx';
-
-import { ConfigDTO } from '@V2/Types/AppTypes';
-import { ProjectDTO } from '@V2/Types/ProjectTypes';
-
 import { document_Widget } from '../widgetDocument';
 
 export async function document_ProjectWidgets(o: {

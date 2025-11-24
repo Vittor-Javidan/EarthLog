@@ -1,8 +1,10 @@
-import { Docx } from '../Docx'
- 
-import { ConfigDTO } from '@V1/Types/AppTypes';
-import { BooleanInputData } from '@V1/Types/ProjectTypes';
+import {
+  ConfigDTO,
+  BooleanInputData
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
+import { Docx } from '../Docx'
 
 export function InputDocument_Boolean(o: {
   config: ConfigDTO

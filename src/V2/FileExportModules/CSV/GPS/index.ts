@@ -1,6 +1,11 @@
+import {
+  LanguageTag,
+  GPS_DTO,
+  ProjectDTO,
+  SampleDTO,
+  WidgetData
+} from "@V2/Types";
 
-import { LanguageTag } from "@V2/Types/AppTypes";
-import { GPS_DTO, ProjectDTO, SampleDTO, WidgetData } from "@V2/Types/ProjectTypes";
 import { translations } from "@V2/Translations/index";
 import { Csv } from "../CSV";
 

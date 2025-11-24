@@ -1,8 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  StringInputData
+} from '@V1/Types';
 
-import { ConfigDTO } from '@V1/Types/AppTypes';
-import { StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
+import { Docx } from '../Docx';
 
 export function InputDocument_String(o: {
   config: ConfigDTO

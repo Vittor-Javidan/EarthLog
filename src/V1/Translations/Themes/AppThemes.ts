@@ -1,4 +1,7 @@
-import { LanguageTag, ThemeNames_APP } from '@V1/Types/AppTypes';
+import {
+  LanguageTag,
+  ThemeNames_APP
+} from '@V1/Types';
 
 type TranslationDTO = Record<LanguageTag, Record<ThemeNames_APP, string>>
 

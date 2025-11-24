@@ -1,10 +1,15 @@
 import { memo, useCallback } from "react"
 import { Circle, Marker, MarkerPressEvent } from "react-native-maps"
 
+import {
+  MapFilter,
+  OpenEntity,
+  SampleDTO,
+  SampleSettings
+} from "@V2/Types"
+
 import DevTools from "@DevTools"
 import { AssetManager } from "@AssetManager"
-import { MapFilter, OpenEntity } from "@V2/Types/AppTypes"
-import { SampleDTO, SampleSettings } from "@V2/Types/ProjectTypes"
 import { Markers_Widget } from "./Widget"
 
 export const Markers_Sample = memo((props: {

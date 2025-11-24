@@ -1,5 +1,9 @@
 import React, { memo } from 'react';
-import { WidgetData } from '@V2/Types/ProjectTypes';
+
+import {
+  WidgetData
+} from '@V2/Types';
+
 import { Widget } from '@V2/Widget/index';
 
 export const ProjectWidgets = memo((props: {

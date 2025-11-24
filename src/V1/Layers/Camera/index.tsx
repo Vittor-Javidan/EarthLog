@@ -3,11 +3,13 @@ import { Modal as ReactNative_Modal, View, ActivityIndicator } from 'react-nativ
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useCameraPermissions } from 'expo-camera';
 
-import { CameraLayerConfig } from '@V1/Types/AppTypes';
+import {
+  CameraLayerConfig
+} from '@V1/Types';
+
 import { CameraLayerAPI } from '@V1/Layers/API/Camera';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Camera } from './Camera';
 import { PermissionScreen } from './PermissionScreen';
 

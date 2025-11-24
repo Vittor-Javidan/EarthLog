@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
+import {
+  Loading
+} from '@V2/Types';
+
 import { Scope } from '@V2/Globals/NavigationControler';
-import { Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { MapAPI } from '@V2/Layers/API/Map';
@@ -15,8 +18,8 @@ export const DateAndTimeScope = memo((props: {
   onScopeChange: (scope: Scope) => void
 }) => {
 
-  const config            = useMemo(() => ConfigService.config, []);
-  const R                 = useMemo(() => translations.scope.dateAndTime[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.scope.dateAndTime[config.language], []);
   const [state     , setState     ] = useState<Loading>('Loading');
   const [showDrawer, setShowDrawer] = useState<boolean>(false);
 

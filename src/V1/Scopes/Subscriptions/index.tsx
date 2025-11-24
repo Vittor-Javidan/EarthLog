@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 
+import {
+  Loading
+} from "@V1/Types";
+
 import { useConnectStore } from "@SubscriptionManager";
-import { Loading } from "@V1/Types/AppTypes";
 import { Scope } from "@V1/Globals/NavigationControler";
 import { translations } from "@V1/Translations/index";
 import { ConfigService } from "@V1/Services/ConfigService";

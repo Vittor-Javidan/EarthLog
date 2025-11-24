@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
 
 import { Button } from '@V2/Button/index';
 

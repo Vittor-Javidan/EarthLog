@@ -1,4 +1,6 @@
-import { LanguageTag } from '@V1/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V1/Types';
 
 type TranslationDTO = Record<LanguageTag, {
   'Camera permission denied': string

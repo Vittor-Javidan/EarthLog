@@ -1,8 +1,12 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { deepCopy } from '@V2/Globals/DeepCopy';
-import { InputData, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  InputData,
+  WidgetRules,
+  WidgetTheme
+} from '@V2/Types';
 
+import { deepCopy } from '@V2/Globals/DeepCopy';
 import { LC } from '../__LC__';
 
 /**

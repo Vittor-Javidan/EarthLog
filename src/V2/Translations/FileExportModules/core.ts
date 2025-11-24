@@ -1,4 +1,6 @@
-import { LanguageTag } from '@V2/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V2/Types';
 
 type TranslationDTO = Record<LanguageTag, {
   'Adding file to zip: ${file.name}': (fileName: string) => string

@@ -1,6 +1,9 @@
 import React, { useState, useMemo, useEffect, memo, useCallback } from 'react';
 
-import { Loading } from '@V1/Types/AppTypes';
+import {
+  Loading
+} from '@V1/Types';
+
 import { Scope } from '@V1/Globals/NavigationControler';
 import { translations } from '@V1/Translations/index';
 import { useBackPress } from '@V1/Hooks/index';

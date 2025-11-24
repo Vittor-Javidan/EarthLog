@@ -1,5 +1,12 @@
-import { AppTheme, ThemeNamesArray_APP, ThemeNamesArray_Widgets, ThemeNames_APP, ThemeNames_Widgets } from '@V1/Types/AppTypes';
-import { WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  AppTheme,
+  ThemeNamesArray_APP,
+  ThemeNamesArray_Widgets,
+  ThemeNames_APP,
+  ThemeNames_Widgets,
+  WidgetTheme
+} from '@V1/Types';
+
 import { appThemes } from '@V1/Themes/AppThemes';
 import { widgetThemes } from '@V1/Themes/WidgetThemes';
 

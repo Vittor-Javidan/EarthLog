@@ -1,8 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { TimeFormat, TimeFormatsArray } from '@V1/Types/AppTypes';
-import { ConfigService } from '@V1/Services/ConfigService';
+import {
+  TimeFormat,
+  TimeFormatsArray
+} from '@V1/Types';
 
+import { ConfigService } from '@V1/Services/ConfigService';
 import { Layout } from '@V1/Layout/index';
 import { TC } from './__TC__';
 import { LC } from './__LC__';

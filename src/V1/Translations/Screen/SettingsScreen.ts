@@ -1,4 +1,6 @@
-import { LanguageTag } from '@V1/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V1/Types';
 
 export type TranslationDTO = Record<LanguageTag, {
   'Auto Sample GPS Acquisition': string

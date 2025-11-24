@@ -1,7 +1,10 @@
 import React, { memo } from 'react';
 import { View } from 'react-native';
 
-import { InputAlertMessage, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  InputAlertMessage,
+  WidgetTheme
+} from '@V1/Types';
 
 import { Text } from '@V1/Text/index';
 

@@ -1,4 +1,8 @@
-import { InputData, WidgetData } from '@V1/Types/ProjectTypes';
+import {
+  InputData,
+  WidgetData
+} from '@V1/Types';
+
 import { ShareService } from '@V1/Services_Core/ShareService';
 import { DatabaseService } from './DatabaseService';
 

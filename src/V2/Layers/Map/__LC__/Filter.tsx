@@ -1,14 +1,17 @@
 import { memo, useCallback, useMemo, useState } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 
+import {
+  MapFilter
+} from "@V2/Types";
+
 import { translations } from "@V2/Translations/index";
-import { MapFilter } from "@V2/Types/AppTypes";
 import { HapticsService } from "@V2/Services/HapticsService";
 import { ConfigService } from "@V2/Services/ConfigService";
 
 import { Icon } from "@V2/Icon/index";
-import { Button } from "@V2/Button/index";
 import { Text } from "@V2/Text/index";
+import { Button } from "@V2/Button/index";
 
 export const Filter = memo((props: {
   show: boolean,

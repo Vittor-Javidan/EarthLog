@@ -1,13 +1,15 @@
 import { memo, useMemo } from "react";
 import { View } from "react-native";
 
-import { ProjectMapScope } from "@V1/Types/AppTypes";
-import { translations } from "@V1/Translations/index";
-import { ConfigService } from "@V1/Services/ConfigService";
-import { ThemeService } from "@V1/Services_Core/ThemeService";
+import {
+  ProjectMapScope
+} from "@V1/Types";
 
-import { Text } from "@V1/Text/index";
+import { translations } from "@V1/Translations/index";
+import { ThemeService } from "@V1/Services_Core/ThemeService";
+import { ConfigService } from "@V1/Services/ConfigService";
 import { CacheService } from "@V1/Services/CacheService";
+import { Text } from "@V1/Text/index";
 
 export const MapLabel_Project = memo((props: {
   scope: ProjectMapScope

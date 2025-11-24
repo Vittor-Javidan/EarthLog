@@ -1,7 +1,11 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
+import {
+  Loading,
+  ThemeNames_Widgets
+} from '@V1/Types';
+
 import { Scope } from '@V1/Globals/NavigationControler';
-import { Loading, ThemeNames_Widgets } from '@V1/Types/AppTypes';
 import { translations } from '@V1/Translations/index';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { MapAPI } from '@V1/Layers/API/Map';

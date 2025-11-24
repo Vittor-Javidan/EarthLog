@@ -1,4 +1,7 @@
-import { DateFormat, LanguageTag } from '@V1/Types/AppTypes';
+import {
+  DateFormat,
+  LanguageTag
+} from '@V1/Types';
 
 type TranslationDTO = Record<LanguageTag, Record<DateFormat, string>>
 

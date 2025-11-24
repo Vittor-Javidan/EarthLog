@@ -1,5 +1,11 @@
 import * as Location from 'expo-location';
-import { AltitudeDTO, CoordinateDTO, GPSAccuracyDTO, GPS_DTO } from '@V1/Types/ProjectTypes';
+
+import {
+  AltitudeDTO,
+  CoordinateDTO,
+  GPSAccuracyDTO,
+  GPS_DTO
+} from '@V1/Types';
 
 export class GPSService {
 

@@ -1,10 +1,17 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import {
+  CompassInputData,
+  CoordinateDTO,
+  WidgetRules,
+  WidgetScope,
+  WidgetTheme
+} from '@V2/Types';
+
 import { MarkerAssets } from '@AssetManager';
 import { deepCopy } from '@V2/Globals/DeepCopy';
 import { translations } from '@V2/Translations/index';
-import { CompassInputData, CoordinateDTO, WidgetRules, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { IDService } from '@V2/Services_Core/IDService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';

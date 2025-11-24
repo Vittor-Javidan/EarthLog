@@ -1,6 +1,10 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from "react"
 
-import { ImageQuality } from "@V2/Types/AppTypes";
+import {
+  ImageQuality
+} from "@V2/Types";
+
+import { sleep } from "@V2/Globals/Sleep";
 import { translations } from "@V2/Translations/index";
 import { ConfigService } from "@V2/Services/ConfigService";
 import { ThemeService } from "@V2/Services_Core/ThemeService";
@@ -12,7 +16,6 @@ import { LC } from "@V2/Layers/PopUp/__LC__";
 import { Input } from "@V2/Input/index";
 import { QualityButtons } from "./QualityButtons";
 import { FooterButtons } from "./FooterButtons";
-import { sleep } from "@V2/Globals/Sleep";
 
 
 export const ExportProject_ZIP_IMAGES = memo((props: {

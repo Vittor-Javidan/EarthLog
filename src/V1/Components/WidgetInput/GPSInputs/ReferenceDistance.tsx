@@ -1,8 +1,11 @@
 import React, { memo } from "react";
 import { View } from "react-native";
 
+import {
+  WidgetTheme
+} from "@V1/Types";
+
 import { Text } from "@V1/Text/index";
-import { WidgetTheme } from "@V1/Types/ProjectTypes";
 
 export const ReferenceDistance = memo((props: {
   referenceDistance: number | null

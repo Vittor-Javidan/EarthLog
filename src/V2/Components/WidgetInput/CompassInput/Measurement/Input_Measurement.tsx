@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState } from "react";
 import { TextInput, View } from "react-native";
 
-import { WidgetTheme } from "@V2/Types/ProjectTypes";
-import { RegexService } from "@V2/Services/RegexService";
+import {
+  WidgetTheme
+} from "@V2/Types";
 
+import { RegexService } from "@V2/Services/RegexService";
 import { Text } from "@V2/Text/index";
 
 export const Input_Measurement = memo((props: {

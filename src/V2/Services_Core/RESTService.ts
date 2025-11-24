@@ -1,5 +1,10 @@
-import { CredentialDTO } from '@V2/Types/AppTypes';
-import { DownloadedProjectDTO, ProjectDTO, ProjectSettings, SyncData } from '@V2/Types/ProjectTypes';
+import {
+  CredentialDTO,
+  DownloadedProjectDTO,
+  ProjectDTO,
+  ProjectSettings,
+  SyncData
+} from '@V2/Types';
 
 export class RESTService {
 

@@ -1,9 +1,12 @@
+import {
+  ConfigDTO
+} from '@V2/Types';
+
 import DevTools from '@DevTools';
-import { ConfigDTO } from '@V2/Types/AppTypes';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { LanguageService } from '@V2/Services_Core/LanguageService';
-import { FOLDER_Config } from '@V2/Services_Files/AppFolders';
 import { DateTimeService } from '@V2/Services_Core/DateTimeService';
+import { FOLDER_Config } from '@V2/Services_Files/AppFolders';
 
 export class ConfigService {
 

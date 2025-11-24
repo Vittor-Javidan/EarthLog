@@ -1,4 +1,6 @@
-import { LanguageTag } from '@V2/Types/AppTypes';
+import {
+  LanguageTag
+} from '@V2/Types';
 
 type TranslationDTO = Record<LanguageTag, {
   'Are you sure you want to delete "${fileName}"? This action cannot be undone.': (filename: string) => string,

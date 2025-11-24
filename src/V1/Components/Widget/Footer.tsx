@@ -1,7 +1,11 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetRules, WidgetTheme } from '@V1/Types/ProjectTypes';
+import {
+  WidgetRules,
+  WidgetTheme
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { HapticsService } from '@V1/Services/HapticsService';
 import { ConfigService } from '@V1/Services/ConfigService';

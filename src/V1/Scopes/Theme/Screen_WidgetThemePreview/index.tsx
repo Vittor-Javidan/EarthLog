@@ -1,7 +1,10 @@
 import React, { memo, useMemo } from 'react';
 import { Dimensions, View } from 'react-native';
 
-import { ThemeNames_Widgets } from '@V1/Types/AppTypes';
+import {
+  ThemeNames_Widgets
+} from '@V1/Types';
+
 import { ConfigService } from '@V1/Services/ConfigService';
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';

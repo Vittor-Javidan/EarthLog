@@ -1,8 +1,10 @@
-import { Docx } from '../Docx';
+import {
+  ConfigDTO,
+  OptionsInputData
+} from '@V1/Types';
 
-import { ConfigDTO } from '@V1/Types/AppTypes';
-import { OptionsInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
+import { Docx } from '../Docx';
 
 export function InputDocument_Options(o: {
   config: ConfigDTO

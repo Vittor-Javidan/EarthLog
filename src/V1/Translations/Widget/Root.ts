@@ -1,5 +1,7 @@
-import { LanguageTag } from '@V1/Types/AppTypes';
-import { InputTypes } from '@V1/Types/ProjectTypes';
+import {
+  LanguageTag,
+  InputTypes
+} from '@V1/Types';
 
 type TranslationDTO = Record<LanguageTag, {
   'This will delete any info or media related to this wiget. This action is permanent and cannot be undone.': string,

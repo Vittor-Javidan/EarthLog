@@ -1,8 +1,14 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 
+import {
+  GPS_DTO,
+  GPSInputData,
+  SampleSettings,
+  StringInputData
+} from '@V1/Types';
+
 import { deepCopy } from '@V1/Globals/DeepCopy';
-import { GPS_DTO, GPSInputData, SampleSettings, StringInputData } from '@V1/Types/ProjectTypes';
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';

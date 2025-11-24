@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import MapView from "react-native-maps";
 
-import { CoordinateDTO, ProjectDTO } from "@V2/Types/ProjectTypes";
+import {
+  CoordinateDTO,
+  ProjectDTO,
+  MapScope
+} from "@V2/Types";
+
 import { GPSWatcherService } from "@V2/Services_Core/GPSService";
 import { ProjectService } from "@V2/Services/ProjectService";
-import { MapScope } from "@V2/Types/AppTypes";
 
 export function useBuildProject(o: {
   id_project: string

@@ -1,7 +1,9 @@
-import { ErrorCodes } from '@V2/Globals/ErrorsCodes';
-import { CredentialDTO } from '@V2/Types/AppTypes';
-import { ProjectSettings } from '@V2/Types/ProjectTypes';
+import {
+  CredentialDTO,
+  ProjectSettings
+} from '@V2/Types';
 
+import { ErrorCodes } from '@V2/Globals/ErrorsCodes';
 import { RESTService } from '@V2/Services_Core/RESTService';
 import { DataProcessingService } from './DataProcessingService';
 import { ProjectService } from './ProjectService';

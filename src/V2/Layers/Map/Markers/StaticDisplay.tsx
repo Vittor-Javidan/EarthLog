@@ -1,5 +1,12 @@
 import { memo } from "react";
-import { MapFilter, MapScope, MapShowSetter, OpenEntity } from "@V2/Types/AppTypes";
+
+import {
+  MapFilter,
+  MapScope,
+  MapShowSetter,
+  OpenEntity
+} from "@V2/Types";
+
 import { Static_Project } from "./Static_Project";
 import { Static_Sample } from "./Static_Sample";
 

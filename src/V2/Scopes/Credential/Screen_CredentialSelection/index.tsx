@@ -1,9 +1,11 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Dimensions } from 'react-native';
 
-import { CredentialDTO } from '@V2/Types/AppTypes';
-import { CredentialService } from '@V2/Services/CredentialService';
+import {
+  CredentialDTO
+} from '@V2/Types';
 
+import { CredentialService } from '@V2/Services/CredentialService';
 import { Animation } from '@V2/Animation/index';
 import { Layout } from '@V2/Layout/index';
 import { TC } from './__TC__';

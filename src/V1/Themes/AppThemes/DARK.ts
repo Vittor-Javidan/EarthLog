@@ -1,4 +1,6 @@
-import { AppTheme } from '@V1/Types/AppTypes';
+import {
+  AppTheme
+} from '@V1/Types';
 
 export const DARK: AppTheme = {
   layout: {

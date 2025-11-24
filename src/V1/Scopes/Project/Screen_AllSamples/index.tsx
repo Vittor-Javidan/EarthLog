@@ -1,6 +1,10 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 
-import { ProjectRules, SampleSettings } from '@V1/Types/ProjectTypes';
+import {
+  ProjectRules,
+  SampleSettings
+} from '@V1/Types';
+
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { CacheService } from '@V1/Services/CacheService';

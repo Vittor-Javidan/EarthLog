@@ -1,10 +1,14 @@
 import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 
-import { GPSAccuracyDTO, GPSFeaturesDTO, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  GPSAccuracyDTO,
+  GPSFeaturesDTO,
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Text } from '@V2/Text/index';
 
 export const RealTimeAccuracy = memo((props: {

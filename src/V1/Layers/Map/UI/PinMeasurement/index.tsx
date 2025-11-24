@@ -2,10 +2,15 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Region } from "react-native-maps";
 
+import {
+  MapScope,
+  OpenEntity,
+  CompassMeasurementDTO,
+  CoordinateDTO
+} from "@V1/Types";
+
 import DevTools from "@DevTools";
 import { Z_INDEX } from "@V1/Globals/zIndex";
-import { MapScope, OpenEntity } from "@V1/Types/AppTypes";
-import { CompassMeasurementDTO, CoordinateDTO } from "@V1/Types/ProjectTypes";
 import { CacheService } from "@V1/Services/CacheService";
 import { PinMeasurementUI_API } from "@V1/Layers/API/Map";
 import { PopUpAPI } from "@V1/Layers/API/PopUp";

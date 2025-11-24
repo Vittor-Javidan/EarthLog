@@ -1,7 +1,13 @@
 import React, { useState, memo, useCallback, useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { InputData, InputTypes, InputTypesArray, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  InputData,
+  InputTypes,
+  InputTypesArray,
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ProjectService } from '@V2/Services/ProjectService';
 import { HapticsService } from '@V2/Services/HapticsService';

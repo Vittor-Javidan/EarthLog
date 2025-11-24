@@ -1,5 +1,9 @@
 import React, { memo } from 'react';
-import { WidgetTheme } from '@V1/Types/ProjectTypes';
+
+import {
+  WidgetTheme
+} from '@V1/Types';
+
 import { Button } from '@V1/Button/index';
 
 export const AddMeasurementButton = memo((props: {

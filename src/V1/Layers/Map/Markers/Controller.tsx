@@ -1,5 +1,9 @@
 import { memo } from "react";
-import { OpenEntity } from "@V1/Types/AppTypes";
+
+import {
+  OpenEntity
+} from "@V1/Types";
+
 import { Dynamic_Measure } from "./Dynamic_Measure";
 
 export const Controller = memo((props: {

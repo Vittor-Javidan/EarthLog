@@ -1,10 +1,12 @@
 import React, { memo, useMemo } from 'react';
 
-import { DateFormat } from '@V1/Types/AppTypes';
+import {
+  DateFormat
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Button } from '@V1/Button/index';
 
 export const DateFormatButton = memo((props: {

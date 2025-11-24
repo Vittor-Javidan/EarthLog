@@ -1,11 +1,14 @@
 import React, { memo, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { SyncData, UploadEntry } from '@V1/Types/ProjectTypes';
+import {
+  SyncData,
+  UploadEntry
+} from '@V1/Types';
+
 import { translations } from '@V1/Translations/index';
 import { ThemeService } from '@V1/Services_Core/ThemeService';
 import { ConfigService } from '@V1/Services/ConfigService';
-
 import { Icon, IconName } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 

@@ -1,5 +1,8 @@
-import { ConfigDTO } from "@V1/Types/AppTypes"
-import { CompassInputData } from "@V1/Types/ProjectTypes"
+import {
+  ConfigDTO,
+  CompassInputData
+} from "@V1/Types"
+
 import { translations } from "@V1/Translations/index";
 import { Docx } from "../Docx";
 

@@ -1,15 +1,21 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
+import {
+  PictureInputData,
+  WidgetRules,
+  WidgetScope,
+  WidgetTheme
+} from '@V2/Types';
+
 import { deepCopy } from '@V2/Globals/DeepCopy';
-import { PictureInputData, WidgetRules, WidgetScope, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { DateTimeService } from '@V2/Services_Core/DateTimeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { PopUpAPI } from '@V2/Layers/API/PopUp';
 import { MediaService } from '@V2/Services/MediaService';
 import { CacheService } from '@V2/Services/CacheService';
 import { useCameraLayer } from '@V2/Layers/API/Camera';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
 import { OpenCameraButton } from './OpenCameraButton';

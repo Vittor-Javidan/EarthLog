@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 
-import { SelectionOptionData, WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  SelectionOptionData,
+  WidgetTheme
+} from '@V2/Types';
 
 import { SelectionOptionButton } from './SelectionOptionButton';
 

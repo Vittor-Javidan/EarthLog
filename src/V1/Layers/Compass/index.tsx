@@ -2,9 +2,11 @@ import React, { memo, useState } from "react";
 import { Modal as ReactNative_Modal } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { CompassLayerConfig } from "@V1/Types/AppTypes";
-import { CompassAPI } from "../API/Compass";
+import {
+  CompassLayerConfig
+} from "@V1/Types";
 
+import { CompassAPI } from "../API/Compass";
 import { Compass_Default } from "./CompassTypes/Compass_Default";
 import { Compass_Measurement } from "./CompassTypes/Compass_Measurement";
 

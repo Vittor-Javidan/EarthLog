@@ -1,4 +1,8 @@
-import { DateFormat, LanguageTag, TimeFormat } from '@V2/Types/AppTypes';
+import {
+  DateFormat,
+  LanguageTag,
+  TimeFormat
+} from '@V2/Types';
 
 export class DateTimeService {
 

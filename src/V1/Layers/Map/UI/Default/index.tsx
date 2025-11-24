@@ -1,7 +1,12 @@
 import { memo, useCallback, useState } from "react";
 import { View } from "react-native";
+
+import {
+  MapFilter,
+  MapScope
+} from "@V1/Types";
+
 import { Z_INDEX } from "@V1/Globals/zIndex";
-import { MapFilter, MapScope } from "@V1/Types/AppTypes";
 import { MapButton } from "../../Buttons";
 import { LC } from "../../__LC__";
 

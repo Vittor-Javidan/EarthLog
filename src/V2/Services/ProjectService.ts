@@ -1,5 +1,17 @@
+import {
+  ProjectDTO,
+  ProjectSettings,
+  SampleSettings,
+  WidgetData,
+  InputTypes,
+  InputData,
+  SampleRules,
+  GPS_DTO,
+  SampleDTO,
+  SyncData
+} from '@V2/Types';
+
 import { VERSION } from '@V2/Globals/Version';
-import { ProjectDTO, ProjectSettings, SampleSettings, WidgetData, InputTypes, InputData, SampleRules, GPS_DTO, SampleDTO, SyncData } from '@V2/Types/ProjectTypes';
 import { IDService } from '@V2/Services_Core/IDService';
 import { DatabaseService } from './DatabaseService';
 

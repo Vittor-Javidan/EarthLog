@@ -1,6 +1,9 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { CompassLayerConfig } from "@V2/Types/AppTypes";
-import { CompassInputData } from "@V2/Types/ProjectTypes";
+
+import {
+  CompassLayerConfig,
+  CompassInputData
+} from "@V2/Types";
 
 export function useCompassLayer(
   o: {

@@ -1,5 +1,7 @@
-import { ConfigDTO } from '@V2/Types/AppTypes';
-import { InputData } from '@V2/Types/ProjectTypes';
+import {
+  ConfigDTO,
+  InputData
+} from '@V2/Types';
 
 import { InputDocument_String } from './String';
 import { InputDocument_Compass } from './Compass';

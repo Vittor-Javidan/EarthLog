@@ -1,11 +1,13 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { CredentialDTO } from '@V2/Types/AppTypes';
+import {
+  CredentialDTO
+} from '@V2/Types';
+
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { HapticsService } from '@V2/Services/HapticsService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Icon } from '@V2/Icon/index';
 import { Text } from '@V2/Text/index';
 

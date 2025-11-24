@@ -1,10 +1,12 @@
 import React, { useMemo, memo } from 'react';
 import { View } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { TextInput_GPS } from './TextInput_GPS';
 
 type TempAltitude = {

@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useState } from "react";
 import { TextInput } from "react-native";
 
-import { WidgetTheme } from "@V1/Types/ProjectTypes";
+import {
+  WidgetTheme
+} from "@V1/Types";
+
 import { FontService } from "@V2/Services_Core/FontService";
 import { HapticsService } from "@V2/Services/HapticsService";
 

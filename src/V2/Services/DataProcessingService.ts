@@ -1,5 +1,13 @@
-import { ConfigDTO, CredentialDTO } from '@V2/Types/AppTypes';
-import { DownloadedProjectDTO, InputData, ProjectDTO, Status, SyncData } from '@V2/Types/ProjectTypes';
+import {
+  ConfigDTO,
+  CredentialDTO,
+  DownloadedProjectDTO,
+  InputData,
+  ProjectDTO,
+  Status,
+  SyncData
+} from '@V2/Types';
+
 import { DateTimeService } from '@V2/Services_Core/DateTimeService';
 import { IDService } from '@V2/Services_Core/IDService';
 

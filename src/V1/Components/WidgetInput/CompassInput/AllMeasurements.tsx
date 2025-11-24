@@ -1,6 +1,12 @@
 import React, { memo } from "react";
+
+import {
+  CompassMeasurementDTO,
+  WidgetScope,
+  WidgetTheme
+} from "@V1/Types";
+
 import { MarkerAssets } from "@AssetManager";
-import { CompassMeasurementDTO, WidgetScope, WidgetTheme } from "@V1/Types/ProjectTypes";
 import { Measurement } from "./Measurement";
 
 export const AllMeasurements = memo((props: {

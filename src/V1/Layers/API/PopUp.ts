@@ -1,4 +1,6 @@
-import { ModalConfig } from '@V1/Types/AppTypes';
+import {
+  ModalConfig
+} from '@V1/Types';
 
 export class PopUpAPI {
 

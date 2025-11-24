@@ -1,6 +1,9 @@
+import {
+  LanguageTag,
+  CompassMeasurementDTO
+} from "@V1/Types";
+
 import { translations } from "@V1/Translations/index";
-import { LanguageTag } from "@V1/Types/AppTypes";
-import { CompassMeasurementDTO } from "@V1/Types/ProjectTypes";
 import { Csv } from "../CSV";
 
 export class Compass_CSV {

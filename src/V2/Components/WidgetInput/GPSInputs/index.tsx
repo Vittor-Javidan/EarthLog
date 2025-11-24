@@ -1,14 +1,22 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
 import { Linking, View } from 'react-native';
 
+import {
+  GPSInputData,
+  GPSAccuracyDTO,
+  GPSFeaturesDTO,
+  GPS_DTO,
+  WidgetRules,
+  WidgetTheme
+} from '@V2/Types';
+
 import DevTools from "@DevTools";
 import { deepCopy } from '@V2/Globals/DeepCopy';
-import { GPSInputData, GPSAccuracyDTO, GPSFeaturesDTO, GPS_DTO, WidgetRules, WidgetTheme } from '@V2/Types/ProjectTypes';
 import { translations } from '@V2/Translations/index';
 import { GPSService, GPSWatcherService } from '@V2/Services_Core/GPSService';
 import { ConfigService } from '@V2/Services/ConfigService';
-import { PopUpAPI } from '@V2/Layers/API/PopUp';
 import { NotificationAPI } from '@V2/Layers/API/Notification';
+import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
 import { ManualInput } from './ManualInput';

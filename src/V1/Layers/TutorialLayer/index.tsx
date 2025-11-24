@@ -2,7 +2,10 @@ import { memo, useState } from "react";
 import { Modal as ReactNative_Modal } from 'react-native';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { TutorialType } from "@V1/Types/AppTypes";
+import {
+  TutorialType
+} from "@V1/Types";
+
 import { TutorialAPI } from "../API/Tutorial";
 import { Tutorial_BubbleLevel } from "./BubbleLevel";
 import { Tutorial_Map } from "./Map";

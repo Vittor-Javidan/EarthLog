@@ -1,13 +1,15 @@
 import React, { memo, useMemo } from "react"
 import { View } from "react-native"
 
-import { SampleMapScope } from "@V1/Types/AppTypes"
+import {
+  SampleMapScope
+} from "@V1/Types"
+
 import { translations } from "@V1/Translations/index"
 import { ThemeService } from "@V1/Services_Core/ThemeService"
 import { ConfigService } from "@V1/Services/ConfigService"
-
-import { Text } from "@V1/Text/index"
 import { CacheService } from "@V1/Services/CacheService"
+import { Text } from "@V1/Text/index"
 
 export const MapLabel_Sample = memo((props: {
   scope: SampleMapScope

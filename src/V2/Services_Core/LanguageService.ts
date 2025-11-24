@@ -1,6 +1,9 @@
 import { getLocales } from 'expo-localization';
 
-import { LanguageTag, languageTags } from '@V2/Types/AppTypes';
+import {
+  LanguageTag,
+  languageTags
+} from '@V2/Types';
 
 export class LanguageService {
 

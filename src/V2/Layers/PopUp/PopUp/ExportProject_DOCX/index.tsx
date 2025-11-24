@@ -1,6 +1,9 @@
 import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 
-import { ImageQuality } from '@V2/Types/AppTypes';
+import {
+  ImageQuality
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';

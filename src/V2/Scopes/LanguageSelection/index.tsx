@@ -1,7 +1,11 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
+import {
+  LanguageTag,
+  Loading
+} from '@V2/Types';
+
 import { Scope } from '@V2/Globals/NavigationControler';
-import { LanguageTag, Loading } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
 import { useBackPress } from '@V2/Hooks/index';
 import { ConfigService } from '@V2/Services/ConfigService';

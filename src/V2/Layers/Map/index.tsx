@@ -3,9 +3,15 @@ import { Dimensions } from "react-native"
 import MapView, { Region } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import {
+  CoordinateDTO,
+  MapFilter,
+  MapScope,
+  MapShowSetter,
+  OpenEntity
+} from "@V2/Types";
+
 import DevTools, { useMapTutorial_LastKnownLocation } from "@DevTools";
-import { MapFilter, MapScope, MapShowSetter, OpenEntity } from "@V2/Types/AppTypes";
-import { CoordinateDTO } from "@V2/Types/ProjectTypes";
 import { ConfigService } from "@V2/Services/ConfigService";
 import { useTutorialLayer } from "../API/Tutorial";
 import { MapAPI } from "../API/Map";

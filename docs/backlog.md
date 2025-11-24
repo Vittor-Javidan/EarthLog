@@ -1,8 +1,5 @@
 # refactoring:
 
-- high Priority:
-    - Move all types to the same file
-
 - low Priority:
     - increase the button size for adding item on <OptionInput />, <SelectionInput /> and <PictureInput />
     - Add all major zIndez inside the gloal zIndex file

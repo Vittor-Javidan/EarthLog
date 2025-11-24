@@ -1,7 +1,10 @@
 import { ImageManipulator, SaveFormat } from 'expo-image-manipulator'
 
+import {
+  ImageQuality
+} from '@V2/Types';
+
 import { path } from '@V2/Globals/Path'
-import { ImageQuality } from '@V2/Types/AppTypes';
 import { FileSystemService } from '@V2/Services_Core/FileSystemService';
 import { ZipService } from '../Core/Zip'
 

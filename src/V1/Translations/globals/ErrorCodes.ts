@@ -1,5 +1,8 @@
+import {
+  LanguageTag
+} from '@V1/Types';
+
 import { ErrorCodes } from '@V1/Globals/ErrorsCodes';
-import { LanguageTag } from '@V1/Types/AppTypes';
 
 type InnerTranslationDTO = Record<LanguageTag, Record<typeof ErrorCodes[keyof typeof ErrorCodes], string>>;
 

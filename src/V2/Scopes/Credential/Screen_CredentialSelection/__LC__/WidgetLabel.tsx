@@ -1,7 +1,10 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
+import {
+  WidgetTheme
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { FontService } from '@V2/Services_Core/FontService';
 import { HapticsService } from '@V2/Services/HapticsService';
@@ -13,8 +16,8 @@ export const WidgetLabel = memo((props: {
   onLabelChange: (label: string) => void
 }) => {
 
-  const config                = useMemo(() => ConfigService.config, []);
-  const R                     = useMemo(() => translations.component.layout.pseudoWidget[config.language], []);
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.component.layout.pseudoWidget[config.language], []);
   const [focused, setFocused] = useState<boolean>(false);
 
   const onFocus = useCallback(() => {

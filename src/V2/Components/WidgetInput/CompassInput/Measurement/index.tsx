@@ -1,8 +1,13 @@
 import React, { memo, useCallback, useState } from "react";
 import { View } from "react-native";
 
+import {
+  CompassMeasurementDTO,
+  WidgetScope,
+  WidgetTheme
+} from "@V2/Types";
+
 import { MarkerAssets } from "@AssetManager";
-import { CompassMeasurementDTO, WidgetScope, WidgetTheme } from "@V2/Types/ProjectTypes";
 
 import { Button } from "@V2/Button/index";
 import { MarkerButton } from "./MarkerButton";

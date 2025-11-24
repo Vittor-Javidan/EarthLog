@@ -1,6 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { CredentialDTO } from '@V2/Types/AppTypes';
+import {
+  CredentialDTO
+} from '@V2/Types';
+
 import { translations } from '@V2/Translations/index';
 import { DownloadService } from '@V2/Services/DownloadService';
 import { ConfigService } from '@V2/Services/ConfigService';

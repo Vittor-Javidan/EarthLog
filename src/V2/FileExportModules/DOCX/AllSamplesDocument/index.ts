@@ -1,11 +1,11 @@
-import { Docx } from '../Docx';
+import {
+  ProjectDTO,
+  ConfigDTO
+} from '@V2/Types';
 
-import { ProjectDTO } from '@V2/Types/ProjectTypes';
-import { ConfigDTO } from '@V2/Types/AppTypes';
 import { translations } from '@V2/Translations/index';
-
 import { FontService } from '@V2/Services_Core/FontService';
-
+import { Docx } from '../Docx';
 import { document_inputData } from '../InputsDocument';
 import { document_Widget } from '../widgetDocument';
 

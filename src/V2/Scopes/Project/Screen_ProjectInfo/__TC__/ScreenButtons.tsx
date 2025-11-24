@@ -1,11 +1,13 @@
 import React, { useState, useMemo, memo } from 'react';
 
+import {
+  ProjectRules
+} from '@V2/Types';
+
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Button } from '@V2/Button/index';
 import { Layout } from '@V2/Layout/index';
-import { ProjectRules } from '@V2/Types/ProjectTypes';
 
 export const ScreenButtons = memo((props: {
   projectRules: ProjectRules

@@ -1,9 +1,11 @@
 import React, { useState, memo, useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { WidgetTheme } from '@V2/Types/ProjectTypes';
-import { HapticsService } from '@V2/Services/HapticsService';
+import {
+  WidgetTheme
+} from '@V2/Types';
 
+import { HapticsService } from '@V2/Services/HapticsService';
 import { Icon } from '@V2/Icon/index';
 
 export const FooterButtons = memo((props: {
