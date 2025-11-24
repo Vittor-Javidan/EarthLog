@@ -1,14 +1,14 @@
 import { memo, useState } from "react";
 
-import { MapFilter, MapScope, NavigationMapScope } from "@V2/Types/AppTypes";
-import { CompassMeasurementDTO, ProjectDTO } from "@V2/Types/ProjectTypes";
+import { MapFilter, MapScope, NavigationMapScope, OpenEntity } from "@V2/Types/AppTypes";
+import { ProjectDTO } from "@V2/Types/ProjectTypes";
 import { useBuildProject } from "./Hooks";
 import { Markers } from "./Markers";
 
 export const MarkersDisplay = memo((props: {
   scope: Exclude<MapScope, NavigationMapScope>
   showMap: boolean
-  openMeasurement: CompassMeasurementDTO | null
+  openEntity: OpenEntity | null
   filter: MapFilter
 }) => {
 
@@ -33,7 +33,7 @@ export const MarkersDisplay = memo((props: {
       <Markers.Project
         scope={props.scope}
         projectDTO={projectDTO}
-        openMeasurement={props.openMeasurement}
+        openEntity={props.openEntity}
         filter={props.filter}
       />
     )
@@ -45,7 +45,7 @@ export const MarkersDisplay = memo((props: {
     return sampleDTO ? (
       <Markers.Sample
         sampleDTO={sampleDTO}
-        openMeasurement={props.openMeasurement}
+        openEntity={props.openEntity}
         filter={props.filter}
       />
     ) : <></>;

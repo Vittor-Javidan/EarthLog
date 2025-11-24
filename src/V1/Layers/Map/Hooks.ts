@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import MapView from "react-native-maps";
 
-import { CompassMeasurementDTO, CoordinateDTO, ProjectDTO } from "@V1/Types/ProjectTypes";
+import { CoordinateDTO, ProjectDTO } from "@V1/Types/ProjectTypes";
 import { GPSWatcherService } from "@V1/Services_Core/GPSService";
 import { ProjectService } from "@V1/Services/ProjectService";
-import { CacheService } from "@V1/Services/CacheService";
 import { MapScope } from "@V1/Types/AppTypes";
 
 export function useBuildProject(o: {
@@ -90,51 +89,14 @@ export function useFollowUserLocation(o: {
   }, deps)
 }
 
-export function useOpenMeasurementLocation(o: {
-  openMeasurement: CompassMeasurementDTO | null,
-  scope: MapScope,
-  showMap: boolean,
-  onGoToCoordinate: (coordinate: CoordinateDTO) => void,
+export function useMapPress(o: {
+  mapPressed: boolean,
+  onMapPressed: () => void,
 }) {
-  const { openMeasurement, scope, showMap } = o;
-
+  const { mapPressed } = o;
   useEffect(() => {
-    if (openMeasurement !== null) {
-
-      const measurementCoordinates = openMeasurement.coordinates;
-      if (measurementCoordinates !== undefined) {
-        o.onGoToCoordinate({ lat: measurementCoordinates.lat, long: measurementCoordinates.long, accuracy: 0 });
-        return;
-      }
-
-      switch (scope.type) {
-
-        case 'sample': {
-          const sampleSetting = CacheService.getSampleFromCache({ id_sample: scope.id_sample});
-          if (
-            sampleSetting.gps !== undefined &&
-            sampleSetting.gps.coordinates !== undefined
-          ) {
-            const coordinates = sampleSetting.gps.coordinates;
-            o.onGoToCoordinate({ lat: coordinates.lat, long: coordinates.long, accuracy: 0 });
-            return;
-          }
-          break
-        }
-
-        case 'project': {
-          const projectSetting = CacheService.getProjectFromCache({ id_project: scope.id_project});
-          if (
-            projectSetting.gps !== undefined &&
-            projectSetting.gps.coordinates !== undefined
-          ) {
-            const coordinates = projectSetting.gps.coordinates;
-            o.onGoToCoordinate({ lat: coordinates.lat, long: coordinates.long, accuracy: 0 });
-            return;
-          }
-          break
-        }
-      }
+    if (mapPressed) {
+      o.onMapPressed();
     }
-  }, [scope, showMap]) 
+  }, [mapPressed]);
 }

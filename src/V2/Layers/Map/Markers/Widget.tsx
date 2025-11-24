@@ -4,15 +4,18 @@ import { Circle, Marker, MarkerPressEvent } from "react-native-maps";
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
 import { translations } from "@V2/Translations/index";
-import { MapFilter } from "@V2/Types/AppTypes";
+import { MapFilter, OpenEntity } from "@V2/Types/AppTypes";
 import { CompassInputData, CompassMeasurementDTO, GPSInputData, WidgetData } from "@V2/Types/ProjectTypes";
 import { ConfigService } from "@V2/Services/ConfigService";
 
 export const Markers_Widget = memo((props: {
   widgetData: WidgetData
-  openMeasurement: CompassMeasurementDTO | null
+  openEntity: OpenEntity | null
   filter: MapFilter
 }) => {
+
+  const openMeasurement = props.openEntity?.type === 'compass measurement' ? props.openEntity.entity : null;
+
   return (<>
     {props.widgetData.inputs.map((input) => {
       if (
@@ -34,7 +37,7 @@ export const Markers_Widget = memo((props: {
           <Marker_CompassInput
             key={input.id_input}
             inputData={input}
-            openMeasurement={props.openMeasurement}
+            openMeasurement={openMeasurement}
           />
         )
       }
@@ -89,9 +92,11 @@ const Marker_CompassInput = memo((props: {
 }) => {
 
   const AllMeasurements = props.inputData.value.map((measurement) => {
+    const entity = props.openMeasurement;
+    const isEntity = entity !== null && entity.id === measurement.id;
     if (
-      measurement.coordinates !== undefined &&
-      measurement.id !== props.openMeasurement?.id
+      !isEntity &&
+      measurement.coordinates !== undefined
     ) {
       return (
         <Marker_Measurement

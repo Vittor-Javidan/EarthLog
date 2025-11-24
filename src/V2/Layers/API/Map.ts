@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { SubscriptionManager } from "@SubscriptionManager";
-import { MapFilter, MapScope, MapShowSetter } from "@V2/Types/AppTypes";
-import { ControllerAPI } from "@V2/Scopes/API/Controller";
+import { MapFilter, MapScope, MapShowSetter, OpenEntity } from "@V2/Types/AppTypes";
 import { CompassMeasurementDTO, CoordinateDTO } from "@V2/Types/ProjectTypes";
+import { ControllerAPI } from "@V2/Scopes/API/Controller";
 
 export function useMap_SetMarker(o: {
   openMap: boolean,
@@ -13,11 +13,11 @@ export function useMap_SetMarker(o: {
   const { openMap, measurement } = o;
   useEffect(() => {
     if (o.openMap) {
-      MapAPI.onRegionChangeCallback = o.onRegionChangeCallback;
-      MapAPI.onCloseMapCallback     = o.onCloseMap;
-      MapAPI.configOpenMeasurement(measurement);
+      PinMeasurementUI_API.onRegionChangeCallback = o.onRegionChangeCallback;
+      PinMeasurementUI_API.onCloseMapCallback     = o.onCloseMap;
+      PinMeasurementUI_API.configOpenMeasurement(measurement);
+      MapAPI.showPinMeasurementUI();
       MapAPI.toggleMap(true);
-      MapAPI.showPinUI_Measurement(true);
     }
   }, [openMap]);
 }
@@ -26,20 +26,11 @@ export class MapAPI {
 
   static isMapOpen: boolean = false;
 
-  /* Setters from Map Layer */
-  static scopeSetter:                 Dispatch<SetStateAction<MapScope>> | null                     = null;
-  static tutorialModeSetter:          Dispatch<SetStateAction<boolean>> | null                      = null;
-  static filterSetter:                Dispatch<SetStateAction<MapFilter>> | null              = null;
-  static showSetter:                  Dispatch<SetStateAction<MapShowSetter>> | null                = null;
-  static backupCoordinateSetter:      Dispatch<SetStateAction<CoordinateDTO | undefined>> | null    = null;
-  static openMeasurementSetter:       Dispatch<SetStateAction<CompassMeasurementDTO | null>> | null = null;
-  static didMeasurementChangedSetter: Dispatch<SetStateAction<boolean>> | null                      = null;
-
-  /* Callbacks from App Layer */
-  static onRegionChangeCallback: ((region: CoordinateDTO | undefined) => void) | null = null;
-  static onCloseMapCallback:     (() => void) | null                                  = null;
-
-  // Manipulation Methods ------------------------------------------------------------
+  static scopeSetter:        Dispatch<SetStateAction<MapScope>> | null          = null;
+  static tutorialModeSetter: Dispatch<SetStateAction<boolean>> | null           = null;
+  static openEntitySetter:   Dispatch<SetStateAction<OpenEntity | null>> | null = null;
+  static filterSetter:       Dispatch<SetStateAction<MapFilter>> | null         = null;
+  static showSetter:         Dispatch<SetStateAction<MapShowSetter>> | null     = null;
 
   static changeScope(newScope: MapScope) {
     if (this.scopeSetter !== null) {
@@ -66,34 +57,33 @@ export class MapAPI {
       this.showSetter(prev => ({ ...prev, map: newValue }) );
       this.isMapOpen = newValue;
 
-      if (!newValue && this.onCloseMapCallback) {
-        // Close map actions
+      if (
+        !newValue &&
+        this.openEntitySetter
+      ) {
+        this.openEntitySetter(null);
         this.showSetter(prev => ({ ...prev,
           pinUI_Measurement: false,
           defaultUI: true
         }));
-        this.onCloseMapCallback();
-        this.onCloseMapCallback = null;
-        this.onRegionChangeCallback = null;
-        this.configOpenMeasurement(null);
+        PinMeasurementUI_API.closeMap();
       }
     }
   }
 
-  static triggerRegionUpdate(region: CoordinateDTO | undefined) {
-    if (this.onRegionChangeCallback) {
-      this.onRegionChangeCallback(region);
-    }
-  }
+  static showPinMeasurementUI() {
 
-  static showPinUI_Measurement(show: boolean) {
+    if (!SubscriptionManager.getStatus().isMapEnabled) {
+      ControllerAPI.changeScope({ scope: 'SUBSCRIPTIONS SCOPE' })
+      return;
+    }
+
     if (
-      SubscriptionManager.getStatus().isMapEnabled &&
       this.filterSetter &&
       this.showSetter &&
-      this.didMeasurementChangedSetter
+      PinMeasurementUI_API.didMeasurementChangedSetter
     ) {
-      this.didMeasurementChangedSetter(false);
+      PinMeasurementUI_API.didMeasurementChangedSetter(false);
       this.filterSetter(prev => ({ ...prev,
         projectInfo: true,
         sampleInfo: true,
@@ -101,11 +91,22 @@ export class MapAPI {
         compassMeasurement: true,
       }));
       this.showSetter(prev => ({ ...prev,
-        pinUI_Measurement: show,
-        defaultUI: !show,
+        pinUI_Measurement: true,
+        defaultUI: false,
       }));
     }
   }
+}
+
+export class PinMeasurementUI_API {
+
+
+  static backupCoordinateSetter:      Dispatch<SetStateAction<CoordinateDTO | undefined>> | null    = null;
+  static openMeasurementSetter:       Dispatch<SetStateAction<CompassMeasurementDTO | null>> | null = null;
+  static didMeasurementChangedSetter: Dispatch<SetStateAction<boolean>> | null                      = null;
+
+  static onRegionChangeCallback: ((region: CoordinateDTO | undefined) => void) | null = null;
+  static onCloseMapCallback:     (() => void) | null                                  = null;
 
   static configOpenMeasurement(measurement: CompassMeasurementDTO | null) {
     if (
@@ -115,6 +116,21 @@ export class MapAPI {
     ) {
       this.openMeasurementSetter(measurement);
       this.backupCoordinateSetter(measurement ? measurement.coordinates : undefined);
+    }
+  }
+
+  static triggerRegionUpdate(region: CoordinateDTO | undefined) {
+    if (PinMeasurementUI_API.onRegionChangeCallback) {
+      PinMeasurementUI_API.onRegionChangeCallback(region);
+    }
+  }
+
+  static closeMap() {
+    if (this.onCloseMapCallback) {
+      this.onCloseMapCallback();
+      this.onCloseMapCallback = null;
+      this.onRegionChangeCallback = null;
+      this.configOpenMeasurement(null);
     }
   }
 }

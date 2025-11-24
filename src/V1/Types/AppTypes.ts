@@ -1,3 +1,5 @@
+import { CompassMeasurementDTO } from "./ProjectTypes";
+
 export type Loading = 'Loaded' | 'Loading';
 
 export const languageTags   = ['en-US', 'pt-BR'] as const;
@@ -221,6 +223,11 @@ export type MapFilter = {
   sampleInfo: boolean,
   gpsInput: boolean,
   compassMeasurement: boolean,
+}
+
+export type OpenEntity = {
+  type: 'compass measurement',
+  entity: CompassMeasurementDTO
 }
 
 // --------------------------------- Compass Types -----------------------------

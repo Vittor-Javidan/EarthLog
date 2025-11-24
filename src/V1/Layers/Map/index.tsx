@@ -4,13 +4,12 @@ import MapView, { Region } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import DevTools, { useMapTutorial_LastKnownLocation } from "@DevTools";
-import { MapFilter, MapScope, MapShowSetter } from "@V1/Types/AppTypes";
-import { CompassMeasurementDTO, CoordinateDTO } from "@V1/Types/ProjectTypes";
+import { MapFilter, MapScope, MapShowSetter, OpenEntity } from "@V1/Types/AppTypes";
+import { CoordinateDTO } from "@V1/Types/ProjectTypes";
 import { ConfigService } from "@V1/Services/ConfigService";
 import { useTutorialLayer } from "../API/Tutorial";
-import { PopUpAPI } from "../API/PopUp";
 import { MapAPI } from "../API/Map";
-import { useFirstPosition, useFollowUserLocation, useOpenMeasurementLocation } from "./Hooks";
+import { useFirstPosition, useFollowUserLocation } from "./Hooks";
 
 import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
@@ -21,15 +20,17 @@ import { UI } from "./UI";
 export const Layer_Map = memo(() => {
 
   const { top, bottom} = useSafeAreaInsets();
-  const [mapRef           , setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
-  const [scope            , setScope            ] = useState<MapScope>({ type: 'navigation' });
-  const [isMapNeverOpen   , setIsMapNeverOpen   ] = useState<boolean>(true);
-  const [followUser       , setFollowUser       ] = useState<boolean>(false);
-  const [lastKnownLocation, setLastKnownLocation] = useState<CoordinateDTO | null>(null);
-  const [goToCoordinate   , setGoToCoordinate   ] = useState<CoordinateDTO | undefined>(undefined);
-  const [centerRegion     , setCenterRegion     ] = useState<Region | null>(null);
-  const [tutorialMode     , setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
-  const [filter           , setFilter           ] = useState<MapFilter>({
+  const [mapRef           ,setMapRef           ] = useState<React.RefObject<MapView | null> | null>(null);
+  const [isMapNeverOpen   ,setIsMapNeverOpen   ] = useState<boolean>(true);
+  const [scope            ,setScope            ] = useState<MapScope>({ type: 'navigation' });
+  const [tutorialMode     ,setTutorialMode     ] = useState<boolean>(DevTools.TUTORIAL_MODE);
+  const [centerRegion     ,setCenterRegion     ] = useState<Region | null>(null);
+  const [mapPressed       ,setMapPressed       ] = useState<boolean>(false);
+  const [followUser       ,setFollowUser       ] = useState<boolean>(false);
+  const [lastKnownLocation,setLastKnownLocation] = useState<CoordinateDTO | null>(null);
+  const [goToCoordinate   ,setGoToCoordinate   ] = useState<CoordinateDTO | undefined>(undefined);
+  const [openEntity       ,setOpenEntity       ] = useState<OpenEntity | null>(null);
+  const [filter           ,setFilter           ] = useState<MapFilter>({
     projectInfo: true,
     sampleInfo: true,
     gpsInput: true,
@@ -39,98 +40,14 @@ export const Layer_Map = memo(() => {
     map: false,
     indicator: false,
     tutorial: ConfigService.config.tutorial_map,
-    pinUI_Measurement: false,
     defaultUI: true,
+    pinUI_Measurement: false,
   })
   MapAPI.scopeSetter        = setScope;
   MapAPI.tutorialModeSetter = setTutorialMode;
+  MapAPI.openEntitySetter   = setOpenEntity;
   MapAPI.filterSetter       = setFilter;
   MapAPI.showSetter         = setShow;
-
-  // Measurement States
-  const [backupCoordinate     , setBackupCoordinate     ] = useState<CoordinateDTO | undefined>(undefined);
-  const [openMeasurement      , setOpenMeasurement      ] = useState<CompassMeasurementDTO | null>(null);
-  const [didMeasurementChanged, setDidMeasurementChanged] = useState<boolean>(false);
-  MapAPI.backupCoordinateSetter      = setBackupCoordinate;
-  MapAPI.openMeasurementSetter       = setOpenMeasurement;
-  MapAPI.didMeasurementChangedSetter = setDidMeasurementChanged;
-
-  // Measurement Pin UI Callbacks ------------------------------------------------------------
-
-  const saveAndCloseMeasurementCoordinates = useCallback(() => {
-    if (openMeasurement === null) return;
-    PopUpAPI.handleAlert((didMeasurementChanged && backupCoordinate !== undefined), {
-      type: 'warning',
-      question: 'You changed the measurement location. Do you want to save the changes?',
-    }, () => {
-      openMeasurement.coordinates === undefined
-      ? MapAPI.triggerRegionUpdate(undefined)
-      : MapAPI.triggerRegionUpdate({
-          lat: openMeasurement.coordinates.lat,
-          long: openMeasurement.coordinates.long,
-          accuracy: 0,
-        });
-      MapAPI.toggleMap(false);
-    })
-  }, [openMeasurement, backupCoordinate, didMeasurementChanged])
-
-  const onMeasurementOpen = useCallback((coordinate: CoordinateDTO) => {
-    const { lat, long } = coordinate;
-    const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
-    const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
-    setGoToCoordinate({
-      lat: newLatitude,
-      long: newLongitude,
-      accuracy: 0,
-    });
-  }, [tutorialMode]);
-
-  const updateMeasurementCoordinates = useCallback(() => {
-    if (centerRegion === null) return;
-    if (openMeasurement === null) return;
-    setOpenMeasurement(prev => {
-      if (prev === null) return null;
-      const newMeasurement = { ...prev }
-      newMeasurement.coordinates = {
-        lat: centerRegion.latitude,
-        long: centerRegion.longitude,
-        accuracy: 0,
-      }
-      return newMeasurement;
-    });
-    setDidMeasurementChanged(true);
-  }, [centerRegion, openMeasurement])
-
-  const deleteMeasurementCoordinates = useCallback(() => {
-    if (openMeasurement === null) return;
-    const newMeasurement = { ...openMeasurement };
-    if (newMeasurement.coordinates) {
-      delete newMeasurement.coordinates;
-      setDidMeasurementChanged(true);
-    }
-    setOpenMeasurement(newMeasurement);
-  }, [openMeasurement])
-
-  const resetMeasurementCoordinates = useCallback(() => {
-    if (openMeasurement === null) return;
-    const newMeasurement = { ...openMeasurement };
-    switch (backupCoordinate) {
-      case undefined: {
-        if (newMeasurement.coordinates) {
-          delete newMeasurement.coordinates;
-        }
-        break;
-      }
-      default: {
-        newMeasurement.coordinates = { ...backupCoordinate };
-        const { lat, long } = backupCoordinate;
-        const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
-        const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
-        setGoToCoordinate({ lat: newLatitude, long: newLongitude, accuracy: 0 });
-      }
-    }
-    setOpenMeasurement(newMeasurement);
-  }, [openMeasurement, backupCoordinate, tutorialMode])
 
   // Map Callbacks ------------------------------------------------------------------------------
 
@@ -151,18 +68,19 @@ export const Layer_Map = memo(() => {
     setFollowUser(prev => !prev);
   }, [followUser])
 
+  // Allows children to detect map press events
   const onMapPress = useCallback(() => {
-    if (// Pin Measurement UI map press behavior
-      show.pinUI_Measurement &&
-      openMeasurement !== null &&
-      centerRegion !== null
-    ) {
-      updateMeasurementCoordinates();
-    }
-  }, [updateMeasurementCoordinates])
-
+    setMapPressed(true);
+  }, []);
   useEffect(() => {
-    if (// detects changes in goToCoordinate to move the map camera
+    if (mapPressed) {
+      setMapPressed(false);
+    }
+  }, [mapPressed]);
+
+  // detects changes in goToCoordinate to move the map camera
+  useEffect(() => {
+    if (
       mapRef !== null &&
       mapRef.current &&
       goToCoordinate !== undefined
@@ -175,6 +93,7 @@ export const Layer_Map = memo(() => {
     }
   }, [goToCoordinate, mapRef])
 
+  // Show/hide map sanitization
   useEffect(() => {
     if (show.map) {
       setIsMapNeverOpen(false)
@@ -212,13 +131,6 @@ export const Layer_Map = memo(() => {
       });
     }
   }, [followUser]);
-
-  useOpenMeasurementLocation({
-    openMeasurement: openMeasurement,
-    scope: scope,
-    showMap: show.map,
-    onGoToCoordinate: onMeasurementOpen,
-  })
 
   useTutorialLayer({
     config: "MAP",
@@ -264,17 +176,6 @@ export const Layer_Map = memo(() => {
     >
 
       {/* UIs */}
-      <UI.PinMeasurement
-        show={show.pinUI_Measurement}
-        scope={scope}
-        followUser={followUser}
-        showCurrentPositionIndicator={mapRef === null || show.indicator}
-        onReset={resetMeasurementCoordinates}
-        onDelete={deleteMeasurementCoordinates}
-        onSave={saveAndCloseMeasurementCoordinates}
-        onPin={updateMeasurementCoordinates}
-        onCurrentPosition={followUserLocation}
-      />
       <UI.Default
         show={show.defaultUI}
         scope={scope}
@@ -283,6 +184,19 @@ export const Layer_Map = memo(() => {
         showCurrentPositionIndicator={mapRef === null || show.indicator}
         onCurrentPosition={followUserLocation}
         onFilterChange={setFilter}
+      />
+      <UI.PinMeasurement
+        showUI={show.pinUI_Measurement}
+        scope={scope}
+        tutorialMode={tutorialMode}
+        centerRegion={centerRegion}
+        followUser={followUser}
+        showCurrentPositionIndicator={mapRef === null || show.indicator}
+        mapPressed={mapPressed}
+        goToCoordinate={setGoToCoordinate}
+        onCurrentPosition={followUserLocation}
+        onMeasurementUpdate={setOpenEntity}
+        onCloseMap={() => MapAPI.toggleMap(false)}
       />
 
       {/* Base Map Components */}
@@ -294,36 +208,23 @@ export const Layer_Map = memo(() => {
         onRegionChangeComplete={onRegionChangeComplete}
         onMapPress={onMapPress}
       >
-        {/* WARNING
-
-          Avoid using useMemo on components rendered inside <Map />.
-          The react-native-maps library does not behave well with memoized values.
-          Even if everything works correctly in development, memoization values can lead to
-          crashes or unexpected behavior in production builds.
-
-          Markers often only re-render when their coordinate prop changes, ignoring
-          updates to other props. Because of this, forcing an update usually requires
-          toggling the marker’s visibility (e.g., {showMarker && <Marker_Component ... />} ),
-          which eliminates any benefit memoization would have provided.
-
-          Overall, this behavior is inconsistent and difficult to debug, so avoiding
-          memoization for map children is recommended.
-
-        */}
         <Markers.LastKnownLocation
           tutorialMode={tutorialMode}
           lastKnownLocation={lastKnownLocation}
         />
-        {openMeasurement !== null && (
+        {(
+          openEntity !== null &&
+          openEntity.type === 'compass measurement'
+        ) && (
           <Markers.DynamicMeasureMarker
-            openMeasurement={openMeasurement}
+            openMeasurement={openEntity.entity}
           />
         )}
         {scope.type !== 'navigation' && (
           <MarkersDisplay
             scope={scope}
             showMap={show.map}
-            openMeasurement={openMeasurement}
+            openEntity={openEntity}
             filter={filter}
           />
         )}
