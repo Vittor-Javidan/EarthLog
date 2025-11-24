@@ -214,8 +214,8 @@ export type MapShowSetter = {
   map: boolean;
   indicator: boolean;
   tutorial: boolean;
-  pinUI_Measurement: boolean;
-  defaultUI: boolean;
+  ui_Default: boolean;
+  ui_PinMeasurement: boolean;
 }
 
 export type MapFilter = {

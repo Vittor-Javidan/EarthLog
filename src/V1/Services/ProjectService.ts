@@ -465,31 +465,31 @@ export class ProjectService {
 
   static async buildProjectDTO(o: {
     id_project: string
-    feedback: (message: string) => void
+    feedback?: (message: string) => void
   }): Promise<ProjectDTO> {
 
     const { id_project } = o;
 
     // GET PROJECT SETTINGS
-    o.feedback('Loading project settings');
+    o.feedback?.('Loading project settings');
     const projectSettings = await DatabaseService.readProject({ id_project });
 
-    o.feedback('Loading project widgets');
+    o.feedback?.('Loading project widgets');
     const projectWidgets = await DatabaseService.getAllWidgets({ path: 'project widgets', id_project });
 
-    o.feedback('Loading project template');
+    o.feedback?.('Loading project template');
     const templateWidgets = await DatabaseService.getAllWidgets({
       path: 'template widgets',
       id_project: id_project,
     });
 
     // GET ALL SAMPLES
-    o.feedback('Loading all sample settings');
+    o.feedback?.('Loading all sample settings');
     const samples: SampleDTO[] = [];
     const samplesSettings = await DatabaseService.getAllSamples({ id_project });
     for (let i = 0; i < samplesSettings.length; i++) {
 
-      o.feedback('Loading sample widgets of' + ` "${samplesSettings[i].name}".` + ` ID: ${samplesSettings[i].id_sample}`);
+      o.feedback?.('Loading sample widgets of' + ` "${samplesSettings[i].name}".` + ` ID: ${samplesSettings[i].id_sample}`);
       const sampleWidgets = await DatabaseService.getAllWidgets({
         path: 'sample widgets',
         id_project: id_project,
@@ -510,5 +510,21 @@ export class ProjectService {
     };
 
     return projectDTO;
+  }
+
+  static async buildSampleDTO(o: {
+    id_project: string
+    id_sample: string
+  }): Promise<SampleDTO> {
+    const { id_project, id_sample } = o;
+    const sampleDTO: SampleDTO = {
+      sampleSettings: await DatabaseService.readSample({ id_project, id_sample }),
+      sampleWidgets:  await DatabaseService.getAllWidgets({
+        path: 'sample widgets',
+        id_project: id_project,
+        id_sample: id_sample,
+      }),
+    };
+    return sampleDTO;
   }
 }

@@ -3,11 +3,11 @@ import { Marker, MarkerPressEvent } from "react-native-maps";
 
 import DevTools from "@DevTools";
 import { AssetManager } from "@AssetManager";
-import { translations } from "@V1/Translations/index";
-import { CompassMeasurementDTO } from "@V1/Types/ProjectTypes";
-import { ConfigService } from "@V1/Services/ConfigService";
+import { translations } from "@V2/Translations/index";
+import { CompassMeasurementDTO } from "@V2/Types/ProjectTypes";
+import { ConfigService } from "@V2/Services/ConfigService";
 
-export const DynamicMeasureMarker = memo((props: {
+export const Dynamic_Measure = memo((props: {
   openMeasurement: CompassMeasurementDTO
 }) => {
 

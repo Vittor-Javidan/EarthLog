@@ -14,7 +14,6 @@ import { useFirstPosition, useFollowUserLocation } from "./Hooks";
 import { MapAnimation } from "./Animation";
 import { Map } from "./Map";
 import { Markers } from "./Markers";
-import { MarkersDisplay } from "./MarkersDisplay";
 import { UI } from "./UI";
 
 export const Layer_Map = memo(() => {
@@ -40,8 +39,8 @@ export const Layer_Map = memo(() => {
     map: false,
     indicator: false,
     tutorial: ConfigService.config.tutorial_map,
-    defaultUI: true,
-    pinUI_Measurement: false,
+    ui_Default: true,
+    ui_PinMeasurement: false,
   })
   MapAPI.scopeSetter        = setScope;
   MapAPI.tutorialModeSetter = setTutorialMode;
@@ -177,7 +176,7 @@ export const Layer_Map = memo(() => {
 
       {/* UIs */}
       <UI.Default
-        show={show.defaultUI}
+        show={show.ui_Default}
         scope={scope}
         filter={filter}
         followUser={followUser}
@@ -186,7 +185,7 @@ export const Layer_Map = memo(() => {
         onFilterChange={setFilter}
       />
       <UI.PinMeasurement
-        showUI={show.pinUI_Measurement}
+        showUI={show.ui_PinMeasurement}
         scope={scope}
         tutorialMode={tutorialMode}
         centerRegion={centerRegion}
@@ -204,30 +203,23 @@ export const Layer_Map = memo(() => {
         loadMap={isMapNeverOpen === false}
         followUser={followUser}
         style={{ flex: 1 }}
-        onLoad={(mapRef) => setMapRef(mapRef)}
+        onLoad={setMapRef}
         onRegionChangeComplete={onRegionChangeComplete}
         onMapPress={onMapPress}
       >
+        <Markers.Controller
+          openEntity={openEntity}
+        />
         <Markers.LastKnownLocation
           tutorialMode={tutorialMode}
           lastKnownLocation={lastKnownLocation}
         />
-        {(
-          openEntity !== null &&
-          openEntity.type === 'compass measurement'
-        ) && (
-          <Markers.DynamicMeasureMarker
-            openMeasurement={openEntity.entity}
-          />
-        )}
-        {scope.type !== 'navigation' && (
-          <MarkersDisplay
-            scope={scope}
-            showMap={show.map}
-            openEntity={openEntity}
-            filter={filter}
-          />
-        )}
+        <Markers.StaticDisplay
+          scope={scope}
+          show={show}
+          openEntity={openEntity}
+          filter={filter}
+        />
       </Map>
     </MapAnimation>
   </>);

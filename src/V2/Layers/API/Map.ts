@@ -63,8 +63,8 @@ export class MapAPI {
       ) {
         this.openEntitySetter(null);
         this.showSetter(prev => ({ ...prev,
-          pinUI_Measurement: false,
-          defaultUI: true
+          ui_PinMeasurement: false,
+          ui_Default: true
         }));
         PinMeasurementUI_API.closeMap();
       }
@@ -91,8 +91,8 @@ export class MapAPI {
         compassMeasurement: true,
       }));
       this.showSetter(prev => ({ ...prev,
-        pinUI_Measurement: true,
-        defaultUI: false,
+        ui_PinMeasurement: true,
+        ui_Default: false,
       }));
     }
   }
