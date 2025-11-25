@@ -32,7 +32,7 @@ export const UI_PinGPS = memo((props: {
   mapPressed: boolean;
   onCurrentPosition: () => void;
   goToCoordinate: (coordinate: CoordinateDTO) => void;
-  onMeasurementUpdate: (gpsInput: OpenEntity | null) => void;
+  onGPSUpdate: (gpsInput: OpenEntity | null) => void;
   onFilterChange: (filter: MapFilter) => void;
   onCloseMap: () => void;
 }) => {
@@ -142,7 +142,7 @@ export const UI_PinGPS = memo((props: {
     showUI,
     openGPS,
     source: gpsSource,
-    onMeasurementUpdate: props.onMeasurementUpdate,
+    onGPSUpdate: props.onGPSUpdate,
   });
 
   useOpenGPSLocation({
@@ -215,13 +215,13 @@ function useUpdateGPS(o: {
   showUI: boolean,
   openGPS: GPSInputData | null,
   source: GPSSource | null,
-  onMeasurementUpdate: (measurement: OpenEntity | null) => void,
+  onGPSUpdate: (gpsInput: OpenEntity | null) => void,
 }) {
   const { showUI, openGPS, source } = o;
   useEffect(() => {
     if (!showUI) { return; }
     if (openGPS === null || source === null) { return; }
-    o.onMeasurementUpdate({
+    o.onGPSUpdate({
       type: 'gps input',
       source: source,
       entity: openGPS,

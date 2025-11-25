@@ -3,10 +3,11 @@ import { View } from "react-native";
 import { Region } from "react-native-maps";
 
 import {
-  MapScope,
-  OpenEntity,
   CompassMeasurementDTO,
-  CoordinateDTO
+  CoordinateDTO,
+  MapFilter,
+  MapScope,
+  OpenEntity
 } from "@V2/Types";
 
 import DevTools from "@DevTools";
@@ -22,6 +23,7 @@ import { MapButton } from "../../Buttons";
 export const UI_PinMeasurement = memo((props: {
   showUI: boolean;
   scope: MapScope
+  filter: MapFilter;
   tutorialMode: boolean;
   followUser: boolean;
   showCurrentPositionIndicator: boolean;
@@ -30,6 +32,7 @@ export const UI_PinMeasurement = memo((props: {
   onCurrentPosition: () => void;
   goToCoordinate: (coordinate: CoordinateDTO) => void;
   onMeasurementUpdate: (measurement: OpenEntity | null) => void;
+  onFilterChange: (filter: MapFilter) => void;
   onCloseMap: () => void;
 }) => {
 
@@ -39,8 +42,10 @@ export const UI_PinMeasurement = memo((props: {
     tutorialMode,
     centerRegion,
     mapPressed,
+    filter,
   } = props;
 
+  const [showFilter           , setShowFilter           ] = useState(false);
   const [backupCoordinate     , setBackupCoordinate     ] = useState<CoordinateDTO | undefined>(undefined);
   const [openMeasurement      , setOpenMeasurement      ] = useState<CompassMeasurementDTO | null>(null);
   const [didMeasurementChanged, setDidMeasurementChanged] = useState<boolean>(false);
@@ -117,6 +122,14 @@ export const UI_PinMeasurement = memo((props: {
       props.goToCoordinate({ lat: newLatitude, long: newLongitude, accuracy: 0 });
   }, [tutorialMode]);
 
+  const onFilterClose = useCallback(() => {
+    setShowFilter(false);
+  }, []);
+
+  const onFilterOpen = useCallback(() => {
+    setShowFilter(true);
+  }, []);
+
   useUpdateMeasurement({
     showUI: showUI,
     openMeasurement: openMeasurement,
@@ -143,6 +156,17 @@ export const UI_PinMeasurement = memo((props: {
   return (<>
     <LC.MapLabel scope={props.scope} />
     <LC.MapCrosshair show={showUI} />
+    <LC.Filter
+      filter={filter}
+      onClose={onFilterClose}
+      show={showFilter}
+      onFilterChange={props.onFilterChange}
+      style={{
+        position: 'absolute',
+        zIndex: Z_INDEX.LAYER_MAP + 1,
+        alignSelf: 'center',
+      }}
+    />
     <View
       style={{
         position: 'absolute',
@@ -163,6 +187,9 @@ export const UI_PinMeasurement = memo((props: {
       />
       <MapButton.Delete
         onPress={deleteMeasurementCoordinates}
+      />
+      <MapButton.Filter
+        onPress={onFilterOpen}
       />
       <MapButton.CurrentPosition
         showIndicator={props.showCurrentPositionIndicator}

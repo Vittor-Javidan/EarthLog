@@ -194,6 +194,7 @@ export const Layer_Map = memo(() => {
       <UI.PinMeasurement
         showUI={show.ui_PinMeasurement}
         scope={scope}
+        filter={filter}
         tutorialMode={tutorialMode}
         centerRegion={centerRegion}
         followUser={followUser}
@@ -202,6 +203,7 @@ export const Layer_Map = memo(() => {
         goToCoordinate={setGoToCoordinate}
         onCurrentPosition={followUserLocation}
         onMeasurementUpdate={setOpenEntity}
+        onFilterChange={setFilter}
         onCloseMap={() => MapAPI.toggleMap(false)}
       />
       <UI.PinGPS
@@ -215,7 +217,7 @@ export const Layer_Map = memo(() => {
         mapPressed={mapPressed}
         goToCoordinate={setGoToCoordinate}
         onCurrentPosition={followUserLocation}
-        onMeasurementUpdate={setOpenEntity}
+        onGPSUpdate={setOpenEntity}
         onFilterChange={setFilter}
         onCloseMap={() => MapAPI.toggleMap(false)}
       />

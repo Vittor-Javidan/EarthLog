@@ -1,6 +1,7 @@
 # ✅ 2.5.9
 - New:
   - Now GPS Input allows get coordinates through the map by clicking the pin button
+  - Added filter button to Pin Measurement map UI
 
 
 # ✅ 2.5.8
