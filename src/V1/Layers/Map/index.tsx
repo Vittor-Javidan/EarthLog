@@ -47,6 +47,7 @@ export const Layer_Map = memo(() => {
     tutorial: ConfigService.config.tutorial_map,
     ui_Default: true,
     ui_PinMeasurement: false,
+    ui_PinGPS: false,
   })
   MapAPI.scopeSetter        = setScope;
   MapAPI.tutorialModeSetter = setTutorialMode;
@@ -201,6 +202,21 @@ export const Layer_Map = memo(() => {
         goToCoordinate={setGoToCoordinate}
         onCurrentPosition={followUserLocation}
         onMeasurementUpdate={setOpenEntity}
+        onCloseMap={() => MapAPI.toggleMap(false)}
+      />
+      <UI.PinGPS
+        showUI={show.ui_PinGPS}
+        scope={scope}
+        filter={filter}
+        tutorialMode={tutorialMode}
+        centerRegion={centerRegion}
+        followUser={followUser}
+        showCurrentPositionIndicator={mapRef === null || show.indicator}
+        mapPressed={mapPressed}
+        goToCoordinate={setGoToCoordinate}
+        onCurrentPosition={followUserLocation}
+        onMeasurementUpdate={setOpenEntity}
+        onFilterChange={setFilter}
         onCloseMap={() => MapAPI.toggleMap(false)}
       />
 

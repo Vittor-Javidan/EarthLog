@@ -1,4 +1,6 @@
 # ✅ 2.5.9
+- New:
+  - Now GPS Input allows get coordinates through the map by clicking the pin button
 
 
 # ✅ 2.5.8

@@ -16,11 +16,16 @@ export const Markers_Sample = memo((props: {
   sampleDTO: SampleDTO
   openEntity: OpenEntity | null
   filter: MapFilter
-}) => { 
+}) => {
+  const isEntitySampleInfo = (
+    props.openEntity?.type === 'gps input' &&
+    props.openEntity.source === 'reference_gps_sample'
+  );
+  const showSampleInfo = !isEntitySampleInfo && props.filter.sampleInfo;
   return (<>
     <Marker_SampleSettings
       key={props.sampleDTO.sampleSettings.id_sample}
-      show={props.filter.sampleInfo}
+      show={showSampleInfo}
       sampleSettings={props.sampleDTO.sampleSettings}
     />
     {props.sampleDTO.sampleWidgets.map((widget) => (

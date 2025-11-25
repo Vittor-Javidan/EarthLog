@@ -160,6 +160,7 @@ export const Screen_SampleInfo = memo((props: {
                     lockedData: !sampleSettings.rules.allowGPSChange,
                   }}
                   referenceGPSData={undefined}
+                  gpsSource='reference_gps_sample'
                   automaticGPSAcquisition={config.automaticSampleGPSReference}
                   onSave={(inputData) => onSaveGPS(inputData)}
                   theme={theme}

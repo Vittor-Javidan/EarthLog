@@ -217,6 +217,7 @@ export type MapShowSetter = {
   tutorial: boolean;
   ui_Default: boolean;
   ui_PinMeasurement: boolean;
+  ui_PinGPS: boolean;
 }
 
 export type MapFilter = {
@@ -229,7 +230,30 @@ export type MapFilter = {
 export type OpenEntity = {
   type: 'compass measurement',
   entity: CompassMeasurementDTO
+} | {
+  type: 'gps input',
+  source: GPSSource,
+  entity: GPSInputData
 }
+
+// --------------------------------- GPS Types ---------------------------------
+
+export type GPSFeaturesDTO = {
+  editMode: boolean
+  gpsTracking: boolean
+  enableCoordinate: boolean
+  enableAltitude: boolean
+  gettingCurrentPosition: boolean
+  isManualInputOpen: boolean
+}
+
+export type GPSAccuracyDTO = {
+  coordinate: number | null,
+  altitude: number | null
+}
+
+/** Allows the Map to know wich GPS is, so it can define witch Marker Icon to use. Only that. */
+export type GPSSource = 'widget_gps' | 'reference_gps_project' | 'reference_gps_sample'
 
 // --------------------------------- Compass Types -----------------------------
 
@@ -456,18 +480,6 @@ export type CoordinateDTO = {
 export type AltitudeDTO = {
   value: number
   accuracy: number
-}
-export type GPSAccuracyDTO = {
-  coordinate: number | null,
-  altitude: number | null
-}
-export type GPSFeaturesDTO = {
-  editMode: boolean
-  gpsTracking: boolean
-  enableCoordinate: boolean
-  enableAltitude: boolean
-  gettingCurrentPosition: boolean
-  isManualInputOpen: boolean
 }
 
 // ============================

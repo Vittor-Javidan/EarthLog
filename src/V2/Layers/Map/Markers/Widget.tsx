@@ -21,6 +21,7 @@ export const Markers_Widget = memo((props: {
   filter: MapFilter
 }) => {
 
+  const openGPS         = props.openEntity?.type === 'gps input'           ? props.openEntity.entity : null;
   const openMeasurement = props.openEntity?.type === 'compass measurement' ? props.openEntity.entity : null;
 
   return (<>
@@ -33,6 +34,7 @@ export const Markers_Widget = memo((props: {
           <Marker_GPSInput
             key={input.id_input}
             inputData={input}
+            openGPS={openGPS}
           />
         )
       }
@@ -54,12 +56,14 @@ export const Markers_Widget = memo((props: {
 
 const Marker_GPSInput = memo((props: {
   inputData: GPSInputData
+  openGPS: GPSInputData | null
 }) => {
 
-  const { inputData } = props;
+  const { inputData, openGPS } = props;
   const { value } = inputData;
 
-  if (value.coordinates === undefined) {
+  const isEntity = openGPS !== null && openGPS.id_input === inputData.id_input;
+  if (value.coordinates === undefined || isEntity) {
     return <></>;
   }
 
@@ -98,21 +102,14 @@ const Marker_CompassInput = memo((props: {
   openMeasurement: CompassMeasurementDTO | null
 }) => {
 
-  const AllMeasurements = props.inputData.value.map((measurement) => {
-    const entity = props.openMeasurement;
-    const isEntity = entity !== null && entity.id === measurement.id;
-    if (
-      !isEntity &&
-      measurement.coordinates !== undefined
-    ) {
-      return (
-        <Marker_Measurement
-          key={measurement.id}
-          measurement={measurement}
-        />
-      );
-    }
-  });
+  const AllMeasurements = props.inputData.value.map((measurement) => (
+    <Marker_Measurement
+      key={measurement.id}
+      measurement={measurement}
+      openMeasurement={props.openMeasurement}
+    />
+  ));
+
   return (<>
     {AllMeasurements}
   </>)
@@ -120,13 +117,17 @@ const Marker_CompassInput = memo((props: {
 
 const Marker_Measurement = memo((props: {
   measurement: CompassMeasurementDTO
+  openMeasurement: CompassMeasurementDTO | null
 }) => {
 
-  const { coordinates, markerIcon, heading, label, dip } = props.measurement;
+  const { measurement, openMeasurement } = props;
+  const { coordinates, markerIcon, heading, label, dip } = measurement;
   const config = ConfigService.config;
   const R      = translations.layers.map[config.language];
 
-  if (coordinates === undefined) {
+  const entity = openMeasurement;
+  const isEntity = entity !== null && entity.id === measurement.id;
+  if (coordinates === undefined || isEntity) {
     return <></>;
   }
 

@@ -1,7 +1,9 @@
-import { DefaultUI } from "./Default";
-import { MeasurementPinUI } from "./PinMeasurement";
+import { UI_Default } from "./Default";
+import { UI_PinGPS } from "./PinGPS";
+import { UI_PinMeasurement } from "./PinMeasurement";
 
 export const UI = {
-  Default: DefaultUI,
-  PinMeasurement: MeasurementPinUI,
+  Default: UI_Default,
+  PinMeasurement: UI_PinMeasurement,
+  PinGPS: UI_PinGPS,
 }

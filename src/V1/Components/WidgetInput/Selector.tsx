@@ -99,8 +99,9 @@ export const InputSelector = memo((props: {
         onInputMoveUp={props.onInputMoveUp}
         onInputMoveDow={props.onInputMoveDow}
         widgetRules={props.widgetRules}
-        theme={props.widgetTheme}
         referenceGPSData={props.referenceGPSData}
+        gpsSource={'widget_gps'}
+        theme={props.widgetTheme}
       />
     );
     case 'picture': return (

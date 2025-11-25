@@ -136,8 +136,9 @@ export const ProjectSettingsWidget = memo((props: {
                 lockedLabel: true,
                 lockedData: !projectSettings.rules.allowGPSChange,
               }}
-              onSave={(inputData) => onSaveGPS(inputData)}
               referenceGPSData={undefined}
+              gpsSource='reference_gps_project'
+              onSave={(inputData) => onSaveGPS(inputData)}
               theme={theme}
               {...unusedProps}
             />

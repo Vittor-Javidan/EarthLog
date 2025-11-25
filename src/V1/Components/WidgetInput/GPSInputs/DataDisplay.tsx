@@ -1,5 +1,5 @@
-import React, { memo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import React, { memo } from 'react';
+import { View } from 'react-native';
 
 import {
   GPSFeaturesDTO,
@@ -8,14 +8,12 @@ import {
 } from '@V1/Types';
 
 import DevTools from "@DevTools";
-import { Icon } from '@V1/Icon/index';
 import { Text } from '@V1/Text/index';
 
 export const DataDisplay = memo((props: {
   inputData: GPSInputData
   features: GPSFeaturesDTO
   theme: WidgetTheme
-  onMapPress: () => void
 }) => {
 
   const { inputData, features, theme } = props;
@@ -41,8 +39,6 @@ export const DataDisplay = memo((props: {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          gap: 10,
         }}
       >
         <View
@@ -51,18 +47,20 @@ export const DataDisplay = memo((props: {
           }}
         >
           {coordinates !== undefined && <>
-            <DataInfo
-              title="Latitude"
-              value={DevTools.TUTORIAL_MODE ? coordinates.lat + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : coordinates.lat}
-              precision={coordinates.accuracy}
-              theme={theme}
-            />
-            <DataInfo
-              title="Longitude"
-              value={DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long}
-              precision={coordinates.accuracy}
-              theme={theme}
-            />
+            <View>
+              <DataInfo
+                title="Latitude"
+                value={DevTools.TUTORIAL_MODE ? coordinates.lat + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : coordinates.lat}
+                precision={coordinates.accuracy}
+                theme={theme}
+              />
+              <DataInfo
+                title="Longitude"
+                value={DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long}
+                precision={coordinates.accuracy}
+                theme={theme}
+              />
+            </View>
           </>}
           {altitude !== undefined && <>
             <DataInfo
@@ -73,12 +71,6 @@ export const DataDisplay = memo((props: {
             />
           </>}
         </View>
-        {coordinates !== undefined && (
-          <MapButton
-            onPress={() => props.onMapPress()}
-            theme={theme}
-          />
-        )}
       </View>
     )}
   </>);
@@ -110,33 +102,3 @@ const DataInfo = memo((props: {
     </View>
   );
 });
-
-const MapButton = memo((props: {
-  onPress: () => void
-  theme: WidgetTheme
-}) => {
-
-  const [pressed, setPressed] = useState(false);
-
-  return (
-    <Pressable
-      onPress={props.onPress}
-      onPressIn={() => setPressed(true)}
-      onPressOut={() => setPressed(false)}
-      style={{
-        backgroundColor: pressed ? props.theme.confirm : props.theme.font,
-        borderRadius: 6,
-        width: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Icon
-        iconName='google-maps'
-        fontSize={40}
-        color={pressed ? props.theme.font : props.theme.background}
-      />
-    </Pressable>
-  );
-});
-

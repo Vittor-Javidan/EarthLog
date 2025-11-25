@@ -18,7 +18,7 @@ export const StaticDisplay = memo((props: {
 }) => {
 
   if (
-    // props.show.ui_PinGPS ||
+    props.show.ui_PinGPS ||
     props.show.ui_Default ||
     props.show.ui_PinMeasurement
   ) {

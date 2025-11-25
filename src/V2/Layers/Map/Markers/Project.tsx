@@ -21,9 +21,14 @@ export const Markers_Project = memo((props: {
   filter: MapFilter
 }) => {
   const { projectDTO } = props
+  const isEntityProjectInfo = (
+    props.openEntity?.type === 'gps input' &&
+    props.openEntity.source === 'reference_gps_project'
+  );
+  const showProjectInfo = !isEntityProjectInfo && props.filter.projectInfo;
   return (<>
     <Marker_ProjectSettings
-      show={props.filter.projectInfo}
+      show={showProjectInfo}
       projectSettings={props.projectDTO.projectSettings}
     />
     {projectDTO.projectWidgets.map((widget) => (

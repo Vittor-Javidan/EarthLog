@@ -174,6 +174,7 @@ export const Screen_WidgetThemePreview = memo((props: {
                 onInputMoveDow={() => {}}
                 onInputMoveUp={() => {}}
                 widgetRules={{}}
+                gpsSource='widget_gps'
                 theme={theme}
               />
             </View>

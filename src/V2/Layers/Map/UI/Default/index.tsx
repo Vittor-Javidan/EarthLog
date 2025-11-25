@@ -10,7 +10,7 @@ import { Z_INDEX } from "@V2/Globals/zIndex";
 import { MapButton } from "../../Buttons";
 import { LC } from "../../__LC__";
 
-export const DefaultUI = memo((props: {
+export const UI_Default = memo((props: {
   show: boolean;
   scope: MapScope
   filter: MapFilter;

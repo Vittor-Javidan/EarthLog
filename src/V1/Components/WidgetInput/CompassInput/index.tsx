@@ -16,7 +16,7 @@ import { IDService } from '@V1/Services_Core/IDService';
 import { ConfigService } from '@V1/Services/ConfigService';
 import { PopUpAPI } from '@V1/Layers/API/PopUp';
 import { useCompassLayer } from '@V1/Layers/API/Compass';
-import { useMap_SetMarker } from '@V1/Layers/API/Map';
+import { useMap_SetMarker_Measurement } from '@V1/Layers/API/Map';
 
 import { LC } from '../__LC__';
 import { AddMeasurementButton } from './AddMeasurentButton';
@@ -151,7 +151,7 @@ export const CompassInput = memo((props: {
     onCompassClose: () => setShow(prev => ({ ...prev, compass: false })),
   }, [show.compass, inputData]);
 
-  useMap_SetMarker({
+  useMap_SetMarker_Measurement({
     openMap: show.map,
     measurement: openMeasurementIndex !== null ? inputData.value[openMeasurementIndex] : null,
     onCloseMap: () => {

@@ -5,6 +5,7 @@ import {
   GPSInputData,
   GPSAccuracyDTO,
   GPSFeaturesDTO,
+  GPSSource,
   GPS_DTO,
   WidgetRules,
   WidgetTheme
@@ -16,6 +17,7 @@ import { translations } from '@V2/Translations/index';
 import { GPSService, GPSWatcherService } from '@V2/Services_Core/GPSService';
 import { ConfigService } from '@V2/Services/ConfigService';
 import { NotificationAPI } from '@V2/Layers/API/Notification';
+import { useMap_SetMarker_GPS } from '@V2/Layers/API/Map';
 import { PopUpAPI } from '@V2/Layers/API/PopUp';
 
 import { LC } from '../__LC__';
@@ -26,16 +28,19 @@ import { LoadingFeedback } from './LoadingFeedback';
 import { RealTimeAccuracy } from './RealTimeAccuracy';
 import { DeleteDataButton } from './DeleteDataButton';
 import { ReferenceDistance } from './ReferenceDistance';
+import { MapButton } from './MapButton';
+import { PinButton } from './PinButton';
 
 export const GPSInput = memo((props: {
   inputData: GPSInputData
   editWidget: boolean
   isFirstInput: boolean
   isLastInput: boolean
-  referenceGPSData: GPS_DTO | undefined
   widgetRules: WidgetRules
-  theme: WidgetTheme
   automaticGPSAcquisition?: boolean
+  referenceGPSData: GPS_DTO | undefined
+  gpsSource: GPSSource // Allows the Map to know wich GPS is, so it can define witch Marker Icon to use. Only that.
+  theme: WidgetTheme
   onSave: (inputData: GPSInputData) => void
   onInputDelete: () => void
   onInputMoveUp: () => void
@@ -47,11 +52,7 @@ export const GPSInput = memo((props: {
   const gpsWatcher = useMemo(() => new GPSWatcherService(deepCopy(props.inputData.value)), []);
   const [inputData        , setInputData        ] = useState<GPSInputData>(deepCopy(props.inputData));
   const [referenceDistance, setReferenceDistance] = useState<number | null>(null);
-  const [accuracy         , setAccuracy         ] = useState<GPSAccuracyDTO>({
-    coordinate: null,
-    altitude: null,
-  });
-
+  const [accuracy         , setAccuracy         ] = useState<GPSAccuracyDTO>({ coordinate: null, altitude: null });
   const [features, setFeatures] = useState<GPSFeaturesDTO>({
     editMode: false,
     gpsTracking: false,
@@ -59,6 +60,10 @@ export const GPSInput = memo((props: {
     enableAltitude: true,
     gettingCurrentPosition: false,
     isManualInputOpen: false,
+  });
+
+  const [show, setShow] = useState({
+    map: false,
   });
 
   const noGPSData = Object.keys(inputData.value).length <= 0;
@@ -175,14 +180,18 @@ export const GPSInput = memo((props: {
     });
   }, [asyncSave]);
 
-  const onMapOpen = useCallback((inputData: GPSInputData) => {
+  const onGoogleMapOpen = useCallback(() => {
     const { coordinates } = inputData.value;
     if (coordinates) {
       const latitude  = DevTools.TUTORIAL_MODE ? coordinates.lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : coordinates.lat;
       const longitude = DevTools.TUTORIAL_MODE ? coordinates.long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : coordinates.long;
       Linking.openURL(`https://www.google.com/maps?q=${latitude},${longitude}`);
     }
-  }, []);
+  }, [inputData]);
+
+  const onAppMapOpen = useCallback(() => {
+    setShow(prev => ({ ...prev, map: true }));
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -209,6 +218,28 @@ export const GPSInput = memo((props: {
       onGPS_Snapshot(noGPSData, inputData);
     }
   }, [])
+
+  useMap_SetMarker_GPS({
+    openMap: show.map,
+    gps: inputData,
+    source: props.gpsSource,
+    onCloseMap: () => setShow(prev => ({ ...prev, map: false })),
+    onRegionChangeCallback: (coordinates) => {
+      const newData: GPSInputData = { ...inputData };
+      switch (true) {
+        case !coordinates && newData.value.coordinates === undefined: {
+          delete newData.value.coordinates;
+          break;
+        }
+        case coordinates !== undefined: {
+          newData.value.coordinates = coordinates;
+          break;
+        }
+      }
+      asyncSave(newData);
+      setInputData(newData);
+    },
+  })
 
   return (<>
     <LC.Root
@@ -240,58 +271,86 @@ export const GPSInput = memo((props: {
     >
       <View
         style={{
-          paddingVertical: 10,
-          gap: 10,
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5,
         }}
       >
-        <ReferenceDistance
-          referenceDistance={referenceDistance}
-          theme={props.theme}
-        />
-        <CheckboxOptions
-          features={features}
-          onToogle_Coordinate={async (checked) => await toogleCoordinate(checked, inputData)}
-          onToogle_Altitude={async (checked) => await toogleAltitude(checked, inputData)}
-          theme={props.theme}
-        />
-        <DataDisplay
-          inputData={inputData}
-          features={features}
-          theme={props.theme}
-          onMapPress={() => onMapOpen(inputData)}
-        />
-        <RealTimeAccuracy
-          accuracy={accuracy}
-          features={features}
-          theme={props.theme}
-        />
-        <LoadingFeedback
-          features={features}
-          theme={props.theme}
-        />
-        {features.editMode === true && (
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: 10,
-            }}
-          >
-            <ManualInput
-              gpsData={inputData.value}
-              features={features}
-              onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
-              onOpen={() => setFeatures(prev => ({ ...prev, isManualInputOpen: true }))}
-              onClose={() => setFeatures(prev => ({ ...prev, isManualInputOpen: false }))}
+        <View
+          style={{
+            paddingVertical: 10,
+            gap: 10,
+            flex: 1,
+            justifyContent: 'space-between',
+          }}
+        >
+          <ReferenceDistance
+            referenceDistance={referenceDistance}
+            theme={props.theme}
+          />
+          <CheckboxOptions
+            features={features}
+            onToogle_Coordinate={async (checked) => await toogleCoordinate(checked, inputData)}
+            onToogle_Altitude={async (checked) => await toogleAltitude(checked, inputData)}
+            theme={props.theme}
+          />
+          <DataDisplay
+            inputData={inputData}
+            features={features}
+            theme={props.theme}
+          />
+          <RealTimeAccuracy
+            accuracy={accuracy}
+            features={features}
+            theme={props.theme}
+          />
+          <LoadingFeedback
+            features={features}
+            theme={props.theme}
+          />
+          {features.editMode === true && (
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+              }}
+            >
+              <ManualInput
+                gpsData={inputData.value}
+                features={features}
+                onConfirm={(newGPSData) => onManualInput(newGPSData, inputData)}
+                onOpen={() => setFeatures(prev => ({ ...prev, isManualInputOpen: true }))}
+                onClose={() => setFeatures(prev => ({ ...prev, isManualInputOpen: false }))}
+                theme={props.theme}
+              />
+              {features.isManualInputOpen === false && (
+                <DeleteDataButton
+                  theme={props.theme}
+                  onPress={async () => await onDeleteData(noGPSData, inputData)}
+                /> 
+              )}
+            </View>
+          )}
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            paddingVertical: 10,
+            gap: 5,
+          }}
+        >
+          <PinButton
+            onPress={onAppMapOpen}
+            isPinned={inputData.value.coordinates !== undefined}
+            theme={props.theme}
+          />
+          {inputData.value.coordinates !== undefined && (
+            <MapButton
+              onPress={onGoogleMapOpen}
               theme={props.theme}
             />
-            {features.isManualInputOpen === false && (
-              <DeleteDataButton
-                theme={props.theme}
-                onPress={async () => await onDeleteData(noGPSData, inputData)}
-              /> 
-            )}
-          </View>
-        )}
+          )}
+        </View>
       </View>
     </LC.Root>
   </>);

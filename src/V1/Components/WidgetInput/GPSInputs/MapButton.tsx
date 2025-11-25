@@ -8,14 +8,10 @@ import {
 import { HapticsService } from "@V1/Services/HapticsService";
 import { Icon } from "@V1/Icon/index";
 
-export const SetMapMarkerPositionButton = memo((props: {
-  isPinned: boolean
-  show: boolean
+export const MapButton = memo((props: {
   onPress: () => void
   theme: WidgetTheme
 }) => {
-
-  if (!props.show) { return <></>; }
 
   const [pressed, setPressed] = useState(false);
 
@@ -28,40 +24,25 @@ export const SetMapMarkerPositionButton = memo((props: {
     setPressed(false);
   }, []);
 
-  const activeBackgroundColor = props.isPinned
-  ? props.theme.font
-  : props.theme.confirm;
-
-  const backgroundColor = props.isPinned
-  ? props.theme.confirm
-  : props.theme.font;
-
-  const activeFontColor = props.isPinned
-  ? props.theme.background
-  : props.theme.font;
-
-  const fontColor = props.isPinned
-  ? props.theme.font
-  : props.theme.background;
-
   return (
     <Pressable
       onPress={props.onPress}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={{
-        backgroundColor: pressed ? activeBackgroundColor : backgroundColor,
-        borderRadius: 6,
-        width: 40,
-        height: 60,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        width: 40,
+        paddingVertical: 10,
+        backgroundColor: pressed ? props.theme.confirm : props.theme.font,
+        borderRadius: 6,
       }}
     >
       <Icon
-        iconName='pushpin'
-        fontSize={20}
-        color={pressed ? activeFontColor : fontColor}
+        iconName='google-maps'
+        fontSize={25}
+        color={pressed ? props.theme.font : props.theme.background}
       />
     </Pressable>
   );

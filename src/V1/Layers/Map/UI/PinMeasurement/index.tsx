@@ -19,7 +19,7 @@ import { useMapPress } from "../../Hooks";
 import { LC } from "../../__LC__";
 import { MapButton } from "../../Buttons";
 
-export const MeasurementPinUI = memo((props: {
+export const UI_PinMeasurement = memo((props: {
   showUI: boolean;
   scope: MapScope
   tutorialMode: boolean;
@@ -96,6 +96,7 @@ export const MeasurementPinUI = memo((props: {
         props.goToCoordinate({ lat: newLatitude, long: newLongitude, accuracy: 0 });
       }
     }
+    setDidMeasurementChanged(false);
     setOpenMeasurement(newMeasurement);
   }, [openMeasurement, backupCoordinate, tutorialMode])
 
@@ -113,11 +114,7 @@ export const MeasurementPinUI = memo((props: {
       const { lat, long } = coordinate;
       const newLatitude  = tutorialMode ? lat  + DevTools.TUTORIAL_RANDOM_OFFSET_LATITUDE : lat;
       const newLongitude = tutorialMode ? long + DevTools.TUTORIAL_RANDOM_OFFSET_LONGITUDE : long;
-      props.goToCoordinate({
-        lat: newLatitude,
-        long: newLongitude,
-        accuracy: 0,
-      });
+      props.goToCoordinate({ lat: newLatitude, long: newLongitude, accuracy: 0 });
   }, [tutorialMode]);
 
   useUpdateMeasurement({
@@ -145,9 +142,7 @@ export const MeasurementPinUI = memo((props: {
 
   return (<>
     <LC.MapLabel scope={props.scope} />
-    <LC.MapCrosshair
-      show={showUI}
-    />
+    <LC.MapCrosshair show={showUI} />
     <View
       style={{
         position: 'absolute',

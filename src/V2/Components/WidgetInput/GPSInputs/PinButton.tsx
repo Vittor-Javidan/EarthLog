@@ -8,14 +8,11 @@ import {
 import { HapticsService } from "@V2/Services/HapticsService";
 import { Icon } from "@V2/Icon/index";
 
-export const SetMapMarkerPositionButton = memo((props: {
-  isPinned: boolean
-  show: boolean
+export const PinButton = memo((props: {
   onPress: () => void
+  isPinned: boolean
   theme: WidgetTheme
 }) => {
-
-  if (!props.show) { return <></>; }
 
   const [pressed, setPressed] = useState(false);
 
@@ -50,17 +47,18 @@ export const SetMapMarkerPositionButton = memo((props: {
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={{
-        backgroundColor: pressed ? activeBackgroundColor : backgroundColor,
-        borderRadius: 6,
-        width: 40,
-        height: 60,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        width: 40,
+        paddingVertical: 10,
+        backgroundColor: pressed ? activeBackgroundColor : backgroundColor,
+        borderRadius: 6,
       }}
     >
       <Icon
         iconName='pushpin'
-        fontSize={20}
+        fontSize={25}
         color={pressed ? activeFontColor : fontColor}
       />
     </Pressable>
