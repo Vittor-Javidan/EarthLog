@@ -5,6 +5,8 @@ import {
 type TranslationDTO = Record<LanguageTag, {
   'Looking into project:': string,
   'Looking into sample:': string,
+  'You changed the GPS input location. Confirm to save the changes': string,
+  'You changed the measurement location. Confirm to save the changes': string,
 
   // Filter
   'Filter': string,
@@ -23,6 +25,8 @@ export const R_Layer_Map: TranslationDTO = {
   'en-US': {
     'Looking into project:': 'Looking into project:',
     'Looking into sample:': 'Looking into sample:',
+    'You changed the GPS input location. Confirm to save the changes': 'You changed the GPS input location. Confirm to save the changes',
+    'You changed the measurement location. Confirm to save the changes': 'You changed the measurement location. Confirm to save the changes',
 
     // Filter
     'Filter': 'Filter',
@@ -39,6 +43,8 @@ export const R_Layer_Map: TranslationDTO = {
   'pt-BR': {
     'Looking into project:': 'Olhando o projeto:',
     'Looking into sample:': 'Olhando a amostra:',
+    'You changed the GPS input location. Confirm to save the changes': 'Você alterou a localização do GPS. Confirma para salvar as alterações',
+    'You changed the measurement location. Confirm to save the changes': 'Você alterou a localização da medição. Confirme para salvar as alterações',
 
     // Filter
     'Filter': 'Filtro',

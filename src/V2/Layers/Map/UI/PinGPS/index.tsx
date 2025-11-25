@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Region } from "react-native-maps";
 
@@ -13,7 +13,9 @@ import {
 
 import DevTools from "@DevTools";
 import { Z_INDEX } from "@V2/Globals/zIndex";
+import { translations } from "@V2/Translations/index";
 import { CacheService } from "@V2/Services/CacheService";
+import { ConfigService } from "@V2/Services/ConfigService";
 import { PinGPS_API } from "@V2/Layers/API/Map";
 import { PopUpAPI } from "@V2/Layers/API/PopUp";
 import { useMapPress } from "../../Hooks";
@@ -46,6 +48,8 @@ export const UI_PinGPS = memo((props: {
     filter,
   } = props;
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
   const [showFilter      , setShowFilter      ] = useState(false);
   const [backupCoordinate, setBackupCoordinate] = useState<CoordinateDTO | undefined>(undefined);
   const [openGPS         , setOpenGPS         ] = useState<GPSInputData | null>(null);
@@ -60,7 +64,7 @@ export const UI_PinGPS = memo((props: {
   const saveAndCloseGPSCoordinates = useCallback(() => {
     PopUpAPI.handleAlert((didGPSChanged && backupCoordinate !== undefined), {
       type: 'warning',
-      question: 'You changed the GPS input location. Do you want to save the changes?',
+      question: R['You changed the GPS input location. Confirm to save the changes'],
     }, () => {
       if (openGPS === null || gpsSource === null) { return }
       openGPS.value.coordinates === undefined

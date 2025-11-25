@@ -3,6 +3,9 @@
   - Now GPS Input allows get coordinates through the map by clicking the pin button
   - Added filter button to Pin Measurement map UI
 
+- Fix:
+  - Added popup translations for Pin GPS and Pin Measurement map UIs
+
 
 # ✅ 1.15.8
 - Critical Fix:

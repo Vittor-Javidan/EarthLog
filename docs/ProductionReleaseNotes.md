@@ -1,8 +1,8 @@
 <en-US>
-  - Widgets are now called Forms
-  - Map translations improved
+  - Added filter on the Map Measurement UI
+  - Now GPS input can pin the location inside the map
 </en-US>
 <pt-BR>
-  - Widgets agora são chamados de Formulários
-  - Traduções do mapa melhoradas
+  - Adicionado filtro na UI de Medição do Mapa
+  - Agora o input de GPS pode fixar a localização dentro do mapa
 </pt-BR>

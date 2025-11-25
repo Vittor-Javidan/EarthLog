@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Region } from "react-native-maps";
 
@@ -12,7 +12,9 @@ import {
 
 import DevTools from "@DevTools";
 import { Z_INDEX } from "@V1/Globals/zIndex";
+import { translations } from "@V1/Translations/index";
 import { CacheService } from "@V1/Services/CacheService";
+import { ConfigService } from "@V1/Services/ConfigService";
 import { PinMeasurementUI_API } from "@V1/Layers/API/Map";
 import { PopUpAPI } from "@V1/Layers/API/PopUp";
 import { useMapPress } from "../../Hooks";
@@ -45,6 +47,8 @@ export const UI_PinMeasurement = memo((props: {
     filter,
   } = props;
 
+  const config = useMemo(() => ConfigService.config, []);
+  const R      = useMemo(() => translations.layers.map[config.language], []);
   const [showFilter           , setShowFilter           ] = useState(false);
   const [backupCoordinate     , setBackupCoordinate     ] = useState<CoordinateDTO | undefined>(undefined);
   const [openMeasurement      , setOpenMeasurement      ] = useState<CompassMeasurementDTO | null>(null);
@@ -56,7 +60,7 @@ export const UI_PinMeasurement = memo((props: {
   const saveAndCloseMeasurementCoordinates = useCallback(() => {
     PopUpAPI.handleAlert((didMeasurementChanged && backupCoordinate !== undefined), {
       type: 'warning',
-      question: 'You changed the measurement location. Do you want to save the changes?',
+      question: R['You changed the measurement location. Confirm to save the changes'],
     }, () => {
       if (openMeasurement === null) { return }
       openMeasurement.coordinates === undefined
