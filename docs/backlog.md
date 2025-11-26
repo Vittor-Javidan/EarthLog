@@ -9,8 +9,6 @@
 
 # features:
 
-- Measurement change popup translations
-
 - Compass:
     - implement stereogram display
 
