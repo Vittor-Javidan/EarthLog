@@ -5,6 +5,7 @@
 
 - Fix:
   - Added popup translations for Pin GPS and Pin Measurement map UIs
+  - File explore crashing the app when trying to go to root directory
 
 
 # ✅ 1.15.8

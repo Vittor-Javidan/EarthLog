@@ -3,7 +3,6 @@ import { View, Image } from "react-native";
 
 import { ThemeService } from "@V1/Services_Core/ThemeService";
 import { ConfigService } from "@V1/Services/ConfigService";
-
 import { PathDisplay } from "./PathDisplay";
 
 export const ImageDisplay = memo((props: {

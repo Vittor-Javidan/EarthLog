@@ -1,14 +1,16 @@
 import { memo, useMemo } from "react";
 import { Pressable, View } from "react-native";
 
-import { FileType } from "@V1/Services_Files/FileExploreService";
+import {
+  FileType
+} from "@V1/Types";
+
 import { ConfigService } from "@V1/Services/ConfigService";
 import { ThemeService } from "@V1/Services_Core/ThemeService";
 
 import { Text } from '@V1/Text/index';
 import { Icon } from "@V1/Icon/index";
 import { Layout } from "@V1/Layout/index";
-
 import { PathDisplay } from "./PathDisplay";
 
 export const ContentsDisplay = memo((props: {
@@ -36,9 +38,9 @@ export const ContentsDisplay = memo((props: {
     >
       <ContentButtons
         contents={props.contents}
-        onPressFolder={(folderName) => props.onPressFolder(folderName)}
-        onPressJsonFile={(textFileName) => props.onPressJsonFile(textFileName)}
-        onPressImageFile={(imageName) => props.onPressImageFile(imageName)}
+        onPressFolder={props.onPressFolder}
+        onPressJsonFile={props.onPressJsonFile}
+        onPressImageFile={props.onPressImageFile}
       />
     </Layout.ScrollView>
   </>)

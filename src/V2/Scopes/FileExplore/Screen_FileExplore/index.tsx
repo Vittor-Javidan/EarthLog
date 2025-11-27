@@ -1,7 +1,11 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { Directory } from 'expo-file-system';
 
-import { FileExploreService, FileType } from '@V2/Services_Files/FileExploreService';
+import {
+  FileType
+} from '@V2/Types';
 
+import { path } from '@V2/Globals/Path';
 import { Layout } from '@V2/Layout/index';
 import { LC } from './__LC__';
 import { TC } from './__TC__';
@@ -10,18 +14,15 @@ export const Screen_FileExplore = memo((props: {
   onScreenButton_Home: () => void
 }) => {
 
-  const [currentPath    , setCurrentPath     ] = React.useState<string>(FileExploreService.currentPath);
-  const [contents       , setContents        ] = React.useState<FileType[]>(FileExploreService.listCurrentDirectoryItems());
-  const [opennedImage   , setOpennedImage    ] = React.useState<string | null>(null);
-  const [opennedTextFile, setOpennedTextFile ] = React.useState<string | null>(null);
-
-  const onFolderPress = useCallback((folderName: string) => {
-    setCurrentPath(prevPath => `${prevPath}/${folderName}`);
-    setContents(FileExploreService.openFolder({
-      type: 'directory',
-      name: folderName
-    }));
-  }, [currentPath, contents]);
+  const [rootPath       , _                 ] = useState<string>(path.getDir().ROOT());
+  const [currentPath    , setCurrentPath    ] = useState<string>(path.getDir().ROOT());
+  const [contents       , setContents       ] = useState<FileType[]>([]);
+  const [opennedImage   , setOpennedImage   ] = useState<string | null>(null);
+  const [opennedTextFile, setOpennedTextFile] = useState<string | null>(null);
+  
+  const onGoToHome = useCallback(() => {
+    props.onScreenButton_Home();
+  }, []);
 
   const onImagePress = useCallback((imageName: string) => {
     setOpennedImage(imageName);
@@ -39,45 +40,54 @@ export const Screen_FileExplore = memo((props: {
     setOpennedTextFile(null);
   }, []);
 
-  const onCloseFolder = useCallback(() => {
-    if (opennedImage) {
-      onImageClose();
-      return;
-    }
-    if (opennedTextFile) {
-      onTextFileClose();
-      return;
-    }
-    if (currentPath !== FileExploreService.LTS_ROOT_PATH) {
-      setContents(FileExploreService.closeFolder());
-      setCurrentPath(FileExploreService.currentPath);
-    }
-  }, [currentPath, contents, opennedImage, opennedTextFile]);
+  const onFolderPress = useCallback((folderName: string) => {
+    setCurrentPath(prevPath => `${prevPath}/${folderName}`);
+  }, [currentPath, contents]);
 
   const onGoToRoot = useCallback(() => {
-    setContents(FileExploreService.goToRoot());
-    setCurrentPath(FileExploreService.currentPath);
-  }, [currentPath, contents]);
-  
-  const onGoToHome = useCallback(() => {
-    FileExploreService.goToRoot();
-    props.onScreenButton_Home();
-  }, []);
+    setCurrentPath(rootPath)
+    setOpennedImage(null);
+    setOpennedTextFile(null);
+  }, [opennedImage, opennedTextFile]);
+
+  const onCloseFolder = useCallback(() => {
+    switch (true) {
+      case opennedImage !== null:    onImageClose();    return;
+      case opennedTextFile !== null: onTextFileClose(); return;
+      case currentPath !== rootPath: {
+        const pathParts = currentPath.split('/');
+        pathParts.pop()
+        setCurrentPath(pathParts.join('/'));
+      }
+    }
+  }, [currentPath, opennedImage, opennedTextFile]);
+
+  const listContents = useCallback(() => {
+    const contents: FileType[] = new Directory(currentPath).list().map((item) => ({
+      type: item instanceof Directory ? 'directory' : 'file',
+      name: item.name
+    }))
+    setContents(contents);
+  }, [currentPath])
+
+  useListContents({
+    currentPath: currentPath,
+    onPathChange: listContents,
+  })
 
   return (
     <Layout.Screen
       screenButtons={
         <TC.ScreenButtons
           onCloseFolder={() => onCloseFolder()}
-          onGoToRoot={() => onGoToRoot()}
-          onGoToHome={() => onGoToHome()}
+          onGoToRoot={onGoToRoot}
+          onGoToHome={onGoToHome}
         />
       }
     >
       {opennedTextFile && (
         <LC.TextDisplay
           textFilePath={`${currentPath}/${opennedTextFile}`}
-          textContent={FileExploreService.openJsonFile(`${currentPath}/${opennedTextFile}`)}
         />
       )}
       {opennedImage && (
@@ -97,3 +107,12 @@ export const Screen_FileExplore = memo((props: {
     </Layout.Screen>
   );
 });
+
+function useListContents(o: {
+  currentPath: string
+  onPathChange: () => void
+}) {
+  useEffect(() => {
+    o.onPathChange();
+  }, [o.currentPath])
+}

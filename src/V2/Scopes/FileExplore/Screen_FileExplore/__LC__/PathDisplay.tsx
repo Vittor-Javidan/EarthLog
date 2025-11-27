@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import { ThemeService } from "@V2/Services_Core/ThemeService";
 import { ConfigService } from "@V2/Services/ConfigService";
-
 import { Text } from "@V2/Text/index";
 
 export const PathDisplay = memo((props: {

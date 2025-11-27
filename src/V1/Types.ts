@@ -175,6 +175,16 @@ export type CredentialDTO = {
 
 export type ImageQuality = 'no compress' | 'High' | 'Medium' | 'Low'
 
+// File Explore Types ----------------------------------------------------------
+
+export type FileType = {
+  type: 'file',
+  name: string,
+} | {
+  type: 'directory',
+  name: string,
+}
+
 // --------------------------------- Camera Types ------------------------------
 export type CameraLayerConfig = CameraPictureMode
 export type CameraPictureMode = {

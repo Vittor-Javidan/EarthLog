@@ -2,7 +2,6 @@ import React, { memo, useMemo } from 'react';
 
 import { ThemeService } from '@V2/Services_Core/ThemeService';
 import { ConfigService } from '@V2/Services/ConfigService';
-
 import { Button } from '@V2/Button/index';
 import { Layout } from '@V2/Layout/index';
 
@@ -22,7 +21,7 @@ export const ScreenButtons = memo((props: {
           iconName="home"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => props.onGoToHome()}
+          onPress={props.onGoToHome}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,
@@ -34,7 +33,7 @@ export const ScreenButtons = memo((props: {
           iconName="folder-home"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => props.onGoToRoot()}
+          onPress={props.onGoToRoot}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,
@@ -46,7 +45,7 @@ export const ScreenButtons = memo((props: {
           iconName="return-down-back-sharp"
           showPlusSign={false}
           buttonDiameter={60}
-          onPress={() => props.onCloseFolder()}
+          onPress={props.onCloseFolder}
           theme={{
             font:              theme.font,
             font_active:       theme.backgroud,
